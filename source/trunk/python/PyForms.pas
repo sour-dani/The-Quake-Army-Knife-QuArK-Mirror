@@ -92,9 +92,6 @@ var
 
  {-------------------}
 
-{var
- FNoTempDelete : Boolean = False;}
-
 procedure PythonUpdateAllForms;
 procedure AutoFocus(Control: TWinControl);
 function GetParentPyForm(Control: TControl) : TPyForm;
@@ -964,13 +961,6 @@ begin
   Action:=caFree;
  FreeCallbacks;
  Released:=True;
-
-(* if Self = QkForm then   { leaving QuArK }
-  begin
-   SaveSetupNow;
-   if not FNoTempDelete then
-    DeleteTempFiles;
-  end; *)
 end;
 
 procedure TPyForm.RefreshMenus;
