@@ -10,6 +10,7 @@ object ConfigDlg: TConfigDlg
   OldCreateOrder = True
   Position = poDefault
   OnClose = FormClose
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown

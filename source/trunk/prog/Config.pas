@@ -46,6 +46,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure ApplyBtnClick(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure OkBtnClick(Sender: TObject);
     procedure CancelBtnClick(Sender: TObject);
@@ -421,7 +422,7 @@ begin
   end;
 end;
 
-procedure TConfigDlg.FormClose(Sender: TObject; var Action: TCloseAction);
+procedure TConfigDlg.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
  GlobalDoAccept{(Self)};
  if ApplyBtn.Enabled then
@@ -433,6 +434,10 @@ begin
     else Abort;
    end;
   end;
+end;
+
+procedure TConfigDlg.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
  MAJAffichage(Nil);
 end;
 

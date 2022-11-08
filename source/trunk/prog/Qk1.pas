@@ -147,6 +147,7 @@ type
     procedure News1Click(Sender: TObject);
     procedure Open1Click(Sender: TObject);
     procedure Save1Click(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormDestroy(Sender: TObject);
     procedure Saveentryasfile1Click(Sender: TObject);
@@ -527,6 +528,7 @@ begin
  {InitSetup;  called by PythonLoadMain}
  ClearExplorer;
  RestorePositionTb('Main', False, FExplorer);
+ OnCloseQuery:=FormCloseQuery;
  OnClose:=FormClose;
  Application.HookMainWindow(WindowHook);
  Application.OnIdle:=AppIdle;
@@ -987,25 +989,6 @@ begin
   end
  else
   ReopensWindow:=False;
-end;*)
-
-(*procedure TForm1FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-var
- I: Integer;
- F: TForm;
-begin
- Explorer.MAJAffichage(Nil);
- for I:=0 to Screen.FormCount-1 do
-  begin
-   F:=Screen.Forms[I];
-   if (F<>Self) and Assigned(F.OnCloseQuery) then
-    begin
-     F.OnCloseQuery(Self, CanClose);
-     if not CanClose then
-      Exit;
-    end;
-  end;
- ClearExplorer;
 end;*)
 
 procedure TForm1.File1Click(Sender: TObject);
@@ -1528,11 +1511,7 @@ begin
   end;
 end;*)
 
-procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
-var
- I: Integer;
- F: TForm;
- CloseAction: TCloseAction;
+procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
  if g_LargeDataInClipboard
  and (MessageDlg(LoadStr1(5681), mtConfirmation, [mbYes, mbNo], 0) = mrNo) then
@@ -1549,6 +1528,14 @@ begin
   end;
 
  SavePendingFiles(True);
+end;
+
+procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
+var
+ I: Integer;
+ F: TForm;
+ CloseAction: TCloseAction;
+begin
  I:=Screen.FormCount;
  while I>0 do
   begin

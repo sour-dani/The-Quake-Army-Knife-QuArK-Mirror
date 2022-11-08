@@ -9,6 +9,7 @@ object ToolBoxForm: TToolBoxForm
   Position = poDefaultPosOnly
   OnActivate = FormActivate
   OnClose = FormClose
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnDeactivate = FormDeactivate

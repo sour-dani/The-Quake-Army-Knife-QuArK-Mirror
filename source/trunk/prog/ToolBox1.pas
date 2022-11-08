@@ -83,6 +83,7 @@ type
     N3: TMenuItem;
     EditDescription1: TMenuItem;
     procedure FormDestroy(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure FolderMacroClick(Sender: TObject);
@@ -680,13 +681,11 @@ begin
     inherited;
 end;
 
-procedure TToolBoxForm.FormClose(Sender: TObject;
-  var Action: TCloseAction);
+procedure TToolBoxForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 {var
  I: Integer;
  S: String;}
 begin
- Explorer.MAJAffichage(Nil);
 (*try
   if ModifiedFiles<>Nil then
    begin
@@ -706,6 +705,11 @@ begin
   Explorer.InvalidatePaintBoxes(0);
   Raise;
  end;*)
+end;
+
+procedure TToolBoxForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+ Explorer.MAJAffichage(Nil);
 end;
 
 procedure TToolBoxForm.FormActivate(Sender: TObject);
