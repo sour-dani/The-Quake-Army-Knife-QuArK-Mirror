@@ -27,7 +27,7 @@ Set the default options for FastMM here.
  application to gain from faster move routines, not just the memory manager. It
  is thus recommended that you use the Fastcode move library in conjunction with
  this memory manager and disable this option.}
-{$define UseCustomVariableSizeMoveRoutines}
+{.$define UseCustomVariableSizeMoveRoutines}
 
 {Enable this option to only install FastMM as the memory manager when the
  application is running inside the Delphi IDE. This is useful when you want
