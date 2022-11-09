@@ -624,11 +624,11 @@ end;*)
 
 procedure QFileObject.LoadObjsFromText(F: TStream; Taille: TStreamPos);
 var
- S: String;
+ S: AnsiString;
 begin
  SetLength(S, Taille);
  F.ReadBuffer(S[1], Taille);
- ConstructObjsFromText(Self, PChar(S), Taille);
+ ConstructObjsFromText(Self, PChar(String(S)), Taille);
   { when loading from the Addons path, try to build a cached (compiled) version }
 (* if (ExtractFilePath(Filename)=GetApplicationAddonsPath())
  and (ExtractFileExt(Filename)=TypeInfo)... *)
@@ -1434,7 +1434,7 @@ end;
 
 procedure ConvertObjsToText(Self: QObject; L: TStringList; Comment: Boolean);
 var
- S: String;
+ S: String; //FIXME: AnsiString?
 begin
  SetLength(S, c_FileSignatureSize);
  PInteger(@S[1])^:=c_FileSignatureQQRK;
@@ -1450,7 +1450,7 @@ begin
  L.Add('}');
 end;
 
-function CheckFileSignature(var P: PChar) : Boolean;
+function CheckFileSignature(var P: PChar) : Boolean; //FIXME: PAnsiChar?
 begin
  if StrLen(P) < c_FileSignatureSize then
  begin

@@ -873,7 +873,7 @@ end;
 procedure ScreenCrossCursor(DeltaX, DeltaY: Integer);
 var
  C: HCursor;
- BitsAND, BitsXOR: PChar;
+ BitsAND, BitsXOR: PAnsiChar;
  W, H, I: Integer;
 begin
  //This creates a 17x17 cross cursor with a hotspot-offset so that the
@@ -893,7 +893,7 @@ begin
   BitsXOR[W*I+1]:=#$80;
  BitsXOR[W*8+1]:=#$FF;
  BitsXOR[W*8+2]:=#$80;
- C:=CreateCursor(HInstance, 8-DeltaX, 8-DeltaY, W*8,H, BitsAND, BitsXOR);
+ C:=CreateCursor(HInstance, 8-DeltaX, 8-DeltaY, W*8, H, BitsAND, BitsXOR);
  Screen.Cursors[crCrossHS]:=C; //Note: Delphi will call the DestroyCursor function.
  finally FreeMem(BitsAND); end;
  finally FreeMem(BitsXOR); end;
