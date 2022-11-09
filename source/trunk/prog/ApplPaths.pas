@@ -61,6 +61,7 @@ function ConcatPaths(const Paths: array of String) : String;
 function GetQPath(const PathToGet : TQPathType) : String; overload;
 function GetQPath(const PathToGet : TQPathType; const GameName: String) : String; overload;
 function SplitVersionNumber(const VersionNumber: String; const Delimiter: String = '.') : TVersionNumber;
+function EscapeCommandline(const S: string): string;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 
  { ------------------- }
 
@@ -233,6 +234,18 @@ begin
   end;
   SetLength(Result, Length(Result)+1);
   Result[Length(Result)-1]:=StrToIntDef(RightStr(VersionNumber, Length(VersionNumber) - OldIndex + 1), 0);
+end;
+
+//Note: This function does NOT add the quotes at the start and end of the argument.
+function EscapeCommandline(const S: string): string;
+begin
+  {$IFDEF LINUX}
+  Result:=StringReplace(S, '\', '\\', [rfReplaceAll]);
+  Result:=StringReplace(Result, '''', '\''', [rfReplaceAll]);
+  Result:=StringReplace(Result, '"', '\"', [rfReplaceAll]);
+  {$ELSE}
+  Result:=StringReplace(S, '"', '\"', [rfReplaceAll]);
+  {$ENDIF}
 end;
 
 initialization

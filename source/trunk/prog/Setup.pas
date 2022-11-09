@@ -1144,7 +1144,7 @@ end;
 
 function GetRegCommand : String;
 begin
- Result:='"'+Application.ExeName+'" "%1"';
+ Result:='"'+EscapeCommandline(Application.ExeName)+'" "%1"';
 end;
 
 procedure MakeAssociations(Config: QObject);

@@ -2032,7 +2032,7 @@ begin
     SetCurrentDirectory(PChar(PyStrPas(curdir)));
     if SI.dwFlags and STARTF_USESTDHANDLES <> 0 then
      begin
-      if cmdline^='"' then
+      if cmdline^='"' then //FIXME: Is this doing proper escaping?
        begin
         P:=cmdline+1;
         Q:=StrScan(P, '"');
@@ -2352,10 +2352,10 @@ begin
  if I>0 then
  begin
    System.Delete(ProgramCall,I,2);
-   System.Insert(FullFile,ProgramCall,I);
+   System.Insert(EscapeCommandline(FullFile),ProgramCall,I);
  end
  else
-   ProgramCall:=ProgramCall+' "'+FullFile+'"';
+   ProgramCall:=ProgramCall+' "'+EscapeCommandline(FullFile)+'"';
 
  FillChar(SI, SizeOf(SI), 0);
  SI.cb:=SizeOf(SI);
@@ -2577,7 +2577,7 @@ begin
  end;
 end;
 
-function xMenuName(self, args: PyObject) : PyObject; cdecl;
+function xMenuName(self, args: PyObject) : PyObject; cdecl; //FIXME: This function should not be needed!
 var
  P: PyChar;
  S: String;
