@@ -26,10 +26,10 @@
 {$A8,B-,C+,D-,E-,F-,G+,H+,I+,J-,K-,L+,M-,N-,O+,P+,Q-,R-,S-,T-,U-,V+,W-,X+,Y+,Z1}
 
 { If you define VCLFIXPACK_DEBUG the patches are compiled with debug information. }
-{$DEFINE VCLFIXPACK_DEBUG}
+{.$DEFINE VCLFIXPACK_DEBUG}
 
 { If you use Delphi 6/7/2005 Personal you must disable the VCLFIXPACK_DB_SUPPORT define. }
-{$DEFINE VCLFIXPACK_DB_SUPPORT}
+{.$DEFINE VCLFIXPACK_DB_SUPPORT}
 
 unit VCLFixPack;
 
