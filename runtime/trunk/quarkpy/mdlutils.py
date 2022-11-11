@@ -13,15 +13,12 @@ import quarkx
 import qutils
 from qeditor import *
 
-### Globals
-keyframesrotation = 0
 
 ###############################
 #
 # Color functions
 #
 ###############################
-
 
 #
 # Takes a float value from 0.0 to 1.0 and returns the Hex value (as a string)
