@@ -482,7 +482,7 @@ Section "!$(TEXT_SEC01_TITLE)" SEC01
 
   ${If} $0 == 0
   ${OrIf} $1 == 0
-    MessageBox MB_ICONEXCLAMATION|MB_OK "$(TEXT_DEPENDENCIES)"
+    MessageBox MB_ICONEXCLAMATION|MB_OK "$(TEXT_DEPENDENCIES)" /SD IDOK
   ${EndIf}
 SectionEnd
 
@@ -545,6 +545,7 @@ Section -Post
   ;WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "VersionMinor" "..."
 
   Call GetInstalledSize
+  Pop $0
   WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "EstimatedSize" "$0"
 SectionEnd
 
@@ -670,13 +671,13 @@ FunctionEnd
 
 Function un.onInit
 !insertmacro MUI_UNGETLANGUAGE
-  MessageBox MB_ICONEXCLAMATION|MB_YESNO|MB_DEFBUTTON2 "$(TEXT_UNINSTALL1)" IDYES +2
+  MessageBox MB_ICONEXCLAMATION|MB_YESNO|MB_DEFBUTTON2 "$(TEXT_UNINSTALL1)" /SD IDYES IDYES +2
   Abort
-  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "$(TEXT_UNINSTALL2)" IDYES +2
+  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "$(TEXT_UNINSTALL2)" /SD IDYES IDYES +2
   Abort
 FunctionEnd
 
 Function un.onUninstSuccess
   HideWindow
-  MessageBox MB_ICONINFORMATION|MB_OK "$(TEXT_UNINSTALL3)"
+  MessageBox MB_ICONINFORMATION|MB_OK "$(TEXT_UNINSTALL3)" /SD IDOK
 FunctionEnd
