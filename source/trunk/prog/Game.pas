@@ -1600,6 +1600,7 @@ begin
     finally
       FindClose(S);
     end;
+    TryingToFind:=CheckDir;
   end
   else
   begin
