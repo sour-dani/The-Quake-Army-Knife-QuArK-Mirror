@@ -20,6 +20,7 @@ Info = {
 
 
 import quarkx
+import os
 from quarkpy.maputils import *
 import quarkpy.mapduplicator
 import quarkpy.qmacro
@@ -75,22 +76,15 @@ class HalfLifeRADFileMaker(StandardDuplicator):
             filename = checkfilename(editor.fileobject.shortname or editor.fileobject["FileName"]) + ".RAD"
         filename = filename.lower()
 
-        radfilename = quarkx.outputfile(quarkx.getmapdir()+"//"+filename)
-
+        radfilename = quarkx.outputfile(os.path.join(quarkx.getmapdir(), filename))
+        f = open(radfilename, "w+")
         try:
-            f = open(radfilename, "w+")
-
-            # print self.dup.dictspec.keys()
-
+            # squawk(self.dup.dictspec.keys())
             for texturename in self.dup.dictspec.keys():
                 if (not texturename in ("macro", "filename", "texture", "lighting")):
-                    # print texturename, self.dup[texturename]
                     f.write("%s\t%s\n" % (texturename, self.dup[texturename]))
-
+        finally:
             f.close()
-        except:
-            f.close()
-            squawk("Can't write the file "+radfilename)
 
         return []
 
