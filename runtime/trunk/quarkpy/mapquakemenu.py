@@ -51,7 +51,7 @@ def CreateCheckFileExtensionArray(instring):
                     break
         return ext, action
 
-    # Remove all unnessary characters
+    # Remove all unnecessary characters
     reducedstring = filter(lambda d: d in gExt_AllCharacters, instring)
     extactionlist = []
     for i in range(0, len(reducedstring)):
@@ -107,42 +107,44 @@ class BuildPgmConsole_Advanced(qquake.BatchConsole):
                 import mapholes
                 mapholes.LoadLinFile(self.editor, self.bspfile_wo_ext+'.'+ext)
         else:
-            print "ERROR: Unknown action \"" + action + "\" for extension \"" + ext + "\""
+            print Strings[5864] % (action, ext)
 
     def FileHasContent(self, ext, attr, filename):
         if (ext[:1] != gExt_MustNotExist):
-            return 0
-        if ((attr==FA_FILENOTFOUND) or not (attr&FA_ARCHIVE)):
-            return 0
-        if attr!=FA_FILENOTFOUND:
-            f=open(filename, "r")
-            data = f.readlines()
-            for line in data:
-                if line.strip()!='':
-                    return 1
-        return 0 # not actually necessary because Python functions returns None by default
+            return False
+        if ((attr == FA_FILENOTFOUND) or not (attr & FA_ARCHIVE)):
+            return False
+        if attr != FA_FILENOTFOUND:
+            f = open(filename, "r")
+            try:
+                for line in f.readlines():
+                    if line.strip() != '':
+                        return True
+            finally:
+                f.close()
+        return False
 
     def close(self):
-        errorfoundandprintet = 0
+        errorfoundandprinted = False
         for ext, action in self.checkextensions:
             errortext = None
             workfile = self.bspfile_wo_ext + "." + ext[1:]
             attr = quarkx.getfileattr(workfile)
             if ((ext[:1] == gExt_GotToExist) and ((attr==FA_FILENOTFOUND) or not (attr&FA_ARCHIVE))):
-                errortext = "Build failed, because it did not create the (%s) file: " % ext + workfile
+                errortext = Strings[5865] % (ext, workfile)
             elif self.FileHasContent(ext, attr, workfile):
 #            elif ((ext[:1] == gExt_MustNotExist) and ((attr!=FA_FILENOTFOUND) and (attr&FA_ARCHIVE))):
-                errortext = "Build failed, because it created the (%s) file: " % ext + workfile
+                errortext = Strings[5866] % (ext, workfile)
 
             # Was error found?
             if (errortext is not None):
-                if (not errorfoundandprintet):
+                if (not errorfoundandprinted):
                     print "!-!"*26
-                    errorfoundandprintet = 1
+                    errorfoundandprinted = True
                 print errortext
                 self.doAction(action, ext[1:])
 
-        if (errorfoundandprintet):
+        if (errorfoundandprinted):
             # Error occured!
             quarkx.console()
             del self.next
@@ -420,7 +422,7 @@ def RebuildAndRun(maplist, editor, runquake, text, forcepak, extracted, cfgfile,
 
                 if (not cmdline) or (quarkx.getfileattr(cmdline)==FA_FILENOTFOUND):
                     desc = setup["BuildDesc%d" % pgrmnbr] or cmdline or pgrmx
-                    quarkx.log("Missing executable: %s" % (cmdline, ), LOG_INFO)
+                    quarkx.log(Strings[5867] % (cmdline, ), LOG_INFO)
                     missing = "     %s\n%s" % (desc, missing)
                 else:
                     # Prepare to run this program
@@ -504,9 +506,9 @@ def RebuildAndRun(maplist, editor, runquake, text, forcepak, extracted, cfgfile,
 
     elif texcount is not None:
         target = setup["TextureWad"] or setup["TexturesPath"]
-#        quarkx.msgbox(target,2,4)
+#        squawk(target)
         target = quarkx.outputfile(target)
-#        quarkx.msgbox(target,2,4)
+#        squawk(target)
         c1,c2 = texcount
         if c1<c2:
             msg = Strings[5590] % (c2, target, c2-c1)
@@ -617,7 +619,7 @@ def QuakeMenu(editor):
     try:
         ud = LoadPoolObj(sourcename, quarkx.openfileobj, sourcename)
     except:
-        quarkx.msgbox("QuArK fail to load the file '%s'. Its menu will not be displayed." % (sourcename, ), MT_ERROR, MB_OK)
+        quarkx.msgbox(Strings[5868] % (sourcename, ), MT_ERROR, MB_OK)
         ud = None
     else:
         ud = ud.findname("Menu.qrk")

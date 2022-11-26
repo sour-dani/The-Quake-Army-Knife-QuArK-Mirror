@@ -1131,6 +1131,11 @@ Strings = {
     5861: "Unable to set '%s' for file extension '%s' ('%s')",
     5862: "%s (empty)",
     5863: "%s: Unknown '%s' value",
+    5864: "ERROR: Unknown action '%s' for extension '%s'",
+    5865: "Build failed, because it did not create the (%s) file: %s",
+    5866: "Build failed, because it created the (%s) file: %s",
+    5867: "Missing executable: %s",
+    5868: "Failed to load the file '%s'. Its menu will not be displayed",
 
     # DanielPharos would like to reserve 6000 .. 6099 for all renderers
     6000: "Unable to create SceneObject//%s",
