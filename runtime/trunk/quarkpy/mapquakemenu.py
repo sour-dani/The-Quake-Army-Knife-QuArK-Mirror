@@ -182,9 +182,9 @@ def writemapfile(root, mapname, selonly, wadfile, hxstr=None, group=None):
     m = quarkx.newfileobj(mapfullname)
 
     if group == "":
-        m.filename = quarkx.outputfile("%s/%s" % (quarkx.getmapdir(), mapfullname))
+        m.filename = quarkx.outputfile(os.path.join(quarkx.getmapdir(), mapfullname))
     else:
-        m.filename = quarkx.outputfile("%s/%s/%s" % (quarkx.getmapdir(), group, mapfullname))
+        m.filename = quarkx.outputfile(os.path.join(quarkx.getmapdir(), group, mapfullname))
     worldspawn = root.copy(1)   # preserve selection while copying
     m["Root"] = worldspawn.name
     m.setint("saveflags", saveflags)
@@ -283,7 +283,7 @@ def RebuildAndRun(maplist, editor, runquake, text, forcepak, extracted, cfgfile,
         or buildmode["BuildPgm7"] \
         or buildmode["BuildPgm8"] \
         or buildmode["BuildPgm9"]:
-            bspfile = quarkx.outputfile("%s/%s.bsp" % (quarkx.getmapdir(), map))
+            bspfile = quarkx.outputfile(os.path.join(quarkx.getmapdir(), map+".bsp"))
             if bspfile in extracted:
                 continue
             extracted = extracted + filesformap(map)
@@ -390,7 +390,7 @@ def RebuildAndRun(maplist, editor, runquake, text, forcepak, extracted, cfgfile,
     for mapfileobject, root, buildmode, mapinfo in newlist:
 
         map = mapinfo["map"]
-        bspfile = quarkx.outputfile("./%s/%s.bsp" % (quarkx.getmapdir(), map))
+        bspfile = quarkx.outputfile(os.path.join(".", quarkx.getmapdir(), map+".bsp"))
 
         for pgrmnbr in range(9,0,-1):
             pgrmx = "BuildPgm%d" % pgrmnbr
