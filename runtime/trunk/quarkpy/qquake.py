@@ -9,6 +9,7 @@ Routines to execute Quake, Hexen II, or Quake 2
 #
 
 import quarkx
+import os
 from qdictionnary import Strings
 import qconsole
 import qutils
@@ -137,7 +138,7 @@ class GameConsole(BatchConsole):
                         folder = pak.getfolder(qname[:i])
                         qobj.shortname = qname[i:]
                         folder.appenditem(qobj)
-                print err % ("/" + qname)
+                print err % (os.path.join(".", qname), )
             pak.filename = writeto
             pak.savefile()
         else:
@@ -155,7 +156,7 @@ class GameConsole(BatchConsole):
                         err = Strings[5832]             #DECKER
                     else:                               #DECKER
                         qobj.savefile(fname)
-                print err % ("/" + qname)
+                print err % (os.path.join(".", qname), )
         print Strings[5826] % writeto
         del self.filelistdata
 
