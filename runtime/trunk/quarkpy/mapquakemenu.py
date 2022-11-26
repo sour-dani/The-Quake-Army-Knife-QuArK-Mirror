@@ -199,14 +199,14 @@ def writemapfile(root, mapname, selonly, wadfile, hxstr=None, group=None):
 
 def filesformap(map):
     setup = quarkx.setupsubset()
-    map = "%s/%s" % (quarkx.getmapdir(), map)
+    map = os.path.join(quarkx.getmapdir(), map)
     mapholes = setup["MapHoles"]
     if not mapholes:
         mapholes = ".lin"
     normal_files = [map+".bsp", map+mapholes]
     e1 = setup["PakExtra1"]
     if e1:
-      normal_files = normal_files + [ map + e1 ]
+        normal_files = normal_files + [ map + e1 ]
     return normal_files
 
 
