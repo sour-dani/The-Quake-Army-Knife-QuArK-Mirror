@@ -743,6 +743,16 @@ def SwapRandB(LongIntNbr):
     Color[0] = TMPColor
     return RGBToColor(Color)
 
+
+
+# Remove illegal characters from a filename
+def checkfilename(filename):
+    from qdictionnary import Strings
+    filename = filter(lambda c: c in r"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$%'-_@{}~`!#()", filename)
+    return filename or Strings[180]
+
+
+
 #---- import the plug-ins ----
 import plugins
 plugins.LoadPlugins("Q_")

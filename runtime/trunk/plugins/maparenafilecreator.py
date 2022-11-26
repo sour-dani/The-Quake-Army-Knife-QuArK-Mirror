@@ -16,6 +16,7 @@ Info = {
    "quark":         "Version 6.0" }
 
 import quarkx
+import os
 from quarkpy.maputils import *
 import quarkpy.mapduplicator
 
@@ -29,10 +30,6 @@ StandardDuplicator = quarkpy.mapduplicator.StandardDuplicator
 #fraglimit 50
 #type "ffa"
 #}
-
-def checkfilename(filename):
-    filename = filter(lambda c: c in r"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$%'-_@{}~`!#()", filename)
-    return filename or Strings[180]
 
 
 class ArenaFileMaker(StandardDuplicator):
@@ -78,7 +75,7 @@ class ArenaFileMaker(StandardDuplicator):
         # build arena script name
         editor = mapeditor(SS_MAP)
         mapname = checkfilename(editor.fileobject.shortname or editor.fileobject["FileName"]).lower()
-        scriptname = quarkx.outputfile("scripts/"+mapname+".arena")
+        scriptname = quarkx.outputfile(os.path.join("scripts", mapname+".arena"))
 
         try:
             f=open(scriptname,"w+")

@@ -54,11 +54,6 @@ def macro_hlradfilemaker_apply(self):
 quarkpy.qmacro.MACRO_hlradfilemaker_apply = macro_hlradfilemaker_apply
 
 
-def checkfilename(filename):
-    filename = filter(lambda c: c in r"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$%'-_@{}~`!#()", filename)
-    return filename or "quark"
-
-
 class HalfLifeRADFileMaker(StandardDuplicator):
 
     def buildimages(self, singleimage=None):

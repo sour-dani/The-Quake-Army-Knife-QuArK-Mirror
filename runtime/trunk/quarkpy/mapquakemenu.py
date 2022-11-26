@@ -160,11 +160,6 @@ class CloseConsole:
 
 
 
-def checkfilename(filename):
-    filename = filter(lambda c: c in r"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$%'-_@{}~`!#()", filename)
-    return filename or Strings[180]
-
-
 def writemapfile(root, mapname, selonly, wadfile, hxstr=None, group=None):
     saveflags = 0
     if MapOption("IgnoreToBuild"):
@@ -276,8 +271,7 @@ def RebuildAndRun(maplist, editor, runquake, text, forcepak, extracted, cfgfile,
                     if mapsearch.CheckMap() == 0:
                         return
 
-        map = checkfilename(mapfileobject["FileName"] or mapfileobject.shortname)
-        map = map.lower()
+        map = qutils.checkfilename(mapfileobject["FileName"] or mapfileobject.shortname).lower()
         mapinfo = {"map": map}
         if buildmode["ExportMapFile"] \
         or buildmode["BuildPgm1"] \
@@ -576,8 +570,8 @@ portalsMenuItem = qmenu.item("Load Portal&file",loadPortalFile,hint="|Loads the 
 def prepAuxFileMenuItem(item,extkey,defext):
     editor=item.editor
     mapfileobject = editor.fileobject
-    map = checkfilename(mapfileobject["FileName"] or mapfileobject.shortname)
-    mapfilename = os.path.join(quarkx.outputfile(''), quarkx.getmapdir(), map.lower())
+    map = qutils.checkfilename(mapfileobject["FileName"] or mapfileobject.shortname).lower()
+    mapfilename = os.path.join(quarkx.outputfile(''), quarkx.getmapdir(), map)
     auxextension = quarkx.setupsubset()[extkey]
     if not auxextension:
         auxextension=defext
