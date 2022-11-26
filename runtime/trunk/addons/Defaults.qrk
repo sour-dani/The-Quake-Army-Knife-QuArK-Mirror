@@ -400,7 +400,6 @@ QQRKSRC1
         Code = "Z" // Hardcoded value in Setup.PAS
 
         Program = "6DX11.EXE"
-
         Directory = ""
         CheckDirectory = "*.EXE"
 
@@ -537,6 +536,7 @@ QQRKSRC1
 
         Program = "CoDSP.exe +set sv_pure 0"
         Directory = "C:\Program Files\Call of Duty"
+        CheckDirectory = "*.EXE"
   //      CheckDirectory = "CoDSP.exe"   // hidden setting
 
         CD = ""
@@ -757,7 +757,6 @@ QQRKSRC1
         Code = "c" // Hardcoded value in Setup.PAS
 
         Program = "WalkTest.EXE"
-
         Directory = "/quark2cs_511/"
         CheckDirectory = "WALKTEST.EXE"
 
@@ -873,9 +872,11 @@ QQRKSRC1
         CheckAddonInstalled = "1"
         Game = "Doom 3"
         Code = "j" // Hardcoded value in Setup.PAS
+
         Program = "Doom3.EXE +seta com_allowconsole 1 +dmap %filename%"
         Directory = "C:\Program Files\Doom 3"
         CheckDirectory = "DOOM3.EXE"   // hidden setting
+
         CD = ""
         CDDir = "\Doom3\base"          // hidden setting
 
@@ -1101,7 +1102,6 @@ QQRKSRC1
         Code = "4" // Hardcoded value in Setup.PAS
 
         Program = "GTest.EXE"
-
         Directory = ""
         CheckDirectory = "*.EXE"
 
@@ -1225,6 +1225,8 @@ QQRKSRC1
 
         Program = "%steampath%\steam.exe -applaunch %steamappid% -dev -console -window -width 800 -height 600"
         Directory = "*auto*"
+        CheckDirectory = "*"
+
         SteamLibraryPath = ""
         SteamGame = "HL2"
         SteamAppID = "*auto*"
@@ -1297,7 +1299,6 @@ QQRKSRC1
         Code = "B" // Hardcoded value in Setup.PAS
 
         Program = "Heretic2.EXE"
-
         Directory = "\Heretic II"
         CheckDirectory = "HERETIC2.EXE"
 
@@ -1351,7 +1352,6 @@ QQRKSRC1
         Code = "2" // Hardcoded value in Setup.PAS
 
         Program = "H2.EXE"
-
         Directory = "\Hexen II"
         CheckDirectory = "H2.EXE"
 
@@ -1560,7 +1560,6 @@ QQRKSRC1
         Code = "D" // Hardcoded value in Setup.PAS
 
         Program = "KingPin.EXE"
-
         Directory = "\KingPin"
         CheckDirectory = "KINGPIN.EXE"
 
@@ -1620,9 +1619,9 @@ QQRKSRC1
         CheckAddonInstalled = "1"
         Game = "MOHAA"
         Code = "e" // Hardcoded value in Setup.PAS
+
 //        Program = "MOHAA.EXE +set sv_pure 0"
         Program = "MOHAA.EXE +set developer 1 +set thereisnomonkey 1 +set cheats 1 +set ui_console 1"
-
         Directory = "\MOHAA"
         CheckDirectory = "MOHAA.EXE"
 
@@ -1770,9 +1769,11 @@ QQRKSRC1
         CheckAddonInstalled = "1"
         Game = "Prey"
         Code = "r" // Hardcoded value in Setup.PAS
+
         Program = "prey.exe +seta com_allowconsole 1 +dmap %filename%"
         Directory = "c:\program files\prey"
         CheckDirectory = "prey.exe"   // hidden setting
+
         CD = ""
         CDDir = "\prey\base"          // hidden setting
 
@@ -1965,8 +1966,7 @@ QQRKSRC1
 
         Program = "Quake3.EXE +set sv_pure 0"
         Directory = "C:\Program Files\Quake III Arena"
-        //CheckDirectory = "QUAKE3.EXE"
-        CheckDirectory = "*.EXE"
+        CheckDirectory = "QUAKE3.EXE"
 
         CD = ""
         CDDir = "\Quake3\baseq3"
@@ -2046,6 +2046,7 @@ QQRKSRC1
         Program = "quake4.exe +seta com_allowconsole 1 +dmap %filename%"
         Directory = "C:\Program Files\Quake 4"
         CheckDirectory = "quake4.exe"   // hidden setting
+
         CD = ""
         CDDir = "\Quake 4\q4base"       // hidden setting
 
@@ -2125,6 +2126,7 @@ QQRKSRC1
         Program = "WOLFSP.EXE +set sv_cheats 1 +set fs_homepath main +set fs_game %gamedir% +set nextmap "$22"spdevmap %filename%"$22" +exec"
         Directory = "C:\Program Files\Return to Castle Wolfenstein"
         CheckDirectory = "*.EXE"   // hidden setting
+
         CD = ""
         CDDir = "\Return to Castle Wolfenstein\main"       // hidden setting
 
@@ -2199,6 +2201,7 @@ QQRKSRC1
         Program = "ET.EXE +set sv_cheats 1 +set sv_pure 0 +set g_gametype 2 +set fs_homepath etmain +set fs_game %gamedir% +devmap "$22"%filename%"$22" +exec"
         Directory = "C:\Program Files\Wolfenstein - Enemy Territory"
         CheckDirectory = "ET.exe"   // hidden setting
+
         CD = ""
         CDDir = "\Wolfenstein - Enemy Territory\etmain"       // hidden setting
 
@@ -2270,7 +2273,6 @@ QQRKSRC1
         Code = "C" // Hardcoded value in Setup.PAS
 
         Program = "Sin.EXE"
-
         Directory = "\Sin"
         CheckDirectory = "SIN.EXE"
 
@@ -2682,6 +2684,7 @@ QQRKSRC1
 
         Program = "map2dif_DEBUG.exe"
         Directory = "C:\Torque"
+        CheckDirectory = "*.EXE"
         //CheckDirectory = "map2dif_DEBUG.exe"   // hidden setting
 
         DefaultTexture = ""
@@ -2761,8 +2764,8 @@ QQRKSRC1
         CheckAddonInstalled = "1"
         Game = "Warfork"
         Code = "x" // Hardcoded value in Setup.PAS
-        Program = "warfork_x86.exe"
 
+        Program = "warfork_x86.exe"
         Directory = "C:\Program Files\fvi\fvi-launcher\applications\warfork\Warfork.app\Contents\Resources"
         CheckDirectory = "*.EXE"
 
@@ -2832,8 +2835,8 @@ QQRKSRC1
         CheckAddonInstalled = "1"
         Game = "Warsow"
         Code = "v" // Hardcoded value in Setup.PAS
-        Program = "warsow_x86.exe"
 
+        Program = "warsow_x86.exe"
         Directory = "C:\Program Files\Warsow"
         CheckDirectory = "*.EXE"
 
@@ -2904,8 +2907,8 @@ QQRKSRC1
         // WildWest game add on by SilverPaladin (Capt. Queeg to WildWest folk)
         Game = "WildWest"
         Code = "w" // Hardcoded value in Setup.PAS
-        Program = "WOLFMP.EXE +set sv_pure 0 +set fs_game %gamedir%"
 
+        Program = "WOLFMP.EXE +set sv_pure 0 +set fs_game %gamedir%"
         Directory = "C:\Program Files\Return to Castle Wolfenstein"
         CheckDirectory = "WildWest.EXE"
 

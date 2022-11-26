@@ -1558,15 +1558,10 @@ var
   CheckDir, S2: String;
   TryingToFind: String;
   F: Boolean;
+  S: TSearchRec;
+  rc: Integer;
 begin
   CheckDir:=SetupGameSet.Specifics.Values['CheckDirectory'];
-{Decker - If no value in CheckDirectory, then accept any directory}
-  if CheckDir='' then
-  begin
-    Result:=true;
-    Exit;
-  end;
-{/Decker}
   if pos(#$D, CheckDir) <> 0 then
   begin
     Result:=false;
@@ -1595,13 +1590,23 @@ begin
     end;
     Delete(TryingToFind, Length(TryingToFind)-5, 6);
   end
+  else if pos('*', CheckDir) <> 0 then
+  begin
+    Result:=false;
+    rc:=FindFirst(ConcatPaths([QuakeDir, CheckDir]), faAnyFile, S);
+    try
+      if rc=0 then
+        Result:=True;
+    finally
+      FindClose(S);
+    end;
+  end
   else
   begin
     Result:=FileExists(ConcatPaths([QuakeDir, CheckDir]));
     TryingToFind:=CheckDir;
   end;
 
-//  Result:=FileExists(CheckFile);
   if not Result then
   begin
     case MessageDlg(FmtLoadStr1(5627, [SetupGameSet.Name, TryingToFind]),
