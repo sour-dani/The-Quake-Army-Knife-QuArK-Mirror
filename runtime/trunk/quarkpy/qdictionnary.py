@@ -888,7 +888,7 @@ Strings = {
     5624: "This map contains a special Duplicator whose behaviour is unknown to QuArK 5//'Sym' is '%s'",
     5625: "%s cannot run multiple TCs together:\n%s\nOnly the last one is used.",
     5626: "the temporary directory '%s'",
-    5627: "The directory to %s seems to be wrong : could not find %s. Do you want to enter the correct path now ?",
+    5627: "The directory to %s seems to be wrong: could not find %s. Do you want to enter the correct path now ?",
     5628: "Remove the temporary tag of file '%s' ? QuArK will then no more consider it a temporary file.",
     5629: "Always create pak files instead of writing files in '%s'",
     5630: "Cannot create a new temporary pak file. The names are in use up to '%s'",

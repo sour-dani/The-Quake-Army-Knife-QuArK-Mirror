@@ -1556,19 +1556,21 @@ function CheckQuakeDir : Boolean;
 var
   CheckFile: String;
   CheckDir, S2: String;
+  QuakeDir2: String;
   TryingToFind: String;
   F: Boolean;
   S: TSearchRec;
   rc: Integer;
 begin
   CheckDir:=SetupGameSet.Specifics.Values['CheckDirectory'];
+  QuakeDir2:=QuickResolveFilename(QuakeDir);
   if pos(#$D, CheckDir) <> 0 then
   begin
     Result:=false;
     S2:=CheckDir;
     while (pos(#$D, S2) <> 0) do
     begin
-      CheckFile:=ConcatPaths([QuakeDir, Copy(S2, 1, pos(#$D, S2)-1)]);
+      CheckFile:=ConcatPaths([QuakeDir2, Copy(S2, 1, pos(#$D, S2)-1)]);
       F:=FileExists(CheckFile);
       Result:=Result or F;
       if not F then TryingToFind:=TryingToFind+Copy(S2, 1, pos(#$D, S2)-1)+', or ';
@@ -1582,7 +1584,7 @@ begin
     S2:=CheckDir;
     while (pos(#$A, S2) <> 0) do
     begin
-      CheckFile:=ConcatPaths([QuakeDir, Copy(S2, 1, pos(#$A, S2)-1)]);
+      CheckFile:=ConcatPaths([QuakeDir2, Copy(S2, 1, pos(#$A, S2)-1)]);
       F:=FileExists(CheckFile);
       Result:=Result and F;
       if not F then TryingToFind:=TryingToFind+Copy(S2, 1, pos(#$A, S2)-1)+', and ';
@@ -1593,7 +1595,7 @@ begin
   else if pos('*', CheckDir) <> 0 then
   begin
     Result:=false;
-    rc:=FindFirst(ConcatPaths([QuakeDir, CheckDir]), faAnyFile, S);
+    rc:=FindFirst(ConcatPaths([QuakeDir2, CheckDir]), faAnyFile, S);
     try
       if rc=0 then
         Result:=True;
@@ -1604,7 +1606,7 @@ begin
   end
   else
   begin
-    Result:=FileExists(ConcatPaths([QuakeDir, CheckDir]));
+    Result:=FileExists(ConcatPaths([QuakeDir2, CheckDir]));
     TryingToFind:=CheckDir;
   end;
 
