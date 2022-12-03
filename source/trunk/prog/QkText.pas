@@ -54,6 +54,11 @@ type
               class function TypeInfo: String; override;
               class procedure FileObjectClassInfo(var Info: TFileObjectClassInfo); override;
             end;
+ QNutFile = class(QText)
+            public
+              class function TypeInfo: String; override;
+              class procedure FileObjectClassInfo(var Info: TFileObjectClassInfo); override;
+            end;
  QZText   = class(QText)
             protected
               procedure SaveFile(Info: TInfoEnreg1); override;
@@ -95,9 +100,10 @@ begin
   4: Result:=QXmlFile;
   5: Result:=QRCFile;
   6: Result:=QSRCFile;
+  7: Result:=QNutFile;
  else
    begin
-    Dec(I,6);
+    Dec(I,7);
     Result:=Nil;
    end;
  end;
@@ -259,6 +265,21 @@ end;
 
  {------------------------}
 
+class function QNutFile.TypeInfo;
+begin
+ Result:='.nut';
+end;
+
+class procedure QNutFile.FileObjectClassInfo(var Info: TFileObjectClassInfo);
+begin
+ inherited;
+ Info.FileObjectDescriptionText:=LoadStr1(5869);
+ Info.FileExt:=835;
+ Info.WndInfo:=[wiWindow];
+end;
+
+ {------------------------}
+
 procedure TFQText.wmInternalMessage(var Msg: TMessage);
 begin
  case Msg.wParam of
@@ -311,4 +332,5 @@ initialization
   RegisterQObject(QCfgFile, 'c');
   RegisterQObject(QJsonFile, 'b');
   RegisterQObject(QXmlFile, 'b');
+  RegisterQObject(QNutFile, 'c');
 end.

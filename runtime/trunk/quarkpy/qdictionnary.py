@@ -288,6 +288,7 @@ Strings = {
     832: "XML file (*.xml)|*.xml",
     833: "Run Commands file (*.rc)|*.rc",
     834: "Source file (*.src)|*.src",
+    835: "Squirrel script file (*.nut)|*.nut",
 
     2368: "Skins",
     2369: "Frames",
@@ -1136,6 +1137,7 @@ Strings = {
     5866: "Build failed, because it created the (%s) file: %s",
     5867: "Missing executable: %s",
     5868: "Failed to load the file '%s'. Its menu will not be displayed",
+    5869: "Squirrel script file",
 
     # DanielPharos would like to reserve 6000 .. 6099 for all renderers
     6000: "Unable to create SceneObject//%s",

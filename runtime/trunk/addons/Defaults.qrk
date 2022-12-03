@@ -238,6 +238,7 @@ QQRKSRC1
         .qc  = "1"     iqc  = '8'
         .hc  = "1"     ihc  = '8'
         .cs  = "1"     ics  = '8'
+        .nut = "1"     inut = '8'
         .wad = "1"     iwad = '9'
         .wal = "1"     iwal = '10'
         .swl = "1"     iswl = '10'
@@ -300,6 +301,7 @@ QQRKSRC1
         .qc  = "Notepad.exe"
         .hc  = "Notepad.exe"
         .cs  = "Notepad.exe"
+        .nut = "Notepad.exe"
         .wad = ""
         .wal = ""
         .swl = ""
@@ -9032,6 +9034,7 @@ QQRKSRC1
       .qc:  = { Txt="QC scripts" externaledit = ! }
       .hc:  = { Txt="HC scripts" externaledit = ! }
       .cs:  = { Txt="CS scripts" externaledit = ! }
+      .nut:  = { Txt="Squirrel scripts" externaledit = ! }
       .wad: = { Txt="WAD texture lists" externaledit = ! }
       .wal: = { Txt="WAL textures" externaledit = ! }
       .swl: = { Txt="SWL Sin textures" externaledit = ! }
@@ -9119,6 +9122,7 @@ QQRKSRC1
       .qc:  = {Typ="X" Cap=".qc"  Txt="QuakeC Code (Quake 1)"}
       .hc:  = {Typ="X" Cap=".hc"  Txt="HexenC Code (Hexen II)"}
       .cs:  = {Typ="X" Cap=".cs"  Txt="Tribes 2 Code"}
+      .nut: = {Typ="X" Cap=".nut" Txt="Squirrel Code"}
       .wad: = {Typ="X" Cap=".wad" Txt="Quake 1 Textures group"}
       .wal: = {Typ="X" Cap=".wal" Txt="Quake 2 Texture file"}
       .swl: = {Typ="X" Cap=".swl" Txt="Sin Texture file"}
