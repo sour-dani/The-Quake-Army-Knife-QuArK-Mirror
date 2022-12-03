@@ -122,7 +122,10 @@ function ResolveFilename(const FileToResolve : TFileToResolve) : TResolvedFilena
 function QuickResolveFilename(const Filename : String) : String;
 procedure CreateAllDirs(const Filename: string; StartIndex: Integer = 1);
 
-function GameBuffer(NeededGame: Char) : PGameBuffer;
+function GameBuffer(const NeededGame: TGameCode) : PGameBuffer;
+function DuplicateGameBuffer(Source: PGameBuffer) : PGameBuffer;
+procedure DeleteGameBuffer(B: PGameBuffer);
+
 procedure ClearBmpInfo24(var BmpInfo: TBitmapInfo256);
 procedure PaletteFromLmp(const Lmp: TPaletteLmp; var BmpInfo: TBitmapInfo256;
            Palette, PaletteReelle: HPalettePtr);
@@ -130,9 +133,6 @@ procedure ColorsFromLmp(const Lmp: TPaletteLmp; var bmiColors: TBitmapInfoColors
 {function MakeQuakeImageData(NeededGame: Char; DC: HDC; W,H, nW,nH: Integer; Format: TMQIDF) : String;}
 function GetQPaletteColor(const BitmapInfo: TBitmapInfo256; I: Integer) : TColorRef;
 function ColorIsLight(C: TColorRef) : Boolean;
-
-function DuplicateGameBuffer(Source: PGameBuffer) : PGameBuffer;
-procedure DeleteGameBuffer(B: PGameBuffer);
 
 procedure GameCfgDlg;
 procedure DisplayAddOnsList(ListView1: TListView);
@@ -258,6 +258,88 @@ begin
  ClearGBList;
 
  SizeDownPython;
+end;
+
+ {------------------------}
+
+function GameBuffer(const NeededGame: Char) : PGameBuffer;
+const
+ Start = Length('Data=');
+var
+ Lmp: TPaletteLmp;
+ PaletteFile: QFileObject;
+ S: String;
+ I, J: Integer;
+ L: TQList;
+begin
+ ChangeGameMode(NeededGame, True);
+ if GameBuffer1=Nil then
+ begin
+   //DanielPharos: Instead of all-black, let's default to a grey-scale palette
+   //so games with no palette defined still have a working checkerboard texture.
+   //FillChar(Lmp, SizeOf(Lmp), 0);
+   for I:=0 to 255 do
+   begin
+     Lmp[I,0]:=I;
+     Lmp[I,1]:=I;
+     Lmp[I,2]:=I;
+   end;
+   {PaletteFile:=Nil;}
+   S:=SetupGameSet.Specifics.Values['Palette'];
+   if S<>'' then
+   begin
+     if S[1]=':' then
+     begin
+       L:=GetQuakeContext;
+       for J:=0 to L.Count-1 do
+       begin
+         S:=L[J].Specifics.Values['Palette'];
+         if S<>'' then
+         begin
+           I:=Length(S);
+           if I>SizeOf(Lmp) then
+             I:=SizeOf(Lmp);
+           Move(PChar(S)^, Lmp, I);
+         end;
+       end;
+     end
+     else
+     begin
+       PaletteFile:=NeedGameFile(S, '');
+       PaletteFile.AddRef(+1);
+       try
+         PaletteFile.Acces;
+         if PaletteFile is QImage then
+         begin
+           QImage(PaletteFile).NotTrueColor;
+           QImage(PaletteFile).GetPalette1(Lmp);
+         end
+         else
+         begin
+           S:=PaletteFile.GetSpecArg('Data');
+           I:=Length(S)-Start;
+           if I<0 then
+             I:=0
+           else
+           if I>SizeOf(Lmp) then
+             I:=SizeOf(Lmp);
+           Move(PChar(S)[Start], Lmp, I);
+         end;
+       finally
+         PaletteFile.AddRef(-1);
+       end;
+     end;
+   end;
+   New(GameBuffer1);
+   GameBuffer1^.RefCount:=1;
+  {GameBuffer1^.AddOns:=Nil;}
+   GameBuffer1^.GameName:=SetupGameSet.Name;
+   GameBuffer1^.TextureExt:=SetupGameSet.Specifics.Values['TextureFormat'];
+   GameBuffer1^.UnifiedPalette:={PaletteFile<>Nil}SetupGameSet.Specifics.Values['UnifiedPalette']<>'';
+   GameBuffer1^.PaletteLmp:=Lmp;
+   PaletteFromLmp(Lmp, GameBuffer1^.BitmapInfo, @GameBuffer1^.Palette, @GameBuffer1^.PaletteReelle);
+ end;
+ Result:=GameBuffer1;
 end;
 
 function DuplicateGameBuffer(Source: PGameBuffer) : PGameBuffer;
@@ -1182,86 +1264,6 @@ begin
  finally
    FreeMem(Log);
  end;
-end;
-
-function GameBuffer(NeededGame: Char) : PGameBuffer;
-const
- Start = Length('Data=');
-var
- Lmp: TPaletteLmp;
- PaletteFile: QFileObject;
- S: String;
- I, J: Integer;
- L: TQList;
-begin
- ChangeGameMode(NeededGame, True);
- if GameBuffer1=Nil then
- begin
-   //DanielPharos: Instead of all-black, let's default to a grey-scale palette
-   //so games with no palette defined still have a working checkerboard texture.
-   //FillChar(Lmp, SizeOf(Lmp), 0);
-   for I:=0 to 255 do
-   begin
-     Lmp[I,0]:=I;
-     Lmp[I,1]:=I;
-     Lmp[I,2]:=I;
-   end;
-   {PaletteFile:=Nil;}
-   S:=SetupGameSet.Specifics.Values['Palette'];
-   if S<>'' then
-   begin
-     if S[1]=':' then
-     begin
-       L:=GetQuakeContext;
-       for J:=0 to L.Count-1 do
-       begin
-         S:=L[J].Specifics.Values['Palette'];
-         if S<>'' then
-         begin
-           I:=Length(S);
-           if I>SizeOf(Lmp) then
-             I:=SizeOf(Lmp);
-           Move(PChar(S)^, Lmp, I);
-         end;
-       end;
-     end
-     else
-     begin
-       PaletteFile:=NeedGameFile(S, '');
-       PaletteFile.AddRef(+1);
-       try
-         PaletteFile.Acces;
-         if PaletteFile is QImage then
-         begin
-           QImage(PaletteFile).NotTrueColor;
-           QImage(PaletteFile).GetPalette1(Lmp);
-         end
-         else
-         begin
-           S:=PaletteFile.GetSpecArg('Data');
-           I:=Length(S)-Start;
-           if I<0 then
-             I:=0
-           else
-           if I>SizeOf(Lmp) then
-             I:=SizeOf(Lmp);
-           Move(PChar(S)[Start], Lmp, I);
-         end;
-       finally
-         PaletteFile.AddRef(-1);
-       end;
-     end;
-   end;
-   New(GameBuffer1);
-   GameBuffer1^.RefCount:=1;
-  {GameBuffer1^.AddOns:=Nil;}
-   GameBuffer1^.GameName:=SetupGameSet.Name;
-   GameBuffer1^.TextureExt:=SetupGameSet.Specifics.Values['TextureFormat'];
-   GameBuffer1^.UnifiedPalette:={PaletteFile<>Nil}SetupGameSet.Specifics.Values['UnifiedPalette']<>'';
-   GameBuffer1^.PaletteLmp:=Lmp;
-   PaletteFromLmp(Lmp, GameBuffer1^.BitmapInfo, @GameBuffer1^.Palette, @GameBuffer1^.PaletteReelle);
- end;
- Result:=GameBuffer1;
 end;
 
 (*function MakeQuakeImageData(NeededGame: Char; DC: HDC; W,H, nW,nH: Integer; Format: TMQIDF) : String;

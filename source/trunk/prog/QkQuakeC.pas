@@ -145,14 +145,14 @@ var
  I: Integer;
  Q: QObject;
  tc: TTypeCode;
- ModeJeu: Char;
+ ModeJeu: TGameCode;
  Source: TMemoryStream;
  Target: TFileStream;
  OutFileName: String;
 begin
  if L.Count=0 then Exit;
  ProgressIndicatorStart(0,0); try
- ModeJeu:=CharModeJeu;
+ ModeJeu:=CurrentGameMode;
  if not (ModeJeu in [mjQuake, mjHexen]) then
   Raise EError(5654);
  SL:=TStringList.Create; try

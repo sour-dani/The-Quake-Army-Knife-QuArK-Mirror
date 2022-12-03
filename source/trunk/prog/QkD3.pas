@@ -464,7 +464,7 @@ var
     and mapmenus.py. }
 
    if EditableSurfaceParms then
- //   if CharModeJeu=mjMohaa then
+ //   if CurrentGameMode=mjMohaa then
    begin
      if (Spec='qer_keyword') and (ReadLine='masked')then
        masked:=true

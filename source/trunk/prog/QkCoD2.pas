@@ -136,7 +136,7 @@ end;
 class function QCoD2Material.CanLoadBlankFileExt(const Filename: String; nParent: QObject): Boolean;
 begin
  Result:=False;
- if CharModeJeu=mjCoD2 then
+ if CurrentGameMode=mjCoD2 then
    while (nParent<>nil) do
    begin
      if IncludeTrailingPathDelimiter(nParent.Name)=GameShadersPath then

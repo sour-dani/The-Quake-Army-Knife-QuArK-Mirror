@@ -1107,7 +1107,7 @@ begin
        // 4618 = '"//Description of the invalid polygon :"
        L.Add(LoadStr1(4618));
        MapSaveSettings:=GetDefaultMapSaveSettings;
-       MapSaveSettings.GameCode:=CharModeJeu;
+       MapSaveSettings.GameCode:=CurrentGameMode;
        CP:=g_DrawInfo.ConstruirePolyedres;
        try
          g_DrawInfo.ConstruirePolyedres:=False;
@@ -1834,7 +1834,7 @@ begin
   L.Add(LoadStr1(4618));
   CP:=g_DrawInfo.ConstruirePolyedres; try
   g_DrawInfo.ConstruirePolyedres:=False;
-  SaveAsMapTextTPolygon(self, CharModeJeu, -1, L, Nil);
+  SaveAsMapTextTPolygon(self, CurrentGameMode, -1, L, Nil);
   finally g_DrawInfo.ConstruirePolyedres:=CP; end;
   if Extra<>'' then
    L.Add(Extra);
@@ -4187,7 +4187,7 @@ begin
  Integer(Addr(Result.Color)^) := Integer(0);
  Result.Mode := trmNormal;
 {DECKER 2003.03.12}
- if (CharModeJeu=mjHalfLife) or (CharModeJeu=mjCoF) or (CharModeJeu=mjSC) or (CharModeJeu=mjHL2) then
+ if (CurrentGameMode=mjHalfLife) or (CurrentGameMode=mjCoF) or (CurrentGameMode=mjSC) or (CurrentGameMode=mjHL2) then
  begin
     // OMG! This is so slow, but hopefully a little faster than the below
     // while-loop, if the end-user don't want to see transparency.

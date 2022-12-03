@@ -410,10 +410,10 @@ end;
 
 class function QBspFileHandler.BspType : Char;
 begin
-  Result:=BspType(CharModeJeu);
+  Result:=BspType(CurrentGameMode);
 end;
 
-class function QBspFileHandler.BspType(mj : Char) : Char;
+class function QBspFileHandler.BspType(mj : TGameCode) : Char;
 begin
  if (mj>='1') and (mj<='9') then
    if (mj='4') then
@@ -432,7 +432,7 @@ begin
    Result:=mj
 end;
 
-function QBspFileHandler.GetSurfaceType(const GameMode : Char) : Char; //FIXME: Handle BspTypeG3D!
+function QBspFileHandler.GetSurfaceType(const GameMode : TGameCode) : Char; //FIXME: Handle BspTypeG3D!
 begin
   if BspType(GameMode)=BspTypeQ3 then
     Result:=BspTypeQ3
@@ -676,7 +676,7 @@ begin
           case Version of
             cVersionBspQ2: { Quake 2 }
             begin
-              if QBspFileHandler.BspType(CharModeJeu)<>bspTypeQ2 then
+              if QBspFileHandler.BspType(CurrentGameMode)<>bspTypeQ2 then
                 ChangeGameMode(mjQuake2,true);
               ObjectGameCode := CurrentQuake2Mode;
               FFileHandler:=QBsp2FileHandler.Create(Self);
@@ -706,7 +706,7 @@ begin
             cVersionBspQ3: { Quake 3 or Soldier of Fortune }
             begin
               { Somebody should be shot; SOF has the same Sig/Vers as Q3 (!!) }
-              if CharModejeu=mjSOF then
+              if CurrentGameMode=mjSOF then
               begin
                 ObjectGameCode := mjSOF;
                 FFileHandler:=QBsp2FileHandler.Create(Self);
@@ -714,10 +714,10 @@ begin
               end
               else
               begin
-                if (CharModeJeu <> mjQ3A) and (CharModeJeu <> mjSTVEF) and (CharModeJeu <> mjNexuiz) then
+                if (CurrentGameMode <> mjQ3A) and (CurrentGameMode <> mjSTVEF) and (CurrentGameMode <> mjNexuiz) then
                   ObjectGameCode := mjQ3A
                 else
-                  ObjectGameCode := CharModeJeu;
+                  ObjectGameCode := CurrentGameMode;
                 FFileHandler:=QBsp3FileHandler.Create(Self);
                 FFileHandler.LoadBsp(F, StreamSize);
               end;
@@ -775,10 +775,10 @@ begin
               end
               else
               begin
-                if (CharModeJeu <> mjJK2) and (CharModeJeu <> mjJA) and (CharModeJeu <> mjSoF2) then
+                if (CurrentGameMode <> mjJK2) and (CurrentGameMode <> mjJA) and (CurrentGameMode <> mjSoF2) then
                   ObjectGameCode := mjJK2
                 else
-                  ObjectGameCode := CharModeJeu;
+                  ObjectGameCode := CurrentGameMode;
                 FFileHandler:=QBsp3FileHandler.Create(Self); {Decker - try using the Q3 .BSP loader}
                 FFileHandler.LoadBsp(F, StreamSize);
               end;

@@ -1108,10 +1108,10 @@ begin
  for I:=WinList1.MenuIndex-1 downto MainWindow1.MenuIndex+1 do
   WindowMenu.Items[I].Free;
  Active:=Screen.{ActiveForm;}Forms[0];
-(*if TbMenuChar<>CharModeJeu then
+(*if TbMenuChar<>CurrentGameMode then
   begin
    SetupQrk:=MakeAddOnsList; try
-   TbMenuChar:=CharModeJeu;
+   TbMenuChar:=CurrentGameMode;
    DefaultTbCount:=0;
     { looks for ToolBox infos in all add-ons }
    DefaultTbCount:=LoadToolBoxInformation(SetupQrk);
@@ -2036,9 +2036,9 @@ begin
  for I:=0 to GameSep1.MenuIndex-1 do
   with GamesMenu.Items[I] do
    begin
-    Checked:=Chr(Tag)=CharModeJeu;
+    Checked:=Chr(Tag)=CurrentGameMode;
     for J:=0 to Count-1 do
-     if Chr(Items[J].Tag)=CharModeJeu then
+     if Chr(Items[J].Tag)=CurrentGameMode then
       begin
        Checked:=True;
        Items[J].Checked:=True;

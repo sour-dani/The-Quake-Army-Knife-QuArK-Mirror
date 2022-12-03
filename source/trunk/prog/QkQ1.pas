@@ -447,7 +447,7 @@ begin
     { update header }
     Fin := Info.F.Position;
     Info.F.Position := Origine;
-    if FBsp.NeedObjectGameCode =mjHalfLife then
+    if FBsp.NeedObjectGameCode = mjHalfLife then
       Header.Signature := cSignatureBspHL
     else
       Header.Signature := cSignatureBspQ1H2;

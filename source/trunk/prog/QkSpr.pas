@@ -547,7 +547,7 @@ end;
 
 procedure QSprFile.SaveFile(Info: TInfoEnreg1);
 var
-  fg:Char;
+  fg: TGameCode;
 begin
   with Info do
     case Format of
@@ -679,8 +679,8 @@ end;
 
 procedure TQSprForm.wmInternalMessage(var Msg: TMessage);
 var
-  s:QSprFile;
-  fg:char;
+  s: QSprFile;
+  fg: TGameCode;
 begin
   case Msg.wParam of
     wp_AfficherObjet:
@@ -702,12 +702,12 @@ begin
           Combobox3.Enabled:=false;
           Combobox2.ItemIndex:=myintspec(s,'SPR_STYPE');
           Combobox3.ItemIndex:=-1;
-        end else if FG=mjQuake2 then begin
+        end else if fg=mjQuake2 then begin
           Combobox2.Enabled:=false;
           Combobox3.Enabled:=false;
           Combobox2.ItemIndex:=-1;
           Combobox3.ItemIndex:=-1;
-        end else if FG=mjHalfLife then begin
+        end else if fg=mjHalfLife then begin
           Combobox2.Enabled:=true;
           Combobox3.Enabled:=true;
           Combobox2.ItemIndex:=myintspec(s,'SPR_STYPE');

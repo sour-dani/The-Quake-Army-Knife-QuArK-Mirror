@@ -292,7 +292,7 @@ begin
       else
        J:=SizeOf(TIntroPakEx);
       F.ReadBuffer(Header, J);
-      if CharModeJeu = mjDK then
+      if CurrentGameMode = mjDK then
        K:=SizeOf(TFinEntreeDaikatanaPak)
       else
        K:=SizeOf(TFinEntreePak);
@@ -365,14 +365,14 @@ begin
            continue;
           end;
 
-         if ((CharModeJeu <> mjDK) and (PFinEntreePak(P1)^.Position+PFinEntreePak(P1)^.Taille > FSize))
-         or ((CharModeJeu = mjDK) and (PFinEntreePak(P1)^.Position+PFinEntreeDaikatanaPak(P1)^.CompressLen > FSize))
+         if ((CurrentGameMode <> mjDK) and (PFinEntreePak(P1)^.Position+PFinEntreePak(P1)^.Taille > FSize))
+         or ((CurrentGameMode = mjDK) and (PFinEntreePak(P1)^.Position+PFinEntreeDaikatanaPak(P1)^.CompressLen > FSize))
          or (PFinEntreePak(P1)^.Position<SizeOf(TIntroPak))
          {or (PFinEntreePak(P1)^.Taille<0)} then
           Raise EErrorFmt(5509, [62]);
 
          F.Position:=PFinEntreePak(P1)^.Position;
-         if (CharModeJeu = mjDK) and (PFinEntreeDaikatanaPak(P1)^.CompressType <> 0) then
+         if (CurrentGameMode = mjDK) and (PFinEntreeDaikatanaPak(P1)^.CompressType <> 0) then
          begin
            //This is a compressed Daikatana file
            EntrySize:=PFinEntreeDaikatanaPak(P1)^.CompressLen;
@@ -483,7 +483,7 @@ var
  Info1: TPakSibling;
 begin
  Acces;
- if CharModeJeu = mjDK then
+ if CurrentGameMode = mjDK then
   J:=SizeOf(TFinEntreeDaikatanaPak)
  else
   J:=SizeOf(TFinEntreePak);

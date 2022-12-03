@@ -321,7 +321,7 @@ begin
       if FSize<SizeOf(Header) then
         Raise EError(5519);
       Base:=F.Position;
-      if CharModeJeu = mjDK then
+      if CurrentGameMode = mjDK then
        LoadTextureDataDK(F, Base, FSize, Self)
       else
       begin

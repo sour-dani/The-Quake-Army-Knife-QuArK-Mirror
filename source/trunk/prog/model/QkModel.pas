@@ -74,7 +74,7 @@ begin
   //DanielPharos: Workaround: Set the gamemode (if not set yet)
   //to the current gamemode, so that annoying warning doesn't show
   if Specifics.Values['Game'] = '' then
-    Specifics.Values['Game'] := GetGameName(CharModeJeu);
+    Specifics.Values['Game'] := GetGameName(CurrentGameMode);
   if nOwner=Application then
     Result:=NewPyForm(Self)
   else

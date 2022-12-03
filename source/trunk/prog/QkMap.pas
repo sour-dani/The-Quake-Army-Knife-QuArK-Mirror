@@ -42,7 +42,7 @@ type
   );
 
   TMapSaveSettings = record
-    GameCode: Char;
+    GameCode: TGameCode;
     MapFormat: TMapFormatTypes;
     MapVersion: Integer;
     DecimalPlaces: Integer;
@@ -101,7 +101,7 @@ type
 
 function GetDefaultMapSaveSettings : TMapSaveSettings;
 function WC22Params(Surface: TFace; const Params: TFaceParams; const UAxis, VAxis : TVect; const UShift, VShift: Double) : Boolean;
-function ReadEntityList(Racine: TTreeMapBrush; const SourceFile: String; BSP: QBsp) : Char;
+function ReadEntityList(Racine: TTreeMapBrush; const SourceFile: String; BSP: QBsp) : TGameCode;
 procedure SaveAsMapText(ObjectToSave: QObject; MapSaveSettings: TMapSaveSettings; Negatif: TQList; Texte: TStrings; Flags2: Integer; HxStrings: TStrings);
 procedure SaveAsMapTextTTreeMapBrush(ObjectToSave: QObject; MapSaveSettings: TMapSaveSettings; Negatif: TQList; Texte: TStrings; Flags2: Integer; HxStrings: TStrings);
 procedure SaveAsMapTextTTreeMapSpec(ObjectToSave: QObject; MapSaveSettings: TMapSaveSettings; Dest, HxStrings: TStrings; Flags2: Integer; EntityNumber: Integer);
@@ -180,7 +180,7 @@ begin
   end;
 end;
 
-function GetDecimalPlaces(const nMode: Char): Integer;
+function GetDecimalPlaces(const nMode: TGameCode): Integer;
 begin
  // Rowdy: 17-Feb-2005 it seems that Torque wants more decimal places in .map files,
  //        something to do with an idiosyncracy in Torque's map2dif utility that
@@ -204,7 +204,7 @@ begin
   Result := 40;
 end;
 
-function GetMapFormat(const nMode: Char) : TMapFormatTypes;
+function GetMapFormat(const nMode: TGameCode) : TMapFormatTypes;
 var
   S : PChar;
 begin
@@ -230,7 +230,7 @@ begin
   begin
     //Resolve GameCode
     if GameCode=mjAny then
-      GameCode:=CharModeJeu;
+      GameCode:=CurrentGameMode;
 
     //Resolve MapFormat
     if MapFormat=UnknownType then
@@ -314,7 +314,7 @@ function QMap.TestConversionType(I: Integer) : QFileObjectClass;
 begin
  case I of
   1: Result:=QQkm;
-  2: case CharModeJeu of
+  2: case CurrentGameMode of
      mj6DX:
        Result:=QHmfFile;
      mjHL2:
@@ -418,7 +418,7 @@ begin
  end;
 end;
 
-function ReadEntityList(Racine: TTreeMapBrush; const SourceFile: String; BSP: QBsp) : Char;
+function ReadEntityList(Racine: TTreeMapBrush; const SourceFile: String; BSP: QBsp) : TGameCode;
 const
  cSeperators = [' ', #13, #10, Chr(vk_Tab)];
  cExponentChars = ['E', 'e'];
@@ -1642,7 +1642,7 @@ expected one.
         Params[I]:=NumericValue;
         ReadSymbol(sNumValueToken);
        end;
-      if CharModeJeu=mjGenesis3D then
+      if CurrentGameMode=mjGenesis3D then
       begin
         if PointsToPlane(Surface.Normale)='X' then
            Params[4]:=-Params[4];
@@ -1703,10 +1703,10 @@ expected one.
             Result:=mjNotQuake1;
           if SymbolType=sStringToken then // FAKK2, EF2 or Mohaa
           begin
-            if (CharModeJeu<>mjFAKK2) and (CharModeJeu<>mjMOHAA) and (CharModeJeu<>mjEF2) then
+            if (CurrentGameMode<>mjFAKK2) and (CurrentGameMode<>mjMOHAA) and (CurrentGameMode<>mjEF2) then
               Result:=mjMOHAA
             else
-              Result:=CharModeJeu;
+              Result:=CurrentGameMode;
             ReadRitualSurfaceParms(Surface);
           end
           else if SymbolType=sNumValueToken then //CoD1 or KMQuake2
@@ -2344,10 +2344,10 @@ begin
                end;
                ReadPatchDef2();
                if RitualPatchDef2Detected then
-                 if (CharModeJeu<>mjFAKK2) and (CharModeJeu<>mjMOHAA) and (CharModeJeu<>mjEF2) then
+                 if (CurrentGameMode<>mjFAKK2) and (CurrentGameMode<>mjMOHAA) and (CurrentGameMode<>mjEF2) then
                    Result:=mjMOHAA
                  else
-                   Result:=CharModeJeu;
+                   Result:=CurrentGameMode;
              end
              else if LowerCase(s)='patchdef3' then
              begin
@@ -2530,13 +2530,13 @@ begin
       Result:=CurrentQuake1Mode;
       if Result=mjHexen then
         Result:=mjQuake
-      else if CharModeJeu=mj6DX then
+      else if CurrentGameMode=mj6DX then
         Result:=mj6DX
-      else if CharModeJeu=mjCrystalSpace then
+      else if CurrentGameMode=mjCrystalSpace then
         Result:=mjCrystalSpace
-      else if CharModeJeu=mjTorque then
+      else if CurrentGameMode=mjTorque then
         Result:=mjTorque
-      else if CharModeJeu=mjSylphis then
+      else if CurrentGameMode=mjSylphis then
         Result:=mjSylphis;
 
     end;
@@ -2545,22 +2545,22 @@ begin
       is detected, we stay in the current game mode if it's
       one of the Q3A-format games, otherwise switch to Q3A }
     begin
-     if CharModeJeu=mjEF2 then
-       Result:=CharModeJeu
-     else if CharModeJeu=mjSOF then
-       Result:=CharModeJeu
-     else if CharModeJeu=mjSTVEF then
-       Result:=CharModeJeu
-     else if CharModeJeu=mjRTCW then
-       Result:=CharModeJeu
-     else if CharModeJeu=mjRTCWET then
-       Result:=CharModeJeu
-     else if CharModeJeu=mjNEXUIZ then
-       Result:=CharModeJeu
-     else if CharModeJeu=mjWarsow then
-       Result:=CharModeJeu
-     else if CharModeJeu=mjWarfork then
-       Result:=CharModeJeu;
+     if CurrentGameMode=mjEF2 then
+       Result:=CurrentGameMode
+     else if CurrentGameMode=mjSOF then
+       Result:=CurrentGameMode
+     else if CurrentGameMode=mjSTVEF then
+       Result:=CurrentGameMode
+     else if CurrentGameMode=mjRTCW then
+       Result:=CurrentGameMode
+     else if CurrentGameMode=mjRTCWET then
+       Result:=CurrentGameMode
+     else if CurrentGameMode=mjNEXUIZ then
+       Result:=CurrentGameMode
+     else if CurrentGameMode=mjWarsow then
+       Result:=CurrentGameMode
+     else if CurrentGameMode=mjWarfork then
+       Result:=CurrentGameMode;
     end;
   end;
 
@@ -2575,7 +2575,7 @@ end;
 procedure QMapFile.LoadFile(F: TStream; FSize: TStreamPos);
 var
  Racine: TTreeMapBrush;
- ModeJeu: Char;
+ ModeJeu: TGameCode;
  Source: String;
 begin
  case ReadFormat of
@@ -2631,10 +2631,10 @@ begin
        Dest.Add('');
 
        MapSaveSettings:=GetDefaultMapSaveSettings;
-       MapSaveSettings.GameCode:=CharModeJeu;
+       MapSaveSettings.GameCode:=CurrentGameMode;
        MapSaveSettings.MapVersion:=0;
        MapOptionSpecs:=SetupSubSet(ssFiles,'MAP').Specifics;
-       if CharModeJeu=mjDoom3 then
+       if CurrentGameMode=mjDoom3 then
        begin
          // Rowdy: write an extra line to indicate we are using version 1 .map file
          // format or Doom 3's default version 2.
@@ -2655,12 +2655,12 @@ begin
          end;
          Dest.Add('');
        end
-       else if CharModeJeu=mjQuake4 then
+       else if CurrentGameMode=mjQuake4 then
        begin
          MapSaveSettings.MapVersion:=3;
          Dest.Add('Version 3');
        end
-       else if CharModeJeu=mjCoD2 then
+       else if CurrentGameMode=mjCoD2 then
        begin
          Dest.Add('iwmap 4');
        end;
@@ -2914,7 +2914,7 @@ begin
    try
     ListePolyedres(Polyedres, Negatif, Flags2 and not soDirectDup, 1);
     OriginBrush:=Nil;
-    if (Flags2 and soOutsideWorldspawn <> 0) and (CharModeJeu>=mjQuake2) then
+    if (Flags2 and soOutsideWorldspawn <> 0) and (CurrentGameMode>=mjQuake2) then
      for I:=Polyedres.Count-1 downto 0 do
       with TPolyedre(Polyedres[I]) do
        if CheckPolyhedron and (Faces.Count>0)
@@ -3107,7 +3107,7 @@ begin
 
   // Rowdy: Doom 3 entity names: use the entity class + '_' + entity number
   // e.g. if entity 17 was a light, the name specific would be 'light_17'
-  if (CharModeJeu=mjDoom3) and not(DoneNameSpecific) then
+  if (CurrentGameMode=mjDoom3) and not(DoneNameSpecific) then
    Dest.Add(LineStart+'name" "'+Name+'_'+IntToStr(EntityNumber)+'"');
 
  end;

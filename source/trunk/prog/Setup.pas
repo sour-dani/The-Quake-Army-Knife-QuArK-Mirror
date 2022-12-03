@@ -148,15 +148,15 @@ procedure StorePakExtensions; {--CONVEX--}
 
  {------------------------}
 
-function CharModeJeu: Char;
+function CurrentGameMode: TGameCode;
 function ModeJeuQuake2: Boolean;
-function CurrentQuake1Mode: Char;
-function CurrentQuake2Mode: Char;
-function GetGameName(const nMode: Char) : String;
-procedure ChangeGameMode(nMode: Char; Confirm: Boolean);
+function CurrentQuake1Mode: TGameCode;
+function CurrentQuake2Mode: TGameCode;
+function GetGameName(const nMode: TGameCode) : String;
+procedure ChangeGameMode(nMode: TGameCode; Confirm: Boolean);
 procedure ChangeGameModeStr(const nMode: String; Confirm: Boolean);
-function GetGameCode(const nMode: String) : Char;
-function GameModeOk(const nMode: Char) : Boolean;
+function GetGameCode(const nMode: String) : TGameCode;
+function GameModeOk(const nMode: TGameCode) : Boolean;
 
 function MapColors(L: TListeCouleurs) : TColor;
 function ModelColors(L: TModelColors) : TColor;
@@ -920,34 +920,34 @@ end;
 { this should probably be done by direct lookup of codes
   in the game config files }
 
-function CharModeJeu: Char;
+function CurrentGameMode: TGameCode;
 var
  S: String;
 begin
  S:=SetupGameSet.Specifics.Values['Code'];
  if S='' then
-  CharModeJeu:=mjQuake
+  Result:=mjQuake
  else
-  CharModeJeu:=S[1];
+  Result:=S[1];
 end;
 
 function ModeJeuQuake2: Boolean; //FIXME: This is a terrible idea!
 begin
- Result := CharModeJeu >= mjQuake2;
+ Result := CurrentGameMode >= mjQuake2;
 end;
 
-function CurrentQuake1Mode: Char;
+function CurrentQuake1Mode: TGameCode;
 begin
- if CharModeJeu < mjQuake2 then
-  Result:=CharModeJeu
+ if CurrentGameMode < mjQuake2 then
+  Result:=CurrentGameMode
  else
   Result:=mjQuake;
 end;
 
-function CurrentQuake2Mode: Char;
+function CurrentQuake2Mode: TGameCode;
 begin
- if CharModeJeu > mjQuake2 then
-  Result:=CharModeJeu
+ if CurrentGameMode > mjQuake2 then
+  Result:=CurrentGameMode
  else
   Result:=mjQuake2;
 end;
@@ -980,7 +980,7 @@ begin
    end;
 end;
 
-function GetGameCode(const nMode: String) : Char;
+function GetGameCode(const nMode: String) : TGameCode;
 var
  Q: QObject;
  S: String;
@@ -1000,7 +1000,7 @@ begin
   end;
 end;
 
-procedure ChangeGameMode(nMode: Char; Confirm: Boolean);
+procedure ChangeGameMode(nMode: TGameCode; Confirm: Boolean);
 var
  S: String;
 begin
@@ -1018,27 +1018,27 @@ begin
    else
     Exit;
  else
-   if CharModeJeu=nMode then
+   if CurrentGameMode=nMode then
     Exit;
  end;
  S:=GetGameName(nMode);
  if S='' then
-  Raise EErrorFmt(5542, [CharModeJeu+nMode]);
+  Raise EErrorFmt(5542, [CurrentGameMode+nMode]);
  ChangeGameModeStr(S, Confirm);
 end;
 
-function GameModeOk(const nMode: Char) : Boolean;
+function GameModeOk(const nMode: TGameCode) : Boolean;
 begin
  case nMode of
   mjAny:       Result:=True;
   mjNotQuake2: Result:=not ModeJeuQuake2;
   mjNotQuake1: Result:=ModeJeuQuake2;
  else
-  Result := CharModeJeu = nMode;
+  Result := CurrentGameMode = nMode;
  end;
 end;
 
-function GetGameName(const nMode: Char) : String;
+function GetGameName(const nMode: TGameCode) : String;
 var
  I: Integer;
  S: String;

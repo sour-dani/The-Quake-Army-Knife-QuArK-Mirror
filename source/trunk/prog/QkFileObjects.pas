@@ -104,6 +104,9 @@ type
     function GetSpecTbExtra(const Specific: String) : String;
   end;
 
+  TGameCode = Char;
+  //PGameCode = ^TGameCode;
+
   PFileObjectClassInfo = ^TFileObjectClassInfo;
   TFileObjectClassInfo = record
                           WndInfo: TFileObjectWndInfo;
@@ -123,8 +126,8 @@ type
   QFileObject = class(QObject)
                 private
                   procedure LoadObjsFromText(F: TStream; Taille: TStreamPos);
-                  function GetObjectGameCode: Char;
-                  procedure SetObjectGameCode(nCode: Char);
+                  function GetObjectGameCode: TGameCode;
+                  procedure SetObjectGameCode(const nCode: TGameCode);
                 protected
                   function OpenWindow(nOwner: TComponent) : TQForm1; dynamic;
                   function ObtainWindow(nOwner: TComponent; State: TFileObjectWndState) : TQForm1;
@@ -158,8 +161,8 @@ type
                   function FindFile(const nName: String) : QFileObject; dynamic;
                   procedure CloseUndo;
                   procedure ChangeToObjectGameMode;
-                  property ObjectGameCode: Char read GetObjectGameCode write SetObjectGameCode;
-                  function NeedObjectGameCode: Char;
+                  property ObjectGameCode: TGameCode read GetObjectGameCode write SetObjectGameCode;
+                  function NeedObjectGameCode: TGameCode;
                   procedure SaveInFile(Format: Integer; AlternateFile: String);
                   procedure LoadFromStream(F: TStream);
                   function PyGetAttr(attr: PyChar) : PyObject; override;
@@ -2188,17 +2191,17 @@ begin
  ChangeGameModeStr(Specifics.Values['Game'], True);
 end;
 
-function QFileObject.GetObjectGameCode: Char;
+function QFileObject.GetObjectGameCode: TGameCode;
 begin
  Result:=GetGameCode(Specifics.Values['Game']);
 end;
 
-procedure QFileObject.SetObjectGameCode(nCode: Char);
+procedure QFileObject.SetObjectGameCode(const nCode: TGameCode);
 begin
  Specifics.Values['Game']:=GetGameName(nCode);
 end;
 
-function QFileObject.NeedObjectGameCode: Char;
+function QFileObject.NeedObjectGameCode: TGameCode;
 begin
  Result:=ObjectGameCode;
  if Result=mjAny then

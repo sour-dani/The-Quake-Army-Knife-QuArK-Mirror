@@ -46,7 +46,7 @@ uses Qk1, QkQme, QkMapPoly, qmath, Travail, Setup,
 
  {------------------------}
 
-function ReadEntityList(Root: TTreeMapBrush; const SourceFile: String; BSP: QBsp) : Char;
+function ReadEntityList(Root: TTreeMapBrush; const SourceFile: String; BSP: QBsp) : TGameCode;
 const
  cSeperators = [' ', #13, #10, Chr(vk_Tab)];
  cExponentChars = ['E', 'e'];
@@ -83,10 +83,6 @@ var
  TxCommand: Char;
  UAxis, VAxis : TVect;
  UShift, VShift: Double;
-
-
-
-
 
 
  procedure ReadSymbol(PrevSymbolMustBe: TSymbols);
@@ -854,7 +850,7 @@ end;
 procedure QVMFFile.LoadFile(F: TStream; FSize: TStreamPos);
 var
  Root: TTreeMapBrush;
- ModeJeu: Char;
+ ModeJeu: TGameCode;
  Source: String;
 begin
  Log(LOG_VERBOSE, 'Loading VMF file: %s', [self.name]);

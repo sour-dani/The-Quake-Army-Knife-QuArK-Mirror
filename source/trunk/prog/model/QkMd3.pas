@@ -362,7 +362,7 @@ begin
     base_tex_name:=BeforeZero(tex.name, MAX_QPATH);
     { The Raven guys seem to have used #0 as the filename-extension
       separator for textures in their .md3's !!! }
-    if CharModeJeu=mjSoF2 then
+    if CurrentGameMode=mjSoF2 then
       if Pos(#0,base_tex_name)<>0 then
          base_tex_name[Pos(#0,base_tex_name)]:='.';
     Skin:=Loaded_ShaderFile(Comp, base_tex_name);
@@ -659,24 +659,24 @@ begin
       org:=f.position;
       f.readbuffer(head, sizeof(head));
       org2:=f.position;
-      if (head.id='IDP3') and (CharModeJeu=mjSTVEF) then
+      if (head.id='IDP3') and (CurrentGameMode=mjSTVEF) then
         ObjectGameCode := mjSTVEF;
-      if (head.id='IDP3') and (CharModeJeu=mjEF2) then
+      if (head.id='IDP3') and (CurrentGameMode=mjEF2) then
         ObjectGameCode := mjEF2;
-      if (head.id='IDP3') and (CharModeJeu=mjRTCWET) then
+      if (head.id='IDP3') and (CurrentGameMode=mjRTCWET) then
         ObjectGameCode := mjRTCWET;
-      if (head.id='IDP3') and (CharModeJeu=mjNEXUIZ) then
+      if (head.id='IDP3') and (CurrentGameMode=mjNEXUIZ) then
         ObjectGameCode := mjNEXUIZ;
-      if (head.id='IDP3') and (CharModeJeu=mjWarsow) then
+      if (head.id='IDP3') and (CurrentGameMode=mjWarsow) then
         ObjectGameCode := mjWarsow;
-      if (head.id='IDP3') and (CharModeJeu=mjWarfork) then
+      if (head.id='IDP3') and (CurrentGameMode=mjWarfork) then
         ObjectGameCode := mjWarfork;
       if (head.id='IDP3') and (head.version=15) then
       begin
-        if (CharModeJeu<mjQ3A) then
+        if (CurrentGameMode<mjQ3A) then
           ObjectGameCode := mjQ3A
         else
-          ObjectGameCode := CharModeJeu;
+          ObjectGameCode := CurrentGameMode;
       end
       else if (head.id='RDM5') {and (head.version=2)} then
         Raise EError(5807)

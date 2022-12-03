@@ -196,7 +196,7 @@ uses qhelper, QkWad, QkBsp, ToolBox1, QkImages, Setup, Travail, qmath,{ QkPcx,}
 type
  TStdGameTextureLink = record
                         LinkSpecificChar: Char;   { use this Specific in the QTextureLnk object }
-                        GameMode: Char;           { corresponding game mode }
+                        GameMode: TGameCode;      { corresponding game mode }
                        end;
 
  { The following structure describes the texture formats used by the various games.
@@ -919,7 +919,7 @@ begin
       S:=Specifics.Values[StdGameTextureLinks[I].LinkSpecificChar];
       if S<>'' then
       begin   { standard link }
-        if CharModeJeu=mjHL2 then
+        if CurrentGameMode=mjHL2 then
         begin
           try // failing to load the textures produces an exception
             Link:=NeedGameFileBase(S, ConcatPaths([GameTexturesPath, TexName+GameBuffer(StdGameTextureLinks[I].GameMode)^.TextureExt]), Specifics.Values['PakFile']) as QPixelSet;
@@ -931,7 +931,7 @@ begin
           if Link=Nil then
             Raise EErrorFmt(5755, [TexName, Arg]);
         end
-        else if CharModeJeu=mjDK then
+        else if CurrentGameMode=mjDK then
           Link:=NeedGameFileBase(S, ConcatPaths([GameTexturesPath, TexName+GameBuffer(mjDK)^.TextureExt]), '') as QPixelSet
         else
           Link:=NeedGameFileBase(S, ConcatPaths([GameTexturesPath, TexName+GameBuffer(StdGameTextureLinks[I].GameMode)^.TextureExt]), '') as QPixelSet;
@@ -949,14 +949,14 @@ begin
        {mac tiglari =- FIXME: we should have these flags
         read directly from the text file in the .pak
         rather than having to put this info into datakp.qrk}
-        if CharModeJeu=mjKingPin then
+        if CurrentGameMode=mjKingPin then
         begin
           Link.Specifics.Add('Contents='+Specifics.Values['c']);
           Link.Specifics.Add('Flags='+Specifics.Values['f']);
           Link.Specifics.Add('Value='+Specifics.Values['v']);
         end
 {end  --- kingpin texture flag hack}
-        else if CharModeJeu=mjDK then
+        else if CurrentGameMode=mjDK then
         begin
           //FIXME: Doesn't work?
           S:=Spec2;
@@ -1053,7 +1053,7 @@ begin
           end
           else
           begin
-            if (CharModeJeu<>mjCoF) and (CharModeJeu<>mjSC) then
+            if (CurrentGameMode<>mjCoF) and (CurrentGameMode<>mjSC) then
               ChangeGameMode(mjHalfLife, True);
             Ext:='.wad3_'+Ext;   { Half-Life .wad file }
           end;

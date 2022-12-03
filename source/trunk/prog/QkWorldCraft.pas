@@ -491,9 +491,9 @@ begin
       Racine:=TTreeMapBrush.Create('', Self);
       Racine.AddRef(+1);
       try
-        if CharModeJeu=mjCoF then
+        if CurrentGameMode=mjCoF then
          ModeJeu:=mjCoF
-        else if CharModeJeu=mjSC then
+        else if CurrentGameMode=mjSC then
          ModeJeu:=mjSC
         else
          ModeJeu:=mjHalfLife;
