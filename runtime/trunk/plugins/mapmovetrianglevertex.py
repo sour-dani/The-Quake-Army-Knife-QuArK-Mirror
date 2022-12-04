@@ -33,11 +33,6 @@ from plugins.mapterrainpos import *  # to import global input from this file
 import quarkpy.maphandles
 
 #
-# for face menu options
-#
-import quarkpy.mapoptions
-
-#
 # This imports the tagging.py plugin in this folder
 #
 import tagging
