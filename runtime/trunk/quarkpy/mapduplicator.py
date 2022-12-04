@@ -20,7 +20,6 @@ import quarkx
 import math
 from maputils import *
 import maphandles
-import mapentities
 
 
 # Variable icons for Duplicator objects
