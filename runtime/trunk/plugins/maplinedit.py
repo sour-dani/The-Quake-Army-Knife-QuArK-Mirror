@@ -22,9 +22,10 @@ from quarkpy.qdictionnary import Strings
 from quarkpy.qeditor import matrix_rot_x
 from quarkpy.qeditor import matrix_rot_y
 from quarkpy.qeditor import matrix_rot_z
+import math
 
 
-class LinEditDlg (quarkpy.dlgclasses.LiveEditDlg):
+class LinEditDlg(quarkpy.dlgclasses.LiveEditDlg):
     #
     # dialog layout
     #

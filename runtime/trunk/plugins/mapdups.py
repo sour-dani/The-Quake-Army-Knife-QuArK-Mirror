@@ -28,8 +28,7 @@ import quarkpy.mapduplicator
 import quarkpy.mapcommands
 import quarkpy.mapentities
 import quarkpy.qmenu
-
-
+import math
 StandardDuplicator = quarkpy.mapduplicator.StandardDuplicator
 
 
