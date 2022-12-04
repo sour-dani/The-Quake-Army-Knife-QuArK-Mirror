@@ -23,7 +23,7 @@ unit Toolbar1;
 interface
 
 uses Windows, {ShellApi,} SysUtils, Classes, Controls, TB97, Dialogs,
-     Menus, QkObjects, QkFileObjects, QkForm, QkGroup;
+     Menus, QkObjects, QkFileObjects, QkForm, QkMacro;
 
 type
   QToolbar = class(QFileObject)
@@ -36,14 +36,6 @@ type
                class procedure FileObjectClassInfo(var Info: TFileObjectClassInfo); override;
                function CreateToolbar(nOwner: TQkForm; nTag: Integer) : TToolbar97;
              end;
-  QMacro = class(QObject)
-           protected
-             function GetTyp: Char;
-             function GetNewGroup : QExplorerGroup;
-           public
-             class function TypeInfo: String; override;
-             procedure Click(Sender: TComponent);
-           end;
   QToolbarButton = class(QMacro)
                    protected
                     {function IsExplorerItem(Q: QObject) : TIsExplorerItem; override;}
@@ -88,50 +80,10 @@ type
 
  {------------------------}
 
-procedure ExecuteObjectMacros(Sender: TComponent; Obj: QObject);
-
- {------------------------}
-
 implementation
 
-uses qdraw, Console, Forms, Game, Setup, QkExplorer, ToolBox1, QkMacro, QkInclude, Running,
-     FormCfg, Quarkx, QkExceptions, QkObjectClassList, QkFormCfg, Python, QkPixelSet, Platform;
-
-const
- typSeparator    = 'S';
- typCreation     = 'C';    { object creation }
- typMessage      = 'M';
- typToolBox      = 'T';
- typCheckBox     = 'X';    { for setting setup options }
- typRadioButton  = 'R';    { for setting one of mutually exclusive setup options }
- typMenu         = '*';
- typMacro        = '+';    { multiple commands (the commands must be included as ":macro" objects) }
- typOpenNew      = 'N';
- typExecute      = 'G';
-
- typCode         = 'P';
-
-{typFormSwitch   = 'F';}
-{typInstallation = 'I';}
-{typOperation    = 'O';}
-
-procedure ExecuteObjectMacros(Sender: TComponent; Obj: QObject);
-var
- I: Integer;
- Q: QObject;
-begin
- if Obj=Nil then Exit;
- Obj.Acces;
- for I:=0 to Obj.SubElements.Count-1 do
-  begin
-   Q:=Obj.SubElements[I];
-   if Q.ClassType = QMacro then
-    QMacro(Q).Click(Sender)
-   else
-    if Q is QFormCfg then
-     DisplayFormDlg(QFormCfg(Q));
-  end;
-end;
+uses Forms, qdraw, Game, Setup, QkInclude, Running, QkExplorer, Quarkx,
+  QkExceptions, QkObjectClassList, Python, QkPixelSet;
 
  {------------------------}
 
@@ -364,247 +316,6 @@ end;
 
  {------------------------}
 
-class function QMacro.TypeInfo: String;
-begin
- Result:=':macro';
-end;
-
-function QMacro.GetTyp: Char;
-var
- S: String;
-begin
- S:=Specifics.Values['Typ'];
- if S='' then
-  Result:=#0
- else
-  Result:=S[1];
-end;
-
-function QMacro.GetNewGroup : QExplorerGroup;
-var
- S: String;
- Gr: QExplorerGroup;
-begin
-{Result:=SubElements.FindName('New.qrk') as QExplorerGroup;
- if Result=Nil then
-  Result:=QExplorerGroup.Create('New', Nil)
- else
-  Result:=CopyToOutside(Result);}
-
- Gr:=QExplorerGroup.Create(LoadStr1(5119), Nil);
- Gr.AddRef(+1); try
- S:=Specifics.Values['Create'];
- if S<>'' then
-  DoIncludeData(Gr, Self, S);
- Result:=CopyToOutside(Gr);
- finally Gr.AddRef(-1); end;
-end;
-
-(*procedure InstallCopy(Sender: TComponent; const TargetPath: String);
-var
- FileOp: TSHFILEOPSTRUCT;
- sFrom, sTo: String;
-begin
- sFrom:=ConcatPaths([GetApplicationPath(), '*.*']);
- sTo:=TargetPath;
- FillChar(FileOp, SizeOf(FileOp), 0);
- FileOp.hwnd:=ValidParentForm(Sender).Handle;
- FileOp.wFunc:=FO_COPY;
- FileOp.pFrom:=PChar(sFrom);
- FileOp.pTo:=PChar(sTo);
- FileOp.fFlags:=FOF_ALLOWUNDO or FOF_NOCONFIRMATION;
- if SHFileOperation(FileOp) <> 0 then
-  ;
-end;*)
-
-procedure QMacro.Click(Sender: TComponent);
-var
- Q{, Source}: QObject;
- Spec{, LinFile}: String;
- E: TQkExplorer;
- Gr: QExplorerGroup;
- ClearList{, L, L1}: TStringList;
- I: Integer;
-begin
- Acces;
- case GetTyp of
-  typCreation:
-    begin
-     E:=TQkExplorer(ValidParentForm(Sender as TControl).Perform(wm_InternalMessage, wp_TargetExplorer, 0));
-     if E<>Nil then
-      begin
-       Gr:=GetNewGroup;
-       Gr.AddRef(+1); try
-       if E.DropObjectsNow(Gr, LoadStr1(544), False) then
-        Exit;
-       finally Gr.AddRef(-1); end;
-      end;
-    end;
-  typCheckBox:
-    if GetSetupPath(Specifics.Values['Path'], Spec, Q) then
-     begin
-      if Q.Specifics.Values[Spec]='' then
-       Q.Specifics.Values[Spec]:='1'
-      else
-       Q.Specifics.Values[Spec]:='';
-      UpdateSetup(scNormal);
-      Exit;
-     end;
-  typRadioButton:
-    if GetSetupPath(Specifics.Values['Path'], Spec, Q) then
-     begin
-      Q.Specifics.Values[Spec]:='1';
-      ClearList:=TStringList.Create; try
-      ClearList.Text:=Specifics.Values['Clear'];
-      for I:=0 to ClearList.Count-1 do
-       Q.Specifics.Values[ClearList[I]]:='';
-      finally ClearList.Free; end;
-      UpdateSetup(scNormal);
-      Exit;
-     end;
-  typMessage:
-    begin
-     ValidParentForm(Sender as TControl).Perform(wm_InternalMessage, wp_ToolbarButton1,
-      IntSpec['Msg']);
-     Exit;
-    end;
-  typToolBox:
-    begin
-     ShowToolBox(Specifics.Values['ToolBox']);
-     Exit;
-    end;
-  typMenu:
-    Exit;
-  typCode:
-    begin
-      Spec:=Specifics.Values['Code'];
-      if Spec<>'' then
-      begin
-        if PyRun_SimpleString(ToPyChar(Spec)) <> 0 then ShowConsole(True);
-        Exit;
-      end
-    end;
-  typMacro:
-    begin
-     I:=StrToIntDef(Specifics.Values['count'], 1);
-     while I>0 do
-      begin
-       ExecuteObjectMacros(Sender, Self);
-       Dec(I);
-      end;
-     Exit;
-    end;
-  typOpenNew:
-    begin
-     Gr:=GetNewGroup;
-     Gr.AddRef(+1); try
-     for I:=0 to Gr.SubElements.Count-1 do
-      begin
-       Q:=Gr.SubElements[I];
-       if Q is QFileObject then
-        with QFileObject(Q) do
-         begin
-          Filename:='';
-          ReadFormat:=rf_Default;
-          Flags:=(Flags or ofFileLink) and not ofModified;
-          OpenStandAloneWindow(Nil, False);
-         end;
-      end;
-     finally Gr.AddRef(-1); end;
-     Exit;
-    end;
-  typExecute:
-    begin
-   (*Q:=Clone(FParent);
-     Q.AddRef(+1); try
-     with ValidParentForm(Sender as TControl) do
-      Source:=HasGotObject(Perform(wm_InternalMessage, wp_EditMsg, edGetMacroObject));
-     if Source=Nil then
-      ProcessMacros(Q, Q)
-     else
-      begin
-       Source.AddRef(+1); try
-       ProcessMacros(Q, Source);
-       finally Source.AddRef(-1); end;
-      end;
-     ClearList:=TStringList.Create; try
-     ClearList.Text:=Q.Specifics.Values['MustUpdate'];
-     LinFile:=Q.Specifics.Values['LinFile'];
-     if LinFile<>'' then
-      begin
-       LinFile:=OutputFile(LinFile);
-       DeleteFile(LinFile);
-      end; 
-     Spec:=Q.Specifics.Values['AddToPack'];
-     if (ClearList.Count>0) or (Spec<>'') then
-      with Op.InternalSpecs.Specifics do
-       begin
-        L:=TStringList.Create; try
-        L.Text:=Values['AddToPack'];
-        L.AddStrings(ClearList);
-        L1:=TStringList.Create; try
-        L1.Text:=Spec;
-        L.AddStrings(L1);
-        finally L1.Free; end;
-        Values['AddToPack']:=L.Text;
-        finally L.Free; end;
-       end;
-     for I:=0 to ClearList.Count-1 do
-      ClearList[I]:=OutputFile(ClearList[I]);
-     RunProgram(Q.Specifics.Values['Exec'], Q.Specifics.Values['Dir'], Q.Specifics.Values['CheckFileCfg'],
-      ClearList, False);
-     finally ClearList.Free; end;
-     finally Q.AddRef(-1); end;
-     if (LinFile<>'') and FileExists(LinFile) then
-      case MessageDlg(LoadStr1(5620), mtConfirmation, mbYesNoCancel, 0) of
-       mrYes: begin
-               with ValidParentForm(Sender as TControl) do
-                Perform(wm_InternalMessage, wp_LoadLinFile, LPARAM(PChar(LinFile)));
-               Raise EError(5621);
-              end;
-       mrNo: ;
-       else Abort;
-      end;
-     Exit;*)
-    end;
-(*typFormSwitch:
-    begin
-     Q:=FindIncludeData1(Self, Specifics.Values['Page']);
-     Q.AddRef(+1); try
-     if (Q<>Nil) and (Q.SubElements.Count>0) then
-      begin
-       Q:=Q.SubElements[0];
-       if Q is QFormCfg then
-        begin
-         Q.Acces;
-         ValidParentForm(Sender as TControl).Perform(wm_InternalMessage,
-          wp_SetFormCfg, LPARAM(Q));
-         Exit;
-        end;
-      end;
-     finally Q.AddRef(-1); end;
-    end;*)
- {typInstallation:
-    begin
-     Spec:=Specifics.Values['Op'];
-     if Spec='COPY' then
-      begin
-       InstallCopy(Sender, Specifics.Values['Path']);
-       Exit;
-      end;
-    end;}
- {typOperation:
-    begin
-     Op.Operation(Self);
-     Exit;
-    end;}
- end;
- PlaySound(SOUND_ERROR);
- Abort;
-end;
-
- {------------------------}
-
 class function QToolbarButton.TypeInfo: String;
 begin
  Result:=':tbbtn';
@@ -763,5 +474,4 @@ end;
 initialization
   RegisterQObject(QToolbar,       'a');
   RegisterQObject(QToolbarButton, 'a');
-  RegisterQObject(QMacro,         'a');
 end.

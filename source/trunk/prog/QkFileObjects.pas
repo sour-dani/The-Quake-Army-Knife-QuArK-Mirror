@@ -210,7 +210,7 @@ function CompareFiles(const Filename1, Filename2: String) : Boolean;
 implementation
 
 uses qhelper, Qk1, Undo, QkExplorer, Setup, qmath, QkGroup, Travail, QkOwnExplorer,
-  QkFileExplorer, QkUnknown, Toolbar1, Quarkx, QkExceptions, QkInclude,
+  QkFileExplorer, QkUnknown, Quarkx, QkExceptions, QkInclude,
   PyObjects, QConsts, Logging, SystemDetails,
   PyForms, QkTreeView, Game, QkObjectClassList, ApplPaths, ExtraFunctionality;
 
