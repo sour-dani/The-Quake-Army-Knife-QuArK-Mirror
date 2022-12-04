@@ -34,7 +34,6 @@ from quarkpy.qdictionnary import Strings
 # Additional Paint modes (other plug-ins may add other Paint modes).
 #
 
-parent = quarkpy.qhandles.RectangleDragObject
 
 #====================================================
 # General functions for this file.
@@ -132,7 +131,7 @@ scale = 0.1
 
 def NORMALIZE(v):
     len = math.sqrt((v[0]*v[0]) + (v[1]*v[1]) + (v[2]*v[2]))
-   
+
     if len > 0:
        len = 1.0 / len
        v[0] *= len
@@ -5432,7 +5431,7 @@ class SolidColorPaintClick(quarkpy.mdlhandles.RectSelDragObject):
     Hint = hintPlusInfobaselink("Solid Color Paint||Solid Color Paint:\n\nAllows Solid Color Painting of the selected model's skin texture.", "intro.modeleditor.toolpalettes.paintmodes.html#solidcolor")
 
     def __init__(self, view, x, y, redcolor, todo):
-        parent.__init__(self, view, x, y, redcolor, todo)
+        quarkpy.mdlhandles.RectSelDragObject.__init__(self, view, x, y, redcolor, todo)
 
 
 class AirbrushPaintClick(quarkpy.mdlhandles.RectSelDragObject):
@@ -5441,7 +5440,7 @@ class AirbrushPaintClick(quarkpy.mdlhandles.RectSelDragObject):
     Hint = hintPlusInfobaselink("Airbrush Paint||Airbrush Paint:\n\nAllows Multiple Color Painting of the selected model's skin texture.", "intro.modeleditor.toolpalettes.paintmodes.html#airbrush")
 
     def __init__(self, view, x, y, redcolor, todo):
-        parent.__init__(self, view, x, y, redcolor, todo)
+        quarkpy.mdlhandles.RectSelDragObject.__init__(self, view, x, y, redcolor, todo)
 
 
 class PatternPaintClick(quarkpy.mdlhandles.RectSelDragObject):
@@ -5450,7 +5449,7 @@ class PatternPaintClick(quarkpy.mdlhandles.RectSelDragObject):
     Hint = hintPlusInfobaselink("Pattern Paint||Pattern Paint:\n\nAllows Pattern Painting of the selected model's skin texture.\n\nNon-functional at this time, reserved for future use.", "intro.modeleditor.toolpalettes.paintmodes.html#pattern")
 
     def __init__(self, view, x, y, redcolor, todo):
-        parent.__init__(self, view, x, y, redcolor, todo)
+        quarkpy.mdlhandles.RectSelDragObject.__init__(self, view, x, y, redcolor, todo)
 
 
 ### START OF THE TOOLBAR AND BUTTON SETUP ###########
