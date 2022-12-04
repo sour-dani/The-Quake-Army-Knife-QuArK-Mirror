@@ -723,9 +723,9 @@ def hintPlusInfobaselink(hint, url):
 # Converts separate Red, Green, Blue color components into a long integer color.
 def RGBToColor(RGB):
     RGB = (65536 * RGB[2]) + (256 * RGB[1]) + RGB[0]
-    if RGB > 999999999:
-        RGB = int(RGB*.1)
-        quarkx.msgbox("RGB caused a long integer !\n\nThe file or function you have\njust used is causing this error\nin converting three R,G,B values\ninto a color integer number.\nThese values should range from 0 to 1.0\nas a percentage of 256 color per channel.\nCheck the file or function code and correct.", MT_ERROR, MB_OK)
+    if RGB >= 2**24 + 1: #Note: Adding a safety margin due to floating point inaccuracies.
+        #These values should range from 0 to 1.0 as a percentage of 256 color per channel.
+        raise ValueError("RGB value out of range!")
     return RGB
 
 # Converts long integer color number into separate color components Red Green Blue (RGB)
