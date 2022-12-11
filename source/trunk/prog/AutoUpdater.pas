@@ -125,7 +125,7 @@ procedure DoUpdate(AllowOnline: Boolean; AutomaticCheck: Boolean);
 implementation
 
 uses StrUtils, SysUtils, DateUtils, QkObjects, QConsts, Setup, Logging, Travail,
-  QkExceptions, AutoUpdateInstaller, TextBoxForm;
+  QkExceptions, AutoUpdateInstaller, TextBoxForm, ExtraFunctionality;
 
 var
   UpdateIndexFile: TUpdateIndexFile;
@@ -190,19 +190,12 @@ end;
 procedure ParseCardinal(FileData: TMemoryStream; var OutputVar: Cardinal);
 var
   ParseLine: String;
-  Dummy: Int64;
 begin
   if GetLine(FileData, ParseLine) = false then
     raise Exception.Create('Invalid Cardinal number.');
 
-  //There is no Delphi StrToCardinal function, so we're going through Int64 instead
-  if TryStrToInt64(ParseLine, Dummy) = false then
+  if TryStrToUInt(ParseLine, OutputVar) = false then
     raise Exception.Create('Invalid Cardinal number.');
-
-  if (Dummy < 0) or (Dummy > 4294967295) then
-    raise Exception.Create('Invalid Cardinal number.');
-
-  OutputVar := Cardinal(Dummy);
 end;
 
 procedure ParseCommonHeader(CurrentFile: TUpdateFile; FileData: TMemoryStream);
@@ -372,7 +365,7 @@ begin
                 Dummy := Setup.Specifics.Values['Notification_'+InternalName];
                 if Dummy <> '' then
                   try
-                    InternalBuildNumber := StrToInt(Dummy);
+                    InternalBuildNumber := StrToUInt(Dummy);
                   except
                     InternalBuildNumber := 0;
                   end
@@ -422,7 +415,7 @@ begin
                 Dummy := Setup.Specifics.Values['Package_'+InternalName];
                 if Dummy <> '' then
                   try
-                    InternalBuildNumber := StrToInt(Dummy);
+                    InternalBuildNumber := StrToUInt(Dummy);
                   except
                     InternalBuildNumber := 0;
                   end

@@ -125,6 +125,11 @@ var
 
 function CopyCursor(pcur: HCursor): HCursor; // This is a macro that wasn't converted
 
+{$ifndef DelphiXE6orNewerCompiler} //FIXME: Not sure about the version of Delphi these were added
+function StrToUInt(const S: string): Cardinal;
+function TryStrToUInt(const S: string; out Value: Cardinal): Boolean;
+{$endif}
+
 {$ifndef Delphi2010orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 7, and they exist in Delphi 2010
 function ContainsText(const AText, ASubText: string): Boolean;
 function StartsText(const ASubText, AText: string): Boolean;
@@ -245,6 +250,35 @@ function CopyCursor(pcur: HCursor): HCursor;
 begin
   Result:=HCURSOR(CopyIcon(HICON(pcur)));
 end;
+
+{$ifndef DelphiXE6orNewerCompiler}
+function StrToUInt(const S: string): Cardinal;
+const
+  SInvalidCardinal = '''%s'' is not a valid cardinal value';
+begin
+  if TryStrToUInt(S, Result) then EConvertError.Create(Format(SInvalidCardinal, [S]));
+end;
+
+function TryStrToUInt(const S: string; out Value: Cardinal): Boolean;
+const
+  MaxCardinal = 4294967295;
+var
+  Dummy: Int64;
+begin
+  Result:=False;
+
+  //Go through Int64
+  if not TryStrToInt64(S, Dummy) then
+    Exit;
+
+  //And then check the bounds
+  if (Dummy < 0) or (Dummy > MaxCardinal) then
+    Exit;
+
+  Value:=Cardinal(Dummy);
+  Result:=True;
+end;
+{$endif}
 
 {$ifndef Delphi2010orNewerCompiler}
 function ContainsText(const AText, ASubText: string): Boolean;
