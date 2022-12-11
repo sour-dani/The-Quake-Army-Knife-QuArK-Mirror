@@ -106,7 +106,7 @@ const
 {$IFDEF CompiledWithDelphi10_4}
   QuArKUsedCompiler       = 'Delphi 10.4';
 {$ELSE}
-{$IFDEF CompiledWithDelphi111}
+{$IFDEF CompiledWithDelphi11}
   QuArKUsedCompiler       = 'Delphi 11';
 {$ELSE}
   QuArKUsedCompiler       = 'Delphi';
