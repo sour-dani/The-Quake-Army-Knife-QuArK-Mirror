@@ -449,17 +449,12 @@ expected one.
         ReadSymbol(sStringToken);
         row:=0;
         S1:=S;
-        //Log(S);
         ReadSymbol(sCurlyBracketLeft);
         // read dispinfo attributes
         while SymbolType=sStringQuotedToken do
         begin
           S2:=S;
-          //Log(s);
           ReadSymbol(sStringQuotedToken);
-          //Log(s);
-          //Log('>'+S1+'_'+S2+'='+S);
-
           if lowercase(s1)='normals' then
           begin
             setlength(aryn,3*nrows);
