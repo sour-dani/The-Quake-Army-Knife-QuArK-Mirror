@@ -774,32 +774,29 @@ class DefaultDrawEntityLines:
         cv.line(int(aabb_110.x), int(aabb_110.y), int(aabb_111.x), int(aabb_111.y))
         cv.line(int(aabb_100.x), int(aabb_100.y), int(aabb_101.x), int(aabb_101.y))
 
-
     def drawonesphere(self, entity, sphereradius, org, OriginalOrigin, color, view):
         try:
             radius = sphereradius * view.scale(OriginalOrigin)
-            radius = int(radius)
-            cv = view.canvas()
-            cv.pencolor = color
-            cv.penwidth = 2
-            cv.brushstyle = BS_CLEAR
-            cv.ellipse(int(org.x)-radius, int(org.y)-radius, int(org.x)+radius, int(org.y)+radius)
         except:
-            pass
-
+            return
+        cv = view.canvas()
+        cv.pencolor = color
+        cv.penwidth = 2
+        cv.brushstyle = BS_CLEAR
+        cv.ellipse(int(org.x-radius), int(org.y-radius), int(org.x+radius), int(org.y+radius))
 
     def drawentityradius(self, entity, nameradius, org, color, view):
         try:
-            if entity[nameradius] is not None:
-                radius = float(entity[nameradius]) * view.scale(org)
-                radius = int(radius)
-                cv = view.canvas()
-                cv.pencolor = color
-                cv.penwidth = 2
-                cv.brushstyle = BS_CLEAR
-                cv.ellipse(int(org.x)-radius, int(org.y)-radius, int(org.x)+radius, int(org.y)+radius)
+            if entity[nameradius] is None:
+                return
+            radius = float(entity[nameradius]) * view.scale(org)
         except:
-            pass
+            return
+        cv = view.canvas()
+        cv.pencolor = color
+        cv.penwidth = 2
+        cv.brushstyle = BS_CLEAR
+        cv.ellipse(int(org.x-radius), int(org.y-radius), int(org.x+radius), int(org.y+radius))
 
 ############## SHINE support code end
 
