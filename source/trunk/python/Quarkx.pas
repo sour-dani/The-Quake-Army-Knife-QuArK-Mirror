@@ -2808,16 +2808,16 @@ begin
     with ConstructQObject('heapstatus', Nil) do
     begin
       Result:=@PythonObj;
-      SpecificsAdd('TotalAddrSpace='+IntToStr(TotalAddrSpace));
-      SpecificsAdd('TotalUncommitted='+IntToStr(TotalUncommitted));
-      SpecificsAdd('TotalCommitted='+IntToStr(TotalCommitted));
-      SpecificsAdd('TotalAllocated='+IntToStr(TotalAllocated));
-      SpecificsAdd('TotalFree='+IntToStr(TotalFree));
-      SpecificsAdd('FreeSmall='+IntToStr(FreeSmall));
-      SpecificsAdd('FreeBig='+IntToStr(FreeBig));
-      SpecificsAdd('Unused='+IntToStr(Unused));
-      SpecificsAdd('Overhead='+IntToStr(Overhead));
-      SpecificsAdd('HeapErrorCode='+IntToStr(HeapErrorCode));
+      SpecificsAdd('TotalAddrSpace='+UIntToStr(TotalAddrSpace));
+      SpecificsAdd('TotalUncommitted='+UIntToStr(TotalUncommitted));
+      SpecificsAdd('TotalCommitted='+UIntToStr(TotalCommitted));
+      SpecificsAdd('TotalAllocated='+UIntToStr(TotalAllocated));
+      SpecificsAdd('TotalFree='+UIntToStr(TotalFree));
+      SpecificsAdd('FreeSmall='+UIntToStr(FreeSmall));
+      SpecificsAdd('FreeBig='+UIntToStr(FreeBig));
+      SpecificsAdd('Unused='+UIntToStr(Unused));
+      SpecificsAdd('Overhead='+UIntToStr(Overhead));
+      SpecificsAdd('HeapErrorCode='+UIntToStr(HeapErrorCode));
       Py_INCREF(Result);
     end;
   {$ELSE}

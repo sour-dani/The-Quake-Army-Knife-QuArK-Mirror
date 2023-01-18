@@ -2153,13 +2153,13 @@ begin
           try
             FillChar(bdata^,bdatasize+1,0);
             readbinarydata(rvDXInstalledVersion,bdata^,4);
-            FVersion:=inttostr(lo(integer(bdata^)))+'.'+inttostr(hi(integer(bdata^)));
+            FVersion:=uinttostr(lo(integer(bdata^)))+'.'+uinttostr(hi(integer(bdata^)));
           except
             {$IFDEF Delphi4orNewerCompiler}
             try
               FillChar(bdata^,bdatasize+1,0);
               readbinarydata(rvDXInstalledVersion,bdata^,8);
-              FVersion:=inttostr(lo(integer(bdata^)))+'.'+inttostr(hi(integer(bdata^)));
+              FVersion:=uinttostr(lo(integer(bdata^)))+'.'+uinttostr(hi(integer(bdata^)));
             except
             end;
             {$ENDIF}

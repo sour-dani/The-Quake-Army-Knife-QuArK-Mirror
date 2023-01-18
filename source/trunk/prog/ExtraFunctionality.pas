@@ -130,6 +130,15 @@ function StrToUInt(const S: string): Cardinal;
 function TryStrToUInt(const S: string; out Value: Cardinal): Boolean;
 {$endif}
 
+{$ifndef DelphiXE6orNewerCompiler} //FIXME: Not sure about the version of Delphi these were added
+function UIntToStr(Value: Cardinal): string; overload;
+{$ifdef Delphi2007orNewerCompiler} //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
+function UIntToStr(Value: UInt64): string; overload;
+{$else}
+function UIntToStr(Value: Int64): string; overload;
+{$endif}
+{$endif}
+
 {$ifndef Delphi2010orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 7, and they exist in Delphi 2010
 function ContainsText(const AText, ASubText: string): Boolean;
 function StartsText(const ASubText, AText: string): Boolean;
@@ -278,6 +287,25 @@ begin
   Value:=Cardinal(Dummy);
   Result:=True;
 end;
+{$endif}
+
+{$ifndef DelphiXE6orNewerCompiler}
+function UIntToStr(Value: Cardinal): string;
+begin
+  FmtStr(Result, '%u', [Value]);
+end;
+
+{$ifdef Delphi2007orNewerCompiler}
+function UIntToStr(Value: UInt64): string;
+begin
+  FmtStr(Result, '%u', [Value]);
+end;
+{$else}
+function UIntToStr(Value: Int64): string;
+begin
+  FmtStr(Result, '%u', [Value]);
+end;
+{$endif}
 {$endif}
 
 {$ifndef Delphi2010orNewerCompiler}

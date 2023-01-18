@@ -1656,7 +1656,8 @@ const
  LineExtraSpace = 2;
  BevelStep      = 12;
 var
- N, BI, I, J, K, BitValue, X, Y, W, FontHeight, LeftMargin, Icone, ExtraVertSpace, MiddleX, NormalW: Integer;
+ N, BI, I, J, K, X, Y, W, FontHeight, LeftMargin, Icone, ExtraVertSpace, MiddleX, NormalW: Integer;
+ BitValue: Cardinal;
  S, Captions, Spec, TextValues, HintMsg: String;
  ArgValue: String; { The value from the argument of the specific. }
  Value: Single;
@@ -1925,7 +1926,7 @@ begin
                                  end;
                       end;
                      end;
-                   ArgValue:=IntToStr(BitValue);
+                   ArgValue:=UIntToStr(BitValue);
                   end;
                  case Found of
                   csDiffers: ArgValue:=LoadStr1(Differs);
