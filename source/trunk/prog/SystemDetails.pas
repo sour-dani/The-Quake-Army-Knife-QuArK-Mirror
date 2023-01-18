@@ -2124,6 +2124,11 @@ begin
 end;
 
 procedure TDirectX.GetInfo;
+  //Taken from: https://www.oreilly.com/library/view/delphi-in-a/1565926595/re314.html
+  function Swap32(const Value: Cardinal): Cardinal;
+  begin
+    Result := Swap(Value shr 16) or (Swap(Value) shl 16);
+  end;
 var
   bdata :pchar;
   sl :tstringlist;
@@ -2152,17 +2157,9 @@ begin
         if ValueExists(rvDXInstalledVersion) then
           try
             FillChar(bdata^,bdatasize+1,0);
-            readbinarydata(rvDXInstalledVersion,bdata^,4);
-            FVersion:=uinttostr(lo(integer(bdata^)))+'.'+uinttostr(hi(integer(bdata^)));
+            readbinarydata(rvDXInstalledVersion,bdata^,8);
+            FVersion:=uinttostr(Swap32(PDWORD(bdata)^))+'.'+uinttostr(Swap32((PDWORD(bdata+4))^));
           except
-            {$IFDEF Delphi4orNewerCompiler}
-            try
-              FillChar(bdata^,bdatasize+1,0);
-              readbinarydata(rvDXInstalledVersion,bdata^,8);
-              FVersion:=uinttostr(lo(integer(bdata^)))+'.'+uinttostr(hi(integer(bdata^)));
-            except
-            end;
-            {$ENDIF}
           end;
       end;
       CloseKey;
