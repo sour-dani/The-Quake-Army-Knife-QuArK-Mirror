@@ -29,7 +29,7 @@ uses Windows, Messages, SysUtils, Classes, Graphics, Controls, Dialogs,
 
 function GetTextureToolbar(nOwner: TComponent) : TWinControl;
 function MakeTextureToolbar(nOwner: TCustomForm; LocalAction: Integer) : TWinControl;
-procedure DynamicTextureToolbar(Tex: TWinControl; nLinks: TQList);
+procedure DynamicTextureToolbar(Tex: TWinControl; const nLinks: TQList);
 
  {------------------------}
 
@@ -115,7 +115,7 @@ begin
   end; *)
 end;
 
-procedure DynamicTextureToolbar(Tex: TWinControl; nLinks: TQList);
+procedure DynamicTextureToolbar(Tex: TWinControl; const nLinks: TQList);
 begin
  with TTbTex(Tex) do
   begin
