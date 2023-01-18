@@ -29,6 +29,7 @@ uses
 type
   TUndoDlg = class(TQkForm)
     Panel1: TPanel;
+    Label3: TLabel;
     ListBox1: TListBox;
     Label1: TLabel;
     Panel2: TPanel;
@@ -236,20 +237,28 @@ begin
 end;
 
 procedure TUndoDlg.FormResize(Sender: TObject);
+
+ function GetListboxHeight(const ListBox: TListBox; const xLabel: TLabel): Integer;
+ var
+  Count: Integer;
+ begin
+  Count:=ListBox.Items.Count;
+  if Count=0 then Count:=1;
+  Result:=Count*ListBox.ItemHeight + (xLabel.Height+12);
+ end;
+
 var
  W, HMax: Integer;
  H1, H2: Integer;
 begin
- W:=ClientWidth-86;
+ W:=ClientWidth-(Label3.Left+Label3.Width+8);
  if W<30 then W:=30;
  ComboBox1.Width:=W;
 
- H1:=ListBox1.Items.Count*ListBox1.ItemHeight + 26;
- W:=ListBox2.Items.Count;
- if W=0 then W:=1;
- H2:=W*ListBox1.ItemHeight + 26;
+ H1:=GetListboxHeight(ListBox1, Label1);
+ H2:=GetListboxHeight(ListBox2, Label2);
 
- HMax:=ClientHeight-25;
+ HMax:=ClientHeight-Bevel1.Height;
  if HMax<10 then HMax:=10;
  if (H1+H2 > HMax) and (H1>HMax div 2) then
   begin

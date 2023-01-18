@@ -25,7 +25,7 @@ object UndoDlg: TUndoDlg
     Align = alTop
     Style = bsRaised
   end
-  object TLabel
+  object Label3: TLabel
     Left = 9
     Top = 6
     Width = 67
@@ -46,7 +46,7 @@ object UndoDlg: TUndoDlg
       Left = 2
       Top = 2
       Width = 209
-      Height = 14
+      Height = 15
       Align = alTop
       Alignment = taCenter
       AutoSize = False
@@ -61,9 +61,9 @@ object UndoDlg: TUndoDlg
     object ListBox1: TListBox
       Tag = 1
       Left = 2
-      Top = 16
+      Top = 17
       Width = 209
-      Height = 46
+      Height = 45
       Align = alClient
       ExtendedSelect = False
       ItemHeight = 13
