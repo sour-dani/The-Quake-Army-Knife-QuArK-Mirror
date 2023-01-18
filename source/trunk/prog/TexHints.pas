@@ -36,7 +36,7 @@ type
 
 implementation
 
-uses Setup, Game, Travail, QkPixelSet, QkTextures;
+uses Setup, Game, Travail, QkPixelSet, QkTextures, ExtraFunctionality;
 
 procedure TTexHintWindow.Paint;
 var
@@ -72,7 +72,7 @@ var
 begin
  Textures.Free;
  Textures:=Nil;
- if Copy(AHint, 1, 4) = 'TEX?' then
+ if StartsStr(AHint, 'TEX?') then
   begin
    S:=Copy(AHint, 5, MaxInt);
    if (S<>'') and (S[Length(S)]=';') then
