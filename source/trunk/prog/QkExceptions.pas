@@ -41,7 +41,7 @@ procedure LogWindowsError(ErrNr: DWORD; const Call: String);
 
 implementation
 
-uses Forms, TextBoxForm, Quarkx, Logging;
+uses Forms, TextBoxForm, Quarkx, Logging, ExtraFunctionality;
 
  {-------------------}
 
@@ -134,18 +134,21 @@ end;
 
  {------------------------}
 
-//From http://www.swissdelphicenter.ch/torry/showcode.php?id=282:
+//Based on: http://www.swissdelphicenter.ch/torry/showcode.php?id=282
 function GetSystemErrorMessage(ErrNr: DWORD) : String;
 var
-  P: PChar;
+  P: LPTSTR;
 begin
   if FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER + FORMAT_MESSAGE_FROM_SYSTEM, nil, ErrNR, 0, @P, 0, nil) <> 0 then
   begin
     Result:=P;
-    LocalFree(Integer(P));
+    LocalFree(HLOCAL(P));
   end
   else
+  begin
+    Log(LOG_WARNING, 'Unable to retrieve system error message for error: ' + UIntToStr(ErrNR));
     Result:='';
+  end;
 end;
 
 procedure LogWindowsError(ErrNr: DWORD; const Call: String);
