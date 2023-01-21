@@ -104,6 +104,14 @@ The developers of used libraries/programs
                         Fastcode Project
                         http://fastcode.sourceforge.net/
 
+- RtlVclOptimize:
+                        Andreas Hausladen
+                        http://andy.jgknet.de/dspeedup/index.php?page=RtlVclOptimize
+
+- VCL Fix Pack:
+                        Andreas Hausladen
+                        https://www.idefixpack.de/blog/bugfix-units/vclfixpack-10/
+
 - QuArKSAS:
                         DanielPharos
 
@@ -128,9 +136,11 @@ The developers of used libraries/programs
                         http://www.nease.net/~marspark (BROKEN)
 
 - Delphi:
+                        Borland
                         http://www.borland.com/
 
 - Python:
+                        Python Software Foundation
                         http://www.python.org/
 
 - NSIS:
