@@ -869,7 +869,6 @@ class DefaultDrawEntityLines:
                     editor = mapeditor()
                     for e in tuple(entities):
                         if e["targetname"] == entity["target"] and e["origin"]:
-                            u = 1
                             p0 = entity["origin"].split(" ")
                             p0 = quarkx.vect(float(p0[0]), float(p0[1]), float(p0[2]))
                             p1 = e["origin"].split(" ")
