@@ -393,7 +393,7 @@ var
  FileHeader: TBitmapFileHeader;
 begin
  M:=TMemoryStream.Create; try
- FillChar(FileHeader, SizeOf(TBitmapFileHeader), 0);
+ FillChar(FileHeader, SizeOf(FileHeader), 0);
  FileHeader.bfType:=$4D42;
  M.Write(FileHeader, SizeOf(FileHeader));
  with BmpInfo.bmiHeader do
