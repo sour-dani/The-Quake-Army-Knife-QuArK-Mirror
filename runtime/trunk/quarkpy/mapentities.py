@@ -8,7 +8,8 @@ Map Editor Entities manager
 # FOUND IN FILE "COPYING.TXT"
 #
 
-import quarkx,sys,math
+import quarkx
+import math
 
 from maputils import *
 import maphandles
@@ -323,48 +324,40 @@ def line(u,p0,p1):
 
 def drawdistnet(o,view): # NOTE: this function needs to handle the selected face like a bezier.
   "Makes a face displacement net for Half-Life 2"
-  for vtx in o.vertices:
-    pass
-    #print 'vtx',vtx
-  try:
-    cp=[]
-    if len(o.dists)!=0: # o.dists is causing the "grey views" problem, what is it suppose to be?
-      #print "dists"
-      delta=1.0/len(o.dists)
-      #print delta
-      u=delta/2.0
-      for dists in o.dists:
-        cc=[]
-        cp.append(cc)
-        pa=line(u,vtx[2],vtx[1])
-        pb=line(u,vtx[3],vtx[0])
-        #print u,pa,pb
-        u=u+delta
-        #print dists
-        v=delta/2.0
-        oldpointpos=pa
-        for d in dists:
-          p=line(v,pa,pb)
-          #print u,v,p,d
-          pointpos= d*o.normal+p
-          cc.append(pointpos)
-          v=v+delta
+  cp=[]
+  if len(o.dists)!=0: #FIXME: o.dists is causing the "grey views" problem, what is it suppose to be?
+    #print "dists"
+    delta=1.0/len(o.dists)
+    #print delta
+    u=delta/2.0
+    for dists in o.dists:
+      cc=[]
+      cp.append(cc)
+      pa=line(u,vtx[2],vtx[1])
+      pb=line(u,vtx[3],vtx[0])
+      #print u,pa,pb
+      u=u+delta
+      #print dists
+      v=delta/2.0
+      oldpointpos=pa
+      for d in dists:
+        p=line(v,pa,pb)
+        #print u,v,p,d
+        pointpos= d*o.normal+p
+        cc.append(pointpos)
+        v=v+delta
 
-      cp = map(lambda cpline, proj=view.proj: map(proj, cpline), cp)
-      cv=view.canvas()
-      for cpline in cp:
-        for j in range(len(cpline)-1):
-          cv.line(cpline[j], cpline[j+1])
+    cp = map(lambda cpline, proj=view.proj: map(proj, cpline), cp)
+    cv=view.canvas()
+    for cpline in cp:
+      for j in range(len(cpline)-1):
+        cv.line(cpline[j], cpline[j+1])
 
-      cp = apply(map, (None,)+tuple(cp))
+    cp = apply(map, (None,)+tuple(cp))
 
-      for cpline in cp:
-        for i in range(len(cpline)-1):
-            cv.line(cpline[i], cpline[i+1])
-
-  except:
-    exctype, value = sys.exc_info()[:2]
-  #  print exctype, value
+    for cpline in cp:
+      for i in range(len(cpline)-1):
+          cv.line(cpline[i], cpline[i+1])
 
 class FaceType(EntityManager):
     "Polyhedron Faces"
@@ -429,57 +422,48 @@ class FaceType(EntityManager):
  ### NEW SpecialHandle code start, only for Half-Life2 at this time.
  ### Used to create a Half-Life 2 face displacement. Activate by changing to "Half-Life2" below.
         if quarkx.setupsubset(SS_GAMES)['GameCfg'] == "Maybe Future Half-Life2":
-            try:
-              print "mapentities line 388 vtx"
-              for vtx in o.vertices:
-                 print vtx
-                 print "mapentities line 391 o.name is ",o.name
-                 print "mapentities line 392 took o"
+#              print "mapentities line 388 vtx"
+#              for vtx in o.vertices:
+#                 print vtx
+#                 print "mapentities line 391 o.name is ",o.name
+#                 print "mapentities line 392 took o"
         #1      if len(o.dists)!=0:
               if len(o.vertices)!=0:
-                print "mapentities line 395 dists"
+#                print "mapentities line 395 dists"
          #2       delta=1.0/len(o.dists)
                 delta=1.0/len(o.vertices)
-                print "mapentities line 398 delta is ",delta
+#                print "mapentities line 398 delta is ",delta
                 u=delta/2.0
          #3       for dists in o.dists:
                 for dists in o.vertices:
                   pa=line(u,vtx[0],vtx[3])
                   pb=line(u,vtx[1],vtx[2])
-                  print "mapentities line 404 u,pa,pb are "
-                  print u
-                  print pa
-                  print pb
+#                  print "mapentities line 404 u,pa,pb are "
+#                  print u, pa, pb
                   u=u+delta
-                  print "mapentities line 409 u is ",u
+#                  print "mapentities line 409 u is ",u
                   v=delta/2.0
                   oldpointpos=pa
                   for d in dists:
                     p=line(v,pa,pb)
-                    print "mapentities line 414 u,v,p,d are "
-                    print u
-                    print v
-                    print p,type(p)
-                    print d,type(d)
-                    print "mapentities line 419 o.normal ",o.normal,type(o.normal)
+#                    print "mapentities line 414 u,v,p,d are "
+#                    print u, v
+#                    print p,type(p)
+#                    print d,type(d)
+#                    print "mapentities line 419 o.normal ",o.normal,type(o.normal)
               #4      pointpos= d*o.normal+p # just needs dif. method of doing this.
 
                     pointpos=o.normal+p
-                    print "mapentities line 423 pointpos is ",pointpos
+#                    print "mapentities line 423 pointpos is ",pointpos
               #5      h=h+ [maphandles.SpecialHandle(pointpos,100)]
          #works           h=h+ [maphandles.SpecialHandle(pointpos,o)] # Use the one below
          # new test area
                     scale1 = 1.0
                     spec = "angles"
-                    print "mapentities line 429 o.name",o.name
+#                    print "mapentities line 429 o.name",o.name
                     h=h+ [maphandles.SpecialHandle(pointpos,o.normal,scale1,o,spec)] # Use this one
 
                     v=v+delta
-              else:
-                  print "mapentities line 434 skipped len section"
-            except:
-              exctype, value = sys.exc_info()[:2]
-              print "mapentities line 437 exctype, value",exctype, value
  ### NEW SpecialHandle code end, only for Half-Life2 at this time.
         return h
 
