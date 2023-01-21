@@ -20,7 +20,7 @@ changes.</li>
 in the QuArK executable. Go to the Project > Options > Version Info
 and update the numbers. Don't forget the copyright year, and the
 pre-release-flag!<br>
-Also, some const's in <tt>QConsts.pas</tt> need to be updated. Check
+Also, some const's in <tt>source/prog/QConsts.pas</tt> need to be updated. Check
 them out and update them where needed:
 <code>
   QuArKVersion
@@ -30,14 +30,14 @@ them out and update them where needed:
   QuArKCompileDate
 </code>
 (The <tt>QuArKCompileDate</tt> can be determined by using the date
-utility in utils\dateutil.)<br>
+utility in <tt>utils/dateutil</tt>.)<br>
 Additionally, there's two version indicators at the top in
-runtime/addons/defaults.qrk that might need updating as well:
+<tt>runtime/addons/defaults.qrk</tt> that might need updating as well:
 <code>
   Version
   InternalVersion
 </code>
-And another copy of the version number in the QuArK.manifest file.
+And another copy of the version number in the <tt>runtime/QuArK.manifest</tt> file.
 </li>
 <li>Make sure that the Project > Options > Directories/Conditionals:
 Conditional Defines are set correctly.</li>
