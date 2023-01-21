@@ -36,6 +36,7 @@ uses
 {$ENDIF}
   FastMove in 'prog\FastMove.pas',
   FastCode in 'prog\FastCode\FastCode.pas',
+  RtlVclOptimize in 'prog\RtlVclOptimize.pas',
   Forms, SysUtils,
 
   //Init the logging module FIRST, otherwise we'll miss log-calls from other init's!
