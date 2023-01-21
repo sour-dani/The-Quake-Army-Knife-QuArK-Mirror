@@ -124,7 +124,7 @@ CompanyName=QuArK Development Team
 FileDescription=Editor for Quake Style Games
 FileVersion=6.6.8.0
 InternalName=QuArK
-LegalCopyright=Copyright (c) 2022
+LegalCopyright=Copyright (c) 2023
 LegalTrademarks=
 OriginalFilename=QuArK.EXE
 ProductName=Quake Army Knife
@@ -135,8 +135,9 @@ Homepage=https://quark.sourceforge.io/
 Count=1
 Item0=$(DELPHI)\Lib\Debug;.;.\components;.\components\direct3d;.\components\zip;.\Prog;.\Prog\FastCode;.\Prog\Model;.\Python;.\3dfx
 [HistoryLists\hlConditionals]
-Count=1
+Count=2
 Item0=DEBUG
+Item1=PyProfiling
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
