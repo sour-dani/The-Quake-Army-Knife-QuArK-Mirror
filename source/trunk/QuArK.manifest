@@ -3,7 +3,7 @@
   <assemblyIdentity type="win32" name="QuArK" version="6.6.8.0" processorArchitecture="x86"/>
   <dependency>
     <dependentAssembly>
-      <assemblyIdentity type="win32" name="Microsoft.Windows.Common-Controls" version="6.0.0.0" publicKeyToken="6595b64144ccf1df" language="*" processorArchitecture="x86"/>
+      <assemblyIdentity type="win32" name="Microsoft.Windows.Common-Controls" version="6.0.0.0" publicKeyToken="6595b64144ccf1df" language="*" processorArchitecture="*"/>
     </dependentAssembly>
   </dependency>
   <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
