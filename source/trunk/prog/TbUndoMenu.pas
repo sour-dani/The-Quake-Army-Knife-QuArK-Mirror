@@ -251,7 +251,8 @@ var
  W, HMax: Integer;
  H1, H2: Integer;
 begin
- W:=ClientWidth-(Label3.Left+Label3.Width+8);
+ ComboBox1.Left:=Label3.Left+Label3.Width+8; //FIXME: Only do on font change?
+ W:=ClientWidth-ComboBox1.Left;
  if W<30 then W:=30;
  ComboBox1.Width:=W;
 
