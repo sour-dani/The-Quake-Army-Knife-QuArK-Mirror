@@ -90,16 +90,11 @@ type
   TMemory = class(TPersistent)
   private
     FMemoryLoad: DWORD;
-    FPhysicalTotal: SIZE_T;
-    FPhysicalFree: SIZE_T;
-    FPageFileTotal: SIZE_T;
-    FPageFileFree: SIZE_T;
-    FVirtualTotal: SIZE_T;
-    FVirtualFree: SIZE_T;
-
+    FPhysicalTotal, FPhysicalFree: DWORDLONG;
+    FPageFileTotal, FPageFileFree: DWORDLONG;
+    FVirtualTotal, FVirtualFree: DWORDLONG;
     FAllocGranularity: DWORD;
-    FMinAppAddress: Cardinal; //Actually, Pointer...
-    FMaxAppAddress: Cardinal; //Actually, Pointer...
+    FMinAppAddress, FMaxAppAddress: Cardinal; //Actually, pointer, but can't publish a pointer as a property.
     FPageSize: DWORD;
     FGDIRes: Byte;
     FUserRes: Byte;
@@ -112,12 +107,12 @@ type
     procedure Report(var sl :TStringList);
   published
     property MemoryLoad :DWORD read FMemoryLoad write FMemoryLoad stored false;
-    property PhysicalTotal :SIZE_T read FPhysicalTotal write FPhysicalTotal stored false;
-    property PhysicalFree :SIZE_T read FPhysicalFree write FPhysicalFree stored false;
-    property PageFileTotal :SIZE_T read FPageFileTotal write FPageFileTotal stored false;
-    property PageFileFree :SIZE_T read FPageFileFree write FPageFileFree stored false;
-    property VirtualTotal :SIZE_T read FVirtualTotal write FVirtualTotal stored false;
-    property VirtualFree :SIZE_T read FVirtualFree write FVirtualFree stored false;
+    property PhysicalTotal :DWORDLONG read FPhysicalTotal write FPhysicalTotal stored false;
+    property PhysicalFree :DWORDLONG read FPhysicalFree write FPhysicalFree stored false;
+    property PageFileTotal :DWORDLONG read FPageFileTotal write FPageFileTotal stored false;
+    property PageFileFree :DWORDLONG read FPageFileFree write FPageFileFree stored false;
+    property VirtualTotal :DWORDLONG read FVirtualTotal write FVirtualTotal stored false;
+    property VirtualFree :DWORDLONG read FVirtualFree write FVirtualFree stored false;
     property AllocGranularity :DWORD read FAllocGranularity write FAllocGranularity stored false;
     property MaxAppAddress :Cardinal read FMaxAppAddress write FMaxAppAddress stored false;
     property MinAppAddress :Cardinal read FMinAppAddress write FMinAppAddress stored false;
@@ -345,19 +340,21 @@ begin
     Result:='0';
 end;
 
-function FormatBytes(const Number: SIZE_T) : String; overload;
+function FormatBytes(const Number: Int64) : String; overload;
 begin
   Result:=formatfloat('#,##',Number);
   if Length(Result)=0 then
     Result:='0';
 end;
 
-function FormatBytes(const Number: QWORD) : String; overload;
+{$IFDEF Delphi2007orNewerCompiler}
+function FormatBytes(const Number: UInt64) : String; overload;
 begin
   Result:=formatfloat('#,##',Number);
   if Length(Result)=0 then
     Result:='0';
 end;
+{$ENDIF}
 
 { TCPU }
 
@@ -1377,7 +1374,7 @@ begin
       LogWindowsError(GetLastError(), 'TMemory.GetInfo: GlobalMemoryStatusEx(TMemoryStatusEx)');
     end;
     MemoryLoad:=MSEX.dwMemoryLoad;
-    PhysicalTotal:=MSEX.ullTotalPhys; //FIXME: Fix conversion...!
+    PhysicalTotal:=MSEX.ullTotalPhys;
     PhysicalFree:=MSEX.ullAvailPhys;
     VirtualTotal:=MSEX.ullTotalVirtual;
     VirtualFree:=MSEX.ullAvailVirtual;
