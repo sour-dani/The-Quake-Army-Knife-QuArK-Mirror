@@ -232,14 +232,16 @@ uses
   PyUndo in 'python\PyUndo.pas',
   Quarkx in 'Python\Quarkx.pas';
 
-
-//Set the support-for-larger-than-2GB-flag, so we can use up to 4 GB!*)
-//FIXME: NOT SUPPORTED THOUGH
-{.$IFDEF Delphi7orNewerCompiler}
-  {.$SetPEFlags $20}
-{.$ENDIF}
-
 {$R *.RES}
+
+//Set the support-for-larger-than-2GB-flag, so we can use up to 4 GB!
+{$IFDEF Delphi6orNewerCompiler}
+  {.$SetPEFlags IMAGE_FILE_LARGE_ADDRESS_AWARE}
+  {$IFNDEF Delphi2007orNewerCompiler} //Became an option in Delphi 2007
+    {$SetPEOptFlags IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE}
+  {$ENDIF}
+  {$SetPEOptFlags IMAGE_DLLCHARACTERISTICS_NX_COMPAT}
+{$ENDIF}
 
 begin
 {$IFDEF MemCheck}

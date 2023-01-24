@@ -147,7 +147,14 @@ function StartsStr(const ASubText, AText: string): Boolean;
 function EndsStr(const ASubText, AText: string): Boolean;
 {$endif}
 
-{$ifndef Delphi7orNewerCompiler} // Pre-dates Delphi 7
+{$ifndef Delphi2007orNewerCompiler}
+const
+  IMAGE_FILE_LARGE_ADDRESS_AWARE = $0020;
+  IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE = $0040;
+  IMAGE_DLLCHARACTERISTICS_NX_COMPAT = $0100;
+{$endif}
+
+{$ifndef Delphi7orNewerCompiler}
 const
   SM_CXVIRTUALSCREEN = 78;
   SM_CYVIRTUALSCREEN = 79;
