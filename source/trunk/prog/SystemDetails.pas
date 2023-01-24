@@ -320,8 +320,6 @@ type
   TStrBuf = array[0..11] of AnsiChar;
 
 var
-  VLevel: Byte;
-  VCPUID: TCPUID;
   WindowsPlatformCompatibility: TPlatformType;
   WindowsPlatform: TPlatform;
   DriverBugs: TStringList;
@@ -337,8 +335,6 @@ begin
   begin
     DefFontData.Name:=PChar(@Metrics.lfMessageFont.lfFaceName);
     DefFontData.Height:=Metrics.lfMessageFont.lfHeight;
-    //DefFontData.Name:='Comic Sans MS';
-    //DefFontData.Height:=-20;
   end;
 end;
 
@@ -370,7 +366,7 @@ begin
 end;
 
 const
-  ID_Bit = $200000;    // EFLAGS ID bit
+  ID_Bit = $200000;   // EFLAGS ID bit
 
   CPUVendorIDs :array[0..13] of string = ('GenuineIntel',
                                           'UMC UMC UMC',
@@ -404,59 +400,62 @@ const
 
 function TCPU.CPUIDExists: boolean; register;
 asm
-	PUSHFD			        //direct access to flags no possible, only via stack
-	POP     EAX		      //flags to EAX
-	MOV     EDX,EAX		  //save current flags
-	XOR     EAX,ID_BIT	//not ID bit
-	PUSH    EAX		      //onto stack
-	POPFD			          //from stack to flags, with not ID bit
-	PUSHFD			        //back to stack
-	POP     EAX		      //get back to EAX
-	XOR     EAX,EDX		  //check if ID bit affected
-	JZ      @exit		    //no, CPUID not available
-	MOV     AL,True		  //Result=True
+	PUSHFD               //direct access to flags no possible, only via stack
+	POP     EAX          //flags to EAX
+	MOV     EDX,EAX      //save current flags
+	XOR     EAX,ID_BIT   //not ID bit
+	PUSH    EAX          //onto stack
+	POPFD                //from stack to flags, with not ID bit
+	PUSHFD               //back to stack
+	POP     EAX          //get back to EAX
+	XOR     EAX,EDX      //check if ID bit affected
+	JZ      @exit        //no, CPUID not available
+	MOV     AL,True      //Result=True
 @exit:
 end;
 
 function TCPU.GetCPUID : TCPUID; register;
+var
+  VCPUID: TCPUID;
 begin
   VCPUID.EAX:=0;
   VCPUID.EBX:=0;
   VCPUID.ECX:=0;
   VCPUID.EDX:=0;
   asm
-	PUSH    EDI               //Save reg.
+	PUSH    EDI          //Save reg.
 	PUSH    EAX
 	PUSH    EBX
 	PUSH    EDX
 	PUSH    ECX
-	LEA     EDI,VCPUID        //Pointer to output buffer in EDI
+	LEA     EDI,VCPUID   //Pointer to output buffer in EDI
 	MOV     EAX,1
-	DW      $A20F             //CPUID Command Execute
+	DW      $A20F        //CPUID Command Execute
 	STOSD
-	MOV eax,ebx
+	MOV     eax,ebx
 	STOSD
-	MOV eax,ecx
+	MOV     eax,ecx
 	STOSD
-	MOV eax,edx
+	MOV     eax,edx
 	STOSD
 	POP     ECX
 	POP     EDX
 	POP     EBX
 	POP     EAX
-	POP     EDI               //Restore Reg.
+	POP     EDI          //Restore Reg.
   end;
   result:=VCPUID;
 end;
 
 function TCPU.GetCPUIDLevel: integer;
+var
+  VLevel: Byte;
 begin
   VLevel:=0;
   asm
-	MOV eax, 0      //  Get Level
-	DB 0Fh,0a2h     //  CPUID opcode
+	MOV eax, 0      //Get Level
+	DB 0Fh,0a2h     //CPUID opcode
 	MOV VLevel,al
-	//RET
   end;
   result:=VLevel;
 End;
@@ -468,8 +467,8 @@ asm
 	PUSH edx
 
 	MOV ebx,esp
-	AND esp,0FFFFFFFCh  //align down to nearest dword
-	PUSHFD              //save original flags
+	AND esp,0FFFFFFFCh   //align down to nearest dword
+	PUSHFD               //save original flags
 
 // i386 CPU check
 // The AC bit, bit #18, is a new bit introduced in the EFLAGS
@@ -479,14 +478,14 @@ asm
 	PUSHFD
 	POP eax
 	MOV ecx,eax
-	XOR eax,40000h   	//toggle AC bit
+	XOR eax,40000h       //toggle AC bit
 	PUSH eax
 	POPFD
 	PUSHFD
 	POP eax
 	XOR eax,ecx
-	MOV eax,3          //assume 80386
-	JE @@end_CPUTyp     //it's a 386
+	MOV eax,3            //assume 80386
+	JE @@end_CPUTyp      //it's a 386
 
 // i486 DX CPU / i487 SX MCP and i486 SX CPU checking
 // Checking for ability to set/clear ID flag (Bit 21) in EFLAGS
@@ -496,30 +495,30 @@ asm
 	PUSHFD
 	POP eax
 	MOV ecx,eax
-	XOR eax,200000h   //toggle ID bit
+	XOR eax,200000h      //toggle ID bit
 	PUSH eax
 	POPFD
 	PUSHFD
 	POP eax
 	XOR eax, ecx
 	MOV eax,4
-	JE @@end_CPUTyp   //it's a 486 w/o support for CPUID
+	JE @@end_CPUTyp      //it's a 486 w/o support for CPUID
 
 // Execute CPUID instruction to determine vendor, family,
 // model and stepping.  The use of the CPUID instruction used
 // in this program can be used for B0 and later steppings
 // of the P5 processor.
 
-	PUSH ebx        // CPUID modifies EBX  !!!
-	MOV eax, 1     	// Level
-	DB 0Fh,0a2h     // CPUID opcode
+	PUSH ebx             //CPUID modifies EBX  !!!
+	MOV eax, 1           //Level
+	DB 0Fh,0a2h          //CPUID opcode
 	MOV al,ah
 	AND eax, 0FH
 	POP ebx
 
 @@end_CPUTyp:
-	POPFD            // restore original flags
-	MOV esp,ebx      // restore original ESP
+	POPFD                //restore original flags
+	MOV esp,ebx          //restore original ESP
 	POP edx
 	POP ecx
 	POP ebx
@@ -529,32 +528,32 @@ function TCPU.GetCPUVendor :string;
 
   function _GetCPUVendor :TStrBuf; assembler; register;
   asm
-  	PUSH    ebx	    //Save regs
-	PUSH    edi
-	MOV     edi,eax		//@Result (TStrBuf)
-	MOV     eax,0
-	DW      $A20F		  //CPUID Command
-	MOV     eax,ebx
-	XCHG	ebx,ecx     //save ECX result
-	MOV	ecx,4
+	PUSH ebx       //Save regs
+	PUSH edi
+	MOV  edi,eax   //@Result (TStrBuf)
+	MOV  eax,0
+	DW   $A20F     //CPUID Command
+	MOV  eax,ebx
+	XCHG ebx,ecx   //save ECX result
+	MOV  ecx,4
   @1:
-	STOSB            	//save first 4 byte
-	SHR     eax,8
-	LOOP    @1
-	MOV     eax,edx
-	MOV	ecx,4
+	STOSB          //save first 4 byte
+	SHR  eax,8
+	LOOP @1
+	MOV  eax,edx
+	MOV  ecx,4
   @2:
-	STOSB            	//save middle 4 byte
-	SHR     eax,8
-	LOOP    @2
-	MOV     eax,ebx
-	MOV	ecx,4
-  @3:            		//save last 4 byte
+	STOSB          //save middle 4 byte
+	SHR  eax,8
+	LOOP @2
+	MOV  eax,ebx
+	MOV  ecx,4
+  @3:              //save last 4 byte
 	STOSB
-	SHR     eax,8
-	LOOP    @3
-	POP     edi		    //Restore regs
-	POP     ebx
+	SHR  eax,8
+	LOOP @3
+	POP  edi       //Restore regs
+	POP  ebx
   end;
 
 var
@@ -726,8 +725,8 @@ end;
 
 function GetTimeStampHi: DWORD; assembler; register;
 asm
-  DW      $310F        //RDTSC Command
-  MOV @Result, EDX;
+	DW      $310F       //RDTSC Command
+	MOV @Result, EDX;
 end;
 
 function GetTimeStampLo: DWORD; assembler; register;
@@ -738,12 +737,12 @@ end;
 
 function GetCPUIDFlags: DWORD; assembler; register;
 asm
-	PUSH    EBX	   	//Save registers
+	PUSH    EBX       //Save registers
 	PUSH    EDI
-	MOV     EAX,1 	        //Set up for CPUID
-	DW      $A20F 	        //CPUID OpCode
-	MOV @Result,EDX	        //Put the flag array into a DWord
-	POP     EDI	       	//Restore registers
+	MOV     EAX,1     //Set up for CPUID
+	DW      $A20F     //CPUID OpCode
+	MOV @Result,EDX   //Put the flag array into a DWord
+	POP     EDI       //Restore registers
 	POP     EBX
 end;
 
