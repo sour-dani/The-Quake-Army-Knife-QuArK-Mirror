@@ -67,6 +67,7 @@ type
 
 var
   g_Ty_InternalConsole: TyObject = (ob_refcnt: 1);
+  ConsoleLogging: Boolean;
 
  {-------------------}
 
@@ -78,11 +79,6 @@ procedure InitConsole;
 procedure ClearConsole;
 procedure FreeConsole;
 procedure ResizeConsole;
-
-procedure OpenConsoleFile;
-procedure CloseConsoleFile;
-procedure ClearConsoleFile;
-procedure WriteConsoleFile(const Text: String);
 
  {-------------------}
 
@@ -96,12 +92,7 @@ uses Qk1, QkObjects, QkExceptions, Quarkx, PyProcess, Setup,
 var
   g_ConsoleForm: TConsoleForm;
 
-  ConsoleFile: TextFile;
-  ConsoleFileOpened: boolean;
-  ConsoleFilename: string;
-
 const
-  CONSOLE_FILENAME  = 'Console.txt';
   MinConsoleWidth   = 80;
   MaxConsoleWidth   = 80;
   MinConsoleHeight  = 60;
@@ -111,9 +102,9 @@ const
 type
  TPipeLine = record
               Src: PyObject;
+              DataLength: Integer;
+              Data: packed array of Char;
               EndLine: Boolean;
-              DataLength: Byte;
-              Data: array of Char;
              end;
  TPipeBuffer = array of TPipeLine;
  PPipeBuffer = ^TPipeBuffer;
@@ -126,60 +117,6 @@ var
  ConsoleReady: Boolean = False;
 
  {-------------------}
-
-procedure OpenConsoleFile;
-var
-  FullFilename: String;
-begin
-  if ConsoleFileOpened then
-    Exit;
-  FullFilename:=ConcatPaths([GetQPath(pQuArKLog), ConsoleFilename]);
-  {$I-}
-  AssignFile(ConsoleFile, FullFilename);
-  {$IFDEF Delphi6orNewerCompiler}
-  SetLineBreakStyle(ConsoleFile, tlbsCRLF);
-  {$ENDIF}
-  if not FileExists(FullFilename) then
-    Rewrite(ConsoleFile)
-  else
-    Append(ConsoleFile);
-  {$I+}
-  ConsoleFileOpened:=True;
-end;
-
-procedure CloseConsoleFile;
-begin
-  if not ConsoleFileOpened then
-    Exit;
-  {$I-}
-  CloseFile(ConsoleFile);
-  {$I+}
-  ConsoleFileOpened:=False;
-end;
-
-procedure ClearConsoleFile;
-var
-  OldConsoleFileStatus: Boolean;
-begin
-  OldConsoleFileStatus:=ConsoleFileOpened;
-  if ConsoleFileOpened then
-    CloseConsoleFile;
-  {$I-}
-  Erase(ConsoleFile);
-  {$I+}
-  if OldConsoleFileStatus then
-    OpenConsoleFile;
-end;
-
-procedure WriteConsoleFile(const Text: String);
-begin
-  if not ConsoleFileOpened then
-    Exit;
-  {$I-}
-  Write(ConsoleFile, Text);
-  Flush(ConsoleFile);
-  {$I+}  
-end;
 
 procedure InitBuffer(var Buffer: PPipeBuffer; Width: Integer; Height: Integer);
 var
@@ -218,6 +155,7 @@ procedure InitConsole;
 begin
   if ConsoleReady then Exit;
   InitBuffer(PipeBuffer, ConsoleWidth, ConsoleHeight);
+  PipeBufPos:=0;
   ConsoleReady:=True;
 end;
 
@@ -246,6 +184,7 @@ var
   BufLine, BufChar: Integer;
   NewBuffer: PPipeBuffer;
 begin
+  Exit; //@@@
   if not ConsoleReady then Exit;
   Setup:=SetupSubSet(ssGeneral, 'Display');
   try
@@ -344,8 +283,6 @@ procedure WriteConsole(Src: PyObject; const Text: String);
   var
    I: Integer;
   begin
-   if ConsoleFileOpened then
-     WriteConsoleFile(sLineBreak);
    I:=PipeBufPos+1;
    if I=ConsoleHeight then I:=0;
    Py_XDECREF(PipeBuffer^[I].Src);
@@ -358,6 +295,7 @@ procedure WriteConsole(Src: PyObject; const Text: String);
 var
  I: Integer;
  Line: ^TPipeLine;
+ S: String;
 begin
  if not ConsoleReady then
   begin
@@ -370,6 +308,11 @@ begin
     begin
      Line:=@PipeBuffer^[PipeBufPos];
      Line^.EndLine:=True;
+     if ConsoleLogging then
+      begin
+       SetString(S, PChar(Line^.Data), Line^.DataLength);
+       Log(LOG_CONSOLE, LOG_ALWAYS, S);
+      end;
      NewLine(Src);
     end;
    Line:=@PipeBuffer^[PipeBufPos];
@@ -379,6 +322,11 @@ begin
      #0, #13: ;
      #10: begin
            Line^.EndLine:=True;
+           if ConsoleLogging then
+            begin
+             SetString(S, PChar(Line^.Data), Line^.DataLength);
+             Log(LOG_CONSOLE, LOG_ALWAYS, S);
+            end;
            NewLine(Src);
            Line:=@PipeBuffer^[PipeBufPos];
           end;
@@ -388,12 +336,15 @@ begin
      begin
       if Line^.DataLength=ConsoleWidth then
        begin
+        if ConsoleLogging then
+         begin
+          SetString(S, PChar(Line^.Data), Line^.DataLength);
+          Log(LOG_CONSOLE, LOG_ALWAYS, S);
+         end;
         NewLine(Src);
         Line:=@PipeBuffer^[PipeBufPos];
        end;
       Line^.Data[Line^.DataLength]:=Text[I];
-      if ConsoleFileOpened then
-       WriteConsoleFile(Text[I]);
       Inc(Line^.DataLength);
      end;
     end;
@@ -796,8 +747,6 @@ begin
 end;
 
 initialization
-  ConsoleFileOpened:=False;
-  ConsoleFileName:=CONSOLE_FILENAME;
+  ConsoleLogging:=False;
 finalization
-  CloseConsoleFile;
 end.

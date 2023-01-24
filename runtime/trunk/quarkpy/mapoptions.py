@@ -54,20 +54,16 @@ def IgnoreDupClick(item):
     editor.ok(undo, "")
 
 
-def StartConsoleLogClick(m):
-    "Start and stop console logging output to Console.txt file."
+def ConsoleLogClick(m):
+    "Start and stop console logging output to the log file."
     if not MapOption("ConsoleLog"):
-        quarkx.startconsolelog()
+        quarkx.setconsolelog(1)
         quarkx.setupsubset(SS_MAP, "Options")['ConsoleLog'] = "1"
         consolelog.state = qmenu.checked
     else:
         quarkx.setupsubset(SS_MAP, "Options")['ConsoleLog'] = None
-        quarkx.stopconsolelog()
+        quarkx.setconsolelog(0)
         consolelog.state = qmenu.normal
-
-def ClearConsoleLogClick(m):
-    "Clears the Console.txt file."
-    quarkx.clearconsolelog()
 
 def Config1Click(item):
     "Configuration Dialog Box."
@@ -198,9 +194,7 @@ lineThicknessItem = qmenu.item("Set Line Thickness (3)",setLineThick,"|Set Line 
 #
 # Global variables to update from plug-ins.
 #
-consolelog = qmenu.item("&Log Console", StartConsoleLogClick, "|Log Console:\n\nWhen active this will write everything that is printed to the console to a text file called 'Console.txt' which is located in QuArK's main folder.|intro.mapeditor.menu.html#optionsmenu")
-
-clearconsolelog = qmenu.item("&Clear Console Log", ClearConsoleLogClick, "|Clear Console Log:\n\nWhen clicked this will clear everything that is printed to the text file called 'Console.txt' which is located in QuArK's main folder.|intro.mapeditor.menu.html#optionsmenu")
+consolelog = qmenu.item("&Log Console", ConsoleLogClick, "|Log Console:\n\nWhen active this will write everything that is printed to the console to a text file called 'Console.txt' which is located in QuArK's main folder.|intro.mapeditor.menu.html#optionsmenu")
 
 items = [
 
@@ -245,7 +239,7 @@ def OptionsMenu():
 
     PlugIns = qmenu.item("List of Plug-ins...", Plugins1Click, "lists loaded plug-ins")
     Config1 = qmenu.item("Confi&guration...", Config1Click, hint = "|Configuration...:\n\nThis leads to the Configuration-Window where all elements of QuArK are setup. From the way the Editor looks and operates to Specific Game Configuration and Mapping or Modeling variables.\n\nBy pressing the F1 key one more time, or clicking the 'InfoBase' button below, you will be taken directly to the Infobase section that covers all of these areas, which can greatly assist you in setting up QuArK for a particular game you wish to map or model for.|intro.configuration.html")
-    Options1 = qmenu.popup("&Options", items+[qmenu.sep, PlugIns, Config1, qmenu.sep, consolelog, clearconsolelog], Options1Click) #FIXME: Move consolelog and clearconsolelog elsewhere... They make little sense here. They are more debugging options! In fact, they are more general. Move to MAIN window...?
+    Options1 = qmenu.popup("&Options", items+[qmenu.sep, PlugIns, Config1, qmenu.sep, consolelog], Options1Click) #FIXME: Move consolelog elsewhere... They make little sense here. They are more debugging options! In fact, they are more general. Move to MAIN window...?
 
     import plugins.mapgridscale #FIXME: Remove dependency!
     import plugins.mappolyrulers #FIXME: Remove dependency!

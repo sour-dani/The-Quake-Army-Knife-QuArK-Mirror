@@ -2846,37 +2846,15 @@ begin
  end;
 end;
 
-function xStartConsoleLog(self, args: PyObject) : PyObject; cdecl;
+function xSetConsoleLog(self, args: PyObject) : PyObject; cdecl;
+var
+  i: integer;
 begin
   Result:=Nil;
   try
-    OpenConsoleFile;
-    Result:=PyNoResult;
-  except
-    Py_XDECREF(Result);
-    EBackToPython;
-    Result:=Nil;
-  end;
-end;
-
-function xStopConsoleLog(self, args: PyObject) : PyObject; cdecl;
-begin
-  Result:=Nil;
-  try
-    CloseConsoleFile;
-    Result:=PyNoResult;
-  except
-    Py_XDECREF(Result);
-    EBackToPython;
-    Result:=Nil;
-  end;
-end;
-
-function xClearConsoleLog(self, args: PyObject) : PyObject; cdecl;
-begin
-  Result:=Nil;
-  try
-    ClearConsoleFile;
+    if not PyArg_ParseTupleX(args, 'i', [@i]) then
+      Exit;
+    ConsoleLogging:=(i<>0);
     Result:=PyNoResult;
   except
     Py_XDECREF(Result);
@@ -3197,7 +3175,7 @@ begin
 end;
 
 const
- MethodTable: array[0..93] of TyMethodDef =
+ MethodTable: array[0..91] of TyMethodDef =
   ((ml_name: 'Setup1';          ml_meth: xSetup1;          ml_flags: METH_VARARGS),
    (ml_name: 'newobj';          ml_meth: xNewObj;          ml_flags: METH_VARARGS),
    (ml_name: 'newfileobj';      ml_meth: xNewFileObj;      ml_flags: METH_VARARGS),
@@ -3282,9 +3260,7 @@ const
    (ml_name: 'exit';            ml_meth: xExit;            ml_flags: METH_VARARGS),
    (ml_name: 'log';             ml_meth: xLog;             ml_flags: METH_VARARGS),{AiV}
    (ml_name: 'heapstatus';      ml_meth: xHeapStatus;      ml_flags: METH_VARARGS),{AiV}
-   (ml_name: 'startconsolelog'; ml_meth: xStartConsoleLog; ml_flags: METH_VARARGS),
-   (ml_name: 'stopconsolelog';  ml_meth: xStopConsoleLog;  ml_flags: METH_VARARGS),
-   (ml_name: 'clearconsolelog'; ml_meth: xClearConsoleLog; ml_flags: METH_VARARGS),
+   (ml_name: 'setconsolelog';   ml_meth: xSetConsoleLog;   ml_flags: METH_VARARGS),
    (ml_name: 'getpixel';        ml_meth: xGetPixel;        ml_flags: METH_VARARGS),
    (ml_name: 'getpixelpal';     ml_meth: xGetPixelPal;     ml_flags: METH_VARARGS),
    (ml_name: 'getpixelalpha';   ml_meth: xGetPixelAlpha;   ml_flags: METH_VARARGS),

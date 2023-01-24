@@ -40,6 +40,13 @@ This is used in the SystemDetails.pas. Use this only in this module.
 </td></tr>
 
 <tr><td class="doccode">
+LOG_CONSOLE
+</td><td>
+Outputs 'ConsoleLog'<br>
+This is used to log the Python console, if enabled.
+</td></tr>
+
+<tr><td class="doccode">
 LOG_DEBUG
 </td><td>
 Outputs 'DebugLog'<br>

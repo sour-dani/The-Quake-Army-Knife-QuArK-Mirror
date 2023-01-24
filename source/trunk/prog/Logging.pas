@@ -26,7 +26,7 @@ interface
 uses Windows, Sysutils{$IFDEF PyProfiling}, Classes{$ENDIF};
 
 type
-  TLogName = (LOG_DEFAULT, LOG_PASCAL, LOG_PYTHON, LOG_SYS, LOG_DEBUG);
+  TLogName = (LOG_DEFAULT, LOG_PASCAL, LOG_PYTHON, LOG_SYS, LOG_CONSOLE, LOG_DEBUG);
 
 Procedure CloseLogFile;
 Procedure OpenLogFile;
@@ -146,6 +146,7 @@ begin
     LOG_PASCAL:  WriteLn(LogFile, format('QuArKLog> %s', [s]));
     LOG_PYTHON:  WriteLn(LogFile, format('PythonLog> %s', [s]));
     LOG_SYS:     WriteLn(LogFile, format('SysLog> %s', [s]));
+    LOG_CONSOLE: WriteLn(LogFile, format('ConsoleLog> %s', [s]));
     LOG_DEBUG:   WriteLn(LogFile, format('DebugLog> %s', [s]));
     else         WriteLn(LogFile, s);
   end;

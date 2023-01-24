@@ -89,11 +89,7 @@ with the mouse.
 
 <a name="logconsole"></a>
 <i><b><a href="#optionsmenu">Log Console</a></b></i>: When active this will write everything that is printed
-to the console to a text file called 'Console.txt' which is located in QuArK's main folder.
-
-<a name="clearconsolelog"></a>
-<i><b><a href="#optionsmenu">Clear Console Log</a></b></i>: When clicked this will clear everything that is
-printed to the text file called 'Console.txt' which is located in QuArK's main folder.
+to the console to the log file called 'QUARK.LOG' which is located in QuArK's main folder.
 
 <table border=0 cellspacing=0>
 

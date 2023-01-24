@@ -8,7 +8,7 @@ Logging.pas file.  There are several ways it can be called. The first
 parameter is optional and indicates the part of the code trying to log
 an item.  It is of the TLogName type:
 
-TLogName: LOG_DEFAULT, LOG_PASCAL, LOG_PYTHON, LOG_SYS, LOG_DEBUG.
+TLogName: LOG_DEFAULT, LOG_PASCAL, LOG_PYTHON, LOG_SYS, LOG_CONSOLE, LOG_DEBUG.
 
 The second, also optional parameter indicated the severity of the item
 to be logged.  All calls to Log with a level equal or lower to the level-
