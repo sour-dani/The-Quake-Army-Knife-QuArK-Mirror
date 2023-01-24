@@ -655,7 +655,7 @@ begin
        Exit;
       end;
     end;
-   Log(LOG_PYTHON, LOG_VERBOSE, 'Loading image: '+PyStrPas(Filename));
+   Log(LOG_PYTHON, LOG_VERBOSE, LoadStr1(4628), [PyStrPas(Filename)]);
    Result:=NewImageList(Bitmap, cx, MaskX, MaskY, cratio);
   finally
    Bitmap.Free;
@@ -2696,7 +2696,7 @@ begin
      T:=Q.SubElements.FindName(S);
      if T=Nil then
       begin
-       Log(LOG_WARNING, LoadStr1(5851), [S]);
+       Log(LOG_PYTHON, LOG_WARNING, LoadStr1(5851), [S]);
        Continue;
       end;
      S:=Q.Specifics.Values['ToolBox'];
@@ -3693,7 +3693,7 @@ begin
   begin
     obj:=PyObject(Pool.Objects[I]);
     if obj^.ob_refcnt > 1 then
-      Log(LOG_INFO, LoadStr1(5833), [obj^.ob_type.tp_name, obj^.ob_refcnt]);
+      Log(LOG_PYTHON, LOG_INFO, LoadStr1(5833), [obj^.ob_type.tp_name, obj^.ob_refcnt]);
     Pool.Delete(I);
     Py_DECREF(obj);
   end;

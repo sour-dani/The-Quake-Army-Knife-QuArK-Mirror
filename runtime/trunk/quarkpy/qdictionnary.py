@@ -559,6 +559,7 @@ Strings = {
     4625: "Restoring default settings will overwrite all the current settings. Are you sure?",
     4626: "Not installed gamemode (%s) in %s. Trying to find an installed one...",
     4627: "Found gamemode: %s",
+    4628: "Loading image: %s",
 
     5119: "(new)",
     5120: "Explorer Group",
