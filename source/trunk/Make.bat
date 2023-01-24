@@ -18,7 +18,7 @@ ECHO.
 ECHO Embedding manifest
 ECHO ------------------
 ECHO.
-REM Make Windows look for UPX in the PATH system variable, but don't display the output.
+REM Check whether MT is available, but don't display the output.
 "%ProgramFiles(x86)%\Windows Kits\10\bin\10.0.20348.0\x86\mt.exe" > NUL 2> NUL
 REM The ERRORLEVEL for 'file not found' is 9009
 IF ERRORLEVEL 9009 GOTO NoMT
