@@ -2511,7 +2511,11 @@ begin
   if not SetDllDirectoryAvailable then
     Exit;
 
-  SetDllDirectoryPtr := GetProcAddress(GetModuleHandle('kernel32'), 'SetDllDirectoryA'); //Note: Delphi7 always calls the ANSI version
+  {$IFDEF UNICODE}
+  SetDllDirectoryPtr := GetProcAddress(GetModuleHandle('kernel32'), 'SetDllDirectoryW');
+  {$ELSE}
+  SetDllDirectoryPtr := GetProcAddress(GetModuleHandle('kernel32'), 'SetDllDirectoryA');
+  {$ENDIF}
   if SetDllDirectoryPtr=nil then
   begin
     LogWindowsError(GetLastError(), 'SetDllSearchPath: GetProcAddress');
@@ -2535,6 +2539,11 @@ begin
   Log(LOG_INFO, 'Now logging system details...');
   s:=TStringList.Create;
   try
+    {$IFDEF DEBUG}
+    s.add('PROCESS:');
+    s.add(format('Image base address: %p', [Pointer(GetModuleHandle(Nil))]));
+    s.add('');
+    {$ENDIF}
     s.add('CPU:');
     GetCPUDetails(s);
     s.add('');
