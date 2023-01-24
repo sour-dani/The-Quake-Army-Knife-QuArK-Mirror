@@ -234,13 +234,15 @@ uses
 
 {$R *.RES}
 
-//Set the support-for-larger-than-2GB-flag, so we can use up to 4 GB!
-{$IFDEF Delphi6orNewerCompiler}
-  {.$SetPEFlags IMAGE_FILE_LARGE_ADDRESS_AWARE}
-  {$IFNDEF Delphi2007orNewerCompiler} //Became an option in Delphi 2007
-    {$SetPEOptFlags IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE}
+{$IFNDEF LINUX}
+  //Set the support-for-larger-than-2GB-flag, so we can use up to 4 GB!
+  {$IFDEF Delphi6orNewerCompiler}
+    {.$SetPEFlags IMAGE_FILE_LARGE_ADDRESS_AWARE}
+    {$IFNDEF Delphi2007orNewerCompiler} //Became an option in Delphi 2007
+      {$SetPEOptFlags IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE}
+    {$ENDIF}
+    {$SetPEOptFlags IMAGE_DLLCHARACTERISTICS_NX_COMPAT}
   {$ENDIF}
-  {$SetPEOptFlags IMAGE_DLLCHARACTERISTICS_NX_COMPAT}
 {$ENDIF}
 
 begin
