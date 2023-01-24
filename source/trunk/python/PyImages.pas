@@ -577,7 +577,7 @@ var
 begin
  if BitmapCopy=0 then
   begin
-   //Log('BitmapCopy for ' + IntToHex(Integer(@Self), 8));}
+   //Log(LOG_VERBOSE, 'BitmapCopy for %p', [@Self]);
 
    P:=GetSize;
    Dest.X:=GetSystemMetrics(sm_CxMenuCheck);
