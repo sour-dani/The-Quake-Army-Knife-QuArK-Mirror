@@ -26,18 +26,53 @@ interface
 
 uses Classes, Windows, SysUtils{$IFDEF Delphi6orNewerCompiler}, StrUtils{$ENDIF};
 
-{$IFDEF CompiledWithDelphi2}
 type
-  TCustomForm = TForm;
+  QWORD = {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
+  PQWORD = ^QWORD;
+  LPQWORD = PQWORD;
+
+{$ifndef Delphi4orNewerCompiler}
+  Int64 = TLargeInteger;
+  PInt64 = ^Int64;
+  LongWord = DWORD;
+  PLongWord = ^LongWord;
 {$ENDIF}
 
-// These seem to be missing altogether!
-type
-  TMemoryStreamWithCapacity = class(TMemoryStream)
-  public
-    property Capacity;
-  end;
+{$ifndef Delphi6orNewerCompiler}
+  PByte = ^Byte;
+  PInteger = ^Integer;
+  PSingle = ^Single;
+  PDouble = ^Double;
+  PPointer = ^Pointer;
+{$endif}
 
+  DWORDLONG = {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
+  PDWORDLONG = ^DWORDLONG;
+  LPDWORDLONG = PDWORDLONG;
+
+  size_t = Cardinal;  //This appears to be true in (32-bit) Delphi
+  ssize_t = Integer;  //This appears to be true in (32-bit) Delphi
+
+  PMemoryStatusEx = ^TMemoryStatusEx;
+  _MEMORYSTATUSEX = record
+    dwLength: DWORD;
+    dwMemoryLoad: DWORD;
+    ullTotalPhys: DWORDLONG;
+    ullAvailPhys: DWORDLONG;
+    ullTotalPageFile: DWORDLONG;
+    ullAvailPageFile: DWORDLONG;
+    ullTotalVirtual: DWORDLONG;
+    ullAvailVirtual: DWORDLONG;
+    ullAvailExtendedVirtual: DWORDLONG;
+  end;
+  {$EXTERNALSYM _MEMORYSTATUSEX}
+  TMemoryStatusEx = _MEMORYSTATUSEX;
+  MEMORYSTATUSEX = _MEMORYSTATUSEX;
+  {$EXTERNALSYM MEMORYSTATUSEX}
+
+  POSVersionInfoExA = ^TOSVersionInfoExA;
+  POSVersionInfoExW = ^TOSVersionInfoExW;
+  POSVersionInfoEx = POSVersionInfoExA;
   _OSVERSIONINFOEXA = record
     dwOSVersionInfoSize: DWORD;
     dwMajorVersion: DWORD;
@@ -74,7 +109,6 @@ type
   TOSVersionInfoEx = TOSVersionInfoExA;
   {$ENDIF}
 
-// These consts don't exist at all! (In Delphi 7)
 const
   VER_SUITE_BACKOFFICE = $00000004;
   VER_SUITE_BLADE = $00000400;
@@ -119,9 +153,32 @@ const
   {$EXTERNALSYM CM_CMYK_COLOR}
   CM_CMYK_COLOR = 4;     { Accepts CMYK color space ICC color profile }
 
-var
-  SetDllDirectory: function (lpPathName : LPCTSTR) : BOOL; stdcall;
+  PROCESSOR_ARCHITECTURE_INTEL: WORD = 0; //x86
+  PROCESSOR_ARCHITECTURE_IA64: WORD = 6; //Intel Itanium Processor Family (IPF)
+  PROCESSOR_ARCHITECTURE_AMD64: WORD = 9; //x64 (AMD or Intel)
+  PROCESSOR_ARCHITECTURE_UNKNOWN: WORD = $FFFF; //Unknown architecture.
+
+{$ifndef Delphi4orNewerCompiler} // FIXME: I'm not sure when this was introduced;
+                                 // but it at least exists in Delphi 4
+  DUPLICATE_CLOSE_SOURCE     = $00000001;
+  DUPLICATE_SAME_ACCESS      = $00000002;
+  MAILSLOT_NO_MESSAGE                 = LongWord(-1);
+  MAILSLOT_WAIT_FOREVER               = LongWord(-1);
+{$endif}
+{$ifndef Delphi7orNewerCompiler}
+  SM_CXVIRTUALSCREEN = 78;
+  SM_CYVIRTUALSCREEN = 79;
+{$endif}
+{$ifndef Delphi2007orNewerCompiler}
+  IMAGE_FILE_LARGE_ADDRESS_AWARE = $0020;
+  IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE = $0040;
+  IMAGE_DLLCHARACTERISTICS_NX_COMPAT = $0100;
+{$endif}
+
+var //Note: These need to be initialized before use!
+  SetDllDirectory: function (lpPathName : LPCTSTR): BOOL; stdcall;
   IsWow64Process: function (hProcess : THandle; var Wow64Process : BOOL): BOOL; stdcall;
+  GlobalMemoryStatusEx: function (var lpBuffer: TMemoryStatusEx): BOOL; stdcall;
 
 function CopyCursor(pcur: HCursor): HCursor; // This is a macro that wasn't converted
 
@@ -147,46 +204,20 @@ function StartsStr(const ASubText, AText: string): Boolean;
 function EndsStr(const ASubText, AText: string): Boolean;
 {$endif}
 
-{$ifndef Delphi2007orNewerCompiler}
-const
-  IMAGE_FILE_LARGE_ADDRESS_AWARE = $0020;
-  IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE = $0040;
-  IMAGE_DLLCHARACTERISTICS_NX_COMPAT = $0100;
-{$endif}
-
-{$ifndef Delphi7orNewerCompiler}
-const
-  SM_CXVIRTUALSCREEN = 78;
-  SM_CYVIRTUALSCREEN = 79;
-{$endif}
+type
+  TMemoryStreamWithCapacity = class(TMemoryStream)
+  public
+    property Capacity;
+  end;
+{$IFDEF CompiledWithDelphi2}
+  TCustomForm = TForm;
+{$ENDIF}
 
 {$ifndef Delphi6orNewerCompiler}
 type
 { TStream seek origins }
   TSeekOrigin = (soBeginning, soCurrent, soEnd);
 {$ENDIF}
-
-{$ifndef Delphi4orNewerCompiler}
-type
-   Int64 = TLargeInteger;
-   PInt64 = ^Int64;
-   LongWord = DWORD;
-   PLongWord = ^LongWord;
-{$ENDIF}
-
-type
-  QWORD = {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
-  PQWORD = ^QWORD;
-  LPQWORD = PQWORD;
-
-{$ifndef Delphi4orNewerCompiler} // FIXME: I'm not sure when this was introduced;
-                                 // but it at least exists in Delphi 4
-const
-  DUPLICATE_CLOSE_SOURCE     = $00000001;
-  DUPLICATE_SAME_ACCESS      = $00000002;
-  MAILSLOT_NO_MESSAGE                 = LongWord(-1);
-  MAILSLOT_WAIT_FOREVER               = LongWord(-1);
-{$endif}
 
 {$ifndef Delphi5orNewerCompiler} // FIXME: I'm not sure when this was introduced;
                                  // but it at least exists in Delphi 5
@@ -196,14 +227,7 @@ const
 function CompareMem(P1, P2: Pointer; Length: Integer): Boolean; assembler;
 {$endif}
 
-{$ifndef Delphi6orNewerCompiler} // Pre-dates Delphi 6
-type
-  PByte = ^Byte;
-  PInteger = ^Integer;
-  PSingle = ^Single;
-  PDouble = ^Double;
-  PPointer = ^Pointer;
-
+{$ifndef Delphi6orNewerCompiler}
 { IsPathDelimiter returns True if the character at byte S[Index]
   is a PathDelimiter ('\' or '/'), and it is not a MBCS lead or trail byte. }
 function IsPathDelimiter(const S: string; Index: Integer): Boolean;
@@ -247,18 +271,6 @@ function PosEx(const SubStr, S: string; Offset: Cardinal = 1): Integer;
 
 //This function doesn't exist at all in Delphi 7:
 function LastPos(const SubStr: String; const S: String): Integer;
-
-//These constants don't exist at all in Delphi 7:
-const
-  PROCESSOR_ARCHITECTURE_INTEL: WORD = 0; //x86
-  PROCESSOR_ARCHITECTURE_IA64: WORD = 6; //Intel Itanium Processor Family (IPF)
-  PROCESSOR_ARCHITECTURE_AMD64: WORD = 9; //x64 (AMD or Intel)
-  PROCESSOR_ARCHITECTURE_UNKNOWN: WORD = $FFFF; //Unknown architecture.
-
-//This type doesn't exist at all in Delphi 7:
-type
-  size_t = Cardinal;  //This appears to be true in (32-bit) Delphi
-  ssize_t = Integer;  //This appears to be true in (32-bit) Delphi
 
 implementation
 

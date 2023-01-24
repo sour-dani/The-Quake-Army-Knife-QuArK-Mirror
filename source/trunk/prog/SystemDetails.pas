@@ -1345,21 +1345,46 @@ end;
 
 procedure TMemory.GetInfo;
 var
-  SI :TSystemInfo;
-  MS :TMemoryStatus;
+  GlobalMemoryStatusExPtr: Pointer;
+  SI: TSystemInfo;
+  MS: TMemoryStatus;
+  MSEX: TMemoryStatusEx;
 begin
   Log(LOG_VERBOSE, 'Starting gathering memory information...');
-  ZeroMemory(@MS,SizeOf(MS));
-  MS.dwLength:=SizeOf(MS);
-  //FIXME: On Windows 2000 and higher: use GlobalMemoryStatusEx instead!   BOOL GlobalMemoryStatusEx(LPMEMORYSTATUSEX lpBuffer);
-  GlobalMemoryStatus(MS);
-  MemoryLoad:=MS.dwMemoryLoad;
-  PhysicalTotal:=MS.dwTotalPhys;
-  PhysicalFree:=MS.dwAvailPhys;
-  VirtualTotal:=MS.dwTotalVirtual;
-  VirtualFree:=MS.dwAvailVirtual;
-  PageFileTotal:=MS.dwTotalPageFile;
-  PageFileFree:=MS.dwAvailPageFile;
+
+  //This is only available on Windows 2000 and higher.
+  GlobalMemoryStatusExPtr := GetProcAddress(GetModuleHandle('kernel32'), 'GlobalMemoryStatusEx');
+  if GlobalMemoryStatusExPtr=nil then
+  begin
+    ZeroMemory(@MS,SizeOf(MS));
+    MS.dwLength:=SizeOf(MS);
+    MemoryLoad:=MS.dwMemoryLoad;
+    PhysicalTotal:=MS.dwTotalPhys;
+    PhysicalFree:=MS.dwAvailPhys;
+    VirtualTotal:=MS.dwTotalVirtual;
+    VirtualFree:=MS.dwAvailVirtual;
+    PageFileTotal:=MS.dwTotalPageFile;
+    PageFileFree:=MS.dwAvailPageFile;
+  end
+  else
+  begin
+    GlobalMemoryStatusEx := GlobalMemoryStatusExPtr;
+    ZeroMemory(@MSEX,SizeOf(MSEX));
+    MSEX.dwLength:=SizeOf(MSEX);
+    if GlobalMemoryStatusEx(MSEX) = false then
+    begin
+      Log(LOG_WARNING, 'Failed to retrieve memory status!');
+      LogWindowsError(GetLastError(), 'TMemory.GetInfo: GlobalMemoryStatusEx(TMemoryStatusEx)');
+    end;
+    MemoryLoad:=MSEX.dwMemoryLoad;
+    PhysicalTotal:=MSEX.ullTotalPhys; //FIXME: Fix conversion...!
+    PhysicalFree:=MSEX.ullAvailPhys;
+    VirtualTotal:=MSEX.ullTotalVirtual;
+    VirtualFree:=MSEX.ullAvailVirtual;
+    PageFileTotal:=MSEX.ullTotalPageFile;
+    PageFileFree:=MSEX.ullAvailPageFile;
+  end;
+
   ZeroMemory(@SI,SizeOf(SI));
   GetSystemInfo(SI);
   AllocGranularity:=SI.dwAllocationGranularity;
