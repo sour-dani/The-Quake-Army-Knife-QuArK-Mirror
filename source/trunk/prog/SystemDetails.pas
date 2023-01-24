@@ -338,15 +338,21 @@ begin
   end;
 end;
 
-function FormatBytes(const Number: Cardinal) : String; overload;
+function FormatBytes(const Number: Integer) : String; overload;
 begin
   Result:=formatfloat('#,##',Number);
   if Length(Result)=0 then
     Result:='0';
 end;
 
-//Needed because Delphi 7 (at least) doesn't have an unsigned 64-bit integer.
-function FormatBytes(const Number: Int64) : String; overload;
+function FormatBytes(const Number: SIZE_T) : String; overload;
+begin
+  Result:=formatfloat('#,##',Number);
+  if Length(Result)=0 then
+    Result:='0';
+end;
+
+function FormatBytes(const Number: QWORD) : String; overload;
 begin
   Result:=formatfloat('#,##',Number);
   if Length(Result)=0 then
