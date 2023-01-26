@@ -28,7 +28,7 @@ def LoadPlugins(beginning):
             f = file.upper()
             if (f[-3:]=='.PY') and (f[:len(beginning)]==beginning):
                 quarkx.log("Loading plugin: %s" % (file, ), LOG_VERBOSE)
-                module = __import__(file[:-3], globals(), locals(), [])
+                module = __import__(file[:-3], globals(), locals())
                 if not (module in LoadedPlugins):
                     LoadedPlugins.append(module)
 
