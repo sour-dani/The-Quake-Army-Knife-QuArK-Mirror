@@ -2320,7 +2320,7 @@ begin
   else
   begin
     //This is an infobase link
-    FullFile:=GetQPath(pQuArKHelp)+URL;
+    FullFile:=Concatpaths([GetQPath(pQuArKHelp), URL]);
     if not CheckFileExists(FullFile) then
     begin
       if SetupSubSet(ssGeneral, 'Display').Specifics.Values['OnlineHelp']<>'' then
