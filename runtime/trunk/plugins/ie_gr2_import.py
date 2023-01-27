@@ -19,7 +19,7 @@ Info = {
 # Python specific modules import.
 import quarkx
 import math
-import struct, os, Lib, Lib.base64
+import struct, os, base64
 from quarkpy.qutils import *
 from quarkpy.qeditor import MapColor # Strictly needed for QuArK bones MapColor call.from types import *
 import quarkpy.mdlbtns
@@ -497,7 +497,7 @@ class gr2_texture:
                 elif current_line[0] == "BitsForComponent":
                     self.BitsForComponent = InterpretIntTuple(current_line[1])
                 elif current_line[0] == "imagedata":
-                    self.imagedata = Lib.base64.b64decode(current_line[1])
+                    self.imagedata = base64.b64decode(current_line[1])
                 else:
                     # Don't know what to do with this...
                     raise "Error: Corrupt texture section! Don't know what to do with: ", current_line
