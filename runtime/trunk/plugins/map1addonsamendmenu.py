@@ -79,7 +79,7 @@ class AddonsDlg (quarkpy.qmacro.dialogbox):
         Txt = "select mapfile:"
         Typ = "EP"
         DefExt = "map"
-        BasePath = "$Game\\tmpQuArK\maps"
+        BasePath = "$Game\\tmpQuArK\\maps"
         Hint = "Type in the full path and name of an optional"$0D
                "mapfile you wish to use for the programs output"$0D
                "or just use the file browser ... to the right."$0D

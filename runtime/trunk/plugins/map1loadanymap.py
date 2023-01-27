@@ -43,7 +43,7 @@ class LoadMapDlg(quarkpy.qmacro.dialogbox):
         Txt = "Select a map file to load:"
         Typ = "EP"
         DefExt = "map"
-        BasePath = "$Game\\tmpQuArK\maps"
+        BasePath = "$Game\\tmpQuArK\\maps"
         DirSep="/"
         Hint = "Type in the name of the map file (.map file),"$0D
                "preceded with its full path and forward slashes,"$0D
