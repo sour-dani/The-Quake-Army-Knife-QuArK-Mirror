@@ -106,6 +106,7 @@ begin
   Result:='';
   if High(Paths)=Low(Paths) then
     Exit;
+  //FIXME: Use System.IOUtils.TPath.Combine if available!
   for I:=Low(Paths) to High(Paths) do
   begin
     if Length(Paths[I])=0 then
@@ -139,7 +140,6 @@ begin
   pUserData: Result:=ConcatPaths([GetQPath(pQuArK), ADDONS_SUBDIRECTORY]);
   pUserGameData: Result:=ConcatPaths([GetQPath(pQuArKAddon), UnderscoredGamename]);
   end;
-  Result:=IncludeTrailingPathDelimiter(Result);
 end;
 
 function GetQPath(const PathToGet : TQPathType; const GameName: String) : String;
