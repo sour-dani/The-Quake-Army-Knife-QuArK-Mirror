@@ -203,7 +203,7 @@ begin
     Update;
     QD1:=QuakeDir;
     // Find all QuArK-created PAK files
-    if FindFirst(QD1+'\*', faDirectory, sr) = 0 then
+    if FindFirst(ConcatPaths([QD1, '*']), faDirectory, sr) = 0 then
     begin
       try
         repeat

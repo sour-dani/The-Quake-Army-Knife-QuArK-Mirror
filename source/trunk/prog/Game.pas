@@ -484,8 +484,8 @@ var
 begin
   Result:=IncludeTrailingPathDelimiter(QuakeDir); //To make sure there already is a trailing slash
   I:=Length(Result)+1;
-  Result:=IncludeTrailingPathDelimiter(ConcatPaths([Result, GettmpQuArK]));
-  CreateAllDirs(Result, I);
+  Result:=ConcatPaths([Result, GettmpQuArK]);
+  CreateAllDirs(IncludeTrailingPathDelimiter(Result), I);
 end;
 
 function OutputFile(const FileName: String) : String;
@@ -499,10 +499,7 @@ begin
    //It's a filename, so we can't add a trailing slash, and we can't send the filename-part to CreateAllDirs
    CreateAllDirs(IncludeTrailingPathDelimiter(ExtractFileDir(Result)), I)
  else
- begin
-   Result:=IncludeTrailingPathDelimiter(Result);
-   CreateAllDirs(Result, I);
- end;
+   CreateAllDirs(IncludeTrailingPathDelimiter(Result), I);
 end;
 
 function GetGameDir : String;

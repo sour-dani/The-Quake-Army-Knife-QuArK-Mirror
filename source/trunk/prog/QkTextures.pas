@@ -499,7 +499,7 @@ var
                     if SRec.Attr and faDirectory = 0 then
                     begin
                       CopyFile(PChar(ConcatPaths([QuakeDir, DirsList[J], SourceDir, SRec.Name])),
-                               PChar(OutputFile(SourceDir+SRec.Name)),
+                               PChar(OutputFile(ConcatPaths([SourceDir, SRec.Name]))),
                                False);
                     end;
 
