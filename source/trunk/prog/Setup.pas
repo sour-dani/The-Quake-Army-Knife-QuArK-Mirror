@@ -642,8 +642,8 @@ begin
    begin
       { no setup file yet }
      //FIXME: In the future, this should be changed to GetQPath(pUserData)!
-     SetupQrk:=BuildFileRoot(GetQPath(pQuArK)+SetupFileName, Nil);
-     LoadedSetupFileName:=GetQPath(pQuArK)+SetupFileName;
+     SetupQrk:=BuildFileRoot(ConcatPaths([GetQPath(pQuArK), SetupFileName]), Nil);
+     LoadedSetupFileName:=ConcatPaths([GetQPath(pQuArK), SetupFileName]);
    end
    else
      try
@@ -652,7 +652,7 @@ begin
      except
       on EQObjectFileNotFound do  { creates a new setup file if not found }
        //FIXME: In the future, this should be changed to GetQPath(pUserData)!
-       SetupQrk:=BuildFileRoot(GetQPath(pQuArK)+SetupFileName, Nil);
+       SetupQrk:=BuildFileRoot(ConcatPaths([GetQPath(pQuArK), SetupFileName]), Nil);
      end;
     { stores the new setup information }
    SetupQrk.AddRef(+1);
