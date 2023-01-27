@@ -860,7 +860,7 @@ begin
 
   if SetEnvironmentVariable('PYTHONHOME', PChar(ExtractFileDir(Application.Exename))) = false then
     Exit;
-  if SetEnvironmentVariable('PYTHONPATH', PChar(ConcatPaths([ExtractFileDir(Application.Exename), 'Lib']))) = false then
+  if SetEnvironmentVariable('PYTHONPATH', PChar(ConcatPaths([ExtractFileDir(Application.Exename), 'Lib']))) = false then //Note that this doesn't actually work if Python is embedded, but for consistency, let's set it anyway.
     Exit;
 //FIXME: Not used for now
 //  if SetEnvironmentVariable('PYTHONOPTIMIZE', '1') = false then

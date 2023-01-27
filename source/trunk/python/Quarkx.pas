@@ -28,11 +28,11 @@ uses Windows, Messages, ShellApi, SysUtils, Python, Forms,
      Menus;
 
 const
- PythonSetupString = 'import sys'#10'sys.path = ["%s"]'#10'import quarkpy';
- PythonRunPackage  = 'quarkpy.RunQuArK()';
- FatalErrorText    = 'Cannot initialize the Python interpreter. QuArK cannot start. Be sure QuArK is correctly installed; reinstall it if required.';
- FatalErrorCaption = 'QuArK Python';
- PythonNotFound    = 'Could not locate Python interpreter. QuArK cannot start.';
+ PythonSetupString  = 'import sys'#10'sys.path = ["%s", "%s"]'#10'import quarkpy'; //Note that we sanitize sys.path
+ PythonRunPackage   = 'quarkpy.RunQuArK()';
+ FatalErrorText     = 'Cannot initialize the Python interpreter. QuArK cannot start. Be sure QuArK is correctly installed; reinstall it if required.';
+ FatalErrorCaption  = 'QuArK Python';
+ PythonNotFound     = 'Could not locate Python interpreter. QuArK cannot start.';
 
 var
  Py_None        : PyObject = Nil;
@@ -97,6 +97,8 @@ uses Classes, Dialogs, Graphics, CommCtrl, ExtCtrls, Controls,
      Coordinates, SystemDetails, ExtraFunctionality, Platform;
 
 const
+ LoadStrMissingText = '*MISSING TEXT*';
+
  ToolBoxClosed = 0;
  ToolBoxHidden = 1;  { is currently open, but hidden }
  ToolBoxOpen   = 2;  { is currently open }
@@ -3385,11 +3387,11 @@ var
  obj: PyObject;
  P: PyChar;
 begin
- if not IsPythonLoaded then
+ if (not IsPythonLoaded) or (Py_xStrings = Nil) then
  begin
    //Can't load text!
    Log(LOG_WARNING, 'Trying to call LoadStr1 while Python has not been loaded yet!');
-   Result:='*MISSING TEXT*';
+   Result:=LoadStrMissingText;
    Exit;
  end;
  Result:='';
@@ -3582,7 +3584,7 @@ var ProbableCauseOfFatalError: array[-9..6] of String = (
    { 3}    ' (Unable to verify Python dll version)',
    { 4}    ' (Error loading Python functions)',
    { 5}    ' (Unable to find or load Python dll)',
-   { 6}    ' (Unable to set-up PythonPath environmental variable)');
+   { 6}    ' (Unable to set-up Python environmental variables)');
 
 
 procedure FatalError(Err: Integer);
@@ -3603,7 +3605,7 @@ begin
   end;
  S:=strPas(P)+ProbableCauseOfFatalError[err];
  ShowConsole(True);
- Log(S + ' Error Code: ' + IntToStr(Err));
+ Log('%s Error Code: %d', [S, Err]);
  Application.MessageBox(PChar(S), FatalErrorCaption, MB_ICONERROR or MB_OK);
  ExitProcess(Err);
 end;
@@ -3625,10 +3627,10 @@ begin
  S:=GetQPath(pQuArK);
  if (Length(S)>0) and IsPathDelimiter(S, Length(S)) then
   SetLength(S, Length(S)-1);
- S:=Format(PythonSetupString, [StringReplace(S,'\','\\',[rfReplaceAll])]);
+ S:=Format(PythonSetupString, [StringReplace(ConcatPaths([S, 'Lib']),'\','\\',[rfReplaceAll]), StringReplace(S,'\','\\',[rfReplaceAll])]);
  { S will now be the python commands:
     import sys
-    sys.path=["<the path to the quark exe>"]
+    sys.path=["<the path to the quark exe>\Lib", "<the path to the quark exe>"]
     import quarkpy
  }
  if PyRun_SimpleString(ToPyChar(S))<>0 then FatalError(-8);
