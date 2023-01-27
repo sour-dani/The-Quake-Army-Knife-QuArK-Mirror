@@ -414,7 +414,7 @@ begin
 
   { loads Defaults.qrk }
  try
-  SetupQrk:=ExactFileLink(GetQPath(pQuArKAddon)+DefaultsFileName, Nil, False);
+  SetupQrk:=ExactFileLink(ConcatPaths([GetQPath(pQuArKAddon), DefaultsFileName]), Nil, False);
   SetupQrk.AddRef(+1);
   try
    LoadedDefaultsFileName:=SetupQrk.Filename;
@@ -459,7 +459,7 @@ begin
  LoadedSetupFileName:='';
  try
   //FIXME: In the future, this should be changed to GetQPath(pUserData)!
-  SetupQrk:=ExactFileLink(GetQPath(pQuArK)+SetupFileName, Nil, False);
+  SetupQrk:=ExactFileLink(ConcatPaths([GetQPath(pQuArK), SetupFileName]), Nil, False);
   SetupQrk.AddRef(+1);
   try
    LoadedSetupFileName:=SetupQrk.Filename;
