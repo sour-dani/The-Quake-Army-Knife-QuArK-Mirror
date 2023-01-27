@@ -1593,12 +1593,13 @@ begin
     F.Free;
   end;
 
- try
-  SaveSetupNow;
- except
-  on E: Exception do
-   MessageBox(0, PChar(FmtLoadStr1(5658, [GetExceptionMessage(E)])), PChar(LoadStr1(5657)), MB_OK or MB_ICONHAND or MB_TASKMODAL);
- end;
+ if LoadingComplete then //If Python isn't loaded, some string would be corrupted.
+  try
+   SaveSetupNow;
+  except
+   on E: Exception do
+    MessageBox(0, PChar(FmtLoadStr1(5658, [GetExceptionMessage(E)])), PChar(LoadStr1(5657)), MB_OK or MB_ICONHAND or MB_TASKMODAL);
+  end;
  ClearGameBuffers(False);
  ClearTimers;
  ClearWireframeCache;
