@@ -69,7 +69,7 @@ implementation
 
 uses Platform, QkGroup, Game, QkTextures, QkWad, QkExplorer, QkZip2,
   Quarkx, QkExceptions, Travail, ToolBox1, QkPak, QkFileObjects, QkHL, ToolBoxGroup,
-  Setup, Logging, QkQ3, OsFolder, QkD3, ApplPaths;
+  Setup, Logging, QkQ3, OsFolder, QkD3, ApplPaths, ExtraFunctionality;
 
 {$R *.DFM}
 
@@ -77,8 +77,6 @@ function FileNameOnly(const Name: String) : String;
 begin
   Result:=Copy(Name,0,Length(Name)-Length(ExtractFileExt(Name)))
 end;
-
-
 
 function ListPakFiles(const Path: String) : TStringList;
 var
@@ -473,7 +471,7 @@ begin
      Tex:=Loaded.SubElements[I];
      if Tex is QShader then
      begin
-       if Copy(Tex.Name,1,9)<>'textures/' then
+       if not StartsText(Tex.Name, 'textures/') then
          continue;
        TexName:=Copy(Tex.Name,10,MaxInt);
        AnalyseFileName(TexName,Path,ShortName);
