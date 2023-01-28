@@ -273,9 +273,9 @@ begin
 
   ShaderExt:=SetupGameSet.Specifics.Values['ShaderExt'];
   if ShaderExt<>'' then
-    shader_filename:=GameShadersPath+shader_filename+ShaderExt
+    shader_filename:=ConcatPaths([GameShadersPath, shader_filename+ShaderExt])
   else
-    shader_filename:=GameShadersPath+shader_filename+'.shader';
+    shader_filename:=ConcatPaths([GameShadersPath, shader_filename+'.shader']);
   shader_texturename:=copy(tex_name, 1, pos('.', tex_name)-1);
 
   try

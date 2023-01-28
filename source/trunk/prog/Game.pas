@@ -910,7 +910,7 @@ var
 begin
   Result:='';
   GetDir(0, CurDir);
-  if IncludeTrailingPathDelimiter(CurDir) = GetQPath(pQuArK) then
+  if IncludeTrailingPathDelimiter(CurDir) = IncludeTrailingPathDelimiter(GetQPath(pQuArK)) then
     //Delphi doesn't like ChDir-ing to the same directory...
     NewPath:=ExpandFileName(Path)
   else

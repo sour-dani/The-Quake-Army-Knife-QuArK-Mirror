@@ -1368,10 +1368,7 @@ begin
             begin
              I:=LastPos(PathDelim, Path);
              if (I=0) or (not SameText(Copy(Path, I+1, Length(Title)), Title)) then
-              begin
-               Path:=IncludeTrailingPathDelimiter(Path);
-               Path:=Path+Title;
-              end;
+              Path:=ConcatPaths([Path, Title]);
             end;
 {Decker}
           end;

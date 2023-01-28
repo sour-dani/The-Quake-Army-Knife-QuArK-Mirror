@@ -139,7 +139,7 @@ begin
  if CurrentGameMode=mjCoD2 then
    while (nParent<>nil) do
    begin
-     if IncludeTrailingPathDelimiter(nParent.Name)=GameShadersPath then
+     if IncludeTrailingPathDelimiter(nParent.Name)=IncludeTrailingPathDelimiter(GameShadersPath) then
      begin
        Result:=True;
        break;

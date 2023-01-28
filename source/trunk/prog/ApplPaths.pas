@@ -163,7 +163,6 @@ begin
   pUserData: Result:=ConcatPaths([GetQPath(pQuArK), ADDONS_SUBDIRECTORY]);
   pUserGameData: Result:=ConcatPaths([GetQPath(pQuArKAddon), UnderscoredGamename]);
   end;
-  Result:=IncludeTrailingPathDelimiter(Result);
 end;
 
  { ------------------- }

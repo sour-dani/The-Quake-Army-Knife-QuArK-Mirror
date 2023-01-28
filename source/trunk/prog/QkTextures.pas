@@ -228,8 +228,6 @@ const
 function GameTexturesPath : String;
 begin
   Result:=SetupGameSet.Specifics.Values['TexturesPath'];
-  //FIXME: Other code depends on the trailing slash... Bad!
-  Result:=IncludeTrailingPathDelimiter(Result);
 end;
 
 function GameShadersPath : String;
@@ -240,8 +238,6 @@ begin
     Log(LOG_WARNING, FmtLoadStr1(4460, ['ShadersPath', 'TexturesPath']));
     Result:=GameTexturesPath;
   end;
-  //FIXME: Other code depends on the trailing slash... Bad!
-  Result:=IncludeTrailingPathDelimiter(Result);
 end;
 
 function GameMaterialsPath : String;
@@ -252,8 +248,6 @@ begin
     Log(LOG_WARNING, FmtLoadStr1(4460, ['MaterialsPath', 'ShadersPath']));
     Result:=GameShadersPath;
   end;
-  //FIXME: Other code depends on the trailing slash... Bad!
-  Result:=IncludeTrailingPathDelimiter(Result);
 end;
 
 function ScaleDown(var W, H: Integer) : Boolean;
