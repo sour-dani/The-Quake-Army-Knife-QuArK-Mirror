@@ -168,6 +168,7 @@ uses
   QkSin in 'prog\QkSin.pas',
   QkSoF in 'prog\QkSoF.pas',
   QkSpr in 'prog\QkSpr.pas',
+  QkStoneless in 'prog\QkStoneless.pas',
   QkSylphis in 'prog\QkSylphis.pas',
   QkSysData in 'prog\QkSysData.pas',
   QkText in 'prog\QkText.pas',

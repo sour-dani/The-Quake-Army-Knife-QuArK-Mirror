@@ -216,6 +216,7 @@ QQRKSRC1
         .hmf = "1"     ihmf = '2'
         .rmf = "1"     irmf = '2'
         .vmf = "1"     ivmf = '2'
+        .xmp = "1"     ixmp = '2'
         .cmap = "1"    icmap = '2'
         .bsp = "1"     ibsp = '3'
         .d3dbsp = "1"  id3dbsp = '3'
@@ -279,6 +280,7 @@ QQRKSRC1
         .hmf = "Notepad.exe"
         .rmf = ""
         .vmf = "Notepad.exe"
+        .xmp = "Notepad.exe"
         .cmap = "Notepad.exe"
         .bsp = ""
         .d3dbsp = ""
@@ -9012,6 +9014,7 @@ QQRKSRC1
       .hmf: = { Txt="HMF map files" externaledit = ! }
       .rmf: = { Txt="RMF map files" externaledit = ! }
       .vmf: = { Txt="VMF map files" externaledit = ! }
+      .xmp: = { Txt="XMP map files" externaledit = ! }
       .cmap: = { Txt="CMAP map files" externaledit = ! }
       .bsp: = { Txt="BSP compiled maps" externaledit = ! }
       .d3dbsp: = { Txt="BSP compiled CoD2 maps" externaledit = ! }
@@ -9099,7 +9102,8 @@ QQRKSRC1
       .map: = {Typ="X" Cap=".map" Txt="Quake map files"}
       .hmf: = {Typ="X" Cap=".hmf" Txt="6DX map files"}
       .rmf: = {Typ="X" Cap=".rmf" Txt="Rich Map Format map files"}
-      .vmf: = {Typ="X" Cap=".vmf" Txt="Valve map format map files"}
+      .vmf: = {Typ="X" Cap=".vmf" Txt="Valve Map Format map files"}
+      .xmp: = {Typ="X" Cap=".xmp" Txt="Stoneless Extended Map map files"}
       .cmap: = {Typ="X" Cap=".cmap" Txt="Sylphis map files"}
       .bsp: = {Typ="X" Cap=".bsp" Txt="Compiled maps"}
       .d3dbsp: = {Typ="X" Cap=".d3dbsp" Txt="Compiled CoD2 maps"}
