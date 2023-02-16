@@ -9,9 +9,7 @@
 ######################################
 
 import quarkx
-import qeditor
 import qmacro
-import qtoolbar
 import qutils
 
 class placepersistent_dialogbox(qmacro.dialogbox):
@@ -40,6 +38,7 @@ class placepersistent_dialogbox(qmacro.dialogbox):
         df.sep = self.dfsep
         df.setdata(src, f)
         df.onchange = self.datachange
+        import qeditor
         df.flags = qeditor.DF_AUTOFOCUS
         dlg.show()
 
@@ -81,6 +80,7 @@ class LiveEditDlg (placepersistent_dialogbox):
     # Create the dialog form and the buttons
     #
 
+        import qtoolbar
         placepersistent_dialogbox.__init__(self, form, src, label,
            exit = qtoolbar.button(
             self.cancel,
