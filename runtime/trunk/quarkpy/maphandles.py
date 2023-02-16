@@ -25,6 +25,7 @@ import qmenu
 from maputils import *
 import mapentities
 import qmacro
+from qeditor import MapColor
 
 #
 # The handle classes.

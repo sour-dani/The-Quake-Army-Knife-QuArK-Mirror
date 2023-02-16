@@ -31,6 +31,7 @@ import quarkpy.mapeditor
 import quarkpy.mapentities
 import quarkpy.maphandles
 from quarkpy.maputils import *
+from quarkpy.qeditor import MapColor
 from quarkpy import guiutils
 
 #

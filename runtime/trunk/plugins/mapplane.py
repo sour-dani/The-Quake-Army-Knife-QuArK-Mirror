@@ -23,6 +23,7 @@ import quarkpy.mapduplicator
 import quarkpy.qhandles
 import quarkpy.qmenu
 from quarkpy.maputils import *
+from quarkpy.qeditor import MapColor
 from tagging import *
 
 class PlaneHandle(quarkpy.maphandles.CenterHandle):

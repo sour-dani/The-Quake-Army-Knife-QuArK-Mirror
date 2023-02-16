@@ -17,6 +17,7 @@ import math
 from qdictionnary import Strings
 import qhandles
 import mdlutils
+from qeditor import MapColor
 from mdlutils import *
 import mdlentities
 import qmenu

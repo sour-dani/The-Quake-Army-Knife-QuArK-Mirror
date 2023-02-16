@@ -12,6 +12,7 @@ import quarkx
 import math
 
 from maputils import *
+from qeditor import MapColor
 import maphandles
 import mapoptions
 import qhandles

@@ -31,6 +31,7 @@ __all__ = ['cleartags', 'untag', 'istagged', 'tag',
            'tagdrawfunc']
 
 import qbaseeditor
+from qeditor import MapColor
 
 # -- Tagging ------------------------------------------------------- #
 class Tagging:
@@ -297,7 +298,7 @@ Uses callback functions set using tagdrawfunc().
   # Make the pen the correct colour, so callback functions don't
   # need to
   oldcolour = cv.pencolor
-  cv.pencolor = qbaseeditor.MapColor("Tag")
+  cv.pencolor = MapColor("Tag")
 
   for k in _drawcallbacks.keys():
     f = _drawcallbacks[k]

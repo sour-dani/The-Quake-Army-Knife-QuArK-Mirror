@@ -16,6 +16,7 @@ import quarkx
 import qmacro
 import qtoolbar
 from maputils import *
+from qeditor import MapColor
 import mapeditor
 import mapoptions
 

@@ -29,6 +29,7 @@ import quarkpy.qmenu
 import quarkpy.qtoolbar
 import tagging
 from quarkpy.maputils import *
+from quarkpy.qeditor import MapColor
 
 
 #

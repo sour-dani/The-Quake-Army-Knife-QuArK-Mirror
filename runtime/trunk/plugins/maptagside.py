@@ -47,6 +47,7 @@ import quarkpy.qtoolbar
 import mapsnapobject
 import mergepolys
 from quarkpy.maputils import *
+from quarkpy.qeditor import MapColor
 from tagging import *
 from faceutils import *
 

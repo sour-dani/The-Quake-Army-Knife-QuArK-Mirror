@@ -9,6 +9,7 @@ Model Editor Entities manager
 #
 
 import quarkx
+from qeditor import MapColor
 from mdlutils import *
 import mdlhandles
 import dlgclasses

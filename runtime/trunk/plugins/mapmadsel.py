@@ -51,6 +51,7 @@ import quarkpy.mapselection
 import quarkpy.dlgclasses
 import faceutils
 from quarkpy.maputils import *
+from quarkpy.qeditor import MapColor
 import quarkpy.tagging as nt
 
 import mapfacemenu

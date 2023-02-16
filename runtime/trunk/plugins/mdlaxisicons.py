@@ -20,6 +20,7 @@ Info = {
 import quarkx
 import quarkpy.mdloptions
 from quarkpy.mdlutils import *
+from quarkpy.qeditor import MapColor
 from quarkpy.qhandles import *
 from quarkpy.qutils import *
 

@@ -28,6 +28,7 @@ import quarkpy.mdlhandles
 import quarkpy.mdlutils
 from quarkpy.maputils import *
 from quarkpy.qdictionnary import Strings
+from quarkpy.qeditor import MapColor
 
 
 #

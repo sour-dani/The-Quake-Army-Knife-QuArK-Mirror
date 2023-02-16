@@ -11,6 +11,7 @@ Map editor portal viewer
 import quarkx
 import qmacro
 import qtoolbar
+from qeditor import MapColor
 from maputils import *
 import mapeditor
 import mapoptions

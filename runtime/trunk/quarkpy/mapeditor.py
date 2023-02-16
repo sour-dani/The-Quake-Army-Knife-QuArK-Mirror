@@ -32,6 +32,7 @@ import mapbtns
 import mapentities
 
 from maputils import *
+from qeditor import MapColor
 from qdictionnary import Strings
 
 

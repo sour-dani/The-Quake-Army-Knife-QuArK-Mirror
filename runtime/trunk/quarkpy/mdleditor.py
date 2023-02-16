@@ -19,6 +19,7 @@ import mdlhandles
 import mdltoolbars
 import mdlmgr
 import qtoolbar
+from qeditor import MapColor
 from mdlutils import *
 
 #from qdictionnary import Strings
