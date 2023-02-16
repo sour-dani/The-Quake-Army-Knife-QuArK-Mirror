@@ -279,7 +279,6 @@ def MACRO_pybutton(pybtn):
     return dlg.info.buttons[pybtn.shortname]
 
 def MACRO_makeaddon(self):
-    import qutils
     a = quarkx.getqctxlist()
     a.reverse()
     i = 0
@@ -290,7 +289,6 @@ def MACRO_makeaddon(self):
     a[i].makeentitiesfromqctx()
 
 def MACRO_makeaddon_tex(self):
-    import qutils
     a = quarkx.getqctxlist()
     a.reverse()
     i = 0
@@ -324,7 +322,6 @@ entfn = {}
 
 def MACRO_ent_convertfrom(text):
     import qeditor
-    import qutils
     a = quarkx.getqctxlist()
     a.reverse()
     # Decker - Some menuitem-captions contains a '&'-character (you know, the one which tells what mnemonic-key can be used)
@@ -349,7 +346,6 @@ mdlimportmenuorder = {}
 
 def MACRO_mdl_pythonimporter(text):
     import qeditor
-    import qutils
     a = quarkx.getqctxlist()
     a.reverse()
     # Decker - Some menuitem-captions contains a '&'-character (you know, the one which tells what mnemonic-key can be used)
@@ -374,7 +370,6 @@ mdlexportmenuorder = {}
 
 def MACRO_mdl_pythonexporter(text):
     import qeditor
-    import qutils
     a = quarkx.getqctxlist()
     a.reverse()
     # Decker - Some menuitem-captions contains a '&'-character (you know, the one which tells what mnemonic-key can be used)
