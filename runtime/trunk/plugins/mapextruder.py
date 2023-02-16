@@ -39,6 +39,7 @@ from tagging import *
 import quarkpy.dlgclasses
 from quarkpy.qeditor import matrix_rot_z
 from quarkpy.qeditor import matrix_rot_y
+from quarkpy.qeditor import MapColor
 from quarkpy.qeditor import MapOption
 import quarkpy.b2utils
 
