@@ -22,7 +22,6 @@ import math
 import struct, os, base64
 from quarkpy.qutils import *
 from quarkpy.qeditor import MapColor # Strictly needed for QuArK bones MapColor call.from types import *
-import quarkpy.mdlbtns
 import quarkpy.mdlutils
 import ie_utils
 from ie_utils import tobj
@@ -2183,6 +2182,7 @@ def loadmodel(root, filename, gamename, nomessage=0):
             comp.currentskin = None
 
     # Updates the Texture Browser's "Used Skin Textures" for all imported skins.
+    import quarkpy.mdlbtns
     tbx_list = quarkx.findtoolboxes("Texture Browser...")
     ToolBoxName, ToolBox, flag = tbx_list[0]
     if flag == TB_OPEN:

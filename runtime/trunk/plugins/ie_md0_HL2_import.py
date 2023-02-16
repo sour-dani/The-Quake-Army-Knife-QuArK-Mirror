@@ -25,7 +25,6 @@ import ie_utils
 from ie_utils import tobj
 from quarkpy.qdictionnary import Strings
 from quarkpy.qeditor import MapColor # Strictly needed for QuArK bones MapColor call.
-import quarkpy.mdlbtns
 import quarkpy.mdlutils
 import quarkpy.qutils
 
@@ -4811,6 +4810,7 @@ def FinishImport(file, editor, filename, ComponentList, QuArK_bones, hitboxsets,
     ie_utils.default_end_logging(filename, "IM", starttime) ### Use "EX" for exporter text, "IM" for importer text.
 
     # Updates the Texture Browser's "Used Skin Textures" for all imported skins.
+    import quarkpy.mdlbtns
     tbx_list = quarkx.findtoolboxes("Texture Browser...")
     ToolBoxName, ToolBox, flag = tbx_list[0]
     if flag == TB_OPEN:

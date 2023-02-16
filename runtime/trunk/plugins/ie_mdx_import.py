@@ -21,7 +21,6 @@ from types import *
 import ie_utils
 from ie_utils import tobj
 from quarkpy.qdictionnary import Strings
-import quarkpy.mdlbtns
 import quarkpy.mdlutils
 import quarkpy.qutils
 
@@ -862,6 +861,7 @@ def loadmodel(root, filename, gamename, nomessage=0):
             comp.currentskin = None
 
     # Updates the Texture Browser's "Used Skin Textures" for all imported skins.
+    import quarkpy.mdlbtns
     tbx_list = quarkx.findtoolboxes("Texture Browser...")
     ToolBoxName, ToolBox, flag = tbx_list[0]
     if flag == quarkpy.qutils.TB_OPEN:

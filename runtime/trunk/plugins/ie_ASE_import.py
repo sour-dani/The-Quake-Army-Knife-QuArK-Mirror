@@ -24,7 +24,6 @@ from quarkpy.qutils import *
 import ie_utils
 from ie_utils import tobj
 from quarkpy.qdictionnary import Strings
-import quarkpy.mdlbtns
 import quarkpy.mdlutils
 
 # Globals
@@ -1387,6 +1386,7 @@ def loadmodel(root, filename, gamename, nomessage=0):
             quarkx.textbox("WARNING", "Missing Skin Textures:\r\n\r\n================================\r\n" + message, MT_WARNING)
 
     # Updates the Texture Browser's "Used Skin Textures" for all imported skins.
+    import quarkpy.mdlbtns
     tbx_list = quarkx.findtoolboxes("Texture Browser...")
     ToolBoxName, ToolBox, flag = tbx_list[0]
     if flag == TB_OPEN:
