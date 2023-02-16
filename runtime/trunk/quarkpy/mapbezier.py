@@ -17,6 +17,7 @@ import maphandles
 import mapentities
 import dlgclasses
 from qeditor import MapColor
+from qdictionnary import Strings
 
 from b2utils import *
 

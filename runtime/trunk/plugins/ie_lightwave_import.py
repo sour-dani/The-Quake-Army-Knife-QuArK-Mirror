@@ -350,7 +350,7 @@ def read_lwo2(file, basepath, filename, typ="LWO2"):
         tobj.pprint("in read_vmad function, objspec_list[8] (facesuv_dict)")
         tobj.pprint("dict list, uses ['UVNAME'] as key, list of [tri, vert, uv] indexes.")
         tobj.pprint("VMAD only uses this.")
-        tobj.pprint("No sub-keys, itterate using:")
+        tobj.pprint("No sub-keys, iterate using:")
         tobj.pprint("if tri_index = [0] and vert_index = [1]: uv_index = [2] (for objspec_list[7])")
         tobj.pprint(facesuv_dict)
         tobj.pprint("")
@@ -384,7 +384,7 @@ def read_verts(lwochunk):
     data = cStringIO.StringIO(lwochunk.read())
     numverts = lwochunk.chunksize/12
     verts = [None] * numverts
-    # Makes QuArK component.currentframe.verteicies here.
+    # Makes QuArK component.currentframe.vertices here.
     for i in xrange(numverts):
         x, y, z = struct.unpack(">fff", data.read(12))
         verts[i] = (x, z, y)
@@ -397,7 +397,7 @@ def read_verts(lwochunk):
 # =================
 # === Read Name ===
 # =================
-# modified to deal with odd lenght strings
+# modified to deal with odd length strings
 def read_name(file):
     name = ""
     while 1:
@@ -406,7 +406,7 @@ def read_name(file):
         else: name += char
     len_name = len(name) + 1 #count the trailing zero
     if len_name%2==1:
-        char = file.read(1) #remove zero padding to even lenght
+        char = file.read(1) #remove zero padding to even length
         len_name += 1
     return name, len_name
 

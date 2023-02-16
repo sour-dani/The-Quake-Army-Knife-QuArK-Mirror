@@ -9,7 +9,6 @@ Implementation of QuArK Map editor's "Options" menu
 #
 
 import quarkx
-from qdictionnary import Strings
 from maputils import *
 import qmenu
 

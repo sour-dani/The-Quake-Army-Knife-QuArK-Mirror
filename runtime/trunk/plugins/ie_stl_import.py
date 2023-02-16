@@ -21,7 +21,6 @@ import quarkpy.qutils
 import quarkpy.mdlutils
 import ie_utils
 from ie_utils import tobj
-from quarkpy.qdictionnary import Strings
 
 # Globals
 logging = 0
@@ -38,7 +37,7 @@ def loadmodel(root, filename, gamename, nomessage=0):
     #   filename is the full path and name of the .StL file selected,
     #   gamename is None.
 
-    global editor, tobj, logging, importername, textlog, Strings
+    global editor, tobj, logging, importername, textlog
     import quarkpy.mdleditor
     editor = quarkpy.mdleditor.mdleditor
     # Step 1 to import model from QuArK's Explorer.

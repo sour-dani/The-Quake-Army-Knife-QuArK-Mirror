@@ -21,7 +21,6 @@ from types import *
 import quarkpy.qutils
 import ie_utils
 from ie_utils import tobj
-from quarkpy.qdictionnary import Strings
 
 #Globals
 editor = None
@@ -554,7 +553,7 @@ class mdx_obj:
 # Fill MDX data structure
 ######################################################
 def fill_mdx(mdx, component):
-    global user_frame_list, user_skins_list, progressbar, tobj, Strings
+    global user_frame_list, user_skins_list, progressbar, tobj
     
     mdx.num_SubObjects=len(component)
 
@@ -1004,7 +1003,7 @@ def build_GL_commands(mdx, component):
 # Save MDX Format
 ######################################################
 def save_mdx(filename):
-    global editor, tobj, logging, exportername, textlog, Strings
+    global editor, tobj, logging, exportername, textlog
     import quarkpy.mdleditor
     editor = quarkpy.mdleditor.mdleditor
     if editor is None:

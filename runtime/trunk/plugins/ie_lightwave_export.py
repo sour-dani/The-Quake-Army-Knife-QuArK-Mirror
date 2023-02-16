@@ -63,7 +63,7 @@ months = [
 # === Write LightWave Format ===
 # ==============================
 def writefile(filename):
-    global progressbar, tobj, Strings, MeshValid
+    global progressbar, tobj, MeshValid
     import quarkpy.mdleditor
     editor = quarkpy.mdleditor.mdleditor
     if editor is None:

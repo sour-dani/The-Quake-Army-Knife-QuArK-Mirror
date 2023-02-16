@@ -9,7 +9,6 @@ Implementation of QuArK Model editor's "Options" menu
 #
 
 import quarkx
-from qdictionnary import Strings
 from mdlutils import *
 import qmenu
 import mdleditor

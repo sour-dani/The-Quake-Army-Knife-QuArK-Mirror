@@ -20,7 +20,6 @@ import quarkx
 from quarkpy.qutils import *
 import ie_utils
 from ie_utils import tobj
-from quarkpy.qdictionnary import Strings
 import quarkpy.mdlutils
 
 # Globals

@@ -22,7 +22,6 @@ from quarkpy.qutils import *
 from types import *
 import ie_utils
 from ie_utils import tobj
-from quarkpy.qdictionnary import Strings
 
 # Globals
 editor = None
@@ -586,7 +585,7 @@ def savemodel(root, filename, gamename, nomessage=0):
     #   for example:  C:\FAKK2\fakk\models\monster\claw\claw.tan
     #   gamename is None.
 
-    global editor, progressbar, tobj, logging, exportername, textlog, Strings
+    global editor, progressbar, tobj, logging, exportername, textlog
     import quarkpy.mdleditor
     editor = quarkpy.mdleditor.mdleditor
     if editor is None:

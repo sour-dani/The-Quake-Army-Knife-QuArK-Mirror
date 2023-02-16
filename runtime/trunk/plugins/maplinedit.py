@@ -18,7 +18,6 @@ import quarkx
 from quarkpy.maputils import *
 import quarkpy.qmacro
 import quarkpy.dlgclasses
-from quarkpy.qdictionnary import Strings
 from quarkpy.qeditor import matrix_rot_x
 from quarkpy.qeditor import matrix_rot_y
 from quarkpy.qeditor import matrix_rot_z

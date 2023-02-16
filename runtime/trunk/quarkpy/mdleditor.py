@@ -22,8 +22,6 @@ import qtoolbar
 from qeditor import MapColor
 from mdlutils import *
 
-#from qdictionnary import Strings
-
 # Globals
 NewSellist = []
 BonesSellist = []

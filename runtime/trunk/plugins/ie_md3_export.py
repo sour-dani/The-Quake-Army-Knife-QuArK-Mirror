@@ -22,7 +22,6 @@ import quarkpy.qtoolbar
 from quarkpy.qutils import *
 import ie_utils
 from ie_utils import tobj
-from quarkpy.qdictionnary import Strings
 
 # Globals
 logging = 0
@@ -502,7 +501,7 @@ class md3Object:
 
 def save_md3(self):
     "Calls functions to write the .md3 model file (also skin and shader files, if called for)."
-    global tobj, logging, exportername, textlog, Strings
+    global tobj, logging, exportername, textlog
 
     logging, tobj, starttime = ie_utils.default_start_logging(exportername, textlog, self.filename, "EX") ### Use "EX" for exporter text, "IM" for importer text.
 
