@@ -1032,10 +1032,11 @@ class TerrainLinearHandle(quarkpy.qhandles.GenericHandle):
 class TerrainLinHandlesManager:
     "Controls the blue Liner Handle and draws the selected faces in red"
 
-    def __init__(self, color, bbox, list, view):
+    def __init__(self, color, bbox, list, view, editor=editor):
         self.color = color
         self.bbox = bbox
         self.view = view
+        self.editor = editor
 
 # New code to draw just the handles I want - copied from LinHandlesManager class
 
@@ -1055,25 +1056,14 @@ class TerrainLinHandlesManager:
         self.bmax = quarkx.vect(bmax1)
         self.list = list
 
-# Sometimes we don't can't get the mapeditor(), so this test for it and gets it.
-
-        editor = mapeditor()
-        if editor is None:
-            quarkx.clickform = view.owner  # Rowdys -important, gets the
-                                           # mapeditor and view clicked in
-            editor = mapeditor()
-        self.editor = editor # so we can pass it along to other def's
-
-        if editor.layout.explorer.sellist is not None:
-            selectlist = editor.layout.explorer.sellist
+        if self.editor.layout.explorer.sellist is not None:
+            selectlist = self.editor.layout.explorer.sellist
 
     def BuildHandles(self, center=None, minimal=None):
         "Builds ONLY the handle CONTOLE & LOCATION - but not the handle DRAWING"
         "That is done in the 'def draw' function further down."
 
-        editor = self.editor
-
-        list = editor.layout.explorer.sellist
+        list = self.editor.layout.explorer.sellist
         view = self.view
 
         if center is None:
