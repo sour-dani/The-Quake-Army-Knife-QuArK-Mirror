@@ -658,10 +658,6 @@ def getzoommenu(zoombtn):
     return items
 
 
-def notimplemented(*any):
-    quarkx.msgbox("This command is not implemented yet.", qutils.MT_ERROR, qutils.MB_OK)
-
-
 #def foreachcontrol(callback):
 #    def test(panel, callback=callback):
 #        for c in panel.controls():
@@ -679,10 +675,10 @@ def notimplemented(*any):
 def ImageWrapper(self, desc, *extra):
     try:
         self.Images = apply(qutils.LoadPoolObj, (desc, quarkx.loadimages) + extra)
-        return 1
     except:
-        quarkx.msgbox("QuArK ran out of system resources loading the file '%s'. The %s will not be displayed." % (extra[0], desc),
-          qutils.MT_ERROR, qutils.MB_OK)
+        quarkx.msgbox("QuArK ran out of system resources loading the file '%s'. The %s will not be displayed." % (extra[0], desc), qutils.MT_ERROR, qutils.MB_OK)
+        return 0
+    return 1
 
 
 class Compass:
