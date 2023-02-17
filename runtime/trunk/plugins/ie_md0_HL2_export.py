@@ -95,6 +95,7 @@ from types import *
 import ie_utils
 from ie_utils import tobj
 from quarkpy.qeditor import MapColor # Strictly needed for QuArK bones MapColor call.
+from quarkpy.qeditor import deg2rad
 
 # Globals
 logging = 0
@@ -1724,7 +1725,7 @@ def CalcBoneAdj(self, m_controller, m_mouth):
         or ((pbonecontroller.type & STUDIO_TYPES) == STUDIO_YR) \
         or ((pbonecontroller.type & STUDIO_TYPES) == STUDIO_ZR):
             if i == 0:
-                m_adj += [value * (math.pi / 180.0)]
+                m_adj += [value * deg2rad]
             else:
                 m_adj += [value]
         elif ((pbonecontroller.type & STUDIO_TYPES) == STUDIO_X) \
