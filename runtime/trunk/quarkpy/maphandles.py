@@ -1503,7 +1503,7 @@ def BuildHandles(editor, ex, view):
                 for b in tb2.tb.buttons:
                     if b.state == 2:
                         import plugins.mapterrainmodes
-                        manager = plugins.mapterrainmodes.TerrainLinHandlesManager(MapColor("Duplicator"), box, list, view)
+                        manager = plugins.mapterrainmodes.TerrainLinHandlesManager(MapColor("Duplicator"), box, list, view, editor)
 ## End of above section for Terrain handels
 
 ## This section to setup for Objectmodes handels - cdunde 12-21-05

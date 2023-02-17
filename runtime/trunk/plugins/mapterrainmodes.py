@@ -1032,7 +1032,7 @@ class TerrainLinearHandle(quarkpy.qhandles.GenericHandle):
 class TerrainLinHandlesManager:
     "Controls the blue Liner Handle and draws the selected faces in red"
 
-    def __init__(self, color, bbox, list, view, editor=editor):
+    def __init__(self, color, bbox, list, view, editor):
         self.color = color
         self.bbox = bbox
         self.view = view
