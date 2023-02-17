@@ -931,9 +931,6 @@ class RedImageDragObject(DragObject):
 
 ## the lines below were added for the Terrain Generator
         editor = mapeditor()
-        if editor is None:
-            quarkx.clickform = view.owner
-            editor = mapeditor()
         self.editor = editor
         self.newx = x
         self.newy = y
