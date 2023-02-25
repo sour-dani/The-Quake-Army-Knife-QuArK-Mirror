@@ -39,7 +39,7 @@ In that folder is <b>one</b> of the compiling programs I spoke about briefly abo
 files.
 
 The other folder shown below that is the <b>second</b> compiling program folder and
-its files. You will need to download the <link download_gamepaks>q3map_2.5.16_win32_x86.zip</link>
+its files. You will need to download the <link download_tools>q3map_2.5.16_win32_x86.zip</link>
 file from the Official QuArK site.
 
 Also, see the <a href="intro.configuration.games.specificgames.stvef.html#misc">Misc. Info.</a>

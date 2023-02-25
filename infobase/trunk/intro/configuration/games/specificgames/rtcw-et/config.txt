@@ -32,7 +32,7 @@ is shown two images below.
 
 But before we do that, go to your <b>Wolfenstein - Enemy Territory</b> game folder and create a new
 sub-folder named <b>QuArK files</b>. This is where the compiling program folder and its files will be placed.
-You will need to download the <link download_gamepaks>q3map_2.5.16_win32_x86.zip</link>
+You will need to download the <link download_tools>q3map_2.5.16_win32_x86.zip</link>
 file from the Official QuArK site.
 
 Also, see the <a href="intro.configuration.games.specificgames.rtcw-et.html#misc">Misc. Info.</a>
