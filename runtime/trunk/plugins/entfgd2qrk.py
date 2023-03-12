@@ -26,6 +26,7 @@ Info = {
 import quarkpy.qutils
 import quarkx
 from quarkpy.qutils import *
+#from quarkpy.maputils import *
 
 
 class Key:
@@ -474,6 +475,9 @@ def AddKeyType(token):
        or token == "sky"): #JackHammer dialect
 #       or token == "decal"):
         theKey = KeyString()
+    elif token == "color":
+        # FIXME: Format unknown; used by alkaline v1.2
+        theKey = KeyString()
     elif token == "color1":
         # FIXME: We want to use LN, but there can be a fourth value...
         theKey = KeyString()
@@ -515,7 +519,7 @@ def AddKeyType(token):
     elif (token == "studio"):
         theKey = KeyStudio()
     else:
-        raise "Unknown KeyType-token:", token
+        raise RuntimeError("Unknown KeyType-token: " + token)
     theKey.SetKeyname(currentkeyname)
 
 def AddKeyDesc(token):
@@ -555,7 +559,11 @@ def EndKeyFlag(token):
     global currentkeyflag, theKey
     if (currentkeyflag is None):
         return
-    if len(currentkeyflag) < 4:
+    if len(currentkeyflag) < 3:
+        value, desc = currentkeyflag
+        selected = "0"
+        hint = ""
+    elif len(currentkeyflag) < 4:
         value, desc, selected = currentkeyflag
         hint = ""
     else:
@@ -820,7 +828,10 @@ statediagram =                                                                  
                                                                                                 \
 ,'STATE_VALUEFLAG2'     :[(TYPE_STRING             ,'STATE_VALUEFLAG3'     ,AddKeyFlagDesc)   ] \
                                                                                                 \
-,'STATE_VALUEFLAG3'     :[(TYPE_SPLITTER_COLON     ,'STATE_VALUEFLAG4'     ,None)             ] \
+,'STATE_VALUEFLAG3'     :[(TYPE_SPLITTER_COLON     ,'STATE_VALUEFLAG4'     ,None)               \
+# Alkaline dialect:
+                         ,(TYPE_SPLITTER_SQUARE_E  ,'STATE_KEYSBEGIN'      ,EndKeyFlags)        \
+                         ,(TYPE_NUMERIC            ,'STATE_VALUEFLAG'      ,AddKeyFlagNum)    ] \
                                                                                                 \
 ,'STATE_VALUEFLAG4'     :[(TYPE_NUMERIC            ,'STATE_VALUEFLAG5'     ,AddKeyFlagDefa)   ] \
 # JackJammer dialect:
@@ -891,9 +902,11 @@ def makeqrk(root, filename, gamename, nomessage=0):
     state = 'STATE_UNKNOWN'
     while (len(srcstring) > 1):
         token, token_is, srcstring = getnexttoken(srcstring)
-        #print "\ntoken:",token
-        #print "token_is:",toktypes[token_is]
-        #print "nextstring:",srcstring[:64]
+        #print
+        #print "state:", state
+        #print "token:", token
+        #print "token_is:", toktypes[token_is]
+        #print "nextstring:", repr(srcstring[:64])
         # Figure out, if the token_is type is expected or not
         expectedtypes = []
         newstate = None
@@ -906,16 +919,16 @@ def makeqrk(root, filename, gamename, nomessage=0):
                 break
             expectedtypes = expectedtypes + [type]
         if newstate is None:
-       #     print "Parse error: Got type", toktypes[token_is], "but expected type(s);", [toktypes[i] for i in expectedtypes]
-       #     print "Debug: Last classname was =", currentclassname
-       #     print "Debug:", srcstring[:64]
-       #     raise "Parse error!"
+            #squawk("Parse error: Got type" + toktypes[token_is] + "but expected type(s);" + [toktypes[i] for i in expectedtypes])
+            #squawk("Last classname was = " + str(currentclassname))
+            #squawk("nextstring: " + repr(srcstring[:64]))
+            #squawk("Associated function: " + func_str)
             if func == "None":
                 func_str = "None"
             else:
                 func_str = str(func)
             quarkx.beep()
-            quarkx.msgbox("PARSE ERROR !\nNon-supported Entity Definition file(s) format.\n\nGot type " + str(toktypes[token_is]) + "\nbut expected type(s): " + str([toktypes[i] for i in expectedtypes]) + "\n\nDebug: Last classname was = " + str(currentclassname) + "\nDebug: " + str(srcstring[:64]) + "\nDebug - Associated function: " + func_str + "\n\nContact QuArK development team with copy of Entity file(s).", quarkpy.qutils.MT_ERROR, quarkpy.qutils.MB_ABORT)
+            quarkx.msgbox("PARSE ERROR !\nNon-supported Entity Definition file(s) format.\n\nGot type " + str(toktypes[token_is]) + "\nbut expected type(s): " + str([toktypes[i] for i in expectedtypes]) + "\n\nPlease contact QuArK development team with copy of Entity file(s).", quarkpy.qutils.MT_ERROR, quarkpy.qutils.MB_ABORT)
             return None
         if (func is not None):
             # This state have a function attached to it. Call it giving it the found token.
