@@ -475,8 +475,8 @@ def AddKeyType(token):
        or token == "sky"): #JackHammer dialect
 #       or token == "decal"):
         theKey = KeyString()
-    elif token == "color":
-        # FIXME: Format unknown; used by alkaline v1.2
+    elif token == "color": #TrenchBroom dialect
+        # FIXME: Format unknown?
         theKey = KeyString()
     elif token == "color1":
         # FIXME: We want to use LN, but there can be a fourth value...
@@ -829,7 +829,7 @@ statediagram =                                                                  
 ,'STATE_VALUEFLAG2'     :[(TYPE_STRING             ,'STATE_VALUEFLAG3'     ,AddKeyFlagDesc)   ] \
                                                                                                 \
 ,'STATE_VALUEFLAG3'     :[(TYPE_SPLITTER_COLON     ,'STATE_VALUEFLAG4'     ,None)               \
-# Alkaline dialect:
+# TrenchBroom dialect:
                          ,(TYPE_SPLITTER_SQUARE_E  ,'STATE_KEYSBEGIN'      ,EndKeyFlags)        \
                          ,(TYPE_NUMERIC            ,'STATE_VALUEFLAG'      ,AddKeyFlagNum)    ] \
                                                                                                 \
