@@ -693,7 +693,7 @@ toktypes={
 
 CHARS_NUMERIC  = "-0123456789."
 CHARS_STRING   = "\""
-CHARS_SPLITTER = "@:=[](),+"
+CHARS_SPLITTER = "@:=[](),+" #Note: The common tokenizer in Worldcraft uses "@,!+&*$.=:[](){}\\", but many of these are related to other formats, and are not used for .fgd.
 
 def getnexttoken(srcstring):
     def nextnonwhitespace(srcstring):
