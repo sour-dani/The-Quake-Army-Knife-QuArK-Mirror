@@ -142,7 +142,7 @@ const
   cIMPLODED_COMPRESSION = 6;
   cDEFLATED_COMPRESSION = 8;
 
-function BuildLFH(ver, bit, com, las, crc, cmp, unc, fil, ext:longint) : TLocalFileHeader;
+function BuildLFH(ver, bit, com: Word; las, crc, cmp, unc: Longword; fil, ext: Word) : TLocalFileHeader;
 begin
   Result.version_needed     := ver;
   Result.bit_flag           := bit;
@@ -155,7 +155,7 @@ begin
   Result.extrafield_len     := ext;
 end;
 
-function BuildFH(ver, vby, bit, com, las, crc, cmp, unc, fil, ext, fcm, ita, exa, lho, dsn:longint) : TFileHeader;
+function BuildFH(ver, vby, bit, com: Word; las, crc, cmp, unc: Longword; fil, ext, fcm, ita: Word; exa, lho, dsn: Longword) : TFileHeader;
 begin
   Result.version_by          := vby;
   Result.version_needed      := ver;
@@ -223,6 +223,37 @@ procedure QZipFolder.WritePakEntries(Info: TInfoEnreg1; Origine: TStreamPos; con
 const
   VMB_NTFS = 10; //version_mady_by - Windows NTFS
   PKZIP_VERSION = 20; //Version 2.0, because we use DEFLATE
+
+  //POSIX st_mode (file attributes):
+  S_IFMT    = Word(61440);   //bit mask for the file type bit field
+
+  S_IFSOCK  = Word(49152);   //socket
+  S_IFLNK   = Word(40960);   //symbolic link
+  S_IFREG   = Word(32768);   //regular file
+  S_IFBLK   = Word(24576);   //block device
+  S_IFDIR   = Word(16384);   //directory
+  S_IFCHR   = Word(8192);   //character device
+  S_IFIFO   = Word(4096);   //FIFO
+
+  S_ISUID    = Word(2048);   //set-user-ID bit (see execve(2))
+  S_ISGID    = Word(1024);   //set-group-ID bit (see below)
+  S_ISVTX    = Word(512);   //sticky bit (see below)
+
+  S_IRWXU    = Word(448);   //owner has read, write, and execute permission
+  S_IRUSR    = Word(256);   //owner has read permission
+  S_IWUSR    = Word(128);   //owner has write permission
+  S_IXUSR    = Word(64);   //owner has execute permission
+
+  S_IRWXG    = Word(56);   //group has read, write, and execute permission
+  S_IRGRP    = Word(32);   //group has read permission
+  S_IWGRP    = Word(16);   //group has write permission
+  S_IXGRP    = Word(8);   //group has execute permission
+
+  S_IRWXO    = Word(7);   //others (not in group) have read, write, and execute permission
+  S_IROTH    = Word(4);   //others have read permission
+  S_IWOTH    = Word(2);   //others have write permission
+  S_IXOTH    = Word(1);   //others have execute permission
+
 var
   I: Integer;
   Q: QObject;
@@ -298,7 +329,7 @@ begin
           Info.F.WriteBuffer(PChar(S)^, Length(S));
          {/Write File Entry}
 
-          cdir:=BuildFH(VMB_NTFS, PKZIP_VERSION, 0, 8, TimestampNow, crc, Size, OrgSize, length(s), 0, 0, 0, {-2118778880} LongInt($81B60000), pos, 0); //FIXME: Set proper timestamp, if available!
+          cdir:=BuildFH(VMB_NTFS, PKZIP_VERSION, 0, 8, TimestampNow, crc, Size, OrgSize, length(s), 0, 0, 0, Longword(S_IFREG or (S_IRUSR or S_IWUSR or S_IRGRP or S_IWGRP or S_IROTH or S_IWOTH)) shl 16, pos, 0); //FIXME: Set proper timestamp, if available!
           sig:=cCFILE_HEADER;
           Repertoire.WriteBuffer(sig, 4);
           Repertoire.WriteBuffer(cdir, sizeof(TFileHeader));
