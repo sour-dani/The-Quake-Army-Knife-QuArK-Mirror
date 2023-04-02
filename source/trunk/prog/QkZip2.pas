@@ -220,6 +220,8 @@ begin
 end;
 
 procedure QZipFolder.WritePakEntries(Info: TInfoEnreg1; Origine: TStreamPos; const Chemin: String; TailleNom: Integer; Repertoire: TStream; eocd: PEndOfCentralDir);
+const
+  VMB_NTFS = 10; //version_mady_by - Windows NTFS
 var
   I: Integer;
   Q: QObject;
@@ -232,8 +234,10 @@ var
   crc: LongWord;
   cdir:TFileHeader;
   sig:Longint;
+  TimestampNow: Integer;
 begin
   Acces;
+  TimestampNow:=DateTimeToFileDate(Now());
   ProgressIndicatorStart(5442, SubElements.Count);
   try
     Info1:=TPakSibling.Create;
@@ -283,16 +287,17 @@ begin
             TempStream.Free;
           end;
 
-          pos:=Info.F.Position; // Save Local Header Offset
+          pos:=Info.F.Position; //Save Local Header Offset
+
          {Write File Entry}
-          LFS:=BuildLFH(10, 0, 8, DateTimeToFileDate(Now()), crc, Size, OrgSize, length(s), 0);
+          LFS:=BuildLFH(VMB_NTFS, 0, 8, TimestampNow, crc, Size, OrgSize, length(s), 0); //FIXME: Set proper timestamp, if available!
           sig:=cZIP_HEADER;
           Info.F.WriteBuffer(sig, 4);
           Info.F.WriteBuffer(LFS, Sizeof(TLocalFileHeader));
           Info.F.WriteBuffer(PChar(S)^, Length(S));
          {/Write File Entry}
 
-          cdir:=BuildFH(10, 20, 0, 8, DateTimeToFileDate(Now()), crc, Size, OrgSize, length(s), 0, 0, 0, {-2118778880} LongInt($81B60000), pos, 0);
+          cdir:=BuildFH(VMB_NTFS, 20, 0, 8, TimestampNow, crc, Size, OrgSize, length(s), 0, 0, 0, {-2118778880} LongInt($81B60000), pos, 0); //FIXME: Set proper timestamp, if available!
           sig:=cCFILE_HEADER;
           Repertoire.WriteBuffer(sig, 4);
           Repertoire.WriteBuffer(cdir, sizeof(TFileHeader));
@@ -302,7 +307,7 @@ begin
           inc(eocd^.no_entries);
           inc(eocd^.size_cd, (4 + sizeof(TFileHeader) + Length(S)));
 
-          Info.F.CopyFrom(T2, T2.Size);       {Write Actual File Data ( Compressed ) }
+          Info.F.CopyFrom(T2, T2.Size); //Write Actual File Data ( Compressed )
         finally
           T2.Free;
         end;
