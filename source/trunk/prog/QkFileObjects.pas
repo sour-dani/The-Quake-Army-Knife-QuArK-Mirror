@@ -1210,6 +1210,8 @@ begin
     on E: Exception do
      Raise EErrorFmt(5517, [E.Message]);
    end;
+   //FIXME: Implement this to propagate last modified/write times from extracted archives!
+   //SetFileTime(F.Handle, nil, nil, @Info.ModifiedTime);
   finally F.Release; end;
   finally Info1.Free; end;
   if Update then
