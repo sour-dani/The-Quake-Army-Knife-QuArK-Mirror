@@ -144,7 +144,7 @@ begin
        Result:=True;
        break;
      end;
-     nParent:=nParent.FParent;
+     nParent:=nParent.Parent;
    end;
 end;
 

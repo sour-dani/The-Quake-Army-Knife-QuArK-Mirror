@@ -37,7 +37,7 @@ type
     Component: QObject;
   public
     class function TypeInfo: String; override;
-    function IsAllowedParent(Parent: QObject) : Boolean; override;
+    function IsAllowedParent(nParent: QObject) : Boolean; override;
     destructor Destroy; override;
     procedure ObjectState(var E: TEtatObjet); override;
     function GetVertices(var P: vec3_p) : Integer;
@@ -57,12 +57,12 @@ implementation
 uses Quarkx, QkExceptions, PyObjects, QkObjectClassList, QkComponent, QkModelRoot,
      QkModelTag, QkFrameGroup, QkMiscGroup, QkTagFrame, PyMath;
 
-function QFrame.IsAllowedParent(Parent: QObject) : Boolean;
+function QFrame.IsAllowedParent(nParent: QObject) : Boolean;
 begin
   if ParentComponent = Nil then
-   if Self.FParent<>Nil then
-    ParentComponent := Self.FParent.FParent;
-  if (Parent=nil) or ((Parent is QFrameGroup) and (Parent.FParent = ParentComponent)) then
+   if Self.Parent<>Nil then
+    ParentComponent := Self.Parent.Parent;
+  if (nParent=nil) or ((nParent is QFrameGroup) and (nParent.Parent = ParentComponent)) then
     Result:=true
   else
     Result:=false;
@@ -72,19 +72,19 @@ function QFrame.GetRoot(RootParent: Boolean): QObject;
 var
   O: QObject;
 begin
-  O:=Self.FParent;
+  O:=Self.Parent;
   while o<>nil do
   begin
     if O is QModelRoot then break;
-    O:=O.FParent;
+    O:=O.Parent;
   end;
   if o<>nil then
   begin
-    if RootParent and (o.FParent is QModelRoot) then
-      o:=o.fparent;
+    if RootParent and (o.Parent is QModelRoot) then
+      o:=o.Parent;
   end;
   if o = self then o:=nil;
-  result:=o;
+  Result:=o;
 end;
 
 procedure QFrame.RotateFrame(matrice: TMatrixTransformation);
@@ -200,7 +200,7 @@ begin
         bf:=QModelTag(modelRoot.getmisc.FindSubObject(myRoot.Specifics.Values['linked_to'], QModelTag, nil));
         bf2:=QModelTag(myRoot.getmisc.FindSubObject(myRoot.Specifics.Values['linked_to'], QModelTag, nil));
         o_tag:=QTagFrame(bf.GetTagFrameFromIndex(currentFrameNumber));
-        s_tag:=QTagFrame(bf2.GetTagFrameFromIndex(FParent.SubElements.IndexOf(Self)));
+        s_tag:=QTagFrame(bf2.GetTagFrameFromIndex(Parent.SubElements.IndexOf(Self)));
       end;
     end;
   end;
@@ -308,7 +308,7 @@ begin
       Exit;
     end;
     'i': if StrComp(attr, 'index')=0 then begin
-      Result:=PyInt_FromLong(FParent.SubElements.IndexOf(self));
+      Result:=PyInt_FromLong(Parent.SubElements.IndexOf(self));
       Exit;
     end
     else if StrComp(attr, 'info')=0 then begin

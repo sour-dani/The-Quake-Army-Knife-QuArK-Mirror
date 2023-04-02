@@ -101,7 +101,7 @@ type
 
 implementation
 
-uses QuarkX, QkExceptions, Game, Travail, QkObjectClassList, Logging;
+uses QuarkX, QkExceptions, Game, Travail, QkObjectClassList, Logging, ExtraFunctionality;
 
 const
  LUMP_ENTITIES = 0;
@@ -739,10 +739,8 @@ begin
           {DECKER - try 'animmap' instead }
           if Stage.Specifics.Values['animmap']<>'' then
           begin
-           Stage.Name:=Stage.Specifics.Values['animmap'];
            { jump over the number and take the first filename in the 'animmap' list }
-           Stage.Name:=Copy(Stage.Name, Pos(' ', Stage.Name)+1, MaxInt);
-           SetLength(Stage.Name, Pos(' ', Stage.Name)-1);
+           Stage.Name:=SplitString(Stage.Specifics.Values['animmap'], ' ')[1];
           end;
          end
         else   { shader attribute }

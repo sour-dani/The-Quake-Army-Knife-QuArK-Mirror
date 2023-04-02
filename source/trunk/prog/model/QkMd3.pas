@@ -518,9 +518,9 @@ begin
   begin
     Result:=Name+Self.TypeInfo;
     O:=Self;
-    While O.FParent<>nil do
+    While O.Parent<>nil do
     begin
-      O:=O.FParent;
+      O:=O.Parent;
       Result:=O.Name+PathDelim+Result;
     end;
   end

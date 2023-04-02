@@ -175,8 +175,8 @@ begin
       Raise InternalE('LoadedItem '+Q.GetFullName+' '+IntToStr(rf_default));
     Q.Open(TQStream(F), 0);
     // i must access the object, from inside the onaccess function
-    Q.FNode^.PUserdata:=GCFDirectoryFile;
-    Q.FNode^.OnAccess:=GCFAddRef;
+    Q.Node^.PUserdata:=GCFDirectoryFile;
+    Q.Node^.OnAccess:=GCFAddRef;
   end;
 end;
 

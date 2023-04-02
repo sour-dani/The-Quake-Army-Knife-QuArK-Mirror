@@ -24,7 +24,7 @@ interface
 
 {$I DelphiVer.inc}
 
-uses Classes, Windows, SysUtils{$IFDEF Delphi6orNewerCompiler}, StrUtils{$ENDIF};
+uses Classes, Types, Windows, SysUtils{$IFDEF Delphi6orNewerCompiler}, StrUtils{$ENDIF};
 
 type
   QWORD = {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
@@ -260,13 +260,17 @@ function ReverseString(const AText: string): string;
 function BoolToStr(B: Boolean; UseBoolStrs: Boolean = False): string;
 {$endif}
 
-{$ifndef Delphi7orNewerCompiler} // Pre-dates Delphi 7
+{$ifndef Delphi7orNewerCompiler}
 { PosEx searches for SubStr in S and returns the index position of
   SubStr if found and 0 otherwise.  If Offset is not given then the result is
   the same as calling Pos.  If Offset is specified and > 1 then the search
   starts at position Offset within S.  If Offset is larger than Length(S)
   then PosEx returns 0.  By default, Offset equals 1. }
 function PosEx(const SubStr, S: string; Offset: Cardinal = 1): Integer;
+{$endif}
+
+{$ifndef DelphiXEorNewerCompiler}
+function SplitString(const S, Delimiters: string): TStringDynArray;
 {$endif}
 
 //This function doesn't exist at all in Delphi 7:
@@ -463,12 +467,35 @@ begin
 end;
 {$endif}
 
+{$ifndef DelphiXEorNewerCompiler}
+function SplitString(const S, Delimiters: string): TStringDynArray;
+var
+  I, LastFound: Integer;
+begin
+  LastFound:=0;
+  for I:=1 to Length(S) do
+  begin
+    if Pos(S[I], Delimiters)<>0 then
+    begin
+      SetLength(Result, Length(Result) + 1);
+      Result[Length(Result) - 1]:=Copy(S, LastFound+1, I-LastFound-1);
+      LastFound:=I;
+    end;
+  end;
+  if LastFound<>Length(S) then
+  begin
+    SetLength(Result, Length(Result) + 1);
+    Result[Length(Result) - 1]:=Copy(S, LastFound+1, MaxInt);
+  end;
+end;
+{$endif}
+
 //From: http://delphi.about.com/od/adptips2004/a/bltip0904_2.htm
 function LastPos(const SubStr: String; const S: String): Integer;
 begin
-   Result := Pos(ReverseString(SubStr), ReverseString(S)) ;
-   if (Result <> 0) then
-     Result := ((Length(S) - Length(SubStr)) + 1) - Result + 1;
+  Result := Pos(ReverseString(SubStr), ReverseString(S)) ;
+  if (Result <> 0) then
+    Result := ((Length(S) - Length(SubStr)) + 1) - Result + 1;
 end;
 
 end.

@@ -261,7 +261,7 @@ begin
   else  { reuse the same object for the file }
    begin
     Result:=QFileObject(Source.Root);
-    if CheckParent and (Result.FParent <> nParent) then
+    if CheckParent and (Result.Parent <> nParent) then
      Raise EErrorFmt(5224, [theFilename]);
    end;*)
  finally
@@ -823,7 +823,7 @@ begin
         Exit;
        end
       else
-       Level:=Level.FParent;
+       Level:=Level.Parent;
     end;
    I:=1;
    while P[I] <> '=' do
@@ -2108,7 +2108,7 @@ function GetFileRoot(Q: QObject) : QFileObject;
 begin
  while Q.Flags and ofFileLink = 0 do
   begin
-   Q:=Q.FParent;
+   Q:=Q.Parent;
    if Q=Nil then
     begin
      Result:=Nil;
@@ -2151,7 +2151,7 @@ begin
       if (g_Form1.Explorer.Roots.Count>0) and (Q=g_Form1.Explorer.Roots[0]) then
        g_Form1.Perform(wm_InternalMessage, SendMsg, LPARAM(Self));
      end;
-    Q:=Q.FParent;
+    Q:=Q.Parent;
    until Q=Nil;
   end;
  inherited;
@@ -2175,8 +2175,8 @@ begin
  Result:=Nil;
  if Flags and ofFileLink = 0 then
   begin
-   if (FParent=Nil) or not (FParent is QFileObject) then Exit;
-   Result:=QFileObject(FParent).FindFile(nName);
+   if (Parent=Nil) or not (Parent is QFileObject) then Exit;
+   Result:=QFileObject(Parent).FindFile(nName);
   end
  else
   begin
@@ -2418,7 +2418,7 @@ begin
  FWndState:=State;
 {FModified:=False;}
 {if State in StandAloneWndState then
-  if Q.FParent=Nil then
+  if Q.Parent=Nil then
    Q.CurrentlySaved:=cs_NotSaved
   else
    Q.CurrentlySaved:=cs_Explorer;}

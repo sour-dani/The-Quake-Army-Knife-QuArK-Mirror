@@ -29,7 +29,7 @@ type
   QModelTag = Class(QMdlObject)
   public
     class function TypeInfo: String; override;
-    function IsAllowedParent(Parent: QObject) : Boolean; override;
+    function IsAllowedParent(nParent: QObject) : Boolean; override;
     procedure ObjectState(var E: TEtatObjet); override;
     function GetTagFrameFromIndex(N: Integer) : QTagFrame;
     function GetTagFrameFromName(const nName: String) : QTagFrame;
@@ -39,9 +39,9 @@ implementation
 
 uses QkObjectClassList, QkMiscGroup;
 
-function QModelTag.IsAllowedParent(Parent: QObject) : Boolean;
+function QModelTag.IsAllowedParent(nParent: QObject) : Boolean;
 begin
-  if (Parent=nil) or (Parent is QMiscGroup) then
+  if (nParent=nil) or (nParent is QMiscGroup) then
     Result:=true
   else
     Result:=false;

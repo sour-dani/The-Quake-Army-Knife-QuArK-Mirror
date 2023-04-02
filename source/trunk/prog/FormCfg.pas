@@ -2761,7 +2761,7 @@ begin
  if Links.Count>0 then  { if there is one or more linked objects }
   begin
    if nForm<>Nil then  { uses the provided form as basis }
-    Form:=nForm.Clone(nForm.FParent, False) as QFormCfg  { makes a copy because we'll write infos in the Form and process its macros }
+    Form:=nForm.Clone(nForm.Parent, False) as QFormCfg  { makes a copy because we'll write infos in the Form and process its macros }
    else
     if AddRemaining or AllowEdit or (EditNames<>'') then  { otherwise, the Form would be useless }
      Form:=QFormCfg.Create('', Nil);  { creates a new, empty Form }

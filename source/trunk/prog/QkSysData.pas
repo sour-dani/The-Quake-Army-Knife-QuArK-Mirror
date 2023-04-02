@@ -28,7 +28,7 @@ type
   QSysData = class(QObject)
   public
     class function TypeInfo: String; override;
-    function IsAllowedParent(Parent: QObject) : Boolean; override;
+    function IsAllowedParent(nParent: QObject) : Boolean; override;
     class function ShowInListSel : Boolean; override;
   end;
 
@@ -36,9 +36,9 @@ implementation
 
 uses QkObjectClassList;
 
-function QSysData.IsAllowedParent(Parent: QObject) : Boolean;
+function QSysData.IsAllowedParent(nParent: QObject) : Boolean;
 begin
-  if (Parent=nil) then
+  if (nParent=nil) then
     Result:=true
   else
     Result:=false;

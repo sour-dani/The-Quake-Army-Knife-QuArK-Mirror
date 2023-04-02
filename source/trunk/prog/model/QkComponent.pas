@@ -53,7 +53,7 @@ type
   public
     destructor Destroy; override;
     class function TypeInfo: String; override;
-    function IsAllowedParent(Parent: QObject) : Boolean; override;
+    function IsAllowedParent(nParent: QObject) : Boolean; override;
     procedure ObjectState(var E: TEtatObjet); override;
     function Triangles(var P: PComponentTris) : Integer;
     function VertexLinks(var P: PBoneVertexLink) : Integer;
@@ -304,9 +304,9 @@ begin
   inherited;
 end;
 
-function QComponent.IsAllowedParent(Parent: QObject) : Boolean;
+function QComponent.IsAllowedParent(nParent: QObject) : Boolean;
 begin
-  if (Parent=nil) or (Parent is QModelRoot) then
+  if (nParent=nil) or (nParent is QModelRoot) then
     Result:=true
   else
     Result:=false;
@@ -316,9 +316,9 @@ function QComponent.FindRoot: QObject;
 var
   p: QObject;
 begin
-  p:=Self.FParent;
+  p:=Self.Parent;
   while (p<>nil) and (p.typeinfo<>':mr') do
-    p:=p.FParent;
+    p:=p.Parent;
   result:=p;
 end;
 

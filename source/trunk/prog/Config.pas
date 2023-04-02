@@ -471,10 +471,10 @@ begin
    ParentNameChain:=TStringList.Create;
    try
     ParentNameChain.Add(Q.Name);
-    while Q.FParent<>nil do
+    while Q.Parent<>nil do
      begin
-      ParentNameChain.Add(Q.FParent.Name);
-      Q:=Q.FParent;
+      ParentNameChain.Add(Q.Parent.Name);
+      Q:=Q.Parent;
      end;
     //The first item is the setup root. We need a special way to find that.
     ResetSetting(ParentNameChain);

@@ -558,7 +558,7 @@ begin
                 Q.Open(TQStream(F), Size);
                 F.Position:=nEnd;
                 {/Copied From LoadedItem & Modified}
-                Q.FNode^.OnAccess:=ZipAddRef;
+                Q.Node^.OnAccess:=ZipAddRef;
               end;
             end;
             ProgressIndicatorIncrement;
@@ -716,7 +716,7 @@ begin
     while (I>0) and not (PathAndShortName[I] in ['/','\']) do
       Dec(I);
     Folder:=GetFolder(Copy(PathAndShortName, 1, I));
-    Q.FParent:=Folder;
+    Q.Parent:=Folder;
     PathAndShortName:=Copy(PathAndShortName, I+1, MaxInt);
     if SetName then
       Q.Name:=PathAndShortName;

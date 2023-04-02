@@ -144,7 +144,7 @@ begin
   begin
    if ToolBoxFolder=Nil then
     ToolBoxFolder:=QToolBoxGroup.Create(FolderName, Nil);
-   Q.FParent:=ToolBoxFolder;
+   Q.Parent:=ToolBoxFolder;
    ToolBoxFolder.SubElements.Add(Q);
   end;
 end;
@@ -155,7 +155,7 @@ begin
   begin
    if ToolBoxFolder=Nil then
     ToolBoxFolder:=QToolBoxGroup.Create(FolderName, Nil);
-   Q.FParent:=ToolBoxFolder;
+   Q.Parent:=ToolBoxFolder;
    ToolBoxFolder.SubElements.Insert(Index,Q);
   end;
 end;
@@ -169,7 +169,7 @@ begin
   begin
     if ToolBoxFolder=Nil then
       ToolBoxFolder:=QToolBoxGroup.Create(FolderName, Nil);
-    Q.FParent:=ToolBoxFolder;
+    Q.Parent:=ToolBoxFolder;
     Index:=0;
     ToolBoxFolder.LocateSubElement(Q.Name,Index);
     ToolBoxFolder.SubElements.Insert(Index,Q);
@@ -186,7 +186,7 @@ begin
   begin
     if ToolBoxFolder=Nil then
       ToolBoxFolder:=QToolBoxGroup.Create(FolderName, Nil);
-    Q.FParent:=ToolBoxFolder;
+    Q.Parent:=ToolBoxFolder;
     Index:=0;
     SubFolder:=ToolBoxFolder.LocateSubElement(Q.Name,Index);
     if SubFolder=Nil then
@@ -410,7 +410,7 @@ end;
 function InsertNewTxList(Parental: QObject; const Name: String; Index: Integer) : QTextureList;
 begin
   Result:=QTextureList.Create(Name, Nil);
-  Result.FParent:=Parental;
+  Result.Parent:=Parental;
   Parental.SubElements.Insert(Index,Result);
 end;
 
@@ -789,7 +789,7 @@ end;
 (*procedure MakeFolder(var Folder, Parental: QObject; const Name: String);
 begin
   Folder:=QToolBoxGroup.Create(Name, Nil);
-  Folder.FParent:=Parental;
+  Folder.Parent:=Parental;
   Parental.SubElements.Add(Folder);
 end;*)
 
@@ -865,7 +865,7 @@ begin
 
  if DiskFolder.SubElements.Count>0 then
  begin
-   DiskFolder.FParent:=Q;
+   DiskFolder.Parent:=Q;
    Q.SubElements.Add(DiskFolder);
  end
  else

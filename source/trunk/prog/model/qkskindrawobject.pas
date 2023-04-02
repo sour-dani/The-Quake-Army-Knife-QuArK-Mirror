@@ -29,7 +29,7 @@ type
   QSkinDrawObject = class(QMdlObject)
   public
     class function TypeInfo: String; override;
-    function IsAllowedParent(Parent: QObject) : Boolean; override;
+    function IsAllowedParent(nParent: QObject) : Boolean; override;
     procedure Dessiner; override;
     procedure CouleurDessin(var C: TColor);
   end;
@@ -38,9 +38,9 @@ implementation
 
 uses Coordinates, QkModelRoot, QkComponent, QkObjectClassList, QkExceptions;
 
-function QSkinDrawObject.IsAllowedParent(Parent: QObject) : Boolean;
+function QSkinDrawObject.IsAllowedParent(nParent: QObject) : Boolean;
 begin
-  if (Parent=nil) or (Parent is QComponent) then
+  if (nParent=nil) or (nParent is QComponent) then
     Result:=true
   else
     Result:=false;
@@ -115,7 +115,7 @@ begin
   //I think this entire class can be REMOVED!
   if not(CCoord is T2DCoordinates) then exit;
   if not (md2dOnly in g_DrawInfo.ModeDessin) then exit;
-  c:=QComponent(Self.FParent);
+  c:=QComponent(Self.Parent);
   if (c = nil) or not(c is QComponent) then
     Raise InternalE('QSkinDrawObject.Dessiner: C is not a QComponent');
   //FIXME: CouleurDessin(C1);

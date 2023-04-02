@@ -238,7 +238,7 @@ end;*)
 var
  Q: QObject;
 begin
- Q:=Clone(FParent, False);
+ Q:=Clone(Parent, False);
  Q.AddRef(+1); try
  ProcessMacros(Q, Self);
  CreateToolbar:=(Q as QToolbar).Create1(nOwner, nTag);

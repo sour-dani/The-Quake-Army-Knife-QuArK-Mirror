@@ -502,7 +502,7 @@ begin
    Q:=Gr.SubElements[I];
    if ieCanDrop in FileObject.IsExplorerItem(Q) then
     begin
-     Q.FParent:=FileObject;
+     Q.Parent:=FileObject;
      U:=TQObjectUndo.Create('', Nil, Q);
      U.InsererAvant:=nInsererAvant;
      g_ListeActions.Add(U);

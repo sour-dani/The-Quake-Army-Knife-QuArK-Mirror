@@ -2325,11 +2325,11 @@ var
 {I: Integer;}
  CreatedBy: QObject;
 begin
- if FPyNoParent and (FParent<>Nil) then
-  CreatedBy:=FParent
+ if FPyNoParent and (Parent<>Nil) then
+  CreatedBy:=Parent
  else
   CreatedBy:=Self;
- Result:=TPolyhedron.Create(Name, {FParent}CreatedBy);
+ Result:=TPolyhedron.Create(Name, {Parent}CreatedBy);
  Result.PyNoParent:=True;
  Result.Flags:=FFlags and ofCloneFlags;
 {for I:=0 to Specifics.Count-1 do
@@ -2569,8 +2569,8 @@ begin
         end;
   'p': if StrComp(attr, 'pieceof') = 0 then
         begin
-         if FPyNoParent and (FParent<>Nil) then
-          Result:=GetPyObj(FParent)
+         if FPyNoParent and (Parent<>Nil) then
+          Result:=GetPyObj(Parent)
          else
           Result:=PyNoResult;
          Exit;
@@ -3036,7 +3036,7 @@ begin
   try
    Normale:=ReadVector(S);
    Normalise(Normale);
-  {Dist:=Dist+Dot(TPolyedre(FParent).CentrePolyedre, Normale);}
+  {Dist:=Dist+Dot(TPolyedre(Parent).CentrePolyedre, Normale);}
   except
    Normale:=Origine;
    Result:=False;  { bad face }
@@ -3121,8 +3121,8 @@ end;
 
 {function TFace.CheckFace;
 begin
- CheckFace:=(TvParent<>Nil) and (FParent is TPolyedre)
- and TPolyedre(FParent).CheckPolyhedron and (prvVertexCount>0);
+ CheckFace:=(TvParent<>Nil) and (Parent is TPolyedre)
+ and TPolyedre(Parent).CheckPolyhedron and (prvVertexCount>0);
 end;}
 
 function TTexturedTreeMap.GetNomTex : String;
@@ -3424,9 +3424,9 @@ end;*)
 
 (*procedure TFace.UpdateSpecifics;
 begin
- Specifics.Values['d']:=ftos(Dist{-Dot(TPolyedre(FParent).CentrePolyedre, Normale)});
+ Specifics.Values['d']:=ftos(Dist{-Dot(TPolyedre(Parent).CentrePolyedre, Normale)});
  Specifics.Values['n']:=vtos1(Normale);
-{TPolyedre(FParent).PolyhedronState:=psUnknown;}
+{TPolyedre(Parent).PolyhedronState:=psUnknown;}
 end;*)
 
 procedure TFace.SetThreePoints(const V1, V2, V3: TVect);
@@ -3598,7 +3598,7 @@ begin
   begin
    if U then
     begin
-     Dup:=Clone(FParent, False) as TTexturedTreeMap;
+     Dup:=Clone(Parent, False) as TTexturedTreeMap;
      g_ListeActions.Add(TQObjectUndo.Create('', Self, Dup));
     end
    else
@@ -3716,7 +3716,7 @@ begin
     InvalidateFace;
    {if Aj in [asModifie, asAjoute, asDeplace2] then
      begin}
-      InvalidatePolyhedronTree(FParent);
+      InvalidatePolyhedronTree(Parent);
      {AjouteDansScene3D(Self);}
     {end;}
    end;
@@ -3948,7 +3948,7 @@ end;
 
 function TFace.CloneFaceTmp : TFace;
 begin
- Result:=TFace(Clone(FParent, False));
+ Result:=TFace(Clone(Parent, False));
  TFace(Result).Specifics.Values[TmpFaceSpec]:='1';
  TFace(Result).Normale:=Normale;
  TFace(Result).Dist:=Dist;
@@ -4201,9 +4201,9 @@ begin
    // the 'rendermode' specific. (This is a very very slow method, considering
    // that GetFaceOpacity() is called many many times!!)
    Parent := @Self;
-   while (Parent^.FParent is Q3DObject) do
+   while (Parent^.Parent is Q3DObject) do
    begin
-     Parent := @(Parent^.FParent);
+     Parent := @(Parent^.Parent);
      if (Parent = nil) then
        exit;
 

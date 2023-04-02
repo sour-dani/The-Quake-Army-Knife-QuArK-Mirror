@@ -246,8 +246,8 @@ begin
   if Q is QFileObject then
    begin
    {T:=Self;
-    while (T.TvParent<>Nil) and (T.FParent is QPakFolder) do
-     T:=T.FParent;
+    while (T.TvParent<>Nil) and (T.Parent is QPakFolder) do
+     T:=T.Parent;
     if T is QPak then
      Result:=[ieCanDrop, ieListView]
     else}
@@ -385,10 +385,10 @@ begin
              Raise InternalE('LoadedItem '+Q.GetFullName+' '+IntToStr(rf_default));
            Q.Open(TQStream(F), PFinEntreeDaikatanaPak(P1)^.CompressLen);
            {/Copied From LoadedItem & Modified}
-           Q.FNode^.OnAccess:=DaikatanaPakAddRef;
-           Q.FNode^.DKTaille:=PFinEntreePak(P1)^.Taille;
-           Q.FNode^.DKCompressLen:=PFinEntreeDaikatanaPak(P1)^.CompressLen;
-           Q.FNode^.DKCompressType:=PFinEntreeDaikatanaPak(P1)^.CompressType;
+           Q.Node^.OnAccess:=DaikatanaPakAddRef;
+           Q.Node^.DKTaille:=PFinEntreePak(P1)^.Taille;
+           Q.Node^.DKCompressLen:=PFinEntreeDaikatanaPak(P1)^.CompressLen;
+           Q.Node^.DKCompressType:=PFinEntreeDaikatanaPak(P1)^.CompressType;
          end
          else
          begin
@@ -632,7 +632,7 @@ begin
  while (I>0) and not (PathAndShortName[I] in ['/','\']) do
   Dec(I);
  Folder:=GetFolder(Copy(PathAndShortName, 1, I));
- Q.FParent:=Folder;
+ Q.Parent:=Folder;
  PathAndShortName:=Copy(PathAndShortName, I+1, MaxInt);
  if SetName then
   Q.Name:=PathAndShortName;

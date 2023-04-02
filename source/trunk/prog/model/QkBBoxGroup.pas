@@ -29,7 +29,7 @@ type
   QBBoxGroup = Class(QMdlObject)
   public
     class function TypeInfo: String; override;
-    function IsAllowedParent(Parent: QObject) : Boolean; override;
+    function IsAllowedParent(nParent: QObject) : Boolean; override;
     procedure AnalyseClic(Liste: PyObject); override;
   end;
 
@@ -37,9 +37,9 @@ implementation
 
 uses QkObjectClassList, QkMiscGroup, QkMapPoly;
 
-function QBBoxGroup.IsAllowedParent(Parent: QObject) : Boolean;
+function QBBoxGroup.IsAllowedParent(nParent: QObject) : Boolean;
 begin
-  if (Parent=nil) or (Parent is QMiscGroup) then
+  if (nParent=nil) or (nParent is QMiscGroup) then
     Result:=true
   else
     Result:=false;

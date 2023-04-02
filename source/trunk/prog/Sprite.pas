@@ -69,14 +69,14 @@ end;
 
 function QSprite.GetSkinDescr: String;
 begin
-  Result:=':'+FParent.Name+':0';
+  Result:=':'+Parent.Name+':0';
 end;
 
 function QSprite.Skin0: QImage;
 begin
   Result:=QImage(Subelements[0]);
   if result=nil then
-    FParent.Acces;
+    Parent.Acces;
 end;
 
 function QSprite.Triangles(var P: PComponentTris) : Integer;

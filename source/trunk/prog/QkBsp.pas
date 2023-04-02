@@ -1669,10 +1669,10 @@ begin
       end;
       Link:=QTextureLnk.Create(Tex.name, TexFolder2);
       Link.Specifics.Add('b='+Name);
-      if FParent=nil then
+      if Parent=nil then
         Link.Specifics.Add('s='+GetBaseDir(Self.Filename, false))
       else
-        Link.Specifics.Add('s='+GetBaseDir(QFileObject(FParent.FParent).Filename, true));  // in a pak file
+        Link.Specifics.Add('s='+GetBaseDir(QFileObject(Parent.Parent).Filename, true));  // in a pak file
       TexFolder2.Subelements.Add(Link);
     end;
     SortTexFolder(TexFolder);

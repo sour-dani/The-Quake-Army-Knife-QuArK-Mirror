@@ -224,7 +224,7 @@ begin
   RunProgram(S, TempPath, 'General:External editors', L, True);
   finally L.Free; end;
 
-  NewObj:=ExactFileLink(EditorFileName, Q.FParent, False);
+  NewObj:=ExactFileLink(EditorFileName, Q.Parent, False);
   NewObj.AddRef(+1); try
   NewObj.LoadAll;
   NewObj2:=Nil; try
@@ -236,7 +236,7 @@ begin
    end
   else
    begin
-    NewObj2:=QFileObjectClass(Q.ClassType).Create(Q.Name, Q.FParent);
+    NewObj2:=QFileObjectClass(Q.ClassType).Create(Q.Name, Q.Parent);
     NewObj2.AddRef(+1);
     if not NewObj2.ConversionFrom(NewObj) then
      Raise EError(5538);

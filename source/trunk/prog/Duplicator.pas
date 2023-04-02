@@ -105,8 +105,8 @@ begin
      begin
       Q:=QkObjFromPyObj(PyList_GetItem(nCache, I));
       if not (Q is TTreeMap) then Raise EError(4449);
-      if TTreeMap(Q).FParent = Nil then
-       TTreeMap(Q).FParent:=Self;
+      if TTreeMap(Q).Parent = Nil then
+       TTreeMap(Q).Parent:=Self;
      end;
     Py_INCREF(nCache);
    end
@@ -377,7 +377,7 @@ begin
   begin
    if U <> false then
     begin
-     Dup:=Clone(FParent, False) as TDuplicator;
+     Dup:=Clone(Parent, False) as TDuplicator;
      g_ListeActions.Add(TQObjectUndo.Create('', Self, Dup));
     end
    else

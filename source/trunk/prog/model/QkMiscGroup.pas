@@ -29,7 +29,7 @@ type
   QMiscGroup = Class(QMdlObject)
   public
     class function TypeInfo: String; override;
-    function IsAllowedParent(Parent: QObject) : Boolean; override;
+    function IsAllowedParent(nParent: QObject) : Boolean; override;
     //procedure AddTo3DScene(Scene: TObject); override;
     procedure AnalyseClic(Liste: PyObject); override;
   end;
@@ -38,9 +38,9 @@ implementation
 
 uses QkObjectClassList, QkModelRoot, QkMapPoly, QkMapObjects, QkBBoxGroup;
 
-function QMiscGroup.IsAllowedParent(Parent: QObject) : Boolean;
+function QMiscGroup.IsAllowedParent(nParent: QObject) : Boolean;
 begin
-  if (Parent=nil) or (Parent is QModelRoot) then
+  if (nParent=nil) or (nParent is QModelRoot) then
     Result:=true
   else
     Result:=false;

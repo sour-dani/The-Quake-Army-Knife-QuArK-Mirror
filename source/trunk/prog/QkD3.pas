@@ -82,7 +82,7 @@ type
 
 implementation
 
-uses Quarkx, QkExceptions, QkObjectClassList, Game, Setup, Travail, Logging;
+uses Quarkx, QkExceptions, QkObjectClassList, Game, Setup, Travail, Logging, ExtraFunctionality;
 
 {------------------------}
 
@@ -629,10 +629,8 @@ begin
             // cdunde - try 'animmap' instead
             if Stage.Specifics.Values['animmap']<>'' then
               begin
-                Stage.Name:=Stage.Specifics.Values['animmap'];
                 // jump over the number and take the first filename in the 'animmap' list
-                Stage.Name:=Copy(Stage.Name, Pos(' ', Stage.Name)+1, MaxInt);
-                SetLength(Stage.Name, Pos(' ', Stage.Name)-1);
+                Stage.Name:=SplitString(Stage.Specifics.Values['animmap'], ' ')[1];
               end;
          end
         else   { shader attribute }

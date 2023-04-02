@@ -1297,7 +1297,7 @@ begin
  while Odd(Q.Flags) do
   begin
    if Q.Flags and ofTreeViewInvisible <> 0 then Exit;
-   Test:=Q.FParent;
+   Test:=Q.Parent;
    if (Test=Nil) or (Test.SubElements.IndexOf(Q)<0) then Exit;
    Q:=Test;
   end;
@@ -1363,8 +1363,8 @@ end;
 
 procedure TMyTreeView.SelectOneChild(Q: QObject);
 begin
- if Q.FParent.Flags and ofTreeViewExpanded = 0 then
-  ToggleExpanding(Q.FParent);
+ if Q.Parent.Flags and ofTreeViewExpanded = 0 then
+  ToggleExpanding(Q.Parent);
  TMSelUnique:=Q;
  UpdateView;
 end;

@@ -193,7 +193,7 @@ begin
       if not GameModeOk((Q as QQuakeCtx).ObjectGameCode) then
        begin
         while (Q<>Nil) and (Q.Flags and ofFileLink = 0) do
-         Q:=Q.FParent;
+         Q:=Q.Parent;
         if (Q=Nil) or not (Q is QFileObject) then
          S:=LoadStr1(5552)
         else
@@ -405,29 +405,29 @@ var
     i: Integer;
   begin
     Result:=nil;
-    for i:=0 to FParent.SubElements.Count-1 do
+    for i:=0 to Parent.SubElements.Count-1 do
     begin
-      if FParent.SubElements[i].typeinfo = ntypeinfo then
+      if Parent.SubElements[i].typeinfo = ntypeinfo then
       begin
-        if FParent.Subelements[i].GetArg('ToolBox')=s then
+        if Parent.Subelements[i].GetArg('ToolBox')=s then
         begin
-          result:=FParent.SubElements[i];
+          result:=Parent.SubElements[i];
           break;
         end;
       end;
     end;
     if Result=nil then
     begin
-      Result:=ConstructQObject(nname+ntypeinfo, FParent);
+      Result:=ConstructQObject(nname+ntypeinfo, Parent);
       if s<>'' then
         Result.Specifics.Add('ToolBox='+s);
-      FParent.SubElements.Add(Result);
+      Parent.SubElements.Add(Result);
     end;
   end;
 begin
   BSPs:=GetAllBSPsFiles;
   try
-    addonRoot:=QFileObject(FParent);
+    addonRoot:=QFileObject(Parent);
     if addonRoot = nil then
       raise InternalE('addonRoot = nil');
 
@@ -451,7 +451,7 @@ begin
         TexRoot.SubElements.Add(TexFolders)
       else
         TexFolders.free;
-      TexFolders.FParent:=TexRoot;
+      TexFolders.Parent:=TexRoot;
     end;
     ProgressIndicatorStart(5458,bsps.Count);
     try
@@ -463,7 +463,7 @@ begin
         oldTexRoot:=QBSP(bsps[0]).GetTextureFolder;
         if (oldTexRoot <> nil) then
         begin
-          oldTexRoot.fParent:=TexFolders;
+          oldTexRoot.Parent:=TexFolders;
           TexFolders.Subelements.Add(oldTexRoot);
         end;
 
@@ -475,7 +475,7 @@ begin
   finally
     bsps.free;
   end;
-  ExplorerFromObject(FParent).Refresh;
+  ExplorerFromObject(Parent).Refresh;
 end;
 
 function IsAllNumbers(const arg: string): Boolean;
@@ -599,23 +599,23 @@ var
     i: Integer;
   begin
     Result:=nil;
-    for i:=0 to FParent.SubElements.Count-1 do
+    for i:=0 to Parent.SubElements.Count-1 do
     begin
-      if FParent.SubElements[i].typeinfo = ntypeinfo then
+      if Parent.SubElements[i].typeinfo = ntypeinfo then
       begin
-        if FParent.Subelements[i].GetArg('ToolBox')=s then
+        if Parent.Subelements[i].GetArg('ToolBox')=s then
         begin
-          result:=FParent.SubElements[i];
+          result:=Parent.SubElements[i];
           break;
         end;
       end;
     end;
     if Result=nil then
     begin
-      Result:=ConstructQObject(nname+ntypeinfo, FParent);
+      Result:=ConstructQObject(nname+ntypeinfo, Parent);
       if s<>'' then
         Result.Specifics.Add('ToolBox='+s);
-      FParent.SubElements.Add(Result);
+      Parent.SubElements.Add(Result);
     end;
   end;
 
@@ -632,7 +632,7 @@ begin
     CreateAddons;
     count:=text_entities.count;
 
-    addonRoot:=QFileObject(FParent);
+    addonRoot:=QFileObject(Parent);
     if addonRoot = nil then
       raise InternalE('Error obtaining Root (addonRoot = nil)');
 
@@ -685,19 +685,19 @@ begin
             begin
               opt_tbx:=QToolBoxGroup.Create(tb, EntityTBX);
               EntityTBX.Subelements.add(opt_tbx);
-              Entity.FParent:=opt_tbx;
+              Entity.Parent:=opt_tbx;
               opt_tbx.SubElements.Add(Entity);
             end
             else
             begin
-              Entity.FParent:=opt_tbx;
+              Entity.Parent:=opt_tbx;
               opt_tbx.SubElements.Add(Entity);
             end;
           end
           else
           begin
             EntityTBX.SubElements.Add(Entity);
-            Entity.FParent:=EntityTBX;
+            Entity.Parent:=EntityTBX;
           end;
         end;
         (*
@@ -742,7 +742,7 @@ begin
   finally
     text_entities.free;
   end;
-  ExplorerFromObject(FParent).Refresh;
+  ExplorerFromObject(Parent).Refresh;
 
   ShowMessage(FmtLoadStr1(5834, [ count,getword(count), Specifics.Values['GameDir']]));
 end;

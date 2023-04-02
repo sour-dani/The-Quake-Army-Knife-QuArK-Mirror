@@ -374,9 +374,9 @@ var
    if Q=Nil then Exit;
    if Roots.IndexOf(Q)<0 then
     begin
-     if not TagMe(Q.FParent) then Exit;
-     if Q.FParent.Flags and ofTreeViewExpanded = 0 then
-      ToggleExpanding(Q.FParent);
+     if not TagMe(Q.Parent) then Exit;
+     if Q.Parent.Flags and ofTreeViewExpanded = 0 then
+      ToggleExpanding(Q.Parent);
     end;
    Result:=True;
   end;
@@ -390,12 +390,12 @@ begin
      TMSelUnique:=Nil;
      Exit;
     end;
-   Racine:=Racine.FParent;
+   Racine:=Racine.Parent;
   end;
- if (Racine<>Q) and (ieListView in Q.FParent.IsExplorerItem(Q)) then
+ if (Racine<>Q) and (ieListView in Q.Parent.IsExplorerItem(Q)) then
   begin
-   TagMe(Q.FParent);
-   TMSelUnique:=Q.FParent;
+   TagMe(Q.Parent);
+   TMSelUnique:=Q.Parent;
    DisplayCurrentObject;
    if (FFiche<>Nil) and (FFiche is TQForm2) then
     TQForm2(FFiche).TMSelUnique:=Q;

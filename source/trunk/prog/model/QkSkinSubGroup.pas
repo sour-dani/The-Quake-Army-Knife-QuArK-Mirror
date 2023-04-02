@@ -29,16 +29,16 @@ type
   QSkinSubGroup = Class(QMdlObject)
   public
     class function TypeInfo: String; override;
-    function IsAllowedParent(Parent: QObject) : Boolean; override;
+    function IsAllowedParent(nParent: QObject) : Boolean; override;
   end;
 
 implementation
 
 uses QkObjectClassList, QkSkinGroup;
 
-function QSkinSubGroup.IsAllowedParent(Parent: QObject) : Boolean;
+function QSkinSubGroup.IsAllowedParent(nParent: QObject) : Boolean;
 begin
-  if (Parent=nil) or (Parent is QSkinGroup) then
+  if (nParent=nil) or (nParent is QSkinGroup) then
     Result:=true
   else
     Result:=false;

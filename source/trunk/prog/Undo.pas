@@ -262,7 +262,7 @@ function GetUndoRoot(Q: QObject) : PUndoRoot;
 begin  { searches the root object over Q }
  while Q.Flags and (ofFileLink or ofTreeViewSubElement) <> ofFileLink do
   begin
-   Q:=Q.FParent;
+   Q:=Q.Parent;
    if Q=Nil then
    begin
      Log(LOG_VERBOSE, 'GetUndoRoot: Unable to find parent of object %s', [Q.Name]);
@@ -303,7 +303,7 @@ begin
      end;
     if Q.Flags and (ofFileLink or ofTreeViewSubElement) = ofFileLink then
      Break;  { found the needed root }
-    Q:=Q.FParent;
+    Q:=Q.Parent;
    until False;
    New(Result);
    Result^.Root:=Q as QFileObject;
@@ -884,15 +884,15 @@ begin
  inherited Create(nText);
 (*if nAncien<>Nil then
   begin
-   CommonParent:=nAncien.FParent;
+   CommonParent:=nAncien.Parent;
    {$IFDEF Debug}
-   if (nNouveau<>Nil) and (CommonParent<>nNouveau.FParent) then
+   if (nNouveau<>Nil) and (CommonParent<>nNouveau.Parent) then
     Raise DebugError;
    {$ENDIF}
   end
  else
   if nNouveau<>Nil then
-   CommonParent:=nNouveau.FParent
+   CommonParent:=nNouveau.Parent
   else
    CommonParent:=Nil;
  if CommonParent<>Nil then CommonParent.AddRef(+1);*)
@@ -905,8 +905,8 @@ begin
    if (Ancien=Nil) or (Ancien.Flags or ofTreeViewSubElement <> 0) then
     Nouveau.Flags:=Nouveau.Flags or ofTreeViewSubElement;
   end;
- if (Ancien<>Nil) and (Nouveau<>Nil) and (Ancien.FParent<>Nil)
- and (Ancien.FParent=Nouveau.FParent) then
+ if (Ancien<>Nil) and (Nouveau<>Nil) and (Ancien.Parent<>Nil)
+ and (Ancien.Parent=Nouveau.Parent) then
   InsererAvant:=Ancien.NextInGroup
  else
   InsererAvant:=Nil;
@@ -970,10 +970,10 @@ begin
  if Ancien<>Nil then
   begin
    {$IFDEF Debug}
-  {if Ancien.FParent<>CommonParent then Raise DebugError;}
+  {if Ancien.Parent<>CommonParent then Raise DebugError;}
    {$ENDIF}
-   if Ancien.FParent<>Nil then
-    with Ancien.FParent do
+   if Ancien.Parent<>Nil then
+    with Ancien.Parent do
      begin
       Modified;
       I:=SubElements.IndexOf(Ancien);
@@ -1012,10 +1012,10 @@ begin
   begin
    Nouveau.Modified;
    {$IFDEF Debug}
-  {if Nouveau.FParent<>CommonParent then Raise DebugError;}
+  {if Nouveau.Parent<>CommonParent then Raise DebugError;}
    {$ENDIF}
-   if Nouveau.FParent<>Nil then
-    with Nouveau.FParent.SubElements do
+   if Nouveau.Parent<>Nil then
+    with Nouveau.Parent.SubElements do
      begin
       if InsererAvant=Nil then
        I:=-1
@@ -1434,7 +1434,7 @@ end;
 
 function ActionQObject(T: QObject) : QObject;
 begin
- Result:=T.Clone(T.FParent, False);
+ Result:=T.Clone(T.Parent, False);
  g_ListeActions.Add(TQObjectUndo.Create('', T, Result));
 end;
 

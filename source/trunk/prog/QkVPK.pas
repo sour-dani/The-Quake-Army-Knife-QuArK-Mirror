@@ -175,8 +175,8 @@ begin
       Raise InternalE('LoadedItem '+Q.GetFullName+' '+IntToStr(rf_default));
     Q.Open(TQStream(F), 0);
     // i must access the object, from inside the onaccess function
-    Q.FNode^.PUserdata:=VPKDirectoryFile;
-    Q.FNode^.OnAccess:=VPKAddRef;
+    Q.Node^.PUserdata:=VPKDirectoryFile;
+    Q.Node^.OnAccess:=VPKAddRef;
   end;
 end;
 

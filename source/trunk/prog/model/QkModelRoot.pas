@@ -92,7 +92,7 @@ begin
   Result:=Nil;
   try
     with QkObjFromPyObj(self) as QModelRoot do
-      QMD3File(FParent).TryAutoLoadParts;
+      QMD3File(Parent).TryAutoLoadParts;
     Result:=PyNoResult;
   except
     Py_XDECREF(Result);

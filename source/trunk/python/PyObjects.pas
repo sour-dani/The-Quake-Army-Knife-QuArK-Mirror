@@ -282,7 +282,7 @@ begin
   if not PyArg_ParseTupleX(args, 'iO!', [@Index, @TyObject_Type, @Obj1]) then
    Exit;
   nChild:=QkObjFromPyObj(Obj1);
-  if nChild.FParent<>Nil then
+  if nChild.Parent<>Nil then
    begin
     PyErr_SetString(QuarkxError, ToPyChar(LoadStr1(4422)));
     Exit;
@@ -452,7 +452,7 @@ begin
   if not PyArg_ParseTupleX(args, '|O', [@obj]) then
    Exit;
   Q:=QkObjFromPyObj(self);
- {nparent:=GetPyObj(Q.FParent);
+ {nparent:=GetPyObj(Q.Parent);
   if not PyArg_ParseTupleX(args, '|O!', [@TyObject_Type, @nparent]) then
    Exit;}
   Q1:=Q.Clone({QkObjFromPyObj(nparent)}Nil, PyObject_IsTrue(obj));
@@ -649,10 +649,10 @@ begin
    'p': if StrComp(attr, 'parent') = 0 then
          with QkObjFromPyObj(self) do
           begin
-           if FParent=Nil then
+           if Parent=Nil then
             Result:=PyNoResult
            else
-            Result:=GetPyObj(FParent);
+            Result:=GetPyObj(Parent);
            Exit;
           end;
    's': if StrComp(attr, 'selected') = 0 then

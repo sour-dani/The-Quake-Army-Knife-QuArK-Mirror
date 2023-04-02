@@ -59,7 +59,7 @@ Skeleton                             #                |
 type
   QModelBone = class(QMdlObject)
   public
-    function IsAllowedParent(Parent: QObject) : Boolean; override;
+    function IsAllowedParent(nParent: QObject) : Boolean; override;
     class function TypeInfo: String; override;
     procedure ObjectState(var E: TEtatObjet); override;
 //    procedure Dessiner; override;
@@ -80,9 +80,9 @@ uses qk3d, pymath, quarkx, QkExceptions, QkObjectClassList, QkMiscGroup, ExtraFu
 
  {------------------------}
 
-function QModelBone.IsAllowedParent(Parent: QObject) : Boolean;
+function QModelBone.IsAllowedParent(nParent: QObject) : Boolean;
 begin
-  if (Parent=nil) or (Parent is QBoneGroup) or (Parent is QModelBone) then
+  if (nParent=nil) or (nParent is QBoneGroup) or (nParent is QModelBone) then
     Result:=true
   else
     Result:=false;

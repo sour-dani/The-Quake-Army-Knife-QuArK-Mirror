@@ -1770,7 +1770,7 @@ begin
       Result:=Tex
     else
     begin
-      Result:=Tex.Clone(Tex.FParent, False) as QPixelSet;
+      Result:=Tex.Clone(Tex.Parent, False) as QPixelSet;
       Result.Name:=nName;
     end
   end
@@ -1778,7 +1778,7 @@ begin
   begin
     PSD:=Tex.Description;
     try
-      Result:=Cls.Create(nName, Tex.FParent) as QPixelSet;
+      Result:=Cls.Create(nName, Tex.Parent) as QPixelSet;
       try
         if not Result.SetDescription(PSD, ccAuto) then
           raise EErrorFmt(5619, [nName]);

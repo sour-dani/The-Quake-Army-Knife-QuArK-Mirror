@@ -418,14 +418,14 @@ var
 begin
  DispInfo(Sender, Node, ItemInfo);
  Q:=ValidObject(Node);
- if (Q.TvParent<>Nil) and (Q.FParent is QToolBoxGroup)
+ if (Q.TvParent<>Nil) and (Q.Parent is QToolBoxGroup)
  and TreeView_GetItemRect(Handle, ItemInfo.hItem, R, True) then
   begin
    DC:=GetDC(Handle);
    C1:=SetTextColor(DC, ColorToRGB(clGrayText));
    hFont:=Windows.SelectObject(DC, DescFont.Handle);
    try
-    R.Right:=QToolBoxgroup(Q.FParent).GetDescription(DC, Q, S);
+    R.Right:=QToolBoxgroup(Q.Parent).GetDescription(DC, Q, S);
     if R.Right>0 then
      begin
       Inc(R.Left, R.Right);
@@ -774,17 +774,17 @@ begin
       if (Q=Nil) or not (Q is QToolBoxGroup) then
        MacroCommand:=False
       else
-       if Q.FParent is QToolBox then
+       if Q.Parent is QToolBox then
         begin
-         if MessageDlg(FmtLoadStr1(5597, [Q.Name, Q.FParent.Name]), mtWarning,
+         if MessageDlg(FmtLoadStr1(5597, [Q.Name, Q.Parent.Name]), mtWarning,
           [mbYes, mbNo], 0) <> mrYes then
            Abort;
-         Q:=Q.FParent;
+         Q:=Q.Parent;
          Undo.Action(Q, TQObjectUndo.Create(FmtLoadStr1(582, [Q.Name]), Q, Nil));
          MacroCommand( { TREL } Ord('T')+256*Ord('R')+65536*Ord('E')+16777216*Ord('L'));
         end
        else
-        Undo.Action(Q.FParent, TQObjectUndo.Create(FmtLoadStr1(582, [Q.Name]), Q, Nil));
+        Undo.Action(Q.Parent, TQObjectUndo.Create(FmtLoadStr1(582, [Q.Name]), Q, Nil));
      end;
   { TREL } Ord('T')+256*Ord('R')+65536*Ord('E')+16777216*Ord('L'):
      BrowseToolBox(GetToolBoxSingleName);
@@ -834,7 +834,7 @@ begin
    S:=Q.Specifics.Values[SpecDesc];
    S2:=InputBox(Q.Name, LoadStr1(5598), S);
    if S<>S2 then
-    Undo.Action(Q.FParent, TSpecificUndo.Create(LoadStr1(608),
+    Undo.Action(Q.Parent, TSpecificUndo.Create(LoadStr1(608),
      SpecDesc, S2, sp_Auto, Q));
   end
  else

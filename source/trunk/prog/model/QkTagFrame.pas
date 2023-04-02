@@ -28,7 +28,7 @@ type
   QTagFrame = class(QMdlObject)
   public
     class function TypeInfo: String; override;
-    function IsAllowedParent(Parent: QObject) : Boolean; override;
+    function IsAllowedParent(nParent: QObject) : Boolean; override;
     procedure ObjectState(var E: TEtatObjet); override;
     Procedure SetPosition(p: vec3_t);
     Function GetPosition: vec3_p;
@@ -40,9 +40,9 @@ implementation
 
 uses QkObjectClassList, QkModelTag;
 
-function QTagFrame.IsAllowedParent(Parent: QObject) : Boolean;
+function QTagFrame.IsAllowedParent(nParent: QObject) : Boolean;
 begin
-  if (Parent=nil) or (Parent is QModelTag) then
+  if (nParent=nil) or (nParent is QModelTag) then
     Result:=true
   else
     Result:=false;

@@ -110,7 +110,7 @@ begin
   Q1:=QkObjFromPyObj(obj1);
   Q2:=QkObjFromPyObj(obj2);
   if Q2<>Nil then
-   Q2.PySetParent(Q1.FParent);
+   Q2.PySetParent(Q1.Parent);
   U:=TQObjectUndo.Create('', Q1, Q2);
   g_ListeActions.Add(U);
   if obj3<>Nil then

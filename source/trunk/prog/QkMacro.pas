@@ -583,7 +583,7 @@ begin
     end;
   typExecute:
     begin
-   (*Q:=Clone(FParent);
+   (*Q:=Clone(Parent);
      Q.AddRef(+1); try
      with ValidParentForm(Sender as TControl) do
       Source:=HasGotObject(Perform(wm_InternalMessage, wp_EditMsg, edGetMacroObject));

@@ -93,7 +93,7 @@ var
 begin
  FindIncludeData1:=Nil;
  while (LookFrom<>Nil) and not Parcourir(LookFrom) do
-  LookFrom:=LookFrom.FParent;
+  LookFrom:=LookFrom.Parent;
  if Result=Nil then
   begin
    AddOns:=MakeAddonsList; try
@@ -152,12 +152,12 @@ function QInclude.RemoveReference : Boolean;
 {var
  IncludePos: Integer;}
 begin
-{if FParent=Nil then
+{if Parent=Nil then
   IncludePos:=-1
  else
-  IncludePos:=FParent.SubElements.IndexOf(Self);}
+  IncludePos:=Parent.SubElements.IndexOf(Self);}
  { this object is immediately removed if DoIncludeData succeeded }
- RemoveReference:=DoIncludeData(FParent, FParent, Name);
+ RemoveReference:=DoIncludeData(Parent, Parent, Name);
 end;*)
 
  {------------------------}

@@ -234,7 +234,10 @@ type
     { for direct copying objects that haven't been loaded
       yet, see QkObjects.txt:Copying }
   protected
+    FName: String;
     FFlags: Byte; { ofXXX flags above }
+    FNode: PQStreamRef; { info about where on disk the objects info is, see QkObjects.txt:delay_loading }
+    FParent: QObject;
     FSelMult: Byte; { smXXX flags above }
     FLoading: Boolean; { true while object is being loaded }
     FPyNoParent: Boolean;  { used by polyhedrons }
@@ -256,11 +259,6 @@ type
     PythonObj: TPythonObj;
     { structure with Python Object fields; to make a real
       Python object, take a pointer to this }
-    FNode: PQStreamRef;
-    { info about where on disk the
-      objects info is, see QkObjects.txt:delay_loading }
-    FParent: QObject;
-    Name: String;
     constructor Create(const nName: String; nParent: QObject);
     { prep for expansion in a treeview }
     procedure LoadAll;
@@ -280,7 +278,10 @@ type
     function GetObjectSize(Loaded: TQStream; LoadNow: Boolean) : Integer;
     procedure ObjectState(var E: TEtatObjet); virtual;
     procedure DisplayDetails(SelIcon: Boolean; var D: TDisplayDetails); virtual;
+    property Name: String read FName write FName;
     property Flags: Byte read FFlags write FFlags;
+    property Node: PQStreamRef read FNode write FNode;
+    property Parent: QObject read FParent write FParent;
     { properties concerning display in a tree-view }
     property SelMult: Byte read FSelMult write FSelMult;
     property SelUnique: Boolean read GetSelUnique write SetSelUnique;
@@ -334,7 +335,7 @@ type
     procedure FinalizeFromText; virtual;
     function WriteSubelements : Boolean; virtual;
     function ClassList : TStringList;
-    function IsAllowedParent(Parent: QObject) : Boolean; virtual;
+    function IsAllowedParent(nParent: QObject) : Boolean; virtual;
     function TreeViewColorBoxes : TColorBoxList; virtual;
   end;
 
@@ -941,8 +942,8 @@ begin
 
   for I:=0 to FSubElements.Count-1 do
   begin
-    if FSubElements[I].FParent=Self then
-      FSubElements[I].FParent:=Nil;  // Put break point here with Break When Condition: FSubElements[I].PythonObj.ob_refcnt > 1
+    if FSubElements[I].Parent=Self then
+      FSubElements[I].Parent:=Nil;  // Put break point here with Break When Condition: FSubElements[I].PythonObj.ob_refcnt > 1
   end;
 
   FSubElements.Free;
@@ -971,8 +972,8 @@ begin
   Q:=Self;
   while Q<>Nil do
   begin
-    Q.FFlags:=Q.FFlags or ofModified;
-    Q:=Q.FParent;
+    Q.Flags:=Q.Flags or ofModified;
+    Q:=Q.Parent;
   end;
 end;
 
@@ -1619,7 +1620,7 @@ begin
     Q:=BindFileQObject(nName, Self, False);
     Q.AddRef(+1);
     try
-      if Q.FParent<>Self then
+      if Q.Parent<>Self then
       begin
         GlobalWarning(FmtLoadStr1(5225, [nName]));
         Modified;
@@ -1708,7 +1709,7 @@ begin
   Result:=true;
 end;
 
-function QObject.IsAllowedParent(Parent: QObject) : Boolean;
+function QObject.IsAllowedParent(nParent: QObject) : Boolean;
 begin
   Result:=true;
 end;
@@ -1971,7 +1972,7 @@ begin
   if not ((FFlags and ofTreeViewSubElement) <> 0) then {Decker - better clarify what the hell we're testing FFlags for!}
     Result:=Nil    { because it is a root in an Explorer }
   else
-    Result:=FParent;
+    Result:=Parent;
 end;
 
 procedure QObject.SetTvParent(nParent: QObject);
@@ -2104,9 +2105,9 @@ function QObject.NextInGroup(): QObject;
 var
   I: Integer;
 begin
-  I:=FParent.SubElements.IndexOf(Self);
-  if (I >= 0) and (I+1 < FParent.SubElements.Count) then
-    Result:=FParent.SubElements.Items[I+1]
+  I:=Parent.SubElements.IndexOf(Self);
+  if (I >= 0) and (I+1 < Parent.SubElements.Count) then
+    Result:=Parent.SubElements.Items[I+1]
   else
     Result:=Nil;
 end;
@@ -2146,7 +2147,7 @@ begin
      {if FFlags and ofTvNode <> 0 then
         Raise InternalE('Clone');}
      {$ENDIF}
-      Result.FNode:=QStreamClone(FNode);
+      Result.Node:=QStreamClone(FNode);
     end;
     Result.FixupReference;
   except
@@ -2796,7 +2797,7 @@ begin
   'p':
     if StrComp(attr, 'parent') = 0 then
     begin
-      Result:=GetPyObj(FParent);
+      Result:=GetPyObj(Parent);
       Exit;
     end;
 

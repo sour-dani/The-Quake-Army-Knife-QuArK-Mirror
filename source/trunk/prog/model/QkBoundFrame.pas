@@ -29,7 +29,7 @@ type
   private
     Component: QObject;
   public
-    function IsAllowedParent(Parent: QObject) : Boolean; override;
+    function IsAllowedParent(nParent: QObject) : Boolean; override;
     class function TypeInfo: String; override;
     procedure ObjectState(var E: TEtatObjet); override;
     procedure Dessiner; override;
@@ -54,9 +54,9 @@ implementation
 
 uses Qk3D, Coordinates, PyMath, Quarkx, QkExceptions, QkObjectClassList, QkMiscGroup;
 
-function QBoundFrame.IsAllowedParent(Parent: QObject) : Boolean;
+function QBoundFrame.IsAllowedParent(nParent: QObject) : Boolean;
 begin
-  if (Parent=nil) or (Parent is QMiscGroup) then
+  if (nParent=nil) or (nParent is QMiscGroup) then
     Result:=true
   else
     Result:=false;
@@ -177,8 +177,8 @@ begin
   end;
   Result:=(Length(S) - StartSpecLen)=sizeof(vec3_t);
   if not result then begin
-    if FParent is QBoundFrame then
-      Result:=QBoundFrame(FParent).GetEndPoint(startpoint)
+    if Parent is QBoundFrame then
+      Result:=QBoundFrame(Parent).GetEndPoint(startpoint)
     else
       Result:=false;
     Exit;

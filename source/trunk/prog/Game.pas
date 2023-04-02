@@ -611,14 +611,14 @@ var
    Setup := SetupGameset;
    if (Setup.Specifics.Values['UseQrkGroupFolder']<>'') then
    begin
-     Q := obj.FParent;
-     while (Q <> nil) and (Q.FParent <> nil) do
+     Q := obj.Parent;
+     while (Q <> nil) and (Q.Parent <> nil) do
      begin
        makefolders := outputfile(ConcatPaths([GameMapPath, Q.Name]));
        if Length(Result) <> 0 then
          Result := PathDelim + Result;
        Result := Q.Name + Result;
-       Q := Q.FParent;
+       Q := Q.Parent;
      end;
    end;
  end;

@@ -292,7 +292,7 @@ begin
  Result:=Nil;
  while Odd(Q.Flags) do
   begin
-   Q:=Q.FParent;
+   Q:=Q.Parent;
    if Q=Nil then Exit;
   end;
  for I:=FAllExplorers.Count-1 downto 0 do
@@ -351,7 +351,7 @@ begin
   repeat
     if not Odd(Q.Flags) then
       g_WorkingExplorer:=Nil;  { moved up past the root of g_WorkingExplorer }
-    Q:=Q.FParent;
+    Q:=Q.Parent;
     if Q=Nil then Break;
     Dec(I);
     Q.OperationInScene(asModifieParent, I);
@@ -364,10 +364,10 @@ begin
  if g_NiveauAction and na_Local <> 0 then Exit;
  if CurrentExplorer=Nil then
   CurrentExplorer:=ExplorerFromObject(Q);
- ParentOnly:=(CurrentExplorer=Nil) and (Q.FParent<>Nil);
+ ParentOnly:=(CurrentExplorer=Nil) and (Q.Parent<>Nil);
  if ParentOnly then
   begin
-   Q:=Q.FParent;
+   Q:=Q.Parent;
    CurrentExplorer:=ExplorerFromObject(Q);
   end;
  if CurrentExplorer<>Nil then
@@ -625,8 +625,8 @@ begin
     begin
      Info:=El.IsExplorerItem(Q);
      {$IFDEF Debug}
-     if (ieDisplay in Info) and (FParent<>El) then
-      Raise InternalE('FParent<>El');
+     if (ieDisplay in Info) and (Parent<>El) then
+      Raise InternalE('Parent<>El');
      {$ENDIF}
      Flags:=Flags and not (ofTreeViewSubElement or ofTreeViewInvisible)
       or Ord(ieDisplay in Info);
@@ -750,15 +750,15 @@ end;*)
 
 (*function TQkExplorer.ValidObject(Node: TTreeNode) : QObject;
 var
- Parent: QObject;
+ nParent: QObject;
 begin
  if Node=Nil then
   Abort;  { Erreur }
  Result:=QObject(Node.Data);
  if Result=FTopObject then
   Exit;  { Ok }
- Parent:=ValidObject(Node.Parent);
- if Parent.SubElements.IndexOf(Result)<0 then
+ nParent:=ValidObject(Node.Parent);
+ if nParent.SubElements.IndexOf(Result)<0 then
   Abort;  { Erreur }
 end;*)
 
@@ -1075,9 +1075,9 @@ var
   procedure ExpandNow(Q1: QObject);
   begin
    if Q1=Stop then Exit;
-   ExpandNow(Q1.FParent);
-   if Q1.FParent.Flags and ofTreeViewExpanded = 0 then
-    ToggleExpanding(Q1.FParent);
+   ExpandNow(Q1.Parent);
+   if Q1.Parent.Flags and ofTreeViewExpanded = 0 then
+    ToggleExpanding(Q1.Parent);
   end;
 begin
  Stop:=Q;
@@ -1088,7 +1088,7 @@ begin
      TMSelUnique:=Nil;
      Exit;
     end;
-   Stop:=Stop.FParent;
+   Stop:=Stop.Parent;
   end;
  TMSelUnique:=Q;
  ExpandNow(Q);
@@ -1667,7 +1667,7 @@ begin
     if ieCanDrop in DropTarget.IsExplorerItem(El) then
      if Copier or not Interne then
       begin
-       El.FParent:=DropTarget;
+       El.Parent:=DropTarget;
        g_ListeActions.Add(TQObjectUndo.Create('', Nil, El));
       end
      else
@@ -1729,7 +1729,7 @@ begin
     if ieCanDrop in DropTarget.TvParent.IsExplorerItem(El) then
      if Copier or not Interne then
       begin
-       El.FParent:=DropTarget.TvParent;
+       El.Parent:=DropTarget.TvParent;
        U:=TQObjectUndo.Create('', Nil, El);
        g_ListeActions.Add(U);
        U.InsererAvant:=InsererAvant;
@@ -1863,7 +1863,7 @@ begin
    Q:=Gr.SubElements[I];
    if ieCanDrop in nParent.IsExplorerItem(Q) then
     begin
-     Q.FParent:=nParent;
+     Q.Parent:=nParent;
      U:=TQObjectUndo.Create('', Nil, Q);
      U.InsererAvant:=nInsererAvant;
      g_ListeActions.Add(U);
@@ -1999,7 +1999,7 @@ end;
 procedure TQkExplorer.RootChanging;
 begin
  if HasRootSpec then
-  Root.FParent.Specifics.Values['Root']:=Root.Name+Root.TypeInfo;
+  Root.Parent.Specifics.Values['Root']:=Root.Name+Root.TypeInfo;
 end;
 
 procedure TQkExplorer.GetExplorerInfo(var Info: TExplorerInfo);

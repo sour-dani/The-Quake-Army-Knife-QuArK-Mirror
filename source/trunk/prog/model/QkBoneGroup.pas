@@ -29,16 +29,16 @@ type
   QBoneGroup = Class(QMdlObject)
   public
     class function TypeInfo: String; override;
-    function IsAllowedParent(Parent: QObject) : Boolean; override;
+    function IsAllowedParent(nParent: QObject) : Boolean; override;
   end;
 
 implementation
 
 uses QkObjectClassList, QkModelRoot;
 
-function QBoneGroup.IsAllowedParent(Parent: QObject) : Boolean;
+function QBoneGroup.IsAllowedParent(nParent: QObject) : Boolean;
 begin
-  if (Parent=nil) or (Parent is QModelRoot) then
+  if (nParent=nil) or (nParent is QModelRoot) then
     Result:=true
   else
     Result:=false;

@@ -3972,8 +3972,8 @@ begin
 
  if MapSaveSettings.GameCode=mjHexen then
   begin
-   if (F.FParent<>nil) and (F.FParent is TPolyhedron) and (TPolyhedron(F.FParent).Specifics.Values['H2_light']<>'') then
-    S:=S+' '+TPolyhedron(F.FParent).Specifics.Values['H2_light']
+   if (F.Parent<>nil) and (F.Parent is TPolyhedron) and (TPolyhedron(F.Parent).Specifics.Values['H2_light']<>'') then
+    S:=S+' '+TPolyhedron(F.Parent).Specifics.Values['H2_light']
    else
     S:=S+' -1';
   end
@@ -4247,7 +4247,7 @@ begin
  begin
 
 {if (Specifics.Values['out']<>'')
- and (FParent<>Nil) and (TvParent.TvParent=Nil) then
+ and (Parent<>Nil) and (TvParent.TvParent=Nil) then
   GlobalWarning(LoadStr1(230));}  { FIXME: do various map tests globally }
  for I:=0 to LengthBuildImages-1 do
    SaveAsMapText(ItemToSave(I), MapSaveSettings, Negatif, Texte, Flags2, HxStrings);
