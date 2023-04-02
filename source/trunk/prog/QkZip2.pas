@@ -222,7 +222,8 @@ end;
 procedure QZipFolder.WritePakEntries(Info: TInfoEnreg1; Origine: TStreamPos; const Chemin: String; TailleNom: Integer; Repertoire: TStream; eocd: PEndOfCentralDir);
 const
   VMB_NTFS = 10; //version_mady_by - Windows NTFS
-  PKZIP_VERSION = 20; //Version 2.0, because we use DEFLATE
+  PKZIP_VERSION_1_0 = 10; //Version 1.0: Default value
+  PKZIP_VERSION_2_0 = 20; //Version 2.0: File is compressed using Deflate compression
 
   //POSIX st_mode (file attributes):
   S_IFMT    = Word(61440);   //bit mask for the file type bit field
@@ -322,14 +323,14 @@ begin
           pos:=Info.F.Position; //Save Local Header Offset
 
          {Write File Entry}
-          LFS:=BuildLFH(PKZIP_VERSION, 0, 8, TimestampNow, crc, Size, OrgSize, length(s), 0); //FIXME: Set proper timestamp, if available!
+          LFS:=BuildLFH(PKZIP_VERSION_1_0, 0, 8, TimestampNow, crc, Size, OrgSize, length(s), 0); //FIXME: Set proper timestamp, if available!
           sig:=cZIP_HEADER;
           Info.F.WriteBuffer(sig, 4);
           Info.F.WriteBuffer(LFS, Sizeof(TLocalFileHeader));
           Info.F.WriteBuffer(PChar(S)^, Length(S));
          {/Write File Entry}
 
-          cdir:=BuildFH(VMB_NTFS, PKZIP_VERSION, 0, 8, TimestampNow, crc, Size, OrgSize, length(s), 0, 0, 0, Longword(S_IFREG or (S_IRUSR or S_IWUSR or S_IRGRP or S_IWGRP or S_IROTH or S_IWOTH)) shl 16, pos, 0); //FIXME: Set proper timestamp, if available!
+          cdir:=BuildFH(VMB_NTFS, PKZIP_VERSION_2_0, 0, 8, TimestampNow, crc, Size, OrgSize, length(s), 0, 0, 0, Longword(S_IFREG or (S_IRUSR or S_IWUSR or S_IRGRP or S_IWGRP or S_IROTH or S_IWOTH)) shl 16, pos, 0); //FIXME: Set proper timestamp, if available!
           sig:=cCFILE_HEADER;
           Repertoire.WriteBuffer(sig, 4);
           Repertoire.WriteBuffer(cdir, sizeof(TFileHeader));
