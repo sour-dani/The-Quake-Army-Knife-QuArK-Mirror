@@ -199,9 +199,9 @@ echo   options:
 echo     DEBUG         = make debug exe [optional]
 echo     ALLOWD3D      = doesn't remove quark d3d files [optional]
 echo     NOHELP        = no help files created 
-echo                     [optional - can't be used with ONLYHELP] 
+echo                     [optional - can't be used with ONLYHELP]
 echo     ONLYHELP      = only creates help files
-echo                     [optional - can't be used with NOHELP] 
+echo                     [optional - can't be used with NOHELP]
 echo     NOCOMPILE     = doesn't compile a new .exe [optional]
 echo     NOCOMPRESSEXE = doesn't compress .exe with "upx" [optional]
 echo     NOSFX         = doesn't create sfx archives.

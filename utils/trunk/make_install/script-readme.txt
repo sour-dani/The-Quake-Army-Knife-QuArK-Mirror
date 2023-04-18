@@ -23,15 +23,16 @@ Usage:
                 necessary.
                 must be in quotes with no spaces,
                 ie "QuArK_6.2" instead of "QuArK 6.2".
-   otpions:
+   
+   options:
      DEBUG         = make debug exe [optional]
      ALLOWD3D      = doesn't remove quark d3d files [optional]
      NOHELP        = no help files created
-                     [optional - can't be used with ONLYHELP] 
+                     [optional - can't be used with ONLYHELP]
      ONLYHELP      = only creates help files
-                     [optional - can't be used with NOHELP] 
+                     [optional - can't be used with NOHELP]
      NOCOMPILE     = doesn't compile a new .exe [optional]
-     NOCOMPRESSEXE = doesn't compress .exe with "upx" [optional] 
+     NOCOMPRESSEXE = doesn't compress .exe with "upx" [optional]
      NOSFX         = doesn't create sfx archives.
      NORUNTIME     = doesn't copy runtime files
 
