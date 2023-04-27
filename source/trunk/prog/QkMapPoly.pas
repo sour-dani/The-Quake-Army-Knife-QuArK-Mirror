@@ -1248,7 +1248,6 @@ var
   ListeSommets: TList;
   SommetEx: PVertexEx;
   NoAretes: array[1..2] of Integer;
-  DummyPointer: Pointer;
 
   procedure RemoveFace(FI: TFace; I: Integer);
   var
@@ -1573,28 +1572,22 @@ begin
       until J=Vertices.Count;
       TamponArete^:=$8000;
 
-      //Okay, problem. ReallocMem can change the pointer! So we have to make sure
-      //after the move, all our pointers are still pointing to the right things!
-
-      //Save original pointer
-      DummyPointer:=Pointer(DescFaces);
+      NbAretes2:=(PChar(Surface)-PChar(DescFaces)) div SizeOf(PVertex);
 
       ReallocMem(DescFaces, PChar(TamponArete)+SizeOf(Word)-PChar(DescFaces));
 
-      //Correct Surface pointer
-      Surface:=PSurface(PChar(Surface)+(PChar(DescFaces)-PChar(DummyPointer)));
+      //Okay, problem. ReallocMem can change the pointer! So we have to make sure
+      //after the move, all our pointers are still pointing to the right things!
 
-      DummyPointer:=PSurface(DescFaces);
+      Surface:=PSurface(DescFaces);
       for J:=0 to FaceList.Count-1 do
       begin
         FJ:=TFace(FaceList[J]);
-        K:=PSurface(DummyPointer)^.prvVertexCount;
-        Faces.Add(DummyPointer);
-        FJ.LinkSurface(DummyPointer);
-        Inc(PChar(DummyPointer), TailleBaseSurface+K*SizeOf(PVertex));
+        K:=PSurface(Surface)^.prvVertexCount;
+        Faces.Add(Surface);
+        FJ.LinkSurface(Surface);
+        Inc(PChar(Surface), TailleBaseSurface+K*SizeOf(PVertex));
       end;
-
-      NbAretes2:=(PChar(Surface)-PChar(DescFaces)) div SizeOf(PVertex);
     finally // 2
       Aretes.Free;
     end;
