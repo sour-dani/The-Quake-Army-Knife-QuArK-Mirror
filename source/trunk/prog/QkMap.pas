@@ -124,6 +124,9 @@ uses
   PyForms, Bezier, QkMesh, Duplicator, QkPixelSet, Qk6DX, QkVMF, QkSylphis, QkQ2,
   QkSin, MapError, PixelSetSizeCache, QkObjectClassList, ExtraFunctionality;
 
+type
+  vec3d = array[1..3] of Double;
+
 const
   MAX_PRECISION = 18; //Delphi 7 caps the precision at 18
 
@@ -2737,7 +2740,7 @@ end;
 
 { based on information about Q3R brush primitives format
   provided by Timothee Besset }
-procedure GetPXPY(const Normal: TVect; const V: TThreePoints; var PX, PY: array of Double; const Dist : Double);
+procedure GetPXPY(const Normal: TVect; const V: TThreePoints; var PX, PY: vec3d; const Dist : Double);
 var
   texS, texT, texO, P0, P1, P2: TVect;
   D : Double;
@@ -3246,7 +3249,7 @@ var
  Delta1, V, V2, V3: TVect;
  Facteur: TDouble;
  FS: PSurface;
- PX, PY: array[1..3] of Double;
+ PX, PY: vec3d;
  rval : Single; { for Value/lightvalue }
  Q: QPixelSet;
  Size: TPoint;
@@ -3379,7 +3382,7 @@ var
     end;
   end;
 
-  procedure write3vect(const P: array of Double; var S: String);
+  procedure write3vect(const P: vec3d; var S: String);
 {
   var
    I: Integer;
@@ -3584,7 +3587,7 @@ var
 
   procedure ApproximateParams(const Normale: TVect; const V: TThreePoints; var Params: TFaceParams; Mirror: Boolean);
   var
-    PX, PY: array[1..3] of TDouble;
+    PX, PY: vec3d;
     A, P2, S, C: TDouble;
     I: Integer;
     Plan: Char;
