@@ -82,7 +82,7 @@ type
 
 implementation
 
-uses Quarkx, QkExceptions, QkObjectClassList, Game, Setup, Travail, Logging, ExtraFunctionality;
+uses StrUtils, Quarkx, QkExceptions, QkObjectClassList, Game, Setup, Travail, Logging, ExtraFunctionality;
 
 {------------------------}
 

@@ -63,6 +63,8 @@ procedure Register;
 
 implementation
 
+uses Types;
+
 procedure Register;
 begin
   RegisterComponents('Exemples', [TQSplitter]);

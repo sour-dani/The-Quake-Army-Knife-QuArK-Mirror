@@ -119,7 +119,7 @@ function TestConversionImages(var I: Integer{; Exclude: QImage}) : QImageClass;
 
 implementation
 
-uses QkPcx, QkBmp, QkTga, QkDDS, QkFTX, QkIwi, QkJpg, QkPng, QkSoF, QkVTF,
+uses Types, QkPcx, QkBmp, QkTga, QkDDS, QkFTX, QkIwi, QkJpg, QkPng, QkSoF, QkVTF,
      TbPalette, qmath, Quarkx, QkExceptions, CCode, Undo, Travail, Setup, Logging;
 
 {$R *.DFM}

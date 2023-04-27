@@ -101,7 +101,7 @@ type
 
 implementation
 
-uses QuarkX, QkExceptions, Game, Travail, QkObjectClassList, Logging, ExtraFunctionality;
+uses StrUtils, QuarkX, QkExceptions, Game, Travail, QkObjectClassList, Logging, ExtraFunctionality;
 
 const
  LUMP_ENTITIES = 0;

@@ -55,7 +55,7 @@ procedure ProgressIndicatorStop;
 
 implementation
 
-uses QkObjects, Quarkx, Logging;
+uses Types, QkObjects, Quarkx, Logging;
 
 {$R *.DFM}
 

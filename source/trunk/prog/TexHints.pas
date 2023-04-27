@@ -36,7 +36,7 @@ type
 
 implementation
 
-uses Setup, Game, Travail, QkPixelSet, QkTextures, ExtraFunctionality;
+uses StrUtils, Setup, Game, Travail, QkPixelSet, QkTextures, ExtraFunctionality;
 
 procedure TTexHintWindow.Paint;
 var

@@ -171,9 +171,9 @@ const
 {$endif}
 {$ifndef Delphi2007orNewerCompiler}
   IMAGE_FILE_LARGE_ADDRESS_AWARE = $0020;
+{$endif}
   IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE = $0040;
   IMAGE_DLLCHARACTERISTICS_NX_COMPAT = $0100;
-{$endif}
 
 var //Note: These need to be initialized before use!
   SetDllDirectory: function (lpPathName : LPCTSTR): BOOL; stdcall;

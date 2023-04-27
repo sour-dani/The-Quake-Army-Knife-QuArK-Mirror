@@ -67,7 +67,7 @@ function ListPakFiles(const Path: String) : TStringList;
 
 implementation
 
-uses Platform, QkGroup, Game, QkTextures, QkWad, QkExplorer, QkZip2,
+uses StrUtils, Platform, QkGroup, Game, QkTextures, QkWad, QkExplorer, QkZip2,
   Quarkx, QkExceptions, Travail, ToolBox1, QkPak, QkFileObjects, QkHL, ToolBoxGroup,
   Setup, Logging, QkQ3, OsFolder, QkD3, ApplPaths, ExtraFunctionality;
 
