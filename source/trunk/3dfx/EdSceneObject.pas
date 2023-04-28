@@ -25,7 +25,7 @@ interface
 uses Windows, Classes,
      Game, Coordinates, qmath, Bezier, QkMesh,
      QkObjects, QkPixelSet, QkComponent, QkMapPoly,
-     Glide, GL1, Direct3D9, Sprite;
+     Glide, GL1, Direct3D9, Sprite, ExtraFunctionality;
 
  {------------------------}
 
@@ -125,8 +125,8 @@ type
    procedure stScaleModel(Skin: PTexture3; var ScaleS, ScaleT: TDouble); virtual; abstract;
    procedure stScaleBezier(Texture: PTexture3; var ScaleS, ScaleT: TDouble); virtual; abstract;
    procedure stScaleSprite(Texture: PTexture3; var ScaleS, ScaleT: TDouble); virtual; abstract;
-   procedure WriteSurfaceExtra(PS: PChar; Surface: PSurface3D); virtual; abstract;
-   procedure WriteVertex(PV: PChar; Source: Pointer; const ns,nt: Single; HiRes: Boolean); virtual; abstract;
+   procedure WriteSurfaceExtra(PS: PArithByte; Surface: PSurface3D); virtual; abstract;
+   procedure WriteVertex(PV: PArithByte; Source: Pointer; const ns,nt: Single; HiRes: Boolean); virtual; abstract;
    procedure PostBuild(nVertexList, nVertexList2: TList); virtual;
    procedure BuildTexture(Texture: PTexture3); virtual; abstract;
    procedure DisableDWM;
@@ -222,7 +222,7 @@ procedure GetwhForTexture(const info: GrTexInfo; var w,h: Integer);
 
 implementation
 
-uses SysUtils, Math, DWM, Logging, ExtraFunctionality,
+uses SysUtils, Math, DWM, Logging,
      Travail, Quarkx, QkExceptions, Setup,
      QkMdlObject, QkTextures, QkImages, QkFileObjects,
      EdSoftware, EdGlide, EdOpenGL, EdDirect3D;
@@ -409,8 +409,8 @@ var
  S,spec: String;
  TexNames: TStringList;
  PList: PSurfaces;
- Dest: PChar;
- PV: PChar;
+ Dest: PArithByte;
+ PV: PArithByte;
  TexPt: array[1..3] of TVect;
  DeltaV, v2, v3: TVect;
  CorrW, CorrH, aa, bb, {cc,} dd, dot22, dot23, dot33, mdet: TDouble;
@@ -482,7 +482,7 @@ var
     v2, v3, DeltaV: TVect;
     dd: TDouble;
   begin
-    PV:=PChar(Surf3D) + SizeOf(TSurface3D) + SurfaceExtraSize;
+    PV:=PArithByte(Surf3D) + SizeOf(TSurface3D) + SurfaceExtraSize;
 
     vp0:=BezierBuf.CP;
     Inc(vp0, i1);
@@ -541,9 +541,9 @@ var
         end;
       end;
 
-      WriteSurfaceExtra(PChar(Surf3D)+SizeOf(TSurface3D), Surf3D);
+      WriteSurfaceExtra(PArithByte(Surf3D)+SizeOf(TSurface3D), Surf3D);
 
-      Inc(PChar(Surf3D), VertexSize3m);
+      Inc(PArithByte(Surf3D), VertexSize3m);
     end;
   end;
 
@@ -949,7 +949,7 @@ begin
          v3.Y:={cc}bb*TexPt[2].Y + dd*TexPt[3].Y;
          v3.Z:={cc}bb*TexPt[2].Z + dd*TexPt[3].Z;
 
-         PV:=PChar(Surf3D) + SizeOf(TSurface3D) + SurfaceExtraSize;
+         PV:=PArithByte(Surf3D) + SizeOf(TSurface3D) + SurfaceExtraSize;
          for J:=0 to prvVertexCount-1 do
          begin
            with prvVertexTable[J]^.P do
@@ -964,7 +964,7 @@ begin
            Inc(PV, VertexSize);
          end;
 
-         WriteSurfaceExtra(PChar(Surf3D)+SizeOf(TSurface3D), Surf3D);
+         WriteSurfaceExtra(PArithByte(Surf3D)+SizeOf(TSurface3D), Surf3D);
 
          PList^.tmp:=PSurface3D(PV);
        end;
@@ -1004,7 +1004,7 @@ begin
 
          for J:=1 to Base.Triangles(CTris) do
          begin
-           PV:=PChar(Surf3D) + SizeOf(TSurface3D) + SurfaceExtraSize;
+           PV:=PArithByte(Surf3D) + SizeOf(TSurface3D) + SurfaceExtraSize;
            for L:=0 to 2 do
            begin
              with CTris^[L] do
@@ -1069,9 +1069,9 @@ begin
                    TextureMode:=trmColor;
              end;
 
-             WriteSurfaceExtra(PChar(Surf3D)+SizeOf(TSurface3D), Surf3D);
+             WriteSurfaceExtra(PArithByte(Surf3D)+SizeOf(TSurface3D), Surf3D);
 
-             Inc(PChar(Surf3D), VertexSize3m);
+             Inc(PArithByte(Surf3D), VertexSize3m);
            end;
          end;
 
@@ -1113,7 +1113,7 @@ begin
 
          for J:=1 to Base.Triangles(CTris) do
          begin
-           PV:=PChar(Surf3D) + SizeOf(TSurface3D) + SurfaceExtraSize;
+           PV:=PArithByte(Surf3D) + SizeOf(TSurface3D) + SurfaceExtraSize;
            for L:=0 to 2 do
            begin
              with CTris^[L] do
@@ -1177,9 +1177,9 @@ begin
                    TextureMode:=trmColor;
              end;
 
-             WriteSurfaceExtra(PChar(Surf3D)+SizeOf(TSurface3D), Surf3D);
+             WriteSurfaceExtra(PArithByte(Surf3D)+SizeOf(TSurface3D), Surf3D);
 
-             Inc(PChar(Surf3D), VertexSize3m);
+             Inc(PArithByte(Surf3D), VertexSize3m);
            end;
          end;
 
@@ -1285,9 +1285,9 @@ begin
                    TextureMode:=trmColor;
                end;
 
-               WriteSurfaceExtra(PChar(Surf3D)+SizeOf(TSurface3D), Surf3D);
+               WriteSurfaceExtra(PArithByte(Surf3D)+SizeOf(TSurface3D), Surf3D);
 
-               PV:=PChar(Surf3D) + SizeOf(TSurface3D) + SurfaceExtraSize;
+               PV:=PArithByte(Surf3D) + SizeOf(TSurface3D) + SurfaceExtraSize;
                bb:=L*(1/BezierMeshDetail);
 
                for K:=0 to BezierBuf.W-1 do
@@ -1309,7 +1309,7 @@ begin
                  Dec(st, BezierBuf.W-1);
                end;
 
-               PChar(Surf3D):=PChar(PV);
+               PArithByte(Surf3D):=PArithByte(PV);
              end;
            end;
          finally
@@ -1634,7 +1634,7 @@ end;
  Size: TPoint;
  I, MemSize: Integer;
  S: String;
- Dest: PChar;
+ Dest: PArithByte;
  Format: TMQIDF;
 begin
  if Q<>Nil then
@@ -1670,7 +1670,7 @@ begin
    S:=Image1.GetImage;
   CopyToDC(Src, GameInfo^.BmpInfo, PChar(S), 0, 0);
 
-  Dest:=PChar(info.data);
+  Dest:=PArithByte(info.data);
   MemSize:=w1*h1;
   for I:=0 to 3 do
    begin
@@ -1698,7 +1698,7 @@ var
 {Image1: QImage;
  SkinType: TSkinType;}
  S: String;
-{Src, Dest: PChar;}
+{Src, Dest: PArithByte;}
 {Lmp: PPaletteLmp;}
  Size: TPoint;
  TextureMaxDimension: Integer;
@@ -1871,7 +1871,7 @@ begin
    (*GetMem(data, J);
      if Direct then
       begin
-       Dest:=PChar(data);
+       Dest:=PArithByte(data);
        if Q=Nil then
         begin
          for J:=0 to MemSize-1 do
@@ -1897,7 +1897,7 @@ begin
       case SkinType of
        stTexture:
          begin
-          Dest:=PChar(data);
+          Dest:=PArithByte(data);
           for J:=0 to 3 do
            begin
             Move(PChar(Q.GetTexImage(J))^, Dest^, MemSize);
@@ -1912,7 +1912,7 @@ begin
          end;
        else
          begin
-          Dest:=PChar(data);
+          Dest:=PArithByte(data);
           for J:=0 to MemSize-1 do
            begin       { build a checkerboard texture image
             if (J and (cDummyTextureWHSize div 2)) = ((J div cDummyTextureWHSize) and (cDummyTextureWHSize div 2)) then
@@ -1935,7 +1935,7 @@ begin
        PTex^.Scaled:=True;
       end;*)
     end;
-   PTex^.MeanColor:=MeanColorNotComputed; {ComputeMeanColor(PChar(data), MemSize);}
+   PTex^.MeanColor:=MeanColorNotComputed; {ComputeMeanColor(PArithByte(data), MemSize);}
   end;
  P^.Texture:=PTex;
 end;
@@ -2008,7 +2008,7 @@ end;
 function GetTex3Description(const Tex3: TTexture3) : TPixelSetDescription;
 var
  J: Integer;
- Dest: PChar;
+ Dest: PArithByte;
 begin
  if Tex3.SourceTexture<>Nil then
   Result:=Tex3.SourceTexture.Description
@@ -2022,14 +2022,14 @@ begin
    Result.ScanLine:=cDummyTextureWHSize;
    Result.ColorPalette:=@(TTextureManager.GetInstance.DummyGameInfo^.PaletteLmp);
    Result.AllocData;
-   Dest:=PChar(Result.Data);
+   Dest:=PArithByte(Result.Data);
    { build a checkerboard texture image }
    for J:=0 to cDummyTextureWHSize * cDummyTextureWHSize - 1 do
     begin
      if (J and (cDummyTextureWHSize div 2)) = ((J div cDummyTextureWHSize) and (cDummyTextureWHSize div 2)) then
-      Dest^:=#0
+      PByte(Dest)^:=0
      else
-      Dest^:=#255;
+      PByte(Dest)^:=255;
      Inc(Dest);
     end;
   end;

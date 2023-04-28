@@ -1377,7 +1377,7 @@ var
  BitmapStruct: Windows.TBitmap;
  BmpInfo: TBitmapInfo256;
  BitmapInfo: TBitmapInfo absolute BmpInfo;
- Source, Data: String;
+ Source, Data: PByte;
  bpp, BaseMemSize: Integer;
  TmpPalette: TPaletteLmp;
 begin
@@ -1390,36 +1390,48 @@ begin
    biPlanes:=1;
   end;
 
- BaseMemSize:=((BmpInfo.bmiHeader.biWidth+3) and not 3) * BmpInfo.bmiHeader.biHeight;
- GetObject(Bitmap.Handle, SizeOf(BitmapStruct), @BitmapStruct);
- bpp:=BitmapStruct.bmBitsPixel*BitmapStruct.bmPlanes;
- if bpp=8 then
-  begin  { note: this is maybe never called }
-   BmpInfo.bmiHeader.biBitCount:=8;
-   SetLength(Source, BaseMemSize);
-   GetDIBits(Bitmap.Canvas.Handle, Bitmap.Handle, 0, BmpInfo.bmiHeader.biHeight,
-    PChar(Source), BitmapInfo, dib_RGB_Colors);
+ Data:=nil;
+ try
+  BaseMemSize:=((BmpInfo.bmiHeader.biWidth+3) and not 3) * BmpInfo.bmiHeader.biHeight;
+  GetObject(Bitmap.Handle, SizeOf(BitmapStruct), @BitmapStruct);
+  bpp:=BitmapStruct.bmBitsPixel*BitmapStruct.bmPlanes;
+  if bpp=8 then
+   begin  { note: this is maybe never called }
+    BmpInfo.bmiHeader.biBitCount:=8;
+    GetMem(Source, BaseMemSize);
+    try
+     GetDIBits(Bitmap.Canvas.Handle, Bitmap.Handle, 0, BmpInfo.bmiHeader.biHeight, Source, BitmapInfo, dib_RGB_Colors);
 
-   SetLength(Data, BaseMemSize);
-   TmpPalette:=LmpFromColors(BmpInfo.bmiColors);
-   Resample(@TmpPalette, PChar(Source), @Game^.PaletteLmp, PChar(Data),
-    BmpInfo.bmiHeader.biWidth, BmpInfo.bmiHeader.biHeight, (BmpInfo.bmiHeader.biWidth+3) and not 3,
-    BmpInfo.bmiHeader.biWidth, BmpInfo.bmiHeader.biHeight, (BmpInfo.bmiHeader.biWidth+3) and not 3);
-  end
- else
-  begin
-   BmpInfo.bmiHeader.biBitCount:=24;
-   SetLength(Source, ((BmpInfo.bmiHeader.biWidth*3+3) and not 3) * BmpInfo.bmiHeader.biHeight);
-   GetDIBits(Bitmap.Canvas.Handle, Bitmap.Handle, 0, BmpInfo.bmiHeader.biHeight,
-    PChar(Source), BitmapInfo, dib_RGB_Colors);
+     TmpPalette:=LmpFromColors(BmpInfo.bmiColors);
 
-   SetLength(Data, BaseMemSize);
-   Resample(Nil, PChar(Source), @Game^.PaletteLmp, PChar(Data),
-    BmpInfo.bmiHeader.biWidth, BmpInfo.bmiHeader.biHeight, (BmpInfo.bmiHeader.biWidth*3+3) and not 3,
-    BmpInfo.bmiHeader.biWidth, BmpInfo.bmiHeader.biHeight, (BmpInfo.bmiHeader.biWidth+3) and not 3);
-  end;
+     GetMem(Data, BaseMemSize);
+     Resample(@TmpPalette, Source, @Game^.PaletteLmp, Data,
+      BmpInfo.bmiHeader.biWidth, BmpInfo.bmiHeader.biHeight, (BmpInfo.bmiHeader.biWidth+3) and not 3,
+      BmpInfo.bmiHeader.biWidth, BmpInfo.bmiHeader.biHeight, (BmpInfo.bmiHeader.biWidth+3) and not 3);
+    finally
+     FreeMem(Source);
+    end;
+   end
+  else
+   begin
+    BmpInfo.bmiHeader.biBitCount:=24;
+    GetMem(Source, ((BmpInfo.bmiHeader.biWidth*3+3) and not 3) * BmpInfo.bmiHeader.biHeight);
+    try
+     GetDIBits(Bitmap.Canvas.Handle, Bitmap.Handle, 0, BmpInfo.bmiHeader.biHeight, Source, BitmapInfo, dib_RGB_Colors);
 
- SetQuakeImageData(Game^.PaletteLmp, Data, BmpInfo.bmiHeader.biWidth, BmpInfo.bmiHeader.biHeight);
+     GetMem(Data, BaseMemSize);
+     Resample(Nil, Source, @Game^.PaletteLmp, Data,
+      BmpInfo.bmiHeader.biWidth, BmpInfo.bmiHeader.biHeight, (BmpInfo.bmiHeader.biWidth*3+3) and not 3,
+      BmpInfo.bmiHeader.biWidth, BmpInfo.bmiHeader.biHeight, (BmpInfo.bmiHeader.biWidth+3) and not 3);
+    finally
+     FreeMem(Source);
+    end;
+   end;
+
+  SetQuakeImageData(Game^.PaletteLmp, PChar(Data), BmpInfo.bmiHeader.biWidth, BmpInfo.bmiHeader.biHeight);
+ finally
+  if Data<>nil then FreeMem(Data);
+ end;
 end;
 
 function QImage.TestConversionType(I: Integer) : QFileObjectClass;

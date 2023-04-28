@@ -1340,7 +1340,7 @@ begin
         Data1:='Image' + ImgCodes[I] + '=';
         SetLength(Data1, Length('Image#=') + W*H);
         Resample(NewPSD.ColorPalette, NewPSD.Data,
-                 NewPSD.ColorPalette, PChar(Data1)+Length('Image#='),
+                 NewPSD.ColorPalette, PByte(PChar(Data1)+Length('Image#=')), //FIXME: Unicode!
                  NewPSD.Size.X, NewPSD.Size.Y, NewPSD.ScanLine,
                  W, H, W);
         Specifics.Add(Data1);
@@ -1506,7 +1506,8 @@ end; *)
 procedure QTextureFile.ResizeTexture(const Size: TPoint);
 var
  Game: PGameBuffer;
- Data, BigData: String;
+ Src: String;
+ Data: PByte;
  V: array[1..2] of Single;
  OldSize: TPoint;
  I, J, W, H: Integer;
@@ -1529,13 +1530,17 @@ begin
     V[2]:=H;
 
     DebutAction;
-    BigData:=GetTexImage(0);
+    Src:=GetTexImage(0);
 
     for I:=0 to (CustomParams and cpIndexesMax)-1 do
     begin
-      SetLength(Data, W*H);
-      Resample(@Game^.PaletteLmp, PChar(BigData), @Game^.PaletteLmp, PChar(Data), OldSize.X, OldSize.Y, OldSize.X, W, H, W);
-      g_ListeActions.Add(TSpecificUndo.Create('', 'Image'+ImgCodes[I], Data, sp_Auto, Self));
+      GetMem(Data, W*H);
+      try
+        Resample(@Game^.PaletteLmp, PByte(PChar(Src)), @Game^.PaletteLmp, Data, OldSize.X, OldSize.Y, OldSize.X, W, H, W); //FIXME: Unicode!
+        g_ListeActions.Add(TSpecificUndo.Create('', 'Image'+ImgCodes[I], PChar(Data), sp_Auto, Self)); //FIXME: Unicode!
+      finally
+        FreeMem(Data);
+      end;
 
       if not ScaleDown(W,H) then
       begin
@@ -1546,9 +1551,13 @@ begin
       end;
     end;
 
-    SetLength(Data, 2*4);   { SizeOf(Single) }
-    Move(V, Data[1], 2*4);   { SizeOf(Single) }
-    g_ListeActions.Add(TSpecificUndo.Create('', FloatSpecNameOf('Size'), Data, sp_Auto, Self));
+    GetMem(Data, 2*SizeOf(Single)); //Note: Recycling variable
+    try
+      Move(V, Data, 2*SizeOf(Single));
+      g_ListeActions.Add(TSpecificUndo.Create('', FloatSpecNameOf('Size'), PChar(Data), sp_Auto, Self)); //FIXME: Unicode!
+    finally
+      FreeMem(Data);
+    end;
     FinAction(Self, LoadStr1(625));
   finally
     DeleteGameBuffer(Game);

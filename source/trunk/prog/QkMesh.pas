@@ -89,7 +89,7 @@ type
 implementation
 
 uses qdraw, QuarkX, QkExceptions, Setup,
-     PyMath, PyMapView, PyObjects, QkObjectClassList, EdSceneObject;
+     PyMath, PyMapView, PyObjects, QkObjectClassList, EdSceneObject, ExtraFunctionality;
 
 //@
 //https://github.com/id-Software/Quake-III-Arena/blob/dbe4ddb10315479fc00086f08e25d968b4b43c49/code/qcommon/cm_patch.c
@@ -441,7 +441,7 @@ begin
  if CCoord.FastDisplay then
   begin  { "fast" drawing method, can directly use PolyPolyline }
     { fill the count buffer }
-   PChar(CountBuffer):=PChar(PP) + cp.W*cp.H*SizeOf(TPointProj);
+   PArithByte(CountBuffer):=PArithByte(PP) + cp.W*cp.H*SizeOf(TPointProj);
    CountDest:=CountBuffer;
    for I:=1 to cp.W do
     begin
@@ -455,7 +455,7 @@ begin
     end;
 
     { collect the X,Y of all control points into the PointBuffer }
-   PChar(PointBuffer):=PChar(CountDest);
+   PArithByte(PointBuffer):=PArithByte(CountDest);
    PtDest1:=PointBuffer;
    Inc(PtDest1, cp.W*cp.H);
    P:=PP;

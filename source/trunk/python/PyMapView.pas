@@ -1952,7 +1952,7 @@ begin
    J:=R.Bottom-R.Top+R.Right-R.Left+2;
    Taille:=J * (2*SizeOf(TPoint)+SizeOf(Integer));
    GetMem(PointArray, Taille); try
-   PChar(P2):=PChar(PointArray)+Taille;
+   PArithByte(P2):=PArithByte(PointArray)+Taille;
    for I:=1 to J do
     begin
      Dec(P2);

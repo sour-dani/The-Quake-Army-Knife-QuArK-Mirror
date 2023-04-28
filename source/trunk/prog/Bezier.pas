@@ -71,7 +71,7 @@ function TriangleSTCoordinates(const cp: TMeshBuf5; I, J: Integer) : vec_st_t;
 implementation
 
 uses qdraw, Coordinates, QuarkX, QkExceptions, Setup,
-     PyMath, PyMapView, PyObjects, QkObjectClassList, EdSceneObject;
+     PyMath, PyMapView, PyObjects, QkObjectClassList, EdSceneObject, ExtraFunctionality;
 
  (*    QUADRATIC BEZIER PATCHES
   *
@@ -599,7 +599,7 @@ begin
  if CCoord.FastDisplay then
   begin  { "fast" drawing method, can directly use PolyPolyline }
     { fill the count buffer }
-   PChar(CountBuffer):=PChar(PP) + FMeshCache.W*FMeshCache.H*SizeOf(TPointProj);
+   PArithByte(CountBuffer):=PArithByte(PP) + FMeshCache.W*FMeshCache.H*SizeOf(TPointProj);
    CountDest:=CountBuffer;
    for I:=1 to FMeshCache.W do
     begin
@@ -613,7 +613,7 @@ begin
     end;
 
     { collect the X,Y of all control points into the PointBuffer }
-   PChar(PointBuffer):=PChar(CountDest);
+   PArithByte(PointBuffer):=PArithByte(CountDest);
    PtDest1:=PointBuffer;
    Inc(PtDest1, FMeshCache.W*FMeshCache.H);
    P:=PP;

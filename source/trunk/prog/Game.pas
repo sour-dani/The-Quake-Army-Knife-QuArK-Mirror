@@ -1268,7 +1268,7 @@ var
  Game: PGameBuffer;
  Dest, Bmp1: HBitmap;
  DestDC: HDC;
- Bits: PChar;
+ Bits: PArithByte;
  nScan: Integer;
 begin
  Game:=GameBuffer(NeededGame);
@@ -1294,7 +1294,7 @@ begin
   if Format<>dfTextureFormat then
    nScan:=-nScan;
   GdiFlush;
-  Resample(Game^.BmpInfo.bmiColors, Bits, PChar(Result), W, H, -((W+3) and not 3), nW, nH, nScan);
+  Resample(Game^.BmpInfo.bmiColors, Bits, PArithByte(Result), W, H, -((W+3) and not 3), nW, nH, nScan);
  finally
   DeleteObject(Dest);
  end;
@@ -1303,7 +1303,7 @@ end;
  Game: PGameBuffer;
  Dest, Bmp1, Dest24: HBitmap;
  DestDC: HDC;
- Bits, Buffer24: PChar;
+ Bits, Buffer24: PArithByte;
  BmpInfo24: TBitmapInfo;
  nScan: Integer;
 begin
@@ -1353,7 +1353,7 @@ begin
  else
   nScan:=nW;
  SetLength(Result, nScan*nH);
- GetDIBits(DC, Dest24, 0, nH, PChar(Result),
+ GetDIBits(DC, Dest24, 0, nH, PArithByte(Result),
   Game^.BmpInfo, dib_RGB_Colors);
  finally DeleteObject(Dest24); end;
 end;*)
@@ -1365,7 +1365,7 @@ end;*)
  Bits: Pointer;
  Ok, FirstPass: Boolean;
  J: Integer;
- PSrc, PDest: PChar;
+ PSrc, PDest: PArithByte;
 begin
  ProgressIndicatorStart(5448, 0); try
  Game:=GameBuffer(NeededGame);
@@ -1420,8 +1420,8 @@ begin
   dfWinFormat: Move(Bits^, Result[1], ImageSize);
   dfTextureFormat:
     begin  { must remove the 4-bytes alignment and bottom-up swap made by Windows }
-     PSrc:=PChar(Bits);
-     PDest:=PChar(Result)+ImageSize;
+     PSrc:=PArithByte(Bits);
+     PDest:=PArithByte(Result)+ImageSize;
      for J:=1 to H do
       begin
        Dec(PDest, W);
@@ -1431,8 +1431,8 @@ begin
     end;
   dfBottomUpTexture:
     begin  { remove the 4-bytes alignment only }
-     PSrc:=PChar(Bits);
-     PDest:=PChar(Result);
+     PSrc:=PArithByte(Bits);
+     PDest:=PArithByte(Result);
      for J:=1 to H do
       begin
        Move(PSrc^, PDest^, W);

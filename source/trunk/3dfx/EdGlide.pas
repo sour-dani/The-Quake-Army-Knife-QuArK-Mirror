@@ -26,7 +26,7 @@ uses Windows, Classes, Setup, SysUtils,
      Coordinates, qmath, Bezier,
      QkObjects,
      Glide,
-     EdSceneObject;
+     EdSceneObject, ExtraFunctionality;
 
 type
  TViewRect = record
@@ -52,8 +52,8 @@ type
    procedure stScaleModel(Skin: PTexture3; var ScaleS, ScaleT: TDouble); override;
    procedure stScaleBezier(Texture: PTexture3; var ScaleS, ScaleT: TDouble); override;
    procedure stScaleSprite(Skin: PTexture3; var ScaleS, ScaleT: TDouble); override;
-   procedure WriteSurfaceExtra(PS: PChar; Surface: PSurface3D); override;
-   procedure WriteVertex(PV: PChar; Source: Pointer; const ns,nt: Single; HiRes: Boolean); override;
+   procedure WriteSurfaceExtra(PS: PArithByte; Surface: PSurface3D); override;
+   procedure WriteVertex(PV: PArithByte; Source: Pointer; const ns,nt: Single; HiRes: Boolean); override;
    procedure PostBuild(nVertexList, nVertexList2: TList); override;
    procedure RenderPList(PList: PSurfaces; TransparentFaces: Boolean);
    procedure RenderTransparent(Transparent: Boolean);
@@ -91,7 +91,7 @@ var
 implementation
 
 uses Game, Quarkx, QkExceptions, Travail,
-     QkPixelSet, QkTextures, QkMapPoly, ApplPaths, ExtraFunctionality;
+     QkPixelSet, QkTextures, QkMapPoly, ApplPaths;
 
 const
  //See the "Floating Point Vertex Snapping and Area Calculations"-section
@@ -542,7 +542,7 @@ begin
  inherited;
 end;
 
-procedure TGlideSceneObject.WriteSurfaceExtra(PS: PChar; Surface: PSurface3D);
+procedure TGlideSceneObject.WriteSurfaceExtra(PS: PArithByte; Surface: PSurface3D);
 var
  Source, Delta: vec3_t;
  PV: PVertex3D;
@@ -575,7 +575,7 @@ begin
    Source[0]:=0;
    Source[1]:=0;
    Source[2]:=0;
-   PV:=PVertex3D(PChar(Surface)+SizeOf(TSurface3D)+SizeOf(TSurfaceExtra));
+   PV:=PVertex3D(PArithByte(Surface)+SizeOf(TSurface3D)+SizeOf(TSurfaceExtra));
    Source:=ComputeVDelta(Source, PV^.v^);
    GlideRadius:=0;
    for I:=2 to Surface^.VertexCount do
@@ -589,7 +589,7 @@ begin
   end;
 end;
 
-procedure TGlideSceneObject.WriteVertex(PV: PChar; Source: Pointer; const ns,nt: Single; HiRes: Boolean);
+procedure TGlideSceneObject.WriteVertex(PV: PArithByte; Source: Pointer; const ns,nt: Single; HiRes: Boolean);
 var
  L, R, Test: Integer;
  Base, Found: PVect3D;
@@ -617,7 +617,7 @@ begin
      end;
    end;
 
-   if PChar(Found^.v) < PChar(Source) then
+   if PArithByte(Found^.v) < PArithByte(Source) then
      L:=Test+1
    else
      R:=Test;
@@ -637,7 +637,7 @@ end;
 
 function PtrListSortR(Item1, Item2: Pointer): Integer;
 begin
- if PChar(Item1)<PChar(Item2) then
+ if PArithByte(Item1)<PArithByte(Item2) then
   Result:=+1
  else
   if Item1=Item2 then
@@ -674,7 +674,7 @@ begin
 
   while (I>=0) and (J>=0) do
   begin
-    Vect.LowPrecision:=PChar(nv2)<PChar(nv);
+    Vect.LowPrecision:=PArithByte(nv2)<PArithByte(nv);
     if Vect.LowPrecision then
     begin
       Vect.v:=nv2;
@@ -1133,7 +1133,7 @@ var
  SourceEdge, LastEdge: Byte;
  Surf: PSurface3D;
  SurfExtra: PSurfaceExtra;
- SurfEnd: PChar;
+ SurfEnd: PArithByte;
  VList: array[0..MAX_VERTICES-1] of GrVertex;
  I, J, N, FindVertexState, CopyV1Count: Integer;
  PV, BaseV, SourceV, LoadedTarget, BaseMaxV: PVertex3D;
@@ -1409,9 +1409,9 @@ begin
  NeedTex:=(RenderMode=rmTextured);
 
  Surf:=PList^.Surf;
- SurfEnd:=PChar(Surf)+PList^.SurfSize;
+ SurfEnd:=PArithByte(Surf)+PList^.SurfSize;
 
- while Surf<SurfEnd do
+ while PArithByte(Surf)<SurfEnd do
  begin
    with Surf^ do
    begin
@@ -1813,7 +1813,7 @@ begin
         Raise EErrorFmt(6200, ['grLfbLock']);
       I:=bmiHeader.biHeight;
       SrcPtr:=info.lfbptr;
-      Inc(PChar(SrcPtr), ViewRect.R.Left*2 + (ScreenSizeY-ViewRect.R.Bottom)*Integer(info.strideInBytes));
+      Inc(PArithByte(SrcPtr), ViewRect.R.Left*2 + (ScreenSizeY-ViewRect.R.Bottom)*Integer(info.strideInBytes));
       Count1:=(ViewRect.R.Right-ViewRect.R.Left) div 4;
       asm
        push esi

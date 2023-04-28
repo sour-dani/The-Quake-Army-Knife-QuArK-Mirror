@@ -35,8 +35,8 @@ uses Game;
      nw,nh,nscan : width, height, and scan line length for the destination image
    The palettes are in the format TPaletteLmp defined in Game.pas.
 *)
-procedure Resample(SrcPalette: PPaletteLmp; Source: PChar;
-                   DestPalette: PPaletteLmp; Dest: PChar; ow,oh,oscan, nw,nh,nscan: Integer);
+procedure Resample(SrcPalette: PPaletteLmp; Source: PByte;
+                   DestPalette: PPaletteLmp; Dest: PByte; ow,oh,oscan, nw,nh,nscan: Integer);
  cdecl;
 
 implementation

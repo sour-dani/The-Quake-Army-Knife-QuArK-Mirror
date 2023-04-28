@@ -148,9 +148,9 @@ procedure ParsePackageFile(CurrentFile: TUpdatePackageFile; FileData: TMemoryStr
 
 function GetLine(FileData: TMemoryStream; var OutputLine: String) : Boolean;
 var
-  Dest, OldDest: PChar;
+  Dest, OldDest: PArithByte;
 begin
-  Dest := PChar(FileData.Memory) + FileData.Position;
+  Dest := PArithByte(FileData.Memory) + FileData.Position;
   OldDest := Dest;
   if (FileData.Position >= FileData.Size) then
   begin
@@ -158,22 +158,22 @@ begin
     Result := false;
     Exit;
   end;
-  while ((Dest^ <> #13) and (Dest^ <> #10)) do
+  while ((PByte(Dest)^ <> 13) and (PByte(Dest)^ <> 10)) do
   begin
     FileData.Seek(1, soFromCurrent);
     Inc(Dest);
     if (FileData.Position = FileData.Size) then
     begin
-      SetString(OutputLine, OldDest, Dest - OldDest);
+      SetString(OutputLine, PChar(OldDest), Dest - OldDest);
       Result := true;
       Exit;
     end;
   end;
-  SetString(OutputLine, OldDest, Dest - OldDest);
-  if ((Dest^ = #13) and (FileData.Position < FileData.Size)) then
+  SetString(OutputLine, PChar(OldDest), Dest - OldDest);
+  if ((PByte(Dest)^ = 13) and (FileData.Position < FileData.Size)) then
   begin
     Inc(Dest);
-    if (Dest^ = #10) then
+    if (PByte(Dest)^ = 10) then
       FileData.Seek(1, soFromCurrent);
   end;
   if (FileData.Position <FileData.Size) then

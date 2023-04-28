@@ -22,7 +22,7 @@ unit EdOpenGL;
 
 interface
 
-uses Windows, Classes, qmath, Coordinates, GL1, EdSceneObject;
+uses Windows, Classes, qmath, Coordinates, GL1, EdSceneObject, ExtraFunctionality;
 
 type
  PLightList = ^TLightList;
@@ -76,8 +76,8 @@ type
    procedure stScaleModel(Skin: PTexture3; var ScaleS, ScaleT: TDouble); override;
    procedure stScaleSprite(Skin: PTexture3; var ScaleS, ScaleT: TDouble); override;
    procedure stScaleBezier(Texture: PTexture3; var ScaleS, ScaleT: TDouble); override;
-   procedure WriteSurfaceExtra(PS: PChar; Surface: PSurface3D); override;
-   procedure WriteVertex(PV: PChar; Source: Pointer; const ns,nt: Single; HiRes: Boolean); override;
+   procedure WriteSurfaceExtra(PS: PArithByte; Surface: PSurface3D); override;
+   procedure WriteVertex(PV: PArithByte; Source: Pointer; const ns,nt: Single; HiRes: Boolean); override;
    procedure ClearSurfaces(Surf: PSurface3D; SurfSize: Integer); override;
    function StartBuildScene({var PW: TPaletteWarning;} var SurfaceExtraSize, VertexSize: Integer) : TBuildMode; override;
    procedure EndBuildScene; override;
@@ -108,7 +108,7 @@ type
 implementation
 
 uses SysUtils, Quarkx, QkExceptions, Setup, Python, Logging, {Math,}
-     QkObjects, QkMapPoly, QkPixelSet, QkForm, ExtraFunctionality;
+     QkObjects, QkMapPoly, QkPixelSet, QkForm;
 
  {------------------------}
 
@@ -595,7 +595,7 @@ begin
   ScaleT:=1;
 end;
 
-procedure TGLSceneObject.WriteSurfaceExtra(PS: PChar; Surface: PSurface3D);
+procedure TGLSceneObject.WriteSurfaceExtra(PS: PArithByte; Surface: PSurface3D);
 begin
   with PSurfaceExtra(PS)^ do
   begin
@@ -604,7 +604,7 @@ begin
   end;
 end;
 
-procedure TGLSceneObject.WriteVertex(PV: PChar; Source: Pointer; const ns,nt: Single; HiRes: Boolean);
+procedure TGLSceneObject.WriteVertex(PV: PArithByte; Source: Pointer; const ns,nt: Single; HiRes: Boolean);
 begin
   with PVertex3D(PV)^ do
   begin
@@ -653,7 +653,7 @@ begin
       end;
 
       if OpenGlLoaded and (NameAreaWalker<>NameArray) then
-        glDeleteTextures((PChar(NameAreaWalker)-PChar(NameArray)) div SizeOf(GLuint), NameArray^);
+        glDeleteTextures((PArithByte(NameAreaWalker)-PArithByte(NameArray)) div SizeOf(GLuint), NameArray^);
     finally
       FreeMem(NameArray);
     end;
@@ -1076,10 +1076,10 @@ end;
 
 procedure TGLSceneObject.ClearSurfaces(Surf: PSurface3D; SurfSize: Integer);
 var
-  SurfEnd: PChar;
+  SurfEnd: PArithByte;
 begin
-  SurfEnd:=PChar(Surf)+SurfSize;
-  while (Surf<SurfEnd) do
+  SurfEnd:=PArithByte(Surf)+SurfSize;
+  while PArithByte(Surf)<SurfEnd do
   begin
     with Surf^ do
     begin
@@ -1094,7 +1094,7 @@ begin
       if VertexCount>=0 then
         Inc(EdOpenGL.PVertex3D(Surf), VertexCount)
       else
-        Inc(PChar(Surf), VertexCount*(-(SizeOf(EdOpenGL.TVertex3D)+SizeOf(vec3_t))));
+        Inc(PArithByte(Surf), VertexCount*(-(SizeOf(EdOpenGL.TVertex3D)+SizeOf(vec3_t))));
     end;
   end;
   inherited;
@@ -1181,7 +1181,7 @@ var
  TempLightList: array of TLightingList;
  Surf: PSurface3D;
  SurfExtra: PSurfaceExtra;
- SurfEnd: PChar;
+ SurfEnd: PArithByte;
  VertexNR: Integer;
  PV: PVertex3D;
  Sz: Integer;
@@ -1199,8 +1199,8 @@ begin
     while Assigned(PS) do
     begin
       Surf:=PS^.Surf;
-      SurfEnd:=PChar(Surf)+PS^.SurfSize;
-      while (Surf<SurfEnd) do
+      SurfEnd:=PArithByte(Surf)+PS^.SurfSize;
+      while PArithByte(Surf)<SurfEnd do
       begin
         with Surf^ do
         begin
@@ -1224,7 +1224,7 @@ begin
                 SurfExtra^.CenterPosition[0]:=SurfExtra^.CenterPosition[0]+PV^.xyz[0];
                 SurfExtra^.CenterPosition[1]:=SurfExtra^.CenterPosition[1]+PV^.xyz[1];
                 SurfExtra^.CenterPosition[2]:=SurfExtra^.CenterPosition[2]+PV^.xyz[2];
-                Inc(PChar(PV), Sz);
+                Inc(PArithByte(PV), Sz);
               end;
               SurfExtra^.CenterPosition[0]:=SurfExtra^.CenterPosition[0]/Abs(VertexCount);
               SurfExtra^.CenterPosition[1]:=SurfExtra^.CenterPosition[1]/Abs(VertexCount);
@@ -1234,7 +1234,7 @@ begin
           if VertexCount>=0 then
             Inc(PVertex3D(Surf), VertexCount)
           else
-            Inc(PChar(Surf), VertexCount*(-(SizeOf(TVertex3D)+SizeOf(vec3_t))));
+            Inc(PArithByte(Surf), VertexCount*(-(SizeOf(TVertex3D)+SizeOf(vec3_t))));
         end;
       end;
 
@@ -1249,8 +1249,8 @@ begin
     while Assigned(PS) do
     begin
       Surf:=PS^.Surf;
-      SurfEnd:=PChar(Surf)+PS^.SurfSize;
-      while (Surf<SurfEnd) do
+      SurfEnd:=PArithByte(Surf)+PS^.SurfSize;
+      while PArithByte(Surf)<SurfEnd do
       begin
         with Surf^ do
         begin
@@ -1332,7 +1332,7 @@ begin
           if VertexCount>=0 then
             Inc(PVertex3D(Surf), VertexCount)
           else
-            Inc(PChar(Surf), VertexCount*(-(SizeOf(TVertex3D)+SizeOf(vec3_t))));
+            Inc(PArithByte(Surf), VertexCount*(-(SizeOf(TVertex3D)+SizeOf(vec3_t))));
         end;
       end;
       PS:=PS^.Next;
@@ -1363,7 +1363,7 @@ var
  PList: PSurfaces;
  Surf: PSurface3D;
  SurfExtra: PSurfaceExtra;
- SurfEnd: PChar;
+ SurfEnd: PArithByte;
  RebuildDisplayList: Boolean;
  FacesDistance: TList;
  FaceDistance: PFaceDistance;
@@ -1545,8 +1545,8 @@ begin
             if (not Transparency) or (not PList^.TransparentTexture) then
             begin
               Surf:=PList^.Surf;
-              SurfEnd:=PChar(Surf)+PList^.SurfSize;
-              while Surf<SurfEnd do
+              SurfEnd:=PArithByte(Surf)+PList^.SurfSize;
+              while PArithByte(Surf)<SurfEnd do
               begin
                 with Surf^ do
                 begin
@@ -1558,7 +1558,7 @@ begin
                   if VertexCount>=0 then
                     Inc(PVertex3D(Surf), VertexCount)
                   else
-                    Inc(PChar(Surf), VertexCount*(-(SizeOf(TVertex3D)+SizeOf(vec3_t))));
+                    Inc(PArithByte(Surf), VertexCount*(-(SizeOf(TVertex3D)+SizeOf(vec3_t))));
                 end;
               end;
             end;
@@ -1605,14 +1605,14 @@ begin
         while Assigned(PList) do
         begin
           Surf:=PList^.Surf;
-          SurfEnd:=PChar(Surf)+PList^.SurfSize;
-          while Surf<SurfEnd do
+          SurfEnd:=PArithByte(Surf)+PList^.SurfSize;
+          while PArithByte(Surf)<SurfEnd do
           begin
             with Surf^ do
             begin
               if PList^.TransparentTexture or (AlphaColor and $FF000000 <> $FF000000) then
               begin
-                SurfExtra:=PSurfaceExtra(PChar(Surf) + SizeOf(TSurface3D));
+                SurfExtra:=PSurfaceExtra(PArithByte(Surf) + SizeOf(TSurface3D));
                 New(FaceDistance);
                 FaceDistance^.Distance:=Sqr(SurfExtra^.CenterPosition[0]+TransX)+Sqr(SurfExtra^.CenterPosition[1]+TransY)+Sqr(SurfExtra^.CenterPosition[2]+TransZ);
                 //Note: Trans(X/Y/Z) is the NEGATIVE coordinate, so we need to ADD instead of SUBTRACT the two values for the distance-calc.
@@ -1627,7 +1627,7 @@ begin
               if VertexCount>=0 then
                 Inc(PVertex3D(Surf), VertexCount)
               else
-                Inc(PChar(Surf), VertexCount*(-(SizeOf(TVertex3D)+SizeOf(vec3_t))));
+                Inc(PArithByte(Surf), VertexCount*(-(SizeOf(TVertex3D)+SizeOf(vec3_t))));
             end;
           end;
           PList:=PList^.Next;
