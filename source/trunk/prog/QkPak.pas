@@ -143,7 +143,7 @@ var
   Base: TStreamPos;
   I: Integer;
   B, C: Byte;
-  buffer: PChar;
+  buffer: PByte;
 begin
   Ref^.Self.Position:=Ref^.Position;
   Base:=Ref^.Self.Position;
