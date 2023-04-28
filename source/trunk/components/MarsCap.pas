@@ -841,7 +841,7 @@ var
                      FParentHandle, @TPMParams);
       { Eat a message }
       PeekMessage(TempMsg, FParentHandle, WM_NCLButtonDown, WM_NCLButtonDown, PM_NoREMOVE);
-      P1 := SmallPointToPoint(TSmallPoint(TempMsg.lParam));
+      P1 := SmallPointToPoint(TSmallPoint(LongInt(TempMsg.lParam)));
       GetWindowRect(FParentHandle, R);
       P1.X := P1.X - R.Left;
       P1.Y := P1.Y - R.Top;
@@ -925,7 +925,7 @@ begin
     if (Msg.Msg = WM_NCLButtonDown) or (Msg.Msg = WM_NCRBUTTONDOWN) or
        (Msg.Msg = WM_NCMButtonDown) then
       FParentForm.BringToFront;
-    P := SmallPointToPoint(TSmallPoint(Msg.lParam));
+    P := SmallPointToPoint(TSmallPoint(LongInt(Msg.lParam)));
     GetWindowRect(FParentHandle, R);
     P.X := P.X - R.Left;
     P.Y := P.Y - R.Top;
