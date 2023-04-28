@@ -2068,7 +2068,7 @@ begin
    if SI.hStdError<>0 then CloseHandle(SI.hStdError);
    if SI.hStdOutput<>0 then CloseHandle(SI.hStdOutput);
   end;
-  Result:=GetProcessModule(PI, nstdout, nstderr, cmdline);
+  Result:=GetProcessModule(PI, nstdout, nstderr, PyStrPas(cmdline));
  except
   Py_XDECREF(Result);
   EBackToPython;
@@ -2519,7 +2519,7 @@ begin
  try
   if not PyArg_ParseTupleX(args, 's', [@s]) then
    Exit;
-  Result:=PyString_FromString(ToPyChar(GetShortHint(s)));
+  Result:=PyString_FromString(ToPyChar(GetShortHint(PyStrPas(s))));
  except
   Py_XDECREF(Result);
   EBackToUser;
@@ -2535,7 +2535,7 @@ begin
  try
   if not PyArg_ParseTupleX(args, 's', [@s]) then
    Exit;
-  Result:=PyString_FromString(ToPyChar(GetLongHint(s)));
+  Result:=PyString_FromString(ToPyChar(GetLongHint(PyStrPas(s))));
  except
   Py_XDECREF(Result);
   EBackToUser;
