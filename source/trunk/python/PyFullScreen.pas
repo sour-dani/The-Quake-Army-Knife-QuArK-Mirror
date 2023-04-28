@@ -218,6 +218,7 @@ var
  Attr1: PyObjectPtr;
  I: Integer;
 begin
+ Result:=nil;
  try
   for I:=Low(MethodTable) to High(MethodTable) do
    if StrComp(attr, MethodTable[I].ml_name) = 0 then
