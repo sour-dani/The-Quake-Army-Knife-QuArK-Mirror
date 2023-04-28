@@ -136,28 +136,28 @@ end;
 
 function TRegistry2.TryWriteBinaryData(const Name: string; var Buffer; BufSize: Integer) : Boolean;
 var
-  bdata: pansichar;
+  bdata: pbyte;
 begin
  {if DontWrite then
  begin
    Result:=True;
    Exit;
  end;}
- bdata:=stralloc(BufSize + 1); //Note: One larger for null-terminator
+ GetMem(bdata, BufSize);
  try
-  FillChar(bdata^, BufSize + 1, 0);
+  ZeroMemory(bdata, BufSize);
   if (not TryReadBinaryData(Name, bdata, BufSize)) or (not CompareMem(@Buffer, bdata, BufSize)) then
   begin
   {if Assigned(OnWrite) then
     OnWrite(Self);
    if not DontWrite then}
     Result:=RegSetValueEx(CurrentKey, PChar(Name), 0, REG_BINARY,
-     PAnsiChar(Buffer), BufSize+1)=ERROR_SUCCESS;
+     PByte(Buffer), BufSize)=ERROR_SUCCESS;
   end
   else
    Result:=True;
  finally
-  strdispose(bdata);
+  FreeMem(bdata);
  end;
 end;
 
