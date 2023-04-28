@@ -20,8 +20,6 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit Console;
 
-{$I DelphiVer.inc}
-
 interface
 
 uses

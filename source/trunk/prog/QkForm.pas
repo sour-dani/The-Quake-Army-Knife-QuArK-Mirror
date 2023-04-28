@@ -22,8 +22,6 @@ unit QkForm;
 
 interface
 
-{$I DelphiVer.inc}
-
 //FIXME: Disable MarsCaption for now...
 {$DEFINE NoMarsCaption}
 

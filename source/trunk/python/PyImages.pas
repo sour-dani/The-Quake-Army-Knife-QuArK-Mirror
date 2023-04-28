@@ -22,7 +22,6 @@ unit PyImages;
 
 interface
 
-{$I DelphiVer.inc}
 {$INCLUDE PyVersions.inc}
 
 uses Windows, Messages, SysUtils, Classes, Graphics, CommCtrl, Python,
@@ -130,6 +129,8 @@ procedure FinalizeInternalImages;
 implementation
 
 uses Types, Quarkx, QkExceptions, PyCanvas, Dialogs;
+
+{$I DelphiVer.inc}
 
 const
  DisabledNak = TBitmap(1);

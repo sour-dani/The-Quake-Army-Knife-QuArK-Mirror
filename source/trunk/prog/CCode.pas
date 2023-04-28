@@ -22,8 +22,6 @@ unit CCode;
 
 interface
 
-{$I DelphiVer.inc}
-
 uses Game;
 
 (* Parameters
@@ -40,6 +38,8 @@ procedure Resample(SrcPalette: PPaletteLmp; Source: PByte;
  cdecl;
 
 implementation
+
+{$I DelphiVer.inc}
 
 (*procedure MemSet(var Buf; C: Char; Count: Integer); stdcall; assembler;
 asm

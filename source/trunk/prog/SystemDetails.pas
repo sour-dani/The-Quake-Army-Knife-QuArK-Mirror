@@ -22,8 +22,6 @@ unit SystemDetails;
 
 interface
 
-{$I DelphiVer.inc}
-
 uses
   SysUtils, StrUtils, Windows, Classes, ExtraFunctionality;
 
@@ -298,6 +296,8 @@ type
   end;
 
 implementation
+
+{$I DelphiVer.inc}
 
 uses Graphics, {$IFDEF CompiledWithDelphi2}ShellObj, OLE2, {$ELSE}ShlObj, ActiveX, {$ENDIF}TlHelp32, Psapi, Registry, Registry2, Logging, QkExceptions;
 
