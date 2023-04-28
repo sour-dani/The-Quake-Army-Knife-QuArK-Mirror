@@ -23,7 +23,7 @@ unit QkPixelSet;
 interface
 
 uses Windows, SysUtils, Classes, Graphics, Game, Python, QkObjects,
-     QkFileObjects;
+     QkFileObjects, ExtraFunctionality;
 
 type
  TPixelSetFormat = (psfDefault, psf8bpp, psf24bpp);
@@ -49,8 +49,8 @@ type
                          ColorPalette: PPaletteLmp;
                          procedure Init;
                          procedure Done;
-                         function StartPointer: PChar;
-                         function AlphaStartPointer: PChar;
+                         function StartPointer: PArithByte;
+                         function AlphaStartPointer: PArithByte;
                          function GetColors(var Buffer: TBitmapInfoColors) : PBitmapInfoColors;
                          function GetBitmapInfo(var Buffer: TBitmapInfo256;
                                                 Pal: HPalettePtr) : PBitmapInfo256;
@@ -109,7 +109,7 @@ procedure DrawToDC(DC: HDC; var BitmapInfo; Data: Pointer; Left, Top: Integer);
 implementation
 
 uses Controls, Dialogs, Quarkx, QkExceptions, QkTextures, CCode, QkExplorer,
-     PyObjects, Setup, Logging, ExtraFunctionality;
+     PyObjects, Setup, Logging;
 
  {------------------------}
 
@@ -152,20 +152,20 @@ begin
   end;
 end;
 
-function TPixelSetDescription.StartPointer : PChar;
+function TPixelSetDescription.StartPointer : PArithByte;
 begin
  if ScanLine>=0 then
-  Result:=PChar(Data)
+  Result:=PArithByte(Data)
  else
-  Result:=PChar(Data) - ScanLine*Pred(Size.Y);
+  Result:=PArithByte(Data) - ScanLine*Pred(Size.Y);
 end;
 
-function TPixelSetDescription.AlphaStartPointer : PChar;
+function TPixelSetDescription.AlphaStartPointer : PArithByte;
 begin
  if AlphaScanLine>=0 then
-  Result:=PChar(AlphaData)
+  Result:=PArithByte(AlphaData)
  else
-  Result:=PChar(AlphaData) - AlphaScanLine*Pred(Size.Y);
+  Result:=PArithByte(AlphaData) - AlphaScanLine*Pred(Size.Y);
 end;
 
 procedure TPixelSetDescription.AllocData;
@@ -285,7 +285,7 @@ function PSDConvert(var Target: TPixelSetDescription;
 var
  Resizing: Boolean;
  I, J, J0, J1: Integer;
- Src, Dest: PChar;
+ Src, Dest: PArithByte;
  Confirm: String;
  CopyPalette: PPaletteLmp;
  TmpPalette: TPaletteLmp;
