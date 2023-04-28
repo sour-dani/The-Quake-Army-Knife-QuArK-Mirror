@@ -64,6 +64,8 @@ var
   FilesToCharLength: Integer;
   I: Integer;
 begin
+  PFilesFrom:=nil;
+  PFilesTo:=nil;
   try
     if (FilesFrom<>nil) and (FilesFrom.Count > 0) then
     begin
