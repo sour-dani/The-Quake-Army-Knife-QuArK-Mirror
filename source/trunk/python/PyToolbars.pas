@@ -161,7 +161,7 @@ function CreateButton(Owner: TComponent; Parent: TWinControl; Canvas: TCanvas; L
 
 implementation
 
-uses Quarkx, PyForms, FormCfg, QkExplorer, PyObjects, SystemDetails, Logging;
+uses Types, Quarkx, PyForms, FormCfg, QkExplorer, PyObjects, SystemDetails, Logging;
 
 const
  BtnMarginX = 6;
