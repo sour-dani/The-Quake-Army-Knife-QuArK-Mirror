@@ -333,7 +333,7 @@ type
     function DirectDataAccess(var S: TStream; var Size: TStreamPos) : Boolean;
     { stuff that should be done when an object has been read in from text rep. }
     procedure FinalizeFromText; virtual;
-    function WriteSubelements : Boolean; virtual;
+    function WriteSubElements : Boolean; virtual;
     function ClassList : TStringList;
     function IsAllowedParent(nParent: QObject) : Boolean; virtual;
     function TreeViewColorBoxes : TColorBoxList; virtual;
