@@ -382,9 +382,7 @@ begin
       'v': if StrComp(attr, 'vtxlist')=0 then begin
         S0:=VertSpec;
         S:=S0+'=';
-        SetLength(S, VertSpecLen);
         I:=VertSpecLen;
-        PChar(DestV):=PChar(S)+I;
         N:=PyObject_Length(value);
         SetLength(S, I+SizeOf(Integer));
         PChar(DestV):=PChar(S)+I;
@@ -424,9 +422,7 @@ begin
       else if StrComp(attr, 'vtx_pos')=0 then begin
         S0:=VertPosSpec;
         S:=S0+'=';
-        SetLength(S, VertPosSpecLen);
         I:=VertPosSpecLen;
-        PChar(DestV):=PChar(S)+I;
         N:=PyObject_Length(value);
         SetLength(S, I+SizeOf(Integer));
         PChar(DestV):=PChar(S)+I;
