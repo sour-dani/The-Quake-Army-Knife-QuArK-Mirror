@@ -129,7 +129,7 @@ procedure FinalizeInternalImages;
 
 implementation
 
-uses Quarkx, QkExceptions, PyCanvas, Dialogs;
+uses Types, Quarkx, QkExceptions, PyCanvas, Dialogs;
 
 const
  DisabledNak = TBitmap(1);
