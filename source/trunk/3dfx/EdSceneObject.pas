@@ -2041,14 +2041,14 @@ var
  re2, gr2, bl2: LongInt;
  pl: array[0..255] of record pr, pg, pb: LongInt; end;
  I, J: Integer;
- P: PChar;
+ P: PArithByte;
 begin
  re:=0;
  gr:=0;
  bl:=0;
  case PSD.Format of
   psf8bpp: begin
-            P:=PChar(PSD.ColorPalette);
+            P:=PArithByte(PSD.ColorPalette);
             for I:=0 to 255 do
              with pl[I] do
               begin

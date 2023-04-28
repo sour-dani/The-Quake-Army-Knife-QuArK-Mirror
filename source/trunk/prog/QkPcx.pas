@@ -202,7 +202,7 @@ begin
           Inc(BufStart);
           if Byte1<$C0 then
            begin
-            ScanLine[I]:=Chr(Byte1);
+            PByte(ScanLine+I)^:=Byte1;
             Inc(I);
            end
           else
@@ -215,13 +215,13 @@ begin
             Byte2:=Ord(InBuffer[BufStart]);
             Inc(BufStart);
             for L:=I to I+K-1 do
-             ScanLine[L]:=Chr(Byte2);
+             PByte(ScanLine+L)^:=Byte2;
             Inc(I,K);
            end;
          end;
         while I<ScanW do
          begin
-          ScanLine[I]:=#0;  { fills with zeroes }
+          PByte(ScanLine+I)^:=0;  { fills with zeroes }
           Inc(I);
          end;
         ProgressIndicatorIncrement;

@@ -96,7 +96,7 @@ procedure Set3DFXGammaCorrection(Value: TDouble);
 implementation
 
 uses Game, Quarkx, QkExceptions, Travail,
-     QkPixelSet, QkTextures, QkMapPoly, ApplPaths;
+     QkPixelSet, QkTextures, QkMapPoly, ApplPaths, ExtraFunctionality;
 
 const
  //Older versions of the software renderer had different bounds
@@ -1833,7 +1833,7 @@ procedure TSoftwareSceneObject.BuildTexture(Texture: PTexture3);
 var
  PSD, PSD2, PSD3: TPixelSetDescription;
  MemSize, MemSizeTotal, J, w, h: Integer;
- Source, Dest: PChar;
+ Source, Dest: PArithByte;
  GammaBuf: Pointer;
 begin
   with Texture^.info do
@@ -1864,7 +1864,7 @@ begin
           PSDConvert(PSD2, PSD, ccTemporary);
 
           Source:=PSD2.StartPointer;
-          Dest:=PChar(data);
+          Dest:=PArithByte(data);
           GammaBuf:=@(TTextureManager.GetInstance.GammaBuffer);
 
           { Make a gamma-corrected copy of the 24-bits (RGB:888) texture to a
@@ -1933,7 +1933,7 @@ begin
           begin
             for J:=1 to 3 do
             begin
-              Dest:=PChar(PSD2.Data);
+              Dest:=PArithByte(PSD2.Data);
 
               PSD.Done;
               PSD:=(Texture^.SourceTexture as QTextureFile).ScaledDownDescription(J);
@@ -1941,7 +1941,7 @@ begin
               PSD3.Size.X:=PSD3.Size.X div 2;
               PSD3.Size.Y:=PSD3.Size.Y div 2;
               PSD3.ScanLine:=PSD3.Size.X;
-              Inc(PChar(PSD3.Data), MemSize);
+              Inc(PArithByte(PSD3.Data), MemSize);
 
               MemSize:=MemSize div 4;
 

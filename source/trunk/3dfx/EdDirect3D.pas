@@ -98,7 +98,7 @@ type
 implementation
 
 uses Logging, Quarkx, QkExceptions, Setup, SysUtils,
-     QkObjects, QkMapPoly, QkPixelSet, DXTypes, D3DX9, Direct3D, DXErr9;
+     QkObjects, QkMapPoly, QkPixelSet, DXTypes, D3DX9, Direct3D, DXErr9, ExtraFunctionality;
 
 const
  cFaintLightFactor = 0.05;
@@ -1662,14 +1662,14 @@ end;
 
 procedure TDirect3DSceneObject.BuildTexture(Texture: PTexture3);
 var
- TexData: PChar;
+ TexData: PArithByte;
  MemSize, W, H, J, I: Integer;
- Alphasource, Source, Dest: PChar;
+ Alphasource, Source, Dest: PArithByte;
  l_Res: HResult;
  PSD, PSD2: TPixelSetDescription;
  TextureRect: D3DLOCKED_RECT;
 
- Source2: PChar;
+ Source2: PArithByte;
 begin
   if Texture^.Direct3DTexture=nil then
   begin

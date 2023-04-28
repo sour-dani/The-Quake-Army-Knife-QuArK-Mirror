@@ -108,7 +108,7 @@ type
 implementation
 
 uses SysUtils, Quarkx, QkExceptions, Setup, Python, Logging, {Math,}
-     QkObjects, QkMapPoly, QkPixelSet, QkForm;
+     QkObjects, QkMapPoly, QkPixelSet, QkForm, ExtraFunctionality;
 
  {------------------------}
 
@@ -1680,9 +1680,9 @@ end;
 
 procedure TGLSceneObject.BuildTexture(Texture: PTexture3);
 var
- TexData: PChar;
+ TexData: PArithByte;
  MemSize, W, H, J: Integer;
- Alphasource, Source, Dest: PChar;
+ Alphasource, Source, Dest: PArithByte;
  PaletteEx: array[0..255] of LongInt;
 {BasePalette: Pointer;}
  PSD, PSD2: TPixelSetDescription;

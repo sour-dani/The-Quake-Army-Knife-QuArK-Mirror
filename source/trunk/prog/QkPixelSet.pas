@@ -375,7 +375,7 @@ begin
         begin
          Move(Src^, Dest^, J0);
          for J:=J0 to J1 do
-          Dest[J]:=#0;   { pad with zeroes }
+          PByte(Dest+J)^:=0;   { pad with zeroes }
          Inc(Src, Source.ScanLine);
          Inc(Dest, ScanLine);
         end;
@@ -413,7 +413,7 @@ begin
           begin
            Move(Src^, Dest^, J0);
            for J:=J0 to J1 do
-            Dest[J]:=#0;   { pad with zeroes }
+            PByte(Dest+J)^:=0;   { pad with zeroes }
            Inc(Src, Source.AlphaScanLine);
            Inc(Dest, AlphaScanLine);
           end;
