@@ -560,7 +560,7 @@ begin
               Dock:=Nil
              else
               begin
-               Dock:=QkToolbar.Owner.FindComponent(StrPas(P));
+               Dock:=QkToolbar.Owner.FindComponent(PyStrPas(P));
                if (Dock=Nil) or not (Dock is TDock97) then
                 begin
                  PyErr_SetString(QuarkxError, ToPyChar(LoadStr1(4419)));
