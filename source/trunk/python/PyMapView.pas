@@ -221,7 +221,7 @@ var
 implementation
 
 uses PyCanvas, QkFileObjects, QkTextures, Game, PyForms, RedLines, Logging, Qk1,
-     qdraw, EdSoftware, EdGlide, EdOpenGL, EdDirect3D, SystemDetails, QkExceptions;
+     qdraw, EdSoftware, EdGlide, EdOpenGL, EdDirect3D, SystemDetails, QkExceptions, ExtraFunctionality;
 
 const
  MAX_PITCH = pi/2.1;
@@ -873,7 +873,7 @@ end;
 procedure ScreenCrossCursor(DeltaX, DeltaY: Integer);
 var
  C: HCursor;
- BitsAND, BitsXOR: PAnsiChar;
+ BitsAND, BitsXOR: PArithByte;
  W, H, I: Integer;
 begin
  //This creates a 17x17 cross cursor with a hotspot-offset so that the
@@ -888,11 +888,11 @@ begin
  GetMem(BitsAND, W*H); try
  FillChar(BitsXOR^, W*H, 0);
  FillChar(BitsAND^, W*H, $FF);
- BitsXOR[W*8]:=#$FF;
+ PByte(BitsXOR+(W*8))^:=$FF;
  for I:=0 to 16 do
-  BitsXOR[W*I+1]:=#$80;
- BitsXOR[W*8+1]:=#$FF;
- BitsXOR[W*8+2]:=#$80;
+  PByte(BitsXOR+(W*I+1))^:=$80;
+ PByte(BitsXOR+(W*8+1))^:=$FF;
+ PByte(BitsXOR+(W*8+2))^:=$80;
  C:=CreateCursor(HInstance, 8-DeltaX, 8-DeltaY, W*8, H, BitsAND, BitsXOR);
  Screen.Cursors[crCrossHS]:=C; //Note: Delphi will call the DestroyCursor function.
  finally FreeMem(BitsAND); end;
