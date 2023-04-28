@@ -45,7 +45,7 @@ type
 implementation
 
 uses SysUtils, Setup, Quarkx, QkExceptions, QkObjectClassList,
-     Game, Logging, Travail;
+     Game, Logging, Travail, ExtraFunctionality;
 
 const
   pcxSignature   = $0801050A;
@@ -118,7 +118,7 @@ var
  XSize, YSize, ScanW, I, J, K, L: Integer;
  V: array[1..2] of Single;
  Data: String;
- ScanLine: PChar;
+ ScanLine: PArithByte;
  Byte1, Byte2: Byte;
  InBuffer: String;
  BufStart, BufEnd, BufMin: Integer;
@@ -168,7 +168,7 @@ begin
       Data:=Spec1;
       I:=ScanW*YSize;   { 'Image1' byte count }
       SetLength(Data, Length(Spec1)+I);
-      ScanLine:=PChar(Data)+Length(Data);
+      ScanLine:=PArithByte(Data)+Length(Data);
       BufMin:=Header.BytesPerLine*2;  { one input line may need up to this count of bytes }
       SetLength(InBuffer, BufMin*8);
       BufStart:=1;
@@ -250,7 +250,7 @@ var
  Size: TPoint;
  Data: String;
  ScanW, J, K: Integer;
- ScanLine, P, EndOfLine: PChar;
+ ScanLine, P, EndOfLine: PArithByte;
  Byte1: Byte;
  OutBuffer: String;
 begin
@@ -276,7 +276,7 @@ begin
       ScanW:=(Size.X+3) and not 3;
       if Length(Data)-Length('Image1=') <> ScanW*Size.Y then
        Raise EErrorFmt(5534, ['Image1']);
-      ScanLine:=PChar(Data)+Length(Data);
+      ScanLine:=PArithByte(Data)+Length(Data);
       for J:=1 to Size.Y do
        begin
         Dec(ScanLine, ScanW);   { image is bottom-up }
