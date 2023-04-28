@@ -166,7 +166,7 @@ function FontToString(Font: TFont) : String;
 
 implementation
 
-uses qdraw, qhelper, qmath, QkUnknown, Undo, TbPalette, Toolbar1, ToolBox1,
+uses Types, qdraw, qhelper, qmath, QkUnknown, Undo, TbPalette, Toolbar1, ToolBox1,
      Setup, QuarkX, QkExceptions, QkFileObjects, QkInclude, QkMacro, QkImages,
      Python, PyMacros, PyToolbars, PyForms, QkPixelSet, QkObjectClassList,
      ApplPaths, BrowseForFolder, Console,
