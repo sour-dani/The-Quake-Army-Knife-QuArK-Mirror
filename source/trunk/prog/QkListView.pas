@@ -74,7 +74,7 @@ type
 
 implementation
 
-uses Qk1, Undo, Quarkx, PyImages, Game, Platform;
+uses Types, Qk1, Undo, Quarkx, PyImages, Game, Platform;
 
 {$R *.DFM}
 

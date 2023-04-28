@@ -167,7 +167,7 @@ type
 
 implementation
 
-uses Qk1, QkExceptions, Undo, Travail, Quarkx, QkModelBone, QkFrame, Logging, Platform;
+uses Types, Qk1, QkExceptions, Undo, Travail, Quarkx, QkModelBone, QkFrame, Logging, Platform;
 
  {------------------------}
 
