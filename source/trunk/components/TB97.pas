@@ -95,7 +95,7 @@ unit TB97;
     application startup if the user is running Windows 95 or NT 4.0 or later.
 }
 
-{$IFNDEF WIN32} Toolbar97 no longer supports Delphi 1. Sorry! {$ENDIF}
+{$IFNDEF WIN32}{$IFNDEF WIN64} Toolbar97 no longer supports Delphi 1. Sorry! {$ENDIF}{$ENDIF}
 
 {$ALIGN ON}
 {$BOOLEVAL OFF}
@@ -2545,7 +2545,7 @@ begin
                     if MultilineDocks then
                      Inc(NewLineSep.Y, (DocksBarHeight-NewBarHeight) div 2);
                     NewLineSep.Blank := PreviousSep.Blank;
-                    LineSeps.Add (Pointer(NewLineSep));
+                    LineSeps.Add (Pointer(LongInt(NewLineSep)));
                   end;
                 end;
               end;
@@ -3137,7 +3137,7 @@ begin
       else
        X:=1;
       for S := 0 to LineSeps.Count-1 do begin
-        Pointer(LS) := LineSeps[S];
+        LongInt(LS) := LongInt(LineSeps[S]);
         with LS do begin
           if Blank then Continue;
           Canvas.Pen.Color := clBtnShadow;
@@ -3540,9 +3540,9 @@ function CompareNewSizes (const Item1, Item2, ExtraData: Pointer): Integer; far;
 begin
   { Sorts in descending order }
   if ExtraData = nil then
-    Result := TSmallPoint(Item2).X - TSmallPoint(Item1).X
+    Result := TSmallPoint(LongInt(Item2)).X - TSmallPoint(LongInt(Item1)).X
   else
-    Result := TSmallPoint(Item2).Y - TSmallPoint(Item1).Y;
+    Result := TSmallPoint(LongInt(Item2)).Y - TSmallPoint(LongInt(Item1)).Y;
 end;
 
 (*procedure TToolbar97.BeginSizing (HitTestValue: Integer);
@@ -3891,7 +3891,7 @@ var
     DT := GetDockTypeOf(DockedTo);
     ArrangeControls (False, False, DT, nil, 0, @S);
     S2 := AddNCAreaToSize(S);
-    NewSizes.Add (Pointer(PointToSmallPoint(S2)));
+    NewSizes.Add (Pointer(LongInt(PointToSmallPoint(S2))));
     LastY := S.Y;
     Max := S.X;
     SkipTo := High(SkipTo);
@@ -3902,8 +3902,8 @@ var
         if S.Y = LastY then
           NewSizes.Delete (NewSizes.Count-1);
         S2 := AddNCAreaToSize(S);
-        if NewSizes.IndexOf(Pointer(PointToSmallPoint(S2))) = -1 then
-          NewSizes.Add (Pointer(PointToSmallPoint(S2)));
+        if NewSizes.IndexOf(Pointer(LongInt(PointToSmallPoint(S2)))) = -1 then
+          NewSizes.Add (Pointer(LongInt(PointToSmallPoint(S2))));
         LastY := S.Y;
       end
       else
@@ -3970,7 +3970,7 @@ var
       if (not Reverse and (I < 0)) or
          (Reverse and (I >= NewSizes.Count)) then
         Break;
-      Pointer(P) := NewSizes[I];
+      LongInt(P) := LongInt(NewSizes[I]);
       if HitTestValue in [HTLEFT, HTRIGHT] then begin
         if (not Reverse and ((I = NewSizes.Count-1) or (Pos.X >= P.X))) or
            (Reverse and ((I = 0) or (Pos.X < P.X))) then begin
@@ -4026,10 +4026,10 @@ begin
     SizeSens := MaxSizeSens;
     { Adjust sensitivity if it's too high }
     for I := 0 to NewSizes.Count-1 do begin
-      Pointer(S) := NewSizes[I];
+      LongInt(S) := LongInt(NewSizes[I]);
       if (S.X = Width) and (S.Y = Height) then begin
         if I > 0 then begin
-          Pointer(N) := NewSizes[I-1];
+          LongInt(N) := LongInt(NewSizes[I-1]);
           if HitTestValue in [HTLEFT, HTRIGHT] then
             NewSize := N.X - S.X - 1
           else
@@ -4037,7 +4037,7 @@ begin
           if NewSize < SizeSens then SizeSens := NewSize;
         end;
         if I < NewSizes.Count-1 then begin
-          Pointer(N) := NewSizes[I+1];
+          LongInt(N) := LongInt(NewSizes[I+1]);
           if HitTestValue in [HTLEFT, HTRIGHT] then
             NewSize := S.X - N.X - 1
           else
@@ -5758,7 +5758,7 @@ begin
                 WM_LBUTTONDOWN, WM_LBUTTONDBLCLK,
                 WM_RBUTTONDOWN, WM_RBUTTONDBLCLK,
                 WM_MBUTTONDOWN, WM_MBUTTONDBLCLK: begin
-                    P := SmallPointToPoint(TSmallPoint(lParam));
+                    P := SmallPointToPoint(TSmallPoint(LongInt(lParam)));
                     Windows.ClientToScreen (hwnd, P);
                     if FindDragTarget(P, True) = Self then
                       Repost := False;
