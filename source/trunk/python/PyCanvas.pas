@@ -658,7 +658,7 @@ begin
            end
           else if StrComp(attr, 'fontname')=0 then
            begin
-            Canvas.Font.Name:=PyString_AsString(value);
+            Canvas.Font.Name:=PyStrPas(PyString_AsString(value));
             Result:=0;
             Exit;
            end
