@@ -768,7 +768,6 @@ var
   CDC: TCDC;
   FCurrentFrame: vec3_p;
   FCurrentFrameCount: Integer;
-  S: String;
   test, total: Single;
   Mode3D: Boolean;
 Label
