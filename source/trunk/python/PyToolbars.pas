@@ -267,7 +267,7 @@ var
 begin
  Count:=PyObject_Length(TbObject^.Buttons);
  if Count<0 then Exit;
- Inc(DisableArrangeControls);
+ DisableAlign;
  try
   for I:=ControlCount-1 downto 0 do
    Controls[I].Free;
@@ -285,9 +285,9 @@ begin
     end;
    end;
  finally
-  Dec(DisableArrangeControls);
+  EnableAlign;
  end;
- AutoArrangeControls;
+ Realign;
 {Show;}
 end;
 

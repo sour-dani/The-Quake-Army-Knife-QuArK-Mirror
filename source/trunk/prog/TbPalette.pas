@@ -103,7 +103,7 @@ begin
    Result.Caption:=LoadStr1(5384);
    Result.CanDockLeftRight:=False;
    Result.CanDockTopBottom:=False;
-   Inc(Result.DisableArrangeControls); try
+   Result.DisableAlign; try
    for I:=0 to 255 div GroupeCouleurs do
     begin
      Panel:=TWinControl.Create(nOwner);
@@ -118,8 +118,8 @@ begin
        Btn.Parent:=Panel;
       end;
     end;
-   finally Dec(Result.DisableArrangeControls); end;
-   Result.AutoArrangeControls;
+   finally Result.EnableAlign; end;
+   Result.Realign;
   end;
  with TTbPal(Result) do
   begin

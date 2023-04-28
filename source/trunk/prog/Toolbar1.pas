@@ -291,13 +291,16 @@ begin
     Tb.CanDockTopBottom:=True;
     Tb.CloseButton:={True}False;
     Tb.Hint:=Specifics.Values['Hint'];
-    Inc(Tb.DisableArrangeControls);
-    for I:=0 to SubElements.Count-1 do
-     if SubElements[I] is QToolbarButton then
-      QToolbarButton(SubElements[I]).CreateButton(nOwner, Tb, ShortCuts);
-    TextsToMenuShortCuts(ShortCuts);
-    Dec(Tb.DisableArrangeControls);
-    Tb.AutoArrangeControls;
+    Tb.DisableAlign;
+    try
+     for I:=0 to SubElements.Count-1 do
+      if SubElements[I] is QToolbarButton then
+       QToolbarButton(SubElements[I]).CreateButton(nOwner, Tb, ShortCuts);
+     TextsToMenuShortCuts(ShortCuts);
+    finally
+     Tb.EnableAlign;
+    end;
+    Tb.Realign;
     finally ShortCuts.Free; end;
     if JustCreated then
      if Tb.ControlCount=0 then

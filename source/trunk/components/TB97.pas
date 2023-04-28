@@ -280,6 +280,7 @@ type
     procedure MoveOnScreen (const OnlyIfFullyOffscreen: Boolean);
     procedure ShouldBeVisible (const Control: TControl; const DockType: TDockType;
       const SetIt: Boolean; var AVisible: Boolean);
+    procedure AutoArrangeControls;
     procedure ArrangeControls (const CanMove, CanResize: Boolean;
       const OldDockType: TDockType; const DockingTo: TDock97; RightX: Integer;
       const NewClientSize: PPoint);
@@ -321,8 +322,6 @@ type
     procedure SetParent (AParent: TWinControl); override;
   public
     { Public declarations }
-{AR}DisableArrangeControls: Integer;  { Increment to disable ArrangeControls }
-{AR}procedure AutoArrangeControls;
     property FloatingRect: TRect read FFloatingRect write FFloatingRect;
     property OrderIndex[Control: TControl]: Integer read GetOrderIndex write SetOrderIndex;
     constructor Create (AOwner: TComponent); override;
@@ -1783,7 +1782,7 @@ begin
   LineSeps := TList.Create;
   OrderList := TList.Create;
 
-  Inc (DisableArrangeControls);
+  DisableAlign;
   try
     ControlStyle := ControlStyle +
       [csAcceptsControls, csClickEvents, csDoubleClicks, csSetCaption] -
@@ -1818,9 +1817,9 @@ begin
     Color := clBtnFace;
     DockedTo := nil;
   finally
-    Dec (DisableArrangeControls);
+    EnableAlign;
   end;
-  AutoArrangeControls;
+  Realign;
 end;
 
 {AR}
@@ -2419,7 +2418,7 @@ var
   DockAllowsDrag, MultilineDocks: Boolean;
 label 1;
 begin
-  if (DisableArrangeControls > 0) or
+  if (AlignDisabled) or
      { Prevent flicker while loading or destroying }
      (csLoading in ComponentState) or
      { Following line added in 1.53 to stop the access violations that 1.52 was
@@ -2435,7 +2434,7 @@ begin
 
   DockAllowsDrag := (DockedTo = nil) or (DockedTo.FAllowDrag);
 
-  Inc (DisableArrangeControls);
+  DisableAlign;
   try
     OldBarWidth := FBarWidth;
     OldBarHeight := FBarHeight;
@@ -2695,7 +2694,7 @@ begin
       end;
     end;
   finally
-    Dec (DisableArrangeControls);
+    EnableAlign;
   end;
 end;
 
@@ -4467,11 +4466,11 @@ begin
           ArrangeControls (True, False, GetDockTypeOf(OldDockedTo),
             Value, FFloatingRightX, nil);
         if Parent <> Value then begin
-          Inc (DisableArrangeControls);
+          DisableAlign;
           try
             Parent := Value;
           finally
-            Dec (DisableArrangeControls);
+            EnableAlign;
           end;
         end;
         AutoArrangeControls;
@@ -4487,13 +4486,13 @@ begin
         if Parent <> nil then
           ArrangeControls (True, False, GetDockTypeOf(OldDockedTo),
             Value, FFloatingRightX, nil);
-        Inc (DisableArrangeControls);
+        DisableAlign;
         try
           if Parent <> FloatParent then
             Parent := FloatParent;
           SetVirtualBoundsRect (FFloatingRect);
         finally
-          Dec (DisableArrangeControls);
+          EnableAlign;
         end;
         AutoArrangeControls;
       end;
