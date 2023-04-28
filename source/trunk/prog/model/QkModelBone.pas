@@ -393,7 +393,7 @@ begin
         DictLen:=0;
         while (PyDict_Next(value, @DictLen, @DictKey, @DictValue)<>0) do
         begin
-          S2:=PyString_AsString(DictKey);
+          S2:=PyStrPas(PyString_AsString(DictKey));
           SetLength(S, I+Length(S2)+1);
           PChar(DestV):=PChar(S)+I;
           StrCopy(DestV, PChar(S2));
@@ -435,7 +435,7 @@ begin
         DictLen:=0;
         while (PyDict_Next(value, @DictLen, @DictKey, @DictValue)<>0) do
         begin
-          S2:=PyString_AsString(DictKey);
+          S2:=PyStrPas(PyString_AsString(DictKey));
           SetLength(S, I+Length(S2)+1);
           PChar(DestV):=PChar(S)+I;
           StrCopy(DestV, PChar(S2));
