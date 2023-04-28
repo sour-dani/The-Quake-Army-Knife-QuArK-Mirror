@@ -1790,7 +1790,7 @@ begin
        try
          Model^.VertexCount:=Count;
          Model^.ModelRendermode:=trmNormal;
-         PChar(VDest):=PChar(Model)+SizeOf(TModel3DInfo);
+         PArithByte(VDest):=PArithByte(Model)+SizeOf(TModel3DInfo);
          Model^.Vertices:=VDest;
          if not AnglesDefined then
          begin
