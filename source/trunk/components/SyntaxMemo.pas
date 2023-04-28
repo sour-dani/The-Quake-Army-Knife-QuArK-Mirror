@@ -298,7 +298,7 @@ var
 begin
  Result:=-1;
  Taille:=SendMessage(Handle, WM_GETTEXTLENGTH, 0,0);
- GetMem(Buffer, Taille); try
+ GetMem(Buffer, Taille*SizeOf(Char)); try
  SendMessage(Handle, WM_GETTEXT, Taille, LongInt(Buffer));
  Taille:=StrLen(Buffer);
  if StartPos>=Taille then Exit;
