@@ -133,7 +133,7 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
   {$DEFINE Delphi10_4orNewerCompiler}
 {$ENDIF}
 {$IFDEF VER350}
-  {$DEFINE CompiledWithDelphi11} //11.0 or 11.1 or 11.2
+  {$DEFINE CompiledWithDelphi11} //11.0 or 11.1 or 11.2 or 11.3
   {$DEFINE Delphi11orNewerCompiler}
 {$ENDIF}
 
