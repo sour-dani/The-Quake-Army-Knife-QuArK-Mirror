@@ -59,6 +59,17 @@ type
   size_t = Cardinal;  //This appears to be true in (32-bit) Delphi
   ssize_t = Integer;  //This appears to be true in (32-bit) Delphi
 
+  //To support pointer arithmetic, we need a custom datatype, because support for it has changed throughout the years.
+  //https://helloacm.com/pointer-arithmetic-in-delphi/
+  //Using naming convection suggested by: https://stackoverflow.com/questions/38371432/how-to-handle-pbyte-pointer-operations-in-d5-d7-operator-not-applicable-to-this#comment64189614_38372378
+{$ifdef Delphi2009orNewerCompiler}
+  ArithByte = Byte;
+  PArithByte = PByte;
+{$else}
+  ArithByte = AnsiChar;
+  PArithByte = PAnsiChar;
+{$endif}
+
   PMemoryStatusEx = ^TMemoryStatusEx;
   _MEMORYSTATUSEX = record
     dwLength: DWORD;

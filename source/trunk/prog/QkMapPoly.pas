@@ -248,7 +248,7 @@ implementation
 
 uses QkFileObjects, Undo, PyMapView, QkMap, QkPixelSet, Dialogs, EdSceneObject,
      Quarkx, QkExceptions, PyObjects, QkSin, QkQuakeCtx, QkObjectClassList,
-     Coordinates, qdraw, Logging, Math, PyMath;
+     Coordinates, qdraw, Logging, Math, PyMath, ExtraFunctionality;
 
 const
  TmpFaceSpec = '!~tmp~!this is a bug';
@@ -1464,7 +1464,7 @@ begin
       K:=FaceList.Count*SizeOf(TSurface) + Aretes.Count + SizeOf(Word);
        { taille maximale, sera réalloué plus tard }
       GetMem(DescFaces, K + Vertices.Count*SizeOf(TUnSommet));
-      PChar(Base):=PChar(DescFaces)+K;
+      PArithByte(Base):=PArithByte(DescFaces)+K;
       Surface:=PSurface(DescFaces);
       try // 3
         for J:=0 to FaceList.Count-1 do
@@ -1527,7 +1527,7 @@ begin
           Surface^.prvVertexCount:=K;
           //Faces.Add(Surface); //Moved to down below...
           //FJ.LinkSurface(Surface);
-          Inc(PChar(Surface), TailleBaseSurface+K*SizeOf(PVertex));
+          Inc(PArithByte(Surface), TailleBaseSurface+K*SizeOf(PVertex));
          end;
       except  // 3
         on E:EListError do
@@ -1537,7 +1537,7 @@ begin
           Exit;
         end;
       end;
-      PChar(TamponArete):=PChar(Surface);
+      PArithByte(TamponArete):=PArithByte(Surface);
       J:=Aretes.Count+1;
       for I:=0 to Vertices.Count-1 do
         with Base^[I] do
@@ -1572,13 +1572,12 @@ begin
       until J=Vertices.Count;
       TamponArete^:=$8000;
 
-      NbAretes2:=(PChar(Surface)-PChar(DescFaces)) div SizeOf(PVertex);
+      NbAretes2:=(PArithByte(Surface)-PArithByte(DescFaces)) div SizeOf(PVertex);
 
-      ReallocMem(DescFaces, PChar(TamponArete)+SizeOf(Word)-PChar(DescFaces));
+      ReallocMem(DescFaces, PArithByte(TamponArete)+SizeOf(Word)-PArithByte(DescFaces));
 
       //Okay, problem. ReallocMem can change the pointer! So we have to make sure
       //after the move, all our pointers are still pointing to the right things!
-
       Surface:=PSurface(DescFaces);
       for J:=0 to FaceList.Count-1 do
       begin
@@ -1586,7 +1585,7 @@ begin
         K:=PSurface(Surface)^.prvVertexCount;
         Faces.Add(Surface);
         FJ.LinkSurface(Surface);
-        Inc(PChar(Surface), TailleBaseSurface+K*SizeOf(PVertex));
+        Inc(PArithByte(Surface), TailleBaseSurface+K*SizeOf(PVertex));
       end;
     finally // 2
       Aretes.Free;
@@ -1972,11 +1971,11 @@ begin
     end;
    SetROP2(g_DrawInfo.DC, R2_CopyPen);
   end;
- PChar(Dessin):=PChar(S)+Base;
- PChar(TamponAretes):=PChar(DescFaces)+NbAretes2*SizeOf(PVertex);
+ PArithByte(Dessin):=PArithByte(S)+Base;
+ PArithByte(TamponAretes):=PArithByte(DescFaces)+NbAretes2*SizeOf(PVertex);
  if CCoord.FastDisplay then
   begin
-   PChar(Nombres):=PChar(S)+BaseNombre;
+   PArithByte(Nombres):=PArithByte(S)+BaseNombre;
    while TamponAretes^<>$8000 do
     begin
      J:=1;
@@ -2001,9 +2000,9 @@ begin
      Nombres^:=J;
      Inc(Nombres);
     end;
-   PChar(Dessin):=PChar(S)+BaseNombre;
-   PolyPolyline(g_DrawInfo.DC, PPoint(PChar(S)+Base)^, PInteger(Dessin)^,
-    (PChar(Nombres)-PChar(Dessin)) div SizeOf(Integer));
+   PArithByte(Dessin):=PArithByte(S)+BaseNombre;
+   PolyPolyline(g_DrawInfo.DC, PPoint(PArithByte(S)+Base)^, PInteger(Dessin)^,
+    (PArithByte(Nombres)-PArithByte(Dessin)) div SizeOf(Integer));
   end
  else
   begin
@@ -2020,7 +2019,7 @@ begin
        Inc(Dessin);
        Inc(TamponAretes);
       end;
-     PChar(Dessin):=PChar(S)+Base;
+     PArithByte(Dessin):=PArithByte(S)+Base;
      CCoord.Polyline95(Dessin^, J);
     end;
   end;
