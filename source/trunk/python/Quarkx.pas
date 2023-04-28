@@ -1213,7 +1213,7 @@ begin
     args:=PyTuple_GetItem(args, 0);
     if args^.ob_type = PyString_Type then
      begin
-      Result:=MakePyVect(ReadVector(PyString_AsString(args)));
+      Result:=MakePyVect(ReadVector(PyStrPas(PyString_AsString(args))));
       Exit;
      end;
    end;
@@ -1247,7 +1247,7 @@ begin
     args:=PyTuple_GetItem(args, 0);
     if args^.ob_type = PyString_Type then
      begin
-      Result:=MakePyQuaternion(stoq(PyString_AsString(args)));
+      Result:=MakePyQuaternion(stoq(PyStrPas(PyString_AsString(args))));
       Exit;
      end;
    end;
@@ -1274,7 +1274,7 @@ begin
     args:=PyTuple_GetItem(args, 0);
     if args^.ob_type = PyString_Type then
      begin
-      Result:=MakePyMatrix(stomx(PyString_AsString(args)));
+      Result:=MakePyMatrix(stomx(PyStrPas(PyString_AsString(args))));
       Exit;
      end;
    end;
