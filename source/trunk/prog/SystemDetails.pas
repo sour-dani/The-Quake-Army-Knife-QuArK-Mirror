@@ -1491,10 +1491,11 @@ begin
           FBiosName:=ReadString(rvBIOSID);
         if ValueExists(rvBIOSVersion) then
         begin
+          //Is actually a REG_MULTI_SZ, but Delphi doesn't support that.
           bdata:=stralloc(bdatasize + 1); //Note: One larger for null-terminator
           try
             FillChar(bdata^,bdatasize+1,0);
-            dummy:=bdatasize;
+            dummy:=bdatasize*SizeOf(Char);
             if TryReadBinaryData(rvBIOSVersion,bdata^,dummy) then
               FBIOSCopyright:=strpas(pchar(bdata));
           finally
@@ -1578,7 +1579,7 @@ begin
     bdata:=stralloc(bdatasize+1); //Note: One larger for null-terminator
     try
       FillChar(bdata^,bdatasize+1,0);
-      RegKey.readbinarydata(ValueName,bdata^,bdatasize);
+      RegKey.readbinarydata(ValueName,bdata^,bdatasize*SizeOf(Char));
       Result:=getstrfrombuf(pchar(bdata));
     finally
       strdispose(bdata);
@@ -2161,8 +2162,6 @@ var
   sl :tstringlist;
   i :integer;
 const
-  bdatasize = 255;
-
   rkDirectX = {HKEY_LOCAL_MACHINE\}'SOFTWARE\Microsoft\DirectX';
   rvDXVersion = 'Version';
   rvDXInstalledVersion = 'InstalledVersion';
@@ -2177,20 +2176,25 @@ begin
     rootkey:=HKEY_LOCAL_MACHINE;
     if OpenKey(rkDirectX,false) then
     begin
-      bdata:=stralloc(bdatasize+1); //Note: One larger for null-terminator
       FVersion:=ReadString(rvDXVersion);
       if FVersion='' then
       begin
         if ValueExists(rvDXInstalledVersion) then
+        begin
+          GetMem(bdata, 8);
           try
-            FillChar(bdata^,bdatasize+1,0);
-            readbinarydata(rvDXInstalledVersion,bdata^,8);
+            try
+              readbinarydata(rvDXInstalledVersion,bdata^,8);
+            except
+              ZeroMemory(bdata, 8);
+            end;
             FVersion:=uinttostr(Swap32(PDWORD(bdata)^))+'.'+uinttostr(Swap32((PDWORD(bdata+4))^));
-          except
+          finally
+            FreeMem(bdata);
           end;
+        end;
       end;
       CloseKey;
-      strdispose(bdata);
     end;
     FDirect3D.Clear;
     sl:=TStringList.create;
