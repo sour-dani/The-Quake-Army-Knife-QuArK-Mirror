@@ -4637,7 +4637,7 @@ begin
           Acces;
           P:=PyString_AsString(value);
           if P=Nil then Exit;
-          NomTex:=P;
+          NomTex:=PyStrPas(P);
           Result:=True;
           Exit;
          end;
