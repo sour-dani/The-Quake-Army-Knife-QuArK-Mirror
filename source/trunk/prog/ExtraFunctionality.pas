@@ -31,12 +31,18 @@ type
   PQWORD = ^QWORD;
   LPQWORD = PQWORD;
 
+{$ifndef Delphi2orNewerCompiler}
+  AnsiChar = Char;
+  PAnsiChar = PChar;
+  AnsiString = String;
+{$endif}
+
 {$ifndef Delphi4orNewerCompiler}
   Int64 = TLargeInteger;
   PInt64 = ^Int64;
   LongWord = DWORD;
   PLongWord = ^LongWord;
-{$ENDIF}
+{$endif}
 
 {$ifndef Delphi6orNewerCompiler}
   PByte = ^Byte;
