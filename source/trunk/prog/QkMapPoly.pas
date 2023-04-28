@@ -2494,13 +2494,13 @@ end;
 
 function pChangedFaces(self, args: PyObject) : PyObject; cdecl;
 var
- poly: PyObject;
+// poly: PyObject;
  Me: TPolyedre;
  I: Integer;
 begin
  Result:=Nil;
  try
-  poly:=self;
+//  poly:=self;
 //  if not PyArg_ParseTupleX(args, 'O!', [@TyObject_Type, @poly]) then
 //   Exit;
   Me:=QkObjFromPyObj(self) as TPolyedre;

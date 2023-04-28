@@ -1008,7 +1008,7 @@ begin
       if (W1.Y = COERCEDFROMFLOAT)
       or (W2.Y <> COERCEDFROMFLOAT) then
        Raise EError(4463);
-      v1:=v2;
+      //v1:=v2;
      end;
     Result:=MakePyQuaternion(W1.X*W2.X, W1.Y*W2.X, W1.Z*W2.X, W1.W*W2.X);
    end;
