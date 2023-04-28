@@ -88,7 +88,7 @@ type
 
 implementation
 
-uses qdraw, QuarkX, QkExceptions, Setup,
+uses Types, qdraw, QuarkX, QkExceptions, Setup,
      PyMath, PyMapView, PyObjects, QkObjectClassList, EdSceneObject, ExtraFunctionality;
 
 //@
