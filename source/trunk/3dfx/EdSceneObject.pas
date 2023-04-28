@@ -1874,12 +1874,13 @@ begin
        Dest:=PArithByte(data);
        if Q=Nil then
         begin
+         //Build a checkerboard texture image
          for J:=0 to MemSize-1 do
-          begin       { build a checkerboard texture image
+          begin
            if (J and (cDummyTextureWHSize div 2)) = ((J div cDummyTextureWHSize) and (cDummyTextureWHSize div 2)) then
-            Dest^:=#0
+            PByte(Dest)^:=0
            else
-            Dest^:=#255;
+            PByte(Dest)^:=255;
            Inc(Dest);
           end;
         end
@@ -1912,13 +1913,14 @@ begin
          end;
        else
          begin
+          //Build a checkerboard texture image
           Dest:=PArithByte(data);
           for J:=0 to MemSize-1 do
-           begin       { build a checkerboard texture image
+           begin
             if (J and (cDummyTextureWHSize div 2)) = ((J div cDummyTextureWHSize) and (cDummyTextureWHSize div 2)) then
-             Dest^:=#0
+             PByte(Dest):=0
             else
-             Dest^:=#255;
+             PByte(Dest)^:=255;
             Inc(Dest);
            end;
          end;
@@ -2022,8 +2024,8 @@ begin
    Result.ScanLine:=cDummyTextureWHSize;
    Result.ColorPalette:=@(TTextureManager.GetInstance.DummyGameInfo^.PaletteLmp);
    Result.AllocData;
+   //Build a checkerboard texture image
    Dest:=PArithByte(Result.Data);
-   { build a checkerboard texture image }
    for J:=0 to cDummyTextureWHSize * cDummyTextureWHSize - 1 do
     begin
      if (J and (cDummyTextureWHSize div 2)) = ((J div cDummyTextureWHSize) and (cDummyTextureWHSize div 2)) then
