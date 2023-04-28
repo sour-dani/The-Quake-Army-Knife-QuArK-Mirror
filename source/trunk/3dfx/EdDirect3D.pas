@@ -669,8 +669,6 @@ var
  Surf: PSurface3D;
  SurfExtra: PSurfaceExtra;
  SurfEnd: PArithByte;
- SurfAveragePosition: vec3_t;
- PAveragePosition: vec3_t;
  VertexNR: Integer;
  PV: PVertex3D;
  Sz: Integer;
