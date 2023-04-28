@@ -496,7 +496,7 @@ begin
     'e': if StrComp(attr, 'editnames')=0 then
           begin
            if QkControl<>Nil then
-            (QkControl as TPyFormCfg).EditNames:=PyString_AsString(value);
+            (QkControl as TPyFormCfg).EditNames:=PyStrPas(PyString_AsString(value));
            Result:=0;
            Exit;
           end;
