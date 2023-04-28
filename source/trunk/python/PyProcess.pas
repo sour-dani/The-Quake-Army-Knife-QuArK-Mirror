@@ -290,9 +290,11 @@ var
  Dummy: DWORD;
  hRead, hWrite: THandle;
  writefnt, closefnt: PyObject;
-   {SA: TSecurityAttributes;}
+ {SA: TSecurityAttributes;}
 begin
  Info:=nil;
+ writefnt:=nil;
+ closefnt:=nil;
  try
   writefnt:=PyObject_GetAttrString(fileobj, 'write');
   if writefnt=Nil then
