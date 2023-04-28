@@ -812,7 +812,11 @@ begin
       ID := AID;
       Form := AForm;
       New := MakeObjectInstance(NewProc);
+      {$IFDEF WIN64}
+      Old := Pointer(SetWindowLongPtr(AForm.Handle, GWL_WNDPROC, IntPtr(New)));
+      {$ELSE}
       Old := Pointer(SetWindowLong(AForm.Handle, GWL_WNDPROC, LongInt(New)));
+      {$ENDIF}
       Hook := NewHook;
       if Assigned(Hook) then
         Application.HookMainWindow (Hook);
@@ -838,7 +842,11 @@ begin
         Dec (RefCount);
         if RefCount = 0 then begin
           if Form.HandleAllocated then
+            {$IFDEF WIN64}
+            SetWindowLongPtr (Form.Handle, GWL_WNDPROC, IntPtr(Old));
+            {$ELSE}
             SetWindowLong (Form.Handle, GWL_WNDPROC, LongInt(Old));
+            {$ENDIF}
           FreeObjectInstance (New);
           if Assigned(Hook) then
             Application.UnhookMainWindow (Hook);
