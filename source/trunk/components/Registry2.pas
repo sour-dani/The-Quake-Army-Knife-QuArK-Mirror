@@ -136,7 +136,7 @@ end;
 
 function TRegistry2.TryWriteBinaryData(const Name: string; var Buffer; BufSize: Integer) : Boolean;
 var
-  bdata: pchar;
+  bdata: pansichar;
 begin
  {if DontWrite then
  begin
@@ -152,7 +152,7 @@ begin
     OnWrite(Self);
    if not DontWrite then}
     Result:=RegSetValueEx(CurrentKey, PChar(Name), 0, REG_BINARY,
-     PChar(Buffer), BufSize+1)=ERROR_SUCCESS;
+     PAnsiChar(Buffer), BufSize+1)=ERROR_SUCCESS;
   end
   else
    Result:=True;
