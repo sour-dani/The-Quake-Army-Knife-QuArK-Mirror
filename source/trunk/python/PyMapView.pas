@@ -220,7 +220,7 @@ var
 
 implementation
 
-uses PyCanvas, QkFileObjects, QkTextures, Game, PyForms, RedLines, Logging, Qk1,
+uses Types, PyCanvas, QkFileObjects, QkTextures, Game, PyForms, RedLines, Logging, Qk1,
      qdraw, EdSoftware, EdGlide, EdOpenGL, EdDirect3D, SystemDetails, QkExceptions, ExtraFunctionality;
 
 const
