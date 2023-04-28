@@ -117,8 +117,20 @@ var
 
 function PyNoResult : PyObject; assembler;
 asm
+{$ifndef DelphiXE2orNewerCompiler}
+{$define CPUX86}
+{$endif}
+{$IFDEF CPUX86}
  mov eax, [Py_None]
  inc dword ptr [eax]
+{$ELSE}
+ {$IFDEF CPUX64}
+  mov rax, [Py_None]
+  inc qword ptr [rax]
+ {$ELSE}
+  {$Message Error Unsupported CPU architecture!}
+ {$ENDIF}
+{$ENDIF}
 end;
 
 function GetEmptyTuple : PyObject;

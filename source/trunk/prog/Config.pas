@@ -88,6 +88,7 @@ implementation
 
 uses Qk1, Game, Quarkx, QkGroup, QkTreeView, QkFormCfg;
 
+{$I DelphiVer.inc}
 {$R *.DFM}
 
 var
@@ -149,7 +150,7 @@ begin
        Tpb.Caption:=NewObjList[I].Name;
        Inc(X, 2);
        Tpb.SetBounds(X, TrashBtn.Top, Canvas.TextWidth(Tpb.Caption)+16, TrashBtn.Height);
-       Tpb.Tag:=LongInt(NewObjList[I]);
+       Tpb.Tag:={$IFDEF DelphiXE2orNewerCompiler}NativeInt{$ELSE}LongInt{$ENDIF}(NewObjList[I]);
        Tpb.OnClick:=InsertNewObj;
        Tpb.Hint:=NewObjList[I].Specifics.Values[SpecDesc];
        Inc(X, Tpb.Width);
@@ -259,7 +260,7 @@ var
  Q: QObject;
  Gr: QExplorerGroup;
 begin
- LongInt(Q):=(Sender as TControl).Tag;
+ {$IFDEF DelphiXE2orNewerCompiler}NativeInt{$ELSE}LongInt{$ENDIF}(Q):=(Sender as TControl).Tag;
  Gr:=ClipboardGroup;
  Gr.AddRef(+1); try
  Q:=Q.Clone(Nil, False);

@@ -422,8 +422,8 @@ begin
        Inc(st1, best_st^[J]);
        s:=(st1^.s + 0.5) * skinwidth1;
        t:=(st1^.t + 0.5) * skinheight1;
-       L.Add(Pointer(s));
-       L.Add(Pointer(t));
+       L.Add(Pointer(PLongInt(@s)^));
+       L.Add(Pointer(PLongInt(@t)^));
        L.Add(Pointer(best_xyz^[J]));
       end;
     end;

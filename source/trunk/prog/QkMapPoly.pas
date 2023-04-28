@@ -1383,8 +1383,8 @@ begin
         I:=Aretes.Count-1;
         while I>0 do
         begin
-          Pointer(S1):=Aretes[I-2];
-          Pointer(S2):=Aretes[I];
+          S1:=Integer(Aretes[I-2]);
+          S2:=Integer(Aretes[I]);
           if S1=S2 then
           begin
             Aretes.Delete(I);
@@ -1433,10 +1433,10 @@ begin
         begin
           if K=2 then
           begin
-            Pointer(S1):=Aretes[NoAretes[1] xor 1];
-            Pointer(S2):=Aretes[NoAretes[1] xor 3];
-            Pointer(S3):=Aretes[NoAretes[2] xor 1];
-            Pointer(S4):=Aretes[NoAretes[2] xor 3];
+            S1:=Integer(Aretes[NoAretes[1] xor 1]);
+            S2:=Integer(Aretes[NoAretes[1] xor 3]);
+            S3:=Integer(Aretes[NoAretes[2] xor 1]);
+            S4:=Integer(Aretes[NoAretes[2] xor 3]);
             if ((S3=S1) and (S4=S2)) or ((S3=S2) and (S4=S1)) then
             begin
               Aretes[NoAretes[1]]:=Aretes[NoAretes[2] xor 2];

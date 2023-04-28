@@ -332,7 +332,7 @@ var p, q: phuftlist;
 begin
   p := pointer(t);
   while p <> nil do begin
-    dec(longint(p), sizeof(huft));
+    dec(pbyte(p), sizeof(huft));
     q := p^[0].v_t;
     z := p^[0].v_n; {Size in Bytes, required by TP ***}
     freemem(p, (z + 1) * sizeof(huft));
@@ -379,7 +379,7 @@ begin
       exit
     end;
     inc(c[p^]);
-    inc(longint(p), sizeof(word)); {point to next item}
+    inc(pbyte(p), sizeof(word)); {point to next item}
     dec(i);
   until i = 0;
   if c[0] = n then begin
@@ -418,22 +418,22 @@ begin
   x[1] := 0;
   j := 0;
   p := pword(@c);
-  inc(longint(p), sizeof(word));
+  inc(pbyte(p), sizeof(word));
   xp := pword(@x);
-  inc(longint(xp), 2 * sizeof(word));
+  inc(pbyte(xp), 2 * sizeof(word));
   dec(i);
   while i <> 0 do begin
     inc(j, p^);
     xp^ := j;
-    inc(longint(p), 2);
-    inc(longint(xp), 2);
+    inc(pbyte(p), 2);
+    inc(pbyte(xp), 2);
     dec(i);
   end;
   {make table of values in order of bit length}
   p := b; i := 0;
   repeat
     j := p^;
-    inc(longint(p), sizeof(word));
+    inc(pbyte(p), sizeof(word));
     if j <> 0 then begin
       v[x[j]] := i;
       inc(x[j]);
@@ -467,7 +467,7 @@ begin
           tryagain := TRUE;
           while (j < z) and tryagain do begin
             f := f shl 1;
-            inc(longint(xp), sizeof(word));
+            inc(pbyte(xp), sizeof(word));
             if f <= xp^ then tryagain := FALSE
             else begin
               dec(f, xp^);
@@ -522,7 +522,7 @@ begin
       else if p^ < s then begin
         if p^ < 256 then r.e := 16 else r.e := 15;
         r.v_n := p^;
-        inc(longint(p), sizeof(word));
+        inc(pbyte(p), sizeof(word));
       end else begin
         if (d = nil) or (e = nil) then begin
           huft_free(pointer(u[0]));
@@ -531,7 +531,7 @@ begin
         end;
         r.e := word(e^[p^ - s]);
         r.v_n := d^[p^ - s];
-        inc(longint(p), sizeof(word));
+        inc(pbyte(p), sizeof(word));
       end;
       {fill code like entries with r}
       f := 1 shl (k - w);
@@ -858,7 +858,7 @@ var header: tlocalfileheader;
       end;
       repeat
         l^ := b;
-        inc(longint(l), sizeof(Word));
+        inc(pbyte(l), sizeof(Word));
         inc(k);
         dec(j);
       until j = 0;
