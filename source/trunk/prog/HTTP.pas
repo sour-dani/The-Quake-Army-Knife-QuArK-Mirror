@@ -327,7 +327,7 @@ end;
 
 procedure THTTPConnection.ReadFile(FileData: TMemoryStream; DataStart, DataLength: cardinal);
 var
-  Buffer: PChar;
+  Buffer: PByte;
   BufferLength: DWORD;
 begin
   if not Requesting then
