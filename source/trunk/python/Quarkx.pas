@@ -24,15 +24,7 @@ interface
 
 {$I DelphiVer.inc}
 
-uses Windows, Messages, ShellApi, SysUtils, Python, Forms,
-     Menus;
-
-const
- PythonSetupString  = 'import sys'#10'sys.path = ["%s", "%s"]'#10'import quarkpy'; //Note that we sanitize sys.path
- PythonRunPackage   = 'quarkpy.RunQuArK()';
- FatalErrorText     = 'Cannot initialize the Python interpreter. QuArK cannot start. Be sure QuArK is correctly installed; reinstall it if required.';
- FatalErrorCaption  = 'QuArK Python';
- PythonNotFound     = 'Could not locate Python interpreter. QuArK cannot start.';
+uses Windows, Messages, ShellApi, SysUtils, Python, Forms, Menus;
 
 var
  Py_None        : PyObject = Nil;
@@ -97,6 +89,12 @@ uses Classes, Dialogs, Graphics, CommCtrl, ExtCtrls, Controls,
      Coordinates, SystemDetails, ExtraFunctionality, Platform;
 
 const
+ PythonSetupString  = 'import sys'#10'sys.path = ["%s", "%s"]'#10'import quarkpy'; //Note that we sanitize sys.path
+ PythonRunPackage   = 'quarkpy.RunQuArK()';
+ FatalErrorText     = 'Cannot initialize the Python interpreter. QuArK cannot start. Be sure QuArK is correctly installed; reinstall it if required.';
+ FatalErrorCaption  = 'QuArK Python';
+ PythonNotFound     = 'Could not locate Python interpreter. QuArK cannot start.';
+
  LoadStrMissingText = '*MISSING TEXT*';
 
  ToolBoxClosed = 0;
