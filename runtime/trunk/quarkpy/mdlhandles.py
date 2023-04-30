@@ -5106,7 +5106,6 @@ class ModelEditorBoneHandlesManager:
         except:
             handle_scale = 1.0
 
-        from math import sqrt
         bonenormallength = quarkx.setupsubset(SS_MODEL,"Building")['RotationHandleLength'][0]
         h.append(BoneCornerHandle(center, center + quarkx.matrix((math.sqrt(2)/2, -math.sqrt(2)/2, 0), (math.sqrt(2)/2, math.sqrt(2)/2, 0), (0, 0, 1)) * quarkx.vect(bonenormallength * handle_scale, 0, 0), self, self.bone))
         return h + [BoneCenterHandle(center, self, self.bone)]
