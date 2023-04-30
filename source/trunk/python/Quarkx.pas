@@ -3297,7 +3297,7 @@ var
 begin
  Result:=False;
 
- m:=Py_InitModule4('quarkx', MethodTable, Nil, Nil, PYTHON_API_VERSION);
+ m:=Py_InitModule4('quarkx', @(MethodTable[0]), Nil, Nil, PYTHON_API_VERSION);
  if m=Nil then
   Exit;
  QuarkxDict:=PyModule_GetDict(m);

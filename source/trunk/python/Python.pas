@@ -374,9 +374,9 @@ PyRun_SimpleString: function (const P: PyChar) : Integer; cdecl;
 //PyRun_String: function (const str: PyChar; start: Integer; Globals, Locals: PyObject) : PyObject; cdecl;
 //Py_CompileString: function (const str, filename: PyChar; start: Integer) : PyObject; cdecl;
 
-//Py_InitModule: function ({$IFDEF PYTHON25}const {$ENDIF}name: PyChar; const MethodDef) : PyObject; cdecl;
-//Py_InitModule3: function ({$IFDEF PYTHON25}const {$ENDIF}name: PyChar; const MethodDef; {$IFDEF PYTHON25}const {$ENDIF}doc: PyChar) : PyObject; cdecl;
-Py_InitModule4: function ({$IFDEF PYTHON25}const {$ENDIF}name: PyChar; const MethodDef; {$IFDEF PYTHON25}const {$ENDIF}doc: PyChar; self: PyObject; Version: Integer) : PyObject; cdecl;
+//Py_InitModule: function ({$IFDEF PYTHON25}const {$ENDIF}name: PyChar; MethodDef: PTyMethodDef) : PyObject; cdecl;
+//Py_InitModule3: function ({$IFDEF PYTHON25}const {$ENDIF}name: PyChar; MethodDef: PTyMethodDef; {$IFDEF PYTHON25}const {$ENDIF}doc: PyChar) : PyObject; cdecl;
+Py_InitModule4: function ({$IFDEF PYTHON25}const {$ENDIF}name: PyChar; MethodDef: PTyMethodDef; {$IFDEF PYTHON25}const {$ENDIF}doc: PyChar; self: PyObject; Version: Integer) : PyObject; cdecl;
 PyModule_GetDict: function (module: PyObject) : PyObject; cdecl;
 PyModule_New: function (const name: PyChar) : PyObject; cdecl;
 //PyImport_ImportModule: function (const name: PyChar) : PyObject; cdecl;
