@@ -531,32 +531,83 @@ function TCPU.GetCPUVendor :string;
 
   function _GetCPUVendor :TStrBuf; assembler; register;
   asm
-	PUSH ebx       //Save regs
-	PUSH edi
-	MOV  edi,eax   //@Result (TStrBuf)
-	MOV  eax,0
-	DW   $A20F     //CPUID Command
-	MOV  eax,ebx
-	XCHG ebx,ecx   //save ECX result
-	MOV  ecx,4
-  @1:
-	STOSB          //save first 4 byte
-	SHR  eax,8
+	{$IFDEF CPUX64}
+	//Save registers
+	PUSH rbx
+	PUSH rdi
+
+	//Call the CPUID command
+	MOV  rdi,rdx   //store @Result (TStrBuf) in RDI
+	MOV  rax,0     //select CPUID standard function 0
+	DW   $A20F     //raw opcode
+
+	//Save the first 4 bytes
+	MOV  rax,rbx   //need CPUID EBX-value to be in EAX
+	XCHG rbx,rcx   //save ECX result
+	MOV  rcx,4     //loop 4 times
+	@1:
+	STOSB          //save 1 byte from EAX
+	SHR  rax,8     //shift to the next byte
 	LOOP @1
-	MOV  eax,edx
-	MOV  ecx,4
-  @2:
-	STOSB          //save middle 4 byte
-	SHR  eax,8
+
+	//Save the middle 4 bytes
+	MOV  rax,rdx   //need CPUID EDX-value to be in EAX
+	MOV  rcx,4     //loop 4 times
+	@2:
+	STOSB          //save 1 byte from EAX
+	SHR  rax,8     //shift to the next byte
 	LOOP @2
-	MOV  eax,ebx
-	MOV  ecx,4
-  @3:              //save last 4 byte
-	STOSB
-	SHR  eax,8
+
+	//Save the last 4 bytes
+	MOV  rax,rbx   //need CPUID ECX-value to be in EAX
+	MOV  rcx,4     //loop 4 times
+	@3:
+	STOSB          //save 1 byte from EAX
+	SHR  rax,8     //shift to the next byte
 	LOOP @3
-	POP  edi       //Restore regs
+
+	//Restore registers
+	POP  rdi
+	POP  rbx
+	{$ELSE}
+	//Save registers
+	PUSH ebx
+	PUSH edi
+
+	//Call the CPUID command
+	MOV  edi,eax   //store @Result (TStrBuf) in EDI
+	MOV  eax,0     //select CPUID standard function 0
+	DW   $A20F     //raw opcode
+
+	//Save the first 4 bytes
+	MOV  eax,ebx   //need CPUID EBX-value to be in EAX
+	XCHG ebx,ecx   //save ECX result
+	MOV  ecx,4     //loop 4 times
+	@1:
+	STOSB          //save 1 byte from EAX
+	SHR  eax,8     //shift to the next byte
+	LOOP @1
+
+	//Save the middle 4 bytes
+	MOV  eax,edx   //need CPUID EDX-value to be in EAX
+	MOV  ecx,4     //loop 4 times
+	@2:
+	STOSB          //save 1 byte from EAX
+	SHR  eax,8     //shift to the next byte
+	LOOP @2
+
+	//Save the last 4 bytes
+	MOV  eax,ebx   //need CPUID ECX-value to be in EAX
+	MOV  ecx,4     //loop 4 times
+	@3:
+	STOSB          //save 1 byte from EAX
+	SHR  eax,8     //shift to the next byte
+	LOOP @3
+
+	//Restore registers
+	POP  edi
 	POP  ebx
+	{$ENDIF}
   end;
 
 var
@@ -2572,7 +2623,7 @@ begin
   try
     {$IFDEF DEBUG}
     s.add('PROCESS:');
-    s.add(format('Image base address: %p', [Pointer(GetModuleHandle(Nil))]));
+    s.add(format('Image base address: 0x%p', [Pointer(GetModuleHandle(Nil))]));
     s.add('');
     {$ENDIF}
     s.add('CPU:');
