@@ -433,7 +433,7 @@ implementation
 
 uses
   {$IFDEF MemTester}MemTester, {$ENDIF}{$IFDEF Debug}QConsts, {$ENDIF}
-  QkObjectClassList, QkFileObjects, QkExplorer, Travail, Game, qhelper,
+  ApplPaths, QkObjectClassList, QkFileObjects, QkExplorer, Travail, Game, qhelper,
   PyObjects, PyImages, Quarkx, QkExceptions, Qk1, Logging{, ExtraFunctionality};
 
 var
