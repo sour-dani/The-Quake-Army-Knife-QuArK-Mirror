@@ -1234,13 +1234,13 @@ pascal; assembler; asm
 end;}
 
 {$IFDEF PyRefDEBUG}
-procedure RefError;
+procedure RefError;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 begin
  Raise InternalE('Python Reference count error');
 end;
 {$ENDIF}
 
-procedure Py_INCREF(o: PyObject);
+procedure Py_INCREF(o: PyObject);{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 begin
   {$IFDEF PyRefDEBUG}
   if o^.ob_refcnt<0 then
@@ -1274,7 +1274,7 @@ asm
 end;
 *)
 
-procedure Py_XINCREF(o: PyObject);
+procedure Py_XINCREF(o: PyObject);{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 begin
   if o <> nil then Py_INCREF(o);
 end;
@@ -1283,7 +1283,7 @@ end;
 procedure Py_Dealloc1(o: PyObject); forward;
 {$ENDIF}*)
 
-procedure Py_Dealloc(o: PyObject);
+procedure Py_Dealloc(o: PyObject);{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 begin
   if @o^.ob_type^.tp_dealloc<>nil then
     o^.ob_type^.tp_dealloc(o);
