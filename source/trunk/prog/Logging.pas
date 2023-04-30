@@ -123,6 +123,10 @@ begin
   else
     Log(LOG_PASCAL, 'QuArK version is %s %s',[QuArKVersion, QuArKMinorVersion]);
   Log(LOG_PASCAL, 'Loglevel is %d',[LogLevel]);
+{$IFDEF Debug}
+  Log(LOG_PASCAL, 'Current install is located in %s', [GetQPath(pQuArK)]);
+  Log(LOG_PASCAL, 'Running in DEBUG mode!');
+{$ENDIF}
 {$IFDEF PyProfiling}
   {$I-}
   AssignFile(LogProfileFile, ConcatPaths([GetQPath(pQuArKLog), LOG_PROFILE_FILENAME]));
