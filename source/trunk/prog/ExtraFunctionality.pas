@@ -145,6 +145,21 @@ type
   {$ENDIF}
 
 const
+{$ifndef Delphi4orNewerCompiler} // FIXME: I'm not sure when this was introduced;
+                                 // but it at least exists in Delphi 4
+  DUPLICATE_CLOSE_SOURCE     = $00000001;
+  DUPLICATE_SAME_ACCESS      = $00000002;
+  MAILSLOT_NO_MESSAGE                 = LongWord(-1);
+  MAILSLOT_WAIT_FOREVER               = LongWord(-1);
+{$endif}
+{$ifndef Delphi7orNewerCompiler}
+  SM_CXVIRTUALSCREEN = 78;
+  SM_CYVIRTUALSCREEN = 79;
+{$endif}
+{$ifndef Delphi2007orNewerCompiler}
+  IMAGE_FILE_LARGE_ADDRESS_AWARE = $0020;
+{$endif}
+{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 7, but existing in Delphi 11.3!
   VER_SUITE_BACKOFFICE = $00000004;
   VER_SUITE_BLADE = $00000400;
   VER_SUITE_COMPUTE_SERVER = $00004000;
@@ -168,14 +183,26 @@ const
   SM_STARTER = 88;
   SM_TABLETPC = 86;
 
+  REG_QWORD = 11; //Added in Windows 2000 //Also: REG_QWORD_LITTLE_ENDIAN
+
+  PROCESSOR_ARCHITECTURE_INTEL: WORD = 0; //x86
+  PROCESSOR_ARCHITECTURE_IA64: WORD = 6; //Intel Itanium Processor Family (IPF)
+  PROCESSOR_ARCHITECTURE_AMD64: WORD = 9; //x64 (AMD or Intel)
+  PROCESSOR_ARCHITECTURE_UNKNOWN: WORD = $FFFF; //Unknown architecture.
+{$endif}
+{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 7, but existing in Delphi 11.3!
+  {$EXTERNALSYM COLORMGMTCAPS}
+  COLORMGMTCAPS = 121;   { Color Management caps                 }
+{$else} //Note: this is a special case! There is a conflicting COLORMGMTCAPS defined by Delphi with an incompatible type, so let's always use this one explicitly
+  COLORMGMTCAPS = Windows.COLORMGMTCAPS;
+{$endif}
+
+  IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE = $0040;
+  IMAGE_DLLCHARACTERISTICS_NX_COMPAT = $0100;
+
   INVALID_SET_FILE_POINTER = DWORD(-1);
 
   UNLEN = 256; // Maximum user name length, in characters (not bytes), excluding terminating 0-characters.
-
-  REG_QWORD = 11; //Added in Windows 2000 //Also: REG_QWORD_LITTLE_ENDIAN
-
-  {$EXTERNALSYM COLORMGMTCAPS}
-  COLORMGMTCAPS = 121;   { Color Management caps                 }
 
   { Color Management Capabilities }
 
@@ -187,28 +214,6 @@ const
   CM_GAMMA_RAMP = 2;     { Supports GetDeviceGammaRamp and SetDeviceGammaRamp }
   {$EXTERNALSYM CM_CMYK_COLOR}
   CM_CMYK_COLOR = 4;     { Accepts CMYK color space ICC color profile }
-
-  PROCESSOR_ARCHITECTURE_INTEL: WORD = 0; //x86
-  PROCESSOR_ARCHITECTURE_IA64: WORD = 6; //Intel Itanium Processor Family (IPF)
-  PROCESSOR_ARCHITECTURE_AMD64: WORD = 9; //x64 (AMD or Intel)
-  PROCESSOR_ARCHITECTURE_UNKNOWN: WORD = $FFFF; //Unknown architecture.
-
-{$ifndef Delphi4orNewerCompiler} // FIXME: I'm not sure when this was introduced;
-                                 // but it at least exists in Delphi 4
-  DUPLICATE_CLOSE_SOURCE     = $00000001;
-  DUPLICATE_SAME_ACCESS      = $00000002;
-  MAILSLOT_NO_MESSAGE                 = LongWord(-1);
-  MAILSLOT_WAIT_FOREVER               = LongWord(-1);
-{$endif}
-{$ifndef Delphi7orNewerCompiler}
-  SM_CXVIRTUALSCREEN = 78;
-  SM_CYVIRTUALSCREEN = 79;
-{$endif}
-{$ifndef Delphi2007orNewerCompiler}
-  IMAGE_FILE_LARGE_ADDRESS_AWARE = $0020;
-{$endif}
-  IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE = $0040;
-  IMAGE_DLLCHARACTERISTICS_NX_COMPAT = $0100;
 
 var //Note: These need to be initialized before use!
   SetDllDirectory: function (lpPathName : LPCTSTR): BOOL; stdcall;
