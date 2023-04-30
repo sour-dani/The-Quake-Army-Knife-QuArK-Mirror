@@ -65,21 +65,21 @@ class VtxDragDlg(quarkpy.dlgclasses.LiveEditDlg):
             Style = "9"
         Caption = "Vertex Movement"
 
-        X: = 
+        X: =
         {
         Txt = "X"
         Typ = "EU"
         Hint = "X position"
         }
 
-        Y: = 
+        Y: =
         {
         Txt = "Y"
         Typ = "EU"
         Hint = "Y position"
         }
 
-        Z: = 
+        Z: =
         {
         Txt = "Z"
         Typ = "EU"
@@ -187,7 +187,7 @@ def moveFaces(faces, mvtx, delta, poly, locklist, freezelist, sloppy=None):
         vtxindex = 0
         for vtx in vtxes:
             if not(vtx-mvtx):
-                moveindex = vtxindex   
+                moveindex = vtxindex
             for vtxh in locklist:
                 #
                 # Testing for closeness rather than full-precision
@@ -316,7 +316,7 @@ def vertexmenu(self, editor, view, oldmenu=quarkpy.maphandles.VertexHandle.menu.
          #
          # Now define a setup function with `self' as its first
          #  argument, and any number of further default arguments
-         #  specified to in stuff from above. 
+         #  specified to in stuff from above.
          #
          # `self' refers the dialog, it's .src is the object
          #  from which the displayed values in the dialog are

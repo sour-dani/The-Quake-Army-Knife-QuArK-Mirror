@@ -399,7 +399,7 @@ class OptionsViewsDlg(quarkpy.dlgclasses.LiveEditDlg):
 def OptionsViewsClick(m):
     editor = mapeditor()
     if editor is None: return
-  
+
     def setup(self):
         editor.findtargetdlg=self
         self.editor = editor
@@ -1016,7 +1016,7 @@ def OptionsViewsClick(m):
             del editor.findtargetdlg
         except:
             pass
-        
+
     OptionsViewsDlg(quarkx.clickform, 'optionsviewsdlg', editor, setup, action, onclosing)
 
 

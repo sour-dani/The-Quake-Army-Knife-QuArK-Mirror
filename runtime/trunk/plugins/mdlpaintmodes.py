@@ -166,7 +166,7 @@ kernel_du.append([2, 1, 4.0])
 kernel_du.append([2, 0, 6.0])
 kernel_du.append([2, -1, 4.0])
 kernel_du.append([2, -2, 1.0])
-        
+
 kernel_dv.append([-2, 2, 1.0])
 kernel_dv.append([-1, 2, 4.0])
 kernel_dv.append([ 0, 2, 6.0])
@@ -2740,7 +2740,7 @@ def SkinViewAirbrush(mdl_editor, skin, Pal, skinuvlist, Opacity, texshortname, t
                          #       RGB = [-du * scale, -dv * scale, 1.0]
 
                          #       RGB = NORMALIZE(RGB)
-                         
+
                          #       if RGB[2] < 0.0:
                          #          RGB[2] = 0.0
                          #          RGB = NORMALIZE(RGB)

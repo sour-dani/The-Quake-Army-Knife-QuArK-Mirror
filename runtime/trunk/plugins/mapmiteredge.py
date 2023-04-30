@@ -699,7 +699,7 @@ def buildwallmakerimages(self, singleimage=None):
                            parent.removeitem(poly)
                            parent.appenditem(polygroup)
                    #
-                   # negative plugs just cut the hole, 
+                   # negative plugs just cut the hole,
                    #
                    if plug['neg']!=1:
                       parent.appenditem(plug.copy())

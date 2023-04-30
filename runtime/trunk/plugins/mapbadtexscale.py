@@ -112,7 +112,7 @@ class BadTexScaleDlg (quarkpy.dlgclasses.LiveEditDlg):
         #
         Spec1 = quarkpy.qmenu.item("", quarkpy.mapmenus.set_mpp_page, "")
         Spec1.page = 3 # face properties page
-        quarkpy.mapmenus.set_mpp_page(Spec1) 
+        quarkpy.mapmenus.set_mpp_page(Spec1)
 
 
 #

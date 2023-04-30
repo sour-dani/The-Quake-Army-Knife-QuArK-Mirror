@@ -38,7 +38,7 @@ class LinEditDlg(quarkpy.dlgclasses.LiveEditDlg):
             Style = "9"
         Caption = "Linear Mapping Edit Dialog"
 
-        scale: = 
+        scale: =
         {
         Txt = "Scale"
         Typ = "EF003"

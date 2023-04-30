@@ -51,7 +51,6 @@ def newvertexdrag(self, v1, v2, flags, view, oldvertexdrag=oldvertexdrag):
     newpoly = self.poly.copy()
     delta = (v2-v1)
     newpoint = self.pos+delta
-    
 
     #  Loop through faces
     for f in newpoly.faces:
@@ -101,7 +100,7 @@ def newvertexdrag(self, v1, v2, flags, view, oldvertexdrag=oldvertexdrag):
                     if (newface.normal*f.normal) < 0: #reset face normals if
                         newface.swapsides()
                     newpoly.appenditem(newface)
-                    
+
     #Return old polygon, new polygon
     return [self.poly], [newpoly]
 

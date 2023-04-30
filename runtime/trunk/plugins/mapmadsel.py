@@ -497,7 +497,6 @@ def ExtendToLinkedClick(m):
   if len(retfaces) > 1:
     editor.layout.explorer.sellist = retfaces
     editor.invalidateviews()
-  
 
 
 def extmenuitem(String, ClickFunction,o, helptext=""):
@@ -802,7 +801,6 @@ def NoSelClick(m):
   else:
     mennosel.state = quarkpy.qmenu.checked
 
-
 def UnrestrictClick(m):
     editor = mapeditor()
     if editor is None:
@@ -815,7 +813,7 @@ def ClearMarkClick(m):
     editor = mapeditor()
     if editor is None: return
     clearstashed(editor)
-    
+
 ###############################
 #
 # browsing multiple selections

@@ -75,13 +75,13 @@ class Full3DLayout(ModelLayout):
     ### rotation is based on the center of the editor view or the model (0,0,0).
         if quarkx.setupsubset(SS_MODEL, "Options")['EditorTrue3Dmode'] != "1":
             quarkpy.qhandles.flat3Dview(self.View3D, self)
-            del self.View3D.info["noclick"] 
+            del self.View3D.info["noclick"]
 
         #
         # To set the qbaseeditor's global currentview for proper creation and
         # drawing of handles when switching from one layout to another.
         #
-        
+
         quarkpy.qbaseeditor.currentview = self.View3D
 
     def setupdepth(self, view):
