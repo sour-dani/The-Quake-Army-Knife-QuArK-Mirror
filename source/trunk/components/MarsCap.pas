@@ -1012,11 +1012,11 @@ var
   MouseDblClk: Boolean;
   HookMouse: HHOOK;
 
-procedure MouseHook(nCode: Integer; wParam: WParam; lParam: PMouseHookStruct); stdcall;
+procedure MouseHook(nCode: Integer; wParam: Windows.WPARAM; lParam: PMouseHookStruct); stdcall;
 begin
   if (wParam = WM_LButtonDBlClk) then
     MouseDblClk := True;
-  CallNextHookEx(HookMouse, nCode, wParam, LongInt(lParam));
+  CallNextHookEx(HookMouse, nCode, wParam, Windows.LPARAM(lParam));
 end;
 
 procedure TMarsCaption.WMLButtonUp(var Msg: TWMLButtonUp);
