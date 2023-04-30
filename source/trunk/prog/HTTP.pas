@@ -87,9 +87,6 @@ type
   INTERNET_PORT = Word; 
   {$EXTERNALSYM INTERNET_PORT}
 
-  //Missing in Delphi 7
-  PLPCTSTR = ^LPCTSTR;
-
 var
   HWinInet: HMODULE;
 
@@ -105,21 +102,21 @@ var
   {$EXTERNALSYM HttpSendRequest}
   HttpQueryInfo: function(hRequest: HINTERNET; dwInfoLevel: DWORD; lpvBuffer: Pointer; var lpdwBufferLength: DWORD; var lpdwReserved: DWORD): BOOL; stdcall;
   {$EXTERNALSYM HttpQueryInfo}
-  InternetSetFilePointer: function(hFile: HINTERNET; lDistanceToMove: Longint; pReserved: Pointer; dwMoveMethod, dwContext: DWORD): DWORD; stdcall;
+  //InternetSetFilePointer: function(hFile: HINTERNET; lDistanceToMove: Longint; pReserved: Pointer; dwMoveMethod, dwContext: DWORD): DWORD; stdcall;
+  InternetSetFilePointer: function(hFile: HINTERNET; lDistanceToMove: Longint; lpDistanceToMoveHigh: PLongint; dwMoveMethod, dwContext: DWORD_PTR): DWORD; stdcall;
   {$EXTERNALSYM InternetSetFilePointer}
   InternetReadFile: function(hFile: HINTERNET; lpBuffer: Pointer; dwNumberOfBytesToRead: DWORD; var lpdwNumberOfBytesRead: DWORD): BOOL; stdcall;
   {$EXTERNALSYM InternetReadFile}
 
 function LoadWinInet: Boolean;
 begin
-  //Note: Delphi7 always calls the ANSI version
   HWinInet := LoadLibrary(winetdll);
   If HWinInet = 0 Then
   begin
     Result := False;
     Exit;
   end;
-  @InternetOpen := GetProcAddress(HWinInet, 'InternetOpenA');
+  @InternetOpen := GetProcAddress(HWinInet, {$IFDEF UNICODE}'InternetOpenW'{$ELSE}'InternetOpenA'{$ENDIF});
   If @InternetOpen = nil Then
   begin
     Result := False;
@@ -131,25 +128,25 @@ begin
     Result := False;
     Exit;
   end;
-  @InternetConnect := GetProcAddress(HWinInet, 'InternetConnectA');
+  @InternetConnect := GetProcAddress(HWinInet, {$IFDEF UNICODE}'InternetConnectW'{$ELSE}'InternetConnectA'{$ENDIF});
   If @InternetConnect = nil Then
   begin
     Result := False;
     Exit;
   end;
-  @HttpOpenRequest := GetProcAddress(HWinInet, 'HttpOpenRequestA');
+  @HttpOpenRequest := GetProcAddress(HWinInet, {$IFDEF UNICODE}'HttpOpenRequestW'{$ELSE}'HttpOpenRequestA'{$ENDIF});
   If @HttpOpenRequest = nil Then
   begin
     Result := False;
     Exit;
   end;
-  @HttpSendRequest := GetProcAddress(HWinInet, 'HttpSendRequestA');
+  @HttpSendRequest := GetProcAddress(HWinInet, {$IFDEF UNICODE}'HttpSendRequestW'{$ELSE}'HttpSendRequestA'{$ENDIF});
   If @HttpSendRequest = nil Then
   begin
     Result := False;
     Exit;
   end;
-  @HttpQueryInfo := GetProcAddress(HWinInet, 'HttpQueryInfoA');
+  @HttpQueryInfo := GetProcAddress(HWinInet, {$IFDEF UNICODE}'HttpQueryInfoW'{$ELSE}'HttpQueryInfoA'{$ENDIF});
   If @HttpQueryInfo = nil Then
   begin
     Result := False;
@@ -385,6 +382,7 @@ begin
     StatusValue:=FileQueryInfo(HTTP_QUERY_STATUS_CODE, 200);
     if StatusValue<>200 then
     begin
+      Log(LOG_WARNING, 'THTTPConnection.GetFile: Wrong HTTP status: %d!', [StatusValue]);
       //FIXME: Properly handle StatusValue!
       raise exception.create('Cannot download file: file info query failed.');
     end;

@@ -56,8 +56,26 @@ type
   PDWORDLONG = ^DWORDLONG;
   LPDWORDLONG = PDWORDLONG;
 
+{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 7, but existing in Delphi 11.3!
+  PLPCTSTR = ^LPCTSTR;
+
+  LONG_PTR = NativeInt;
+  {$EXTERNALSYM LONG_PTR}
+  ULONG_PTR = NativeUInt;
+  {$EXTERNALSYM ULONG_PTR}
+  DWORD_PTR = ULONG_PTR;
+  {$EXTERNALSYM DWORD_PTR}
+  HANDLE_PTR = type NativeUInt;
+  {$EXTERNALSYM HANDLE_PTR}
+{$endif}
+
+{$IFDEF CPUX64}
+  size_t = UInt64;
+  ssize_t = Int64;
+{$ELSE}
   size_t = Cardinal;  //This appears to be true in (32-bit) Delphi
   ssize_t = Integer;  //This appears to be true in (32-bit) Delphi
+{$ENDIF}
 
   //To support pointer arithmetic, we need a custom datatype, because support for it has changed throughout the years.
   //https://helloacm.com/pointer-arithmetic-in-delphi/
