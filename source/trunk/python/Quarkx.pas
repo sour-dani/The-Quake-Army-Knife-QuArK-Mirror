@@ -3282,7 +3282,7 @@ const
    (ml_name: 'setpixelpal';     ml_meth: xSetPixelPal;     ml_flags: METH_VARARGS),
    (ml_name: 'setpixelalpha';   ml_meth: xSetPixelAlpha;   ml_flags: METH_VARARGS),
    (ml_name: 'getchangednames'; ml_meth: xGetChangedNames; ml_flags: METH_VARARGS), //QuarkXWorkaroundNameChange
-   (ml_Name: Nil;               ml_meth: Nil));
+   (ml_name: Nil;               ml_meth: Nil;              ml_flags: 0;            ml_doc: Nil));
 
  {-------------------}
 
