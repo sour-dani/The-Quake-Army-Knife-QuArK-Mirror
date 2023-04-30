@@ -2593,11 +2593,7 @@ begin
   if not SetDllDirectoryAvailable then
     Exit;
 
-  {$IFDEF UNICODE}
-  SetDllDirectoryPtr := GetProcAddress(GetModuleHandle('kernel32'), 'SetDllDirectoryW');
-  {$ELSE}
-  SetDllDirectoryPtr := GetProcAddress(GetModuleHandle('kernel32'), 'SetDllDirectoryA');
-  {$ENDIF}
+  SetDllDirectoryPtr := GetProcAddress(GetModuleHandle('kernel32'), {$IFDEF UNICODE}'SetDllDirectoryW'{$ELSE}'SetDllDirectoryA'{$ENDIF});
   if SetDllDirectoryPtr=nil then
   begin
     LogWindowsError(GetLastError(), 'SetDllSearchPath: GetProcAddress');
