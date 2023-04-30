@@ -658,7 +658,7 @@ var
   StreamRefFile: TextFile;
 begin
   inherited Create(FileName, Mode, Rights);
-  AssignFile(StreamRefFile, StreamRefDumpFile);
+  AssignFile(StreamRefFile, ConcatPaths([GetQPath(pQuArKLog), StreamRefDumpFile]));
   if FileExists(StreamRefDumpFile) then
     Append(StreamRefFile)
   else
@@ -671,7 +671,7 @@ destructor TQStream.Destroy;
 var
   StreamRefFile: TextFile;
 begin
-  AssignFile(StreamRefFile, StreamRefDumpFile);
+  AssignFile(StreamRefFile, ConcatPaths([GetQPath(pQuArKLog), StreamRefDumpFile]));
   Append(StreamRefFile);
   WriteLn(StreamRefFile, Format('Close %d', [Self.FHandle]));
   CloseFile(StreamRefFile);
@@ -686,7 +686,7 @@ var
 {$ENDIF}
 begin
   {$IFDEF StreamRefDEBUG}
-  AssignFile(StreamRefFile, StreamRefDumpFile);
+  AssignFile(StreamRefFile, ConcatPaths([GetQPath(pQuArKLog), StreamRefDumpFile]));
   Append(StreamRefFile);
   WriteLn(StreamRefFile, Format('AddRef %d: %d (about to +1)', [Self.FHandle, RefCount1]));
   CloseFile(StreamRefFile);
@@ -710,7 +710,7 @@ var
 {$ENDIF}
 begin
   {$IFDEF StreamRefDEBUG}
-  AssignFile(StreamRefFile, StreamRefDumpFile);
+  AssignFile(StreamRefFile, ConcatPaths([GetQPath(pQuArKLog), StreamRefDumpFile]));
   Append(StreamRefFile);
   WriteLn(StreamRefFile, Format('AddRefNode %d: %d (about to +1)', [Self.FHandle, RefCount1]));
   CloseFile(StreamRefFile);
@@ -736,7 +736,7 @@ var
 {$ENDIF}
 begin
   {$IFDEF StreamRefDEBUG}
-  AssignFile(StreamRefFile, StreamRefDumpFile);
+  AssignFile(StreamRefFile, ConcatPaths([GetQPath(pQuArKLog), StreamRefDumpFile]));
   Append(StreamRefFile);
   WriteLn(StreamRefFile, Format('Release %d: %d (about to -1)', [Self.FHandle, RefCount1]));
   CloseFile(StreamRefFile);

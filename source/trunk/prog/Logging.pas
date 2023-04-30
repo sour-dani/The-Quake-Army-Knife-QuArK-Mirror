@@ -23,7 +23,7 @@ unit Logging;
 interface
 
 //Keep the number of uses to a bare minimal, due to Delphi's init-order!
-uses Windows, Sysutils{$IFDEF PyProfiling}, Classes{$ENDIF};
+{$IFDEF PyProfiling}uses Classes;{$ENDIF}
 
 type
   TLogName = (LOG_DEFAULT, LOG_PASCAL, LOG_PYTHON, LOG_SYS, LOG_CONSOLE, LOG_DEBUG);
@@ -61,8 +61,7 @@ const
 
 implementation
 
-//Keep the number of uses to a bare minimal, due to Delphi's init-order!
-uses QConsts;//, ApplPaths; //FIXME: ApplPaths is including TOO MUCH!
+uses Windows, Sysutils, QConsts, ApplPaths;
 
 var
   LogFile: TextFile;
@@ -94,8 +93,7 @@ var
   filename: string;
 begin
   result:='';
-  //filename:=GetQPath(pQuArK)+LogPatchname; //This should be in pQuArKLog, but older version of QuArK put it in the main directory.
-  filename:=LogPatchname;
+  filename:=ConcatPaths([GetQPath(pQuArK), LogPatchname]);
   if fileexists(filename) then
   begin
   {$I-}
@@ -115,8 +113,7 @@ begin
     exit;
   PatchVersion:=GetPatchVersion;
   {$I-}
-  //AssignFile(LogFile, ConcatPaths([GetQPath(pQuArKLog), LogFilename]));
-  AssignFile(LogFile, LogFilename);
+  AssignFile(LogFile, ConcatPaths([GetQPath(pQuArKLog), LogFilename]));
   rewrite(LogFile);
   {$I+}
   LogOpened:=true;
@@ -128,8 +125,7 @@ begin
   Log(LOG_PASCAL, 'Loglevel is %d',[LogLevel]);
 {$IFDEF PyProfiling}
   {$I-}
-  //AssignFile(LogProfileFile, ConcatPaths([GetQPath(pQuArKLog), LOG_PROFILE_FILENAME]));
-  AssignFile(LogProfileFile, LOG_PROFILE_FILENAME);
+  AssignFile(LogProfileFile, ConcatPaths([GetQPath(pQuArKLog), LOG_PROFILE_FILENAME]));
   rewrite(LogProfileFile);
   {$I+}
 {$ENDIF}
