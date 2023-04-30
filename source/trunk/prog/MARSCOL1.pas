@@ -133,7 +133,7 @@ begin
  until Process=Nil;
 end;
 
-function ThreadFunc(lpdwParam: LongInt) : LongInt; stdcall;
+function ThreadFunc(lpParameter: Pointer) : DWORD; stdcall;
 begin
  try
   repeat
@@ -144,14 +144,15 @@ begin
   {nothing - simply breaks out of the loop in case of exception}
  end;
  MarsCapActive:=False;   { error }
- Result:=-1;
+ Result:=High(DWORD);
 end;
 
  {------------------------}
 
 procedure SetMarsCapActive(nActive: Boolean);
 var
- I, dwThreadId: Integer;
+ I: Integer;
+ dwThreadId: DWORD; //Needed due to Delphi's implementation
 begin
  if nActive then
   begin
@@ -163,7 +164,6 @@ begin
   begin
    if nActive and (Redrawer=0) then
     begin  { starts the redrawer thread }
-     dwThreadId:=-1;
      Redrawer:=CreateThread(Nil, 0, @ThreadFunc, Nil, 0, dwThreadId);
      if Redrawer=0 then
       nActive:=False;  { failed }

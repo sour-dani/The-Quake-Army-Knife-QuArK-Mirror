@@ -56,7 +56,7 @@ var
 
 function DoInstall: Boolean;
 var
-  ThreadId: DWORD; //Dummy variable
+  ThreadId: DWORD; //Needed due to Delphi's implementation
 begin
   Result:=False;
   InstallWindow:=TAutoUpdateInstaller.Create(nil);

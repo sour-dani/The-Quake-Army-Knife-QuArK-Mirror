@@ -87,14 +87,14 @@ type
 {data-write}     1: (writefnt, closefnt: PyObject; ReadPipe: THandle; Extra: PPipeBuffer);
                end;
 
-function WaiterProc(var Info: TWaiterInfo) : LongInt; stdcall;
+function WaiterProc(var Info: TWaiterInfo) : DWORD; stdcall;
 begin
  WaitForSingleObject(Info.self^.Process, INFINITE);
  PostMessage(g_Form1.Handle, wm_InternalMessage, wppn_EndOfProcess, LPARAM(@Info));
  Result:=0;
 end;
 
-function PipeReader(var Info: TWaiterInfo) : LongInt; stdcall;
+function PipeReader(var Info: TWaiterInfo) : DWORD; stdcall;
 const
  InputMsgBufferSize = 1024;
 var
@@ -231,7 +231,7 @@ function ProcessPipe(fileobj: PyObject) : THandle;
 (*var
  Info: ^TWaiterInfo;
  Waiter: THandle;
- Dummy: Integer;
+ Dummy: DWORD; //Needed due to Delphi's implementation
  hRead, hWrite: THandle;
  writefnt, closefnt: PyObject;
  S: String;
@@ -287,7 +287,7 @@ end;*)
 var
  Info: ^TWaiterInfo;
  Waiter: THandle;
- Dummy: DWORD;
+ Dummy: DWORD; //Needed due to Delphi's implementation
  hRead, hWrite: THandle;
  writefnt, closefnt: PyObject;
  {SA: TSecurityAttributes;}
@@ -384,7 +384,7 @@ var
  fnt: PyObject;
  Waiter: THandle;
  Info: ^TWaiterInfo;
- Dummy: DWORD;
+ Dummy: DWORD; //Needed due to Delphi's implementation
 begin
  Result:=Nil;
  try
@@ -465,11 +465,10 @@ end;
 
  {-------------------}
 
-function GetProcessModule(const Info: TProcessInformation;
- nstdout, nstderr: PyObject; const CmdLine: String) : PyProcessObject;
+function GetProcessModule(const Info: TProcessInformation; nstdout, nstderr: PyObject; const CmdLine: String) : PyProcessObject;
 var
  Info1: ^TWaiterInfo;
- Dummy: DWORD;
+ Dummy: DWORD; //Needed due to Delphi's implementation
  H: THandle;
 begin
  CloseHandle(Info.hThread);
