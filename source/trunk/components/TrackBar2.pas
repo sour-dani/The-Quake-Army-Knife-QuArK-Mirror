@@ -15,9 +15,9 @@ uses
 type
   TTBEndTrack = packed record //FIXME: Untested!
     Msg: Cardinal;
-    Unused1: Longint;
-    Unused2: Longint;
-    Result: Longint;
+    Unused1: WPARAM;
+    Unused2: LPARAM;
+    Result: LRESULT;
   end;
 
   TTrackBar2 = class(TTrackBar)
