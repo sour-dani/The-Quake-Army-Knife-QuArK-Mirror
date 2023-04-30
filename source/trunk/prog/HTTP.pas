@@ -90,15 +90,15 @@ type
 var
   HWinInet: HMODULE;
 
-  InternetOpen: function (lpszAgent: PChar; dwAccessType: DWORD; lpszProxy, lpszProxyBypass: PChar; dwFlags: DWORD): HINTERNET; stdcall;
+  InternetOpen: function (lpszAgent: LPCTSTR; dwAccessType: DWORD; lpszProxy, lpszProxyBypass: LPCTSTR; dwFlags: DWORD): HINTERNET; stdcall;
   {$EXTERNALSYM InternetOpen}
   InternetCloseHandle: function (hInet: HINTERNET): BOOL; stdcall;
   {$EXTERNALSYM InternetCloseHandle}
-  InternetConnect: function (hInet: HINTERNET; lpszServerName: PChar; nServerPort: INTERNET_PORT; lpszUsername: PChar; lpszPassword: PChar; dwService: DWORD; dwFlags: DWORD; dwContext: DWORD): HINTERNET; stdcall;
+  InternetConnect: function (hInet: HINTERNET; lpszServerName: LPCTSTR; nServerPort: INTERNET_PORT; lpszUsername: LPCTSTR; lpszPassword: LPCTSTR; dwService: DWORD; dwFlags: DWORD; dwContext: DWORD): HINTERNET; stdcall;
   {$EXTERNALSYM InternetConnect}
-  HttpOpenRequest: function(hConnect: HINTERNET; lpszVerb: PChar; lpszObjectName: PChar; lpszVersion: PChar; lpszReferrer: PChar; lplpszAcceptTypes: PLPCTSTR; dwFlags: DWORD; dwContext: DWORD): HINTERNET; stdcall;
+  HttpOpenRequest: function(hConnect: HINTERNET; lpszVerb, lpszObjectName, lpszVersion, lpszReferrer: LPCTSTR; lplpszAcceptTypes: PLPCTSTR; dwFlags: DWORD; dwContext: DWORD): HINTERNET; stdcall;
   {$EXTERNALSYM HttpOpenRequest}
-  HttpSendRequest: function(hRequest: HINTERNET; lpszHeaders: PChar; dwHeadersLength: DWORD; lpOptional: Pointer;  dwOptionalLength: DWORD): BOOL; stdcall;
+  HttpSendRequest: function(hRequest: HINTERNET; lpszHeaders: LPCTSTR; dwHeadersLength: DWORD; lpOptional: Pointer; dwOptionalLength: DWORD): BOOL; stdcall;
   {$EXTERNALSYM HttpSendRequest}
   HttpQueryInfo: function(hRequest: HINTERNET; dwInfoLevel: DWORD; lpvBuffer: Pointer; var lpdwBufferLength: DWORD; var lpdwReserved: DWORD): BOOL; stdcall;
   {$EXTERNALSYM HttpQueryInfo}
@@ -300,7 +300,7 @@ end;
 
 function THTTPConnection.FileQueryInfo(Flag: DWORD; Default: Integer = 0): Integer;
 var
-  StatusBuffer: PChar;
+  StatusBuffer: PByte;
   BufferLength: DWORD;
   HeaderIndex: DWORD;
 begin
@@ -319,7 +319,12 @@ begin
       Exit;
     end;
 
-    Result:=StrToIntDef(LeftStr(StatusBuffer, BufferLength), Default);
+    //Truncate the buffer, and add a null-terminator.
+    ReallocMem(StatusBuffer, BufferLength + SizeOf(Char));
+    PByte(PArithByte(StatusBuffer) + BufferLength)^:=0;
+    PByte(PArithByte(StatusBuffer) + BufferLength + 1)^:=0;
+
+    Result:=StrToIntDef(PChar(StatusBuffer), Default);
   finally
     FreeMem(StatusBuffer);
   end;
