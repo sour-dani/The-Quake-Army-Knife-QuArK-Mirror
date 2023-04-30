@@ -235,7 +235,7 @@ begin
   Result:=SetupGameSet.Specifics.Values['ShadersPath'];
   if Result='' then
   begin
-    Log(LOG_WARNING, FmtLoadStr1(4460, ['ShadersPath', 'TexturesPath']));
+    Log(LOG_INFO, FmtLoadStr1(4460, ['ShadersPath', 'TexturesPath']));
     Result:=GameTexturesPath;
   end;
 end;
@@ -245,7 +245,7 @@ begin
   Result:=SetupGameSet.Specifics.Values['MaterialsPath'];
   if Result='' then
   begin
-    Log(LOG_WARNING, FmtLoadStr1(4460, ['MaterialsPath', 'ShadersPath']));
+    Log(LOG_INFO, FmtLoadStr1(4460, ['MaterialsPath', 'ShadersPath']));
     Result:=GameShadersPath;
   end;
 end;
