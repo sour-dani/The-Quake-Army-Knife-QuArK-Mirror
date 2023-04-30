@@ -634,8 +634,7 @@ begin
         Form4.FSelection1:=Nil;
        Form4.TestsDUsage(Form4.FSelection1, NouveauNumero);
        if AncienControl<>Nil then
-        PostMessage(Form4.Handle, wm_InternalMessage, wp_RestoreFocus,
-         LongInt(AncienControl));
+        PostMessage(Form4.Handle, wm_InternalMessage, wp_RestoreFocus, LPARAM(AncienControl));
       end;}
      R^.UndoList.Add(UndoObject);
      GlobalUndoList.Add(UndoObject);

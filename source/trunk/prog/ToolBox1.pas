@@ -283,8 +283,7 @@ begin
    if SelectEventWnd<>0 then
     begin
      if Gr.SubElements.Count>=1 then
-      PostMessage(SelectEventWnd, wm_InternalMessage, wp_TbSelectEvent,
-       LongInt(Gr.SubElements[0]));
+      PostMessage(SelectEventWnd, wm_InternalMessage, wp_TbSelectEvent, LPARAM(Gr.SubElements[0]));
      Exit;
     end;
    Targ:=DefaultTarget;

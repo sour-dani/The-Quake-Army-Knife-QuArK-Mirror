@@ -53,8 +53,8 @@ function GetControlAttr(self: PyObject; attr, CtrlType: PyChar) : PyObject; cdec
 function SetControlAttr(self: PyObject; attr: PyChar; value: PyObject) : Integer; cdecl;
 function DefControlMessage(var Msg: TMessage) : Boolean;
 function NewControl(var nType: TyTypeObject; nControl: TControl) : PyControlF;
-procedure PythonDrop1(self: PyObject; wParam: Integer; Source: TObject; Target: TControl; X, Y: Integer);
-procedure PythonDrop(nForm: TForm; lParam: LongInt; Button: Boolean);
+procedure PythonDrop1(self: PyObject; wParam: WParam; Source: TObject; Target: TControl; X, Y: Integer);
+procedure PythonDrop(nForm: TForm; lParam: LParam; Button: Boolean);
 
 {$IFDEF Debug}
 procedure DumpControls;
@@ -123,7 +123,7 @@ begin
  PythonDrop1(@Self, wp_Drop, Source, Target, X, Y);
 end;
 
-procedure PythonDrop1(self: PyObject; wParam: Integer; Source: TObject; Target: TControl; X, Y: Integer);
+procedure PythonDrop1(self: PyObject; wParam: WParam; Source: TObject; Target: TControl; X, Y: Integer);
 var
  src, lst, args: PyObject;
 begin
@@ -141,11 +141,11 @@ begin
  lst:=QListToPyList(DragObject.SubElements); try
  args:=Py_BuildValueX('OOiiO', [self, lst, X, Y, src]);
  finally Py_DECREF(lst); end;
- if (args<>Nil) and not PostMessage(ValidParentForm(Target).Handle, wm_InternalMessage, wParam, LongInt(args)) then
+ if (args<>Nil) and not PostMessage(ValidParentForm(Target).Handle, wm_InternalMessage, wParam, LPARAM(args)) then
   Py_DECREF(args);
 end;
 
-procedure PythonDrop(nForm: TForm; lParam: LongInt; Button: Boolean);
+procedure PythonDrop(nForm: TForm; lParam: LParam; Button: Boolean);
 var
  obj: PyObject;
  args: PyObject absolute lParam;

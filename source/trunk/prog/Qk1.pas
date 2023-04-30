@@ -1140,7 +1140,7 @@ begin
     begin
      Item:=TMenuItem.Create(Self);
      Item.Caption:=TQForm1(Obj).Caption;
-     Item.Tag:=LongInt(Obj);
+     Item.Tag:={$IFDEF DelphiXE2orNewerCompiler}NativeInt{$ELSE}LongInt{$ENDIF}(Obj);
      Item.OnClick:=MainWindow1Click;
      Item.RadioItem:=True;
      Item.Checked:=Active=Obj;
@@ -2143,7 +2143,7 @@ begin
  with Sender as TButton do
   begin
    Enabled:=False;
-  {LongInt(Pointer(E)):=Tag;}
+   //{$IFDEF DelphiXE2orNewerCompiler}NativeInt{$ELSE}LongInt{$ENDIF}(Pointer(E)):=Tag;
    Msg:=Hint;
   end;
  L:=TStringList.Create; try

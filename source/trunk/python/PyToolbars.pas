@@ -1390,7 +1390,7 @@ end;
 procedure TQkBtnPanel.wmInternalMessage(var Msg: TMessage);
 begin
  case Msg.wParam of
-  wp_GetPyControl: Msg.Result:=LongInt(BtnPanelObject);
+  wp_GetPyControl: Msg.Result:=LResult(BtnPanelObject);
   wp_UpdateButtons: UpdateButtons;
  else
   if not DefControlMessage(Msg) then

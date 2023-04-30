@@ -678,7 +678,7 @@ begin
   with ClientToScreen(Point(X,Y)) do
    Popup.Popup(X,Y);
  finally
-  PostMessage(Handle, wm_InternalMessage, tm_FreeMenu, LongInt(Popup));
+  PostMessage(Handle, wm_InternalMessage, tm_FreeMenu, LPARAM(Popup));
  end; *)
 end;
 

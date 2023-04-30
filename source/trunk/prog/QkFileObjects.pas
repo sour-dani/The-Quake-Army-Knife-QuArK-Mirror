@@ -1758,7 +1758,7 @@ end;
 
 {procedure QFileObject.Modif;
 begin
- PosteMessageFiches(wp_ModifObjet, LongInt(Self));
+ PosteMessageFiches(wp_ModifObjet, LPARAM(Self));
 end;}
 
 {procedure QFileObject.LienFichier(const theFilename: String);
@@ -2338,7 +2338,7 @@ begin
          SetLength(S, MAX_PATH+2);
          GetTempPath(MAX_PATH+1, PChar(S));
          SetLength(S, StrLen(PChar(S)));
-         S:=ConcatPaths([S, Format('auto-save-%x-%x%s', [GetCurrentProcessId, LongInt(Self), TypeInfo])]);
+         S:=ConcatPaths([S, Format('auto-save-%x-%p%s', [GetCurrentProcessId, Pointer(Self), TypeInfo])]);
          Result:=PyString_FromString(ToPyChar(S));
          Exit;
         end;
@@ -2510,7 +2510,7 @@ begin
     {MainMenu1.UnMerge(MainObjMenu);}
      CopyToolbar(Nil, MenuToolbar);
      if FAttachPanel<>Nil then
-      PostMessage(GetViewForm.Handle, wm_InternalMessage, wp_AfficherObjet, LongInt(FFileObject));
+      PostMessage(GetViewForm.Handle, wm_InternalMessage, wp_AfficherObjet, LPARAM(FFileObject));
     end
    else
    {g_Form1.Menu.UnMerge(MainObjMenu)};
@@ -2752,7 +2752,7 @@ begin
  try
   if FAttachPanel<>Nil then
    begin
-    PostMessage(GetViewForm.Handle, wm_InternalMessage, wp_AfficherObjet, LongInt(OldObj));
+    PostMessage(GetViewForm.Handle, wm_InternalMessage, wp_AfficherObjet, LPARAM(OldObj));
     FAttachPanel:=Nil;
    end;
   FFileObject.AddRef(-1);

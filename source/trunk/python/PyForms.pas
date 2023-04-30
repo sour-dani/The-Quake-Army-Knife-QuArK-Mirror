@@ -1277,7 +1277,7 @@ begin
   wp_TargetExplorer: if FileObject<>Nil then
                       for I:=0 to ComponentCount-1 do
                        if (Components[I] is TPythonExplorer) and TPythonExplorer(Components[I]).CanBeTargetted then
-                        Msg.Result:=LongInt(Components[I]);
+                        Msg.Result:=LResult(Components[I]);
  {wp_SortMapViews: SortMapViews(Self);}
   wp_ClickItem: PyFormsClickItem(Msg.lParam, Self);
  else

@@ -315,7 +315,7 @@ begin
     end;
   wp_TargetExplorer:
    {if Roots.Count>0 then}
-     Msg.Result:=LongInt(Self);
+     Msg.Result:=LResult(Self);
   wp_ObjectModified:
     ObjectModified(QObject(Msg.lParam));
   wp_ObjectRemoved:

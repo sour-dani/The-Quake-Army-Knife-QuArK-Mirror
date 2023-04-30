@@ -142,7 +142,7 @@ end;
 procedure TPyFloatingWnd.wmInternalMessage(var Msg: TMessage);
 begin
  case Msg.wParam of
-  wp_GetPyControl: Msg.Result:=LongInt(WndObject);
+  wp_GetPyControl: Msg.Result:=LResult(WndObject);
  else
   if not DefControlMessage(Msg) then
    inherited;

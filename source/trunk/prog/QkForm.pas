@@ -726,7 +726,7 @@ begin
         SendMessage(EditH, SendMsg, 0, 0)
        else
         begin
-         SendMessage(EditH, em_GetSel, LongInt(@First), LongInt(@Last));
+         SendMessage(EditH, em_GetSel, Windows.WPARAM(@First), Windows.LPARAM(@Last));
          if First<Last then Result:=edOk or edCut or edCopy or edDelete;
         end;
       end;

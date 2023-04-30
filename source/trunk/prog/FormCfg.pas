@@ -3169,7 +3169,7 @@ end;
 
 procedure TFormCfg.EnterEditChange(Sender: TObject);
 begin
- PostMessage(Handle, wm_InternalMessage, wp_InternalEdit, LongInt(Sender));
+ PostMessage(Handle, wm_InternalMessage, wp_InternalEdit, LPARAM(Sender));
 end;
 
 procedure TFormCfg.PopupMenuClick(Sender: TObject);

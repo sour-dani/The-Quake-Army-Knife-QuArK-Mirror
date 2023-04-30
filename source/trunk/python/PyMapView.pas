@@ -387,7 +387,7 @@ var
  Y, Limite: Integer;
 begin
  case Msg.wParam of
-  wp_GetPyControl: Msg.Result:=LongInt(MapViewObject);
+  wp_GetPyControl: Msg.Result:=LResult(MapViewObject);
   wp_PyInvalidate: Drawing:=Drawing or dfRebuildScene;
   wp_MoveRedLine: begin
                    Y:=Abs(Msg.lParam);

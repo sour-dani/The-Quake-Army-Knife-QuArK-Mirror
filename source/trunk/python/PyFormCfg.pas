@@ -88,7 +88,7 @@ end;
 procedure TPyFormCfg.wmInternalMessage(var Msg: TMessage);
 begin
  case Msg.wParam of
-  wp_GetPyControl: Msg.Result:=LongInt(FormCfgObject);
+  wp_GetPyControl: Msg.Result:=LResult(FormCfgObject);
   wp_Changed: CallNotifyEvent(FormCfgObject, FOnChange, False);
  else
   if not DefControlMessage(Msg) then

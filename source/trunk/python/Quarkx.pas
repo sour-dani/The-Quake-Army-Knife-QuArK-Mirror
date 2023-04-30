@@ -3887,7 +3887,7 @@ begin
      begin
       Item:=TMenuItem.Create(Self);
       Item.Caption:=TQForm1(Obj).Caption;
-      Item.Tag:=LongInt(Obj);
+      Item.Tag:={$IFDEF DelphiXE2orNewerCompiler}NativeInt{$ELSE}LongInt{$ENDIF}(Obj);
       Item.OnClick:=MainWindow1Click;
       Item.RadioItem:=True;
       Item.Checked:=Active=Obj;

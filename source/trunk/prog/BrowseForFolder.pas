@@ -83,7 +83,7 @@ begin
       begin
        if (S[Length(S)]=PathDelim) and (S[Length(S)-1]<>DriveDelim) then
         SetLength(S, Length(S)-1);
-       SendMessage(hwnd, BFFM_SETSELECTION, 1, LongInt(PChar(S)));
+       SendMessage(hwnd, BFFM_SETSELECTION, 1, Windows.LPARAM(PChar(S)));
       end;
     end;
   BFFM_SELCHANGED:
@@ -121,7 +121,7 @@ begin
  BrowseInfo.lpszTitle:=PChar(Title);
  BrowseInfo.lpfn:=BrowseCallback;
  S:=IncludeTrailingPathDelimiter(Path)+#0+CheckFile;
- BrowseInfo.lParam:=LongInt(PChar(S));
+ BrowseInfo.lParam:=Windows.LPARAM(PChar(S));
  if CheckWindowsMEAnd2000 then //FIXME: And if Internet Explorer 5 is installed
   BrowseInfo.ulFlags:=BIF_NEWDIALOGSTYLE;
  pidlFolder:=SHBrowseForFolder( {$IFDEF CompiledWithDelphi2} @ {$ENDIF} BrowseInfo);

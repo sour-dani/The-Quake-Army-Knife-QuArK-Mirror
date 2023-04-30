@@ -83,7 +83,7 @@ type
     function GroupeSelection : QExplorerGroup;
    {function CopyToOutside(Gr: QExplorerGroup) : QExplorerGroup; dynamic;}
     function DropTargetDragFlags : Integer;
-    procedure MessageInterne(wParam: Integer; lParam: LongInt);
+    procedure MessageInterne(wParam: WPARAM; lParam: LPARAM);
    {procedure Modified;}
    {procedure SelectionnerInterne(Q: QObject); virtual;}
     procedure CopyToClipboard;
@@ -1348,7 +1348,7 @@ begin
             FSelection1:=Nil;
            TestsDUsage(FSelection1, NouveauNumero);
            if AncienControl<>Nil then
-            MessageInterne(wp_RestoreFocus, LongInt(AncienControl));
+            MessageInterne(wp_RestoreFocus, LPARAM(AncienControl));
           end;
  {muExceptBegin: FSelection1:=Nil;
   muExceptEnd: begin
@@ -1617,7 +1617,7 @@ begin
   with ClientToScreen(Point(X,Y)) do
    Popup.Popup(X,Y);
  finally
-  PostMessage(Handle, wm_InternalMessage, tm_FreeMenu, LongInt(Popup));
+  PostMessage(Handle, wm_InternalMessage, tm_FreeMenu, LPARAM(Popup));
  end;
 end;
 
@@ -1779,7 +1779,7 @@ begin
   SetSelection1(T, Spec)};
 end;
 
-procedure TQkExplorer.MessageInterne(wParam: Integer; lParam: LongInt);
+procedure TQkExplorer.MessageInterne(wParam: WPARAM; lParam: LPARAM);
 var
  F: TCustomForm;
 begin

@@ -187,7 +187,7 @@ end;
 procedure TPythonExplorer.wmInternalMessage(var Msg: TMessage);
 begin
  case Msg.wParam of
-  wp_GetPyControl: Msg.Result:=LongInt(ExplorerObject);
+  wp_GetPyControl: Msg.Result:=LResult(ExplorerObject);
   tm_DoubleClick: DisplayMenu(True);
  else
   if not DefControlMessage(Msg) then

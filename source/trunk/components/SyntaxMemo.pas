@@ -109,7 +109,7 @@ begin
    finally ReleaseDC(Handle, DC); end;*)
 
    T:=T*4;
-   SendMessage(Handle, em_SetTabStops, 1, LongInt(@T));
+   SendMessage(Handle, em_SetTabStops, 1, LParam(@T));
    Invalidate;
   end;
 end;
@@ -214,7 +214,7 @@ var
 begin
  SetLength(TabSpaces, TabStops);
  FillChar(TabSpaces[1], TabStops, ord(' '));
- SendMessage(Handle, EM_GETRECT, 0, LongInt(@DisplayRect));
+ SendMessage(Handle, EM_GETRECT, 0, LParam(@DisplayRect));
  DispRectLeft:=DisplayRect.Left;
  I:=GetScrollPos(Handle, SB_HORZ);
  Dec(DisplayRect.Left, I);
@@ -299,7 +299,7 @@ begin
  Result:=-1;
  Taille:=SendMessage(Handle, WM_GETTEXTLENGTH, 0,0);
  GetMem(Buffer, Taille*SizeOf(Char)); try
- SendMessage(Handle, WM_GETTEXT, Taille, LongInt(Buffer));
+ SendMessage(Handle, WM_GETTEXT, Taille, LParam(Buffer));
  Taille:=StrLen(Buffer);
  if StartPos>=Taille then Exit;
  if frWholeWord in Options then
