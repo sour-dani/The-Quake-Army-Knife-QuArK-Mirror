@@ -76,7 +76,7 @@ type
  TyCFunction = function(self, args: PyObject) : PyObject; cdecl;
  TyCFunctionKey = function(self, args, keys: PyObject) : PyObject; cdecl;
  PTyMethodDef = ^TyMethodDef;
- TyMethodDef = packed record
+ TyMethodDef = record
                 ml_name: (*const*) PyChar;
                 case Integer of
                  0: (ml_meth: TyCFunction;
@@ -86,7 +86,7 @@ type
                end;
 
  PPyMemberDef = ^PyMemberDef;
- PyMemberDef = packed record
+ PyMemberDef = record
    name : PyChar;
    _type : integer;
    offset : {$IFDEF PYTHON25}Py_ssize_t{$ELSE}Integer{$ENDIF};
@@ -98,7 +98,7 @@ type
  setter = function(ob1, ob2 : PyObject; ptr : Pointer) : integer; cdecl;
 
  PPyGetSetDef = ^PyGetSetDef;
- PyGetSetDef = packed record
+ PyGetSetDef = record
    name : PyChar;
    get : getter;
    _set : setter;
@@ -156,7 +156,7 @@ type
  FnAllocFunc     = function(t: PyTypeObject; i : {$IFDEF PYTHON25}Py_ssize_t{$ELSE}Integer{$ENDIF}) : PyObject; cdecl;
 
  PyNumberMethods = ^TyNumberMethods;
- TyNumberMethods = packed record
+ TyNumberMethods = record
                     nb_add, nb_subtract, nb_multiply,
                     nb_divide, nb_remainder, nb_divmod: FnBinaryFunc;
                     nb_power: FnTernaryFunc;
@@ -184,7 +184,7 @@ type
                    end;
 
  PySequenceMethods = ^TySequenceMethods;
- TySequenceMethods = packed record
+ TySequenceMethods = record
                       sq_length: {$IFDEF PYTHON25}FnLenfunc{$ELSE}FnInquiry{$ENDIF};
                       sq_concat: FnBinaryfunc;
                       sq_repeat: {$IFDEF PYTHON25}FnSSizeArgfunc{$ELSE}FnIntArgFunc{$ENDIF};
@@ -200,14 +200,14 @@ type
                      end;
 
  PyMappingMethods = ^TyMappingMethods;
- TyMappingMethods = packed record
+ TyMappingMethods = record
                      mp_length: {$IFDEF PYTHON25}FnLenFunc{$ELSE}FnInquiry{$ENDIF};
                      mp_subscript: FnBinaryFunc;
                      mp_ass_subscript: FnObjObjArgProc;
                     end;
 
  PyBufferProcs = ^TyBufferProcs;
- TyBufferProcs = packed record
+ TyBufferProcs = record
                   bf_getreadbuffer: FnReadBufferProc;
                   bf_getwritebuffer: FnWriteBufferProc;
                   bf_getsegcount: FnSegCountProc;
@@ -504,7 +504,7 @@ const
   CO_MAXBLOCKS = 20;
 
 type
-  PyTryBlock = packed record
+  PyTryBlock = record
     b_type, b_handler, b_level: Integer;
   end;
 
@@ -536,7 +536,7 @@ type
 
 type
   PyInterpreterState = ^TyInterpreterState;
-  TyInterpreterState = packed record
+  TyInterpreterState = record
     next, tstate_head: PyInterpreterState;
     modules, sysdict, builtins: PyObject;
     {$IFDEF PYTHON26}
@@ -554,7 +554,7 @@ type
   end;
 
   PyThreadState = ^TyThreadState;
-  TyThreadState = packed record
+  TyThreadState = record
     next: PyThreadState;
     interp: PyInterpreterState;
 
