@@ -4384,7 +4384,7 @@ class LinearHandle(qhandles.GenericHandle):
                 rotationorigin = self.mgr.center
                 # Use this if the radius should also be changed:
                 #try:
-                #    changedradius = sqrt(pow(newpos.x, 2) + pow(newpos.y, 2) + pow(newpos.z, 2)) / sqrt(pow(oldpos.x, 2) + pow(oldpos.y, 2) + pow(oldpos.z, 2))
+                #    changedradius = math.sqrt(pow(newpos.x, 2) + pow(newpos.y, 2) + pow(newpos.z, 2)) / math.sqrt(pow(oldpos.x, 2) + pow(oldpos.y, 2) + pow(oldpos.z, 2))
                 #except:
                 #    changedradius = 1.0
                 changedradius = 1.0
@@ -4404,7 +4404,7 @@ class LinearHandle(qhandles.GenericHandle):
                 rotationorigin = self.mgr.center
                 # Use this if the radius should also be changed:
                 #try:
-                #    changedradius = sqrt(pow(newpos.x, 2) + pow(newpos.y, 2) + pow(newpos.z, 2)) / sqrt(pow(oldpos.x, 2) + pow(oldpos.y, 2) + pow(oldpos.z, 2))
+                #    changedradius = math.sqrt(pow(newpos.x, 2) + pow(newpos.y, 2) + pow(newpos.z, 2)) / math.sqrt(pow(oldpos.x, 2) + pow(oldpos.y, 2) + pow(oldpos.z, 2))
                 #except:
                 #    changedradius = 1.0
                 changedradius = 1.0
@@ -5108,7 +5108,7 @@ class ModelEditorBoneHandlesManager:
 
         from math import sqrt
         bonenormallength = quarkx.setupsubset(SS_MODEL,"Building")['RotationHandleLength'][0]
-        h.append(BoneCornerHandle(center, center + quarkx.matrix((sqrt(2)/2, -sqrt(2)/2, 0), (sqrt(2)/2, sqrt(2)/2, 0), (0, 0, 1)) * quarkx.vect(bonenormallength * handle_scale, 0, 0), self, self.bone))
+        h.append(BoneCornerHandle(center, center + quarkx.matrix((math.sqrt(2)/2, -math.sqrt(2)/2, 0), (math.sqrt(2)/2, math.sqrt(2)/2, 0), (0, 0, 1)) * quarkx.vect(bonenormallength * handle_scale, 0, 0), self, self.bone))
         return h + [BoneCenterHandle(center, self, self.bone)]
 
     def drawbox(self, view):
@@ -6224,7 +6224,7 @@ class BoneCornerHandle(BoneHandle):
             m = quarkx.matrix(quarkx.vect(1.0, 0.0, 0.0), quarkx.vect(0.0, 1.0, 0.0), quarkx.vect(0.0, 0.0, 1.0))
         # Use this if the radius should also be changed:
         #try:
-        #    changedradius = sqrt(pow(newpos.x, 2) + pow(newpos.y, 2) + pow(newpos.z, 2)) / sqrt(pow(oldpos.x, 2) + pow(oldpos.y, 2) + pow(oldpos.z, 2))
+        #    changedradius = math.sqrt(pow(newpos.x, 2) + pow(newpos.y, 2) + pow(newpos.z, 2)) / math.sqrt(pow(oldpos.x, 2) + pow(oldpos.y, 2) + pow(oldpos.z, 2))
         #except:
         #    changedradius = 1.0
         changedradius = 1.0
@@ -6391,8 +6391,7 @@ class BoneCornerHandle(BoneHandle):
             if obj.name == self.bone.name:
                 p = view.proj(obj.position + obj.rotmatrix * quarkx.vect(bonenormallength * handle_scale, 0, 0))
             else:
-                from math import sqrt
-                p = view.proj(obj.position + quarkx.matrix((sqrt(2)/2, -sqrt(2)/2, 0), (sqrt(2)/2, sqrt(2)/2, 0), (0, 0, 1)) * quarkx.vect(bonenormallength * handle_scale, 0, 0))
+                p = view.proj(obj.position + quarkx.matrix((math.sqrt(2)/2, -math.sqrt(2)/2, 0), (math.sqrt(2)/2, math.sqrt(2)/2, 0), (0, 0, 1)) * quarkx.vect(bonenormallength * handle_scale, 0, 0))
             # Draws the line and ball ( p) at the end of the rotation handle and fills in its color.
             if p.visible:
                 cv.penstyle = PS_INSIDEFRAME

@@ -530,7 +530,7 @@ def load_md5(md5_filename, basepath, actionname):
                 if qw<0:
                     qw=0
                 else:
-                    qw = -sqrt(qw)
+                    qw = -math.sqrt(qw)
                 md5_bones[bone_counter].bindmat = quaternion2matrix([qx,qy,qz,qw])
 
                 tempmatrix = md5_bones[bone_counter].bindmat
@@ -1174,7 +1174,7 @@ class md5anim:
                     if qw<0:
                         qw=0
                     else:
-                        qw = -sqrt(qw)
+                        qw = -math.sqrt(qw)
                     self.md5anim_bones[bone_counter].bindquat = [qx,qy,qz,qw]
 
             elif words and words[0]=="frame":
@@ -1242,7 +1242,7 @@ class md5anim:
                 if qw<0:
                     qw=0
                 else:
-                    qw = -sqrt(qw)
+                    qw = -math.sqrt(qw)
                 QuArK_frame_position_raw[frame_counter][bone_counter] = quarkx.vect(lx, ly, lz)
                 tempmatrix = quaternion2matrix([qx, qy, qz, qw])
                 QuArK_frame_matrix_raw[frame_counter][bone_counter] = quarkx.matrix((tempmatrix[0][0], tempmatrix[1][0], tempmatrix[2][0]), (tempmatrix[0][1], tempmatrix[1][1], tempmatrix[2][1]), (tempmatrix[0][2], tempmatrix[1][2], tempmatrix[2][2]))
