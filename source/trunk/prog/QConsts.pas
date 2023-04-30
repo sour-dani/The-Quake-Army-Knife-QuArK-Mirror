@@ -151,6 +151,7 @@ const
   QuArKInfobase           = 'https://quark.sourceforge.io/infobase/';
   QuArKDefaultHelpPage    = 'index.html'; 
   QuArKUpdateSite         = 'quark.sourceforge.io';
+  QuArKUpdateSiteSSL      = True;
   QuArKUpdateFile         = '/update/index.dat';
 
 implementation

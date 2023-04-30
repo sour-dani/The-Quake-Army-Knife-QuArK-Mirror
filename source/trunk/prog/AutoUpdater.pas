@@ -339,7 +339,7 @@ begin
             Exit;
           ProgressIndicatorIncrement;
 
-          UpdateConnection.ConnectTo(QuArKUpdateSite);
+          UpdateConnection.ConnectTo(QuArKUpdateSite, QuArKUpdateSiteSSL);
           ProgressIndicatorIncrement;
 
           FileData := TMemoryStream.Create;

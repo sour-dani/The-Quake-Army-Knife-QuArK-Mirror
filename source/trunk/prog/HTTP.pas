@@ -38,7 +38,7 @@ type
   public
     function GoOnline: Boolean;
     procedure GoOffline;
-    procedure ConnectTo(const HostName: string);
+    procedure ConnectTo(const HostName: string; const UseSSL: Boolean = False);
     procedure CloseConnect;
     procedure FileRequest(const FileName: string);
     function FileQueryInfo(Flag: DWORD; Default: Integer = 0): Integer;
@@ -229,14 +229,17 @@ begin
   InetHandle:=nil;
 end;
 
-procedure THTTPConnection.ConnectTo(const HostName: string);
+procedure THTTPConnection.ConnectTo(const HostName: string; const UseSSL: Boolean);
 begin
   if not Online then
     raise exception.create('Not online.');
   if Connected then
     CloseConnect;
 
-  InetConnection:=InternetConnect(InetHandle, PChar(HostName), INTERNET_DEFAULT_HTTP_PORT, nil, nil, INTERNET_SERVICE_HTTP, 0, 0);
+  if UseSSL then
+    InetConnection:=InternetConnect(InetHandle, PChar(HostName), INTERNET_DEFAULT_HTTPS_PORT, nil, nil, INTERNET_SERVICE_HTTP, 0, 0)
+  else
+    InetConnection:=InternetConnect(InetHandle, PChar(HostName), INTERNET_DEFAULT_HTTP_PORT, nil, nil, INTERNET_SERVICE_HTTP, 0, 0);
   if InetConnection=nil then
   begin
     LogWindowsError(GetLastError(), 'THTTPConnection.ConnectTo: InternetConnect failed!');
