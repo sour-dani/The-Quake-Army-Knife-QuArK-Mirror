@@ -75,7 +75,7 @@ type
 
  TyCFunction = function(self, args: PyObject) : PyObject; cdecl;
  TyCFunctionKey = function(self, args, keys: PyObject) : PyObject; cdecl;
- PTymethodDef = ^TyMethodDef;
+ PTyMethodDef = ^TyMethodDef;
  TyMethodDef = packed record
                 ml_name: (*const*) PyChar;
                 case Integer of
@@ -374,9 +374,9 @@ PyRun_SimpleString: function (const P: PyChar) : Integer; cdecl;
 //PyRun_String: function (const str: PyChar; start: Integer; Globals, Locals: PyObject) : PyObject; cdecl;
 //Py_CompileString: function (const str, filename: PyChar; start: Integer) : PyObject; cdecl;
 
-//Py_InitModule: function (name: PyChar; const MethodDef) : PyObject; cdecl;
-//Py_InitModule3: function (name: PyChar; const MethodDef; doc: PyChar) : PyObject; cdecl;
-Py_InitModule4: function (name: PyChar; const MethodDef; doc: PyChar; self: PyObject; Version: Integer) : PyObject; cdecl;
+//Py_InitModule: function ({$IFDEF PYTHON25}const {$ENDIF}name: PyChar; const MethodDef) : PyObject; cdecl;
+//Py_InitModule3: function ({$IFDEF PYTHON25}const {$ENDIF}name: PyChar; const MethodDef; {$IFDEF PYTHON25}const {$ENDIF}doc: PyChar) : PyObject; cdecl;
+Py_InitModule4: function ({$IFDEF PYTHON25}const {$ENDIF}name: PyChar; const MethodDef; {$IFDEF PYTHON25}const {$ENDIF}doc: PyChar; self: PyObject; Version: Integer) : PyObject; cdecl;
 PyModule_GetDict: function (module: PyObject) : PyObject; cdecl;
 PyModule_New: function (const name: PyChar) : PyObject; cdecl;
 //PyImport_ImportModule: function (const name: PyChar) : PyObject; cdecl;
@@ -677,7 +677,11 @@ const
 //  (Variable: @@Py_CompileString;           Name: 'Py_CompileString';           MinimalVersion: 0 ),
 //  (Variable: @@Py_InitModule;              Name: 'Py_InitModule';              MinimalVersion: 0 ), //Missing in DLL
 //  (Variable: @@Py_InitModule3;             Name: 'Py_InitModule3';             MinimalVersion: 0 ), //Missing in DLL
+{$IFDEF CPUX64}
+    (Variable: @@Py_InitModule4;             Name: 'Py_InitModule4_64';          MinimalVersion: 0 ),
+{$ELSE}
     (Variable: @@Py_InitModule4;             Name: 'Py_InitModule4';             MinimalVersion: 0 ),
+{$ENDIF}
     (Variable: @@PyModule_GetDict;           Name: 'PyModule_GetDict';           MinimalVersion: 0 ),
     (Variable: @@PyModule_New;               Name: 'PyModule_New';               MinimalVersion: 0 ),
 //  (Variable: @@PyImport_ImportModule;      Name: 'PyImport_ImportModule';      MinimalVersion: 0 ),
@@ -1281,7 +1285,8 @@ procedure Py_Dealloc1(o: PyObject); forward;
 
 procedure Py_Dealloc(o: PyObject);
 begin
-  o^.ob_type^.tp_dealloc(o);
+  if @o^.ob_type^.tp_dealloc<>nil then
+    o^.ob_type^.tp_dealloc(o);
 end;
 (*{$IFDEF Debug}
 var
@@ -1300,7 +1305,7 @@ assembler;
 asm
  push eax
  mov edx, [eax+TyObject.ob_type]
- call dword [edx+TyTypeObject.tp_dealloc]
+ call dword [edx+TyTypeObject.tp_dealloc] //FIXME: Check for nil-pointer first!
  add esp, 4
 end;
 *)
