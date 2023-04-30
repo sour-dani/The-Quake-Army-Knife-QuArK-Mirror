@@ -33,7 +33,7 @@ type
 type
   THTTPConnection = class
   private
-    Online, Connected, Requesting: Boolean;
+    Online, Connected, UsingSSL, Requesting: Boolean;
     InetHandle, InetConnection, InetResource: HINTERNET;
   public
     function GoOnline: Boolean;
@@ -78,6 +78,8 @@ const
   {$EXTERNALSYM INTERNET_FLAG_RELOAD}
   INTERNET_FLAG_NO_CACHE_WRITE = $04000000;
   {$EXTERNALSYM INTERNET_FLAG_NO_CACHE_WRITE}
+  INTERNET_FLAG_SECURE = $00800000;
+  {$EXTERNALSYM INTERNET_FLAG_SECURE}
   HTTP_QUERY_CONTENT_LENGTH = 5;
   {$EXTERNALSYM HTTP_QUERY_CONTENT_LENGTH}
   HTTP_QUERY_STATUS_CODE = 19;
@@ -246,6 +248,7 @@ begin
     raise exception.create('Unable to open internet connection.');
   end;
   Connected:=True;
+  UsingSSL:=UseSSL;
 end;
 
 procedure THTTPConnection.CloseConnect;
@@ -270,7 +273,10 @@ begin
     CloseRequest;
 
   //We might need to set this as accepted type: 'binary/octet-stream'
-  InetResource:=HttpOpenRequest(InetConnection, PChar('GET'), PChar(FileName), nil, nil, nil, INTERNET_FLAG_RELOAD + INTERNET_FLAG_NO_CACHE_WRITE, 0);
+  if UsingSSL then
+    InetResource:=HttpOpenRequest(InetConnection, PChar('GET'), PChar(FileName), nil, nil, nil, INTERNET_FLAG_RELOAD + INTERNET_FLAG_NO_CACHE_WRITE + INTERNET_FLAG_SECURE, 0)
+  else
+    InetResource:=HttpOpenRequest(InetConnection, PChar('GET'), PChar(FileName), nil, nil, nil, INTERNET_FLAG_RELOAD + INTERNET_FLAG_NO_CACHE_WRITE, 0);
   if InetResource=nil then
   begin
     LogWindowsError(GetLastError(), 'THTTPConnection.FileRequest: HttpOpenRequest failed!');
