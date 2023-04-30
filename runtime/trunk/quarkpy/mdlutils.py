@@ -338,15 +338,17 @@ def SaveTreeView(editor):
     sellist = editor.layout.explorer.sellist
     editor.ObjSelectList = []
     for obj in sellist:
-        sel = [obj.name]
-        par = obj.parent
-        if par.name == "New model.qkl":
-            par = editor.Root
-        while par.type != ":mr":
-            sel = sel + [par.name]
-            par = par.parent
-        sel.reverse()
-        editor.ObjSelectList = editor.ObjSelectList + [sel]
+        sel = []
+        while obj != editor.Root:
+            sel.append(obj.name)
+            obj = obj.parent
+            if obj is None:
+                #Failed to find editor.Root; can't save this!
+                sel = []
+                break
+        if len(sel) != 0:
+            sel.reverse()
+            editor.ObjSelectList = editor.ObjSelectList + [sel]
 
     editor.ObjExpandList = []
     def storestate(parent, list):
@@ -380,16 +382,16 @@ def RestoreTreeView(editor):
         except:
             continue
 
-    getbones = 0
+    getbones = False
     for ObjectName in editor.ObjExpandList:
         try:
             if ObjectName.endswith(":bg"):
                 bonesgroup = editor.Root.dictitems[ObjectName]
                 bonesgroup.flags = bonesgroup.flags | qutils.OF_TVEXPANDED
             elif ObjectName.endswith(":bone"):
-                if getbones == 0:
-                	bones = bonesgroup.findallsubitems("", ':bone')
-                	getbones = 1
+                if not getbones:
+                    bones = bonesgroup.findallsubitems("", ':bone')
+                    getbones = True
                 for bone in bones:
                     if bone.name == ObjectName:
                         bone.flags = bone.flags | qutils.OF_TVEXPANDED
