@@ -1,4 +1,4 @@
-Unit zCompres;
+Unit Zcompress;
 
 { compress.c -- compress a memory buffer
   Copyright (C) 1995-1998 Jean-loup Gailly.
@@ -13,7 +13,7 @@ interface
 {$I zconf.inc}
 
 uses
-  zutil, zlib, zDeflate;
+  zutil, zlib, deflateZ;
 
                         { utility functions }
 

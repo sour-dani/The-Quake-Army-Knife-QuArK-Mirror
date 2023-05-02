@@ -28,7 +28,7 @@ procedure CompressStream(var Input: TMemoryStream; var Output: TMemoryStream);
 
 implementation
 
-uses zlib, zdeflate, zutil, setup;
+uses zlib, deflateZ, zutil, setup;
 
 Function GetZBufferSize: Integer;
 begin

@@ -202,7 +202,7 @@ function inflateSyncPoint(var z : z_stream) : int;
 implementation
 
 uses
-  adler;
+  adler32Z;
 
 function inflateReset(var z : z_stream) : int;
 begin

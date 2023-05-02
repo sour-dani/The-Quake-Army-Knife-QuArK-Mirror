@@ -29,10 +29,10 @@ uses
   zutil,
   zLib,
   gzIo,
-  zInflate,
-  zDeflate,
-  zCompres,
-  zUnCompr
+  inflateZ,
+  deflateZ,
+  compressZ,
+  uncomprZ
 {$ifdef MemCheck}
   , MemCheck in '..\..\monotekt\pas\memcheck\memcheck.pas'
 {$endif}

@@ -1,4 +1,4 @@
-Unit zUnCompr;
+Unit Zuncompr;
 
 { uncompr.c -- decompress a memory buffer
   Copyright (C) 1995-1998 Jean-loup Gailly.
@@ -13,7 +13,7 @@ interface
 {$I zconf.inc}
 
 uses
-  zutil, zlib, zInflate;
+  zutil, zlib, inflateZ;
 
 { ===========================================================================
      Decompresses the source buffer into the destination buffer.  sourceLen is

@@ -1,4 +1,4 @@
-Unit Adler;
+Unit adler32Z;
 
 {
   adler32.c -- compute the Adler-32 checksum of a data stream

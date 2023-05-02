@@ -1,4 +1,4 @@
-Unit zDeflate;
+Unit deflateZ;
 
 { Orginal: deflate.h -- internal compression state
            deflate.c -- compress data using the deflation algorithm
@@ -329,7 +329,7 @@ const
 implementation
 
 uses
-  trees, adler;
+  trees, adler32Z;
 
 {  ===========================================================================
    Function prototypes. }

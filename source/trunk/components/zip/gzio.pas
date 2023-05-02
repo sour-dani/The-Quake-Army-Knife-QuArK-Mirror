@@ -21,7 +21,7 @@ uses
   {$else}
   SysUtils,
   {$endif}
-  zutil, zlib, crc, zdeflate, zinflate;
+  zutil, zlib, crc32Z, deflateZ, inflateZ;
 
 type gzFile = voidp;
 type z_off_t = long;
