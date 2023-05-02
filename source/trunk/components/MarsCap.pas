@@ -695,7 +695,7 @@ begin
   FOldWindowProc := TFarProc(GetWindowLong(FParentHandle, GWL_WNDPROC));
   FNewWindowProc := MakeObjectInstance(MarsCaptionWindowProc);
   {$IFDEF WIN64}
-  SetWindowLongPtr(FParentHandle, GWL_WNDPROC, IntPtr(FNewWindowProc));
+  SetWindowLongPtr(FParentHandle, GWL_WNDPROC, LONG_PTR(FNewWindowProc));
   {$ELSE}
   SetWindowLong(FParentHandle, GWL_WNDPROC, LongInt(FNewWindowProc));
   {$ENDIF}
@@ -704,7 +704,7 @@ end;
 procedure TMarsCaption.UnHookWindowProc;
 begin
   {$IFDEF WIN64}
-  SetWindowLongPtr(FParentHandle, GWL_WNDPROC, IntPtr(FOldWindowProc));
+  SetWindowLongPtr(FParentHandle, GWL_WNDPROC, LONG_PTR(FOldWindowProc));
   {$ELSE}
   SetWindowLong(FParentHandle, GWL_WNDPROC, LongInt(FOldWindowProc));
   {$ENDIF}

@@ -813,7 +813,7 @@ begin
       Form := AForm;
       New := MakeObjectInstance(NewProc);
       {$IFDEF WIN64}
-      Old := Pointer(SetWindowLongPtr(AForm.Handle, GWL_WNDPROC, IntPtr(New)));
+      Old := Pointer(SetWindowLongPtr(AForm.Handle, GWL_WNDPROC, LONG_PTR(New)));
       {$ELSE}
       Old := Pointer(SetWindowLong(AForm.Handle, GWL_WNDPROC, LongInt(New)));
       {$ENDIF}
@@ -843,7 +843,7 @@ begin
         if RefCount = 0 then begin
           if Form.HandleAllocated then
             {$IFDEF WIN64}
-            SetWindowLongPtr (Form.Handle, GWL_WNDPROC, IntPtr(Old));
+            SetWindowLongPtr (Form.Handle, GWL_WNDPROC, LONG_PTR(Old));
             {$ELSE}
             SetWindowLong (Form.Handle, GWL_WNDPROC, LongInt(Old));
             {$ENDIF}
