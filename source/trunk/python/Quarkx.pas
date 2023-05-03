@@ -2290,19 +2290,6 @@ end;
 
 procedure HTMLDoc(const URL: String);
 
-  function CheckFileExists(const Filename: String) : Boolean;
-  var
-    S: String;
-    I: Integer;
-  begin
-    I:=Pos('#', Filename);
-    if I>0 then
-      S:=LeftStr(Filename, I-1)
-    else
-      S:=Filename;
-    Result:=FileExists(S);
-  end;
-
   procedure OpenError(const Err: String);
   begin
    raise EErrorFmt(5649, [URL, Err]);
@@ -2331,7 +2318,12 @@ begin
   begin
     //This is an infobase link
     FullFile:=Concatpaths([GetQPath(pQuArKHelp), URL]);
-    if not CheckFileExists(FullFile) then
+    I:=Pos('#', FullFile);
+    if I>0 then
+      S:=LeftStr(FullFile, I-1)
+    else
+      S:=FullFile;
+    if not FileExists(S) then
     begin
       if SetupSubSet(ssGeneral, 'Display').Specifics.Values['OnlineHelp']<>'' then
       begin
