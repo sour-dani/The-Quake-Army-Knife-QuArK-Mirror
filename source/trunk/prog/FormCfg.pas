@@ -169,7 +169,7 @@ implementation
 uses Types, qdraw, qhelper, qmath, QkUnknown, Undo, TbPalette, Toolbar1, ToolBox1,
      Setup, QuarkX, QkExceptions, QkFileObjects, QkInclude, QkMacro, QkImages,
      Python, PyMacros, PyToolbars, PyForms, QkPixelSet, QkObjectClassList,
-     ApplPaths, BrowseForFolder, Console,
+     ApplPaths, BrowseForFolder, FileExists2, Console,
      SystemDetails, Platform, Logging, ExtraFunctionality;
 
 const
@@ -1470,7 +1470,7 @@ begin
  with Form.SubElements[(Sender as TControl).Tag-1] do
   begin
    CheckFile:=Specifics.Values['CheckFile'];
-   if not CheckFileExists(Arg, CheckFile) then
+   if not FileExistsWild(Arg, CheckFile, nil) then
     Raise EErrorFmt(5610, [CheckFile]);
   end;
  SetArg(Sender, Arg);

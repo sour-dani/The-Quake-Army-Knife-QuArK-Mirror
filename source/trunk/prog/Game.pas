@@ -146,7 +146,7 @@ implementation
 
 uses StrUtils, Graphics, QkPak, Setup, QkUnknown, QkTextures, Travail, ToolBox1,
   QkImages, Game2, QkQuakeCtx, Config, PakFiles, QkExceptions, Quarkx, PyImages,
-  ApplPaths, Qk1, SteamFS, Python, Logging, ExtraFunctionality;
+  ApplPaths, Qk1, SteamFS, Python, Logging, FileExists2, ExtraFunctionality;
 
 var
  GameFiles: TQList = Nil;
@@ -1553,62 +1553,11 @@ end;
 
 function CheckQuakeDir : Boolean;
 var
-  CheckFile: String;
-  CheckDir, S2: String;
-  QuakeDir2: String;
+  CheckDir: String;
   TryingToFind: String;
-  F: Boolean;
-  S: TSearchRec;
-  rc: Integer;
 begin
   CheckDir:=SetupGameSet.Specifics.Values['CheckDirectory'];
-  QuakeDir2:=QuickResolveFilename(QuakeDir);
-  if pos(#$D, CheckDir) <> 0 then
-  begin
-    Result:=false;
-    S2:=CheckDir;
-    while (pos(#$D, S2) <> 0) do
-    begin
-      CheckFile:=ConcatPaths([QuakeDir2, Copy(S2, 1, pos(#$D, S2)-1)]);
-      F:=FileExists(CheckFile);
-      Result:=Result or F;
-      if not F then TryingToFind:=TryingToFind+Copy(S2, 1, pos(#$D, S2)-1)+', or ';
-      Delete(S2, 1, pos(#$D, S2));
-    end;
-    Delete(TryingToFind, Length(TryingToFind)-4, 5);
-  end
-  else if pos(#$A, CheckDir) <> 0 then
-  begin
-    Result:=true;
-    S2:=CheckDir;
-    while (pos(#$A, S2) <> 0) do
-    begin
-      CheckFile:=ConcatPaths([QuakeDir2, Copy(S2, 1, pos(#$A, S2)-1)]);
-      F:=FileExists(CheckFile);
-      Result:=Result and F;
-      if not F then TryingToFind:=TryingToFind+Copy(S2, 1, pos(#$A, S2)-1)+', and ';
-      Delete(S2, 1, pos(#$A, S2));
-    end;
-    Delete(TryingToFind, Length(TryingToFind)-5, 6);
-  end
-  else if pos('*', CheckDir) <> 0 then
-  begin
-    Result:=false;
-    rc:=FindFirst(ConcatPaths([QuakeDir2, CheckDir]), faAnyFile, S);
-    try
-      if rc=0 then
-        Result:=True;
-    finally
-      FindClose(S);
-    end;
-    TryingToFind:=CheckDir;
-  end
-  else
-  begin
-    Result:=FileExists(ConcatPaths([QuakeDir2, CheckDir]));
-    TryingToFind:=CheckDir;
-  end;
-
+  Result:=FileExistsWild(QuickResolveFilename(QuakeDir), CheckDir, @TryingToFind);
   if not Result then
   begin
     case MessageDlg(FmtLoadStr1(5627, [SetupGameSet.Name, TryingToFind]),

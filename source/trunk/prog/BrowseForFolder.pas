@@ -27,48 +27,10 @@ interface
 uses Windows;
 
 function BrowseForFolderDlg(hwnd: HWnd; var Path: String; Title: String; const CheckFile: String) : Boolean;
-function CheckFileExists(const Path, CheckFile: String) : Boolean;
 
 implementation
 
-uses SysUtils, SystemDetails, {$IFDEF CompiledWithDelphi2}ShellObj, OLE2,{$ELSE}ShlObj, ActiveX,{$ENDIF} ExtraFunctionality;
-
-function CheckFileExists(const Path, CheckFile: String) : Boolean;
-var
-  S, S2: String;
-begin
- if (Path='') or (CheckFile='') then
-  Result:=True
- else
-  begin
-   S:=IncludeTrailingPathDelimiter(Path);
-
-   if pos(#$D, CheckFile) <> 0 then
-   begin
-     Result:=false;
-     S2:=CheckFile;
-     while (pos(#$D, S2) <> 0) do
-     begin
-       Result:=Result or FileExists(S+Copy(S2, 1, pos(#$D, S2)-1));
-       Delete(S2, 1, pos(#$D, S2));
-     end;
-   end
-   else if pos(#$A, CheckFile) <> 0 then
-   begin
-     Result:=true;
-     S2:=CheckFile;
-     while (pos(#$A, S2) <> 0) do
-     begin
-       Result:=Result and FileExists(S+Copy(S2, 1, pos(#$A, S2)-1));
-       Delete(S2, 1, pos(#$A, S2));
-     end;
-   end
-   else
-   begin
-     Result:=FileExists(S+CheckFile);
-   end;
-  end;
-end;
+uses SysUtils, SystemDetails, FileExists2, {$IFDEF CompiledWithDelphi2}ShellObj, OLE2,{$ELSE}ShlObj, ActiveX,{$ENDIF} ExtraFunctionality;
 
 function BrowseCallback(hWnd: HWND; uMsg: UINT; lParam, lpData: LPARAM): Integer stdcall; export;
 var
@@ -92,7 +54,7 @@ begin
      if SHGetPathFromIDList(PItemIDList(lParam), PChar(S)) and (S[1]<>#0) then
       begin
        SetLength(S, StrLen(PChar(S)));
-       Ok:=CheckFileExists(S, StrEnd(PChar(lpData))+1);
+       Ok:=FileExistsWild(S, StrEnd(PChar(lpData))+1, nil);
       end
      else
       Ok:=False;

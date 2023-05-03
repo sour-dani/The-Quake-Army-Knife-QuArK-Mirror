@@ -94,6 +94,7 @@ uses
   Duplicator in 'prog\Duplicator.pas',
   ExtraFunctionality in 'prog\ExtraFunctionality.pas',
   FormCfg in 'prog\FormCfg.pas',
+  FileExists2 in 'prog\FileExists2.pas',
   Game in 'prog\Game.pas' {GameCfgDlg},
   Game2 in 'prog\Game2.pas' {AddOnsAddDlg},
   HelpPopup1 in 'prog\HelpPopup1.pas' {HelpPopup},
