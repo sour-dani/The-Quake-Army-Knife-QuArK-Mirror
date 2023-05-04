@@ -323,14 +323,14 @@ begin
           pos:=Info.F.Position; //Save Local Header Offset
 
          {Write File Entry}
-          LFS:=BuildLFH(PKZIP_VERSION_1_0, 0, 8, TimestampNow, crc, Size, OrgSize, length(s), 0); //FIXME: Set proper timestamp, if available!
+          LFS:=BuildLFH(PKZIP_VERSION_1_0, 0, cDEFLATED_COMPRESSION, TimestampNow, crc, Size, OrgSize, length(s), 0); //FIXME: Set proper timestamp, if available!
           sig:=cZIP_HEADER;
           Info.F.WriteBuffer(sig, 4);
           Info.F.WriteBuffer(LFS, Sizeof(TLocalFileHeader));
           Info.F.WriteBuffer(PChar(S)^, Length(S));
          {/Write File Entry}
 
-          cdir:=BuildFH(VMB_NTFS, PKZIP_VERSION_2_0, 0, 8, TimestampNow, crc, Size, OrgSize, length(s), 0, 0, 0, Longword(S_IFREG or (S_IRUSR or S_IWUSR or S_IRGRP or S_IWGRP or S_IROTH or S_IWOTH)) shl 16, pos, 0); //FIXME: Set proper timestamp, if available!
+          cdir:=BuildFH(VMB_NTFS, PKZIP_VERSION_2_0, 0, cDEFLATED_COMPRESSION, TimestampNow, crc, Size, OrgSize, length(s), 0, 0, 0, Longword(S_IFREG or (S_IRUSR or S_IWUSR or S_IRGRP or S_IWGRP or S_IROTH or S_IWOTH)) shl 16, pos, 0); //FIXME: Set proper timestamp, if available!
           sig:=cCFILE_HEADER;
           Repertoire.WriteBuffer(sig, 4);
           Repertoire.WriteBuffer(cdir, sizeof(TFileHeader));
