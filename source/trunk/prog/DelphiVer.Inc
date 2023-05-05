@@ -244,3 +244,31 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 {$IFDEF Delphi2orNewerCompiler}
   {$DEFINE Delphi1orNewerCompiler}
 {$ENDIF}
+
+// Also set CPU architecture defines that were added in later Delph versions.
+// Based on information from: https://docwiki.embarcadero.com/RADStudio/Sydney/en/Conditional_compilation_(Delphi)
+
+{$IFNDEF DelphiXE2orNewerCompiler}
+{$IFNDEF CPUX64}
+{$DEFINE CPUX86}
+{$ENDIF}
+{$ENDIF}
+
+{$IFNDEF DelphiXE8orNewerCompiler}
+{$IFDEF CPUX86}
+{$DEFINE CPU32BITS}
+{$ELSE}
+{$DEFINE CPU64BITS}
+{$ENDIF}
+{$ENDIF}
+
+{$IFNDEF DelphiXE4orNewerCompiler}
+{$IFDEF CPUARM}
+{$IFDEF CPU32BITS}
+{$DEFINE CPUARM32}
+{$ENDIF}
+{$IFDEF CPU64BITS}
+{$DEFINE CPUARM64}
+{$ENDIF}
+{$ENDIF}
+{$ENDIF}
