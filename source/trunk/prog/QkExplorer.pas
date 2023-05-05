@@ -118,7 +118,7 @@ type
    {procedure ExpandAndSelect(Q: QObject);}
     function MsgUndo(Op: TMsgUndo; Data: Pointer) : Pointer; virtual;
     procedure TestsDUsage(Preference: QObject; Spec: Integer);
-    function EditMenuCommand(Cmd: Integer) : Integer;
+    function EditMenuCommand(Cmd: LPARAM) : LRESULT;
     function DropObjectsNow(Gr: QExplorerGroup; const Texte: String; Beep: Boolean) : Boolean; dynamic;
     procedure GetExplorerInfo(var Info: TExplorerInfo); dynamic;
     procedure CloseUndoObjects;
@@ -1951,7 +1951,7 @@ begin
   FinAction(AnyObj, S);
 end;
 
-function TQkExplorer.EditMenuCommand(Cmd: Integer) : Integer;
+function TQkExplorer.EditMenuCommand(Cmd: LPARAM) : LRESULT;
 var
  I: Integer;
  CanEdit: Boolean;

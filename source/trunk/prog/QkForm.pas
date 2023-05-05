@@ -174,10 +174,10 @@ procedure PosteMessageFiches(wParam: WPARAM; lParam: LPARAM);
 procedure EnvoieMessageFiches(wParam: WPARAM; lParam: LPARAM);
 procedure SetMarsCapActive(nActive: Boolean);
 
-function GetObjectResult(Q: QObject) : LongInt;
-function GetObjectsResult(QList: TQList) : LongInt;
-function HasGotObject(L: LongInt; FirstOk: Boolean) : QObject;
-function HasGotObjects(L: LongInt) : TQList;
+function GetObjectResult(Q: QObject) : LRESULT;
+function GetObjectsResult(QList: TQList) : LRESULT;
+function HasGotObject(L: LRESULT; FirstOk: Boolean) : QObject;
+function HasGotObjects(L: LRESULT) : TQList;
 
 function GetDockColor: TColor;
 
@@ -222,7 +222,7 @@ begin
  L:=TQList.Create;
  try
   if Q<>Nil then L.Add(Q);
-  Result:=LongInt(L);
+  Result:=LRESULT(L);
  except
   L.Free;
   raise;
@@ -237,14 +237,14 @@ begin
  L:=TQList.Create;
  try
   for I:=0 to QList.Count-1 do L.Add(QList[I]);
-  Result:=LongInt(L);
+  Result:=LRESULT(L);
  except
   L.Free;
   raise;
  end;
 end;
 
-function HasGotObject(L: LongInt; FirstOk: Boolean) : QObject;
+function HasGotObject(L: LRESULT; FirstOk: Boolean) : QObject;
 var
  List: TQList;
 begin
@@ -258,7 +258,7 @@ begin
   end;
 end;
 
-function HasGotObjects(L: LongInt) : TQList;
+function HasGotObjects(L: LRESULT) : TQList;
 begin
  if L=0 then
   Result:=TQList.Create
@@ -578,7 +578,7 @@ end;
 procedure TQkForm.DefaultHandler(var Msg);
 begin
  inherited;
- if (Integer(Msg) in
+ if (UINT(Msg) in
  [WM_NCHITTEST,
   WM_NCLBUTTONDBLCLK,
   WM_NCLBUTTONDOWN,
@@ -590,8 +590,8 @@ begin
   WM_NCRBUTTONDBLCLK,
   WM_NCRBUTTONDOWN,
   WM_NCRBUTTONUP])
- or (Integer(Msg)=WM_INITMENU)
- or (Integer(Msg)=WM_ENTERSIZEMOVE) then
+ or (UINT(Msg)=WM_INITMENU)
+ or (UINT(Msg)=WM_ENTERSIZEMOVE) then
    MarsMessage(MarsCap);
 end;*)
 

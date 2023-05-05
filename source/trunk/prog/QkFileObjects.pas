@@ -88,7 +88,7 @@ type
     procedure SaveToolbars(Remove: Boolean);
     procedure LoadToolbars;
     procedure ForcedAssignObject(const Q: QFileObject; State: TFileObjectWndState);
-    function EditMenuCommand(Cmd: Integer) : Integer;
+    function EditMenuCommand(Cmd: LPARAM) : LRESULT;
   public
     property FileObject: QFileObject read FFileObject;
     property AttachPanel: TWinControl read FAttachPanel;
@@ -2784,7 +2784,7 @@ begin
    Raise EError(5527);
 end;
 
-function TQForm1.EditMenuCommand(Cmd: Integer) : Integer;
+function TQForm1.EditMenuCommand(Cmd: LPARAM) : LRESULT;
 begin
  Result:=edOk;
  case Cmd of

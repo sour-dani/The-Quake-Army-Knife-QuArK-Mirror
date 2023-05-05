@@ -57,7 +57,7 @@ type
     function SelectInExplorer : TQkExplorer;
     function GroupeSelection : QExplorerGroup;
     procedure SelectListItem(Item: TListItem);
-    function EditMenuCommandLv(Cmd: Integer) : Integer;
+    function EditMenuCommandLv(Cmd: LPARAM) : LRESULT;
     procedure CreateWnd; override;
     procedure SelectObject(const Q: QObject);
     procedure MouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean); override;
@@ -371,7 +371,7 @@ begin
   end;
 end;
 
-function TQForm2.EditMenuCommandLv(Cmd: Integer) : Integer;
+function TQForm2.EditMenuCommandLv(Cmd: LPARAM) : LRESULT;
 var
  G: QExplorerGroup;
 begin
