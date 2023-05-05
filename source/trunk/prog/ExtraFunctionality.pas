@@ -69,7 +69,7 @@ type
   {$EXTERNALSYM HANDLE_PTR}
 {$endif}
 
-{$IFDEF CPUX64}
+{$IFDEF CPU64BITS}
   size_t = UInt64;
   ssize_t = Int64;
 {$ELSE}

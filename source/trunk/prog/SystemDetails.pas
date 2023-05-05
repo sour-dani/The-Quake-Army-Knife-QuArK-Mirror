@@ -531,6 +531,45 @@ function TCPU.GetCPUVendor :string;
 
   function _GetCPUVendor :TStrBuf; assembler; register;
   asm
+	{$IFDEF CPUX86}
+	//Save registers
+	PUSH ebx
+	PUSH edi
+
+	//Call the CPUID command
+	MOV  edi,eax   //store @Result (TStrBuf) in EDI
+	MOV  eax,0     //select CPUID standard function 0
+	DW   $A20F     //raw opcode
+
+	//Save the first 4 bytes
+	MOV  eax,ebx   //need CPUID EBX-value to be in EAX
+	XCHG ebx,ecx   //save ECX result
+	MOV  ecx,4     //loop 4 times
+	@1:
+	STOSB          //save 1 byte from EAX
+	SHR  eax,8     //shift to the next byte
+	LOOP @1
+
+	//Save the middle 4 bytes
+	MOV  eax,edx   //need CPUID EDX-value to be in EAX
+	MOV  ecx,4     //loop 4 times
+	@2:
+	STOSB          //save 1 byte from EAX
+	SHR  eax,8     //shift to the next byte
+	LOOP @2
+
+	//Save the last 4 bytes
+	MOV  eax,ebx   //need CPUID ECX-value to be in EAX
+	MOV  ecx,4     //loop 4 times
+	@3:
+	STOSB          //save 1 byte from EAX
+	SHR  eax,8     //shift to the next byte
+	LOOP @3
+
+	//Restore registers
+	POP  edi
+	POP  ebx
+	{$ELSE}
 	{$IFDEF CPUX64}
 	//Save registers
 	PUSH rbx
@@ -570,43 +609,8 @@ function TCPU.GetCPUVendor :string;
 	POP  rdi
 	POP  rbx
 	{$ELSE}
-	//Save registers
-	PUSH ebx
-	PUSH edi
-
-	//Call the CPUID command
-	MOV  edi,eax   //store @Result (TStrBuf) in EDI
-	MOV  eax,0     //select CPUID standard function 0
-	DW   $A20F     //raw opcode
-
-	//Save the first 4 bytes
-	MOV  eax,ebx   //need CPUID EBX-value to be in EAX
-	XCHG ebx,ecx   //save ECX result
-	MOV  ecx,4     //loop 4 times
-	@1:
-	STOSB          //save 1 byte from EAX
-	SHR  eax,8     //shift to the next byte
-	LOOP @1
-
-	//Save the middle 4 bytes
-	MOV  eax,edx   //need CPUID EDX-value to be in EAX
-	MOV  ecx,4     //loop 4 times
-	@2:
-	STOSB          //save 1 byte from EAX
-	SHR  eax,8     //shift to the next byte
-	LOOP @2
-
-	//Save the last 4 bytes
-	MOV  eax,ebx   //need CPUID ECX-value to be in EAX
-	MOV  ecx,4     //loop 4 times
-	@3:
-	STOSB          //save 1 byte from EAX
-	SHR  eax,8     //shift to the next byte
-	LOOP @3
-
-	//Restore registers
-	POP  edi
-	POP  ebx
+	{$Message Error Unsupported CPU architecture!}
+	{$ENDIF}
 	{$ENDIF}
   end;
 

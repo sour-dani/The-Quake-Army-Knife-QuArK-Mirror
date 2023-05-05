@@ -115,9 +115,6 @@ var
 
 function PyNoResult : PyObject; assembler;
 asm
-{$ifndef DelphiXE2orNewerCompiler}
-{$define CPUX86}
-{$endif}
 {$IFDEF CPUX86}
  mov eax, [Py_None]
  inc dword ptr [eax]

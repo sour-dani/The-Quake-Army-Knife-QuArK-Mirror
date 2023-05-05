@@ -677,7 +677,7 @@ const
 //  (Variable: @@Py_CompileString;           Name: 'Py_CompileString';           MinimalVersion: 0 ),
 //  (Variable: @@Py_InitModule;              Name: 'Py_InitModule';              MinimalVersion: 0 ), //Missing in DLL
 //  (Variable: @@Py_InitModule3;             Name: 'Py_InitModule3';             MinimalVersion: 0 ), //Missing in DLL
-{$IFDEF CPUX64}
+{$IFDEF CPU64BITS}
     (Variable: @@Py_InitModule4;             Name: 'Py_InitModule4_64';          MinimalVersion: 0 ),
 {$ELSE}
     (Variable: @@Py_InitModule4;             Name: 'Py_InitModule4';             MinimalVersion: 0 ),
@@ -965,7 +965,7 @@ begin
   FoundOwnVersion:=False;
 
   //DanielPharos: We're going to assume the Python version information always
-  //is formated as integers delimited by periods '.', with the number starting
+  //is formatted as integers delimited by periods '.', with the number starting
   //after a space ' '.
   Index:=Pos(' ', s);
   if Index <> 0 then

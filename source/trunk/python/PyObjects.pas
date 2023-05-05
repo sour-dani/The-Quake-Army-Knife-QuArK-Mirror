@@ -117,9 +117,6 @@ uses Quarkx, QkExceptions, QkFileObjects, QkObjectClassList, QkExplorer, qhelper
 
 function QkObjFromPyObj1(o: PyObject) : QObject; register;
 asm
-{$ifndef DelphiXE2orNewerCompiler}
-{$define CPUX86}
-{$endif}
 {$IFDEF CPUX86}
  sub eax, offset QObject.PythonObj
 {$ELSE}
