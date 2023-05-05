@@ -29,6 +29,8 @@ uses Windows, Messages, Classes, SysUtils, Controls, Forms,
      QkObjects, Menus, TB97, StdCtrls, ComCtrls, CommCtrl,
      {$IFNDEF NoMarsCaption} marsCap, {$ENDIF} Graphics, ExtraFunctionality;
 
+{$I DelphiVer.inc}
+
 const
  wm_InternalMessage = {wm_User + $73}  $68FF;
  wp_FormActivate         = 101;
@@ -140,6 +142,9 @@ type
     MarsCap: TMarsColors;
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+    {$IFDEF Delphi8orNewerCompiler}
+    procedure MouseWheelHandler(var Message: TMessage); override;
+    {$ENDIF}
     function MenuShortcut(var Msg: TWMKeyDown) : Boolean;
     function ProcessEditMsg(lParam: LPARAM) : LongInt;
    {procedure RestorePosition(const Tag: String);}
@@ -397,6 +402,22 @@ begin
  LocalDoAccept(ActiveControl);
  inherited;
 end;
+
+//Somewhere after Delphi 7, somebody decided to change the way mousewheel control messages are handled.
+//Windows delivers them to the proper window, but Delphi wants to handle non-window child controls too.
+//So they decided to redirect ALL messages to the Form, breaking existing code. So let's restore this!
+{$IFDEF Delphi8orNewerCompiler} //FIXME: Not sure from what version onwards exactly.
+procedure TQkForm.MouseWheelHandler(var Message: TMessage);
+begin
+  with Message do
+  begin
+    if ActiveControl <> nil then
+      Result := ActiveControl.Perform(CM_MOUSEWHEEL, WParam, LParam)
+    else
+      inherited MouseWheelHandler(Message);
+  end;
+end;
+{$ENDIF}
 
 procedure TQkForm.MouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
 begin
