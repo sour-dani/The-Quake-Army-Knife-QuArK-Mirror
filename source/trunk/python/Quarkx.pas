@@ -3275,10 +3275,10 @@ const
 
 function InitializeQuarkx : Boolean;
 
- procedure RegType(var PyType: TyTypeObject; VarName: PyChar);
+ function RegType(var PyType: TyTypeObject; const VarName: PyChar) : Boolean;
  begin
   PyType.ob_type:=PyType_Type;
-  PyDict_SetItemString(QuarkxDict, VarName, @PyType);
+  Result:=(PyDict_SetItemString(QuarkxDict, VarName, @PyType)<>0);
  end;
 
 var
@@ -3288,93 +3288,117 @@ begin
 
  m:=Py_InitModule4('quarkx', @(MethodTable[0]), Nil, Nil, PYTHON_API_VERSION);
  if m=Nil then
+ begin
+  Log(LOG_WARNING, 'InitializeQuarkx: Failed to create quarkx module!');
   Exit;
+ end;
  QuarkxDict:=PyModule_GetDict(m);
  if QuarkxDict=Nil then
+ begin
+  Log(LOG_WARNING, 'InitializeQuarkx: Failed to get quarkx dictionary!');
   Exit;
+ end;
  EmptyTuple:=PyTuple_New(0);
  if EmptyTuple=Nil then
+ begin
+  Log(LOG_WARNING, 'InitializeQuarkx: Failed to create empty tuple!');
   Exit;
+ end;
 
- RegType(TyWindow_Type,    'window_type');
- RegType(TyToolbar_Type,   'toolbar_type');
- RegType(TyImageList_Type, 'imagelist_type');
- RegType(TyImage1_Type,    'image1_type');
- RegType(TyPanel_Type,     'panel_type');
-{RegType(TyFile_Type,      'file_type');}
- RegType(TyObject_Type,    'object_type');
-{RegType(TyFileObject_Type,'fileobject_type');}
- RegType(TyExplorer_Type,  'explorer_type');
- RegType(TyFormCfg_Type,   'dataform_type');
- RegType(TyFloating_Type,  'floating_type');
- RegType(TyFullscreen_Type,'fullscreen_type');
- RegType(TyMapView_Type,   'mapview_type');
- RegType(TyImageCtrl_Type, 'imagectrl_type');
- RegType(TyBtnPanel_Type,  'btnpanel_type');
- RegType(TyVect_Type,      'vector_type');
- RegType(TyQuaternion_Type,'quaternion_type');
- RegType(TyMatrix_Type,    'matrix_type');
- RegType(TyCanvas_Type,    'canvas_type');
- RegType(TyProcess_Type,   'process_type');
+ if not RegType(TyWindow_Type,    'window_type') then Exit;
+ if not RegType(TyToolbar_Type,   'toolbar_type') then Exit;
+ if not RegType(TyImageList_Type, 'imagelist_type') then Exit;
+ if not RegType(TyImage1_Type,    'image1_type') then Exit;
+ if not RegType(TyPanel_Type,     'panel_type') then Exit;
+{if not RegType(TyFile_Type,      'file_type') then Exit;}
+ if not RegType(TyObject_Type,    'object_type') then Exit;
+{if not RegType(TyFileObject_Type,'fileobject_type') then Exit;}
+ if not RegType(TyExplorer_Type,  'explorer_type') then Exit;
+ if not RegType(TyFormCfg_Type,   'dataform_type') then Exit;
+ if not RegType(TyFloating_Type,  'floating_type') then Exit;
+ if not RegType(TyFullscreen_Type,'fullscreen_type') then Exit;
+ if not RegType(TyMapView_Type,   'mapview_type') then Exit;
+ if not RegType(TyImageCtrl_Type, 'imagectrl_type') then Exit;
+ if not RegType(TyBtnPanel_Type,  'btnpanel_type') then Exit;
+ if not RegType(TyVect_Type,      'vector_type') then Exit;
+ if not RegType(TyQuaternion_Type,'quaternion_type') then Exit;
+ if not RegType(TyMatrix_Type,    'matrix_type') then Exit;
+ if not RegType(TyCanvas_Type,    'canvas_type') then Exit;
+ if not RegType(TyProcess_Type,   'process_type') then Exit;
 
 (*Temp:=TPyForm.Create(Application);
  Temp.Show;
- PyDict_SetItemString(QuarkxDict, 'mainform', @Temp.WndObject);*)
+ if PyDict_SetItemString(QuarkxDict, 'mainform', @Temp.WndObject)<>0 then Exit;*)
 
  QuarkxError:=PyErr_NewException('quarkx.error', Nil, Nil);
  if QuarkxError=Nil then
   Exit;
- PyDict_SetItemString(QuarkxDict, 'error', QuarkxError);
+ if PyDict_SetItemString(QuarkxDict, 'error', QuarkxError)<>0 then Exit;
 
  QuarkxAborted:=PyErr_NewException('quarkx.aborted', Nil, Nil);
  if QuarkxAborted=Nil then
   Exit;
- PyDict_SetItemString(QuarkxDict, 'aborted', QuarkxAborted);
+ if PyDict_SetItemString(QuarkxDict, 'aborted', QuarkxAborted)<>0 then Exit;
 
  m:=PyString_FromString(QuArKVersion + ' ' + QuArKMinorVersion);
  if m=Nil then
   Exit;
- PyDict_SetItemString(QuarkxDict, 'version', m);
- Py_DECREF(m);
+ try
+  if PyDict_SetItemString(QuarkxDict, 'version', m)<>0 then Exit;
+ finally
+  Py_DECREF(m);
+ end;
 
  m:=PyString_FromString(ToPyChar(GetQPath(pQuArK)));
  if m=Nil then
   Exit;
- PyDict_SetItemString(QuarkxDict, 'exepath', m);
- Py_DECREF(m);
+ try
+  if PyDict_SetItemString(QuarkxDict, 'exepath', m)<>0 then Exit;
+ finally
+  Py_DECREF(m);
+ end;
 
  m:=PyString_FromString(ToPyChar(GetQPath(pQuArKLog)));
  if m=Nil then
   Exit;
- PyDict_SetItemString(QuarkxDict, 'logpath', m);
- Py_DECREF(m);
+ try
+  if PyDict_SetItemString(QuarkxDict, 'logpath', m)<>0 then Exit;
+ finally
+  Py_DECREF(m);
+ end;
 
  m:=PyList_New(0);
  if m=Nil then
   Exit;
- PyDict_SetItemString(QuarkxDict, 'editshortcuts', m);
- Py_DECREF(m);
+ try
+  if PyDict_SetItemString(QuarkxDict, 'editshortcuts', m)<>0 then Exit;
+ finally
+  Py_DECREF(m);
+ end;
 
  m:=PyList_New(0);
  if m=Nil then
   Exit;
- PyDict_SetItemString(QuarkxDict, 'buildmodes', m);
- Py_DECREF(m);
+ try
+  if PyDict_SetItemString(QuarkxDict, 'buildmodes', m)<>0 then Exit;
+ finally
+  Py_DECREF(m);
+ end;
 
  ToolboxMenu:=PyList_New(0);
  if ToolboxMenu=Nil then
   Exit;
- PyDict_SetItemString(QuarkxDict, 'toolboxmenu', ToolboxMenu);
+ if PyDict_SetItemString(QuarkxDict, 'toolboxmenu', ToolboxMenu)<>0 then Exit;
 
  HelpMenu:=PyList_New(0);
  if HelpMenu=Nil then
   Exit;
- PyDict_SetItemString(QuarkxDict, 'helpmenu', HelpMenu);
+ if PyDict_SetItemString(QuarkxDict, 'helpmenu', HelpMenu)<>0 then Exit;
 
 {m:=Py_BuildValueX('OOOO', [Py_None, Py_None, Py_None, Py_None]);
  if m=Nil then
   Exit;
- PyDict_SetItemString(QuarkxDict, 'redlinesicons', m);
+ if PyDict_SetItemString(QuarkxDict, 'redlinesicons', m)<>0 then Exit;
  Py_DECREF(m);}
 
  Result:=True;
