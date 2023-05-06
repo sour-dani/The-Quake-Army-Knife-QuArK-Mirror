@@ -140,13 +140,23 @@ uses Quarkx, QkExceptions, PyExplorer, PyFormCfg, PyMapView, PyImages,
      PyToolbars, PyForms, PyControls, FormCfg, QkObjects,
      PyFloating, PyFullscreen;
 
+{$I DelphiVer.inc}
+
 const
  wp_RealignControls = 91;
  wp_ReorderMapViews = 92;
 
 function LayoutMgrFromPanelObj(PanelObj: PyObject) : TLayoutMgr;
 asm
+{$IFDEF CPUX86}
  sub eax, offset TLayoutMgr.PanelObject
+{$ELSE}
+ {$IFDEF CPUX64}
+  sub rax, offset TLayoutMgr.PanelObject
+ {$ELSE}
+  {$Message Error Unsupported CPU architecture!}
+ {$ENDIF}
+{$ENDIF}
 end;
 
  {-------------------}
