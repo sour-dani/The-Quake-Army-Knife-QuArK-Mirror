@@ -215,7 +215,7 @@ begin
   Result:=Result or $FF;
 end;
 
-function GetObjectResult(Q: QObject) : LongInt;
+function GetObjectResult(Q: QObject) : LRESULT;
 var
  L: TQList;
 begin
@@ -229,7 +229,7 @@ begin
  end;
 end;
 
-function GetObjectsResult(QList: TQList) : LongInt;
+function GetObjectsResult(QList: TQList) : LRESULT;
 var
  L: TQList;
  I: Integer;
@@ -688,8 +688,8 @@ function TQkForm.ProcessEditMsg(lParam: LPARAM) : LongInt;
 var
  Ac: TControl;
  EditH: HWnd;
- First, Last: LongInt;
- SendMsg: Integer;
+ First, Last: DWORD;
+ SendMsg: UINT;
 begin
  Ac:=Screen.ActiveControl;
  if Ac<>Nil then
