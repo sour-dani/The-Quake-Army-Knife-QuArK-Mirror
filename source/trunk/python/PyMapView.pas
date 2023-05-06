@@ -928,11 +928,11 @@ begin
      PP:=MapViewProj.Proj(PyVect(obj)^.V);
      if MapViewProj.CheckVisible(PP) then
       begin
-       if PyObject_HasAttrString(item, 'size') then
+       if PyObject_HasAttrString(item, 'size')<>0 then
         begin
          size:=PyObject_GetAttrString(item, 'size');
          if size=Nil then Exit;
-         if not PyArg_ParseTupleX(size, 'ii:get_handle_size', [@SizeX, @SizeY]) then
+         if PyArg_ParseTupleX(size, 'ii:get_handle_size', [@SizeX, @SizeY])=0 then
           Exit;
         end
        else
@@ -2068,7 +2068,7 @@ begin
  H:=GetHandle(HintInfo.CursorPos.X, HintInfo.CursorPos.Y, False, @Area);
  if H<>Py_None then
   try
-   if PyObject_HasAttrString(H, 'hint') then
+   if PyObject_HasAttrString(H, 'hint')<>0 then
     begin
      hint:=PyObject_GetAttrString(H, 'hint');
      if hint=Nil then Exit;
@@ -2098,7 +2098,7 @@ begin
    begin
     v1:=MakePyVect(Camera);
     try
-      Result:=Py_BuildValueODD(v1, HorzAngle, -PitchAngle);
+      Result:=Py_BuildValueX('Odd', [v1, HorzAngle, -PitchAngle]);
     finally
       Py_DECREF(v1);
     end;
@@ -2116,7 +2116,7 @@ begin
  if MapViewProj is TCameraCoordinates then
   with TCameraCoordinates(MapViewProj) do
    begin
-    if not PyArg_ParseTupleX(value, 'O!dd', [@TyVect_Type, @v1, @f1, @f2]) then
+    if PyArg_ParseTupleX(value, 'O!dd', [@TyVect_Type, @v1, @f1, @f2])=0 then
      Exit;
     Camera:=v1^.V;
     HorzAngle:=f1;
@@ -2159,11 +2159,11 @@ begin
   VAngle:=0.0;
   MinDist:=0.0;
   MaxDist:=0.0;
-  if not PyArg_ParseTupleAndKeywordsX(args, keywds, 's|ddddd', kwlist[0], [@P, @Angle, @Scale, @VAngle, @MinDist, @MaxDist]) then
+  if PyArg_ParseTupleAndKeywordsX(args, keywds, 's|ddddd', kwlist[0], [@P, @Angle, @Scale, @VAngle, @MinDist, @MaxDist])=0 then
    Exit;
   if Scale<rien then Scale:=rien;}
   rng:=Nil;
-  if not PyArg_ParseTupleX(args, 's|OO', [@P, @mx, @rng]) then
+  if PyArg_ParseTupleX(args, 's|OO', [@P, @mx, @rng])=0 then
    Exit;
   if PyControlF(self)^.QkControl<>Nil then
    with PyControlF(self)^.QkControl as TPyMapView do
@@ -2270,12 +2270,12 @@ begin
          VAngle:=-VAngle;
         end;
        MapViewProj:=GetAngleCoord(Angle, VAngle, Scale);*)
-       if not PyArg_ParseTupleX(args, 'sO!|O', [@P, @TyMatrix_Type, @mx, @rng]) then
+       if PyArg_ParseTupleX(args, 'sO!|O', [@P, @TyMatrix_Type, @mx, @rng])=0 then
         Exit;
        MapViewProj:=GetMatrixCoordinates(mx^.M);
       end;
      UpdateCoords(True);
-     if (MapViewProj<>Nil) and ((rng=Nil) or PyObject_IsTrue(rng)) then
+     if (MapViewProj<>Nil) and ((rng=Nil) or (PyObject_IsTrue(rng)=1)) then
       begin
        if MapViewProj.FlatDisplay then
         begin
@@ -2307,7 +2307,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'OO', [@objX, @objY]) then
+  if PyArg_ParseTupleX(args, 'OO', [@objX, @objY])=0 then
    Exit;
   if PyControlF(self)^.QkControl<>Nil then
    with PyControlF(self)^.QkControl as TPyMapView do
@@ -2352,10 +2352,10 @@ begin
   if OtherColor=TColorRef(clNone) then
    OtherColor:=clBlack;
   { tiglari
-  if not PyArg_ParseTupleX(args, 'O|ii', [@rootobj, @flags, @OtherColor]) then
+  if PyArg_ParseTupleX(args, 'O|ii', [@rootobj, @flags, @OtherColor])=0 then
   }
   restrobj:=Nil;
-  if not PyArg_ParseTupleX(args, 'O|iiO', [@rootobj, @flags, @OtherColor, @restrobj]) then
+  if PyArg_ParseTupleX(args, 'O|iiO', [@rootobj, @flags, @OtherColor, @restrobj])=0 then
   { \tiglari }
    Exit;
   Root:=QkObjFromPyObj(rootobj);
@@ -2485,12 +2485,12 @@ begin
  try
   if PyObject_Length(args)=1 then
    begin
-    if not PyArg_ParseTupleX(args, 'O!', [@TyVect_Type, @Result]) then
+    if PyArg_ParseTupleX(args, 'O!', [@TyVect_Type, @Result])=0 then
      Exit;
     V:=PyVect(Result)^.V;
    end
   else
-   if not PyArg_ParseTupleX(args, 'ddd', [@V.X, @V.Y, @V.Z]) then
+   if PyArg_ParseTupleX(args, 'ddd', [@V.X, @V.Y, @V.Z])=0 then
     Exit;
   if PyControlF(self)^.QkControl<>Nil then
    with PyControlF(self)^.QkControl as TPyMapView do
@@ -2519,7 +2519,7 @@ begin
  try
   if PyObject_Length(args)=1 then
    begin
-    if not PyArg_ParseTupleX(args, 'O!', [@TyVect_Type, @Result]) then
+    if PyArg_ParseTupleX(args, 'O!', [@TyVect_Type, @Result])=0 then
      Exit;
     with PyVect(Result)^ do
      begin
@@ -2529,7 +2529,7 @@ begin
      end;
    end
   else
-   if not PyArg_ParseTupleX(args, 'fff', [@Pt.x, @Pt.y, @Pt.oow]) then
+   if PyArg_ParseTupleX(args, 'fff', [@Pt.x, @Pt.y, @Pt.oow])=0 then
     Exit;
   if PyControlF(self)^.QkControl<>Nil then
    with PyControlF(self)^.QkControl as TPyMapView do
@@ -2554,7 +2554,7 @@ begin
  try
   if PyObject_Length(args)=1 then
    args:=PyTuple_GetItem(args, 0);
-  if not PyArg_ParseTupleX(args, 'dd', [@d1, @d2]) then
+  if PyArg_ParseTupleX(args, 'dd', [@d1, @d2])=0 then
    Exit;
   if PyControlF(self)^.QkControl<>Nil then
    with PyControlF(self)^.QkControl as TPyMapView do
@@ -2587,7 +2587,7 @@ begin
  Result:=Nil;
  try
   ctr:=Nil;
-  if not PyArg_ParseTupleX(args, 'ii|O!', [@rx, @ry, @TyVect_Type, @ctr]) then
+  if PyArg_ParseTupleX(args, 'ii|O!', [@rx, @ry, @TyVect_Type, @ctr])=0 then
    Exit;
   if PyControlF(self)^.QkControl<>Nil then
    with PyControlF(self)^.QkControl as TPyMapView do
@@ -2627,7 +2627,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'Oii', [@rootobj, @g_DrawInfo.X, @g_DrawInfo.Y]) then
+  if PyArg_ParseTupleX(args, 'Oii', [@rootobj, @g_DrawInfo.X, @g_DrawInfo.Y])=0 then
    Exit;
   Root:=QkObjFromPyObj(rootobj);
   if not (Root is Q3DObject) then
@@ -2690,7 +2690,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O', [@obj]) then
+  if PyArg_ParseTupleX(args, 'O', [@obj])=0 then
    Exit;
   V:={Origine}OriginVectorZero;
   if PyControlF(self)^.QkControl<>Nil then
@@ -2727,7 +2727,7 @@ begin
  Result:=Nil;
  try
   v1:=Nil;
-  if not PyArg_ParseTupleX(args, '|O!', [@TyVect_Type, @v1]) then
+  if PyArg_ParseTupleX(args, '|O!', [@TyVect_Type, @v1])=0 then
    Exit;
   F:=1.0;
   if PyControlF(self)^.QkControl<>Nil then
@@ -2763,7 +2763,7 @@ begin
   flags:=0;
   color2:=0;
   norg:=Nil;
-  if not PyArg_ParseTupleX(args, 'O!O!i|iiO!', [@TyVect_Type, @v1obj, @TyVect_Type, @v2obj, @color, @flags, @color2, @TyVect_Type, @norg]) then
+  if PyArg_ParseTupleX(args, 'O!O!i|iiO!', [@TyVect_Type, @v1obj, @TyVect_Type, @v2obj, @color, @flags, @color2, @TyVect_Type, @norg])=0 then
    Exit;
   if norg=Nil then
    V:={Origine}OriginVectorZero
@@ -2792,7 +2792,7 @@ begin
  {$ENDIF}
  try
   AltTexSrc:=Nil;
-  if not PyArg_ParseTupleX(args, '|O', [@AltTexSrc]) then
+  if PyArg_ParseTupleX(args, '|O', [@AltTexSrc])=0 then
    Exit;
   if PyControlF(self)^.QkControl<>Nil then
    with PyControlF(self)^.QkControl as TPyMapView do
@@ -2856,7 +2856,7 @@ begin
  LogProfiling('PyMapView, mInvalidateRect', [self.ob_type.tp_name, args.ob_type.tp_name], PythonGetStackTrace());
  {$ENDIF}
  try
-  if not PyArg_ParseTupleX(args, 'iiii', [@P1.X, @P1.Y, @P2.X, @P2.Y]) then
+  if PyArg_ParseTupleX(args, 'iiii', [@P1.X, @P1.Y, @P2.X, @P2.Y])=0 then
    Exit;
   R.TopLeft:=P1;
   R.BottomRight:=P2;
@@ -3025,7 +3025,7 @@ begin
            if QkControl<>Nil then
             with QkControl as TPyMapView do
              if MapViewProj<>Nil then
-              Result:=Py_BuildValueDD(MapViewProj.MinDistance, MapViewProj.MaxDistance);
+              Result:=Py_BuildValueX('dd', [MapViewProj.MinDistance, MapViewProj.MaxDistance]);
            Exit;
           end;
     'f': if StrComp(attr, 'flags')=0 then
@@ -3143,7 +3143,7 @@ begin
           begin
            if QkControl<>Nil then
             with QkControl as TPyMapView do
-             SetAnimation(PyObject_IsTrue(value));
+             SetAnimation(PyObject_IsTrue(value)=1);
            Result:=0;
            Exit;
           end;
@@ -3151,7 +3151,7 @@ begin
           begin
            if QkControl<>Nil then
             begin
-             if not PyArg_ParseTupleX(value, 'O!fii', [@TyVect_Type, @centerX, @scaleX, @offsetX, @multipleX]) then
+             if PyArg_ParseTupleX(value, 'O!fii', [@TyVect_Type, @centerX, @scaleX, @offsetX, @multipleX])=0 then
               Exit;
              with (QkControl as TPyMapView).BackgroundImage do
               begin
@@ -3170,7 +3170,7 @@ begin
          else
          if StrComp(attr, 'backgroundimage')=0 then
           begin
-           if not PyArg_ParseTupleX(value, 'O', [@objX]) then
+           if PyArg_ParseTupleX(value, 'O', [@objX])=0 then
             Exit;
            with (QkControl as TPyMapView).BackgroundImage do
             begin
@@ -3302,7 +3302,7 @@ begin
             with QkControl as TPyMapView do
              if MapViewProj<>Nil then
               begin
-               if not PyArg_ParseTupleX(value, 'dd', [@f1, @f2]) then
+               if PyArg_ParseTupleX(value, 'dd', [@f1, @f2])=0 then
                 Exit;
                if not MapViewProj.FlatDisplay then
                 Raise EError(4448);
@@ -3371,7 +3371,7 @@ begin
           end;*)
     'r': if StrComp(attr, 'redlines')=0 then
           begin
-           if not PyArg_ParseTupleX(value, 'ff', [@fl1, @fl2]) then
+           if PyArg_ParseTupleX(value, 'ff', [@fl1, @fl2])=0 then
             Exit;
            if QkControl<>Nil then
             with QkControl as TPyMapView do

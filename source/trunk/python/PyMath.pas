@@ -276,7 +276,7 @@ begin
          else if (attr[1]='t') and (attr[2]=#0) then
          begin
            with PyVectST(self)^ do
-            Result:=Py_BuildValueDD(TexS, TexT);
+            Result:=Py_BuildValueX('dd', [TexS, TexT]);
            Exit;
          end;
    't':  if attr[1]=#0 then
@@ -287,14 +287,14 @@ begin
          else if StrComp(attr, 'tuple')=0 then
          begin
           with PyVect(self)^.V do
-           Result:=Py_BuildValueDDD(X, Y, Z);
+           Result:=Py_BuildValueX('ddd', [X, Y, Z]);
           Exit;
          end
         else if (attr[1]='e') and (attr[2]='x') and PyVect(self)^.ST then
          if attr[3]=#0 then
           begin
            with PyVectST(self)^ do
-            Result:=Py_BuildValueDD(TexS, TexT);
+            Result:=Py_BuildValueX('dd', [TexS, TexT]);
            Exit;
           end
          else
@@ -326,14 +326,14 @@ begin
          else if StrComp(attr,'xyz')=0 then
           begin
            with PyVect(self)^.V do
-            Result:=Py_BuildValueDDD(X, Y, Z);
+            Result:=Py_BuildValueX('ddd', [X, Y, Z]);
            Exit;
          end
          else if StrComp(attr,'xyzst')=0 then
           begin
            with PyVect(self)^.V do
             with PyVectST(self)^ do
-             Result:=Py_BuildValueD5(X, Y, Z, TexS, TexT);
+             Result:=Py_BuildValueX('ddddd', [X, Y, Z, TexS, TexT]);
            Exit;
           end;
    'y': if attr[1]=#0 then
@@ -857,13 +857,13 @@ begin
          else if StrComp(attr,'xyz')=0 then
           begin
            with PyQuaternion(self)^.Q do
-            Result:=Py_BuildValueDDD(X, Y, Z);
+            Result:=Py_BuildValueX('ddd', [X, Y, Z]);
            Exit;
          end
          else if StrComp(attr,'xyzw')=0 then
           begin
            with PyQuaternion(self)^.Q do
-            Result:=Py_BuildValueD4(X, Y, Z, W);
+            Result:=Py_BuildValueX('dddd', [X, Y, Z, W]);
            Exit;
           end;
    'y': if attr[1]=#0 then
@@ -1188,7 +1188,7 @@ begin
          begin
           with PyMatrix(self)^ do
            for I:=1 to 3 do
-            obj[I]:=Py_BuildValueDDD(M[I,1], M[I,2], M[I,3]);
+            obj[I]:=Py_BuildValueX('ddd', [M[I,1], M[I,2], M[I,3]]);
           try
            Result:=Py_BuildValueX('OOO', [obj[1], obj[2], obj[3]]);
           finally
@@ -1262,7 +1262,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(ij, 'ii:matrix[i,j]', [@I, @J]) then
+  if PyArg_ParseTupleX(ij, 'ii:matrix[i,j]', [@I, @J])=0 then
    Exit;
   if (I<0) or (J<0) or (I>=3) or (J>=3) then
    Raise EError(4444);
@@ -1280,7 +1280,7 @@ var
 begin
  try
   Result:=-1;
-  if not PyArg_ParseTupleX(ij, 'ii:matrix[i,j]', [@I, @J]) then
+  if PyArg_ParseTupleX(ij, 'ii:matrix[i,j]', [@I, @J])=0 then
    Exit;
   if (I<0) or (J<0) or (I>=3) or (J>=3) then
    Raise EError(4444);

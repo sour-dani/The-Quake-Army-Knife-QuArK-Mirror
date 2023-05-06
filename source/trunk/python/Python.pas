@@ -389,7 +389,7 @@ PyEval_CallObject: function (o, args: PyObject) : PyObject; cdecl;
 //Python 2.7.x broke backwards compatibility without warning
 PyEval_CallObjectWithKeywords: function (o, args, kw: PyObject) : PyObject; cdecl;
 {$ENDIF}
-PyCallable_Check: function (o: PyObject) : LongBool; cdecl;
+PyCallable_Check: function (o: PyObject) : Integer; cdecl;
 
 PyErr_Print: procedure; cdecl;
 PyErr_Clear: procedure; cdecl;
@@ -399,27 +399,27 @@ PyErr_Restore: procedure (o1, o2, o3: PyObject); cdecl;
 PyErr_NewException: function (name: PyChar; base, dict: PyObject) : PyObject; cdecl;
 PyErr_SetString: procedure (o: PyObject; const c: PyChar); cdecl;
 //function PyErr_BadArgument : Integer; cdecl;
-PyErr_ExceptionMatches: function (exc: PyObject) : LongBool; cdecl;
+PyErr_ExceptionMatches: function (exc: PyObject) : Integer; cdecl;
 
 //function PyObject_Hash(o: PyObject) : LongInt; cdecl;
 PyObject_Length: function (o: PyObject) : {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}; cdecl;
 //PyObject_GetItem: function (o, key: PyObject) : PyObject; cdecl;
-PyObject_HasAttrString: function (o: PyObject; const attr_name: PyChar) : LongBool; cdecl;
+PyObject_HasAttrString: function (o: PyObject; const attr_name: PyChar) : Integer; cdecl;
 PyObject_GetAttrString: function (o: PyObject; const attr_name: PyChar) : PyObject; cdecl;
-PyObject_IsTrue: function (o: PyObject) : LongBool; cdecl;
+PyObject_IsTrue: function (o: PyObject) : Integer; cdecl;
 PyObject_Str: function (o: PyObject) : PyObject; cdecl;
 PyObject_Repr: function (o: PyObject) : PyObject; cdecl;
 PySequence_GetItem: function (o: PyObject; index: {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}) : PyObject; cdecl;
 PySequence_In: function (o, value: PyObject) : Integer; cdecl;
 PySequence_Index: function (o, value: PyObject) : {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}; cdecl;
 PySequence_DelItem: function (o: PyObject; index: {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}) : Integer; cdecl;
-PyMapping_HasKey: function (o, key: PyObject) : LongBool; cdecl;
-PyMapping_HasKeyString: function (o: PyObject; key: PyChar) : LongBool; cdecl;
+PyMapping_HasKey: function (o, key: PyObject) : Integer; cdecl;
+PyMapping_HasKeyString: function (o: PyObject; const key: PyChar) : Integer; cdecl;
 PyNumber_Float: function (o: PyObject) : PyObject; cdecl;
 
-Py_BuildValue: function (const fmt: PyChar{...}) : PyObject; cdecl;
-PyArg_ParseTuple: function (src: PyObject; const fmt: PyChar{...}) : LongBool; cdecl;
-//PyArg_ParseTupleAndKeywords: function (arg, kwdict: PyObject; const fmt: PyChar; var kwlist: PyChar{...}) : LongBool; cdecl;
+Py_BuildValue: function (const fmt: PyChar{, ...}) : PyObject; cdecl;
+PyArg_ParseTuple: function (src: PyObject; const fmt: PyChar{, ...}) : Integer; cdecl;
+//PyArg_ParseTupleAndKeywords: function (args, kw: PyObject; const fmt: PyChar; keywords: PPyChar{, ...}) : Integer; cdecl;
 PyTuple_New: function (size: {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}) : PyObject; cdecl;
 PyTuple_GetItem: function (tuple: PyObject; index: {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}) : PyObject; cdecl;
 PyTuple_SetItem: function (tuple: PyObject; index: {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}; item: PyObject) : Integer; cdecl;
@@ -606,14 +606,14 @@ var
 function PyObject_NEW(t: PyTypeObject) : PyObject;
 {function PyObject_NEWVAR(t: PyTypeObject; i: Integer) : PyObject;}
 procedure PyObject_DEL(o: PyObject);
-function Py_BuildValueX(const fmt: PyChar; Args: array of const) : PyObject;
+function Py_BuildValueX(const fmt: PyChar; const Args: array of const) : PyObject;
 function Py_BuildValueDD(v1, v2: Double) : PyObject;
 function Py_BuildValueDDD(v1, v2, v3: Double) : PyObject;
 function Py_BuildValueD4(v1, v2, v3, v4: Double) : PyObject;
 function Py_BuildValueD5(v1, v2, v3, v4, v5: Double) : PyObject;
 function Py_BuildValueODD(v1: PyObject; v2, v3: Double) : PyObject;
-function PyArg_ParseTupleX(src: PyObject; const fmt: PyChar; AllArgs: array of const) : LongBool;
-//function PyArg_ParseTupleAndKeywordsX(arg, kwdict: PyObject; const fmt: PyChar; var kwlist: PyChar; AllArgs: array of const) : LongBool;  pascal;
+function PyArg_ParseTupleX(src: PyObject; const fmt: PyChar; const Args: array of const) : Integer;
+//function PyArg_ParseTupleAndKeywordsX(arg, kwdict: PyObject; const fmt: PyChar; var kwlist: PyChar; const Args: array of const) : Integer;  pascal;
 procedure Py_INCREF(o: PyObject);
 procedure Py_DECREF(o: PyObject);
 procedure Py_REF_Delta(o: PyObject; Delta: Integer);
@@ -1135,7 +1135,7 @@ begin
 end;
 
 //Note: This function can only handle Args-elements that are 4 bytes in size (DWORD's), so it will NOT work with Double's!
-function Py_BuildValueX(const fmt: PyChar; Args: array of const) : PyObject;
+function Py_BuildValueX(const fmt: PyChar; const Args: array of const) : PyObject;
 asm                     { Comments added by Decker, but I'm not sure they are correct!! }
  push edi               { save the value of edi for later retrieval }
  shl ecx, 2             { multiply ecx with 4 (ecx = the number of elements in the Args array, minus 1) }
@@ -1153,7 +1153,8 @@ asm                     { Comments added by Decker, but I'm not sure they are co
  pop edi                { restore the saved value of edi }
 end;
 
-function PyArg_ParseTupleX(src: PyObject; const fmt: PyChar; AllArgs: array of const) : LongBool;
+//See documentation for Py_BuildValueX above for more information
+function PyArg_ParseTupleX(src: PyObject; const fmt: PyChar; const Args: array of const) : Integer;
 asm
  push edi               { save the value of edi for later retrieval }
  push esi               { save the value of esi for later retrieval }
@@ -1212,8 +1213,8 @@ begin
  Result:=F(Py_BuildValue)('Odd', v1, v2, v3);
 end;
 
-{function PyArg_ParseTupleAndKeywordsX(arg, kwdict: PyObject; const fmt: PyChar; var kwlist: PyChar; AllArgs: array of const) : LongBool;
-pascal; assembler; asm
+{function PyArg_ParseTupleAndKeywordsX(arg, kwdict: PyObject; const fmt: PyChar; var kwlist: PyChar; const Args: array of const) : Integer; pascal; assembler;
+asm
  mov ecx, [AllArgs-4]
  mov edx, [AllArgs]
  add ecx, ecx

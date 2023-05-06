@@ -230,7 +230,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O', [@obj]) then
+  if PyArg_ParseTupleX(args, 'O', [@obj])=0 then
    Exit;
   Q:=QkObjFromPyObj(obj);
   if Q=Nil then
@@ -284,7 +284,7 @@ begin
  Result:=Nil;
  try
   ok:=Nil;
-  if not PyArg_ParseTupleX(args, '|O', [@ok]) then
+  if PyArg_ParseTupleX(args, '|O', [@ok])=0 then
    Exit;
   Sender:=PyControl(self)^.QkControl;
   if Sender<>Nil then
@@ -457,7 +457,7 @@ begin
           end;
     'r': if StrComp(attr, 'rect') = 0 then
           begin
-           if not PyArg_ParseTupleX(value, 'ii', [@nRect.Right, @nRect.Bottom]) then
+           if PyArg_ParseTupleX(value, 'ii', [@nRect.Right, @nRect.Bottom])=0 then
             Exit;
            if QkControl<>Nil then
             with QkControl as TPyFloatingWnd do
@@ -470,7 +470,7 @@ begin
           end;
     'w': if StrComp(attr, 'windowrect') = 0 then
           begin
-           if not PyArg_ParseTupleX(value, 'iiii', [@nRect.Left, @nRect.Top, @nRect.Right, @nRect.Bottom]) then
+           if PyArg_ParseTupleX(value, 'iiii', [@nRect.Left, @nRect.Top, @nRect.Right, @nRect.Bottom])=0 then
             Exit;
            if QkControl<>Nil then
             (QkControl as TPyFloatingWnd).BoundsRect:=nRect;

@@ -141,7 +141,7 @@ var
 begin
   Result:=nil;
   try
-    if not PyArg_ParseTupleX(args, 'iii', [@v1, @v2, @v3]) then
+    if PyArg_ParseTupleX(args, 'iii', [@v1, @v2, @v3])=0 then
       exit;
     with QkObjFromPyObj(self) as QComponent do begin
       cnt:=Triangles(tris2);
@@ -200,7 +200,7 @@ var
 begin
   result:=nil;
   try
-    if not PyArg_ParseTupleX(args, 'i', [@Index]) then
+    if PyArg_ParseTupleX(args, 'i', [@Index])=0 then
       exit;
     with QkObjFromPyObj(self) as QComponent do begin
       IntSpec['show']:=index;
@@ -220,7 +220,7 @@ var
 begin
   Result:=nil;
   try
-    if not PyArg_ParseTupleX(args, 'O', [@u]) then
+    if PyArg_ParseTupleX(args, 'O', [@u])=0 then
       Exit;
     Q:=QkObjFromPyObj(u);
     if not (Q is QFrame) then
@@ -242,7 +242,7 @@ var
 begin
   Result:=Nil;
   try
-    if not PyArg_ParseTupleX(args, 'O!', [PyList_Type, @lst]) then
+    if PyArg_ParseTupleX(args, 'O!', [PyList_Type, @lst])=0 then
       Exit;
     Q:=TQList.Create;
     try
@@ -268,7 +268,7 @@ var
 begin
   Result:=nil;
   try
-    if not PyArg_ParseTupleX(args, 'O', [@u]) then
+    if PyArg_ParseTupleX(args, 'O', [@u])=0 then
       Exit;
     Q:=QkObjFromPyObj(u);
     with QkObjFromPyObj(self) as QComponent do begin
@@ -877,7 +877,7 @@ begin
               if obj=Nil then
                 exit;
               if obj^.ob_type=PyTuple_Type then begin
-                if not PyArg_ParseTupleX(obj, 'OO;filltris format error', [@patterns[False], @patterns[True]]) then
+                if PyArg_ParseTupleX(obj, 'OO;filltris format error', [@patterns[False], @patterns[True]])=0 then
                   exit;//Goto PreExit;
                 with Tris^ do
                   for K:=0 to 2 do begin
@@ -900,7 +900,7 @@ begin
                     C1:=PyInt_AsLong(obj);
                     C2:=C1;
                   end else
-                    if not PyArg_ParseTupleX(obj, 'ii;filltris format error', [@C1, @C2]) then
+                    if PyArg_ParseTupleX(obj, 'ii;filltris format error', [@C1, @C2])=0 then
                       exit;//Goto PreExit;
                   SetTextColor(g_DrawInfo.DC, C1);
                   SetBkColor(g_DrawInfo.DC, C2);
@@ -1153,7 +1153,7 @@ begin
       Exit;
     end else if StrComp(attr, 'currentframeindex') = 0 then begin
       I:=0;
-      if not PyArg_ParseTupleX(value,'i',[@i]) then
+      if PyArg_ParseTupleX(value,'i',[@i])=0 then
         Exit;
       CurrentFrame:=GetFrameFromIndex(I);
       Result:=True;
@@ -1187,10 +1187,10 @@ begin
         tri:=PyList_GetItem(value, I);
         if tri=Nil then
           Exit;
-        if not PyArg_ParseTupleX(tri, 'OOO;a triangle needs three points', [@pt[0], @pt[1], @pt[2]]) then
+        if PyArg_ParseTupleX(tri, 'OOO;a triangle needs three points', [@pt[0], @pt[1], @pt[2]])=0 then
           Exit;
         for L:=0 to 2 do begin
-          if not PyArg_ParseTupleX(pt[L], 'iii;bad tripoint format', [@VN, @SS, @TT]) then
+          if PyArg_ParseTupleX(pt[L], 'iii;bad tripoint format', [@VN, @SS, @TT])=0 then
             Exit;
           with Dest^[L] do begin
             VertexNo:=VN;

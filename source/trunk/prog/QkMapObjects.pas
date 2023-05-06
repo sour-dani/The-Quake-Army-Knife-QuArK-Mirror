@@ -655,12 +655,12 @@ begin
  Result:=Nil;
  try
   u:=Nil;
-  if not PyArg_ParseTupleX(args, 'ss|O', [@tOld, @tNew, @u]) then
+  if PyArg_ParseTupleX(args, 'ss|O', [@tOld, @tNew, @u])=0 then
    Exit;
   with QkObjFromPyObj(self) as TTreeMap do
    begin
     LoadAll;
-    Result:=PyInt_FromLong(ReplaceTexture(PyStrPas(tOld), PyStrPas(tNew), (u<>Nil) and PyObject_IsTrue(u)));
+    Result:=PyInt_FromLong(ReplaceTexture(PyStrPas(tOld), PyStrPas(tNew), (u<>Nil) and (PyObject_IsTrue(u)=1)));
    end;
  except
   Py_XDECREF(Result);

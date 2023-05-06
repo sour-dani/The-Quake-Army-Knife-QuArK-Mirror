@@ -2404,7 +2404,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O!', [PyList_Type, @lst]) then
+  if PyArg_ParseTupleX(args, 'O!', [PyList_Type, @lst])=0 then
    Exit;
   L1:=TQList.Create;
   L2:=TQList.Create;
@@ -2444,7 +2444,7 @@ begin
  Result:=Nil;
  try
   face:=Nil;
-  if not PyArg_ParseTupleX(args, 'O!|O!', [@TyObject_Type, @poly, @TyObject_Type, @face]) then
+  if PyArg_ParseTupleX(args, 'O!|O!', [@TyObject_Type, @poly, @TyObject_Type, @face])=0 then
    Exit;
   Me:=QkObjFromPyObj(self) as TPolyedre;
   Me.LoadAll;
@@ -2501,7 +2501,7 @@ begin
  Result:=Nil;
  try
 //  poly:=self;
-//  if not PyArg_ParseTupleX(args, 'O!', [@TyObject_Type, @poly]) then
+//  if PyArg_ParseTupleX(args, 'O!', [@TyObject_Type, @poly])=0 then
 //   Exit;
   Me:=QkObjFromPyObj(self) as TPolyedre;
   Me.LoadAll;
@@ -4270,7 +4270,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O!', [@TyObject_Type, @nobj]) then
+  if PyArg_ParseTupleX(args, 'O!', [@TyObject_Type, @nobj])=0 then
    Exit;
   S:=(QkObjFromPyObj(self) as TFace).FaceOfPoly;
   while Assigned(S) do
@@ -4316,7 +4316,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O!O!', [@TyVect_Type, @v1, @TyVect_Type, @v2]) then
+  if PyArg_ParseTupleX(args, 'O!O!', [@TyVect_Type, @v1, @TyVect_Type, @v2])=0 then
    Exit;
   with QkObjFromPyObj(self) as TFace do
    begin
@@ -4342,7 +4342,7 @@ begin
  Result:=Nil;
  try
   AltTexSrc:=Nil;
-  if not PyArg_ParseTupleX(args, 'i|O', [@mode, @AltTexSrc]) then
+  if PyArg_ParseTupleX(args, 'i|O', [@mode, @AltTexSrc])=0 then
    Exit;
   with QkObjFromPyObj(self) as TFace do
    begin
@@ -4385,7 +4385,7 @@ begin
  Result:=Nil;
  try
   AltTexSrc:=Nil;
-  if not PyArg_ParseTupleX(args, '(O!O!O!)i|O', [@TyVect_Type, @v[1], @TyVect_Type, @v[2], @TyVect_Type, @v[3], @mode, @AltTexSrc]) then
+  if PyArg_ParseTupleX(args, '(O!O!O!)i|O', [@TyVect_Type, @v[1], @TyVect_Type, @v[2], @TyVect_Type, @v[3], @mode, @AltTexSrc])=0 then
    Exit;
  {V2.X:=v[2]^.V.X - v[1]^.V.X;
   V2.Y:=v[2]^.V.Y - v[1]^.V.Y;
@@ -4503,7 +4503,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O!', [@TyObject_Type, @nobj]) then
+  if PyArg_ParseTupleX(args, 'O!', [@TyObject_Type, @nobj])=0 then
    Exit;
   S:=(QkObjFromPyObj(self) as TFace).FaceOfPoly;
   while Assigned(S) do

@@ -206,10 +206,10 @@ begin
   if obj=Py_None then
    FillChar(Icons, SizeOf(Icons), 0)
   else
-   if not PyArg_ParseTupleX(obj, 'O!O!O!O!O!O!',
+   if PyArg_ParseTupleX(obj, 'O!O!O!O!O!O!',
     [@TyImage1_Type, @Icons[0], @TyImage1_Type, @Icons[1],
      @TyImage1_Type, @Icons[2], @TyImage1_Type, @Icons[3],
-     @TyImage1_Type, @Icons[4], @TyImage1_Type, @Icons[5]]) then Exit;
+     @TyImage1_Type, @Icons[4], @TyImage1_Type, @Icons[5]])=0 then Exit;
  finally Py_DECREF(obj); end;
 
  Btn:=TQkToolbarButton.Create(Owner);
@@ -588,7 +588,7 @@ begin
           end;
     'f': if StrComp(attr, 'floatrect')=0 then
           begin
-           if not PyArg_ParseTupleX(value, 'iiii', [@nRect.Left, @nRect.Top, @nRect.Right, @nRect.Bottom]) then
+           if PyArg_ParseTupleX(value, 'iiii', [@nRect.Left, @nRect.Top, @nRect.Right, @nRect.Bottom])=0 then
             Exit;
            if QkToolbar<>Nil then
             begin
@@ -614,7 +614,7 @@ begin
     'v': if StrComp(attr, 'visible')=0 then
           begin
            if QkToolbar<>Nil then
-            if QkToolbar.Visible xor PyObject_IsTrue(value) then
+            if QkToolbar.Visible xor (PyObject_IsTrue(value)=1) then
              begin
               QkToolbar.Visible:=not QkToolbar.Visible;
               ShowHide(Nil);
@@ -1082,7 +1082,7 @@ begin
   end
  else
   if (FMouseOnIcon or not FullClick)
-  and PyObject_HasAttrString(BtnObject, 'menu') then
+  and (PyObject_HasAttrString(BtnObject, 'menu')<>0) then
    begin
     F:=GetParentPyForm(Self);
     if F=Nil then Exit;
@@ -1154,8 +1154,8 @@ function TQkToolbarButton.FullClick : Boolean;
 var
  obj: PyObject;
 begin
- Result:=PyObject_HasAttrString(BtnObject, 'menu')
-     and PyObject_HasAttrString(BtnObject, 'onclick');
+ Result:=(PyObject_HasAttrString(BtnObject, 'menu')<>0)
+     and (PyObject_HasAttrString(BtnObject, 'onclick')<>0);
  if Result then
   begin
    obj:=PyObject_GetAttrString(BtnObject, 'onclick');
@@ -1184,14 +1184,14 @@ begin
     FMenuShowing:=-1;
     Exit;
    end;
- if PyObject_HasAttrString(BtnObject, 'dragobject') then
+ if PyObject_HasAttrString(BtnObject, 'dragobject')<>0 then
   begin
    SetDragSource(dfOk or dfCopyToOutside, GetNewGroup);
    BeginDrag(True);
    FSelected:=True;
   end
  else
-  if PyObject_HasAttrString(BtnObject, 'onenddrag') then
+  if PyObject_HasAttrString(BtnObject, 'onenddrag')<>0 then
    begin
     FSelected:=True;
     SetCursor(Screen.Cursors[crDrag]);
@@ -1232,7 +1232,7 @@ procedure TQkToolbarButton.DoRClick;
 var
  callback: PyObject;
 begin
- if PyObject_HasAttrString(BtnObject, 'onrclick') then
+ if PyObject_HasAttrString(BtnObject, 'onrclick')<>0 then
   begin
    ClickForm(Owner as TForm);
    callback:=PyObject_GetAttrString(BtnObject, 'onrclick');
@@ -1274,7 +1274,7 @@ var
 begin
  PostMessage(ValidParentForm(Self).Handle, wm_InternalMessage, wp_EndDrag, 0);
  UpdateBtn;  { reset Selected }
- if PyObject_HasAttrString(BtnObject, 'onenddrag') then
+ if PyObject_HasAttrString(BtnObject, 'onenddrag')<>0 then
   begin
    ClickForm(Owner as TForm);
    callback:=PyObject_GetAttrString(BtnObject, 'onenddrag');
@@ -1290,7 +1290,7 @@ procedure TQkToolbarButton.DragOver;
 var
  obj: PyObject;
 begin
- if PyObject_HasAttrString(BtnObject, 'ondrop') then
+ if PyObject_HasAttrString(BtnObject, 'ondrop')<>0 then
   begin
    obj:=PyObject_GetAttrString(BtnObject, 'ondrop'); try
    Accept:=(obj<>Nil) and (obj<>Py_None) and (DragFlags<>0);
@@ -1669,7 +1669,7 @@ begin
           end;
     'm': if StrComp(attr, 'margins')=0 then
           begin
-           if not PyArg_ParseTupleX(value, 'ii', [@P.X, @P.Y]) then
+           if PyArg_ParseTupleX(value, 'ii', [@P.X, @P.Y])=0 then
             Exit;
            if QkControl<>Nil then
             with QkControl as TQkBtnPanel do

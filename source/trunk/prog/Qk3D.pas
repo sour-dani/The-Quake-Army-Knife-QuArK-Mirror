@@ -390,7 +390,7 @@ begin
  Result:=Nil;
  try
   nGrid:=0;
-  if not PyArg_ParseTupleX(args, 'O!|d', [@TyVect_Type, @V1, @nGrid]) then
+  if PyArg_ParseTupleX(args, 'O!|d', [@TyVect_Type, @V1, @nGrid])=0 then
    Exit;
   if nGrid>0 then
    g_DrawInfo.ModeDeplacement:=mdDisplacementGrid
@@ -416,7 +416,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'd', [@nGrid]) then
+  if PyArg_ParseTupleX(args, 'd', [@nGrid])=0 then
    Exit;
   if nGrid>0 then
    begin
@@ -443,7 +443,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O!O!', [@TyVect_Type, @V1, @TyMatrix_Type, @M1]) then
+  if PyArg_ParseTupleX(args, 'O!O!', [@TyVect_Type, @V1, @TyMatrix_Type, @M1])=0 then
    Exit;
   g_DrawInfo.ModeDeplacement:=mdLinear;
   g_DrawInfo.Clic:=V1^.V;
@@ -465,7 +465,7 @@ function qInflate(self, args: PyObject) : PyObject; cdecl;
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'd', [@g_DrawInfo.ClicZ]) then
+  if PyArg_ParseTupleX(args, 'd', [@g_DrawInfo.ClicZ])=0 then
    Exit;
   g_DrawInfo.ModeDeplacement:=mdInflate;
   g_DrawInfo.Clic:={Origine}OriginVectorZero;

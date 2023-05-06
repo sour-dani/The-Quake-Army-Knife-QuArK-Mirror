@@ -70,7 +70,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'i', [@nCount]) then
+  if PyArg_ParseTupleX(args, 'i', [@nCount])=0 then
    Exit;
   if PyList_GetItem(self,0)=Py_None then
    Raise EError(4451);

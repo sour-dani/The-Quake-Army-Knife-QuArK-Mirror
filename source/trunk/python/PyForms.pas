@@ -119,7 +119,7 @@ var
  callback, arglist, callresult: PyObject;
 begin
  try
-  Result:=PyObject_HasAttrString(obj, 'onclick');
+  Result:=(PyObject_HasAttrString(obj, 'onclick')<>0);
   if Result then
    begin
     callback:=PyObject_GetAttrString(obj, 'onclick');
@@ -177,7 +177,7 @@ begin
   Result:=ClickItemNow(obj, Options, nForm)
  else
   begin
-   Result:=PyObject_HasAttrString(obj, 'onclick');
+   Result:=(PyObject_HasAttrString(obj, 'onclick')<>0);
    if not Result then Exit;
    Py_XDECREF(ci_obj);
    ci_obj:=obj;
@@ -251,7 +251,7 @@ begin
   nCaption:='tool bar';
   nButtons:=Nil;
   Closeable:=Nil;
-  if not PyArg_ParseTupleX(args, '|sO!O', [@nCaption, PyList_Type, @nButtons, @Closeable]) then
+  if PyArg_ParseTupleX(args, '|sO!O', [@nCaption, PyList_Type, @nButtons, @Closeable])=0 then
    Exit;
   with PyWindow(self)^ do
    begin
@@ -264,7 +264,7 @@ begin
     Tb:=TQkToolbar.CustomCreate(Form, Bounds((R.Left+R.Right) div 2-16, (R.Left+R.Right) div 2-16, 32, 32));
     Tb.Caption:=PyStrPas(nCaption);
     Tb.DockedTo:=Form.topdock;
-    Tb.CloseButton:=(Closeable<>Nil) and PyObject_IsTrue(Closeable);
+    Tb.CloseButton:=(Closeable<>Nil) and (PyObject_IsTrue(Closeable)=1);
     if nButtons<>Nil then
      Tb.TbObject^.SetButtons(nButtons);
    end;
@@ -378,7 +378,7 @@ begin
  try
   nFlags:=0;
   nCaption:='';
-  if not PyArg_ParseTupleX(args, '|is', [@nFlags, @nCaption]) then
+  if PyArg_ParseTupleX(args, '|is', [@nFlags, @nCaption])=0 then
    Exit;
   with PyWindow(self)^ do
    begin
@@ -436,7 +436,7 @@ begin
  try
   nFlags:=0;
   nCaption:='';
-  if not PyArg_ParseTupleX(args, '|is', [@nFlags, @nCaption]) then
+  if PyArg_ParseTupleX(args, '|is', [@nFlags, @nCaption])=0 then
    Exit;
   with PyWindow(self)^ do
    begin
@@ -463,7 +463,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 's', [@nMacro]) then
+  if PyArg_ParseTupleX(args, 's', [@nMacro])=0 then
    Exit;
   with PyWindow(self)^ do
    try
@@ -490,7 +490,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'i', [@Color]) then
+  if PyArg_ParseTupleX(args, 'i', [@Color])=0 then
    Exit;
   if (PyWindow(self)^.Form<>Nil) and ChooseColor(PyWindow(self)^.Form, Color) then
    Result:=PyInt_FromLong(Color)
@@ -549,7 +549,7 @@ begin
  Result:=Nil;
  try
   ok:=Nil;
-  if not PyArg_ParseTupleX(args, '|O', [@ok]) then
+  if PyArg_ParseTupleX(args, '|O', [@ok])=0 then
    Exit;
   Sender:=PyWindow(self)^.Form;
   if (ok=Nil) or PyObject_IsTrue(ok) then
@@ -771,7 +771,7 @@ begin
          end;
    'w': if StrComp(attr, 'windowrect') = 0 then
          begin
-          if not PyArg_ParseTupleX(value, 'iiii', [@nRect.Left, @nRect.Top, @nRect.Right, @nRect.Bottom]) then
+          if PyArg_ParseTupleX(value, 'iiii', [@nRect.Left, @nRect.Top, @nRect.Right, @nRect.Bottom])=0 then
            Exit;
           if PyWindow(self)^.Form<>Nil then
            PyWindow(self)^.Form.RestoredRect:=nRect;
@@ -926,7 +926,7 @@ var
  fnt: PyObject;
 begin
  if (Info<>Nil) and (Info<>Py_None)
- and PyObject_HasAttrString(Info, FntName) then
+ and (PyObject_HasAttrString(Info, FntName)<>0) then
   begin
    fnt:=PyObject_GetAttrString(Info, FntName);
    try
@@ -1049,7 +1049,7 @@ begin
      if obj<>Nil then
       begin
        Py_INCREF(obj); try
-       if PyObject_HasAttrString(obj, 'hint') then
+       if PyObject_HasAttrString(obj, 'hint')<>0 then
         begin
          s:=PyObject_GetAttrString(obj, 'hint');
          if s<>Nil then
@@ -1337,7 +1337,7 @@ begin
   if ShortCut and (scCtrl or scAlt) = 0 then
    begin
     esc:=PyInt_FromLong(Msg.CharCode); try
-    if (esc<>Nil) and PyMapping_HasKey(NumShortCuts, esc) then
+    if (esc<>Nil) and (PyMapping_HasKey(NumShortCuts, esc)<>0) then
      begin
       obj:=PyDict_GetItem(NumShortCuts, esc);
       if obj<>Nil then
@@ -1345,7 +1345,7 @@ begin
         obj:=PyEval_CallObject(obj, EmptyTuple);
         if obj<>Nil then
          begin
-          Result:=PyObject_IsTrue(obj);
+          Result:=(PyObject_IsTrue(obj)=1);
           Py_DECREF(obj);
          end;
        end;
@@ -1356,7 +1356,7 @@ begin
     finally Py_XDECREF(esc); end;
    end;
 
- if (S<>'') and PyMapping_HasKeyString(ShortCuts, ToPyChar(S)) then
+ if (S<>'') and (PyMapping_HasKeyString(ShortCuts, ToPyChar(S))<>0) then
   begin
    Result:=True;
    obj:=PyDict_GetItemString(ShortCuts, ToPyChar(S));

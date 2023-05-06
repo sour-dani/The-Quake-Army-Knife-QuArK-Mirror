@@ -58,7 +58,7 @@ var
 begin
   Result:=Nil;
   try
-    if not PyArg_ParseTupleX(args, 'O', [@u]) then
+    if PyArg_ParseTupleX(args, 'O', [@u])=0 then
       Exit;
     Q:=QkObjFromPyObj(u);
     if not (Q is QComponent) then

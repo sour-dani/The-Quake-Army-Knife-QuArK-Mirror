@@ -66,7 +66,7 @@ begin
     g_DrawInfo.DC:=PyCanvasObj(self)^.Canvas.Handle;
     if PyObject_Length(args)=2 then
      begin
-      if not PyArg_ParseTupleX(args, 'O!O!', [@TyVect_Type, @v1, @TyVect_Type, @v2]) then
+      if PyArg_ParseTupleX(args, 'O!O!', [@TyVect_Type, @v1, @TyVect_Type, @v2])=0 then
        Exit;
       if (v1^.Source3D=Nil) or (v1^.Source3D<>v2^.Source3D) then
        Raise EError(4447);
@@ -74,7 +74,7 @@ begin
      end
     else
      begin
-      if not PyArg_ParseTupleX(args, 'iiii', [@P1.X, @P1.Y, @P2.X, @P2.Y]) then
+      if PyArg_ParseTupleX(args, 'iiii', [@P1.X, @P1.Y, @P2.X, @P2.Y])=0 then
        Exit;
       Line95(g_DrawInfo.DC, P1, P2);
      end;
@@ -93,7 +93,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'iiii', [@P1.X, @P1.Y, @P2.X, @P2.Y]) then
+  if PyArg_ParseTupleX(args, 'iiii', [@P1.X, @P1.Y, @P2.X, @P2.Y])=0 then
    Exit;
   if Assigned(PyCanvasObj(self)^.Canvas) then
    Rectangle95(PyCanvasObj(self)^.Canvas.Handle, P1.X, P1.Y, P2.X, P2.Y);
@@ -111,7 +111,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'iiii', [@P1.X, @P1.Y, @P2.X, @P2.Y]) then
+  if PyArg_ParseTupleX(args, 'iiii', [@P1.X, @P1.Y, @P2.X, @P2.Y])=0 then
    Exit;
   if Assigned(PyCanvasObj(self)^.Canvas) then
    Ellipse95(PyCanvasObj(self)^.Canvas.Handle, P1.X, P1.Y, P2.X, P2.Y);
@@ -130,7 +130,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'iii', [@P.X, @P.Y, @Color]) then
+  if PyArg_ParseTupleX(args, 'iii', [@P.X, @P.Y, @Color])=0 then
    Exit;
   if Assigned(PyCanvasObj(self)^.Canvas) then
    Color:=SetPixel(PyCanvasObj(self)^.Canvas.Handle, P.X, P.Y, Color)
@@ -152,7 +152,7 @@ begin
  Result:=Nil;
  try
   //Color:=CLR_NONE; //Not needed: Color is a dummy parameter
-  if not PyArg_ParseTupleX(args, 'ii|i', [@P.X, @P.Y, @Color]) then
+  if PyArg_ParseTupleX(args, 'ii|i', [@P.X, @P.Y, @Color])=0 then
    Exit;
   if Assigned(PyCanvasObj(self)^.Canvas) then
    Color:=GetPixel(PyCanvasObj(self)^.Canvas.Handle, P.X, P.Y)
@@ -175,7 +175,7 @@ begin
  Result:=Nil;
  try
   Color:=CLR_NONE;
-  if not PyArg_ParseTupleX(args, 'O!ii', [@TyImage1_Type, @im, @P.X, @P.Y, @Color]) then
+  if PyArg_ParseTupleX(args, 'O!ii', [@TyImage1_Type, @im, @P.X, @P.Y, @Color])=0 then
    Exit;
   if Assigned(PyCanvasObj(self)^.Canvas) then
    im^.Draw(PyCanvasObj(self)^.Canvas.Handle, P.X, P.Y, Color);
@@ -218,7 +218,7 @@ begin
   if Assigned(PyCanvasObj(self)^.Canvas) then
    begin
     lgr:=1;
-    if not PyArg_ParseTupleX(args, 'O!(iiii)|i', [@TyObject_Type, @tx, @R.Left, @R.Top, @R.Right, @R.Bottom, @lgr]) then
+    if PyArg_ParseTupleX(args, 'O!(iiii)|i', [@TyObject_Type, @tx, @R.Left, @R.Top, @R.Right, @R.Bottom, @lgr])=0 then
      Exit;
     Tex1:=QkObjFromPyObj(tx);
     if not (Tex1 is QPixelSet) then
@@ -355,7 +355,7 @@ begin
   if Assigned(PyCanvasObj(self)^.Canvas) then
    begin
     ccw:=Py_None;
-    if not PyArg_ParseTupleX(args, 'O!|O', [PyList_Type, @lst, @ccw]) then
+    if PyArg_ParseTupleX(args, 'O!|O', [PyList_Type, @lst, @ccw])=0 then
      Exit;
     obj:=PyList_GetItem(lst, 0);
     if obj=Nil then Exit;
@@ -377,7 +377,7 @@ begin
         PPts1^:=PyVect_AsPP(PyVect(obj));
         Inc(PPts1);
        end;
-      Coord.Polygon95(PPts^, Count, PyObject_IsTrue(ccw));
+      Coord.Polygon95(PPts^, Count, PyObject_IsTrue(ccw)=1);
       finally FreeMem(PPts); end;
      end
     else
@@ -388,7 +388,7 @@ begin
        begin
         obj:=PyList_GetItem(lst, I);
         if obj=Nil then Exit;
-        if not PyArg_ParseTupleX(obj, 'ii', [@Pt1^.X, @Pt1^.Y]) then
+        if PyArg_ParseTupleX(obj, 'ii', [@Pt1^.X, @Pt1^.Y])=0 then
          Exit;
         Inc(Pt1);
        end;
@@ -411,7 +411,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'iis', [@X, @Y, @Text]) then
+  if PyArg_ParseTupleX(args, 'iis', [@X, @Y, @Text])=0 then
    Exit;
   if Assigned(PyCanvasObj(self)^.Canvas) then
    PyCanvasObj(self)^.Canvas.TextOut(X, Y, PyStrPas(Text));
@@ -430,7 +430,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 's', [@Text]) then
+  if PyArg_ParseTupleX(args, 's', [@Text])=0 then
    Exit;
   if Assigned(PyCanvasObj(self)^.Canvas) then
    with PyCanvasObj(self)^.Canvas do
@@ -670,7 +670,7 @@ begin
            end
           else if StrComp(attr, 'fontbold')=0 then
            begin
-            if PyObject_IsTrue(value) then
+            if PyObject_IsTrue(value)=1 then
              Canvas.Font.Style:=Canvas.Font.Style+[fsBold]
             else
              Canvas.Font.Style:=Canvas.Font.Style-[fsBold];
@@ -679,7 +679,7 @@ begin
            end
           else if StrComp(attr, 'fontitalic')=0 then
            begin
-            if PyObject_IsTrue(value) then
+            if PyObject_IsTrue(value)=1 then
              Canvas.Font.Style:=Canvas.Font.Style+[fsItalic]
             else
              Canvas.Font.Style:=Canvas.Font.Style-[fsItalic];
@@ -688,7 +688,7 @@ begin
            end
           else if StrComp(attr, 'fontunderline')=0 then
            begin
-            if PyObject_IsTrue(value) then
+            if PyObject_IsTrue(value)=1 then
              Canvas.Font.Style:=Canvas.Font.Style+[fsUnderline]
             else
              Canvas.Font.Style:=Canvas.Font.Style-[fsUnderline];
@@ -715,7 +715,7 @@ begin
            end;
      't': if StrComp(attr, 'transparent')=0 then
            begin
-            if PyObject_IsTrue(value) then
+            if PyObject_IsTrue(value)=1 then
              Mode1:=Transparent
             else
              Mode1:=Opaque;

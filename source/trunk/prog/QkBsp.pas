@@ -1132,7 +1132,7 @@ var
 begin
  Result:=Nil;
  try
-   if not PyArg_ParseTupleX(args, 'f', [@r]) then
+   if PyArg_ParseTupleX(args, 'f', [@r])=0 then
      Exit;
    with QkObjFromPyObj(self) as QBsp do
    begin
@@ -1734,7 +1734,7 @@ var
 begin
  Result:=Nil;
  try
-   if not PyArg_ParseTupleX(args, 'fO', [@r, @bsp]) then
+   if PyArg_ParseTupleX(args, 'fO', [@r, @bsp])=0 then
      Exit;
    with QkObjFromPyObj(self) as TTreeBspPlane do
    begin

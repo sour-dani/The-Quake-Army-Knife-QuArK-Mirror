@@ -817,7 +817,7 @@ var
 begin
   Result:=Nil;
   try
-    if not PyArg_ParseTupleX(args, 's', [@pathbase]) then
+    if PyArg_ParseTupleX(args, 's', [@pathbase])=0 then
       Exit;
     ProgressIndicatorStart(0,0);
     try
@@ -839,7 +839,7 @@ var
 begin
   Result:=Nil;
   try
-    if not PyArg_ParseTupleX(args, 's', [@path]) then
+    if PyArg_ParseTupleX(args, 's', [@path])=0 then
       Exit;
     Result:=GetPyObj((QkObjFromPyObj(self) as QZipFolder).GetFolder(PyStrPas(path)));
   except

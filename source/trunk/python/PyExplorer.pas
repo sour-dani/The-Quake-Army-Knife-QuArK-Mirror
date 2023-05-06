@@ -243,7 +243,7 @@ begin
  obj:=QListToPyList(Gr.SubElements); try
  callresult:=GetPythonValue(ExplorerObject^.FOnDrop, Py_BuildValueX('OOs', [ExplorerObject, obj, ToPyChar(Texte)]), True);
  finally Py_DECREF(obj); end;
- Result:=(callresult<>Nil) and PyObject_IsTrue(callresult);
+ Result:=(callresult<>Nil) and (PyObject_IsTrue(callresult)=1);
  Py_XDECREF(callresult);
  if not Result and Beep then
   PlaySound(SOUND_DEFAULT);
@@ -260,7 +260,7 @@ begin
   end;
  obj:=QListToPyList(SourceQ.SubElements); try
  callresult:=GetPythonValue(FOnInsert, Py_BuildValueX('OO', [ExplorerObject, obj]), True);
- Result:=(callresult<>Nil) and ((callresult=Py_None) or PyObject_IsTrue(callresult));
+ Result:=(callresult<>Nil) and ((callresult=Py_None) or (PyObject_IsTrue(callresult)=1));
  Py_XDECREF(callresult);
  if Result then
   begin
@@ -301,7 +301,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O', [@obj]) then
+  if PyArg_ParseTupleX(args, 'O', [@obj])=0 then
    Exit;
   Q:=QkObjFromPyObj(obj);
   if Q=Nil then
@@ -359,10 +359,10 @@ begin
  Result:=Nil;
  try
   expd:=Nil;
-  if not PyArg_ParseTupleX(args, 'O!|O', [@TyObject_Type, @obj, @expd]) then
+  if PyArg_ParseTupleX(args, 'O!|O', [@TyObject_Type, @obj, @expd])=0 then
    Exit;
   Q:=QkObjFromPyObj(obj);
-  if (Q<>Nil) and ((Q.Flags and ofTreeViewExpanded<>0) xor ((expd=Nil) or PyObject_IsTrue(expd))) then
+  if (Q<>Nil) and ((Q.Flags and ofTreeViewExpanded<>0) xor ((expd=Nil) or (PyObject_IsTrue(expd)=1))) then
     with PyControlF(self)^ do
      if QkControl<>Nil then
       with QkControl as TPythonExplorer do
@@ -382,7 +382,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O!', [@TyObject_Type, @obj]) then
+  if PyArg_ParseTupleX(args, 'O!', [@TyObject_Type, @obj])=0 then
    Exit;
   Q:=QkObjFromPyObj(obj);
   if (Q<>Nil) then

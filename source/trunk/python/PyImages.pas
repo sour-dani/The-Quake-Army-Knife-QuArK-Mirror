@@ -689,7 +689,7 @@ begin
   end;
   if rslt=nil then Exit;
   try
-   if (rslt<>Nil) and PyObject_IsTrue(rslt) then
+   if (rslt<>Nil) and (PyObject_IsTrue(rslt)=1) then
     begin
      MouseCapture:=True;
      OnMouseMove:=MouseMoveEvt;

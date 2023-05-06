@@ -2222,14 +2222,14 @@ begin
  try
   alt:='';
   astext:=Nil;
-  if not PyArg_ParseTupleX(args, '|sO', [@alt, @astext]) then Exit;
+  if PyArg_ParseTupleX(args, '|sO', [@alt, @astext])=0 then Exit;
   with QkObjFromPyObj(self) as QFileObject do
    begin
     Acces;
     if astext=Nil then
      Format:=RecommendFormat
     else
-     if PyObject_IsTrue(astext) then
+     if PyObject_IsTrue(astext)=1 then
       Format:=rf_AsText
      else
       Format:=rf_Default;
@@ -2254,7 +2254,7 @@ begin
  Result:=Nil;
  try
   convert:=Nil;
-  if not PyArg_ParseTupleX(args, '|s', [@convert]) then
+  if PyArg_ParseTupleX(args, '|s', [@convert])=0 then
    Exit;
   Source:=QkObjFromPyObj(self) as QFileObject;
   if convert=Nil then

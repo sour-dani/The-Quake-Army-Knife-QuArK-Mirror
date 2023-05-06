@@ -1228,7 +1228,7 @@ begin
   else
    begin
     Flags:=1;
-    if not PyArg_ParseTupleX(args, 'i|i', [@nSize, @Flags]) then
+    if PyArg_ParseTupleX(args, 'i|i', [@nSize, @Flags])=0 then
      Exit;
     if Odd(Flags) then
      Inc(nSize, 3);
@@ -1332,7 +1332,7 @@ begin
  Result:=Nil;
  try
   Renderer:=Nil;
-  if not PyArg_ParseTupleX(args, '|s', [@Renderer]) then
+  if PyArg_ParseTupleX(args, '|s', [@Renderer])=0 then
    Exit;
 
   Mgr:=LayoutMgrFromPanelObj(self);
@@ -1361,7 +1361,7 @@ begin
  Result:=Nil;
  try
   nImage:=Nil;
-  if not PyArg_ParseTupleX(args, '|O', [@nImage]) then
+  if PyArg_ParseTupleX(args, '|O', [@nImage])=0 then
    Exit;
   Mgr:=LayoutMgrFromPanelObj(self);
   with TPyImageControl.Create(Mgr.GetOwner.Owner) do
@@ -1388,7 +1388,7 @@ begin
  Result:=Nil;
  try
   nButtons:=Nil;
-  if not PyArg_ParseTupleX(args, '|O!', [PyList_Type, @nButtons]) then
+  if PyArg_ParseTupleX(args, '|O!', [PyList_Type, @nButtons])=0 then
    Exit;
   Mgr:=LayoutMgrFromPanelObj(self);
   with TQkBtnPanel.Create(Mgr.GetOwner.Owner) do
@@ -1528,7 +1528,7 @@ begin
          end
         else if StrComp(attr, 'sections')=0 then
          begin
-          if not PyArg_ParseTupleX(value, 'O!O!', [PyTuple_Type, @nS[soVertical], PyTuple_Type, @nS[soHorizontal]]) then
+          if PyArg_ParseTupleX(value, 'O!O!', [PyTuple_Type, @nS[soVertical], PyTuple_Type, @nS[soHorizontal]])=0 then
            Exit;
           for Orien:=Low(Orien) to High(Orien) do
            for I:=0 to PyObject_Length(nS[Orien])-1 do

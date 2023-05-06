@@ -39,7 +39,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O!s', [@TyObject_Type, @obj1, @txt]) then
+  if PyArg_ParseTupleX(args, 'O!s', [@TyObject_Type, @obj1, @txt])=0 then
    Exit;
   if g_ListeActions=Nil then
    Raise EError(4442);
@@ -74,7 +74,7 @@ begin
  Result:=Nil;
  try
   obj3:=Nil;
-  if not PyArg_ParseTupleX(args, 'O!O!|O', [@TyObject_Type, @obj1, @TyObject_Type, @obj2, @obj3]) then
+  if PyArg_ParseTupleX(args, 'O!O!|O', [@TyObject_Type, @obj1, @TyObject_Type, @obj2, @obj3])=0 then
    Exit;
   if g_ListeActions=Nil then
    Raise EError(4442);
@@ -103,7 +103,7 @@ begin
  Result:=Nil;
  try
   obj3:=Nil;
-  if not PyArg_ParseTupleX(args, 'O!O|O', [@TyObject_Type, @obj1, @obj2, @obj3]) then
+  if PyArg_ParseTupleX(args, 'O!O|O', [@TyObject_Type, @obj1, @obj2, @obj3])=0 then
    Exit;
   if g_ListeActions=Nil then
    Raise EError(4442);
@@ -134,7 +134,7 @@ begin
  Result:=Nil;
  try
   nPosition:=sp_Auto;
-  if not PyArg_ParseTupleX(args, 'O!sO|i', [@TyObject_Type, @obj1, @P, @obj2, @nPosition]) then
+  if PyArg_ParseTupleX(args, 'O!sO|i', [@TyObject_Type, @obj1, @P, @obj2, @nPosition])=0 then
    Exit;
   if g_ListeActions=Nil then
    Raise EError(4442);
@@ -170,7 +170,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O!s', [@TyObject_Type, @obj1, @P]) then
+  if PyArg_ParseTupleX(args, 'O!s', [@TyObject_Type, @obj1, @P])=0 then
    Exit;
   if g_ListeActions=Nil then
    Raise EError(4442);
@@ -190,7 +190,7 @@ begin
  Result:=Nil;
  try
   obj3:=Nil;
-  if not PyArg_ParseTupleX(args, 'O!O!|O', [@TyObject_Type, @obj1, @TyObject_Type, @obj2, @obj3]) then
+  if PyArg_ParseTupleX(args, 'O!O!|O', [@TyObject_Type, @obj1, @TyObject_Type, @obj2, @obj3])=0 then
    Exit;
   if g_ListeActions=Nil then
    Raise EError(4442);

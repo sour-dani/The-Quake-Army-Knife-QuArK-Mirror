@@ -11,10 +11,10 @@ inherited PyForm: TPyForm
   end
   inherited leftdock: TDock97
     Top = 14
-    Height = 245
+    Height = 238
   end
   inherited rightdock: TDock97
     Top = 14
-    Height = 245
+    Height = 238
   end
 end

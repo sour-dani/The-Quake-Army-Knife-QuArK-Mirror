@@ -388,7 +388,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O', [@fnt]) then
+  if PyArg_ParseTupleX(args, 'O', [@fnt])=0 then
    Exit;
   Info:=nil;
   try

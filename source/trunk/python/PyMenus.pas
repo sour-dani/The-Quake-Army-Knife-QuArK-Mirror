@@ -179,7 +179,7 @@ begin
            end;
           nInfo.fType:=MFT_STRING;
 
-          IsPopup:=PyObject_HasAttrString(ListItem, 'items');
+          IsPopup:=(PyObject_HasAttrString(ListItem, 'items')<>0);
           FillRec:=IsPopup;
 
           //Partial copy of: IsPyMenuItemDisabled
@@ -198,7 +198,7 @@ begin
           if J and state_CheckMask = state_RadioCheck then
            nInfo.fType:=nInfo.fType or MFT_RADIOCHECK;
 
-          if PyObject_HasAttrString(ListItem, 'menuicon') then
+          if PyObject_HasAttrString(ListItem, 'menuicon')<>0 then
            begin
             obj:=PyObject_GetAttrString(ListItem, 'menuicon');
             if obj=Nil then Exit;

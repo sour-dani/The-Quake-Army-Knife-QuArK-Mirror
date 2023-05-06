@@ -275,7 +275,7 @@ begin
  Result:=Nil;
  try
   Internal:=0;
-  if not PyArg_ParseTupleX(args, '|i', [@Internal]) then
+  if PyArg_ParseTupleX(args, '|i', [@Internal])=0 then
    Exit;
   if Internal=0 then
    PyComponent(self).Command(cmdInvalidate1)
@@ -325,7 +325,7 @@ begin
  try
   Q.X:=0;
   Q.Y:=MaxInt;
-  if not PyArg_ParseTupleX(args, 'O!|ii', [PyList_Type, @mnu, @Q.X, @Q.Y]) then
+  if PyArg_ParseTupleX(args, 'O!|ii', [PyList_Type, @mnu, @Q.X, @Q.Y])=0 then
    Exit;
   with PyComponent(self)^ do
    begin
@@ -538,7 +538,7 @@ begin
          end;
     's': if StrComp(attr, 'section')=0 then
           begin
-           if not PyArg_ParseTupleX(value, 'ii', [@X, @Y]) then
+           if PyArg_ParseTupleX(value, 'ii', [@X, @Y])=0 then
             Exit;
            Upd:=False;
            if (X>=0) and (SectionX<>X) then
@@ -558,7 +558,7 @@ begin
           end;
     'v': if StrComp(attr, 'visible')=0 then
           begin
-           SetHidden(not PyObject_IsTrue(value));
+           SetHidden(PyObject_IsTrue(value)=0);
            Result:=0;
            Exit;
           end;

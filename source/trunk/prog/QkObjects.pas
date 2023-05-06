@@ -2862,7 +2862,7 @@ begin
   's':
     if StrComp(attr, 'selected') = 0 then
     begin
-      if PyObject_IsTrue(value) then
+      if PyObject_IsTrue(value)=1 then
         SetSelMult
       else
       begin

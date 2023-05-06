@@ -739,7 +739,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 's', [@pathbase]) then
+  if PyArg_ParseTupleX(args, 's', [@pathbase])=0 then
    Exit;
   ProgressIndicatorStart(0,0); try
   Result:=PyInt_FromLong((QkObjFromPyObj(self) as QPakFolder).ExtractTo(PyStrPas(pathbase)));
@@ -757,7 +757,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 's', [@path]) then
+  if PyArg_ParseTupleX(args, 's', [@path])=0 then
    Exit;
   Result:=GetPyObj((QkObjFromPyObj(self) as QPakFolder).GetFolder(PyStrPas(path)));
  except

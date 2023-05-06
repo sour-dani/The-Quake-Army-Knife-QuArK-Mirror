@@ -139,7 +139,7 @@ var
     Q2:=Nil
    else
     begin
-     if not PyArg_ParseTupleX(o, 'OO', [@P1, @P2]) then
+     if PyArg_ParseTupleX(o, 'OO', [@P1, @P2])=0 then
       begin
        P1:=Nil;
        P2:=Nil;
@@ -160,7 +160,7 @@ begin
  Result:=Nil;
  try
   nForm:=Nil;
-  if not PyArg_ParseTupleX(args, 'O|O', [@nList, @nForm]) then
+  if PyArg_ParseTupleX(args, 'O|O', [@nList, @nForm])=0 then
    Exit;
   nFormQ:=QkObjFromPyObj(nForm);
   if (nFormQ<>Nil) and not (nFormQ is QFormCfg) then
@@ -202,7 +202,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'si', [@nSpec, @nTag]) then
+  if PyArg_ParseTupleX(args, 'si', [@nSpec, @nTag])=0 then
    Exit;
   with PyControlF(self)^ do
    if QkControl<>Nil then
@@ -229,12 +229,12 @@ var
 begin
  Result:=Nil;
  try
-  ncz:=Nil;
-  if not PyArg_ParseTupleX(args, 'si|O', [@nSpec, @nTag, @nCz]) then
+  nCz:=Nil;
+  if PyArg_ParseTupleX(args, 'si|O', [@nSpec, @nTag, @nCz])=0 then
    Exit;
   with PyControlF(self)^ do
    if QkControl<>Nil then
-    (QkControl as TPyFormCfg).ToggleBitSpec(PyStrPas(nSpec), nTag, (nCz=Nil) or PyObject_IsTrue(nCz));
+    (QkControl as TPyFormCfg).ToggleBitSpec(PyStrPas(nSpec), nTag, (nCz=Nil) or (PyObject_IsTrue(nCz)=1));
   Result:=PyNoResult;
  except
   Py_XDECREF(Result);
@@ -249,7 +249,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'i', [@cmd]) then
+  if PyArg_ParseTupleX(args, 'i', [@cmd])=0 then
    Exit;
   with PyControlF(self)^ do
    if QkControl<>Nil then
@@ -443,21 +443,21 @@ begin
     'a': if StrComp(attr, 'allowedit')=0 then
           begin
            if QkControl<>Nil then
-            (QkControl as TPyFormCfg).AllowEdit:=PyObject_IsTrue(value);
+            (QkControl as TPyFormCfg).AllowEdit:=(PyObject_IsTrue(value)=1);
            Result:=0;
            Exit;
           end
          else if StrComp(attr, 'alloweditname')=0 then
           begin
            if QkControl<>Nil then
-            (QkControl as TPyFormCfg).AllowEditName:=PyObject_IsTrue(value);
+            (QkControl as TPyFormCfg).AllowEditName:=(PyObject_IsTrue(value)=1);
            Result:=0;
            Exit;
           end
          else if StrComp(attr, 'addremaining')=0 then
           begin
            if QkControl<>Nil then
-            (QkControl as TPyFormCfg).AddRemaining:=PyObject_IsTrue(value);
+            (QkControl as TPyFormCfg).AddRemaining:=(PyObject_IsTrue(value)=1);
            Result:=0;
            Exit;
           end
@@ -486,7 +486,7 @@ begin
           begin
            if QkControl<>Nil then
             with QkControl as TPyFormCfg do
-             if PyObject_IsTrue(value) then
+             if PyObject_IsTrue(value)=1 then
               HintPrefix:=BlueHintPrefix
              else
               HintPrefix:='';
@@ -517,7 +517,7 @@ begin
     'h': if StrComp(attr, 'header')=0 then
           begin
            if QkControl<>Nil then
-            (QkControl as TPyFormCfg).NoHeader:=not PyObject_IsTrue(value);
+            (QkControl as TPyFormCfg).NoHeader:=(PyObject_IsTrue(value)=0);
            Result:=0;
            Exit;
           end;

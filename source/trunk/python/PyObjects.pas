@@ -240,7 +240,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'i', [@Index]) then
+  if PyArg_ParseTupleX(args, 'i', [@Index])=0 then
    Exit;
   with QkObjFromPyObj(self) do
    begin
@@ -266,7 +266,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O!', [@TyObject_Type, @Obj1]) then
+  if PyArg_ParseTupleX(args, 'O!', [@TyObject_Type, @Obj1])=0 then
    Exit;
   nChild:=QkObjFromPyObj(Obj1);
   nParent:=QkObjFromPyObj(self);
@@ -289,7 +289,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'iO!', [@Index, @TyObject_Type, @Obj1]) then
+  if PyArg_ParseTupleX(args, 'iO!', [@Index, @TyObject_Type, @Obj1])=0 then
    Exit;
   nChild:=QkObjFromPyObj(Obj1);
   if nChild.Parent<>Nil then
@@ -322,7 +322,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O', [@Obj1]) then
+  if PyArg_ParseTupleX(args, 'O', [@Obj1])=0 then
    Exit;
   nParent:=QkObjFromPyObj(self);
   nParent.Acces;
@@ -363,7 +363,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 's', [@nName]) then
+  if PyArg_ParseTupleX(args, 's', [@nName])=0 then
    Exit;
   nParent:=QkObjFromPyObj(self);
   nParent.Acces;
@@ -382,7 +382,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 's', [@nName]) then
+  if PyArg_ParseTupleX(args, 's', [@nName])=0 then
    Exit;
   nParent:=QkObjFromPyObj(self);
   nParent.Acces;
@@ -401,7 +401,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 's', [@Spec]) then
+  if PyArg_ParseTupleX(args, 's', [@Spec])=0 then
    Exit;
   Q:=QkObjFromPyObj(self);
   Q.Acces;
@@ -421,7 +421,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'si', [@Spec, @value]) then
+  if PyArg_ParseTupleX(args, 'si', [@Spec, @value])=0 then
    Exit;
   Q:=QkObjFromPyObj(self);
   Q.Acces;
@@ -459,13 +459,13 @@ begin
  Result:=Nil;
  try
   obj:=Py_None;
-  if not PyArg_ParseTupleX(args, '|O', [@obj]) then
+  if PyArg_ParseTupleX(args, '|O', [@obj])=0 then
    Exit;
   Q:=QkObjFromPyObj(self);
  {nparent:=GetPyObj(Q.Parent);
-  if not PyArg_ParseTupleX(args, '|O!', [@TyObject_Type, @nparent]) then
+  if PyArg_ParseTupleX(args, '|O!', [@TyObject_Type, @nparent])=0 then
    Exit;}
-  Q1:=Q.Clone({QkObjFromPyObj(nparent)}Nil, PyObject_IsTrue(obj));
+  Q1:=Q.Clone({QkObjFromPyObj(nparent)}Nil, PyObject_IsTrue(obj)=1);
   Result:=GetPyObj(Q1);
  except
   Py_XDECREF(Result);
@@ -480,7 +480,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O!', [@TyObject_Type, @Obj1]) then
+  if PyArg_ParseTupleX(args, 'O!', [@TyObject_Type, @Obj1])=0 then
    Exit;
   Result:=PyInt_FromLong(Ord(
    ieCanDrop in QkObjFromPyObj(self).IsExplorerItem(QkObjFromPyObj(Obj1))));
@@ -514,7 +514,7 @@ begin
  Result:=Nil;
  try
   bc:=Nil;
-  if not PyArg_ParseTupleX(args, 'ss|s', [@name, @wc, @bc]) then
+  if PyArg_ParseTupleX(args, 'ss|s', [@name, @wc, @bc])=0 then
    Exit;
   nName:=PyStrPas(name);
   WantClass:=NeedClassOfType(PyStrPas(wc));
@@ -542,7 +542,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O!', [@TyObject_Type, @src]) then
+  if PyArg_ParseTupleX(args, 'O!', [@TyObject_Type, @src])=0 then
    Exit;
   QkObjFromPyObj(self).CopyAllData(QkObjFromPyObj(src), False);
   Result:=PyNoResult;
@@ -561,7 +561,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 's#', [@src, @count]) then
+  if PyArg_ParseTupleX(args, 's#', [@src, @count])=0 then
    Exit;
   Q:=QkObjFromPyObj(self);
   Q.Acces;
@@ -584,13 +584,13 @@ begin
  Result:=Nil;
  try
   o:=Nil;
-  if not PyArg_ParseTupleX(args, '|O', [@o]) then
+  if PyArg_ParseTupleX(args, '|O', [@o])=0 then
    Exit;
   Q:=QkObjFromPyObj(self);
   if o=Nil then
    Sel1:=Odd(Q.SelMult)
   else
-   Sel1:=PyObject_IsTrue(o);
+   Sel1:=(PyObject_IsTrue(o)=1);
   Q.DisplayDetails(Sel1, Info);
   if Info.Icon=Nil then
    Result:=PyNoResult
@@ -1004,7 +1004,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 's', [@nSpec]) then
+  if PyArg_ParseTupleX(args, 's', [@nSpec])=0 then
     Exit;
   Q:=QkObjFromPyObj(self);
   if Q=nil then
@@ -1025,7 +1025,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O', [@obj]) then
+  if PyArg_ParseTupleX(args, 'O', [@obj])=0 then
     Exit;
   Q:=QkObjFromPyObj(self);
   if Q=nil then

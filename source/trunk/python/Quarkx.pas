@@ -434,7 +434,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O', [@obj]) then Exit;
+  if PyArg_ParseTupleX(args, 'O', [@obj])=0 then Exit;
   Form:=PyWindow(self)^.Form;
   NewMainMenu:=TMainMenu.Create(Form);
   try
@@ -487,7 +487,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O', [@obj]) then
+  if PyArg_ParseTupleX(args, 'O', [@obj])=0 then
    Exit;
   Py_INCREF(obj);       { never delete this }
   if Py_None=Nil then
@@ -517,7 +517,7 @@ begin
  Result:=Nil;
  try
   Mode:=0;
-  if not PyArg_ParseTupleX(args, '|i', [@Mode]) then
+  if PyArg_ParseTupleX(args, '|i', [@Mode])=0 then
    Exit;
   Result:=PyList_New(0);
   for I:=0 to Screen.FormCount-1 do
@@ -549,7 +549,7 @@ begin
  Result:=Nil;
  try
   s:=Nil;
-  if not PyArg_ParseTupleX(args, '|s', [@s]) then
+  if PyArg_ParseTupleX(args, '|s', [@s])=0 then
    Exit;
   Temp:=TPyForm.Create(Application);
  {Temp.Show;}
@@ -575,7 +575,7 @@ begin
  Result:=Nil;
  try
   s:=Nil;
-  if not PyArg_ParseTupleX(args, 'O|s', [@rootobj, @s]) then
+  if PyArg_ParseTupleX(args, 'O|s', [@rootobj, @s])=0 then
    Exit;
   Root:=QkObjFromPyObj(rootobj);
   OpenFullscreenWindow(PyStrPas(s), Root);
@@ -600,7 +600,7 @@ var
   Obj: PyObject;
 begin
   Result:=Nil;
-  if not PyArg_ParseTupleX(args, '|O', [@Obj]) then
+  if PyArg_ParseTupleX(args, '|O', [@Obj])=0 then
    Exit;
   Result:=PyNoResult;
 end;
@@ -621,7 +621,7 @@ begin
   WidthObj:=Nil;
   MaskX:=-1;
   //MaskY:=-1; //Not needed
-  if not PyArg_ParseTupleX(args, 's|O(ii)', [@FileName, @WidthObj, @MaskX, @MaskY]) then
+  if PyArg_ParseTupleX(args, 's|O(ii)', [@FileName, @WidthObj, @MaskX, @MaskY])=0 then
    Exit;
   cratio:=1;
   if WidthObj=Nil then
@@ -708,7 +708,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 's', [@nName]) then
+  if PyArg_ParseTupleX(args, 's', [@nName])=0 then
    Exit;
   with ConstructQObject(PyStrPas(nName), Nil) do
    begin
@@ -730,7 +730,7 @@ begin
  Result:=Nil;
  try
   nParent:=Nil;
-  if not PyArg_ParseTupleX(args, 's|O!', [@FileName, @TyObject_Type, @nParent]) then
+  if PyArg_ParseTupleX(args, 's|O!', [@FileName, @TyObject_Type, @nParent])=0 then
    Exit;
   with BuildFileRoot(PyStrPas(FileName), QkObjFromPyObj(nParent)) do
    begin
@@ -752,7 +752,7 @@ begin
  Result:=Nil;
  try
   nParent:=Nil;
-  if not PyArg_ParseTupleX(args, 's|O!', [@FileName, @TyObject_Type, @nParent]) then
+  if PyArg_ParseTupleX(args, 's|O!', [@FileName, @TyObject_Type, @nParent])=0 then
    Exit;
   with BindFileQObject(PyStrPas(FileName), QkObjFromPyObj(nParent), False) do
    begin
@@ -780,7 +780,7 @@ begin
  try
   nForm:=Nil;
   nAddToRecents:=0;
-  if not PyArg_ParseTupleX(args, 'Oii|Oi', [@nFileObject, @nAskName, @nFileType, @nForm, @nAddToRecents]) then
+  if PyArg_ParseTupleX(args, 'Oii|Oi', [@nFileObject, @nAskName, @nFileType, @nForm, @nAddToRecents])=0 then
    Exit;
   FileObject:=QFileObject(QkObjFromPyObj(nFileObject));
   if nForm=Py_None then
@@ -806,10 +806,10 @@ begin
  Result:=Nil;
  try
   im2:=Nil;
-  if not PyArg_ParseTupleX(args, 'iO|O', [@J, @im, @im2]) then
+  if PyArg_ParseTupleX(args, 'iO|O', [@J, @im, @im2])=0 then
    Exit;
-  if ((im^.ob_type <> @TyImage1_Type) and not PyCallable_Check(im))
-  or ((im2<>Nil) and (im2^.ob_type <> @TyImage1_Type) and not PyCallable_Check(im2)) then
+  if ((im^.ob_type <> @TyImage1_Type) and (PyCallable_Check(im)=0))
+  or ((im2<>Nil) and (im2^.ob_type <> @TyImage1_Type) and (PyCallable_Check(im2)=0)) then
    Raise EError(4431);
   if (J<0) or (J>=InternalImagesCount) then
    Raise EError(4430);
@@ -858,7 +858,7 @@ begin
  try
   Flags:=0;
   nFileName:='';
-  if not PyArg_ParseTupleX(args, 'ssO|is', [@nTitle, @nDefExt, @nFilters, @Flags, @nFileName]) then
+  if PyArg_ParseTupleX(args, 'ssO|is', [@nTitle, @nDefExt, @nFilters, @Flags, @nFileName])=0 then
    Exit;
   Count:=PyObject_Length(nFilters);
   if Count<0 then Exit;
@@ -929,7 +929,7 @@ begin
  try
   SetIndex:=-1;
   SubSet:=Nil;
-  if not PyArg_ParseTupleX(args, '|is', [@SetIndex, @SubSet]) then
+  if PyArg_ParseTupleX(args, '|is', [@SetIndex, @SubSet])=0 then
    Exit;
   if SubSet<>Nil then
    Result:=GetPyObj(SetupSubSet(TSetupSet(SetIndex), PyStrPas(SubSet)))
@@ -1014,7 +1014,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O', [@obj]) then
+  if PyArg_ParseTupleX(args, 'O', [@obj])=0 then
    Exit;
   if obj=Py_None then
    Result:=PyList_New(0)
@@ -1049,7 +1049,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O', [@Lines]) then
+  if PyArg_ParseTupleX(args, 'O', [@Lines])=0 then
    Exit;
   if Lines=Py_None then
    Result:=PyString_FromString('')
@@ -1086,7 +1086,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 's#', [@P, @Size]) then
+  if PyArg_ParseTupleX(args, 's#', [@P, @Size])=0 then
    Exit;
   Result:=PyString_FromString(P);
  except
@@ -1139,7 +1139,7 @@ begin
  try
   PType:=Nil;
   PName:=Nil;
-  if not PyArg_ParseTupleX(args, '|ss', [@PType, @PName]) then
+  if PyArg_ParseTupleX(args, '|ss', [@PType, @PName])=0 then
    Exit;
   if PType=Nil then
    Result:=QListToPyList(GetQuakeContext)
@@ -1170,7 +1170,7 @@ begin
  Result:=Nil;
  try
   obj:=Nil;
-  if not PyArg_ParseTupleX(args, '|O!', [@TyWindow_Type, @obj]) then
+  if PyArg_ParseTupleX(args, '|O!', [@TyWindow_Type, @obj])=0 then
    Exit;
   if obj=Nil then
    PythonUpdateAllForms
@@ -1192,7 +1192,7 @@ begin
  try
   Ticks:=0;
   Start:=-1;
-  if not PyArg_ParseTupleX(args, '|ii', [@Ticks, @Start]) then
+  if PyArg_ParseTupleX(args, '|ii', [@Ticks, @Start])=0 then
    Exit;
   if Start<>0 then
    begin
@@ -1226,13 +1226,13 @@ begin
    end;
   if PyObject_Length(args)=5 then
    begin
-    if not PyArg_ParseTupleX(args, 'ddddd', [@nX, @nY, @nZ, @nS, @nT]) then
+    if PyArg_ParseTupleX(args, 'ddddd', [@nX, @nY, @nZ, @nS, @nT])=0 then
      Exit;
     Result:=MakePyVect5(nX, nY, nZ, nS, nT);
    end
   else
    begin
-    if not PyArg_ParseTupleX(args, 'ddd', [@nX, @nY, @nZ]) then
+    if PyArg_ParseTupleX(args, 'ddd', [@nX, @nY, @nZ])=0 then
      Exit;
     Result:=MakePyVect3(nX, nY, nZ);
    end;
@@ -1258,7 +1258,7 @@ begin
       Exit;
      end;
    end;
-  if not PyArg_ParseTupleX(args, 'dddd', [@nX, @nY, @nZ, @nW]) then
+  if PyArg_ParseTupleX(args, 'dddd', [@nX, @nY, @nZ, @nW])=0 then
    Exit;
   Result:=MakePyQuaternion(nX, nY, nZ, nW);
  except
@@ -1285,7 +1285,7 @@ begin
       Exit;
      end;
    end;
-  if not PyArg_ParseTupleX(args, 'OOO', [@obj[1], @obj[2], @obj[3]]) then
+  if PyArg_ParseTupleX(args, 'OOO', [@obj[1], @obj[2], @obj[3]])=0 then
    Exit;
   if (obj[1]^.ob_type = @TyVect_Type)
   and (obj[2]^.ob_type = @TyVect_Type)
@@ -1301,7 +1301,7 @@ begin
    end
   else
    for I:=1 to 3 do
-    if not PyArg_ParseTupleX(obj[I], 'ddd', [@M[I,1], @M[I,2], @M[I,3]]) then
+    if PyArg_ParseTupleX(obj[I], 'ddd', [@M[I,1], @M[I,2], @M[I,3]])=0 then
      Exit;
   Result:=MakePyMatrix(M);
  except
@@ -1317,7 +1317,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 's', [@nName]) then
+  if PyArg_ParseTupleX(args, 's', [@nName])=0 then
    Exit;
   Result:=PoolObj(PyStrPas(nName));
   if Result=Nil then
@@ -1337,7 +1337,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'sO', [@nName, @nObj]) then
+  if PyArg_ParseTupleX(args, 'sO', [@nName, @nObj])=0 then
    Exit;
   SetPoolObj(PyStrPas(nName), nObj);
   Result:=nObj;
@@ -1357,7 +1357,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O!', [@TyObject_Type, @nObj]) then
+  if PyArg_ParseTupleX(args, 'O!', [@TyObject_Type, @nObj])=0 then
    Exit;
   Q:=QkObjFromPyObj(nObj);
   if Q=Nil then
@@ -1406,9 +1406,9 @@ begin
  Result:=Nil;
  try
   Now:=Py_None;
-  if not PyArg_ParseTupleX(args, '|O', [@Now]) then
+  if PyArg_ParseTupleX(args, '|O', [@Now])=0 then
    Exit;
-  if PyObject_IsTrue(Now) then
+  if PyObject_IsTrue(Now)=1 then
    begin
     Gr:=ClipboardGroup;
     Gr.AddRef(+1);
@@ -1435,7 +1435,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O!', [PyList_Type, @nList]) then
+  if PyArg_ParseTupleX(args, 'O!', [PyList_Type, @nList])=0 then
    Exit;
   Gr:=ClipboardGroup;
   Gr.AddRef(+1);
@@ -1460,7 +1460,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'OOi', [@nCall, @nInfo, @nDelay]) then
+  if PyArg_ParseTupleX(args, 'OOi', [@nCall, @nInfo, @nDelay])=0 then
    Exit;
   MakePyTimer(nCall, nInfo, nDelay);
   Result:=PyNoResult;
@@ -1479,7 +1479,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'sii', [@msg, @typ, @btn]) then
+  if PyArg_ParseTupleX(args, 'sii', [@msg, @typ, @btn])=0 then
    Exit;
   Result:=PyInt_FromLong(MessageDlg(PyStrPas(msg), TMsgDlgType(typ), Buttons, 0));
  except
@@ -1496,7 +1496,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'ssi', [@msg, @text, @typ]) then
+  if PyArg_ParseTupleX(args, 'ssi', [@msg, @text, @typ])=0 then
    Exit;
   ShowTextBox('QuArK', PyStrPas(msg), PyStrPas(text), TMsgDlgType(typ));
   Result:=PyNoResult;
@@ -1535,7 +1535,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'iif', [@c1, @c2, @factor]) then
+  if PyArg_ParseTupleX(args, 'iif', [@c1, @c2, @factor])=0 then
    Exit;
   Result:=PyInt_FromLong(MiddleColor(c1,c2,factor));
  except
@@ -1551,7 +1551,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'f', [@r]) then
+  if PyArg_ParseTupleX(args, 'f', [@r])=0 then
    Exit;
   Result:=PyInt_FromLong(Round(r-rien));
  except
@@ -1567,7 +1567,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'd', [@r]) then
+  if PyArg_ParseTupleX(args, 'd', [@r])=0 then
    Exit;
   Result:=PyString_FromString(ToPyChar(ftos(r)));
  except
@@ -1586,7 +1586,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O!', [PyList_Type, @lst]) then
+  if PyArg_ParseTupleX(args, 'O!', [PyList_Type, @lst])=0 then
    Exit;
   L:=TStringList.Create;
   try
@@ -1625,7 +1625,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O!', [PyList_Type, @lst]) then
+  if PyArg_ParseTupleX(args, 'O!', [PyList_Type, @lst])=0 then
    Exit;
   Min.X:=MaxInt;
   Min.Y:=MaxInt;
@@ -1682,7 +1682,7 @@ begin
  Result:=Nil;
  try
   dir:=0;
-  if not PyArg_ParseTupleX(args, 'O!O!|i', [PyList_Type, @lst1, PyList_Type, @lst2, @dir]) then
+  if PyArg_ParseTupleX(args, 'O!O!|i', [PyList_Type, @lst1, PyList_Type, @lst2, @dir])=0 then
    Exit;
   RechercheAdjacents(lst1, lst2, dir>=0, dir<=0);
   Result:=PyNoResult;
@@ -1702,7 +1702,7 @@ begin
  Result:=Nil;
  try
   AltTexSrc:=Nil;
-  if not PyArg_ParseTupleX(args, 's|O', [@texname, @AltTexSrc]) then
+  if PyArg_ParseTupleX(args, 's|O', [@texname, @AltTexSrc])=0 then
    Exit;
   Q:=GlobalFindTexture(PyStrPas(texname), QkObjFromPyObj(AltTexSrc));
  {if Q<>Nil then
@@ -1727,7 +1727,7 @@ begin
  Result:=Nil;
  try
   AltTexSrc:=Nil;
-  if not PyArg_ParseTupleX(args, 'O!i|O', [PyList_Type, @texnames, @op, @AltTexSrc]) then
+  if PyArg_ParseTupleX(args, 'O!i|O', [PyList_Type, @texnames, @op, @AltTexSrc])=0 then
    Exit;
   Count:=PyObject_Length(texnames);
   if Count<0 then Exit;
@@ -1764,7 +1764,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 's', [@P]) then
+  if PyArg_ParseTupleX(args, 's', [@P])=0 then
    Exit;
   State:=GetAsyncKeyState(Ord(PyStrPas(P)[1]));
   if State<0 then
@@ -1790,9 +1790,9 @@ begin
  try
   SoundType:=Cardinal(SOUND_DEFAULT);
   {$IFDEF PYTHON23}
-  if not PyArg_ParseTupleX(args, '|I', [@SoundType]) then
+  if PyArg_ParseTupleX(args, '|I', [@SoundType])=0 then
   {$ELSE}
-  if not PyArg_ParseTupleX(args, '|i', [@SoundType]) then
+  if PyArg_ParseTupleX(args, '|i', [@SoundType])=0 then
   {$ENDIF}
    Exit;
   PlaySound(TSoundType(SoundType));
@@ -1813,7 +1813,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O!O!', [PyList_Type, @pol, PyList_Type, @neg]) then
+  if PyArg_ParseTupleX(args, 'O!O!', [PyList_Type, @pol, PyList_Type, @neg])=0 then
    Exit;
   Originaux:=TQList.Create;
   Anciens:=TQList.Create;
@@ -1867,7 +1867,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'ii', [@nText, @nCount]) then
+  if PyArg_ParseTupleX(args, 'ii', [@nText, @nCount])=0 then
    Exit;
   Result:=GetProgressBarModule(nText, nCount);
  except
@@ -1885,7 +1885,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'sO', [@tb, @sel]) then
+  if PyArg_ParseTupleX(args, 'sO', [@tb, @sel])=0 then
    Exit;
   if tb^<>#0 then
    ToolBox:=OpenToolBox(PyStrPas(tb))
@@ -1909,7 +1909,7 @@ begin
  Result:=Nil;
  try
   sel:=Nil;
-  if not PyArg_ParseTupleX(args, 's|O', [@tb, @sel]) then
+  if PyArg_ParseTupleX(args, 's|O', [@tb, @sel])=0 then
    Exit;
   if tb^<>#0 then
    ToolBox:=OpenToolBox(PyStrPas(tb))
@@ -1937,7 +1937,7 @@ begin
   path:='';
   obj:=Nil;
   oblist:=Py_None;
-  if not PyArg_ParseTupleX(args, '|sO!O', [@path, @TyObject_Type, @obj, @oblist]) then
+  if PyArg_ParseTupleX(args, '|sO!O', [@path, @TyObject_Type, @obj, @oblist])=0 then
    Exit;
   if obj=Nil then
    begin
@@ -1973,7 +1973,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O!O!', [@TyVect_Type, @v1, @TyVect_Type, @v2]) then
+  if PyArg_ParseTupleX(args, 'O!O!', [@TyVect_Type, @v1, @TyVect_Type, @v2])=0 then
    Exit;
   if (v1^.Source3D=Nil) or (v1^.Source3D<>v2^.Source3D) then
    Raise EError(4447);
@@ -2018,7 +2018,7 @@ begin
  try
   nstdout:=Nil;
   nstderr:=Nil;
-  if not PyArg_ParseTupleX(args, 'ss|OO', [@cmdline, @curdir, @nstdout, @nstderr]) then
+  if PyArg_ParseTupleX(args, 'ss|OO', [@cmdline, @curdir, @nstdout, @nstderr])=0 then
    Exit;
   if nstderr=Nil then
    nstderr:=nstdout;
@@ -2092,7 +2092,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'Os#', [@obj, @text, @textlength]) then
+  if PyArg_ParseTupleX(args, 'Os#', [@obj, @text, @textlength])=0 then
    Exit;
   SetString(S, PChar(PyStrPas(text)), textlength);
   WriteConsole(obj, S);
@@ -2111,9 +2111,9 @@ begin
  Result:=Nil;
  try
   o:=Nil;
-  if not PyArg_ParseTupleX(args, '|O', [@o]) then
+  if PyArg_ParseTupleX(args, '|O', [@o])=0 then
    Exit;
-  ShowConsole((o=Nil) or PyObject_IsTrue(o));
+  ShowConsole((o=Nil) or (PyObject_IsTrue(o)=1));
   Result:=PyNoResult;
  except
   Py_XDECREF(Result);
@@ -2128,7 +2128,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 's', [@s]) then
+  if PyArg_ParseTupleX(args, 's', [@s])=0 then
    Exit;
   CheckQuakeDir;
   Result:=PyString_FromString(ToPyChar(OutputFile(PyStrPas(s))));
@@ -2146,9 +2146,9 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O', [@test]) then
+  if PyArg_ParseTupleX(args, 'O', [@test])=0 then
    Exit;
-  S:=FindNextAvailablePakFilename(PyObject_IsTrue(test));
+  S:=FindNextAvailablePakFilename(PyObject_IsTrue(test)=1);
   if S='' then
    Result:=PyNoResult
   else
@@ -2172,7 +2172,7 @@ begin
  try
   Filename:=Nil;
   nFileobject:=Nil;
-  if not PyArg_ParseTupleX(args, 'si|sO', [@s, @i, @Filename, @nFileobject]) then
+  if PyArg_ParseTupleX(args, 'si|sO', [@s, @i, @Filename, @nFileobject])=0 then
    Exit;
 
   OldFilename.Commandline:=PyStrPas(s);
@@ -2208,7 +2208,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 's', [@s]) then
+  if PyArg_ParseTupleX(args, 's', [@s])=0 then
    Exit;
   Result:=PyInt_FromLong(GetFileAttributes(PChar(QuickResolveFilename(PyStrPas(s)))));
  except
@@ -2225,7 +2225,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'si', [@s, @i]) then
+  if PyArg_ParseTupleX(args, 'si', [@s, @i])=0 then
    Exit;
   if i=-1 then
    begin
@@ -2250,7 +2250,7 @@ begin
  Result:=Nil;
  try
   i:=scMaximal;
-  if not PyArg_ParseTupleX(args, '|i', [@i]) then
+  if PyArg_ParseTupleX(args, '|i', [@i])=0 then
    Exit;
   if i=scInit then
    InitSetup   { reload setup }
@@ -2271,9 +2271,9 @@ begin
  Result:=Nil;
  try
   ok:=Nil;
-  if not PyArg_ParseTupleX(args, '|O', [@ok]) then
+  if PyArg_ParseTupleX(args, '|O', [@ok])=0 then
    Exit;
-  if (ok=Nil) or PyObject_IsTrue(ok) then
+  if (ok=Nil) or (PyObject_IsTrue(ok)=1) then
    GlobalDoAccept
   else
    GlobalDoCancel;
@@ -2376,7 +2376,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 's', [@s]) then
+  if PyArg_ParseTupleX(args, 's', [@s])=0 then
    Exit;
   HTMLDoc(PyStrPas(s));
   Result:=PyNoResult;
@@ -2394,7 +2394,7 @@ begin
   Result:=Nil;
   try
     infobaselink := nil;
-    if not PyArg_ParseTupleX(args, 's|s', [@helptext, @infobaselink]) then
+    if PyArg_ParseTupleX(args, 's|s', [@helptext, @infobaselink])=0 then
       Exit;
 
     if (infobaselink = nil) then
@@ -2417,7 +2417,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 's', [@s]) then
+  if PyArg_ParseTupleX(args, 's', [@s])=0 then
    Exit;
   if g_Form1.HelpMenu.Tag=0 then
    begin
@@ -2445,7 +2445,7 @@ var
 begin
   Result:=Nil;
   try
-    if not PyArg_ParseTupleX(args, 's', [@s]) then
+    if PyArg_ParseTupleX(args, 's', [@s])=0 then
       Exit;
     Item:=TMenuItem.Create(g_Form1);
     Item.Caption:=PyStrPas(s);
@@ -2482,7 +2482,7 @@ var
 begin
   Result:=Nil;
   try
-    if not PyArg_ParseTupleX(args, 's', [@s]) then
+    if PyArg_ParseTupleX(args, 's', [@s])=0 then
       Exit;
     Item:=TMenuItem.Create(g_Form1);
     Item.Caption:=PyStrPas(s);
@@ -2516,7 +2516,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 's', [@s]) then
+  if PyArg_ParseTupleX(args, 's', [@s])=0 then
    Exit;
   Result:=PyString_FromString(ToPyChar(GetShortHint(PyStrPas(s))));
  except
@@ -2532,7 +2532,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 's', [@s]) then
+  if PyArg_ParseTupleX(args, 's', [@s])=0 then
    Exit;
   Result:=PyString_FromString(ToPyChar(GetLongHint(PyStrPas(s))));
  except
@@ -2548,7 +2548,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 's', [@P]) then
+  if PyArg_ParseTupleX(args, 's', [@P])=0 then
    Exit;
   Application.Hint:=PyStrPas(P);
   Result:=PyNoResult;
@@ -2585,7 +2585,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 's', [@P]) then
+  if PyArg_ParseTupleX(args, 's', [@P])=0 then
    Exit;
   S:=StringReplace(PyStrPas(P), '&', '&&', [rfReplaceAll]);
   Result:=PyString_FromString(ToPyChar(S));
@@ -2602,7 +2602,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O!O!', [PyList_Type, @pol, PyList_Type, @sta]) then
+  if PyArg_ParseTupleX(args, 'O!O!', [PyList_Type, @pol, PyList_Type, @sta])=0 then
    Exit;
   Result:=SearchForHoles(pol, sta);
  except
@@ -2623,7 +2623,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O!', [PyList_Type, @vtx]) then
+  if PyArg_ParseTupleX(args, 'O!', [PyList_Type, @vtx])=0 then
    Exit;
   Count:=PyObject_Length(vtx);
   if Count<0 then Exit;
@@ -2675,7 +2675,7 @@ begin
  Result:=Nil;
  try
   P:='';
-  if not PyArg_ParseTupleX(args, '|s', [@P]) then
+  if PyArg_ParseTupleX(args, '|s', [@P])=0 then
    Exit;
 
   L:=TQList.Create;
@@ -2741,7 +2741,7 @@ begin
  Result:=Nil;
  try
   b:=Nil;
-  if not PyArg_ParseTupleX(args, 's|s', [@f, @b]) then
+  if PyArg_ParseTupleX(args, 's|s', [@f, @b])=0 then
    Exit;
   if b=Nil then
    Q:=NeedGameFile(PyStrPas(f), '')
@@ -2762,7 +2762,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O', [@obj]) then
+  if PyArg_ParseTupleX(args, 'O', [@obj])=0 then
    Exit;
   Q:=QkObjFromPyObj(obj);
   if Q<>nil then
@@ -2783,7 +2783,7 @@ begin
   Result:=Nil;
   try
     i:=-1;
-    if not PyArg_ParseTupleX(args, 's|i', [@P, @i]) then
+    if PyArg_ParseTupleX(args, 's|i', [@P, @i])=0 then
       Exit;
     if P=Nil then
       Exit;
@@ -2853,7 +2853,7 @@ var
 begin
   Result:=Nil;
   try
-    if not PyArg_ParseTupleX(args, 'i', [@i]) then
+    if PyArg_ParseTupleX(args, 'i', [@i])=0 then
       Exit;
     ConsoleLogging:=(i<>0);
     Result:=PyNoResult;
@@ -2881,7 +2881,7 @@ begin
     AltTexSrc:=nil;
     U:=0;
     V:=0;
-    if not PyArg_ParseTupleX(args, 's|Oii', [@texname, @AltTexSrc, @U, @V]) then
+    if PyArg_ParseTupleX(args, 's|Oii', [@texname, @AltTexSrc, @U, @V])=0 then
      Exit;
     Q:=GlobalFindTexture(PyStrPas(texname), QkObjFromPyObj(AltTexSrc));
     if not (Q is QImage) then
@@ -2940,7 +2940,7 @@ begin
     U:=0;
     V:=0;
     Color:=CLR_NONE;
-    if not PyArg_ParseTupleX(args, 's|Oiii', [@texname, @AltTexSrc, @U, @V, @Color]) then
+    if PyArg_ParseTupleX(args, 's|Oiii', [@texname, @AltTexSrc, @U, @V, @Color])=0 then
      Exit;
     Q:=GlobalFindTexture(PyStrPas(texname), QkObjFromPyObj(AltTexSrc));
     if not (Q is QImage) then
@@ -2998,7 +2998,7 @@ begin
   try
     AltTexSrc:=nil;
     Index:=0;
-    if not PyArg_ParseTupleX(args, 's|Oi', [@texname, @AltTexSrc, @Index]) then
+    if PyArg_ParseTupleX(args, 's|Oi', [@texname, @AltTexSrc, @Index])=0 then
      Exit;
     if (Index<0) or (Index>255) then
      raise EError(2606);
@@ -3039,7 +3039,7 @@ begin
     AltTexSrc:=nil;
     Index:=0;
     Color:=CLR_NONE;
-    if not PyArg_ParseTupleX(args, 's|Oii', [@texname, @AltTexSrc, @Index, @Color]) then
+    if PyArg_ParseTupleX(args, 's|Oii', [@texname, @AltTexSrc, @Index, @Color])=0 then
      Exit;
     if (Index<0) or (Index>255) then
      raise EError(2606);
@@ -3081,7 +3081,7 @@ begin
     AltTexSrc:=nil;
     U:=0;
     V:=0;
-    if not PyArg_ParseTupleX(args, 's|Oii', [@texname, @AltTexSrc, @U, @V]) then
+    if PyArg_ParseTupleX(args, 's|Oii', [@texname, @AltTexSrc, @U, @V])=0 then
      Exit;
     Q:=GlobalFindTexture(PyStrPas(texname), QkObjFromPyObj(AltTexSrc));
     if not (Q is QImage) then
@@ -3120,7 +3120,7 @@ begin
     U:=0;
     V:=0;
     Color:=CLR_NONE;
-    if not PyArg_ParseTupleX(args, 's|Oiii', [@texname, @AltTexSrc, @U, @V, @Color]) then
+    if PyArg_ParseTupleX(args, 's|Oiii', [@texname, @AltTexSrc, @U, @V, @Color])=0 then
      Exit;
     if (Color > 255) then
      raise EError(2605);
@@ -3463,7 +3463,7 @@ begin
  try
   if value=Nil then Exit;
   try
-   if PyCallable_Check(value) then
+   if PyCallable_Check(value)<>0 then
     begin
      if Hourglass then
       ProgressIndicatorStart(0,0);
@@ -3708,7 +3708,7 @@ var
  str: PyObject;
 begin
  if PyErr_Occurred<>Nil then
-  if PyErr_ExceptionMatches(QuarkxAborted) then
+  if PyErr_ExceptionMatches(QuarkxAborted)<>0 then
    begin
     {$IFDEF Debug}
     PyErr_Print;
@@ -3718,7 +3718,7 @@ begin
     {$ENDIF}
    end
   else
-   if Assigned(ExceptionMethod) and PyErr_ExceptionMatches(QuarkxError) then
+   if Assigned(ExceptionMethod) and (PyErr_ExceptionMatches(QuarkxError)<>0) then
     begin
      str:=Nil;
      PyErr_Fetch(ptype, pvalue, ptraceback);
@@ -3800,7 +3800,7 @@ var
 begin
  Result:=Nil;
  try
-  if not PyArg_ParseTupleX(args, 'O', [@menu]) then
+  if PyArg_ParseTupleX(args, 'O', [@menu])=0 then
    Exit;
   LItems:=PyList_New(0); try
   Active:=Screen.Forms[0];
