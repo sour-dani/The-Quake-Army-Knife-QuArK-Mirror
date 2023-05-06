@@ -39,6 +39,7 @@ type
 
  PyCharacterType = AnsiChar;
  PyChar = PAnsiChar;
+ //PPyChar = ^PyChar;
 
  {$IFDEF PYTHON25}
  Py_ssize_t = ssize_t;
@@ -607,11 +608,6 @@ function PyObject_NEW(t: PyTypeObject) : PyObject;
 {function PyObject_NEWVAR(t: PyTypeObject; i: Integer) : PyObject;}
 procedure PyObject_DEL(o: PyObject);
 function Py_BuildValueX(const fmt: PyChar; const Args: array of const) : PyObject;
-function Py_BuildValueDD(v1, v2: Double) : PyObject;
-function Py_BuildValueDDD(v1, v2, v3: Double) : PyObject;
-function Py_BuildValueD4(v1, v2, v3, v4: Double) : PyObject;
-function Py_BuildValueD5(v1, v2, v3, v4, v5: Double) : PyObject;
-function Py_BuildValueODD(v1: PyObject; v2, v3: Double) : PyObject;
 function PyArg_ParseTupleX(src: PyObject; const fmt: PyChar; const Args: array of const) : Integer;
 //function PyArg_ParseTupleAndKeywordsX(arg, kwdict: PyObject; const fmt: PyChar; var kwlist: PyChar; const Args: array of const) : Integer;  pascal;
 procedure Py_INCREF(o: PyObject);
@@ -1134,89 +1130,287 @@ begin
   FreeMem(o);
 end;
 
-//Note: This function can only handle Args-elements that are 4 bytes in size (DWORD's), so it will NOT work with Double's!
+//In Delphi, "array of const" is defined as an open array of TVarRec's.
+//The argument gets replaced by the compiler by a Pointer to a number of TVarRec's,
+//and another argument that's an Integer with the Length of the array.
+//TVarRec is a record with its first member (pointer/integer-sized) containing the data,
+//and a second member a Byte called VType indicating what type of data the first record holds.
+
+//We implement the following Python types:
+//O (object), which will be a vtPointer (PyObject).
+//i (integer), which will be a vtInteger.
+//s (string), which will be a vtPChar or vtPWideChar (PyChar).
+//f (float), which will be a vtExtended (10 byte float).
+//d (double), which will be a vtExtended (10 byte float).
+
+//Note that this function does NOT contain a full-featured parser for the format string;
+//let's only implement what we need here. For example, we're not implementing 'p' boolean.
+//Additionally, we're "cheating" with 'O!'; it requires a TypeObject, and then
+//a PyObject, but we're "mis"-parsing it as two pointers, which is functionally equivalent.
 function Py_BuildValueX(const fmt: PyChar; const Args: array of const) : PyObject;
-asm                     { Comments added by Decker, but I'm not sure they are correct!! }
- push edi               { save the value of edi for later retrieval }
- shl ecx, 2             { multiply ecx with 4 (ecx = the number of elements in the Args array, minus 1) }
- lea edi, [ecx+8]       { load edi register with the result of "ecx + 8"; this is the number of bytes we're going to push onto the stack }
- add ecx, ecx           { multiply ecx with 2 - now it would have been "ecx = ecx * 8"; "array of const" stores its elements per 8 bytes }
- add ecx, edx           { this will now point to the last argument we need to send through }
- @L1:
-  push dword ptr [ecx]  { push an argument onto the stack }
-  sub ecx, 8            { subtract 8 from our argument pointer }
-  cmp ecx, edx          { compare with the first argument; i.e. did we just push the last argument onto the stack? }
- jnb @L1                { jump to L1 if "not below"; i.e. we're not done with the Args-array yet }
- push fmt               { push the fmt-string onto the stack as well, making it the first argument for Py_BuildValue }
- call Py_BuildValue     { call Py_BuildValue }
- add esp, edi           { remove the arguments we pushed onto the stack }
- pop edi                { restore the saved value of edi }
+var
+  StackGrowth: size_t;
+asm
+  {$IFDEF CPUX86}
+  //EAX: fmt
+  //EDX: pointer to Args's first item
+  //ECX: length of Args, minus 1
+
+  push edi               { store the value of edi, because we want to use that register }
+  push esi               { store the value of esi, because we want to use that register }
+
+  inc ecx                { get the actual number of items }
+
+  //We have to jump to the end of the Args-array, because we have to iterate over it reversed
+  mov edi, ecx           { we're going to calculate the number of bytes from the number of items }
+  shl edi, 3             { multiply the number of elements with SizeOf(TVarRec) }
+  add edx, edi           { go to the end of the Args-array }
+
+  mov esi, eax         { we have to walk over the fmt in order to distinguish floats from doubles }
+  mov StackGrowth, 4   { already account for fmt (which will be pushed later) }
+  @L1:
+    //We have to skip over any symbols in fmt that don't need an argument
+    @testFmtChar:
+    cmp byte ptr [esi], '('       { skip '(' }
+    jz @skipFmtChar
+    cmp byte ptr [esi], ')'       { skip ')' }
+    jz @skipFmtChar
+    //cmp byte ptr [esi], '{'       { skip '{' }
+    //jz @skipFmtChar
+    //cmp byte ptr [esi], '}'       { skip '}' }
+    //jz @skipFmtChar
+    cmp byte ptr [esi], '|'       { skip '|' }
+    jz @skipFmtChar
+    //cmp byte ptr [esi], ':'       { skip ':' }
+    //jz @skipFmtChar
+    //cmp byte ptr [esi], ','       { skip '.' }
+    //jz @skipFmtChar
+    //cmp byte ptr [esi], ' '       { skip ' ' }
+    //jz @skipFmtChar
+    cmp byte ptr [esi], 0         { sanity check for end of fmt-string }
+    jnz @FmtReady      { jump if we found a format-character }
+
+    sub StackGrowth, 4     { fmt isn't on the stack yet}
+    add esp, StackGrowth   { remove the arguments we pushed onto the stack }
+    pop esi                { restore the original value of esi }
+    pop edi                { restore the original value of edi }
+    mov al, reInvalidCast  { prepare an "invalid cast" error }
+    jmp System.Error       { raise the error }
+
+    @skipFmtChar:
+    inc esi            { go to the next character }
+    jmp @testFmtChar   { test that one too }
+    @FmtReady:
+
+    //Process the Args-array
+    sub edx, 8    { go back one item in the Args-array; 8 = SizeOf(TVarRec) }
+    //[EDX].Integer[0] = TVarRec.data
+    //[EDX].Byte[4]    = TVarRec.VType
+    movzx edi, [edx].Byte[4]          // TVarRec.VType
+    cmp edi, vtInteger    { handle integers }
+    jz @lInteger
+    cmp edi, vtExtended   { handle floating points }
+    jz @lExtended
+    cmp edi, vtPointer    { handle objects }
+    jz @lPointer
+    cmp edi, vtPChar      { handle strings }
+    jz @lPointer
+    cmp edi, vtPWideChar  { handle strings }
+    jz @lPointer
+
+    //If we reach this point, there's an unsupported variable type in the Args-array
+    sub StackGrowth, 4     { fmt isn't on the stack yet}
+    add esp, StackGrowth   { remove the arguments we pushed onto the stack }
+    pop esi                { restore the original value of esi }
+    pop edi                { restore the original value of edi }
+    mov al, reInvalidCast  { prepare an "invalid cast" error }
+    jmp System.Error       { raise the error }
+
+    //Convert the item
+    @lInteger:
+    push dword ptr [edx]               { push the integer onto the stack }
+    add StackGrowth, 4
+    jmp @lDone
+
+    @lExtended:
+    mov edi, [edx]            { it's a pointer to a double, so dereference it once }
+    fld tbyte ptr [edi]       { put the 10 byte float into x87 stack }
+    cmp byte ptr [esi], 'f'   { floats are 4 bytes, doubles are 8 bytes }
+    jz @isFloat
+    sub esp, 8                { make room on stack for the double }
+    fstp qword ptr [esp]      { pop double from x87 stack onto CPU stack }
+    fwait                     { make sure any floating point exceptions are handled }
+    add StackGrowth, 8        { double, so this requires 8 bytes}
+    jmp @lDone
+    @isFloat:
+    sub esp, 4                { make room on stack for the float }
+    add StackGrowth, 4
+    fstp dword ptr [esp]      { pop single from x87 stack onto CPU stack }
+    fwait                     { make sure any floating point exceptions are handled }
+    jmp @lDone
+
+    @lPointer:
+    push dword ptr [edx]  { push the pointer onto the stack }
+    add StackGrowth, 4
+    @lDone:
+
+    dec ecx              { we're finished processing an item in the Args-array }
+    jnz @L1              { back to L1 if we're not done with the Args-array yet }
+  push fmt               { push the fmt-string onto the stack as well, making it the first argument for Py_BuildValue }
+  call Py_BuildValue     { call Py_BuildValue }
+  add esp, StackGrowth   { remove the arguments we pushed onto the stack }
+  pop esi                { restore the original value of esi }
+  pop edi                { restore the original value of edi }
+
+  //Result in EAX
+  {$ELSE}
+  {$IFDEF CPUX64}
+  {$Message Error Unsupported CPU architecture!} //FIXME
+  {$ELSE}
+  {$Message Error Unsupported CPU architecture!}
+  {$ENDIF}
+  {$ENDIF}
 end;
 
 //See documentation for Py_BuildValueX above for more information
 function PyArg_ParseTupleX(src: PyObject; const fmt: PyChar; const Args: array of const) : Integer;
+var
+  StackGrowth: size_t;
 asm
- push edi               { save the value of edi for later retrieval }
- push esi               { save the value of esi for later retrieval }
- mov esi, edx
- mov edx, ecx
- mov ecx, [esp+16]
- shl ecx, 2
- lea edi, [ecx+12]
- add ecx, ecx
- add ecx, edx
- @L1:
-  push dword ptr [ecx]
-  sub ecx, 8
-  cmp ecx, edx
- jnb @L1
- push esi
- push eax
- call PyArg_ParseTuple
- add esp, edi
- pop esi                { restore the saved value of esi }
- pop edi                { restore the saved value of edi }
+  {$IFDEF CPUX86}
+  //EAX: src
+  //EDX: fmt
+  //ECX: pointer to Args's first item
+  //ESP+12: length of Args, minus 1
+
+  push edi               { store the value of edi, because we want to use that register }
+  push esi               { store the value of esi, because we want to use that register }
+  push ebx               { store the value of ebx, because we want to use that register }
+
+  mov ebx, [esp+24]      { we're pushing things onto the stack, so we need Args in a register }
+  inc ebx                { get the actual number of items }
+
+  //We have to jump to the end of the Args-array, because we have to iterate over it reversed
+  mov edi, ebx           { we're going to calculate the number of bytes from the number of items }
+  shl edi, 3             { multiply the number of elements with SizeOf(TVarRec) }
+  add ecx, edi           { go to the end of the Args-array }
+
+  mov esi, edx           { we have to walk over the fmt in order to distinguish floats from doubles }
+  mov StackGrowth, 8     { already account for src and fmt (which will be pushed later) }
+  @L1:
+    //We have to skip over any symbols in fmt that don't need an argument
+    @testFmtChar:
+    cmp byte ptr [esi], '('       { skip '(' }
+    jz @skipFmtChar
+    cmp byte ptr [esi], ')'       { skip ')' }
+    jz @skipFmtChar
+    //cmp byte ptr [esi], '{'       { skip '{' }
+    //jz @skipFmtChar
+    //cmp byte ptr [esi], '}'       { skip '}' }
+    //jz @skipFmtChar
+    cmp byte ptr [esi], '|'       { skip '|' }
+    jz @skipFmtChar
+    //cmp byte ptr [esi], ':'       { skip ':' }
+    //jz @skipFmtChar
+    //cmp byte ptr [esi], ','       { skip '.' }
+    //jz @skipFmtChar
+    //cmp byte ptr [esi], ' '       { skip ' ' }
+    //jz @skipFmtChar
+    cmp byte ptr [esi], 0         { sanity check for end of fmt-string }
+    jnz @FmtReady      { jump if we found a format-character }
+
+    sub StackGrowth, 8     { src and fmt aren't on the stack yet}
+    add esp, StackGrowth   { remove the arguments we pushed onto the stack }
+    pop ebx                { restore the original value of ebx }
+    pop esi                { restore the original value of esi }
+    pop edi                { restore the original value of edi }
+    mov al, reInvalidCast  { prepare an "invalid cast" error }
+    jmp System.Error       { raise the error }
+
+    @skipFmtChar:
+    inc esi            { go to the next character }
+    jmp @testFmtChar   { test that one too }
+    @FmtReady:
+
+    //Process the Args-array
+    sub ecx, 8    { go back one item in the Args-array; 8 = SizeOf(TVarRec) }
+    //[ECX].Integer[0] = TVarRec.data
+    //[ECX].Byte[4]    = TVarRec.VType
+    movzx edi, [ecx].Byte[4]          // TVarRec.VType
+    cmp edi, vtInteger    { handle integers }
+    jz @lInteger
+    cmp edi, vtExtended   { handle floating points }
+    jz @lExtended
+    cmp edi, vtPointer    { handle objects }
+    jz @lPointer
+    cmp edi, vtPChar      { handle strings }
+    jz @lPointer
+    cmp edi, vtPWideChar  { handle strings }
+    jz @lPointer
+
+    //If we reach this point, there's an unsupported variable type in the Args-array
+    sub StackGrowth, 8     { src and fmt aren't on the stack yet}
+    add esp, StackGrowth   { remove the arguments we pushed onto the stack }
+    pop ebx                { restore the original value of ebx }
+    pop esi                { restore the original value of esi }
+    pop edi                { restore the original value of edi }
+    mov al, reInvalidCast  { prepare an "invalid cast" error }
+    jmp System.Error       { raise the error }
+
+    //Convert the item
+    @lInteger:
+    push dword ptr [ecx]               { push the integer onto the stack }
+    add StackGrowth, 4
+    jmp @lDone
+
+    @lExtended:
+    mov edi, [ecx]            { it's a pointer to a double, so dereference it once }
+    fld tbyte ptr [edi]       { put the 10 byte float into x87 stack }
+    cmp byte ptr [esi], 'f'   { floats are 4 bytes, doubles are 8 bytes }
+    jz @isFloat
+    sub esp, 8                { make room on stack for the double }
+    fstp qword ptr [esp]      { pop double from x87 stack onto CPU stack }
+    fwait                     { make sure any floating point exceptions are handled }
+    add StackGrowth, 8        { double, so this requires 8 bytes}
+    jmp @lDone
+    @isFloat:
+    sub esp, 4                { make room on stack for the float }
+    add StackGrowth, 4
+    fstp dword ptr [esp]      { pop single from x87 stack onto CPU stack }
+    fwait                     { make sure any floating point exceptions are handled }
+    jmp @lDone
+
+    @lPointer:
+    push dword ptr [ecx]  { push the pointer onto the stack }
+    add StackGrowth, 4
+    @lDone:
+
+    dec ebx              { we're finished processing an item in the Args-array }
+    jnz @L1              { back to L1 if we're not done with the Args-array yet }
+  push fmt               { push the fmt-string onto the stack  }
+  push src               { push the src-object onto the stack as well, making it the first argument for Py_BuildValue }
+  call PyArg_ParseTuple  { call PyArg_ParseTuple }
+  add esp, StackGrowth   { remove the arguments we pushed onto the stack }
+  pop ebx                { restore the original value of ebx }
+  pop esi                { restore the original value of esi }
+  pop edi                { restore the original value of edi }
+
+  //Result in EAX
+  {$ELSE}
+  {$IFDEF CPUX64}
+  {$Message Error Unsupported CPU architecture!} //FIXME
+  {$ELSE}
+  {$Message Error Unsupported CPU architecture!}
+  {$ENDIF}
+  {$ENDIF}
 end;
 
-function Py_BuildValueDD(v1, v2: Double) : PyObject;
-type
- F = function(const fmt: PyChar; v1, v2: Double) : PyObject; cdecl;
-begin
- Result:=F(Py_BuildValue)('dd', v1, v2);
-end;
-
-function Py_BuildValueDDD(v1, v2, v3: Double) : PyObject;
-type
- F = function(const fmt: PyChar; v1, v2, v3: Double) : PyObject; cdecl;
-begin
- Result:=F(Py_BuildValue)('ddd', v1, v2, v3);
-end;
-
-function Py_BuildValueD4(v1, v2, v3, v4: Double) : PyObject;
-type
- F = function(const fmt: PyChar; v1, v2, v3, v4: Double) : PyObject; cdecl;
-begin
- Result:=F(Py_BuildValue)('dddd', v1, v2, v3, v4);
-end;
-
-function Py_BuildValueD5(v1, v2, v3, v4, v5: Double) : PyObject;
-type
- F = function(const fmt: PyChar; v1, v2, v3, v4, v5: Double) : PyObject; cdecl;
-begin
- Result:=F(Py_BuildValue)('ddddd', v1, v2, v3, v4, v5);
-end;
-
-function Py_BuildValueODD(v1: PyObject; v2, v3: Double) : PyObject;
-type
- F = function(const fmt: PyChar; v1: PyObject; v2, v3: Double) : PyObject; cdecl;
-begin
- Result:=F(Py_BuildValue)('Odd', v1, v2, v3);
-end;
-
-{function PyArg_ParseTupleAndKeywordsX(arg, kwdict: PyObject; const fmt: PyChar; var kwlist: PyChar; const Args: array of const) : Integer; pascal; assembler;
+//FIXME: Still needs to be modified to handle double's!!!
+(*function PyArg_ParseTupleAndKeywordsX(arg, kwdict: PyObject; const fmt: PyChar; var kwlist: PyChar; const Args: array of const) : Integer; pascal; assembler;
 asm
- mov ecx, [AllArgs-4]
- mov edx, [AllArgs]
+ {$IFDEF CPUX86}
+ mov ecx, [Args-4]
+ mov edx, [Args]
  add ecx, ecx
  add ecx, ecx
  add ecx, ecx
@@ -1231,8 +1425,15 @@ asm
  push [fmt]
  push [kwdict]
  push [arg]
- call PyArg_ParseTupleAndKeywords
-end;}
+ //call PyArg_ParseTupleAndKeywords
+ {$ELSE}
+ {$IFDEF CPUX64}
+ {$Message Error Unsupported CPU architecture!} //FIXME
+ {$ELSE}
+ {$Message Error Unsupported CPU architecture!}
+ {$ENDIF}
+ {$ENDIF}
+end;*)
 
 {$IFDEF PyRefDEBUG}
 procedure RefError;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
