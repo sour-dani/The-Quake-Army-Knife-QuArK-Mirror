@@ -260,6 +260,16 @@ const
 
  {------------------------}
 
+procedure MainInit;
+begin
+  //Remove the current directory from the DLL search path
+  SetDllSearchPath();
+
+  InitDefaultFonts;
+
+  OpenLogFile;
+end;
+
  (*procedure TForm1Button1Click(Sender: TObject);
 var
  P,Q: QObject;
@@ -399,9 +409,6 @@ begin
    FilesToOpen[Length(FilesToOpen) - 1] := ParamStr(I);
   end;
  end;
-
- //Remove the current directory from the DLL search path
- SetDllSearchPath();
 
  //This is the mutex for single-instance checking
  Log(LOG_VERBOSE, 'Checking mutex...');
@@ -2472,5 +2479,8 @@ begin
   PythonCodeEnd;
  end;
 end;
+
+initialization
+  InitProc := @MainInit;
 
 end.

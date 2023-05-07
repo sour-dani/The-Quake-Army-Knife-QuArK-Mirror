@@ -261,10 +261,7 @@ begin
   DecimalSeparator:='.';
   {$ENDIF}
 
-  InitDefaultFonts;
-
   Log(LOG_VERBOSE, 'Loading main form...');
   Application.CreateForm(TForm1, g_Form1);
   Application.Run;
-
 end.

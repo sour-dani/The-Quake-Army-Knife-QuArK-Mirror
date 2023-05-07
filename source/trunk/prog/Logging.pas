@@ -28,7 +28,6 @@ interface
 type
   TLogName = (LOG_DEFAULT, LOG_PASCAL, LOG_PYTHON, LOG_SYS, LOG_CONSOLE, LOG_DEBUG);
 
-Procedure CloseLogFile;
 Procedure OpenLogFile;
 
 function GetLogLevel : Cardinal;
@@ -70,6 +69,7 @@ var
   LogPatchname: string;
   LogLevel: cardinal;
   LogLevelEnv: string;
+  LogCache: array of string;
 {$IFDEF PyProfiling}
   LogProfileFile: TextFile;
 {$ENDIF}
@@ -108,6 +108,7 @@ end;
 Procedure OpenLogFile;
 var
   PatchVersion: String;
+  I: Integer;
 begin
   if LogOpened then
     exit;
@@ -117,16 +118,25 @@ begin
   rewrite(LogFile);
   {$I+}
   LogOpened:=true;
-  Log(LOG_PASCAL, 'QuArK started at %s',[DateTimeToStr(now)]);
+  Log(LOG_PASCAL, 'QuArK started at %s', [DateTimeToStr(now)]);
   if Length(PatchVersion) <> 0 then
-    Log(LOG_PASCAL, 'QuArK version is %s %s %s',[QuArKVersion, QuArKMinorVersion, PatchVersion])
+    Log(LOG_PASCAL, 'QuArK version is %s %s %s', [QuArKVersion, QuArKMinorVersion, PatchVersion])
   else
-    Log(LOG_PASCAL, 'QuArK version is %s %s',[QuArKVersion, QuArKMinorVersion]);
-  Log(LOG_PASCAL, 'Loglevel is %d',[LogLevel]);
+    Log(LOG_PASCAL, 'QuArK version is %s %s', [QuArKVersion, QuArKMinorVersion]);
+  Log(LOG_PASCAL, 'Loglevel is %d', [LogLevel]);
 {$IFDEF Debug}
   Log(LOG_PASCAL, 'Current install is located in %s', [GetQPath(pQuArK)]);
   Log(LOG_PASCAL, 'Running in DEBUG mode!');
 {$ENDIF}
+  if Length(LogCache)<>0 then
+  begin
+    {$I-}
+    for I:=0 to Length(LogCache)-1 do
+      WriteLn(LogFile, LogCache[I]);
+    Flush(LogFile);
+    {$I+}
+    SetLength(LogCache, 0);    
+  end;
 {$IFDEF PyProfiling}
   {$I-}
   AssignFile(LogProfileFile, ConcatPaths([GetQPath(pQuArKLog), LOG_PROFILE_FILENAME]));
@@ -136,20 +146,28 @@ begin
 end;
 
 Procedure aLog(logger: TLogName; const s: string);
+var
+  S2: string;
 begin
-  if not LogOpened then
-    //Warning: Can't OPEN the log file from here, due to Delphi's init-order!
-    Exit;
-  {$I-}
   case logger of
-    LOG_DEFAULT: WriteLn(LogFile, format('Log> %s', [s]));
-    LOG_PASCAL:  WriteLn(LogFile, format('QuArKLog> %s', [s]));
-    LOG_PYTHON:  WriteLn(LogFile, format('PythonLog> %s', [s]));
-    LOG_SYS:     WriteLn(LogFile, format('SysLog> %s', [s]));
-    LOG_CONSOLE: WriteLn(LogFile, format('ConsoleLog> %s', [s]));
-    LOG_DEBUG:   WriteLn(LogFile, format('DebugLog> %s', [s]));
-    else         WriteLn(LogFile, s);
+    LOG_DEFAULT: S2:=Format('Log> %s', [s]);
+    LOG_PASCAL:  S2:=Format('QuArKLog> %s', [s]);
+    LOG_PYTHON:  S2:=Format('PythonLog> %s', [s]);
+    LOG_SYS:     S2:=Format('SysLog> %s', [s]);
+    LOG_CONSOLE: S2:=Format('ConsoleLog> %s', [s]);
+    LOG_DEBUG:   S2:=Format('DebugLog> %s', [s]);
+    else         S2:=s;
   end;
+  if not LogOpened then
+  begin
+    //Logfile isn't open yet (or already closed). Let's store it,
+    //and write it as soon as the logfile gets opened (again?).
+    SetLength(LogCache, Length(LogCache) + 1);
+    LogCache[Length(LogCache) - 1]:=S2;
+    Exit;
+  end;
+  {$I-}
+  WriteLn(LogFile, S2);
   Flush(LogFile);
   {$I+}
 end;
@@ -301,7 +319,6 @@ initialization
     Windows.MessageBox(0, 'Environmental variable QUARK_LOG_LEVEL found. QuArK will use its value.', 'Environmental variable found', MB_TASKMODAL or MB_ICONINFORMATION or MB_OK);
     LogLevel:=StrToIntDef(LogLevelEnv, DefaultLogLevel);
   end;
-  OpenLogFile;
 finalization
   CloseLogFile;
 end.
