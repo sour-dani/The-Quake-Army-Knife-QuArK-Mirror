@@ -175,6 +175,7 @@ type
     {DefaultTbCount,} OpenFilterIndex: Integer;
     FNoTempDelete: Boolean;
    {TbMenuChar: Char;}
+    FilesToOpen: array of string;
     procedure ReadSetupInformation(Level: Integer);
    {function LoadToolBoxInformation(SetupQrk: QObject) : Integer;}
     function LoadToolBoxList(SetupQrk: QObject) : Integer;
@@ -244,12 +245,10 @@ type
                     DoSplash: Boolean;
                     DoUpdate: Boolean;
                     OnlineUpdate: Boolean;
-                    Files: array of string;
                    end;
 
 var
   OnlyOnceMutex: THandle = 0;
-  LaunchOptions: TCmdLineOptions;
   OldException: TExceptionEvent;
   LoadingComplete: Boolean = false;
 
@@ -260,38 +259,6 @@ const
 {$R ICONES\ICONES.RES}
 
  {------------------------}
-
-procedure ProcessCmdLine;
-var
- I: Integer;
- S: String;
-begin
- // ParamStr(0) is the executable name, so don't process it
- for I := 1 to ParamCount do
- begin
-  S := UpperCase(ParamStr(I));
-  if S = '/?' then
-   MessageBox(0, 'Available parameters:' + #13#10
-   + #13#10
-   + '/?: Displays this window' + #13#10
-   + '/NOINSTANCE: Skips the single-instance check (use at own risk!)' + #13#10
-   + '/NOSPLASH: Skips the splash-screen' + #13#10
-   + '/NOUPDATE: Skips the update check' + #13#10
-   + #13#10
-   + 'All other parameters will be interpreted as files to load.', 'QuArK', MB_TASKMODAL or MB_OK)
-  else if S = '/NOINSTANCE' then
-   LaunchOptions.DoInstance := false
-  else if S = '/NOSPLASH' then
-   LaunchOptions.DoSplash := false
-  else if S = '/NOUPDATE' then
-   LaunchOptions.DoUpdate := false
-  else
-  begin
-   SetLength(LaunchOptions.Files, Length(LaunchOptions.Files) + 1);
-   LaunchOptions.Files[Length(LaunchOptions.Files) - 1] := ParamStr(I);
-  end;
- end;
-end;
 
  (*procedure TForm1Button1Click(Sender: TObject);
 var
@@ -394,19 +361,44 @@ var
  C: TColor;
  Splash: TSplashScreen;
  MutexError: DWORD;
+ LaunchOptions: TCmdLineOptions;
 begin
- Log(LOG_VERBOSE, 'Loading main form...');
-
  // Set-up exception handling
  OldException:=Application.OnException;
  Application.OnException:=AppException;
 
- // Process the commandline and prepare it for further use
+ // Process the commandline
  LaunchOptions.DoInstance := true; //These are the defaults
  LaunchOptions.DoSplash := true;
  LaunchOptions.DoUpdate := true;
  LaunchOptions.OnlineUpdate := true;
- ProcessCmdLine;
+ SetLength(FilesToOpen, 0);
+
+ // ParamStr(0) is the executable name, so don't process it
+ for I := 1 to ParamCount do
+ begin
+  S := UpperCase(ParamStr(I));
+  if S = '/?' then
+   MessageBox(0, 'Available parameters:' + #13#10
+   + #13#10
+   + '/?: Displays this window' + #13#10
+   + '/NOINSTANCE: Skips the single-instance check (use at own risk!)' + #13#10
+   + '/NOSPLASH: Skips the splash-screen' + #13#10
+   + '/NOUPDATE: Skips the update check' + #13#10
+   + #13#10
+   + 'All other parameters will be interpreted as files to load.', 'QuArK', MB_TASKMODAL or MB_OK)
+  else if S = '/NOINSTANCE' then
+   LaunchOptions.DoInstance := false
+  else if S = '/NOSPLASH' then
+   LaunchOptions.DoSplash := false
+  else if S = '/NOUPDATE' then
+   LaunchOptions.DoUpdate := false
+  else
+  begin
+   SetLength(FilesToOpen, Length(FilesToOpen) + 1);
+   FilesToOpen[Length(FilesToOpen) - 1] := ParamStr(I);
+  end;
+ end;
 
  //Remove the current directory from the DLL search path
  SetDllSearchPath();
@@ -1941,9 +1933,10 @@ end;
 function TForm1.ExecuteCmdLine(Counter: Integer) : Integer;
 begin
  Inc(Counter);
- if Counter>Length(LaunchOptions.Files) then
+ if Counter>Length(FilesToOpen) then
   begin
    //Done loading all (if any) files from the commandline. Now process the last remaining things to-do...
+   SetLength(FilesToOpen, 0);
    RefreshAssociations(False);
    RestoreAutoSaved('.qkm');
    RestoreAutoSaved('.qkl'); //FIXME: This never runs! AutoRestoreEvent is made! --> Right, dump that CreateEvent. We're already using the CreateMutex above. Just put a tip in the documentation about this!!!
@@ -1951,7 +1944,7 @@ begin
   end
  else
   if Counter>0 then
-   OpenAFile(LaunchOptions.Files[Counter - 1], False);
+   OpenAFile(FilesToOpen[Counter - 1], False);
  Result:=Counter;
 end;
 
