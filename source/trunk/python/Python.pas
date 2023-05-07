@@ -1168,7 +1168,7 @@ asm
   //We have to jump to the end of the Args-array, because we have to iterate over it reversed
   mov edi, ecx           { we're going to calculate the number of bytes from the number of items }
   shl edi, 3             { multiply the number of elements with SizeOf(TVarRec) }
-  add edx, edi           { go to the end of the Args-array }
+  add edx, edi           { go to the end of the Args-array (one past it) }
 
   mov esi, eax         { we have to walk over the fmt in order to distinguish floats from doubles }
   mov StackGrowth, 4   { already account for fmt (which will be pushed later) }
@@ -1194,7 +1194,7 @@ asm
     cmp byte ptr [esi], 0         { sanity check for end of fmt-string }
     jnz @FmtReady      { jump if we found a format-character }
 
-    sub StackGrowth, 4     { fmt isn't on the stack yet}
+    sub StackGrowth, 4     { fmt isn't on the stack yet }
     add esp, StackGrowth   { remove the arguments we pushed onto the stack }
     pop esi                { restore the original value of esi }
     pop edi                { restore the original value of edi }
@@ -1223,7 +1223,7 @@ asm
     jz @lPointer
 
     //If we reach this point, there's an unsupported variable type in the Args-array
-    sub StackGrowth, 4     { fmt isn't on the stack yet}
+    sub StackGrowth, 4     { fmt isn't on the stack yet }
     add esp, StackGrowth   { remove the arguments we pushed onto the stack }
     pop esi                { restore the original value of esi }
     pop edi                { restore the original value of edi }
@@ -1258,7 +1258,7 @@ asm
     add StackGrowth, 4
     @lDone:
 
-    dec ecx              { we're finished processing an item in the Args-array }
+    dec ecx              { we've finished processing an item in the Args-array }
     jnz @L1              { back to L1 if we're not done with the Args-array yet }
   push fmt               { push the fmt-string onto the stack as well, making it the first argument for Py_BuildValue }
   call Py_BuildValue     { call Py_BuildValue }
@@ -1269,7 +1269,7 @@ asm
   //Result in EAX
   {$ELSE}
   {$IFDEF CPUX64}
-  //RAX: fmt
+  //RCX: fmt
   //RDX: pointer to Args's first item
   //R8: length of Args, minus 1
 
@@ -1281,9 +1281,9 @@ asm
   //We have to jump to the end of the Args-array, because we have to iterate over it reversed
   mov rdi, r8            { we're going to calculate the number of bytes from the number of items }
   shl rdi, 4             { multiply the number of elements with SizeOf(TVarRec) }
-  add rdx, rdi           { go to the end of the Args-array }
+  add rdx, rdi           { go to the end of the Args-array (one past it) }
 
-  mov rsi, rax         { we have to walk over the fmt in order to distinguish floats from doubles }
+  mov rsi, rcx         { we have to walk over the fmt in order to distinguish floats from doubles }
   mov StackGrowth, 8   { already account for fmt (which will be pushed later) }
   @L1:
     //We have to skip over any symbols in fmt that don't need an argument
@@ -1307,7 +1307,7 @@ asm
     cmp byte ptr [rsi], 0         { sanity check for end of fmt-string }
     jnz @FmtReady      { jump if we found a format-character }
 
-    sub StackGrowth, 8     { fmt isn't on the stack yet}
+    sub StackGrowth, 8     { fmt isn't on the stack yet }
     add rsp, StackGrowth   { remove the arguments we pushed onto the stack }
     pop rsi                { restore the original value of rsi }
     pop rdi                { restore the original value of rdi }
@@ -1336,7 +1336,7 @@ asm
     jz @lPointer
 
     //If we reach this point, there's an unsupported variable type in the Args-array
-    sub StackGrowth, 8     { fmt isn't on the stack yet}
+    sub StackGrowth, 8     { fmt isn't on the stack yet }
     add rsp, StackGrowth   { remove the arguments we pushed onto the stack }
     pop rsi                { restore the original value of rsi }
     pop rdi                { restore the original value of rdi }
@@ -1371,8 +1371,29 @@ asm
     add StackGrowth, 8
     @lDone:
 
-    dec r8               { we're finished processing an item in the Args-array }
+    dec r8               { we've finished processing an item in the Args-array }
     jnz @L1              { back to L1 if we're not done with the Args-array yet }
+
+  //FIXME: Not everything should be in the registers...!
+  //The first four integer or pointer parameters are passed in the rcx, rdx, r8, and r9 registers.
+  //The first four floating-point parameters are passed in the first four SSE registers, xmm0-xmm3.
+
+  //Put the second argument (if any) in the rdx register
+  cmp StackGrowth, 8
+  jle @doCall
+  mov rdx, [rsp]
+
+  //Put the third argument (if any) in the r8 register
+  cmp StackGrowth, 16
+  jle @doCall
+  mov r8, [rsp+8]
+
+  //Put the fourth argument (if any) in the r9 register
+  cmp StackGrowth, 24
+  jle @doCall
+  mov r9, [rsp+16]
+
+  @doCall:
   push fmt               { push the fmt-string onto the stack as well, making it the first argument for Py_BuildValue }
   call Py_BuildValue     { call Py_BuildValue }
   add rsp, StackGrowth   { remove the arguments we pushed onto the stack }
@@ -1407,7 +1428,7 @@ asm
   //We have to jump to the end of the Args-array, because we have to iterate over it reversed
   mov edi, ebx           { we're going to calculate the number of bytes from the number of items }
   shl edi, 3             { multiply the number of elements with SizeOf(TVarRec) }
-  add ecx, edi           { go to the end of the Args-array }
+  add ecx, edi           { go to the end of the Args-array (one past it) }
 
   mov esi, edx           { we have to walk over the fmt in order to distinguish floats from doubles }
   mov StackGrowth, 8     { already account for src and fmt (which will be pushed later) }
@@ -1433,7 +1454,7 @@ asm
     cmp byte ptr [esi], 0         { sanity check for end of fmt-string }
     jnz @FmtReady      { jump if we found a format-character }
 
-    sub StackGrowth, 8     { src and fmt aren't on the stack yet}
+    sub StackGrowth, 8     { src and fmt aren't on the stack yet }
     add esp, StackGrowth   { remove the arguments we pushed onto the stack }
     pop ebx                { restore the original value of ebx }
     pop esi                { restore the original value of esi }
@@ -1463,7 +1484,7 @@ asm
     jz @lPointer
 
     //If we reach this point, there's an unsupported variable type in the Args-array
-    sub StackGrowth, 8     { src and fmt aren't on the stack yet}
+    sub StackGrowth, 8     { src and fmt aren't on the stack yet }
     add esp, StackGrowth   { remove the arguments we pushed onto the stack }
     pop ebx                { restore the original value of ebx }
     pop esi                { restore the original value of esi }
@@ -1499,7 +1520,7 @@ asm
     add StackGrowth, 4
     @lDone:
 
-    dec ebx              { we're finished processing an item in the Args-array }
+    dec ebx              { we've finished processing an item in the Args-array }
     jnz @L1              { back to L1 if we're not done with the Args-array yet }
   push fmt               { push the fmt-string onto the stack  }
   push src               { push the src-object onto the stack as well, making it the first argument for Py_BuildValue }
@@ -1518,111 +1539,63 @@ asm
   //R9: length of Args, minus 1
 
   push rdi               { store the value of rdi, because we want to use that register }
-  push rsi               { store the value of rsi, because we want to use that register }
 
   inc r9                 { get the actual number of items }
 
   //We have to jump to the end of the Args-array, because we have to iterate over it reversed
   mov rdi, r9            { we're going to calculate the number of bytes from the number of items }
   shl rdi, 4             { multiply the number of elements with SizeOf(TVarRec) }
-  add r8, rdi            { go to the end of the Args-array }
+  add r8, rdi            { go to the end of the Args-array (one past it) }
 
-  mov rsi, rdx           { we have to walk over the fmt in order to distinguish floats from doubles }
-  mov StackGrowth, 16    { already account for src and fmt (which will be pushed later) }
+  mov StackGrowth, 16    { already account for src and fmt }
+  //Process the Args-array
   @L1:
-    //We have to skip over any symbols in fmt that don't need an argument
-    @testFmtChar:
-    cmp byte ptr [rsi], '('       { skip '(' }
-    jz @skipFmtChar
-    cmp byte ptr [rsi], ')'       { skip ')' }
-    jz @skipFmtChar
-    //cmp byte ptr [rsi], '{'       { skip '{' }
-    //jz @skipFmtChar
-    //cmp byte ptr [rsi], '}'       { skip '}' }
-    //jz @skipFmtChar
-    cmp byte ptr [rsi], '|'       { skip '|' }
-    jz @skipFmtChar
-    //cmp byte ptr [rsi], ':'       { skip ':' }
-    //jz @skipFmtChar
-    //cmp byte ptr [rsi], ','       { skip '.' }
-    //jz @skipFmtChar
-    //cmp byte ptr [rsi], ' '       { skip ' ' }
-    //jz @skipFmtChar
-    cmp byte ptr [rsi], 0         { sanity check for end of fmt-string }
-    jnz @FmtReady      { jump if we found a format-character }
-
-    sub StackGrowth, 16    { src and fmt aren't on the stack yet}
-    add rsp, StackGrowth   { remove the arguments we pushed onto the stack }
-    pop rsi                { restore the original value of rsi }
-    pop rdi                { restore the original value of rdi }
-    mov al, reInvalidCast  { prepare an "invalid cast" error }
-    jmp System.Error       { raise the error }
-
-    @skipFmtChar:
-    inc rsi            { go to the next character }
-    jmp @testFmtChar   { test that one too }
-    @FmtReady:
-
-    //Process the Args-array
     sub r8, 16    { go back one item in the Args-array; 16 = SizeOf(TVarRec) }
     //[R8].Integer[0] = TVarRec.data
     //[R8].Byte[8]    = TVarRec.VType
     movzx rdi, [r8].Byte[8]          // TVarRec.VType
-    cmp rdi, vtInteger    { handle integers }
-    jz @lInteger
-    cmp rdi, vtExtended   { handle floating points }
-    jz @lExtended
+    //cmp rdi, vtInteger    { handle integers }
+    //jz @lInteger
+    //cmp rdi, vtExtended   { handle floating points }
+    //jz @lExtended
     cmp rdi, vtPointer    { handle objects }
     jz @lPointer
-    cmp rdi, vtPChar      { handle strings }
-    jz @lPointer
-    cmp rdi, vtPWideChar  { handle strings }
-    jz @lPointer
+    //cmp rdi, vtPChar      { handle strings }
+    //jz @lPointer
+    //cmp rdi, vtPWideChar  { handle strings }
+    //jz @lPointer
 
     //If we reach this point, there's an unsupported variable type in the Args-array
-    sub StackGrowth, 16    { src and fmt aren't on the stack yet}
+    sub StackGrowth, 16    { src and fmt aren't on the stack yet }
     add rsp, StackGrowth   { remove the arguments we pushed onto the stack }
-    pop rsi                { restore the original value of rsi }
     pop rdi                { restore the original value of rdi }
     mov al, reInvalidCast  { prepare an "invalid cast" error }
     jmp System.Error       { raise the error }
 
     //Convert the item
-    @lInteger:
-    sub rsp, 4                { make room on stack for the integer }
-    mov edi, dword ptr [r8]  { put the integer onto the stack }
-    mov dword ptr [rsp], edi  { ... in two steps }
-    add StackGrowth, 4
-    jmp @lDone
-
-    @lExtended:
-    mov rdi, [r8]            { it's a pointer to a double, so dereference it once }
-    cmp byte ptr [rsi], 'f'   { floats are 4 bytes, doubles are 8 bytes }
-    jz @isFloat
-    sub rsp, 8                { make room on stack for the double }
-    push [rdi]                { push the double onto the stack }
-    add StackGrowth, 8        { double, so this requires 8 bytes}
-    jmp @lDone
-    @isFloat:
-    sub rsp, 4                { make room on stack for the float }
-    fld qword ptr [rdi]       { put the 10 byte float into x87 stack }
-    fstp dword ptr [rsp]      { pop single from x87 stack onto CPU stack }
-    fwait                     { make sure any floating point exceptions are handled }
-    add StackGrowth, 4
-    jmp @lDone
-
     @lPointer:
     push qword ptr [r8]  { push the pointer onto the stack }
     add StackGrowth, 8
-    @lDone:
+    //@lDone:
 
-    dec r9               { we're finished processing an item in the Args-array }
+    dec r9               { we've finished processing an item in the Args-array }
     jnz @L1              { back to L1 if we're not done with the Args-array yet }
-  push fmt               { push the fmt-string onto the stack  }
-  push src               { push the src-object onto the stack as well, making it the first argument for Py_BuildValue }
+
+  //Put the third argument (if any) in the r8 register
+  cmp StackGrowth, 16
+  jle @doCall
+  mov r8, [rsp]
+
+  //Put the fourth argument (if any) in the r9 register
+  cmp StackGrowth, 24
+  jle @doCall
+  mov r9, [rsp+8]
+
+  @doCall:
+  push fmt               { push the fmt-string onto the stack }
+  push src               { push the src-object onto the stack as well }
   call PyArg_ParseTuple  { call PyArg_ParseTuple }
   add rsp, StackGrowth   { remove the arguments we pushed onto the stack }
-  pop rsi                { restore the original value of rsi }
   pop rdi                { restore the original value of rdi }
 
   //Result in RAX
