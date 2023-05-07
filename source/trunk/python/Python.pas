@@ -523,7 +523,7 @@ type
 
     f_exc_type, f_exc_value, f_exc_traceback: PyObject;
 
-    f_tstate: Pointer; //Actually PyThreadState, but Delphi can't handle forward record declarations, so we have to break the cyclical dependancy.
+    f_tstate: Pointer; //Actually PyThreadState, but Delphi can't handle forward record declarations, so we have to break the cyclical dependency.
     f_lasti, f_lineno, f_iblock: Integer;
 
     f_blockstack: packed array[0..CO_MAXBLOCKS-1] of PyTryBlock;
@@ -868,9 +868,13 @@ begin
 {$IFDEF Debug}
   if SetEnvironmentVariable('PYTHONDEBUG', '1') = false then
     Exit;
+  //if SetEnvironmentVariable('PYTHONVERBOSE', '1') = false then
+  //  Exit;
   if SetEnvironmentVariable('PYTHONDUMPREFS', '1') = false then
     Exit;
 {$ENDIF}
+  //if SetEnvironmentVariable('PYTHONDONTWRITEBYTECODE', '1') = false then
+  //  Exit;
   Result:=5;
 
   if PythonLib=0 then
