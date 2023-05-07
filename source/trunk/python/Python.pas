@@ -1512,7 +1512,7 @@ asm
   //Result in EAX
   {$ELSE}
   {$IFDEF CPUX64}
-  //RAX: src
+  //RCX: src
   //RDX: fmt
   //R8: pointer to Args's first item
   //R9: length of Args, minus 1
