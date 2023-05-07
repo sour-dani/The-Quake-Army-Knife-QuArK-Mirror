@@ -3278,7 +3278,7 @@ function InitializeQuarkx : Boolean;
  function RegType(var PyType: TyTypeObject; const VarName: PyChar) : Boolean;
  begin
   PyType.ob_type:=PyType_Type;
-  Result:=(PyDict_SetItemString(QuarkxDict, VarName, @PyType)<>0);
+  Result:=(PyDict_SetItemString(QuarkxDict, VarName, @PyType)=0);
  end;
 
 var
