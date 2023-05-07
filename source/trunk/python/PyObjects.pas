@@ -556,7 +556,7 @@ end;
 function qLoadText(self, args: PyObject) : PyObject; cdecl;
 var
  src: PyChar;
- count: Integer;
+ count: {$IFDEF PYTHON25}Py_ssize_t{$ELSE}Integer{$ENDIF};
  Q: QObject;
 begin
  Result:=Nil;

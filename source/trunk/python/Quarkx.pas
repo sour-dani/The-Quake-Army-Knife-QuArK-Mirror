@@ -1082,7 +1082,7 @@ end;
 function xTruncStr(self, args: PyObject) : PyObject; cdecl;
 var
  P: PyChar;
- Size: Integer;
+ Size: {$IFDEF PYTHON25}Py_ssize_t{$ELSE}Integer{$ENDIF};
 begin
  Result:=Nil;
  try
@@ -2086,7 +2086,7 @@ end;
 function xWriteConsole(self, args: PyObject) : PyObject; cdecl;
 var
  text: PyChar;
- textlength: Integer;
+ textlength: {$IFDEF PYTHON25}Py_ssize_t{$ELSE}Integer{$ENDIF};
  obj: PyObject;
  S: String;
 begin
