@@ -2623,6 +2623,9 @@ begin
   try
     {$IFDEF DEBUG}
     s.add('PROCESS:');
+    s.add(format('Process ID: %u', [Windows.GetCurrentProcessId()]));
+    s.add(format('Main instance handle: %u', [System.MainInstance]));
+    s.add(format('Main thread ID: %u', [System.MainThreadID]));
     s.add(format('Image base address: 0x%p', [Pointer(GetModuleHandle(Nil))]));
     s.add('');
     {$ENDIF}

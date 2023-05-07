@@ -135,7 +135,7 @@ begin
       WriteLn(LogFile, LogCache[I]);
     Flush(LogFile);
     {$I+}
-    SetLength(LogCache, 0);    
+    SetLength(LogCache, 0);
   end;
 {$IFDEF PyProfiling}
   {$I-}
