@@ -62,32 +62,32 @@ uses Windows, SysUtils, Quarkx, QkExceptions, QkObjectClassList,
 type
   //Based on: https://github.com/CptAsgard/CoD2Unity/blob/master/Assets/cod2materialfiles.txt
   TCoD2MaterialHeader = packed record
-     offset_material: DWORD;      //index to the material name
-     offset_color_texture: DWORD; //index to color texture name
-     unknown1: DWORD;             //UNKNOWN
-     size_texture: DWORD;         //texture size
-     unknown2: DWORD;             //UNKNOWN, padding?
-     unknown3, unknown4: Word;    //UNKNOWN, texture UV?
-     unknown5, unknown6: Word;    //UNKNOWN, texture ST?
+     offset_material: Longword;            //index to the material name
+     offset_color_texture: Longword;       //index to color texture name
+     unknown1: Longword;                   //UNKNOWN
+     size_texture: Longword;               //texture size
+     unknown2: Longword;                   //UNKNOWN, padding?
+     unknown3, unknown4: Word;             //UNKNOWN, texture UV?
+     unknown5, unknown6: Word;             //UNKNOWN, texture ST?
      texture_size_x, texture_size_y: Word; //texture size dimensions
-     unknown7: DWORD;             //UNKNOWN, padding?
-     unknown8: DWORD;             //UNKNOWN
-     unknown9: DWORD;             //UNKNOWN
-     unknown10: DWORD;            //UNKNOWN
-     unknown11: DWORD;            //UNKNOWN
-     unknown12: DWORD;            //UNKNOWN
-     offset_techniqueset: DWORD;  //index to techniqueset name
-     unknown13: DWORD;            //UNKNOWN
-     offset_shader: DWORD;        //index to shader name
-     offset_colormap_tag: DWORD;  //index to 'colorMap'
-     unknown14: DWORD;            //UNKNOWN, shader slot index?
-     offset_colormap: DWORD;      //index to color map name
-     offset_normalmap_tag: DWORD; //index to 'normalMap'
-     unknown15: DWORD;            //UNKNOWN, shader slot index?
-     offset_normalmap: DWORD;     //index to normal map name
-     offset_specularmap_tag: DWORD; //index to 'specularMap'
-     unknown16: DWORD;            //UNKNOWN, shader slot index?
-     offset_specularmap: DWORD;   //index to specular texture
+     unknown7: Longword;                   //UNKNOWN, padding?
+     unknown8: Longword;                   //UNKNOWN
+     unknown9: Longword;                   //UNKNOWN
+     unknown10: Longword;                  //UNKNOWN
+     unknown11: Longword;                  //UNKNOWN
+     unknown12: Longword;                  //UNKNOWN
+     offset_techniqueset: Longword;        //index to techniqueset name
+     unknown13: Longword;                  //UNKNOWN
+     offset_shader: Longword;              //index to shader name
+     offset_colormap_tag: Longword;        //index to 'colorMap'
+     unknown14: Longword;                  //UNKNOWN, shader slot index?
+     offset_colormap: Longword;            //index to color map name
+     offset_normalmap_tag: Longword;       //index to 'normalMap'
+     unknown15: Longword;                  //UNKNOWN, shader slot index?
+     offset_normalmap: Longword;           //index to normal map name
+     offset_specularmap_tag: Longword;     //index to 'specularMap'
+     unknown16: Longword;                  //UNKNOWN, shader slot index?
+     offset_specularmap: Longword;         //index to specular texture
   end;
 
 {------------------------}
@@ -181,9 +181,9 @@ begin
       Raise EError(5519);
     org:=F.position;
     f.readbuffer(header, sizeof(header));
-    f.seek(org+Integer(header.offset_material), soBeginning);
+    f.seek(org+TStreamPos(header.offset_material), soBeginning);
     S:=ReadString(); //@
-    f.seek(org+Integer(header.offset_color_texture), soBeginning);
+    f.seek(org+TStreamPos(header.offset_color_texture), soBeginning);
     texture_name:=ReadString(); //@
     //@
    end
