@@ -1463,7 +1463,7 @@ begin
   exit;
  end;
  Result:=(PInteger(P)^=c_FileSignatureQQRK) and (PInteger(P+SizeOf(LongInt))^=c_FileVersionText);
- Inc(P, 2*SizeOf(LongInt));
+ Inc(P, c_FileSignatureSize);
 end;
 
 procedure QFileObject.SaveFile(Info: TInfoEnreg1);
