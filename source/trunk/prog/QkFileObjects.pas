@@ -221,8 +221,9 @@ uses qhelper, Qk1, Undo, QkExplorer, Setup, qmath, QkGroup, Travail, QkOwnExplor
 const
  c_FileSignatureQQRK   = $4B525151;  {QQRK}
  c_FileVersionBinary   = $314E4942;  {BIN1}
+ //c_FileVersionBinary2  = $324E4942;  {BIN2}
  c_FileVersionText     = $31435253;  {SRC1}
- c_FileVersionText2    = $32435253;  {SRC2}
+ //c_FileVersionText2    = $32435253;  {SRC2}
 
  c_FileSignatureSize = 2*SizeOf(LongWord);  { Signature + Version }
 
