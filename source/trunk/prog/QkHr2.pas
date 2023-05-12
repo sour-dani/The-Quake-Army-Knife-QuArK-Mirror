@@ -237,7 +237,7 @@ begin
         F.Position:=Origine+Delta;
         F.ReadBuffer(Hr2Entry, SizeOf(Hr2Entry));
         Inc(Delta, SizeOf(Hr2Entry));
-        if (Delta+Integer(Hr2Entry.Size) > FSize) then
+        if (Delta+TStreamPos(Hr2Entry.Size) > FSize) then
          Raise EErrorFmt(5509, [291]);
 
         S:=CharToPas(Hr2Entry.SectionName);
