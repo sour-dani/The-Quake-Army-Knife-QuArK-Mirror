@@ -1592,7 +1592,7 @@ begin
     F.Free;
   end;
 
- if LoadingComplete then //If Python isn't loaded, some string would be corrupted.
+ if LoadingComplete then //If Python isn't loaded, some strings would become corrupted.
   try
    SaveSetupNow;
   except
