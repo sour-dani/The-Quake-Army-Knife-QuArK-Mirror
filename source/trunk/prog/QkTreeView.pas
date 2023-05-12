@@ -179,7 +179,11 @@ const
  MyTVIndent = 19;
  TextMarginH = 2;
  TextMarginV = 1;
- IconToTextMargin = 2;
+ IconSize = 16; //Must be equal to picture file
+ IconToTextMargin = 2; //Margin between the icon and the text
+ ColorBoxMargin = 2; //Margin between the text and colorboxes
+ ColorBoxWidth = 12;
+ ColorBoxSpacing = 4; //Room between color boxes
 
 var
  MyTVPlusSign: HBitmap = 0;
@@ -287,7 +291,7 @@ begin
     ReleaseDC(0, DC);
   end;
   LineStep:=Metrics.tmHeight+(2*TextMarginV);
-  if LineStep<16 then LineStep:=16;
+  if LineStep<IconSize then LineStep:=IconSize;
 
   VertScrollBar.Range:=CountVisibleItems(Roots, ofTreeViewSubElement)*LineStep;
 end;
@@ -573,7 +577,7 @@ var
                if TextSize.cx > FDescriptionLeft then
                 FDescriptionLeft:=TextSize.cx;
               end;
-             Inc(FDescriptionLeft, X+(16+IconToTextMargin+(2*TextMarginH)+DescMargin));
+             Inc(FDescriptionLeft, X+IconSize+IconToTextMargin+(2*TextMarginH)+DescMargin);
              FDescLeftOk:=True;
             end;
            R.Left:=FDescriptionLeft;
@@ -591,11 +595,11 @@ var
            end;
 
          //If the line has more vertical space than the icon
-         if R.Bottom-Y > 16 then
+         if R.Bottom-Y > IconSize then
           begin
-           YOffset:=(R.Bottom-Y-16) div 2;
+           YOffset:=(R.Bottom-Y-IconSize) div 2;
            TMPRect.Left:=X;
-           TMPRect.Right:=X+16;
+           TMPRect.Right:=X+IconSize;
 
            //Space above the icon
            TMPRect.Top:=R.Top;
@@ -603,7 +607,7 @@ var
            FillRect(DC, TMPRect, Brush);
 
            //Space below the icon
-           TMPRect.Top:=Y+YOffset+16;
+           TMPRect.Top:=Y+YOffset+IconSize;
            TMPRect.Bottom:=R.Bottom;
            FillRect(DC, TMPRect, Brush);
           end
@@ -621,10 +625,10 @@ var
           Image1:=PyImage1(Etat.Icon);
           if (Image1=Nil)
           or not ImageList_DrawEx(Image1^.ImageList^.Handle, Image1^.Index,
-           DC, X,Y+YOffset, 16,16, BkColor, BkColor, Mode[Item.Flags and ofNotLoadedToMemory <> 0]) then
+           DC, X,Y+YOffset, IconSize,IconSize, BkColor, BkColor, Mode[Item.Flags and ofNotLoadedToMemory <> 0]) then
             begin
              R.Left:=X;
-             R.Right:=X+16;
+             R.Right:=X+IconSize;
              FillRect(DC, R, Brush); //Note: draws the vertical space around the icon twice!
             end;
          finally
@@ -633,9 +637,9 @@ var
          if (Item.Flags and (ofFileLink or ofTreeViewSubElement) = ofFileLink or ofTreeViewSubElement)
          and (InternalImages[iiLinkOverlay,0]<>Nil) and (InternalImages[iiLinkOverlay,0]^.ob_type = @TyImage1_Type) then
           with PyImage1(InternalImages[iiLinkOverlay,0])^ do
-           ImageList_DrawEx(ImageList^.Handle, Index, DC, X,Y+YOffset, 16,16, CLR_NONE, CLR_DEFAULT, ILD_TRANSPARENT);
+           ImageList_DrawEx(ImageList^.Handle, Index, DC, X,Y+YOffset, IconSize,IconSize, CLR_NONE, CLR_DEFAULT, ILD_TRANSPARENT);
 
-         R.Left:=X+16;
+         R.Left:=X+IconSize;
 //         FoundAColor:=False;
          L:=Item.TreeViewColorBoxes;
          if L<>nil then
@@ -667,12 +671,12 @@ var
           begin
            SetBkColor(DC, SelBkColor);
            SetTextColor(DC, SelTextColor);
-           R.Right:=X+16+IconToTextMargin;
+           R.Right:=X+IconSize+IconToTextMargin;
            FillRect(DC, R, Brush);
            R.Left:=R.Right;
            Inc(R.Right, TextSize.cx+(2*TextMarginH));
            UpdateMaxPixelWidth(R.Right);
-           ExtTextOut(DC, X+16+IconToTextMargin+TextMarginH, Y+TextMarginV, ETO_OPAQUE, @R, PChar(Item.Name), Length(Item.Name), Nil);
+           ExtTextOut(DC, X+IconSize+IconToTextMargin+TextMarginH, Y+TextMarginV, ETO_OPAQUE, @R, PChar(Item.Name), Length(Item.Name), Nil);
            R.Left:=R.Right;
            R.Right:=FDescriptionLeft;
            FillRect(DC, R, Brush);
@@ -682,15 +686,15 @@ var
          else
           begin
            R.Right:=FDescriptionLeft;
-           UpdateMaxPixelWidth(X+16+IconToTextMargin+(2*TextMarginH)+TextSize.cx);
-           ExtTextOut(DC, X+16+IconToTextMargin+TextMarginH, Y+TextMarginV, ETO_OPAQUE, @R, PChar(Item.Name), Length(Item.Name), Nil);
+           UpdateMaxPixelWidth(X+IconSize+IconToTextMargin+(2*TextMarginH)+TextSize.cx);
+           ExtTextOut(DC, X+IconSize+IconToTextMargin+TextMarginH, Y+TextMarginV, ETO_OPAQUE, @R, PChar(Item.Name), Length(Item.Name), Nil);
            if Odd(Item.SelMult) then
             begin
              Pen1:=SelectObject(DC, CreatePen(ps_Solid, 1, SelBkColor));
              try
                Brush1:=SelectObject(DC, GetStockObject(Null_brush));
-               Rectangle(DC, X+16+IconToTextMargin, R.Top, X+TextSize.cx+16+IconToTextMargin+(2*TextMarginH), R.Bottom);
-               UpdateMaxPixelWidth(X+TextSize.cx+16+IconToTextMargin+(2*TextMarginH));
+               Rectangle(DC, X+IconSize+IconToTextMargin, R.Top, X+TextSize.cx+IconSize+IconToTextMargin+(2*TextMarginH), R.Bottom);
+               UpdateMaxPixelWidth(X+TextSize.cx+IconSize+IconToTextMargin+(2*TextMarginH));
                SelectObject(DC, Brush1);
              finally
                DeleteObject(SelectObject(DC, Pen1));
@@ -699,7 +703,7 @@ var
           end;
          if FocusItem=Item then
           begin
-           R.Left:=X+16+IconToTextMargin;
+           R.Left:=X+IconSize+IconToTextMargin;
            R.Right:=R.Left+TextSize.cx+(2*TextMarginH);
            UpdateMaxPixelWidth(R.Right);
            DrawFocusRect(DC, R);
@@ -710,12 +714,12 @@ var
            for M:=0 to Length(C)-1 do
             if C[M]<>clNone then
              begin
+              R.Left:=X+IconSize+IconToTextMargin+(2*TextMarginH)+TextSize.cx+ColorBoxMargin+((ColorBoxSpacing + ColorBoxWidth)*NumberOfColorsDrawn);
               NumberOfColorsDrawn:=NumberOfColorsDrawn+1;
-              R.Left:=X+6+TextSize.cx+(16*NumberOfColorsDrawn);
               Brush1:=SelectObject(DC, CreateSolidBrush(C[M]));
               try
-                UpdateMaxPixelWidth(R.Left+16);
-                Rectangle(DC, R.Left+4, R.Top+3, R.Left+16, R.Bottom-3);
+                UpdateMaxPixelWidth(R.Left+ColorBoxSpacing+ColorBoxWidth);
+                Rectangle(DC, R.Left+ColorBoxSpacing, R.Top+3, R.Left+ColorBoxSpacing+ColorBoxWidth, R.Bottom-3);
               finally
                 DeleteObject(SelectObject(DC, Brush1));
               end;
@@ -902,7 +906,7 @@ begin
    Dec(I);
    Test:=FFocusList[I];
    Dec(I);
-   OldJ:=Integer(FFocusList[I]);
+   OldJ:=Integer(FFocusList[I]); //FIXME: Fix Integer!
    J:=L.IndexOf(Test);
    if J<0 then
     begin
@@ -1653,7 +1657,7 @@ begin
      begin
       R:=GetNodeDisplayRect(Item);
       if IsRectEmpty(R) then Exit;
-      Inc(R.Left, 16+IconToTextMargin+TextMarginH);
+      Inc(R.Left, IconSize+IconToTextMargin+TextMarginH);
       R.Right:=ClientWidth;
       Inc(R.Top);
       Dec(R.Bottom);
@@ -1829,7 +1833,7 @@ begin
     finally
       ReleaseDC(Handle, DC);
     end;
-    Result:=Bounds(1+Level*MyTVIndent, Index*LineStep, TextSize.cx+16+IconToTextMargin+(2*TextMarginH), LineStep);
+    Result:=Bounds(1+Level*MyTVIndent, Index*LineStep, TextSize.cx+IconSize+IconToTextMargin+(2*TextMarginH), LineStep);
     Exit;
    end;
  Result:=Rect(0,0,0,0);
