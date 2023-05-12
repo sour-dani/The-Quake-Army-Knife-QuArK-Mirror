@@ -1442,8 +1442,8 @@ var
  S: String; //FIXME: AnsiString?
 begin
  SetLength(S, c_FileSignatureSize);
- PInteger(@S[1])^:=c_FileSignatureQQRK;
- PInteger(@S[1+SizeOf(LongInt)])^:=c_FileVersionText;
+ PLongInt(@S[1])^:=c_FileSignatureQQRK;
+ PLongInt(@S[1+SizeOf(LongInt)])^:=c_FileVersionText;
  L.Add(S);
  if Comment then
   begin
@@ -1462,7 +1462,7 @@ begin
   Result:=false;
   exit;
  end;
- Result:=(PInteger(P)^=c_FileSignatureQQRK) and (PInteger(P+SizeOf(LongInt))^=c_FileVersionText);
+ Result:=(PLongInt(P)^=c_FileSignatureQQRK) and (PLongInt(P+SizeOf(LongInt))^=c_FileVersionText);
  Inc(P, c_FileSignatureSize);
 end;
 
@@ -1528,8 +1528,8 @@ begin
     begin
      L:=TStringList.Create; try
      SetLength(S, c_FileSignatureSize);
-     PInteger(@S[1])^:=c_FileSignatureQQRK;
-     PInteger(@S[1+SizeOf(LongInt)])^:=c_FileVersionText;
+     PLongInt(@S[1])^:=c_FileSignatureQQRK;
+     PLongInt(@S[1+SizeOf(LongInt)])^:=c_FileVersionText;
      L.Add(S);
      L.Add(FmtLoadStr1(5200, [QuArKVersion, Name+TypeInfo]));
      L.Text:=L.Text;   { #13 --> #13#10 }
@@ -1566,8 +1566,8 @@ begin
     begin
      L:=TStringList.Create; try
      SetLength(S, c_FileSignatureSize);
-     PInteger(@S[1])^:=c_FileSignatureQQRK;
-     PInteger(@S[1+SizeOf(LongInt)])^:=c_FileVersionText;
+     PLongInt(@S[1])^:=c_FileSignatureQQRK;
+     PLongInt(@S[1+SizeOf(LongInt)])^:=c_FileVersionText;
      L.Add(S);
      L.Add(FmtLoadStr1(5200, [QuArKVersion, Name+TypeInfo]));
      L.Text:=L.Text;   { #13 --> #13#10 }
