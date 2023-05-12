@@ -23,8 +23,8 @@ unit Game2;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  TB97, ComCtrls, StdCtrls, Qk1, QkForm;
+  Windows, SysUtils, Classes, Graphics, Controls, Forms,
+  TB97, ComCtrls, StdCtrls, QkForm;
 
 type
   TAddOnsAddDlg = class(TQkForm)
