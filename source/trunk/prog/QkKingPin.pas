@@ -234,7 +234,7 @@ begin
 
           Specifics.Add(S);
 
-          if not ScaleDown(Integer(tex_size.x),Integer(tex_size.y)) then
+          if not ScaleDown(tex_size.x, tex_size.y) then
             Break;
         end;
 
