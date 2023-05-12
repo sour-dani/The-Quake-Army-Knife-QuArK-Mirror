@@ -140,7 +140,7 @@ type
                       property TextureMirror: Boolean read GetTextureMirror write SetTextureMirror;
                       function PyGetAttr(attr: PyChar) : PyObject; override;
                       function PySetAttr(attr: PyChar; value: PyObject) : Boolean; override;
-                      function GetFaceOpacity(Default: Integer) : TTexOpacityInfo;
+                      function GetFaceOpacity(Default: Byte) : TTexOpacityInfo;
                     end;
 
  { The entire treatment of texture-positiong is somewhat crufty, since
@@ -4168,15 +4168,17 @@ begin
   end;
 end;
 
-function TTexturedTreeMap.GetFaceOpacity(Default: Integer) : TTexOpacityInfo;
+function TTexturedTreeMap.GetFaceOpacity(Default: Byte) : TTexOpacityInfo;
 var
  S: String;
  Val: Integer;
  Parent: ^Q3DObject;
- C:Array[0..2] of Double;
+ C: Array[0..2] of Double;
 begin
  Result.Value := Default;
- Integer(Addr(Result.Color)^) := Integer(0);
+ Result.Color[0] := 0;
+ Result.Color[1] := 0;
+ Result.Color[2] := 0;
  Result.Mode := trmNormal;
 {DECKER 2003.03.12}
  if (CurrentGameMode=mjHalfLife) or (CurrentGameMode=mjCoF) or (CurrentGameMode=mjSC) or (CurrentGameMode=mjHL2) then
