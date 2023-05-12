@@ -929,7 +929,7 @@ begin
  end;
 end;
 
-procedure QFileObject.WriteStandardFileHeading(TotalSize: Integer; F: TStream);
+procedure QFileObject.WriteStandardFileHeading(TotalSize: LongInt; F: TStream);
 var
  Header: TFileHeaderBinary;
 begin
@@ -1469,7 +1469,7 @@ end;
 procedure QFileObject.SaveFile(Info: TInfoEnreg1);
 var
  L: TStringList;
- Origin, Eof: Integer;
+ Origin, Eof: TStreamPos;
  Info1: TFileObjectClassInfo;
 begin
  with Info do case Format of
@@ -1511,7 +1511,7 @@ end;
 var
  L: TStringList;
  S: String;
- Origin, Eof: Integer;
+ Origin, Eof: TStreamPos;
 begin
  case Format of
   rf_Default:
@@ -1548,7 +1548,7 @@ end;*)
 var
  L: TStringList;
  S: String;
- Origin, Eof: Integer;
+ Origin, Eof: TStreamPos;
 begin
  Result:=False;
  case Format of
