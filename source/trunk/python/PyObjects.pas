@@ -121,6 +121,7 @@ asm
  sub eax, offset QObject.PythonObj
 {$ELSE}
  {$IFDEF CPUX64}
+  mov rax, rcx
   sub rax, offset QObject.PythonObj
  {$ELSE}
   {$Message Error Unsupported CPU architecture!}

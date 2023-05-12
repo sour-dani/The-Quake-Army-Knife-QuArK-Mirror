@@ -130,7 +130,7 @@ var
 
  {-------------------}
 
-function LayoutMgrFromPanelObj(PanelObj: PyObject) : TLayoutMgr;
+function LayoutMgrFromPanelObj(PanelObj: PyObject) : TLayoutMgr; register;
 
  {-------------------}
 
@@ -152,6 +152,7 @@ asm
  sub eax, offset TLayoutMgr.PanelObject
 {$ELSE}
  {$IFDEF CPUX64}
+  mov rax, rcx
   sub rax, offset TLayoutMgr.PanelObject
  {$ELSE}
   {$Message Error Unsupported CPU architecture!}
