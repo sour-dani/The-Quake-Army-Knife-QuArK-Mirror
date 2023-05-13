@@ -1459,36 +1459,6 @@ begin
  Orthogonal:=(Abs(SinAngleV*CosAngleV)<rien) and (Abs(SinAngle*CosAngle)<rien);
 end;*)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
  {------------------------}
 
 function Get3DCoord : TCameraCoordinates;

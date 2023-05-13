@@ -400,7 +400,7 @@ var
  begin
   Result:=g_SetupSet[ssGeneral].GetFloatSpec('InternalVersion', 0);
  end;
- 
+
 begin
  for T:=High(T) downto Low(T) do
   if g_SetupSet[T]<>Nil then
