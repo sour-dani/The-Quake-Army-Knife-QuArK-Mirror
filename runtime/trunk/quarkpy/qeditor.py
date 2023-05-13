@@ -725,13 +725,15 @@ class Compass:
                 # Animate the Compass.
 
                 start = 0
+                delay = 0
                 if (i-self.i)%imgcount <= imgcount/2:
                     #
                     # Counterclockwise
                     #
                     while i != self.i:
                         self.i = (self.i + 1) % imgcount   # next image
-                        start = quarkx.wait(10, start)
+                        start = quarkx.wait(delay, start)
+                        delay = 10
                         ctrl.image = self.Images[self.i]
                 else:
                     #
@@ -739,7 +741,8 @@ class Compass:
                     #
                     while i != self.i:
                         self.i = (self.i - 1) % imgcount   # next image
-                        start = quarkx.wait(10, start)
+                        start = quarkx.wait(delay, start)
+                        delay = 10
                         ctrl.image = self.Images[self.i]
 
                 #

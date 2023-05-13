@@ -1186,21 +1186,18 @@ end;
 
 function xWait(self, args: PyObject) : PyObject; cdecl;
 var
- Ticks, Start: Integer;
+ Ticks: Integer;
+ Start: DWORD;
 begin
  Result:=Nil;
  try
-  Ticks:=0;
-  Start:=-1;
-  if PyArg_ParseTupleX(args, '|ii', [@Ticks, @Start])=0 then
+  Start:=0;
+  if PyArg_ParseTupleX(args, 'i|I', [@Ticks, @Start])=0 then
    Exit;
   if Start<>0 then
-   begin
-    if Start<>-1 then
-     Dec(Ticks, Integer(GetTickCount)-Start);
-    if Ticks>0 then
-     Sleep(Ticks);
-   end;
+   Dec(Ticks, GetTickCount-Start);
+  if Ticks>0 then
+   Sleep(Ticks);
   Result:=PyInt_FromLong(GetTickCount);
  except
   Py_XDECREF(Result);
