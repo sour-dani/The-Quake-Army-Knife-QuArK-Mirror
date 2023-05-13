@@ -1141,6 +1141,7 @@ Strings = {
     5868: "Failed to load the file '%s'. Its menu will not be displayed",
     5869: "Squirrel script file",
     5870: "Stoneless Extended Map file",
+    5871: "Unable to decompress file '%s': it is encrypted",
 
     # DanielPharos would like to reserve 6000 .. 6099 for all renderers
     6000: "Unable to create SceneObject//%s",

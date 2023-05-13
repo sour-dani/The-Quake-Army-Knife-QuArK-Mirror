@@ -54,34 +54,34 @@ uses
 }
 
 type
-  TLocalfileheader = packed record
-    version_needed     : Word;
-    bit_flag           : Word;
-    compression_method : Word;
-    last_mod_datetime  : Longword;
-    crc_32             : Longword;
-    compressed         : Longword;
-    uncompressed       : Longword;
-    filename_len       : Word;
-    extrafield_len     : Word;
+  TLocalFileHeader = packed record
+    version_needed      : Word;
+    bit_flag            : Word;
+    compression_method  : Word;
+    last_mod_datetime   : Longword;
+    crc_32              : Longword;
+    compressed          : Longword;
+    uncompressed        : Longword;
+    filename_len        : Word;
+    extrafield_len      : Word;
   end;
 
   TFileHeader = packed record
-    version_by            : Word;
-    version_needed        : Word;
-    bit_flag              : Word;
-    compression_method    : Word;     //  8
-    last_mod_datetime     : Longword;
-    crc_32                : Longword;
-    compressed            : Longword;
-    uncompressed          : Longword; //  24
-    filename_len          : Word;
-    extrafield_len        : Word;
-    filecomment_len       : Word;
-    disk_start_no         : Word;
-    internal_attrs        : Word;     //  34
-    external_attrs        : Longword;
-    local_header_offset   : Longword; //  42
+    version_by           : Word;
+    version_needed       : Word;
+    bit_flag             : Word;
+    compression_method   : Word;     //  8
+    last_mod_datetime    : Longword;
+    crc_32               : Longword;
+    compressed           : Longword;
+    uncompressed         : Longword; //  24
+    filename_len         : Word;
+    extrafield_len       : Word;
+    filecomment_len      : Word;
+    disk_start_no        : Word;
+    internal_attrs       : Word;     //  34
+    external_attrs       : Longword;
+    local_header_offset  : Longword; //  42
   end;
 
   TEndOfCentralDir = packed record
@@ -185,12 +185,6 @@ begin
   Result.zipfilecomment_len := zfn;
 end;
 
-procedure ReadaString(f:TStream; var s:String; size:Integer);
-begin
-  SetLength(s, size);   { reserve space for the string }
-  f.readbuffer(PChar(s)^, size);  { read it in a single operation }
-end;
-
 type
   TPakSibling = class(TInfoEnreg1)
   private
@@ -260,13 +254,13 @@ var
   Q: QObject;
   S: String;
   Info1: TPakSibling;
-  TempStream,T2:TMemoryStream;
+  TempStream, T2: TMemoryStream;
   tInfo: TInfoEnreg1;
   LFS: TLocalFileHeader;
-  OrgSize,Size,pos: TStreamPos;
+  OrgSize, Size, pos: TStreamPos;
   crc: LongWord;
-  cdir:TFileHeader;
-  sig:Longint;
+  cdir: TFileHeader;
+  sig: LongWord;
   TimestampNow: Integer;
 begin
   Acces;
@@ -288,14 +282,14 @@ begin
     for I:=0 to SubElements.Count-1 do
     begin
       Q:=SubElements[I];
-      if Q is QPakFolder then   { save as folder in the .pak }
+      if Q is QPakFolder then //Save as folder in the archive.
         QZipFolder(Q).WritePakEntries(Info, Origine, Chemin+Q.Name+'/', TailleNom, Repertoire, eocd)
       else
       begin
         S:=Chemin+Q.Name+Q.TypeInfo;
         T2:=TMemoryStream.Create;
         try
-         { First Save The File Data To A Memory Stream}
+          //First save the file data to a memory stream.
           TempStream:=TMemoryStream.Create;
           try
             tInfo:=TInfoEnreg1.Create;
@@ -304,7 +298,7 @@ begin
               tInfo.TransfertSource:=Info.TransfertSource;
               tInfo.TempObject:=Info.TempObject;
               tInfo.F:=TempStream;
-              Q.SaveFile1(tInfo);   { save in non-QuArK file format }
+              Q.SaveFile1(tInfo); //Save in non-QuArK file format.
             finally
               tInfo.Free;
             end;
@@ -312,7 +306,7 @@ begin
             TempStream.Seek(0, soBeginning);
             OrgSize:=TempStream.Size;
 
-           { Compress Data From TempStream To T2}
+            //Compress data from TempStream to T2.
             CompressStream(TempStream, T2);
             T2.Seek(0, soBeginning);
             Size:=T2.Size;
@@ -340,7 +334,7 @@ begin
           inc(eocd^.no_entries);
           inc(eocd^.size_cd, (4 + sizeof(TFileHeader) + Length(S)));
 
-          Info.F.CopyFrom(T2, T2.Size); //Write Actual File Data ( Compressed )
+          Info.F.CopyFrom(T2, T2.Size); //Write actual file data (compressed).
         finally
           T2.Free;
         end;
@@ -356,7 +350,7 @@ procedure QZipFolder.SaveFile(Info: TInfoEnreg1);
 var
   Repertoire: TMemoryStream;
   Origine, Fin: TStreamPos;
-  sig: LongInt;
+  sig: LongWord;
   EOCDHeader: TEndOfCentralDir;
   comment: string;
 begin
@@ -419,19 +413,26 @@ begin
 end;
 
 procedure QZipFolder.LoadFile(F: TStream; FSize: TStreamPos);
+
+  procedure ReadaString(f:TStream; var s:AnsiString; size:Integer); //FIXME: Unless bit 11 in the general purpose bit flag is set. (Bit 0 is the encryption bit!)
+  begin
+    SetLength(s, size);   { reserve space for the string }
+    f.readbuffer(PAnsiChar(s)^, size);  { read it in a single operation }
+  end;
+
 var
   J: Integer;
   Dossier, nDossier: QObject;
-  Chemin, CheminPrec,fn: String;
+  Chemin, CheminPrec, fn: String;
   dummystring: String;
   Q: QObject;
   FH: TFileHeader;
-  org,Size:TStreamPos;
+  org, Size: TStreamPos;
   files: TMemoryStream;
-  EoSig,FileSig: LongWord;
-  nEnd:TStreamPos;
+  EoSig, FileSig: LongWord;
+  nEnd: TStreamPos;
   eocd: TEndOfCentralDir;
-  I:Word;
+  I: Word;
   eocd_found: boolean;
 begin
   case ReadFormat of
@@ -443,20 +444,21 @@ begin
       if (FSize < sizeof(TEndOfCentralDIR)) then
         raise EErrorFmt(5840, [LoadName, FSize, sizeof(TEndOfCentralDIR)]);
 
-      f.seek(FSize-sizeof(TEndOfCentralDIR), soBeginning); // EOCD is stored at least -Sizeof(endofcentraldir) header
+      //Find the end of the central directory.
+      f.seek(FSize-sizeof(TEndOfCentralDIR), soBeginning); //EOCD is stored at least -Sizeof(endofcentraldir) header.
       eocd_found:=false;
       while (f.position > org) do
       begin
-        f.ReadBuffer(eosig, 4);                         // check for cEOCD_HEADER signature
+        f.ReadBuffer(eosig, 4); //Check for cEOCD_HEADER signature.
         eocd_found := (eosig = cEOCD_HEADER);
         if not eocd_found then
-          f.seek(-5, soCurrent)                     // Skip back 1 byte, and recheck
+          f.seek(-5, soCurrent) //Skip back 1 byte, and recheck.
         else
           break;
       end;
       if not eocd_found then
       begin
-        f.seek(org, soBeginning); // Restore original file position, just in case
+        f.seek(org, soBeginning); //Restore original file position, just in case.
         raise EErrorFmt(5841, [LoadName, cEOCD_HEADER]);
       end;
 
@@ -466,16 +468,17 @@ begin
       if eocd.zipfilecomment_len <> 0 then
       begin
         setlength(dummystring, eocd.zipfilecomment_len);
-        f.readbuffer(dummystring[1], eocd.zipfilecomment_len);
+        f.readbuffer(dummystring[1], eocd.zipfilecomment_len); //FIXME: Use ReadaString!
         if dummystring = quark_zip_comment_temp then
         begin
           Specifics.Values['temp']:= '1';
         end;
+        //FIXME: Save the comment so we can restore it on save?
       end;
-      f.seek(org + eocd.offset_cd, soBeginning); {seek to central directory}
-      files:=TMemoryStream.Create;    {ms for central directory}
+      f.seek(org + eocd.offset_cd, soBeginning); //Seek to central directory
+      files:=TMemoryStream.Create; //MemoryStream for central directory
       try
-        files.CopyFrom(f, eocd.size_cd); {read in central dir}
+        files.CopyFrom(f, eocd.size_cd); //Read in central dir
         files.seek(0, soBeginning);
 
         ProgressIndicatorStart(5461, eocd.no_entries);
@@ -492,18 +495,20 @@ begin
             ReadaString(files, dummystring, FH.extrafield_len);
             ReadaString(files, dummystring, FH.filecomment_len);
 
-            { store original filename for later check }
-            fn:=Chemin;
+            //We don't support encrypted zip files at the moment.
+            if (FH.bit_flag and 1) <> 0 then
+              raise EErrorFmt(5871, [LoadName]); //FIXME: Add the file as QUnknown or QRawFile instead? (And log the issue!)
 
-            { check compression method, that it is one we can decompress }
+            //Check compression method, that it is one we can decompress.
             if  (FH.compression_method<>cSTORED_COMPRESSION)
             and (FH.compression_method<>cSHRUNK_COMPRESSION)
             and (FH.compression_method<>cIMPLODED_COMPRESSION)
             and (FH.compression_method<>cDEFLATED_COMPRESSION) then
-              Raise EErrorFmt(5692, [LoadName, FH.compression_method]);
+              Raise EErrorFmt(5692, [LoadName, FH.compression_method]); //FIXME: Add the file as QUnknown or QRawFile instead? (And log the issue!)
 
-            { if previous file's path, is the same as this file's path, then reuse the Dossier-pointer.
-              Else reset the Dossier-pointer to self. }
+            //If previous file's path is the same as this file's path, then reuse the Dossier-pointer.
+            //Else reset the Dossier-pointer to self.
+            fn:=Chemin; //Store original filename for later check.
             if Copy(Chemin, 1, Length(CheminPrec)) = CheminPrec then
               Delete(Chemin, 1, Length(CheminPrec))
             else
@@ -512,7 +517,7 @@ begin
               CheminPrec:='';
             end;
 
-            { Find the correct .zipfolder, or create a new one for this file. }
+            //Find the correct .zipfolder, or create a new one for this file.
             repeat
               J:=Pos('/', Chemin);
               if J=0 then
@@ -542,7 +547,7 @@ begin
             begin
               Size:=FH.compressed;
 
-              { if this file, really is a file and not just a path, then add it as a sub-element }
+              //If this file, really is a file and not just a path, then add it as a sub-element.
               if fn[length(fn)]<>'/' then
               begin
                 Size:=Size + (FH.extrafield_len + FH.filename_len + 4 + sizeof(FH) + FH.filecomment_len);
