@@ -448,20 +448,23 @@ PyString_Size: function (o: PyObject) : {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Int
 
 PyInt_FromLong: function (Value: LongInt) : PyObject; cdecl;
 PyInt_AsLong: function (o: PyObject) : LongInt; cdecl;
+//PyInt_FromSsize_t: function (Value: Py_ssize_t) : PyObject; cdecl;
+//PyInt_FromSize_t: function (Value: size_t) : PyObject; cdecl;
+//PyInt_AsSsize_t: function (o: PyObject) : Py_ssize_t; cdecl;
+//PyInt_AsUnsignedLongMask: function (o: PyObject) : Longword; cdecl;
 
-//NOT TESTED:
-//Long integers in Python are unlimited in size
-//(only limited by the amount of available memory)
+//Long integers in Python are unlimited in size (only limited by the amount of available memory)
 //PyLong_FromLong: function (Value : LongInt) : PyObject; cdecl;
 //PyLong_FromUnsignedLong: function (Value : Longword) : PyObject; cdecl;
-//PyLong_FromSsize_t: function (Value : Py_ssize_t) : PyObject; cdecl; //New in Python 2.6
-//PyLong_FromSize_t: function (Value : size_t) : PyObject; cdecl; //New in Python 2.6
+//PyLong_FromSsize_t: function (Value : Py_ssize_t) : PyObject; cdecl;
+//PyLong_FromSize_t: function (Value : size_t) : PyObject; cdecl;
 //PyLong_FromDouble: function (Value : Double) : PyObject; cdecl;
 //PyLong_AsLong: function (o : PyObject) : LongInt; cdecl;
-//PyLong_AsLongAndOverflow: function (o : PyObject, overflow : PInteger) : LongInt; cdecl; //New in Python 2.7
-//PyLong_AsSsize_t: function(o : PyObject) : Py_ssize_t; cdecl; //New in Python 2.6
+//PyLong_AsLongAndOverflow: function (o : PyObject, overflow : PInteger) : LongInt; cdecl;
+//PyLong_AsSsize_t: function(o : PyObject) : Py_ssize_t; cdecl;
 //PyLong_AsUnsignedLong: function(o : PyObject) : Longword; cdecl;
-//PyLong_AsUnsignedLongMask: function (o : PyObject) : Longword; cdecl; //New in Python 2.3
+//PyLong_AsUnsignedLongMask: function (o : PyObject) : Longword; cdecl;
+//PyLong_AsDouble: function (o : PyObject) : Double; cdecl;
 
 PyFloat_FromDouble: function (Value: Double) : PyObject; cdecl;
 PyFloat_AsDouble: function (o: PyObject) : Double; cdecl;
@@ -734,6 +737,21 @@ const
     (Variable: @@PyString_Size;              Name: 'PyString_Size';              MinimalVersion: 0 ),
     (Variable: @@PyInt_FromLong;             Name: 'PyInt_FromLong';             MinimalVersion: 0 ),
     (Variable: @@PyInt_AsLong;               Name: 'PyInt_AsLong';               MinimalVersion: 0 ),
+//    (Variable: @@PyInt_FromSsize_t;          Name: 'PyInt_FromSsize_t';          MinimalVersion: 250 ),
+//    (Variable: @@PyInt_FromSize_t;           Name: 'PyInt_FromSize_t';           MinimalVersion: 250 ),
+//    (Variable: @@PyInt_AsSsize_t;            Name: 'PyInt_AsSsize_t';            MinimalVersion: 250 ),
+//    (Variable: @@PyInt_AsUnsignedLongMask;   Name: 'PyInt_AsUnsignedLongMask';   MinimalVersion: 230 ),
+//    (Variable: @@PyLong_FromLong;            Name: 'PyLong_FromLong';            MinimalVersion: 0 ),
+//    (Variable: @@PyLong_FromUnsignedLong;    Name: 'PyLong_FromUnsignedLong';    MinimalVersion: 0 ),
+//    (Variable: @@PyLong_FromSsize_t;         Name: 'PyLong_FromSsize_t';         MinimalVersion: 260 ),
+//    (Variable: @@PyLong_FromSize_t;          Name: 'PyLong_FromSize_t';          MinimalVersion: 260 ),
+//    (Variable: @@PyLong_FromDouble;          Name: 'PyLong_FromDouble';          MinimalVersion: 0 ),
+//    (Variable: @@PyLong_AsLong;              Name: 'PyLong_AsLong';              MinimalVersion: 0 ),
+//    (Variable: @@PyLong_AsLongAndOverflow;   Name: 'PyLong_AsLongAndOverflow';   MinimalVersion: 270 ),
+//    (Variable: @@PyLong_AsSsize_t;           Name: 'PyLong_AsSsize_t';           MinimalVersion: 260 ),
+//    (Variable: @@PyLong_AsUnsignedLong;      Name: 'PyLong_AsUnsignedLong';      MinimalVersion: 0 ),
+//    (Variable: @@PyLong_AsUnsignedLongMask;  Name: 'PyLong_AsUnsignedLongMask';  MinimalVersion: 230 ),
+//    (Variable: @@PyLong_AsDouble;            Name: 'PyLong_AsDouble';            MinimalVersion: 0 ),
     (Variable: @@PyFloat_FromDouble;         Name: 'PyFloat_FromDouble';         MinimalVersion: 0 ),
     (Variable: @@PyFloat_AsDouble;           Name: 'PyFloat_AsDouble';           MinimalVersion: 0 ),
     (Variable: @@PyObject_Init;              Name: 'PyObject_Init';              MinimalVersion: 0 ),
@@ -1036,9 +1054,7 @@ begin
   end;
   Result:=1;
 
- { tiglari:
-   Now we set the value of some global variables
-   to the basic Python types }
+  //Retrieve the values of the basic Python types
   obj1:=PyList_New(0);
   if obj1=Nil then
     Exit;
@@ -1069,6 +1085,8 @@ begin
   PyFloat_Type:=obj1^.ob_type;
   Py_DECREF(obj1);
 
+  //It is not possible to create a PyType_Type directly. However,
+  //we can get it through a PyType we already have.
   PyType_Type:=PyList_Type^.ob_type;
 
   PythonLoaded:=true;
