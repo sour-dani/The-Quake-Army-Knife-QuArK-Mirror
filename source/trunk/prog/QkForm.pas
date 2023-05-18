@@ -146,7 +146,7 @@ type
     procedure MouseWheelHandler(var Message: TMessage); override;
     {$ENDIF}
     function MenuShortcut(var Msg: TWMKeyDown) : Boolean;
-    function ProcessEditMsg(lParam: LPARAM) : LongInt;
+    function ProcessEditMsg(lParam: LPARAM) : LRESULT;
    {procedure RestorePosition(const Tag: String);}
     function RestorePositionTb(const Config: String; SubTb: Boolean; SepWidth: TControl) : QObject;
     procedure RestorePositionFrom(const Tag: String; Source: QObject);
@@ -684,7 +684,7 @@ begin
  Result:=False;
 end;
 
-function TQkForm.ProcessEditMsg(lParam: LPARAM) : LongInt;
+function TQkForm.ProcessEditMsg(lParam: LPARAM) : LRESULT;
 var
  Ac: TControl;
  EditH: HWnd;
