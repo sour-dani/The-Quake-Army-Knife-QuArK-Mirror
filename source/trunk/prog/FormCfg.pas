@@ -192,7 +192,7 @@ const
 
 function GetVKeyName(VkCode: Integer) : String;
 var
- J: Integer;
+ J: UINT;
 begin
  J:=MapVirtualKey(VkCode, 0);
  SetLength(Result, 31);
