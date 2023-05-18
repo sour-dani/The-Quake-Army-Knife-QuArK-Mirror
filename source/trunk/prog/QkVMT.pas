@@ -110,7 +110,7 @@ begin
 
     case SpecDataType of
     vlDTString: vlMaterialAddNodeString(PvlChar(SpecName),PvlChar(Spec));
-    vlDTInteger: vlMaterialAddNodeInteger(PvlChar(SpecName),StrToInt(Spec));
+    vlDTInteger: vlMaterialAddNodeInteger(PvlChar(SpecName),StrToUInt(Spec));
     vlDTSingle: vlMaterialAddNodeSingle(PvlChar(SpecName),StrToFloat(Spec));
     end;
   end;
