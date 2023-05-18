@@ -1509,8 +1509,8 @@ end;
 function QObject.DirectDataAccess(var S: TStream; var Size: TStreamPos) : Boolean;
 var
   F: TStream;
-  ReadFormat, FileItemCount, J: Integer;
-  Taille, ExtraSize, DeltaPos: TStreamPos;
+  ReadFormat, FileItemCount: Integer;
+  Taille, ExtraSize, DeltaPos, J: TStreamPos;
   Info: TFileItemInfo;
   Info1: TFileObjectClassInfo;
   Name: String;
