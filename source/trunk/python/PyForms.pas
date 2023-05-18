@@ -96,8 +96,8 @@ procedure PythonUpdateAllForms;
 procedure AutoFocus(Control: TWinControl);
 function GetParentPyForm(Control: TControl) : TPyForm;
 function NewPyForm(Q: QFileObject) : TPyForm;
-function ClickItem(obj: PyObject; Options: Integer; {cioXXX} nForm: TPyForm) : Boolean;
-procedure PyFormsClickItem(Options: Integer; nForm: TPyForm);
+function ClickItem(obj: PyObject; Options: LPARAM; {cioXXX} nForm: TPyForm) : Boolean;
+procedure PyFormsClickItem(Options: LPARAM; nForm: TPyForm);
 
  {-------------------}
 
@@ -159,7 +159,7 @@ begin
  end;
 end;
 
-procedure PyFormsClickItem(Options: Integer; nForm: TPyForm);
+procedure PyFormsClickItem(Options: LPARAM; nForm: TPyForm);
 begin
  if ci_obj<>Nil then
   begin
@@ -169,7 +169,7 @@ begin
   end;
 end;
 
-function ClickItem(obj: PyObject; Options: Integer; nForm: TPyForm) : Boolean;
+function ClickItem(obj: PyObject; Options: LPARAM; nForm: TPyForm) : Boolean;
 var
  H: HWnd;
 begin
