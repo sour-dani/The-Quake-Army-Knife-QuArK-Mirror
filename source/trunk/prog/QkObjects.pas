@@ -400,7 +400,7 @@ type
 function EndOfClipboardChain(PasteNow: QObject) : Boolean;
 
 var
-  g_CF_QObjects: Integer;
+  g_CF_QObjects: UINT;
   g_ClipboardChain: TClipboardHandler = EndOfClipboardChain;
 (*g_PopupMenuObject: QObject;*)
 (*CodeConstruction: Char;*)
