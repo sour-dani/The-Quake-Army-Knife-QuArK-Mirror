@@ -696,7 +696,7 @@ begin
     begin
      System.Delete(S,1,2);
      Needed:=StrToIntDef(S,0);  { expected number of values }
-     GetMem(ValueList, (Length(Arg)+1) * (4 div 2));  { could not be more }  { SizeOf(Single) }
+     GetMem(ValueList, (Length(Arg)+1) * (SizeOf(Single) div 2));  { could not be more }
      try
       ValuePtr:=ValueList;
       N:=0;
@@ -734,8 +734,8 @@ begin
       until P=0;
       if (Needed<>0) and (N<>Needed) then
        Raise EErrorFmt(192, [Needed, Arg1]);
-      SetLength(Arg, N*4);                   { SizeOf(Single) }
-      System.Move(ValueList^, Arg[1], N*4);  { SizeOf(Single) }
+      SetLength(Arg, N*SizeOf(Single));
+      Move(ValueList^, Arg[1], N*SizeOf(Single));
      finally
       FreeMem(ValueList);
      end;
@@ -2472,9 +2472,9 @@ begin
                     begin
                      TextValues:='';
                      J:=1;
-                     while J<=Length(Spec)-3 do     { 3 = SizeOf(Single)-1 }
+                     while J<=Length(Spec)-(SizeOf(Single)-1) do
                       begin
-                       System.Move(Spec[J], Value, 4);  { SizeOf(Single) }
+                       System.Move(Spec[J], Value, SizeOf(Single));
                        if J>1 then
                         TextValues:=TextValues+' ';
                        if (Length(S)>=3) and (S[3]='0') then
@@ -2487,7 +2487,7 @@ begin
                         end
                        else
                         TextValues:=TextValues+ftos1(Value);
-                       Inc(J, 4);                   { SizeOf(Single) }
+                       Inc(J, SizeOf(Single));
                       end;
                      Spec:=TextValues;
                     end;
