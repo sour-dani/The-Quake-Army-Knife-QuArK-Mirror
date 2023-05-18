@@ -275,7 +275,7 @@ end;
 
 function ftos0(const F: TDouble) : String;
 var
- R: Integer;
+ R: Int64;
 begin
  if Abs(F) < High(R) - 2 then //Safety margin
  begin
@@ -292,7 +292,7 @@ end;
 
 function ftos1(const F: TDouble) : String;
 var
- R: Integer;
+ R: Int64;
 begin
  if Abs(F) < High(R) - 2 then //Safety margin
  begin
@@ -309,7 +309,7 @@ end;
 
 function ftosp(const F: TDouble; const P: integer) : String;
 var
- R: Integer;
+ R: Int64;
 begin
  if Abs(F) < High(R) - 2 then //Safety margin
  begin
@@ -349,7 +349,7 @@ end;}
 
 function dtosp(const D: TDouble; const P: integer) : String;
 var
- R: Integer;
+ R: Int64;
 begin
  if Abs(D) < High(R) - 2 then //Safety margin
  begin
@@ -534,7 +534,7 @@ end;
 function vtocol255(const R,G,B: TDouble) : TColor;
 var
  ComposantesCible: array[1..3] of Byte absolute Result;
- Entier: Integer;
+ Entier: Int64;
 begin
  Result:=0;
  Entier:=Round(R);
