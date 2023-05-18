@@ -53,7 +53,7 @@ var
 
 function GetProcessModule(const Info: TProcessInformation;
  nstdout, nstderr: PyObject; const CmdLine: String) : PyProcessObject;
-procedure ProcessNotify(wParam, lParam: LongInt);
+procedure ProcessNotify(wParam: WPARAM; lParam: LPARAM);
 function ProcessPipe(fileobj: PyObject) : THandle;
 function EmptyInputPipe : THandle;
 
@@ -161,7 +161,7 @@ begin
  until False;
 end;
 
-procedure ProcessNotify(wParam, lParam: LongInt);
+procedure ProcessNotify(wParam: WPARAM; lParam: LPARAM);
 var
  Info: ^TWaiterInfo absolute lParam;
  s: PyObject;
