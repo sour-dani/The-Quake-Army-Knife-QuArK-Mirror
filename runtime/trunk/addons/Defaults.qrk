@@ -8678,7 +8678,7 @@ QQRKSRC1
       MppTopBtns: = {Typ="X" Txt="Multi-pages panels" Cap="Buttons above"}
       MaxRecentFiles: = {Txt="Maximum number of recent files" Typ="EF1" Hint="Maximum amount of recent files to keep track of (0 .. 20)"}
       //ConsoleWidth: = {Txt="Width of console" Typ="EF1" Hint="Amount of character per line in the console (80 .. 80)"}
-      ConsoleHeight: = {Txt="Height of console" Typ="EF1" Hint="Maximum amount of lines in the console (60 .. 600)"}
+      ConsoleHeight: = {Txt="Height of console" Typ="EF1" Hint="Maximum amount of lines in the console (30 .. 1000)"}
       OnlineHelp: = {Txt="Online help" Typ="X" Cap="Enabled" Hint="This will cause QuArK to open up the online help when the wanted help file is not available locally."}
     }
     General3DView:form =

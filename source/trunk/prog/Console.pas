@@ -93,8 +93,8 @@ var
 const
   MinConsoleWidth   = 80;
   MaxConsoleWidth   = 80;
-  MinConsoleHeight  = 60;
-  MaxConsoleHeight  = 600;
+  MinConsoleHeight  = 30;
+  MaxConsoleHeight  = 1000;
   ConsoleFontHeight = 15;
 
 type
