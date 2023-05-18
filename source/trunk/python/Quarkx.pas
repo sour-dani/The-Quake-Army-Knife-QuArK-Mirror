@@ -88,6 +88,8 @@ uses Classes, Dialogs, Graphics, CommCtrl, ExtCtrls, Controls,
      ApplPaths, MapError, StrUtils, QkImages, QkExceptions,
      Coordinates, SystemDetails, ExtraFunctionality, Platform;
 
+{$INCLUDE PyVersions.inc}
+
 const
  PythonSetupString  = 'import sys'#10'sys.path = ["%s", "%s"]'#10'import quarkpy'; //Note that we sanitize sys.path
  PythonRunPackage   = 'quarkpy.RunQuArK()';
