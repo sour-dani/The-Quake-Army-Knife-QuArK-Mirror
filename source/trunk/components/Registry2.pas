@@ -196,7 +196,7 @@ begin
     OnWrite(Self);
    if not DontWrite then}
     Result:=RegSetValueEx(CurrentKey, PChar(Name), 0, REG_SZ,
-     PChar(Value), Length(Value)+1)=ERROR_SUCCESS;
+     PChar(Value), (Length(Value) + 1) * SizeOf(Char))=ERROR_SUCCESS;
   end
  else
   Result:=True;
