@@ -60,7 +60,7 @@ const
 
 implementation
 
-uses Windows, Sysutils, QConsts, ApplPaths;
+uses Windows, Sysutils, QConsts, ApplPaths, ExtraFunctionality;
 
 var
   LogFile: TextFile;
@@ -317,7 +317,7 @@ initialization
   else
   begin
     Windows.MessageBox(0, 'Environmental variable QUARK_LOG_LEVEL found. QuArK will use its value.', 'Environmental variable found', MB_TASKMODAL or MB_ICONINFORMATION or MB_OK);
-    LogLevel:=StrToIntDef(LogLevelEnv, DefaultLogLevel);
+    LogLevel:=StrToUIntDef(LogLevelEnv, DefaultLogLevel);
   end;
 finalization
   CloseLogFile;

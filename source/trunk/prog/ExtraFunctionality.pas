@@ -224,6 +224,7 @@ function CopyCursor(pcur: HCursor): HCursor; // This is a macro that wasn't conv
 
 {$ifndef DelphiXE6orNewerCompiler} //FIXME: Not sure about the version of Delphi these were added
 function StrToUInt(const S: string): Cardinal;
+function StrToUIntDef(const S: string; Default: Cardinal): Cardinal;
 function TryStrToUInt(const S: string; out Value: Cardinal): Boolean;
 {$endif}
 
@@ -329,6 +330,11 @@ const
   SInvalidCardinal = '''%s'' is not a valid cardinal value';
 begin
   if TryStrToUInt(S, Result) then EConvertError.Create(Format(SInvalidCardinal, [S]));
+end;
+
+function StrToUIntDef(const S: string; Default: Cardinal): Cardinal;
+begin
+  if TryStrToUInt(S, Result) then Result:=Default;
 end;
 
 function TryStrToUInt(const S: string; out Value: Cardinal): Boolean;
