@@ -1188,8 +1188,10 @@ asm
   shl edi, 3             { multiply the number of elements with SizeOf(TVarRec) }
   add edx, edi           { go to the end of the Args-array (one past it) }
 
+  mov StackGrowth, 0   { this is the amount with which we've grown the stack }
+
+  //Loop over the Args-array
   mov esi, eax         { we have to walk over the fmt in order to distinguish floats from doubles }
-  mov StackGrowth, 4   { already account for fmt (which will be pushed later) }
   @L1:
     //We have to skip over any symbols in fmt that don't need an argument
     @testFmtChar:
@@ -1212,7 +1214,6 @@ asm
     cmp byte ptr [esi], 0         { sanity check for end of fmt-string }
     jnz @FmtReady      { jump if we found a format-character }
 
-    sub StackGrowth, 4     { fmt isn't on the stack yet }
     add esp, StackGrowth   { remove the arguments we pushed onto the stack }
     pop esi                { restore the original value of esi }
     pop edi                { restore the original value of edi }
@@ -1224,7 +1225,7 @@ asm
     jmp @testFmtChar   { test that one too }
     @FmtReady:
 
-    //Process the Args-array
+    //Process the Args-item
     sub edx, 8    { go back one item in the Args-array; 8 = SizeOf(TVarRec) }
     //[EDX].Integer[0] = TVarRec.data
     //[EDX].Byte[4]    = TVarRec.VType
@@ -1241,7 +1242,6 @@ asm
     jz @lPointer
 
     //If we reach this point, there's an unsupported variable type in the Args-array
-    sub StackGrowth, 4     { fmt isn't on the stack yet }
     add esp, StackGrowth   { remove the arguments we pushed onto the stack }
     pop esi                { restore the original value of esi }
     pop edi                { restore the original value of edi }
@@ -1252,7 +1252,7 @@ asm
     @lInteger:
     push dword ptr [edx]               { push the integer onto the stack }
     add StackGrowth, 4
-    jmp @lDone
+    jmp @lDoneConverting
 
     @lExtended:
     mov edi, [edx]            { it's a pointer to a double, so dereference it once }
@@ -1263,22 +1263,25 @@ asm
     fstp qword ptr [esp]      { pop double from x87 stack onto CPU stack }
     fwait                     { make sure any floating point exceptions are handled }
     add StackGrowth, 8        { double, so this requires 8 bytes}
-    jmp @lDone
+    jmp @lDoneConverting
     @isFloat:
     sub esp, 4                { make room on stack for the float }
     add StackGrowth, 4
     fstp dword ptr [esp]      { pop single from x87 stack onto CPU stack }
     fwait                     { make sure any floating point exceptions are handled }
-    jmp @lDone
+    jmp @lDoneConverting
 
     @lPointer:
     push dword ptr [edx]  { push the pointer onto the stack }
     add StackGrowth, 4
-    @lDone:
+    //jmp @lDoneConverting
+
+    @lDoneConverting:
 
     dec ecx              { we've finished processing an item in the Args-array }
     jnz @L1              { back to L1 if we're not done with the Args-array yet }
   push fmt               { push the fmt-string onto the stack as well, making it the first argument for Py_BuildValue }
+  add StackGrowth, 4
   call Py_BuildValue     { call Py_BuildValue }
   add esp, StackGrowth   { remove the arguments we pushed onto the stack }
   pop esi                { restore the original value of esi }
@@ -1295,14 +1298,35 @@ asm
   push rsi               { store the value of rsi, because we want to use that register }
 
   inc r8                 { get the actual number of items }
+  mov rax, r8            { free up the r8 register }
 
   //We have to jump to the end of the Args-array, because we have to iterate over it reversed
   mov rdi, r8            { we're going to calculate the number of bytes from the number of items }
   shl rdi, 4             { multiply the number of elements with SizeOf(TVarRec) }
   add rdx, rdi           { go to the end of the Args-array (one past it) }
 
+  mov StackGrowth, 0     { this is the amount with which we've grown the stack }
+
+  //Always need room for 4 arguments on the stack
+  cmp rax, 3             { if there are 3 or more arguments, we don't need to reserve anything on the stack }
+  jge @lDoneReservering
+  push 0
+  add StackGrowth, 8
+
+  cmp rax, 2             { if there are 2 arguments, we've already reserved enough }
+  je @lDoneReservering
+  push 0
+  add StackGrowth, 8
+
+  cmp rax, 1             { if there is 1 argument, we've already reserved enough }
+  je @lDoneReservering
+  push 0
+  add StackGrowth, 8
+
+  @lDoneReservering:
+
+  //Loop over the Args-array
   mov rsi, rcx         { we have to walk over the fmt in order to distinguish floats from doubles }
-  mov StackGrowth, 8   { already account for fmt (which will be pushed later) }
   @L1:
     //We have to skip over any symbols in fmt that don't need an argument
     @testFmtChar:
@@ -1325,7 +1349,7 @@ asm
     cmp byte ptr [rsi], 0         { sanity check for end of fmt-string }
     jnz @FmtReady      { jump if we found a format-character }
 
-    sub StackGrowth, 8     { fmt isn't on the stack yet }
+    //If we reach this point, the fmt-string is bad!
     add rsp, StackGrowth   { remove the arguments we pushed onto the stack }
     pop rsi                { restore the original value of rsi }
     pop rdi                { restore the original value of rdi }
@@ -1337,7 +1361,7 @@ asm
     jmp @testFmtChar   { test that one too }
     @FmtReady:
 
-    //Process the Args-array
+    //Process the Args-item
     sub rdx, 16    { go back one item in the Args-array; 16 = SizeOf(TVarRec) }
     //[RDX].Integer[0] = TVarRec.data
     //[RDX].Byte[4]    = TVarRec.VType
@@ -1354,7 +1378,6 @@ asm
     jz @lPointer
 
     //If we reach this point, there's an unsupported variable type in the Args-array
-    sub StackGrowth, 8     { fmt isn't on the stack yet }
     add rsp, StackGrowth   { remove the arguments we pushed onto the stack }
     pop rsi                { restore the original value of rsi }
     pop rdi                { restore the original value of rdi }
@@ -1365,54 +1388,86 @@ asm
     @lInteger:
     push qword ptr [rdx]               { push the integer onto the stack }
     add StackGrowth, 8
-    jmp @lDone
+    jmp @lPutInRegister
 
     @lExtended:
     mov rdi, [rdx]            { it's a pointer to a double, so dereference it once }
     cmp byte ptr [rsi], 'f'   { floats are 4 bytes, doubles are 8 bytes }
     jz @isFloat
-    sub rsp, 8                { make room on stack for the double }
-    push [rdi]                { push the double onto the stack }
+    push qword ptr [rdi]      { push the double onto the stack }
     add StackGrowth, 8        { double, so this requires 8 bytes}
-    jmp @lDone
+    jmp @lPutInRegisterDouble
     @isFloat:
     sub rsp, 4                { make room on stack for the float }
     fld qword ptr [rdi]       { put the 10 byte float into x87 stack }
     fstp dword ptr [rsp]      { pop single from x87 stack onto CPU stack }
     fwait                     { make sure any floating point exceptions are handled }
     add StackGrowth, 4
-    push [edi]
-    jmp @lDone
+    jmp @lPutInRegisterFloat
 
     @lPointer:
     push qword ptr [rdx]  { push the pointer onto the stack }
     add StackGrowth, 8
-    @lDone:
+    //jmp @lPutInRegister
 
-    dec r8               { we've finished processing an item in the Args-array }
+    @lPutInRegister:
+    //Put the second, third, and fourth arguments (if any) in the rdx, r8, and r9 registers respectively
+    cmp rax, 1            { second argument }
+    jne @lPutInRegister2
+    mov rdx, [rsp]
+    jmp @lRegistersReady
+    @lPutInRegister2:
+    cmp rax, 2            { third argument }
+    jne @lPutInRegister3
+    mov r8, [rsp]
+    jmp @lRegistersReady
+    @lPutInRegister3:
+    cmp rax, 3            { fourth argument }
+    jne @lRegistersReady
+    mov r9, [rsp]
+    jmp @lRegistersReady
+
+    @lPutInRegisterFloat:
+    //Put the second, third, and fourth arguments (if any) in the xmm1, xmm2, xmm3 registers respectively
+    cmp rax, 1            { second argument }
+    jne @lPutInRegisterFloat2
+    movss xmm1, [rsp]
+    jmp @lRegistersReady
+    @lPutInRegisterFloat2:
+    cmp rax, 2            { third argument }
+    jne @lPutInRegisterFloat3
+    movss xmm2, [rsp]
+    jmp @lRegistersReady
+    @lPutInRegisterFloat3:
+    cmp rax, 3            { fourth argument }
+    jne @lRegistersReady
+    movss xmm3, [rsp]
+    jmp @lRegistersReady
+
+    @lPutInRegisterDouble:
+    //Put the second, third, and fourth arguments (if any) in the xmm1, xmm2, xmm3 registers respectively
+    cmp rax, 1            { second argument }
+    jne @lPutInRegisterDouble2
+    movsd xmm1, [rsp]
+    jmp @lRegistersReady
+    @lPutInRegisterDouble2:
+    cmp rax, 2            { third argument }
+    jne @lPutInRegisterDouble3
+    movsd xmm2, [rsp]
+    jmp @lRegistersReady
+    @lPutInRegisterDouble3:
+    cmp rax, 3            { fourth argument }
+    jne @lRegistersReady
+    movsd xmm3, [rsp]
+    //jmp @lRegistersReady
+
+    @lRegistersReady:
+
+    dec rax              { we've finished processing an item in the Args-array }
     jnz @L1              { back to L1 if we're not done with the Args-array yet }
 
-  //FIXME: Not everything should be in the registers...!
-  //The first four integer or pointer parameters are passed in the rcx, rdx, r8, and r9 registers.
-  //The first four floating-point parameters are passed in the first four SSE registers, xmm0-xmm3.
-
-  //Put the second argument (if any) in the rdx register
-  cmp StackGrowth, 8
-  jle @doCall
-  mov rdx, [rsp]
-
-  //Put the third argument (if any) in the r8 register
-  cmp StackGrowth, 16
-  jle @doCall
-  mov r8, [rsp+8]
-
-  //Put the fourth argument (if any) in the r9 register
-  cmp StackGrowth, 24
-  jle @doCall
-  mov r9, [rsp+16]
-
-  @doCall:
   push fmt               { push the fmt-string onto the stack as well, making it the first argument for Py_BuildValue }
+  add StackGrowth, 8
   call Py_BuildValue     { call Py_BuildValue }
   add rsp, StackGrowth   { remove the arguments we pushed onto the stack }
   pop rsi                { restore the original value of rsi }
@@ -1448,8 +1503,10 @@ asm
   shl edi, 3             { multiply the number of elements with SizeOf(TVarRec) }
   add ecx, edi           { go to the end of the Args-array (one past it) }
 
+  mov StackGrowth, 0     { this is the amount with which we've grown the stack }
+
+  //Loop over the Args-array
   mov esi, edx           { we have to walk over the fmt in order to distinguish floats from doubles }
-  mov StackGrowth, 8     { already account for src and fmt (which will be pushed later) }
   @L1:
     //We have to skip over any symbols in fmt that don't need an argument
     @testFmtChar:
@@ -1472,7 +1529,7 @@ asm
     cmp byte ptr [esi], 0         { sanity check for end of fmt-string }
     jnz @FmtReady      { jump if we found a format-character }
 
-    sub StackGrowth, 8     { src and fmt aren't on the stack yet }
+    //If we reach this point, the fmt-string is bad!
     add esp, StackGrowth   { remove the arguments we pushed onto the stack }
     pop ebx                { restore the original value of ebx }
     pop esi                { restore the original value of esi }
@@ -1485,7 +1542,7 @@ asm
     jmp @testFmtChar   { test that one too }
     @FmtReady:
 
-    //Process the Args-array
+    //Process the Args-item
     sub ecx, 8    { go back one item in the Args-array; 8 = SizeOf(TVarRec) }
     //[ECX].Integer[0] = TVarRec.data
     //[ECX].Byte[4]    = TVarRec.VType
@@ -1502,7 +1559,6 @@ asm
     jz @lPointer
 
     //If we reach this point, there's an unsupported variable type in the Args-array
-    sub StackGrowth, 8     { src and fmt aren't on the stack yet }
     add esp, StackGrowth   { remove the arguments we pushed onto the stack }
     pop ebx                { restore the original value of ebx }
     pop esi                { restore the original value of esi }
@@ -1514,7 +1570,7 @@ asm
     @lInteger:
     push dword ptr [ecx]               { push the integer onto the stack }
     add StackGrowth, 4
-    jmp @lDone
+    jmp @lDoneConverting
 
     @lExtended:
     mov edi, [ecx]            { it's a pointer to a double, so dereference it once }
@@ -1525,23 +1581,26 @@ asm
     fstp qword ptr [esp]      { pop double from x87 stack onto CPU stack }
     fwait                     { make sure any floating point exceptions are handled }
     add StackGrowth, 8        { double, so this requires 8 bytes}
-    jmp @lDone
+    jmp @lDoneConverting
     @isFloat:
     sub esp, 4                { make room on stack for the float }
     add StackGrowth, 4
     fstp dword ptr [esp]      { pop single from x87 stack onto CPU stack }
     fwait                     { make sure any floating point exceptions are handled }
-    jmp @lDone
+    jmp @lDoneConverting
 
     @lPointer:
     push dword ptr [ecx]  { push the pointer onto the stack }
     add StackGrowth, 4
-    @lDone:
+    //jmp @lDoneConverting
+
+    @lDoneConverting:
 
     dec ebx              { we've finished processing an item in the Args-array }
     jnz @L1              { back to L1 if we're not done with the Args-array yet }
   push fmt               { push the fmt-string onto the stack  }
   push src               { push the src-object onto the stack as well, making it the first argument for Py_BuildValue }
+  add StackGrowth, 8
   call PyArg_ParseTuple  { call PyArg_ParseTuple }
   add esp, StackGrowth   { remove the arguments we pushed onto the stack }
   pop ebx                { restore the original value of ebx }
@@ -1559,15 +1618,31 @@ asm
   push rdi               { store the value of rdi, because we want to use that register }
 
   inc r9                 { get the actual number of items }
+  mov rax, r9            { store a copy of the number of items }
 
   //We have to jump to the end of the Args-array, because we have to iterate over it reversed
   mov rdi, r9            { we're going to calculate the number of bytes from the number of items }
   shl rdi, 4             { multiply the number of elements with SizeOf(TVarRec) }
   add r8, rdi            { go to the end of the Args-array (one past it) }
 
-  mov StackGrowth, 16    { already account for src and fmt }
-  //Process the Args-array
+  mov StackGrowth, 0     { this is the amount with which we've grown the stack }
+
+  //Always need room for 4 arguments on the stack
+  cmp rax, 2             { if there are 2 or more arguments, we don't need to reserve anything on the stack }
+  jge @lDoneReservering
+  push 0
+  add StackGrowth, 8
+
+  cmp rax, 1             { if there is 1 argument, we've already reserved enough }
+  je @lDoneReservering
+  push 0
+  add StackGrowth, 8
+
+  @lDoneReservering:
+
+  //Loop over the Args-array
   @L1:
+    //Process the Args-item
     sub r8, 16    { go back one item in the Args-array; 16 = SizeOf(TVarRec) }
     //[R8].Integer[0] = TVarRec.data
     //[R8].Byte[8]    = TVarRec.VType
@@ -1584,7 +1659,6 @@ asm
     //jz @lPointer
 
     //If we reach this point, there's an unsupported variable type in the Args-array
-    sub StackGrowth, 16    { src and fmt aren't on the stack yet }
     add rsp, StackGrowth   { remove the arguments we pushed onto the stack }
     pop rdi                { restore the original value of rdi }
     mov al, reInvalidCast  { prepare an "invalid cast" error }
@@ -1594,24 +1668,25 @@ asm
     @lPointer:
     push qword ptr [r8]  { push the pointer onto the stack }
     add StackGrowth, 8
-    //@lDone:
+    //jmp @lDoneConverting
+
+    //@lDoneConverting:
 
     dec r9               { we've finished processing an item in the Args-array }
     jnz @L1              { back to L1 if we're not done with the Args-array yet }
 
-  //Put the third argument (if any) in the r8 register
-  cmp StackGrowth, 16
-  jle @doCall
+  //Put the third and fourth arguments (if any) in the r8 and r9 registers respectively
+  cmp rax, 0
+  jle @lRegistersReady
   mov r8, [rsp]
-
-  //Put the fourth argument (if any) in the r9 register
-  cmp StackGrowth, 24
-  jle @doCall
+  cmp rax, 1
+  jle @lRegistersReady
   mov r9, [rsp+8]
+  @lRegistersReady:
 
-  @doCall:
   push fmt               { push the fmt-string onto the stack }
   push src               { push the src-object onto the stack as well }
+  add StackGrowth, 16
   call PyArg_ParseTuple  { call PyArg_ParseTuple }
   add rsp, StackGrowth   { remove the arguments we pushed onto the stack }
   pop rdi                { restore the original value of rdi }
