@@ -143,9 +143,8 @@ begin
    Result:=True;
    Exit;
  end;}
- GetMem(bdata, BufSize);
+ bdata:=AllocMem(BufSize);
  try
-  ZeroMemory(bdata, BufSize);
   if (not TryReadBinaryData(Name, bdata, BufSize)) or (not CompareMem(@Buffer, bdata, BufSize)) then
   begin
   {if Assigned(OnWrite) then

@@ -85,8 +85,7 @@ var
   size: TPoint;
 begin
   size:=Skin0.GetSize;
-  GetMem(p_o, sizeof(TComponentTris)*2);
-  FillChar(p_o^, sizeof(TComponentTris)*2, #0);
+  p_o:=AllocMem(sizeof(TComponentTris)*2);
   p:=p_o;
   p_o^[0].VertexNo:=0; P^[0].S:=0; P^[0].T:=0;
   p_o^[1].VertexNo:=1; P^[1].S:=size.x; P^[1].T:=0;

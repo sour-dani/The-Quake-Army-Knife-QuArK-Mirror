@@ -1630,9 +1630,8 @@ begin
    end;
   if FaceList.Count<4 then
    Exit;
-{ GetMem(FacesVCount, FaceList.Count*SizeOf(Integer));
-  try
-  FillChar(FacesVCount^, FaceList.Count*SizeOf(Integer), 0);}
+{ FacesVCount:=AllocMem(FaceList.Count*SizeOf(Integer));
+  try}
   for I:=FaceList.Count-1 downto 1 do
    begin
     FI:=TFace(FaceList[I]);
@@ -4043,8 +4042,7 @@ begin
    else
     DetInv:=(FacteurEchelle*EchelleTexture)/Det;
 
-   GetMem(Plan, TailleEntetePlan + NbSommets*SizeOf(TPoint));
-   FillChar(Plan^, TailleEntetePlan, 0);
+   Plan:=AllocMem(TailleEntetePlan + NbSommets*SizeOf(TPoint));
    Plan.A:=(NormalePt.X*FacteurEchelle) div NormalePt.Z;
    Plan.B:=(NormalePt.Y*FacteurEchelle) div NormalePt.Z;
    Plan.Min.X:=MaxInt;

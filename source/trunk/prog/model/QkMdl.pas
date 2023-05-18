@@ -1215,8 +1215,7 @@ begin
                     models (inspired by Quake 2's) to the more restricted Quake 1 format. }
 
             Taille1 := InputVertexCount * SizeOf(PVertexNode);
-            GetMem(VertexMap, Taille1);
-            FillChar(VertexMap^, Taille1, 0);
+            VertexMap:=AllocMem(Taille1);
             try
               mdl.numtris := TheComp.Triangles(CTriangles);
               CTris := CTriangles;

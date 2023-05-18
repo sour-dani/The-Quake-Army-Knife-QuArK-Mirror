@@ -373,9 +373,8 @@ begin
   if FileData.Position <> FileData.Size then
   begin
     Log(LOG_WARNING, 'THTTPConnection.ReadFile: FileData does NOT fill buffer completely!');
-    GetMem(Buffer, FileData.Size - FileData.Position);
+    Buffer:=AllocMem(FileData.Size - FileData.Position);
     try
-      FillChar(Buffer, FileData.Size - FileData.Position, 0);
       FileData.WriteBuffer(Buffer, FileData.Size - FileData.Position);
     finally
       FreeMem(Buffer);
