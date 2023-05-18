@@ -359,8 +359,8 @@ object Form1: TForm1
     end
   end
   object ObjMenu: TPopupMenu
-    Left = 49
-    Top = 209
+    Left = 48
+    Top = 208
     object ObjSep1: TMenuItem
       Caption = '-'
     end
@@ -392,8 +392,8 @@ object Form1: TForm1
     end
   end
   object HelpMenu: TPopupMenu
-    Left = 321
-    Top = 209
+    Left = 320
+    Top = 208
     object CheckUpdate1: TMenuItem
       Caption = '&Check for updates'
       OnClick = CheckUpdate1Click
