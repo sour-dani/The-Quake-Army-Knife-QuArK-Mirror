@@ -182,7 +182,6 @@ var
   BufLine, BufChar: Integer;
   NewBuffer: PPipeBuffer;
 begin
-  Exit; //@@@
   if not ConsoleReady then Exit;
   Setup:=SetupSubSet(ssGeneral, 'Display');
   try
