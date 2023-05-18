@@ -144,7 +144,7 @@ var
  var
    Entite: TTreeMapSpec;
    Origin: array[0..2] of Single;
-   OldPos: Integer;
+   OldPos: TStreamPos;
    IsBrush: Boolean;
  begin
    //Ugly hack; we need to know if there's children for this entity
