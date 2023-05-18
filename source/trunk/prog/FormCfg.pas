@@ -3118,7 +3118,7 @@ procedure TFormCfg.EditKeyDown(Sender: TObject; var Key: Word; Shift: TShiftStat
   end;
 
 var
- Sens: Integer;
+ Sens: LPARAM;
 begin
  case Key of
    VK_UP:    Sens:=-1;
