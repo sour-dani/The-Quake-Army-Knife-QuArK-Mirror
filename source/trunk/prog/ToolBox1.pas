@@ -603,7 +603,7 @@ end;
 function TToolBoxForm.DefaultTarget : TQkExplorer;
 var
  I: Integer;
- L: LongInt;
+ L: LRESULT;
  S: String;
  Info: TExplorerInfo;
 begin
