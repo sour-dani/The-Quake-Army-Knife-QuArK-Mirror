@@ -535,7 +535,7 @@ var
         with BezierOpacity do
         begin
           if Mode=trmColor then
-            AlphaColor:=Integer(Color[0]) or Integer(Color[1] shl 8) or Integer(Color[2] shl 16) or (Value shl 24)
+            AlphaColor:=Cardinal(Color[0]) or Cardinal(Color[1] shl 8) or Cardinal(Color[2] shl 16) or (Value shl 24)
           else
             AlphaColor:=CurrentColor or (Value shl 24);
         end;
