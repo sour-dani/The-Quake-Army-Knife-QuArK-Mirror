@@ -1432,7 +1432,7 @@ var
  v: array[1..5] of TDouble;
  LR: Boolean;
  DC, SrcDC: HDC;
- TickCounts: array[0..NumTickCounts-1] of LongInt;
+ TickCounts: array[0..NumTickCounts-1] of DWORD;
  NumTicks: Integer;
  Msg: TMsg;
  nEye, Look, Right, Down: TVect;
@@ -1549,7 +1549,7 @@ begin
      if NumTicks<NumTickCounts then
       Inc(NumTicks)
      else
-      Move(TickCounts[1], TickCounts[0], SizeOf(TickCounts)-SizeOf(LongInt));
+      Move(TickCounts[1], TickCounts[0], SizeOf(TickCounts)-SizeOf(DWORD));
 
      repeat
       TickCounts[NumTicks-1]:=GetTickCount;
@@ -2750,7 +2750,8 @@ end;
 
 function mDrawGrid(self, args: PyObject) : PyObject; cdecl;
 var
- color, color2, flags: Integer;
+ color, color2: Cardinal;
+ flags: Integer;
  v1obj, v2obj: PyVect;
  norg: PyVect;
  V: TVect;
@@ -2763,7 +2764,7 @@ begin
   flags:=0;
   color2:=0;
   norg:=Nil;
-  if PyArg_ParseTupleX(args, 'O!O!i|iiO!', [@TyVect_Type, @v1obj, @TyVect_Type, @v2obj, @color, @flags, @color2, @TyVect_Type, @norg])=0 then
+  if PyArg_ParseTupleX(args, 'O!O!I|iIO!', [@TyVect_Type, @v1obj, @TyVect_Type, @v2obj, @color, @flags, @color2, @TyVect_Type, @norg])=0 then
    Exit;
   if norg=Nil then
    V:={Origine}OriginVectorZero
