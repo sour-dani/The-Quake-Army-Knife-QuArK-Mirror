@@ -1129,20 +1129,28 @@ function PyObject_NEW(t: PyTypeObject) : PyObject;
 var
  o: PyObject;
 begin
+  {$IFDEF DEBUG}
+  o:=AllocMem(t^.tp_basicsize);
+  {$ELSE}
   GetMem(o, t^.tp_basicsize);
+  {$ENDIF}
   Result:=PyObject_Init(o,t);
   {$IFDEF DebugPythonLeak}
   g_PythonObjects.Add(o);
   {$ENDIF}
 end;
 
-{function PyObject_NEWVAR(t: PyTypeObject; i: Integer) : PyObject;
+(*function PyObject_NEWVAR(t: PyTypeObject; i: Integer) : PyObject;
 var
  o: PyObject;
 begin
+ {$IFDEF DEBUG}
+ o:=AllocMem(t^.tp_basicsize + i*t^.tp_itemsize);
+ {$ELSE}
  GetMem(o, t^.tp_basicsize + i*t^.tp_itemsize);
+ {$ENDIF}
  Result:=_PyObject_NewVar(t,i,o);
-end;}
+end;*)
 
 procedure PyObject_DEL(o: PyObject);
 begin
