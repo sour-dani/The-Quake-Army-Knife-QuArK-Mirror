@@ -27,6 +27,8 @@ uses SysUtils, Classes, Controls, Graphics, Forms, StdCtrls, ExtCtrls,
      Menus, CommCtrl, EnterEditCtrl, TrackBar2, QkForm, Game,
      CursorScrollBox, Spin, SmArrowBtn, QkFormCfg;
 
+{$I DelphiVer.inc}
+
 const
  wp_InternalEdit = 96;
  wp_LineStep     = 97;
@@ -52,7 +54,7 @@ type
               PopupForm: TQkForm;
               PopupFormEdit: TCustomEdit;
               EditTogether: TStringList;
-              LastRowTag: Integer;
+              LastRowTag: {$IFDEF DelphiXE2orNewerCompiler}NativeInt{$ELSE}LongInt{$ENDIF};
              {procedure UpdateLabelHighlight;}
               function GetMouseRow(var I: Integer) : Boolean;
               procedure SelectRow(Row: Integer; Spec: Boolean);
