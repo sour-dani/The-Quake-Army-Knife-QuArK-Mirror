@@ -623,85 +623,6 @@ def CallManager(fn, *args):
 #   Notice that here Arrow() now sends an extra argument, a text, so the Arrow() function should be modified to take this, but
 #    does not need to do anything with it, yet!
 
-def ParseCompoundVolume(CVString):
-
-    nNumSpheres = 0
-
-    iChar = 0
-    while iChar < len(CVString) and CVString[iChar] != ' ':
-        iChar = iChar + 1
-
-    if iChar == len(CVString):
-        return []
-
-    nNumSpheres = int(CVString[:iChar])
-
-    ParseList = []
-
-    for iSphere in range(nNumSpheres):
-        while iChar < len(CVString) and CVString[iChar] == ' ':
-            iChar = iChar + 1
-
-        if iChar == len(CVString):
-            return []
-
-        SphereInfoStart = iChar
-
-        # X
-        while iChar < len(CVString) and CVString[iChar] != ' ':
-            iChar = iChar + 1
-
-        if iChar == len(CVString):
-            return []
-
-        # Space
-        while iChar < len(CVString) and CVString[iChar] == ' ':
-            iChar = iChar + 1
-
-        if iChar == len(CVString):
-            return []
-
-        # Y
-        while iChar < len(CVString) and CVString[iChar] != ' ':
-            iChar = iChar + 1
-
-        if iChar == len(CVString):
-            return []
-
-        # Space
-        while iChar < len(CVString) and CVString[iChar] == ' ':
-            iChar = iChar + 1
-
-        if iChar == len(CVString):
-            return []
-
-        # Z
-        while iChar < len(CVString) and CVString[iChar] != ' ':
-            iChar = iChar + 1
-
-        if iChar == len(CVString):
-            return []
-
-        iSphereOrigin = quarkx.vect(CVString[SphereInfoStart:iChar])
-
-        # Space
-        while iChar < len(CVString) and CVString[iChar] == ' ':
-            iChar = iChar + 1
-
-        if iChar == len(CVString):
-            return []
-
-        # Radius
-        SphereInfoStart = iChar
-        while iChar < len(CVString) and CVString[iChar] != ' ':
-            iChar = iChar + 1
-
-        iSphereRadius = float(CVString[SphereInfoStart:iChar])
-
-        ParseList = ParseList + [(iSphereOrigin, iSphereRadius)]
-
-    return ParseList
-
 class DefaultDrawEntityLines:
 
     def drawentityarrow(self, entity, org, backarrow, color, view, processentities, text=None):
@@ -727,68 +648,10 @@ class DefaultDrawEntityLines:
             if e[spec]==arg:
                 self.drawentityarrow(e, org, backarrow, color, view, processentities, text)
 
-
-############## SHINE support code start
-
-    def drawAABB(self, mins, maxs, color, view):
-        cv = view.canvas()
-        cv.pencolor = color
-# calculate aabb points
-        aabb_010 = view.proj(quarkx.vect(mins.x, maxs.y, mins.z))
-        aabb_110 = view.proj(quarkx.vect(maxs.x, maxs.y, mins.z))
-        aabb_100 = view.proj(quarkx.vect(maxs.x, mins.y, mins.z))
-        aabb_001 = view.proj(quarkx.vect(mins.x, mins.y, maxs.z))
-        aabb_011 = view.proj(quarkx.vect(mins.x, maxs.y, maxs.z))
-        aabb_101 = view.proj(quarkx.vect(maxs.x, mins.y, maxs.z))
-        aabb_000 = view.proj(mins)
-        aabb_111 = view.proj(maxs)
-
-# draw low level
-        cv.line(int(aabb_000.x), int(aabb_000.y), int(aabb_010.x), int(aabb_010.y))
-        cv.line(int(aabb_110.x), int(aabb_110.y), int(aabb_010.x), int(aabb_010.y))
-        cv.line(int(aabb_110.x), int(aabb_110.y), int(aabb_100.x), int(aabb_100.y))
-        cv.line(int(aabb_000.x), int(aabb_000.y), int(aabb_100.x), int(aabb_100.y))
-# draw high level
-        cv.line(int(aabb_001.x), int(aabb_001.y), int(aabb_011.x), int(aabb_011.y))
-        cv.line(int(aabb_111.x), int(aabb_111.y), int(aabb_011.x), int(aabb_011.y))
-        cv.line(int(aabb_111.x), int(aabb_111.y), int(aabb_101.x), int(aabb_101.y))
-        cv.line(int(aabb_001.x), int(aabb_001.y), int(aabb_101.x), int(aabb_101.y))
-# draw medium level
-        cv.line(int(aabb_000.x), int(aabb_000.y), int(aabb_001.x), int(aabb_001.y))
-        cv.line(int(aabb_010.x), int(aabb_010.y), int(aabb_011.x), int(aabb_011.y))
-        cv.line(int(aabb_110.x), int(aabb_110.y), int(aabb_111.x), int(aabb_111.y))
-        cv.line(int(aabb_100.x), int(aabb_100.y), int(aabb_101.x), int(aabb_101.y))
-
-    def drawonesphere(self, entity, sphereradius, org, OriginalOrigin, color, view):
-        try:
-            radius = sphereradius * view.scale(OriginalOrigin)
-        except:
-            return
-        cv = view.canvas()
-        cv.pencolor = color
-        cv.penwidth = 2
-        cv.brushstyle = BS_CLEAR
-        cv.ellipse(int(org.x-radius), int(org.y-radius), int(org.x+radius), int(org.y+radius))
-
-    def drawentityradius(self, entity, nameradius, org, color, view):
-        try:
-            if entity[nameradius] is None:
-                return
-            radius = float(entity[nameradius]) * view.scale(org)
-        except:
-            return
-        cv = view.canvas()
-        cv.pencolor = color
-        cv.penwidth = 2
-        cv.brushstyle = BS_CLEAR
-        cv.ellipse(int(org.x-radius), int(org.y-radius), int(org.x+radius), int(org.y+radius))
-
-############## SHINE support code end
-
-
     def drawentitylines(self, entity, org, view, entities, processentities):
-        # "entity" and "processentities" is the current selected entity.
-        # "entities" is a list of all other entities EXCLUDING the selected entity.
+        # "entity" is the current selected entity.
+        # "entities" is a list of all other entities EXCLUDING the selected entity and all previously handled entities.
+        # "processentities" is all the entities to handle.
 
         color = MapColor("Axis")
         org1 = view.proj(org)
@@ -905,10 +768,6 @@ class DefaultDrawEntityLines:
                     ### Line below draws normal light full radius.
                     cv.ellipse(int(org1.x - radius), int(org1.y - radius), int(org1.x + radius), int(org1.y + radius))
 
-############ SHINE support code start
-        if entity["pivot"] is not None and quarkx.setupsubset(SS_GAMES)['GameCfg'] == "Shine":
-           self.drawentityarrows("pivotname", entity["pivot"], org, 1, RED, view, entities, processentities)
-############ SHINE support code end
         if entity["combattarget"] is not None:  # X7: combattarget to targetname
            self.drawentityarrows("targetname", entity["combattarget"], org, 0, color, view, entities, processentities)
         if entity["deathtarget"] is not None:  # X7: deathtarget to targetname, color RED
@@ -925,10 +784,6 @@ class DefaultDrawEntityLines:
         if entity["target"] is not None:
            self.drawentityarrows("targetname", entity["target"], org, 0, color, view, entities, processentities)
            self.drawentityarrows("name", entity["target"], org, 0, color, view, entities, processentities) # Rowdy: allow for Doom 3's
-############ SHINE support code start
-        if entity["Activator.Target"] is not None and quarkx.setupsubset(SS_GAMES)['GameCfg'] == "Shine":
-           self.drawentityarrows("Trigger.TargetName", entity["Activator.Target"], org, 0, color, view, entities, processentities)
-############ SHINE support code end
         if entity["targetname"] is not None:
            self.drawentityarrows("combattarget", entity["targetname"], org, 1, color, view, entities, processentities)
            self.drawentityarrows("deathtarget", entity["targetname"], org, 1, RED, view, entities, processentities)
@@ -944,109 +799,7 @@ class DefaultDrawEntityLines:
            self.drawentityarrows("dmgteam", entity["dmgteam"], org, 0, BLUE, view, entities, processentities)
         if entity["dmgteam"] is not None:  #X7: dmgteam (Arg) for Q2 Lazarus Monsters entities, color Blue
            self.drawentityarrows("dmgteam", entity["dmgteam"], org, 1, BLUE, view, entities, processentities)
-############ SHINE support code start
-        if quarkx.setupsubset(SS_GAMES)['GameCfg'] == "Shine":
-    #    pos = string.find(CVD, " ")
-    #    if pos>-1:
-    #          NV = CVD[:pos]
-    #          debug(NV)
-    #          i=0
-    #          while i<NV:
-    #            debug(i)
-    #            i = i+1
-            try:
-                if entity["CollisionInfo.mins"] is not None:
-                    if entity["CollisionInfo.maxs"] is not None:
-                        mins = org + quarkx.vect(entity["CollisionInfo.mins"])
-                        maxs = org + quarkx.vect(entity["CollisionInfo.maxs"])
-                        self.drawAABB(mins, maxs, color, view)
-            except:
-                pass
 
-            try:
-                if entity["CollisionInfo.CompoundVolumeData"] is not None:
-                    SpheresList = ParseCompoundVolume(entity["CollisionInfo.CompoundVolumeData"])
-                    for Sphere in SpheresList:
-                        SphereOrigin, SphereRadius = Sphere
-
-                        ItemOrigin = quarkx.vect(entity["origin"])
-
-                        szmangle = "0 0 0"
-                        if entity["mangle"] is not None:
-                            szmangle = entity["mangle"]
-
-                        angles = quarkx.vect(szmangle)
-                        pitch = -angles.x*deg2rad
-                        yaw = angles.y*deg2rad
-                        roll = angles.z*deg2rad
-
-                        mat = matrix_rot_z(yaw)*matrix_rot_y(pitch)*matrix_rot_x(roll)
-
-                        SphereOrigin = (mat*SphereOrigin)+ItemOrigin
-                        self.drawonesphere(entity, SphereRadius, view.proj(SphereOrigin),SphereOrigin, color, view)
-                else:
-                    EntityForm = quarkx.getqctxlist(":form" , entity.shortname)
-                    if EntityForm is not None and len(EntityForm) > 0:
-                        EntityForm = EntityForm[-1]
-                        for TestItem in EntityForm.subitems:
-                            if TestItem.shortname == "CompVolInfo":
-                                if TestItem["CVInfo"] is not None:
-                                    SpheresList = ParseCompoundVolume(TestItem["CVInfo"])
-                                    for Sphere in SpheresList:
-                                        SphereOrigin, SphereRadius = Sphere
-
-                                        ItemOrigin = quarkx.vect(entity["origin"])
-
-                                        szmangle = "0 0 0"
-                                        if entity["mangle"] is not None:
-                                            szmangle = entity["mangle"]
-
-                                        angles = quarkx.vect(szmangle)
-                                        pitch = -angles.x*deg2rad
-                                        yaw = angles.y*deg2rad
-                                        roll = angles.z*deg2rad
-
-                                        mat = matrix_rot_z(yaw)*matrix_rot_y(pitch)*matrix_rot_x(roll)
-
-                                        SphereOrigin = (mat*SphereOrigin)+ItemOrigin
-                                        self.drawonesphere(entity, SphereRadius, view.proj(SphereOrigin),SphereOrigin, color, view)
-                                break;
-            except:
-                pass
-
-            self.drawentityradius(entity, "CollisionInfo.radius", org1, color, view)
-            self.drawentityradius(entity, "SkinMesh.VisibilityDistance", org1, color, view)
-            self.drawentityradius(entity, "Shadow.VisibilityDistance", org1, color, view)
-            self.drawentityradius(entity, "BrushModel.VisibilityDistance", org1, color, view)
-            self.drawentityradius(entity, "Shadow.MaxDistance", org1, color, view)
-
-            self.drawentityradius(entity, "Sound.MinDistance", org1, BLUE, view)
-            self.drawentityradius(entity, "Sound.MaxDistance", org1, RED, view)
-
-            try:
-                if entity.shortname == "NavPoint" and entity.parent is not None:
-                    self.drawentityradius(entity, "Location.radius", org1, RED, view)
-                    radius = float(entity["Location.radius"])
-                    worldspawn = entity.parent
-                    while worldspawn.shortname <> "worldspawn" and worldspawn.parent is not None:
-                        worldspawn = worldspawn.parent
-                    items = worldspawn.findallsubitems("NavPoint", ":e")
-                    for item in items:
-                        if item <> entity and item["origin"] is not None:
-                            ItemOrigin = quarkx.vect(item["origin"])
-                            ItemRadius = float(item["Location.radius"])
-                            lenItem = abs(org - ItemOrigin)
-                            if lenItem < 2*(radius + ItemRadius)+300.0:
-                                OrgItem = view.proj(ItemOrigin)
-                                drawcolor = color
-                                if lenItem <= (radius + ItemRadius):
-                                    drawcolor = YELLOW
-                                self.drawentityradius(item, "Location.radius", OrgItem, drawcolor, view)
-                else:
-                    self.drawentityradius(entity, "Location.radius", org1, color, view)
-            except:
-                pass
-############ SHINE support code end
 
 #
 # EntityLines Manager list
@@ -1059,19 +812,16 @@ def drawentitylines(editor, processentities, view):
     "According to the choosen game, draw additional lines and arrows (e.g. target to targetname)"
     entities = editor.AllEntities()
     try:
-        mgr = EntityLinesMapping[quarkx.setupsubset().shortname] # DECKER - Find a drawentitylines-mgr for this game
+        mgr = EntityLinesMapping[quarkx.setupsubset().shortname] #Find a drawentitylines-mgr for this game
     except KeyError:
-        mgr = EntityLinesMapping["Default"] # DECKER - Hmm? Use the default manager, since there wasn't any plugin for the selected game
-    i = 0
-    while i<len(processentities):
-        entity = processentities[i]
-        i=i+1
+        mgr = EntityLinesMapping["Default"] #Use the default manager, since there wasn't any plugin for the selected game
+    for entity in processentities:
         if entity in entities:
             entities.remove(entity)
         org = ObjectOrigin(entity)
         if org is None:
             continue
-        mgr.drawentitylines(entity, org, view, entities, processentities) # DECKER - Call the manager
+        mgr.drawentitylines(entity, org, view, entities, processentities) #Call the manager with this entity to draw
 
 
 #
