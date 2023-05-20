@@ -128,7 +128,7 @@ type
 
 implementation
 
-uses Travail, QkExplorer, Quarkx, QkExceptions, PyObjects, Game, UNZIP, ZIP,
+uses Travail, QkExplorer, Quarkx, QkExceptions, PyObjects, Game, ZipAbbrevia,
      QkUnknown, QkObjectClassList, ExtraFunctionality;
 
 const
@@ -302,12 +302,11 @@ begin
             finally
               tInfo.Free;
             end;
-            crc:=CalcCRC32(TempStream.Memory, TempStream.Size);
             TempStream.Seek(0, soBeginning);
             OrgSize:=TempStream.Size;
 
             //Compress data from TempStream to T2.
-            CompressStream(TempStream, T2);
+            crc:=ZipCompressStream(TempStream, T2);
             T2.Seek(0, soBeginning);
             Size:=T2.Size;
           finally
@@ -396,14 +395,16 @@ end;
 
 function ZipAddRef(Ref: PQStreamRef; var S: TStream) : TStreamPos;
 var
-  err: integer;
+  crc: LongWord;
 begin
   Ref^.Self.Position:=Ref^.Position;
   S:=TMemoryStream.Create;
   try
-    err:=UnZipFile(Ref^.Self, S, Ref^.Position);
-    if err<>0 then
-      raise EErrorFmt(5815, [err]);
+    try
+      crc:=ZipDecompressStream(Ref^.Self, S);
+    except on E: Exception do
+      raise EErrorFmt(5815, [GetExceptionMessage(E)]);
+    end;
     Result:=S.Size;
     S.Position:=0;
   except

@@ -1085,7 +1085,7 @@ Strings = {
     5812: "The command line for tool %i is not set. Do you want to enter the command line now ?",
     5813: "Unable to load %s file. No valid loading library selected.",
     5814: "Unable to save %s file. No valid saving library selected.",
-    5815: "Error decompressing file (%d)",
+    5815: "Error decompressing file: %s",
     5816: "Problem with texture scale of face %d in brush %d",
     5817: "Invalid texture render mode\nDefaulting to normal",
     5818: "Unable to load pixelset from %s",
@@ -1142,6 +1142,9 @@ Strings = {
     5869: "Squirrel script file",
     5870: "Stoneless Extended Map file",
     5871: "Unable to decompress file '%s': it is encrypted",
+    5872: "decompressed size mismatch",
+    5873: "Checksum mismatch",
+    5874: "Unsupported compression method",
 
     # DanielPharos would like to reserve 6000 .. 6099 for all renderers
     6000: "Unable to create SceneObject//%s",

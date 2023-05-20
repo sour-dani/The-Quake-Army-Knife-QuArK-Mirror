@@ -201,7 +201,7 @@ begin
       end;
     end;
     if S.Size <> Ref^.DKTaille then
-      raise EErrorFmt(5815, [0]);
+      raise EErrorFmt(5815, [LoadStr1(5872)]);
     Result:=S.Size;
     S.Position:=0;
   except

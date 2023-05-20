@@ -123,13 +123,9 @@ The developers of used libraries/programs
                         Jordan Russell
                         http://www.jrsoftware.org/
 
-- PASZLIB:
-                        NOMSSI NZALI Jacques H. C.
-                        http://www.nomssi.de/paszlib/paszlib.html
-
-- Chief's UNZIP
-                        info-zip group, Christian Ghisler, Prof Abimbola Olowofoyeku (The African Chief)
-                        http://www.foyeh.org/
+- TurboPower Abbrevia:
+                        TurboPower Software
+                        https://tpabbrevia.sourceforge.net/
 
 - MarsCap:
                         Chen Ken

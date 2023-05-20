@@ -3096,8 +3096,7 @@ QQRKSRC1
       ZIP:config =
       {
         CompressionBufferSize = '16' // KBytes
-        CompressionLevel = '9'
-        CompressionMemoryUsage = '8'
+        CompressionLevel = '8'
         Form = "FilesZIP"
       }
     }
@@ -8214,8 +8213,7 @@ QQRKSRC1
       Style = "7"
       sep: = {Typ="S" Txt="---- Advanced ZIP Settings ----"}
       CompressionLevel: = {Txt="Compression Level" Typ="EF1" Hint="Level of compression to use (0 .. 9)"}
-      CompressionBufferSize: = {Txt="Size of compression buffer (KB)" Typ="EF1" Hint="Size of memory buffer to allocate when compressing"}
-      CompressionMemoryUsage: = {Txt="Memory usage of internal compression state" Typ="EF1" Hint="Level of memory usage when compressing (1 .. 9)"}
+      CompressionBufferSize: = {Txt="Size of compression buffer (KB)" Typ="EF1" Hint="Size of memory buffer to allocate when compressing (1 .. 32)"}
     }
 
     MapColors:form =
