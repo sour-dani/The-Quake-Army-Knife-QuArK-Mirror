@@ -3096,7 +3096,7 @@ QQRKSRC1
       ZIP:config =
       {
         CompressionBufferSize = '16' // KBytes
-        CompressionLevel = '8'
+        CompressionLevel = '9'
         Form = "FilesZIP"
       }
     }
