@@ -682,6 +682,9 @@ class DefaultDrawEntityLines:
                         color = quakecolor(quarkx.vect(entity["_color"]))
                 elif L2:
                     L2 = readfloats(L2)
+                    if len(L2) != 4:
+                        #squawk('Invalid light specific')
+                        return
                     radius = L2[3]
                     color = makeRGBcolor(L2[0], L2[1], L2[2])
                 else:
@@ -695,6 +698,9 @@ class DefaultDrawEntityLines:
                             color = vectorRGBcolor(quarkx.vect(entity["color"]))
 
                     #L3 = readfloats(L3)
+                    #if len(L3) != 4:
+                    #    #squawk('Invalid light specific')
+                    #    return
                     #radius = L3[3]
                     #color = makeRGBcolor(L3[0], L3[1], L3[2])
 
