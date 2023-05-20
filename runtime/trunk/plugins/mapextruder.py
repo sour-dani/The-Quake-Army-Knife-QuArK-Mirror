@@ -1919,7 +1919,7 @@ def extrudermenu(o, editor, oldmenu=quarkpy.mapentities.DuplicatorType.menu.im_f
     punch_inner.state=punch_outer.state=quarkpy.qmenu.disabled
     punch_inner.hint=punch_inner.hint+"\n\nTo get the item enabled, mark something with RMB|Navigate Tree|<map object>|Mark."
   if o["type"]!="t":
-    punch_outer_state=qquarkpy.menu.disabled
+    punch_outer_state=quarkpy.qmenu.disabled
 
   testconc1 = quarkpy.qmenu.item("test brushes",testbrushes)
   testpatch1 = quarkpy.qmenu.item("test patches",testpatches)
