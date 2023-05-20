@@ -486,9 +486,9 @@ var
  PlusBmp1, MinusBmp1: HBitmap;
  FocusItem: QObject;
  DotColors: array[Boolean] of TColorRef;
- MaxPixelWidth: Longint; //DanielPharos: A workaround to get the horizontal scrollbar working
+ MaxPixelWidth: Integer; //DanielPharos: A workaround to get the horizontal scrollbar working
 
-  procedure UpdateMaxPixelWidth(NewWidth: Longint);
+  procedure UpdateMaxPixelWidth(NewWidth: Integer);
   begin
     if (NewWidth > MaxPixelWidth) then MaxPixelWidth := NewWidth;
   end;
