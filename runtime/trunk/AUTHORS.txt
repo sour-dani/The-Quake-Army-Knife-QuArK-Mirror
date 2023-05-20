@@ -108,7 +108,7 @@ The developers of used libraries/programs
                         Andreas Hausladen
                         http://andy.jgknet.de/dspeedup/index.php?page=RtlVclOptimize
 
-- VCL Fix Pack:
+- VCL Fix Pack & ControlsAtomFix:
                         Andreas Hausladen
                         https://www.idefixpack.de/blog/bugfix-units/vclfixpack-10/
 

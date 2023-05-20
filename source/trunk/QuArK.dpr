@@ -36,6 +36,7 @@ uses
 {$ENDIF}
   FastMove in 'prog\FastMove.pas',
   FastCode in 'prog\FastCode\FastCode.pas',
+  ControlsAtomFix in 'prog\ControlsAtomFix.pas',
   RtlVclOptimize in 'prog\RtlVclOptimize.pas',
   Forms, SysUtils, {$IFNDEF LINUX}Windows,{$ENDIF}
 
