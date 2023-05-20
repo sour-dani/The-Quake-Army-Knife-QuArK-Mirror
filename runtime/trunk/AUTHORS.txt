@@ -83,18 +83,19 @@ The developers of used libraries/programs
                         Denton Woods
                         Nicolas Weber
                         Matej Týc
-                        http://openil.sourceforge.net/
+                        https://openil.sourceforge.net/
 
 - FreeImage:
                         Hervé Drolon
-                        http://freeimage.sourceforge.net/
+                        https://freeimage.sourceforge.io/
 
 - NVDXT:
-                        http://www.nvidia.com/
+                        https://www.nvidia.com/
 
 - FastMM:
                         Pierre le Riche
                         https://github.com/pleriche/FastMM4
+                        https://github.com/pleriche/FastMM5
 
 - FastMove:
                         John O'Harrow
@@ -102,7 +103,7 @@ The developers of used libraries/programs
 
 - FastCode:
                         Fastcode Project
-                        http://fastcode.sourceforge.net/
+                        https://fastcode.sourceforge.net/
 
 - RtlVclOptimize:
                         Andreas Hausladen
@@ -121,7 +122,7 @@ The developers of used libraries/programs
 
 - Toolbar97:
                         Jordan Russell
-                        http://www.jrsoftware.org/
+                        https://jrsoftware.org/
 
 - TurboPower Abbrevia:
                         TurboPower Software
@@ -137,8 +138,8 @@ The developers of used libraries/programs
 
 - Python:
                         Python Software Foundation
-                        http://www.python.org/
+                        https://www.python.org/
 
 - NSIS:
                         "kichik"
-                        http://nsis.sourceforge.net/
+                        https://nsis.sourceforge.io/

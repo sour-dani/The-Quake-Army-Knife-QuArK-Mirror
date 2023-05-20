@@ -28,8 +28,11 @@ uses
 {$IFDEF MemTester}
   MemTester in 'prog\MemTester.pas',
 {$ENDIF}
-{$IFDEF FastMM}
+{$IFDEF FastMM4}
   FastMM4 in 'prog\FastMM4.pas',
+{$ENDIF}
+{$IFDEF FastMM5}
+  FastMM5 in 'prog\FastMM5.pas',
 {$ENDIF}
 {$IFDEF MemCheck}
   MemCheck in 'prog\MemCheck.pas',
