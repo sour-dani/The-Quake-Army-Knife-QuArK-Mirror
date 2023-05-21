@@ -32,6 +32,7 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 {.$DEFINE FastMM_ClearLogFileOnStartup}
 {.$DEFINE FastMM_EnableMemoryLeakReporting}
 {$DEFINE FastMM_NoMessageBoxes}
+{$DEFINE FastMM_NoDebugInfo}
 {$DEFINE FastMM5}     (*Enable for FastMM5, copy the debug DLL to the runtime directory when debugging*)
 {$ELSE}
 {$DEFINE FastMM4}     (*Enable for FastMM4, copy the debug DLL to the runtime directory when debugging*)
