@@ -226,7 +226,7 @@ class Entity:
             key.GenerateForm(s)
         # Place "<keyword>=!"-statements at the _end_ of ":form" definitions, because of a problem which Decker found but can't solve.
         for inh in self.m_inherit:
-            s.specificadd(inh+"=!")
+            s[inh] = "!"
         indent.appenditem(s)
 
 class BrushEntity(Entity):

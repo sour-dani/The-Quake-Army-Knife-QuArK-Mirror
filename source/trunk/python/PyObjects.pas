@@ -80,11 +80,10 @@ function qCopyAllData(self, args: PyObject) : PyObject; cdecl;
 function qLoadText(self, args: PyObject) : PyObject; cdecl;
 function qGetIcon(self, args: PyObject) : PyObject; cdecl;
 function qRefreshTV(self, args: PyObject) : PyObject; cdecl;
-function qSpecAdd(self, args: PyObject) : PyObject; cdecl;
 function qIsAllowedParent(self, args: PyObject) : PyObject; cdecl;
 
 const
- PyObjMethodTable: array[0..18] of TyMethodDef =
+ PyObjMethodTable: array[0..17] of TyMethodDef =
   ((ml_name: 'subitem';         ml_meth: qSubItem;         ml_flags: METH_VARARGS),
    (ml_name: 'findname';        ml_meth: qFindName;        ml_flags: METH_VARARGS),
    (ml_name: 'findshortname';   ml_meth: qFindShortName;   ml_flags: METH_VARARGS),
@@ -102,7 +101,6 @@ const
    (ml_name: 'loadtext';        ml_meth: qLoadText;        ml_flags: METH_VARARGS),
    (ml_name: 'geticon';         ml_meth: qGetIcon;         ml_flags: METH_VARARGS),
    (ml_name: 'refreshtv';       ml_meth: qRefreshTV;       ml_flags: METH_VARARGS),
-   (ml_name: 'specificadd';     ml_meth: qSpecAdd;         ml_flags: METH_VARARGS),
    (ml_name: 'isallowedparent'; ml_meth: qIsAllowedParent; ml_flags: METH_VARARGS));
 
  {-------------------}
@@ -990,27 +988,6 @@ begin
   E:=ExplorerFromObject(Q);
   if E<>nil then
     E.Refresh;
-  Result:=PyNoResult;
- except
-  Py_XDECREF(Result);
-  EBackToPython;
-  Result:=Nil;
- end;
-end;
-
-function qSpecAdd(self, args: PyObject) : PyObject; cdecl;
-var
- Q: QObject;
- nSpec: PyChar;
-begin
- Result:=Nil;
- try
-  if PyArg_ParseTupleX(args, 's', [@nSpec])=0 then
-    Exit;
-  Q:=QkObjFromPyObj(self);
-  if Q=nil then
-    exit;
-  Q.Specifics.Add(PyStrPas(nSpec));
   Result:=PyNoResult;
  except
   Py_XDECREF(Result);
