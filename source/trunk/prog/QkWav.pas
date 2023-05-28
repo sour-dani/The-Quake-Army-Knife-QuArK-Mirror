@@ -121,7 +121,7 @@ end;
 
 procedure TWavDataInfo.InitStream(nPos: Integer);
 var
- Delta: Integer;
+ Delta: TStreamPos;
 begin
  Delta:=nPos*BytesPerTick;
  BytesLeft:=DataSize-Delta;

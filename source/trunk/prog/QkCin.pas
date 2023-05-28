@@ -170,11 +170,11 @@ end;
 
 procedure TCinDataInfo.EstimateLength;
 var
- Progress: LongInt;
+ Progress: TStreamPos;
  Estimated: TDouble;
 begin
  if EOF then Exit;
- Progress:=LongInt(FrameOfs.Last)-OfsData;
+ Progress:=TStreamPos(FrameOfs.Last)-OfsData;
  if FrameOfs.Count<=1 then
   Estimated:=EstimatedFrameSize+BytesPerTick
  else
@@ -295,7 +295,7 @@ begin
    try
     Progress:=0;
     MaxP:=nPos-FrameOfs.Count+1;
-    I:=LongInt(FrameOfs.Last);
+    I:=TStreamPos(FrameOfs.Last);
    {BytesLeft:=DataSize-I;}
     Stream.Position:=StreamSource+I;
     Stream.ReadBuffer(NextPos, SizeOf(NextPos));
@@ -330,7 +330,7 @@ begin
  PaletteChange:=High(TBuffers)-Low(TBuffers)+1;
  if nPos>=FrameOfs.Count then
   nPos:=FrameOfs.Count-1;
- Stream.Position:=LongInt(FrameOfs[nPos]);
+ Stream.Position:=TStreamPos(FrameOfs[nPos]);
 end;
 
 destructor TCinDataInfo.Destroy;
@@ -462,13 +462,13 @@ begin
  else
   if nPos>=FrameOfs.Count then
    begin
-    HCount:=ReadNewHeader-LongInt(FrameOfs.Last)-SizeOf(LongInt)-BytesPerTick;
+    HCount:=ReadNewHeader-TStreamPos(FrameOfs.Last)-SizeOf(LongInt)-BytesPerTick;
     EstimateLength;
     if nPos>=FrameOfs.Count then Exit;
    end
   else
    begin
-    Stream.Position:=LongInt(FrameOfs[nPos]);
+    Stream.Position:=TStreamPos(FrameOfs[nPos]);
     if Palettes[nPos]<>Nil then
      begin
       CurrentPalette:=PBitmapInfoColors(Palettes[nPos]);
