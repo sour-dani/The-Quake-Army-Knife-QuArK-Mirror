@@ -22,14 +22,8 @@ unit Undo;
 
 interface
 
-uses SysUtils, WinProcs, Classes, Controls, Forms, Dialogs,
+uses SysUtils, Classes, Controls, Forms, Dialogs,
      QkObjects, QkExplorer, QkFileObjects;
-
-(*var
- MaxUndoLevel  : Integer = 50;
- MinUndoLevel  : Integer = 10;
- UndoBufferSize: Integer = 2*1024*1024;   { 2 MB }
- FreeMaxMemory : Boolean = True;*)
 
 type
  TUndoObject = class

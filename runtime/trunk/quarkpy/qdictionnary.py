@@ -662,7 +662,7 @@ Strings = {
     5214: "You will no longer be able to undo any of the previous operations if you go on.",
     5215: "You will no longer be able to undo all of the previous operations if you go on.",
     5216: "QuArK has left %d temporary file(s) in path %s, probably because it crashed or because of a bug. Do you want to delete this(these) file(s) now ?",
-    5217: "'%s' : Cannot (un)do this operation any more because the file has been closed",
+    # 5217: "'%s' : Cannot (un)do this operation any more because the file has been closed",
     # 5218: "Warning: the tree view you see is incomplete, because the Explorer views of QuArK cannot display the same objects more than once.",
     5219: "The file %s's \"save\" support has not (yet) been added. File ignored.",
     5220: "'%s' : Invalid file size. The file is %u bytes length instead of %u",
