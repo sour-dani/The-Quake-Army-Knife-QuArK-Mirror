@@ -46,13 +46,15 @@ implementation
 
 uses SysUtils, Qk1, Setup, Quarkx, QkObjectClassList, Game, QkExceptions, Logging;
 
+{$I DelphiVer.inc}
+
 var
  Chain1: TClipboardHandler;
 
 function CollerImage(PasteNow: QObject) : Boolean;
 var
  H: THandle;
- SourceTaille: DWORD;
+ SourceTaille: {$IFDEF CPU64BITS}SIZE_T{$ELSE}DWORD{$ENDIF};
  Source: TMemoryStream;
  Image: QBmp;
 begin

@@ -86,6 +86,7 @@ implementation
 
 uses Qk1, QkMapPoly, Setup, QkInclude, QkMacro, Quarkx, Travail, QkQuakeC, QkObjectClassList;
 
+{$I DelphiVer.inc}
 {$R *.DFM}
 
  {------------------------}
@@ -114,7 +115,7 @@ var
  Source: TMemoryStream;
  H: THandle;
  P: PChar;
- SourceTaille: DWORD;
+ SourceTaille: {$IFDEF CPU64BITS}SIZE_T{$ELSE}DWORD{$ENDIF};
 begin
  Result:=IsClipboardFormatAvailable(g_CF_QObjects);
  if Result and Assigned(PasteNow) then
