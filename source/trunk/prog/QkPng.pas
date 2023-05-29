@@ -87,7 +87,6 @@ begin
     Flag:=IL_TRUE
   else
     Flag:=IL_FALSE;
-
   ilSetInteger(IL_PNG_INTERLACE, Flag);
   CheckDevILError(ilGetError);
 end;

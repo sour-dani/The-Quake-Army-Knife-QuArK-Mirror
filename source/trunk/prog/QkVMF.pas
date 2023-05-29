@@ -24,8 +24,7 @@ interface
 
 uses
   Windows, SysUtils, Classes, Dialogs,
-  QkFileObjects, QkObjects, QkMapObjects,
-  qmatrices, QkMap;
+  QkFileObjects, QkObjects, QkMapObjects, QkMap;
 
 type
  QVMFFile = class(QMapFile)

@@ -218,10 +218,13 @@ begin
     1: Flag:=IL_FASTEST;
     2: Flag:=IL_LESS_MEM;
     else
+      //FIXME: Log!
       Flag:=IL_DONT_CARE;
     end;
   except
-    Flag:=IL_DONT_CARE;
+    on EConvertError do
+      //FIXME: Log!
+      Flag:=IL_DONT_CARE;
   end;
   ilHint(IL_MEM_SPEED_HINT, Flag);
   CheckDevILError(ilGetError);
@@ -235,7 +238,9 @@ begin
       Flag:=IL_DONT_CARE;
     end;
   except
-    Flag:=IL_DONT_CARE;
+    on EConvertError do
+      //FIXME: Log!
+      Flag:=IL_DONT_CARE;
   end;
   ilHint(IL_COMPRESSION_HINT, Flag);
   CheckDevILError(ilGetError);
@@ -262,8 +267,7 @@ type
   PRGBA = ^TRGBA;
   TRGBA = array[0..3] of Byte;
 var
-  RawBuffer: String;
-  Source: PByte;
+  RawBuffer, Source: PByte;
   ImgData, PalData, AlphaData: String;
   DestImg, DestPal, DestAlpha: PChar;
   I, J: Integer;
@@ -283,8 +287,8 @@ begin
     DevILLoaded:=true;
   end;
 
-  SetLength(RawBuffer, FSize);
-  F.ReadBuffer(Pointer(RawBuffer)^, FSize);
+  GetMem(RawBuffer, FSize); //FIXME: Put in try..finally
+  F.ReadBuffer(RawBuffer^, FSize);
 
   LoadFileDevILSettings;
 
@@ -294,7 +298,7 @@ begin
     ilBindImage(DevILImage);
     CheckDevILError(ilGetError);
 
-    if ilLoadL(FileTypeDevIL, Pointer(RawBuffer), FSize)=IL_FALSE then
+    if ilLoadL(FileTypeDevIL, RawBuffer, FSize)=IL_FALSE then
     begin
       CheckDevILError(ilGetError);
       LogAndRaiseError(FmtLoadStr1(5736, [FormatName, 'ilLoadL', FormatName]));
@@ -471,6 +475,7 @@ begin
     ilDeleteImages(1, @DevILImage);
     CheckDevILError(ilGetError);
   end;
+  FreeMem(RawBuffer);
 end;
 
 procedure QImage.SaveFileDevIL(Info: TInfoEnreg1);
@@ -485,8 +490,7 @@ type
   TRGBA = array[0..3] of Byte;
 var
   PSD: TPixelSetDescription;
-  RawBuffer: String;
-  Dest: PByte;
+  RawBuffer, Dest: PByte;
   SourceImg, SourceAlpha, SourcePal, pSourceImg, pSourceAlpha, pSourcePal: PChar;
   Width, Height: Integer;
   PaddingSource, PaddingDest: Integer;
@@ -665,8 +669,8 @@ begin
       OutputSize:=0;
       OutputSize:=ilSaveL(FileTypeDevIL, Nil, OutputSize);
       CheckDevILError(ilGetError);
-      SetLength(RawBuffer, OutputSize);
-      OutputSize:=ilSaveL(FileTypeDevIL, Pointer(RawBuffer), OutputSize);
+      GetMem(RawBuffer, OutputSize); //FIXME: Put in try..finally
+      OutputSize:=ilSaveL(FileTypeDevIL, RawBuffer, OutputSize);
       CheckDevILError(ilGetError);
 
     finally
@@ -677,7 +681,8 @@ begin
     PSD.Done;
   end;
 
-  Info.F.WriteBuffer(Pointer(RawBuffer)^,OutputSize);
+  Info.F.WriteBuffer(RawBuffer^, OutputSize);
+  FreeMem(RawBuffer);
 end;
 
 procedure QImage.LoadFileFreeImage(F: TStream; FSize: TStreamPos);
@@ -691,8 +696,7 @@ type
   PRGBA = ^TRGBA;
   TRGBA = array[0..3] of Byte;
 var
-  RawBuffer: String;
-  Source: PByte;
+  RawBuffer, Source: PByte;
   SourcePalette: PRGBQuad;
   ImgData, PalData, AlphaData: String;
   DestImg, DestPal, DestAlpha: PChar;
@@ -715,10 +719,10 @@ begin
     FreeImageLoaded:=true;
   end;
 
-  SetLength(RawBuffer, FSize);
-  F.ReadBuffer(Pointer(RawBuffer)^, FSize);
+  GetMem(RawBuffer, FSize); //FIXME: Put in try..finally
+  F.ReadBuffer(RawBuffer^, FSize);
 
-  FIBuffer := FreeImage_OpenMemory(Pointer(RawBuffer), FSize);
+  FIBuffer := FreeImage_OpenMemory(RawBuffer, FSize);
   FIImage := FreeImage_LoadFromMemory(FileTypeFreeImage, FIBuffer, LoadFileFreeImageSettings);
   try
     Width:=FreeImage_GetWidth(FIImage);
@@ -870,6 +874,7 @@ begin
     FreeImage_Unload(FIImage);
     FreeImage_CloseMemory(FIBuffer);
   end;
+  FreeMem(RawBuffer);
 end;
 
 procedure QImage.SaveFileFreeImage(Info: TInfoEnreg1);
@@ -884,8 +889,7 @@ type
   TRGBA = array[0..3] of Byte;
 var
   PSD: TPixelSetDescription;
-  RawBuffer: String;
-  Dest: PByte;
+  RawBuffer, Dest: PByte;
   DestPalette: PRGBQuad;
   SourceImg, SourceAlpha, SourcePal, pSourceImg, pSourceAlpha, pSourcePal: PChar;
   Width, Height: Integer;
@@ -1045,13 +1049,13 @@ begin
   FreeImage_Unload(FIImage); //FIXME: Put in try..finally
 
   OutputSize:=FreeImage_TellMemory(FIBuffer);
-  SetLength(RawBuffer, OutputSize);
+  GetMem(RawBuffer, OutputSize); //FIXME: Put in try..finally
   if FreeImage_SeekMemory(FIBuffer, 0, SEEK_SET)=false then
   begin
     FreeImage_CloseMemory(FIBuffer);
     LogAndRaiseError(FmtLoadStr1(5721, [FormatName, 'FreeImage_SeekMemory']));
   end;
-  OutputSize:=FreeImage_ReadMemory(Pointer(RawBuffer), 1, OutputSize, FIBuffer);
+  OutputSize:=FreeImage_ReadMemory(RawBuffer, 1, OutputSize, FIBuffer);
   if OutputSize=0 then
   begin
     FreeImage_CloseMemory(FIBuffer);
@@ -1059,7 +1063,8 @@ begin
   end;
   FreeImage_CloseMemory(FIBuffer); //FIXME: Put in try..finally
 
-  Info.F.WriteBuffer(Pointer(RawBuffer)^, OutputSize);
+  Info.F.WriteBuffer(RawBuffer^, OutputSize);
+  FreeMem(RawBuffer);
 end;
 
 function QImage.OpenWindow(nOwner: TComponent) : TQForm1;
@@ -1726,6 +1731,8 @@ end;
  {------------------------}
 
 procedure TFQImages.wmInternalMessage(var Msg: TMessage);
+const
+ Spec2 = 'Pal';
 var
  Pal: TToolbar97;
  PSD: TPixelSetDescription;
@@ -1741,7 +1748,7 @@ begin
       if FileObj1.IsTrueColor then
        Pal.Free
       else
-       DynamicPaletteToolbar(Pal, FileObject, 'Pal');
+       DynamicPaletteToolbar(Pal, FileObject, Spec2);
      PSD:=QImage(FileObject).Description;
      FFileObject:=Nil;
      try
@@ -1780,6 +1787,8 @@ begin
 end;
 
 function TFQImages.MacroCommand(Cmd: Integer) : Boolean;
+const
+ Spec2 = 'Pal';
 var
  Pal: TToolbar97;
 begin
@@ -1791,7 +1800,7 @@ begin
        if (FileObject as QImage).IsTrueColor then
         Raise EError(5689);
        Pal:=MakePaletteToolbar(ValidParentForm(Self));
-       DynamicPaletteToolbar(Pal, FileObject, 'Pal');
+       DynamicPaletteToolbar(Pal, FileObject, Spec2);
        Pal.Show;
       end;
  else

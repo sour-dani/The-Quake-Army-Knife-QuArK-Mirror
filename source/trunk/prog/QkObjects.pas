@@ -1068,6 +1068,7 @@ begin
   { adds the size of the loaded data }
   for I:=0 to Specifics.Count-1 do
     Inc(Result, SizeOf(String)+Length(Specifics[I])*SizeOf(Char));
+    //FIXME: This doesn't take into account possible string sharing/pooling between objects!
 
   for I:=0 to SubElements.Count-1 do
     Inc(Result, SubElements[I].GetObjectSize(Loaded, LoadNow));

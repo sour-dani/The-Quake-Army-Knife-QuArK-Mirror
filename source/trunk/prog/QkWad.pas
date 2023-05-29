@@ -807,11 +807,11 @@ begin
     TimerAnimation.Enabled:=False;
     TimerAnimation.Tag:=-1;
 
-    LoadNoOfTexAtEachCall := StrToInt(SetupSubSet(ssToolbars, 'Texture Browser').Specifics.Values['ImageListLoadNoOfTexAtEachCall']);
+    LoadNoOfTexAtEachCall := StrToInt(SetupSubSet(ssToolbars, 'Texture Browser').Specifics.Values['ImageListLoadNoOfTexAtEachCall']); //FIXME: Check for convert error!
     if (LoadNoOfTexAtEachCall < 1) then
       LoadNoOfTexAtEachCall := 1; { Load atleast one texture for each call to this function }
 
-    TexDimension := StrToInt(SetupSubSet(ssToolbars, 'Texture Browser').Specifics.Values['ImageListTextureDimension']);
+    TexDimension := StrToInt(SetupSubSet(ssToolbars, 'Texture Browser').Specifics.Values['ImageListTextureDimension']); //FIXME: Check for convert error!
     TexDimension := 16 * (TexDimension div 16); { Allow only steps of 16 }
     if (TexDimension < 32) then
       TexDimension := 32; { Minimum dimension is 32x32 }

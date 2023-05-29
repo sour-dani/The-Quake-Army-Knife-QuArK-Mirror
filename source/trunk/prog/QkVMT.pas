@@ -292,7 +292,7 @@ procedure QVMTFile.LoadFile(F: TStream; FSize: TStreamPos);
 var
   Setup: QObject;
 
-  RawBuffer: String;
+  RawBuffer: PByte;
   VMTMaterial: vlUInt;
   Stage: QVMTStage;
   StageList: array of QObject;
@@ -316,8 +316,8 @@ begin
         VMTLoaded:=true;
       end;
 
-      SetLength(RawBuffer, FSize);
-      F.ReadBuffer(Pointer(RawBuffer)^, FSize);
+      GetMem(RawBuffer, FSize); //FIXME: Put in try..finally
+      F.ReadBuffer(RawBuffer^, FSize);
 
       if vlCreateMaterial(@VMTMaterial)=vlFalse then
         LogAndRaiseError('Unable to load VMT file. Call to vlCreateMaterial failed.');
@@ -332,14 +332,18 @@ begin
           0: vlSetInteger(VTFLIB_VMT_PARSE_MODE, PARSE_MODE_STRICT);
           1: vlSetInteger(VTFLIB_VMT_PARSE_MODE, PARSE_MODE_LOOSE);
           else
+            //FIXME: Log!
             vlSetInteger(VTFLIB_VMT_PARSE_MODE, PARSE_MODE_LOOSE);
           end;
         except
-          vlSetInteger(VTFLIB_VMT_PARSE_MODE, PARSE_MODE_LOOSE);
+          on EConvertError do
+            //FIXME: Log!
+            vlSetInteger(VTFLIB_VMT_PARSE_MODE, PARSE_MODE_LOOSE);
         end;
 
-        if vlMaterialLoadLump(Pointer(RawBuffer), Length(RawBuffer))=vlFalse then
+        if vlMaterialLoadLump(PvlVoid(RawBuffer), FSize)=vlFalse then
           LogAndRaiseError('Unable to load VMT file. Call to vlMaterialLoadLump failed. Please make sure the file is a valid VMT file, and not damaged or corrupt.');
+        FreeMem(RawBuffer);
 
         if vlMaterialGetFirstNode=vlFalse then
           LogAndRaiseError('Unable to load VMT file. Call to vlMaterialGetFirstNode failed.');
@@ -414,7 +418,7 @@ procedure QVMTFile.SaveFile(Info: TInfoEnreg1);
 var
   I: Integer;
   Q: QObject;
-  RawBuffer: String;
+  RawBuffer: PByte;
   VMTMaterial, OutputSize: Cardinal;
 begin
  Log(LOG_VERBOSE, 'Saving VMT file %s', [self.name]);
@@ -452,11 +456,12 @@ begin
         end;
       end;
 
-      SetLength(RawBuffer, 2048);     //FIXME: 2048 is just a number. We need a better way!
-      if vlMaterialSaveLump(Pointer(RawBuffer), Length(RawBuffer), @OutputSize)=vlFalse then
+      GetMem(RawBuffer, 2048);     //FIXME: 2048 is just a number. We need a better way! //FIXME: Put in try..finally
+      if vlMaterialSaveLump(PvlVoid(RawBuffer), 2048, @OutputSize)=vlFalse then
         LogAndRaiseError('Unable to save VMT file. Call to vlMaterialSaveLump failed.');
 
-      F.WriteBuffer(Pointer(RawBuffer)^,OutputSize);
+      F.WriteBuffer(RawBuffer^,OutputSize);
+      FreeMem(RawBuffer);
     finally
       vlDeleteMaterial(VMTMaterial);
     end;

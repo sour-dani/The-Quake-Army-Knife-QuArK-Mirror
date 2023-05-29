@@ -88,35 +88,26 @@ begin
     0: Flag:=IL_JFIF;
     1: Flag:=IL_EXIF;
     else
+      //FIXME: Log!
       Flag:=IL_JFIF;
     end;
   except
-    Flag:=IL_JFIF;
+    on EConvertError do
+      //FIXME: Log!
+      Flag:=IL_JFIF;
   end;
-
   ilSetInteger(IL_JPG_SAVE_FORMAT, Flag);
   CheckDevILError(ilGetError);
 
-  try
-    Flag:=Round(Setup.GetFloatSpec('SaveQualityDevIL', 99));
-  except
-    Flag:=99;
-  end;
+  Flag:=Round(Setup.GetFloatSpec('SaveQualityDevIL', 99));
+  if Flag < 0 then
+    Flag:=0;
   if Flag > 99 then
     Flag:=99;
-
   ilSetInteger(IL_JPG_QUALITY, Flag);
   CheckDevILError(ilGetError);
 
-  try
-    if Setup.Specifics.Values['SaveProgressiveDevIL']<>'' then
-      Flag:=IL_TRUE
-    else
-      Flag:=IL_FALSE;
-  except
-    Flag:=IL_FALSE;
-  end;
-  if Flag=IL_TRUE then
+  if Setup.Specifics.Values['SaveProgressiveDevIL']<>'' then
     ilEnable(IL_JPG_PROGRESSIVE)
   else
     ilDisable(IL_JPG_PROGRESSIVE);
@@ -134,18 +125,17 @@ begin
     1: Result:=JPEG_FAST;
     2: Result:=JPEG_ACCURATE;
     else
+      //FIXME: Log!
       Result:=JPEG_ACCURATE;
     end;
   except
-    Result:=JPEG_ACCURATE;
+    on EConvertError do
+      //FIXME: Log!
+      Result:=JPEG_ACCURATE;
   end;
 
-  try
-    if Setup.Specifics.Values['LoadCMYKFreeImage']<>'' then
-      Result:=Result or JPEG_CMYK;
-  except
-    ;
-  end;
+  if Setup.Specifics.Values['LoadCMYKFreeImage']<>'' then
+    Result:=Result or JPEG_CMYK;
 end;
 
 function QJpeg.SaveFileFreeImageSettings : Integer;
@@ -162,18 +152,17 @@ begin
     4: Result:=JPEG_QUALITYGOOD;
     5: Result:=JPEG_QUALITYSUPERB;
     else
+      //FIXME: Log!
       Result:=JPEG_QUALITYGOOD;
     end;
   except
-    Result:=JPEG_QUALITYGOOD;
+    on EConvertError do
+      //FIXME: Log!
+      Result:=JPEG_QUALITYGOOD;
   end;
 
-  try
-    if Setup.Specifics.Values['SaveProgressiveFreeImage']<>'' then
-      Result:=Result or JPEG_PROGRESSIVE;
-  except
-    ;
-  end;
+  if Setup.Specifics.Values['SaveProgressiveFreeImage']<>'' then
+    Result:=Result or JPEG_PROGRESSIVE;
 end;
 
 procedure QJpeg.LoadFile(F: TStream; FSize: TStreamPos);

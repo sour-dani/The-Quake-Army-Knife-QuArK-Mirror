@@ -95,10 +95,13 @@ begin
     7: Flag:=IL_3DC;
     8: Flag:=IL_RXGB;
     else
+      //FIXME: Log!
       Flag:=IL_DXT1;
     end;
   except
-    Flag:=IL_DXT1;
+    on EConvertError do
+      //FIXME: Log!
+      Flag:=IL_DXT1;
   end;
 
   ilSetInteger(IL_DXTC_FORMAT, Flag);
@@ -152,8 +155,6 @@ var
   LibraryToUse: string;
 
   PSD: TPixelSetDescription;
-//  TexSize : longword;
-  //RawBuffer: String;
   S: String;
   Dest: PByte;
   SourceImg, SourceAlpha, SourcePal, pSourceImg, pSourceAlpha, pSourcePal: PByte;

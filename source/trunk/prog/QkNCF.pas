@@ -182,7 +182,7 @@ end;
 
 procedure QNCFFolder.LoadFile(F: TStream; FSize: TStreamPos);
 var
-  //RawBuffer: String;
+  //RawBuffer: PByte;
 
   NCFDirectoryItem : PHLDirectoryItem;
   Nsubelements, I : hlUInt;
@@ -205,11 +205,12 @@ begin
            LogAndRaiseError(FmtLoadStr1(5722, ['NCF', 'hlBindPackage', PChar(hlGetString(HL_ERROR))]));
 
          (*//This code would load the entire file --> OutOfMemory!
-         SetLength(RawBuffer, FSize);
-         F.ReadBuffer(Pointer(RawBuffer)^, FSize);
+         GetMem(RawBuffer, FSize); //FIXME: Put in try..finally
+         F.ReadBuffer(RawBuffer^, FSize);
 
-         if hlPackageOpenMemory(Pointer(RawBuffer), Length(RawBuffer), HL_MODE_READ + HL_MODE_WRITE) = hlFalse then
+         if hlPackageOpenMemory(RawBuffer, FSize, HL_MODE_READ + HL_MODE_WRITE) = hlFalse then
            LogAndRaiseError(FmtLoadStr1(5722, ['NCF', 'hlPackageOpenMemory', PChar(hlGetString(HL_ERROR))]));
+         FreeMem(RawBuffer);
 
          //so instead, do this:*)
 

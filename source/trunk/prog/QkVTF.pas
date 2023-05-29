@@ -95,10 +95,13 @@ begin
         3: Flag:=IL_DXT1A;
         4: Flag:=IL_DXT_NO_COMP;
         else
+          //FIXME: Log!
           Flag:=IL_DXT5;
         end;
       except
-        Flag:=IL_DXT5;
+        on EConvertError do
+          //FIXME: Log!
+          Flag:=IL_DXT5;
       end;
     end
     else
@@ -111,10 +114,13 @@ begin
         3: Flag:=IL_DXT1A;
         4: Flag:=IL_DXT_NO_COMP;
         else
+          //FIXME: Log!
           Flag:=IL_DXT1;
         end;
       except
-        Flag:=IL_DXT1;
+        on EConvertError do
+          //FIXME: Log!
+          Flag:=IL_DXT1;
       end;
     end;
   finally
@@ -138,10 +144,10 @@ var
   Setup: QObject;
   Flag: vlInt;
 
-  RawBuffer: String;
+  RawBuffer: PByte;
   Source, DestAlpha, DestImg, pSource, pDestAlpha, pDestImg: PChar;
   AlphaData, ImgData: String;
-  I,J: Integer;
+  I, J: Integer;
 
   VTFImage: Cardinal;
   ImageFormat: VTFImageFormat;
@@ -166,8 +172,8 @@ begin
           VTFLoaded:=true;
         end;
 
-        SetLength(RawBuffer, FSize);
-        F.ReadBuffer(Pointer(RawBuffer)^, FSize);
+        GetMem(RawBuffer, FSize); //FIXME: Put in try..finally
+        F.ReadBuffer(RawBuffer^, FSize);
 
         Setup:=SetupSubSet(ssFiles, 'VTF');
         try
@@ -177,10 +183,13 @@ begin
           2: Flag:=DXT_QUALITY_HIGH;
           3: Flag:=DXT_QUALITY_HIGHEST;
           else
+            //FIXME: Log!
             Flag:=DXT_QUALITY_HIGH;
           end;
         except
-          Flag:=DXT_QUALITY_HIGH;
+          on EConvertError do
+            //FIXME: Log!
+            Flag:=DXT_QUALITY_HIGH;
         end;
         vlSetInteger(VTFLIB_DXT_QUALITY, Flag);
 
@@ -191,8 +200,9 @@ begin
           if vlBindImage(VTFImage)=vlFalse then
             LogAndRaiseError(FmtLoadStr1(5720, [FormatName, 'vlBindImage']));
 
-          if vlImageLoadLump(Pointer(RawBuffer), Length(RawBuffer), vlFalse)=vlFalse then
+          if vlImageLoadLump(PvlVoid(RawBuffer), FSize, vlFalse)=vlFalse then
             LogAndRaiseError(FmtLoadStr1(5736, [FormatName, 'vlImageLoadLump', FormatName]));
+          FreeMem(RawBuffer);
 
           HasAlpha := (vlImageGetFlags() and (TEXTUREFLAGS_ONEBITALPHA or TEXTUREFLAGS_EIGHTBITALPHA))<>0;
           if HasAlpha then
@@ -305,7 +315,8 @@ var
   DummyImage: QImage;
   PSD: TPixelSetDescription;
   TexSize : longword;
-  S, RawBuffer: String;
+  S: String;
+  RawBuffer: PByte;
   RawData, RawData2: PvlByte;
   SourceImg, SourceAlpha, Dest, pSourceImg, pSourceAlpha, pDest: PChar;
   Width, Height: Integer;
@@ -366,11 +377,14 @@ begin
             if S<>'' then
             begin
               try
-                TexFormat:=strtoint(S);
+                TexFormat:=StrToInt(S);
                 if (TexFormat < 0) or (TexFormat >= IMAGE_FORMAT_COUNT) then
+                  //FIXME: Log!
                   TexFormat := IMAGE_FORMAT_DXT5;
               except
-                TexFormat := IMAGE_FORMAT_DXT5;
+                on EConvertError do
+                  //FIXME: Log!
+                  TexFormat := IMAGE_FORMAT_DXT5;
               end;
             end;
             ImageFormat:=IMAGE_FORMAT_RGBA8888;
@@ -412,11 +426,14 @@ begin
             if S<>'' then
             begin
               try
-                TexFormat:=strtoint(S);
+                TexFormat:=StrToInt(S);
                 if (TexFormat < 0) or (TexFormat >= IMAGE_FORMAT_COUNT) then
+                  //FIXME: Log!
                   TexFormat := IMAGE_FORMAT_DXT5;
               except
-                TexFormat := IMAGE_FORMAT_DXT5;
+                on EConvertError do
+                  //FIXME: Log!
+                  TexFormat := IMAGE_FORMAT_DXT5;
               end;
             end;
             ImageFormat:=IMAGE_FORMAT_RGB888;
@@ -460,12 +477,12 @@ begin
         if I>0 then
         begin
           try
-            VTFMajorVersion:=strtoint(LeftStr(VTFSaveVersion, I-1));
+            VTFMajorVersion:=StrToInt(LeftStr(VTFSaveVersion, I-1));
           except
             VTFMajorVersion:=VTF_MAJOR_VERSION;
           end;
           try
-            VTFMinorVersion:=strtoint(RightStr(VTFSaveVersion, Length(VTFSaveVersion)-I));
+            VTFMinorVersion:=StrToInt(RightStr(VTFSaveVersion, Length(VTFSaveVersion)-I));
           except
             VTFMinorVersion:=VTF_MINOR_VERSION;
           end;
@@ -483,12 +500,12 @@ begin
 
         if vlImageCreateSingle(Width, Height, RawData, @VTFOptions)=vlFalse then
           LogAndRaiseError(FmtLoadStr1(5721, [FormatName, 'vlImageCreateSingle']));
-        SetLength(RawBuffer, vlImageGetSize);
-        if vlImageSaveLump(Pointer(RawBuffer), Length(RawBuffer), @OutputSize)=vlFalse then
+        GetMem(RawBuffer, vlImageGetSize); //FIXME: Put in try..finally
+        if vlImageSaveLump(PvlVoid(RawBuffer), vlImageGetSize, @OutputSize)=vlFalse then
           LogAndRaiseError(FmtLoadStr1(5721, [FormatName, 'vlImageSaveLump']));
 
-        F.WriteBuffer(Pointer(RawBuffer)^,OutputSize);
-        FreeMem(RawData); //FIXME: Put inside try..finally
+        F.WriteBuffer(RawBuffer^,OutputSize);
+        FreeMem(RawData);
       finally
         vlDeleteImage(VTFImage);
       end;
