@@ -903,7 +903,7 @@ begin
     Raise EErrorFmt(5561, [SetupGameSet.Name, DisplayAllAlias(FileName), BaseDir]);
 end;
 
-//Returns an alternative path (from the QuArK dir) is the given path was a relative path
+//Returns an alternative path (from the QuArK dir) if the given path was a relative path
 function CheckForRelativePath(const Path: String) : String;
 var
   CurDir, NewPath: String;
