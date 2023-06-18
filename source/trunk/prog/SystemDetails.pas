@@ -2495,8 +2495,7 @@ begin
                 until RealProcessNameSize < ProcessNameBufferSize;
                 if RealProcessNameSize > 0 then
                 begin
-                  SetLength(ProcessName, RealProcessNameSize);
-                  ProcessName := PChar(ProcessNameBuffer);
+                  SetString(ProcessName, ProcessNameBuffer, RealProcessNameSize);
                   if SameFileName(ProcessName, exeFileName) then
                   begin
                     Result:=True;
