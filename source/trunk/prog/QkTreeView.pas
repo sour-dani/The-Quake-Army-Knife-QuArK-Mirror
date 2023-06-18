@@ -1390,7 +1390,7 @@ end;
 procedure TMyTreeView.WMKillFocus(var Message: TMessage);
 begin
  HasFocus:=False;
- if (EditInfo=Nil) or (DWORD(Message.wParam)<>EditInfo^.InPlaceEdit.Handle) then
+ if (EditInfo=Nil) or (Message.wParam<>EditInfo^.InPlaceEdit.Handle) then
   begin
    CancelMouseClicking(True);
    Invalidate;
