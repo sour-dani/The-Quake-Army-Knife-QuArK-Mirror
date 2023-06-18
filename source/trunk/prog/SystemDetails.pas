@@ -2436,7 +2436,7 @@ begin
       ContinueLoop := Process32First(FSnapshotHandle, FProcessEntry32);
       while ContinueLoop <> false do
       begin
-        if SameText(ExtractFilename(StrPas(FProcessEntry32.szExeFile)), ExtractFilename(exeFileName)) then
+        if SameFileName(ExtractFilename(StrPas(FProcessEntry32.szExeFile)), ExtractFilename(exeFileName)) then
         begin
           FSnapshotHandle2 := CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, FProcessEntry32.th32ProcessID);
           if FSnapshotHandle2 = INVALID_HANDLE_VALUE then
@@ -2447,7 +2447,7 @@ begin
           try
             FModuleEntry32.dwSize := SizeOf(FModuleEntry32);
             Module32First(FSnapshotHandle2, FModuleEntry32);
-            if SameText(StrPas(FModuleEntry32.szExePath), ExeFileName) then
+            if SameFileName(StrPas(FModuleEntry32.szExePath), ExeFileName) then
             begin
               Result := True;
               break;
@@ -2497,11 +2497,7 @@ begin
                 begin
                   SetLength(ProcessName, RealProcessNameSize);
                   ProcessName := PChar(ProcessNameBuffer);
-{$IFDEF LINUX}
-                  if CompareStr(ProcessName, exeFileName) = 0 then
-{$ELSE}
-                  if SameText(ProcessName, exeFileName) then
-{$ENDIF}
+                  if SameFileName(ProcessName, exeFileName) then
                   begin
                     Result:=True;
                     break;
