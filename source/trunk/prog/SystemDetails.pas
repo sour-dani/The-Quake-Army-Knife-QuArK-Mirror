@@ -2538,8 +2538,9 @@ function RetrieveModuleFilename(ModuleHandle: HMODULE) : String;
 var
   Path: LPTSTR;
 begin
-  Path:=StrAlloc(MAX_PATH);
+  Path:=StrAlloc(MAX_PATH+1);
   try
+    Path[MAX_PATH]:=#0; //GetModuleFileName might return a not null-terminated, truncated string
     if GetModuleFileName(ModuleHandle, Path, MAX_PATH) = 0 then
       raise exception.create('Unable to retrieve filename of a module!');
     Result := StrPas(Path);
