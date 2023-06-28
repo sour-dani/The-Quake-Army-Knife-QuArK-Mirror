@@ -131,9 +131,13 @@ begin
           BackBufferFormat := 0;
         end;
       except
-        Log(LOG_CRITICAL, LoadStr1(6012), ['BackBufferFormat',0]);
-        BackBufferFormat := 0;
+        on EConvertError do
+        begin
+          Log(LOG_CRITICAL, LoadStr1(6012), ['BackBufferFormat',0]);
+          BackBufferFormat := 0;
+        end;
       end;
+
       try
         StencilBufferBits:=StrToInt(Setup.Specifics.Values['StencilBufferBits']);
         if (StencilBufferBits < 0) or (StencilBufferBits > 1) then
@@ -142,8 +146,11 @@ begin
           StencilBufferBits := 0;
         end;
       except
-        Log(LOG_CRITICAL, LoadStr1(6012), ['StencilBufferBits',0]);
-        StencilBufferBits := 0;
+        on EConvertError do
+        begin
+          Log(LOG_CRITICAL, LoadStr1(6012), ['StencilBufferBits',0]);
+          StencilBufferBits := 0;
+        end;
       end;
 
       //DanielPharos: We're going to need to check if the settings here are OK
