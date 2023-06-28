@@ -1,6 +1,6 @@
 {
 
-FastMM 5.04
+FastMM 5.05
 
 Description:
   A fast replacement memory manager for Embarcadero Delphi applications that scales well across multiple threads and CPU
@@ -219,7 +219,7 @@ dynamic loading is explicitly specified.}
 const
 
   {The current version of FastMM.  The first digit is the major version, followed by a two digit minor version number.}
-  CFastMM_Version = 504;
+  CFastMM_Version = 505;
 
   {The number of arenas for small, medium and large blocks.  Increasing the number of arenas decreases the likelihood
   of thread contention happening (when the number of threads inside a GetMem call is greater than the number of arenas),
@@ -8463,9 +8463,29 @@ begin
   if ABlockInfo.DebugInformation = nil then
     Exit;
 
-  {Check the block header and footer for corruption}
-  if not CheckDebugBlockHeaderAndFooterCheckSumsValid(ABlockInfo.DebugInformation) then
-    System.Error(reInvalidPtr);
+  {Check the block header and footer for corruption.}
+  if (ABlockInfo.DebugInformation.CalculateHeaderCheckSum <> ABlockInfo.DebugInformation.HeaderCheckSum)
+    or (ABlockInfo.DebugInformation.CalculateFooterCheckSum <> ABlockInfo.DebugInformation.DebugFooterPtr^) then
+  begin
+    {The header and/or footer checksums are not currently correct, but that may just be due to a race condition:  When a
+    debug block is freed the debug header and footer are updated while the block manager is not yet locked, so we need
+    to check again whether the block is still flagged as having debug information, and if so, check its contents a
+    second time.}
+    if BlockHasDebugInfo(ABlockInfo.DebugInformation) then
+    begin
+      {The block is still flagged as containing debug information, so one of two scenarios are possible:
+      1) The block header or footer has been corrupted
+      2) The block is being freed, and FastMM_FreeMem_FreeDebugBlock has completed updating the headers and footers}
+      if not CheckDebugBlockHeaderAndFooterCheckSumsValid(ABlockInfo.DebugInformation) then
+        System.Error(reInvalidPtr);
+    end
+    else
+    begin
+      {The "debug info" flag in the block header is not currently set.  This means that the debug header and footer are
+      currently being updated inside FastMM_FreeMem_FreeDebugBlock before the block is actually freed.}
+      Exit;
+    end;
+  end;
 
   {If it is a free block, check whether it has been modified after being freed.}
   if ABlockInfo.BlockIsFree and (not CheckDebugBlockFillPatternIntact(ABlockInfo.DebugInformation)) then
