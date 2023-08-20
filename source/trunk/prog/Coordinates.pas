@@ -237,7 +237,7 @@ implementation
 
 { $DEFINE DebugCoord}
 
-uses qdraw, Qk3D, QkMapPoly, Setup, SystemDetails;
+uses SysUtils, qdraw, Qk3D, QkMapPoly, Setup, ExtraFunctionality;
 
 const
   MaxoowLocal = 1.0;
@@ -1077,7 +1077,7 @@ procedure T2DCoordinates.InitProjVar;
 begin
  inherited;
 {Facteur:=1/Sqr(pProjZ);}
- FastDisplay:=CheckWindowsNT or (pProjZ<=2); //FIXME: Why pProjZ here?
+ FastDisplay:=CheckWin32Version(4, 0) or (pProjZ<=2); //Windows NT //FIXME: Why pProjZ here?
  FlatDisplay:=True;
  HiddenRegions:=os_Left or os_Right or os_Top or os_Bottom;
 end;

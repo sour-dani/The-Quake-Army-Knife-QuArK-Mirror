@@ -45,7 +45,7 @@ function DataToBmp16(const S: String; W: Integer) : HBitmap;
 
 implementation
 
-uses QkPixelSet, SystemDetails;
+uses QkPixelSet, ExtraFunctionality;
 
 const
  Max95 = 8192;  { to clip coordinates x and y }
@@ -306,7 +306,7 @@ end;
 
 procedure InitViewport16();
 begin
- if CheckWindowsNT then
+ if CheckWin32Version(4, 0) then //Windows NT
   begin   { Windows NT can use the full 32 bits }
    PointVisible95:=PointVisibleOk;
    Line95:=LineOk;

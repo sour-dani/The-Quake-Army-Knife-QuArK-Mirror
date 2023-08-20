@@ -308,6 +308,9 @@ function BoolToStr(B: Boolean; UseBoolStrs: Boolean = False): string;
   starts at position Offset within S.  If Offset is larger than Length(S)
   then PosEx returns 0.  By default, Offset equals 1. }
 function PosEx(const SubStr, S: string; Offset: Cardinal = 1): Integer;
+
+//This was added in Delphi 6 Update Pack 2, but there's no way to check for that...
+function CheckWin32Version(AMajor: Integer; AMinor: Integer = 0): Boolean;
 {$endif}
 
 {$ifndef DelphiXEorNewerCompiler}
@@ -510,6 +513,13 @@ begin
   Result := Pos(SubStr, RightStr(S, Length(S) - Offset));
   if Result <> 0 then
     Result := Result + Offset;
+end;
+
+function CheckWin32Version(AMajor: Integer; AMinor: Integer = 0): Boolean;
+begin
+  Result := (Win32MajorVersion > AMajor) or
+            ((Win32MajorVersion = AMajor) and
+             (Win32MinorVersion >= AMinor));
 end;
 {$endif}
 

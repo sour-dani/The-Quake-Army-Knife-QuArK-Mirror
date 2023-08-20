@@ -26,10 +26,8 @@ uses
   SysUtils, StrUtils, Windows, Classes, ExtraFunctionality;
 
 procedure LogSystemDetails;
-function CheckWindowsNT: Boolean;
-function CheckWindows98And2000: Boolean;
-function CheckWindowsMEAnd2000: Boolean;
-function CheckWindows2000: Boolean;
+function CheckWindows98And2000: Boolean; //FIXME: Switch to using CheckWin32Version!
+function CheckWindowsMEAnd2000: Boolean; //FIXME: Switch to using CheckWin32Version!
 function ProcessExists(const exeFileName: String): Boolean;
 function WindowExists(const WindowName: String): Boolean;
 function RetrieveModuleFilename(ModuleHandle: HMODULE): String;
@@ -1927,7 +1925,7 @@ begin
     end;
 
     FColorMgmtCaps:=[];
-    if CheckWindows2000 then
+    if CheckWin32Version(5, 0) then //Windows 2000
     begin
       I:=GetDeviceCaps(l_hdc,{windows.}ExtraFunctionality.COLORMGMTCAPS);
       if I<>CM_NONE then
@@ -2544,11 +2542,6 @@ begin
   end;
 end;
 
-function CheckWindowsNT: Boolean;
-begin
-  Result:=(WindowsPlatformCompatibility=osWinNTComp);
-end;
-
 function CheckWindows98And2000: Boolean;
 begin
   Result:=(WindowsPlatform<>osWin95) and (WindowsPlatform<>osWinNT4);
@@ -2557,11 +2550,6 @@ end;
 function CheckWindowsMEAnd2000: Boolean;
 begin
   Result:=(WindowsPlatform<>osWin95) and (WindowsPlatform<>osWin98) and (WindowsPlatform<>osWin98SE) and (WindowsPlatform<>osWinNT4);
-end;
-
-function CheckWindows2000: Boolean;
-begin
-  Result:=(WindowsPlatform<>osWin95) and (WindowsPlatform<>osWin98) and (WindowsPlatform<>osWin98SE) and (WindowsPlatform<>osWinME) and (WindowsPlatform<>osWinNT4);
 end;
 
 procedure WarnDriverBugs;
