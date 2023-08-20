@@ -447,7 +447,7 @@ var
   Root: QModelRoot;
   Comp: QComponent;
   Components, Skins: TQList;
-  Position0, Taille1: TStreamPos;
+  Position0: TStreamPos;
   L, GlCmds: TList;
   I, J, K, K1: Integer;
   SkinObj: QImage;

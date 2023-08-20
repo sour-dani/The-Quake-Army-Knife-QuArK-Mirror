@@ -1054,11 +1054,11 @@ var
   FrameList, SkinList: TQList;
   mdl: mdl_t;
   Size: array[1..2] of Single;
-  Position0, I, J, K, K1, Taille1, Delta, InputVertexCount: Integer;
+  Position0: TStreamPos;
+  I, J, K, K1, Taille1, Delta, InputVertexCount: Integer;
   SkinGroup: skingroup_t;
   FrameGroup: framegroup_t;
   P: PByte;
-  S: string;
   SkinObj: QImage;
   SkinSize: TPoint;
   STData: PVertxArray;
@@ -1070,7 +1070,7 @@ var
   FrameObj: QFrame;
   FrSourcePts: ^trivertx_array_t;
   Times: string;
-  PreviousTime, Time1: Single;
+  PreviousTime: Single;
   NextTime: ^Single;
   VertexMap: ^TVertexMap;
   Node: PVertexNode;
