@@ -1768,7 +1768,9 @@ begin
    try
      TextureMaxDimension:=1 shl StrToInt(SetupSubSet(ssGeneral, '3D view').Specifics.Values['TextureMaxDimension']);
    except
-     TextureMaxDimension:=1 shl 8; { default value is 256 }
+     on EConvertError do
+       //FIXME: Log!
+       TextureMaxDimension:=1 shl 8; { default value is 256 }
    end;
    if (TextureMaxDimension < 8) then
      TextureMaxDimension:=8; { minimum value is 8 }
