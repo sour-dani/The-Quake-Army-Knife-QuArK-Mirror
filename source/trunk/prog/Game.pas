@@ -130,7 +130,7 @@ procedure ClearBmpInfo24(var BmpInfo: TBitmapInfo256);
 procedure PaletteFromLmp(const Lmp: TPaletteLmp; var BmpInfo: TBitmapInfo256;
            Palette, PaletteReelle: HPalettePtr);
 procedure ColorsFromLmp(const Lmp: TPaletteLmp; var bmiColors: TBitmapInfoColors);
-{function MakeQuakeImageData(NeededGame: Char; DC: HDC; W,H, nW,nH: Integer; Format: TMQIDF) : String;}
+{function MakePalettedImageData(NeededGame: Char; DC: HDC; W,H, nW,nH: Integer; Format: TMQIDF) : String;}
 function GetQPaletteColor(const BitmapInfo: TBitmapInfo256; I: Integer) : TColorRef;
 function ColorIsLight(C: TColorRef) : Boolean;
 
@@ -1263,7 +1263,7 @@ begin
  end;
 end;
 
-(*function MakeQuakeImageData(NeededGame: Char; DC: HDC; W,H, nW,nH: Integer; Format: TMQIDF) : String;
+(*function MakePalettedImageData(NeededGame: Char; DC: HDC; W,H, nW,nH: Integer; Format: TMQIDF) : String;
 var
  Game: PGameBuffer;
  Dest, Bmp1: HBitmap;

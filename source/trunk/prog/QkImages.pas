@@ -1354,7 +1354,7 @@ end;
 
 (*procedure QImage.PasteImageDC(NeededGame: Char; DC: HDC; W,H: Integer);
 begin
- SetQuakeImageData(NeededGame, MakeQuakeImageData(NeededGame, DC, W,H, W,H, dfWinFormat), W,H);
+ SetQuakeImageData(NeededGame, MakePalettedImageData(NeededGame, DC, W,H, W,H, dfWinFormat), W,H);
 end;
 
 procedure QImage.PasteBitmapH;
