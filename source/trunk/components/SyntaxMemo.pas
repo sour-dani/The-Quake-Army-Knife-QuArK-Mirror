@@ -297,10 +297,9 @@ var
  Taille, Mot: Integer;
 begin
  Result:=-1;
- Taille:=SendMessage(Handle, WM_GETTEXTLENGTH, 0,0);
+ Taille:=StrLen(WindowText);
  GetMem(Buffer, Taille*SizeOf(Char)); try
- SendMessage(Handle, WM_GETTEXT, Taille, LParam(Buffer));
- Taille:=StrLen(Buffer);
+ StrCopy(Buffer, WindowText);
  if StartPos>=Taille then Exit;
  if frWholeWord in Options then
   if StartPos>0 then
