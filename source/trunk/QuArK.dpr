@@ -25,6 +25,9 @@ program QuArK;
 {$INCLUDE MemManager.inc}
 
 uses
+  //
+  // Memory managers
+  //
 {$IFDEF MemTester}
   MemTester in 'prog\MemTester.pas',
 {$ENDIF}
@@ -37,22 +40,33 @@ uses
 {$IFDEF MemCheck}
   MemCheck in 'prog\MemCheck.pas',
 {$ENDIF}
-  FastMove in 'prog\FastMove.pas',
-  FastCode in 'prog\FastCode\FastCode.pas',
+
+  //
+  // Runtime fixes
+  //
+{$IFDEF CompiledWithDelphi6}
+  D6CheckWin32VersionFix in 'prog\D6CheckWin32VersionFix.pas',
+{$ENDIF}
+{$IFDEF Delphi6orNewerCompiler}{$IFNDEF Delphi2010orNewerCompiler}{$IFDEF CPUX86}
+  VCLFixPack in 'prog\VCLFixPack.pas',
+{$ENDIF}{$ENDIF}{$ENDIF}
 {$IFNDEF DelphiXE2orNewerCompiler}
   ControlsAtomFix in 'prog\ControlsAtomFix.pas',
 {$ENDIF}
+  //VistaAltFixUnit in 'prog\VistaAltFixUnit.pas',
+  //VistaAltFixUnit2 in 'prog\VistaAltFixUnit2.pas',
+
+  //
+  // Runtime optimization
+  //
+  FastMove in 'prog\FastMove.pas',
+  FastCode in 'prog\FastCode\FastCode.pas',
   RtlVclOptimize in 'prog\RtlVclOptimize.pas',
+
   Forms, SysUtils, {$IFNDEF LINUX}Windows,{$ENDIF}
 
   //Init the logging module FIRST, otherwise we'll miss log-calls from other init's!
   Logging in 'prog\Logging.pas',
-
-{$IFDEF Delphi6orNewerCompiler}{$IFNDEF Delphi2010orNewerCompiler}{$IFDEF CPUX86}
-  VCLFixPack in 'prog\VCLFixPack.pas',
-{$ENDIF}{$ENDIF}{$ENDIF}
-  //VistaAltFixUnit in 'prog\VistaAltFixUnit.pas',
-  //VistaAltFixUnit2 in 'prog\VistaAltFixUnit2.pas',
 
   DWM in '3dfx\DWM.pas',
   DX9 in '3dfx\DX9.pas',
@@ -267,6 +281,15 @@ begin
   FormatSettings.DecimalSeparator:='.';
   {$ELSE}
   DecimalSeparator:='.';
+  {$ENDIF}
+
+  {$IFDEF CompiledWithDelphi6}
+  //SysUtils.CheckWin32Version was added in Update Pack 2 of Delphi 6,
+  //but there is no way to check for which Update Pack is installed,
+  //so let's check for the existance of the function itself.
+  {$IF Declared(CheckWin32Version)}
+  PatchCheckWin32Version;
+  {$IFEND}
   {$ENDIF}
 
   Log(LOG_VERBOSE, 'Loading main form...');
