@@ -42,7 +42,7 @@ var
 
  { ----------------- }
 
-function WndMessageProc(hWnd: HWND; Msg: UINT; WParam: WPARAM; LParam: LPARAM): UINT; stdcall;
+function WndMessageProc(hWnd: HWND; Msg: UINT; WParam: WPARAM; LParam: LPARAM): LRESULT; stdcall;
 begin
   Result := DefWindowProc(hWnd,Msg,wParam,lParam);
 end;

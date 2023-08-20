@@ -80,7 +80,7 @@ begin
   end;
 end;
 
-function WndMessageProc(hWnd: HWND; Msg: UINT; WParam: WPARAM; LParam: LPARAM): UINT; stdcall;
+function WndMessageProc(hWnd: HWND; Msg: UINT; WParam: WPARAM; LParam: LPARAM): LRESULT; stdcall;
 var
  PaintInfo: TPaintStruct;
  DC: HDC;
