@@ -39,14 +39,18 @@ uses
 {$ENDIF}
   FastMove in 'prog\FastMove.pas',
   FastCode in 'prog\FastCode\FastCode.pas',
+{$IFNDEF DelphiXE2orNewerCompiler}
   ControlsAtomFix in 'prog\ControlsAtomFix.pas',
+{$ENDIF}
   RtlVclOptimize in 'prog\RtlVclOptimize.pas',
   Forms, SysUtils, {$IFNDEF LINUX}Windows,{$ENDIF}
 
   //Init the logging module FIRST, otherwise we'll miss log-calls from other init's!
   Logging in 'prog\Logging.pas',
 
+{$IFDEF Delphi6orNewerCompiler}{$IFNDEF Delphi2010orNewerCompiler}{$IFDEF CPUX86}
   VCLFixPack in 'prog\VCLFixPack.pas',
+{$ENDIF}{$ENDIF}{$ENDIF}
   //VistaAltFixUnit in 'prog\VistaAltFixUnit.pas',
   //VistaAltFixUnit2 in 'prog\VistaAltFixUnit2.pas',
 
