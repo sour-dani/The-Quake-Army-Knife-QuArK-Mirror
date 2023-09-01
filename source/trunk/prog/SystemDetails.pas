@@ -120,7 +120,7 @@ type
 
   TOperatingSystem = class(TPersistent)
   private
-    FExtended: Boolean;
+    FExtended: Boolean; //This platform supports OSVersionInfoEx
     FBuildNumber: DWORD; //SysUtils.Win32BuildNumber has the wrong datatype!
     FMajorVersion: DWORD; //SysUtils.Win32MajorVersion has the wrong datatype!
     FMinorVersion: DWORD; //SysUtils.Win32MinorVersion has the wrong datatype!
@@ -1027,19 +1027,21 @@ const
 begin
   Log(LOG_VERBOSE, 'Starting gathering OS information...');
   FDirs.Clear;
-  Extended:=False;
-  ZeroMemory(@OS,SizeOf(OS));
-  OS.dwOSVersionInfoSize:=SizeOf(TOSVersionInfo);
-  if not GetVersionEx(POSVersionInfo(@OS)^) then
-    raise exception.create('Unable to retrieve system details. Call to GetVersionEx failed!');
-  if (OS.dwPlatformId = VER_PLATFORM_WIN32_NT) and (OS.dwMajorVersion > 4) then
+  if CheckWin32Version(5, 0) then //Windows 2000
   begin
-    // This platform supports TOSVersionInfoEx
+    Extended:=True;
     ZeroMemory(@OS,SizeOf(OS));
     OS.dwOSVersionInfoSize:=SizeOf(TOSVersionInfoEx);
     if not GetVersionEx(POSVersionInfo(@OS)^) then
       raise exception.create('Unable to retrieve system details. Call to GetVersionEx failed!');
-    Extended:=True;
+  end
+  else
+  begin
+    Extended:=False;
+    ZeroMemory(@OS,SizeOf(OS));
+    OS.dwOSVersionInfoSize:=SizeOf(TOSVersionInfo);
+    if not GetVersionEx(POSVersionInfo(@OS)^) then
+      raise exception.create('Unable to retrieve system details. Call to GetVersionEx failed!');
   end;
   MajorVersion:=OS.dwMajorVersion;
   MinorVersion:=OS.dwMinorVersion;
