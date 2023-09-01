@@ -88,6 +88,7 @@ type
   PArithByte = PAnsiChar;
 {$endif}
 
+{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 7, and they exist in Delphi 11.3
   PMemoryStatusEx = ^TMemoryStatusEx;
   _MEMORYSTATUSEX = record
     dwLength: DWORD;
@@ -104,6 +105,7 @@ type
   TMemoryStatusEx = _MEMORYSTATUSEX;
   MEMORYSTATUSEX = _MEMORYSTATUSEX;
   {$EXTERNALSYM MEMORYSTATUSEX}
+{$endif}
 
   POSVersionInfoExA = ^TOSVersionInfoExA;
   POSVersionInfoExW = ^TOSVersionInfoExW;
@@ -185,10 +187,11 @@ const
 
   REG_QWORD = 11; //Added in Windows 2000 //Also: REG_QWORD_LITTLE_ENDIAN
 
-  PROCESSOR_ARCHITECTURE_INTEL: WORD = 0; //x86
-  PROCESSOR_ARCHITECTURE_IA64: WORD = 6; //Intel Itanium Processor Family (IPF)
-  PROCESSOR_ARCHITECTURE_AMD64: WORD = 9; //x64 (AMD or Intel)
-  PROCESSOR_ARCHITECTURE_UNKNOWN: WORD = $FFFF; //Unknown architecture.
+  PROCESSOR_ARCHITECTURE_INTEL(*: WORD*) = 0; //x86
+  PROCESSOR_ARCHITECTURE_ARM(*: WORD*) = 5; //ARM
+  PROCESSOR_ARCHITECTURE_IA64(*: WORD*) = 6; //Intel Itanium Processor Family (IPF)
+  PROCESSOR_ARCHITECTURE_AMD64(*: WORD*) = 9; //x64 (AMD or Intel)
+  PROCESSOR_ARCHITECTURE_UNKNOWN(*: WORD*) = $FFFF; //Unknown architecture.
 {$endif}
 {$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 7, but existing in Delphi 11.3!
   {$EXTERNALSYM COLORMGMTCAPS}
@@ -215,11 +218,6 @@ const
   {$EXTERNALSYM CM_CMYK_COLOR}
   CM_CMYK_COLOR = 4;     { Accepts CMYK color space ICC color profile }
 
-var //Note: These need to be initialized before use!
-  SetDllDirectory: function (lpPathName : LPCTSTR): BOOL; stdcall;
-  IsWow64Process: function (hProcess : THandle; var Wow64Process : BOOL): BOOL; stdcall;
-  GlobalMemoryStatusEx: function (var lpBuffer: TMemoryStatusEx): BOOL; stdcall;
-
 function CopyCursor(pcur: HCursor): HCursor; // This is a macro that wasn't converted
 
 {$ifndef DelphiXE6orNewerCompiler} //FIXME: Not sure about the version of Delphi these were added
@@ -243,6 +241,50 @@ function StartsText(const ASubText, AText: string): Boolean;
 function EndsText(const ASubText, AText: string): Boolean;
 function StartsStr(const ASubText, AText: string): Boolean;
 function EndsStr(const ASubText, AText: string): Boolean;
+{$endif}
+
+var
+  DelayFunc_GlobalMemoryStatusEx: Boolean;
+  DelayFunc_GetNativeSystemInfo: Boolean;
+  DelayFunc_SetDllDirectoryA: Boolean;
+  DelayFunc_SetDllDirectoryW: Boolean;
+  DelayFunc_SetDllDirectory: Boolean;
+  DelayFunc_IsWow64Process: Boolean;
+
+{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 7, and they exist in Delphi 11.3
+{$ifdef Delphi2010orNewerCompiler} //Use delayed loading
+function GlobalMemoryStatusEx(var lpBuffer : TMEMORYSTATUSEX): BOOL; stdcall;
+{$EXTERNALSYM GlobalMemoryStatusEx}
+function GlobalMemoryStatusEx; external kernel32 name 'GlobalMemoryStatusEx' delayed;
+
+procedure GetNativeSystemInfo(var lpSystemInformation: TSystemInfo); stdcall;
+{$EXTERNALSYM GetNativeSystemInfo}
+procedure GetNativeSystemInfo; external kernel32 name 'GetNativeSystemInfo' delayed;
+
+function SetDllDirectory(lpPathName: LPCWSTR): BOOL; stdcall;
+{$EXTERNALSYM SetDllDirectory}
+function SetDllDirectoryA(lpPathName: LPCSTR): BOOL; stdcall;
+{$EXTERNALSYM SetDllDirectoryA}
+function SetDllDirectoryW(lpPathName: LPCWSTR): BOOL; stdcall;
+{$EXTERNALSYM SetDllDirectoryW}
+function SetDllDirectory; external kernel32 name {$IFDEF UNICODE}'SetDllDirectoryW'{$ELSE}'SetDllDirectoryA'{$ENDIF} delayed;
+function SetDllDirectoryA; external kernel32 name 'SetDllDirectoryA' delayed;
+function SetDllDirectoryW; external kernel32 name 'SetDllDirectoryW' delayed;
+
+function IsWow64Process(hProcess: THandle; Wow64Process: PBOOL): BOOL; overload; stdcall;
+function IsWow64Process(hProcess: THandle; var Wow64Process: BOOL): BOOL; overload; stdcall;
+{$EXTERNALSYM IsWow64Process}
+function IsWow64Process(hProcess: THandle; Wow64Process: PBOOL): BOOL; external kernel32 name 'IsWow64Process' delayed;
+function IsWow64Process(hProcess: THandle; var Wow64Process: BOOL): BOOL; external kernel32 name 'IsWow64Process' delayed;
+{$else}
+var
+  GlobalMemoryStatusEx: function (var lpBuffer: TMemoryStatusEx): BOOL; stdcall;
+  GetNativeSystemInfo: procedure (var lpSystemInformation: TSystemInfo); stdcall;
+  SetDllDirectory: function (lpPathName : LPCTSTR): BOOL; stdcall;
+  SetDllDirectoryA: function (lpPathName : LPCSTR): BOOL; stdcall;
+  SetDllDirectoryW: function (lpPathName : LPCWSTR): BOOL; stdcall;
+  IsWow64Process: function (hProcess : THandle; var Wow64Process : BOOL): BOOL; stdcall;
+{$endif}
 {$endif}
 
 type
@@ -319,6 +361,9 @@ function SplitString(const S, Delimiters: string): TStringDynArray;
 
 //This function doesn't exist at all in Delphi 7:
 function LastPos(const SubStr: String; const S: String): Integer;
+
+//This function doesn't exist at all in Delphi:
+function CheckWin32VersionWithServicePack(AMajor: Integer; AMinor: Integer = 0; AServicePackMajor: Integer = 0; AServicePackMinor: Integer = 0): Boolean; //Note: We use the wrong datatype to be consistent with CheckWin32Version.
 
 implementation
 
@@ -554,4 +599,54 @@ begin
     Result := ((Length(S) - Length(SubStr)) + 1) - Result + 1;
 end;
 
+function CheckWin32VersionWithServicePack(AMajor, AMinor, AServicePackMajor, AServicePackMinor: Integer): Boolean;
+var
+  OS: TOSVersionInfoEx;
+  Win32ServicePackMajor, Win32ServicePackMinor: Integer;
+begin
+  if CheckWin32Version(5, 0) then //Windows 2000
+  begin
+    Win32ServicePackMajor:=0;
+    Win32ServicePackMinor:=0;
+  end
+  else
+  begin
+    ZeroMemory(@OS,SizeOf(OS));
+    OS.dwOSVersionInfoSize:=SizeOf(TOSVersionInfo);
+    if not GetVersionEx(POSVersionInfo(@OS)^) then
+      raise exception.create('Unable to retrieve system details. Call to GetVersionEx failed!');
+    Win32ServicePackMajor:=OS.wServicePackMajor;
+    Win32ServicePackMinor:=OS.wServicePackMinor;
+  end;
+  Result := (Win32MajorVersion > AMajor) or
+            ((Win32MajorVersion = AMajor) and (Win32MinorVersion >= AMinor)) or
+            ((Win32MajorVersion = AMajor) and (Win32MinorVersion = AMinor) and (Win32ServicePackMajor >= AServicePackMajor)) or
+            ((Win32MajorVersion = AMajor) and (Win32MinorVersion = AMinor) and (Win32ServicePackMajor = AServicePackMajor) and (Win32ServicePackMinor >= AServicePackMinor));
+end;
+
+initialization
+  //Initialized the delay loading functions.
+{$ifdef Delphi2010orNewerCompiler}
+  DelayFunc_GlobalMemoryStatusEx := CheckWin32Version(5, 0); //Windows 2000
+  DelayFunc_GetNativeSystemInfo := CheckWin32Version(5, 1); //Windows XP, Windows Server 2003
+  DelayFunc_SetDllDirectoryA := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003
+  DelayFunc_SetDllDirectoryW := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003
+  DelayFunc_SetDllDirectory := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003
+  DelayFunc_IsWow64Process := CheckWin32VersionWithServicePack(5, 1, 2); //Windows XP with SP2, Windows Server 2003 with SP1
+{$else}
+  //Note: The module 'kernel32' is always loaded inside a process.
+  GlobalMemoryStatusEx := GetProcAddress(GetModuleHandle('kernel32'), 'GlobalMemoryStatusEx');
+  GetNativeSystemInfo := GetProcAddress(GetModuleHandle('kernel32'),'GetNativeSystemInfo');
+  SetDllDirectoryA := GetProcAddress(GetModuleHandle('kernel32'), 'SetDllDirectoryA');
+  SetDllDirectoryW := GetProcAddress(GetModuleHandle('kernel32'), 'SetDllDirectoryW');
+  {$IFDEF UNICODE}SetDllDirectory:=SetDllDirectoryW;{$ELSE}SetDllDirectory:=SetDllDirectoryA;{$ENDIF};
+  IsWow64Process := GetProcAddress(GetModuleHandle('kernel32'),'IsWow64Process');
+
+  DelayFunc_GlobalMemoryStatusEx := (PPointer(@GlobalMemoryStatusEx) <> nil);
+  DelayFunc_GetNativeSystemInfo := (PPointer(@GetNativeSystemInfo) <> nil);
+  DelayFunc_SetDllDirectoryA := (PPointer(@SetDllDirectoryA) <> nil);
+  DelayFunc_SetDllDirectoryW := (PPointer(@SetDllDirectoryW) <> nil);
+  DelayFunc_SetDllDirectory := (PPointer(@SetDllDirectory) <> nil);
+  DelayFunc_IsWow64Process := (PPointer(@IsWow64Process) <> nil);
+{$endif}
 end.

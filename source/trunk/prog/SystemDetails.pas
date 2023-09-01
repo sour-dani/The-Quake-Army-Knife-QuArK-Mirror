@@ -47,7 +47,6 @@ type
     FSubModel: string;
     FModel,
     FCount,
-    //FArchitecture,
     FLevel,
     FStepping,
     FFamily,
@@ -70,7 +69,6 @@ type
     procedure Report(var sl :TStringList);
   published
     property HasCPUID :Boolean read FHasCPUID write FHasCPUID stored false;
-    //property Architecture :cardinal read FArchitecture write FArchitecture stored false;
     property Level :cardinal read FLevel write FLevel stored false;
     property Count :cardinal read FCount write FCount stored false;
     property Vendor :string read FVendor write FVendor stored false;
@@ -131,6 +129,7 @@ type
     FSuiteMask: WORD;
     FProductType: Byte;
     FWow64: Boolean;
+    FArchitecture: WORD;
     FVersion: string;
     FRegUser: string;
     FSerialNumber: string;
@@ -157,6 +156,7 @@ type
     property SuiteMask :WORD read FSuiteMask write FSuiteMask stored false;
     property ProductType :Byte read FProductType write FProductType stored false;
     property Wow64 :Boolean read FWow64 write FWow64 stored false;
+    property Architecture :WORD read FArchitecture write FArchitecture stored false;
     property SerialNumber :string read FSerialNumber write FSerialNumber stored false;
     property RegisteredUser :string read FRegUser write FRegUser stored false;
     property RegisteredOrg :string read FRegOrg write FRegOrg stored false;
@@ -316,7 +316,6 @@ var
   WindowsPlatformCompatibility: TPlatformType;
   WindowsPlatform: TPlatform;
   DriverBugs: TStringList;
-  SetDllDirectoryAvailable: Boolean;
 
 procedure InitDefaultFonts;
 var
@@ -880,7 +879,10 @@ var
 begin
   Log(LOG_VERBOSE, 'Starting gathering CPU information...');
   ZeroMemory(@SI,SizeOf(SI));
-  GetSystemInfo(SI);
+  if DelayFunc_GetNativeSystemInfo then
+    GetNativeSystemInfo(SI)
+  else
+    GetSystemInfo(SI);
   Count:=SI.dwNumberOfProcessors;
   Family:=SI.dwProcessorType;
 //  Vendor:=
@@ -921,8 +923,8 @@ procedure TCPU.Report(var sl: TStringList);
 begin
   with sl do
   begin
-    //add(format('%d x %s %s - %d MHz',[self.Count,Vendor,VendorID,Freq]));
-    add(format('%d x %s %s',[self.Count,Vendor,VendorID]));
+    //add(format('%d x %s %s - %d MHz',[Count,Vendor,VendorID,Freq]));
+    add(format('%d x %s %s',[Count,Vendor,VendorID]));
     add(format('Submodel: %s',[Submodel]));
     add(format('Model ID: Family %d  Model %d  Stepping %d  Level %d',[Family,Model,Stepping,Level]));
   end;
@@ -1003,8 +1005,8 @@ end;
 procedure TOperatingSystem.GetInfo;
 var
   OS: TOSVersionInfoEx;
+  SI :TSystemInfo;
   bIsWow64: BOOL;
-  Wow64Ptr: Pointer;
   p: pchar;
   n: DWORD;
   WinH: HWND;
@@ -1061,14 +1063,15 @@ begin
     ProductType:=0;
     //See: http://msdn.microsoft.com/en-us/library/ms724833.aspx
   end;
-  Wow64Ptr := GetProcAddress(GetModuleHandle('kernel32'),'IsWow64Process');
-  if Wow64Ptr <> nil then
+
+  if DelayFunc_IsWow64Process then
   begin
-    IsWow64Process := Wow64Ptr;
-    bIsWow64 := FALSE;
     if IsWow64Process(GetCurrentProcess(), bIsWow64) = false then
-      //FIXME: Even though we probably should raise an error, let's just play it safe...
-      Wow64:=False
+    begin
+      Wow64:=False;
+      Log(LOG_WARNING, 'Failed to determine Wow64 status!');
+      LogWindowsError(GetLastError(), 'TOperatingSystem.GetInfo: IsWow64Process(bIsWow64)');
+    end
     else
       if bIsWow64 then
         Wow64:=True
@@ -1077,6 +1080,14 @@ begin
   end
   else
     Wow64:=False;
+
+  ZeroMemory(@SI,SizeOf(SI));
+  if DelayFunc_GetNativeSystemInfo then
+    GetNativeSystemInfo(SI)
+  else
+    GetSystemInfo(SI);
+  Architecture:=SI.wProcessorArchitecture;
+
   case OS.dwPlatformId of
     VER_PLATFORM_WIN32s:
      begin
@@ -1343,6 +1354,14 @@ begin
   with sl do
   begin
     add('Platform: '+Platform);
+    case Architecture of
+    PROCESSOR_ARCHITECTURE_INTEL: add('Architecture: Intel x86');
+    PROCESSOR_ARCHITECTURE_ARM: add('Architecture: ARM');
+    PROCESSOR_ARCHITECTURE_IA64: add('Architecture: Intel Itanium');
+    PROCESSOR_ARCHITECTURE_AMD64: add('Architecture: AMD64');
+    PROCESSOR_ARCHITECTURE_UNKNOWN: add('Architecture: Unknown');
+    else add('Architecture: Unknown');
+    end;
     if Length(Version)<>0 then
      add(format('Version: %s %d.%d.%d',[Version,MajorVersion,MinorVersion,BuildNumber]))
     else
@@ -1397,30 +1416,14 @@ end;
 
 procedure TMemory.GetInfo;
 var
-  GlobalMemoryStatusExPtr: Pointer;
   SI: TSystemInfo;
   MS: TMemoryStatus;
   MSEX: TMemoryStatusEx;
 begin
   Log(LOG_VERBOSE, 'Starting gathering memory information...');
 
-  //This is only available on Windows 2000 and higher.
-  GlobalMemoryStatusExPtr := GetProcAddress(GetModuleHandle('kernel32'), 'GlobalMemoryStatusEx');
-  if GlobalMemoryStatusExPtr=nil then
+  if DelayFunc_GlobalMemoryStatusEx then
   begin
-    ZeroMemory(@MS,SizeOf(MS));
-    MS.dwLength:=SizeOf(MS);
-    MemoryLoad:=MS.dwMemoryLoad;
-    PhysicalTotal:=MS.dwTotalPhys;
-    PhysicalFree:=MS.dwAvailPhys;
-    VirtualTotal:=MS.dwTotalVirtual;
-    VirtualFree:=MS.dwAvailVirtual;
-    PageFileTotal:=MS.dwTotalPageFile;
-    PageFileFree:=MS.dwAvailPageFile;
-  end
-  else
-  begin
-    GlobalMemoryStatusEx := GlobalMemoryStatusExPtr;
     ZeroMemory(@MSEX,SizeOf(MSEX));
     MSEX.dwLength:=SizeOf(MSEX);
     if GlobalMemoryStatusEx(MSEX) = false then
@@ -1435,10 +1438,26 @@ begin
     VirtualFree:=MSEX.ullAvailVirtual;
     PageFileTotal:=MSEX.ullTotalPageFile;
     PageFileFree:=MSEX.ullAvailPageFile;
+  end
+  else
+  begin
+    ZeroMemory(@MS,SizeOf(MS));
+    MS.dwLength:=SizeOf(MS);
+    GlobalMemoryStatus(MS);
+    MemoryLoad:=MS.dwMemoryLoad;
+    PhysicalTotal:=MS.dwTotalPhys;
+    PhysicalFree:=MS.dwAvailPhys;
+    VirtualTotal:=MS.dwTotalVirtual;
+    VirtualFree:=MS.dwAvailVirtual;
+    PageFileTotal:=MS.dwTotalPageFile;
+    PageFileFree:=MS.dwAvailPageFile;
   end;
 
   ZeroMemory(@SI,SizeOf(SI));
-  GetSystemInfo(SI);
+  if DelayFunc_GetNativeSystemInfo then
+    GetNativeSystemInfo(SI)
+  else
+    GetSystemInfo(SI);
   AllocGranularity:=SI.dwAllocationGranularity;
   MaxAppAddress:=Cardinal(SI.lpMaximumApplicationAddress);
   MinAppAddress:=Cardinal(SI.lpMinimumApplicationAddress);
@@ -2360,10 +2379,6 @@ begin
   try
     c.getInfo;
     c.report(s);
-
-    SetDllDirectoryAvailable := (c.FMajorVersion > 5)
-                            or ((c.FMajorVersion = 5) and (c.FMinorVersion > 1))
-                            or ((c.FMajorVersion = 5) and (c.FMinorVersion = 1) and (c.ServicePackMajor >= 1));
   finally
     c.free;
   end;
@@ -2576,22 +2591,13 @@ begin
 end;
 
 procedure SetDllSearchPath;
-var
-  SetDllDirectoryPtr: Pointer;
 begin
-  //This is only available on Windows XP SP1 and later (and Windows Server 2003 and later).
-  if not SetDllDirectoryAvailable then
-    Exit;
-
-  SetDllDirectoryPtr := GetProcAddress(GetModuleHandle('kernel32'), {$IFDEF UNICODE}'SetDllDirectoryW'{$ELSE}'SetDllDirectoryA'{$ENDIF});
-  if SetDllDirectoryPtr=nil then
+  if not DelayFunc_SetDllDirectory then
   begin
-    LogWindowsError(GetLastError(), 'SetDllSearchPath: GetProcAddress');
-    Log(LOG_WARNING, 'Failed to change the DLL search path; QuArK will be vulnerable to DLL hijacking!');
+    Log(LOG_WARNING, 'SetDllDirectory not available; QuArK will be vulnerable to DLL hijacking!');
     Exit;
   end;
 
-  SetDllDirectory := SetDllDirectoryPtr;
   if SetDllDirectory('') = false then
   begin
     Log(LOG_WARNING, 'Failed to change the DLL search path; QuArK will be vulnerable to DLL hijacking!');
