@@ -923,8 +923,8 @@ procedure TCPU.Report(var sl: TStringList);
 begin
   with sl do
   begin
-    //add(format('%d x %s %s - %d MHz',[Count,Vendor,VendorID,Freq]));
-    add(format('%d x %s %s',[Count,Vendor,VendorID]));
+    //add(format('%d x %s %s - %d MHz',[self.Count,Vendor,VendorID,Freq]));
+    add(format('%d x %s %s',[self.Count,Vendor,VendorID]));
     add(format('Submodel: %s',[Submodel]));
     add(format('Model ID: Family %d  Model %d  Stepping %d  Level %d',[Family,Model,Stepping,Level]));
   end;
