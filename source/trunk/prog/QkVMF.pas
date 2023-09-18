@@ -40,7 +40,7 @@ type
 implementation
 
 uses Qk1, QkQme, QkMapPoly, qmath, Travail, Setup,
-  Qk3D, QkBsp, Undo, Game, Quarkx, QkExceptions,
+  Qk3D, QkBsp, Undo, Game, Quarkx, QkExceptions, QkSpecifics,
   QkObjectClassList, MapError, Logging, DispFace, QConsts;
 
  {------------------------}

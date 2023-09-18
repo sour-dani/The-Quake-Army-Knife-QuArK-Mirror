@@ -33,7 +33,7 @@ interface
 {$INCLUDE MemManager.inc}
 
 uses SysUtils, Messages, Classes, Windows, Controls, Graphics, Forms, qmath,
-  Menus, CommCtrl, Python;
+  Menus, CommCtrl, Python, QkSpecifics;
 
 const
   iiUnknownFile           = 0;
@@ -156,7 +156,6 @@ type
   //Just a convenience type to seamlessly support Delphi6+ large file support.
   TStreamPos = {$ifdef Delphi6orNewerCompiler} Int64 {$else} Longint {$endif};
 
-  TSpecificsList = TStringList;
   TQList = class;
   TQStream = class;
   QObject = class;

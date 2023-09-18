@@ -23,7 +23,7 @@ unit Undo;
 interface
 
 uses SysUtils, Classes, Controls, Forms, Dialogs,
-     QkObjects, QkExplorer, QkFileObjects;
+     QkObjects, QkSpecifics, QkExplorer, QkFileObjects;
 
 type
  TUndoObject = class

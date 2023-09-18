@@ -191,6 +191,7 @@ uses
   QkRawFile in 'prog\QkRawFile.pas' {FQRawFile},
   QkSin in 'prog\QkSin.pas',
   QkSoF in 'prog\QkSoF.pas',
+  QkSpecifics in 'prog\QkSpecifics.pas',
   QkSpr in 'prog\QkSpr.pas',
   QkStoneless in 'prog\QkStoneless.pas',
   QkSylphis in 'prog\QkSylphis.pas',
