@@ -16,9 +16,9 @@ RequestExecutionLevel admin
 !define INSTALLER_EXENAME "quark-dependencies.exe"
 !define PRODUCT_NAME "QuArK dependencies"
 !define PRODUCT_NAME_FULL "Quake Army Knife dependencies"
-!define PRODUCT_COPYRIGHT "Copyright (c) 2022"
-!define PRODUCT_VERSION_NUMBER "1.0.0.0"
-!define PRODUCT_VERSION_STRING "1.0.0.0"
+!define PRODUCT_COPYRIGHT "Copyright (c) 2023"
+!define PRODUCT_VERSION_NUMBER "1.0.0.1"
+!define PRODUCT_VERSION_STRING "1.0.0.1"
 !define PRODUCT_WEB_SITE "https://quark.sourceforge.io/"
 !define PRODUCT_PUBLISHER "QuArK Development Team"
 
@@ -425,7 +425,18 @@ Function _isInstalledIE4SP2
     Push 1
     Return
   ${EndIf}
+
+  ClearErrors
+  ReadRegStr $0 HKLM "SOFTWARE\Microsoft\Internet Explorer" "Version"
+  IfErrors 0 AlreadyInstalled
   Push 0
+  Return
+AlreadyInstalled:
+  StrCmp $0 "4.72.3612.1713" RightVersion
+  Push 0
+  Return
+RightVersion:
+  Push 1
 FunctionEnd
 
 Section /o "$(TEXT_SecIE4SP2_TITLE)" SecIE4SP2
@@ -512,7 +523,7 @@ Function _isInstalledDirectX9
   ${EndIf}
 
   ClearErrors
-  ReadRegStr $0 HKLM "Software\Microsoft\DirectX" "Version"
+  ReadRegStr $0 HKLM "SOFTWARE\Microsoft\DirectX" "Version"
   IfErrors 0 AlreadyInstalled
   Push 0
   Return
