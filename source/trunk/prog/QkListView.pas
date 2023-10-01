@@ -80,6 +80,7 @@ uses Types, Qk1, Undo, Quarkx, PyImages, Game, Platform;
 
 const
  LocalActionFlags = na_Select;
+ MouseWheelScrollSpeed = 32; //FIXME: Retrieve from system settings?
 
  {------------------------}
 
@@ -538,14 +539,14 @@ end;
 
 procedure TQForm2.MouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
 begin
-  ListView1.Scroll(0, 32);
+  ListView1.Scroll(0, MouseWheelScrollSpeed);
   InvalidateRect(ListView1.Handle, Nil, False);
   Handled := true;
 end;
 
 procedure TQForm2.MouseWheelUp(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
 begin
-  ListView1.Scroll(0, -32);
+  ListView1.Scroll(0, -MouseWheelScrollSpeed);
   InvalidateRect(ListView1.Handle, Nil, False);
   Handled := true;
 end;
