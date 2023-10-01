@@ -522,7 +522,7 @@ begin
  ItemStruct.statemask:=TVIS_BOLD;
  ItemStruct.state:=TVIS_BOLD;
  TreeView_SetItem(Handle, ItemStruct);
- InvalidateRect(Handle, Nil, True);
+ Invalidate;
 end;
 
 procedure TQkExplorer.RemoveRoot(I: Integer);
@@ -606,7 +606,7 @@ begin
   begin
    Item.state:=Etat;
    TreeView_SetItem(Handle, Item);
-   InvalidateRect(Handle, Nil, True);
+   Invalidate;
   end;
 end;*)
 
@@ -964,7 +964,7 @@ begin
  InvalidatePaintBoxes(1);
  FSelection1:=nSelection;
  if Spec<>-3 then
-  InvalidateRect(Handle, Nil, True);
+  Invalidate;
  Result:=TMSelUnique;
  if Result<>nSelection then
   Result:=Nil;
