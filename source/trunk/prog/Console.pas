@@ -347,7 +347,7 @@ begin
     end;
   end;
  if g_ConsoleForm<>Nil then
-  InvalidateRect(g_ConsoleForm.Display.Handle, Nil, False);
+  g_ConsoleForm.Display.Invalidate;
 end;
 
 procedure ShowConsole(Show: Boolean);
@@ -357,7 +357,7 @@ begin
    g_ConsoleForm:=TConsoleForm.Create(Application)
   else
    begin
-    InvalidateRect(g_ConsoleForm.Display.Handle, Nil, False);
+    g_ConsoleForm.Display.Invalidate;
     ActivateNow(g_ConsoleForm);
    end
  else
