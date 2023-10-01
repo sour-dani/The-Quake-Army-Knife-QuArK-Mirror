@@ -24,7 +24,7 @@ interface
 
 {$INCLUDE PyVersions.inc}
 
-uses Windows, SysUtils, Coordinates, qmath, qquaternions, qmatrices, Python, Quarkx;
+uses SysUtils, Coordinates, qmath, qquaternions, qmatrices, Python, Quarkx;
 
 type
   PyVect = ^TyVect;
