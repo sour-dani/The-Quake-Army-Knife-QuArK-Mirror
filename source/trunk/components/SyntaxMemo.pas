@@ -152,7 +152,7 @@ procedure TSyntaxMemo.Change;
 begin
  inherited;
  {Paint;}
- InvalidateRect(Handle, Nil, False);
+ Invalidate;
 end;
 
 (*procedure TSyntaxMemo.Paint;
@@ -283,7 +283,7 @@ begin
   begin
    if FSelection then
     {Paint;}
-     InvalidateRect(Handle, Nil, False);
+     Invalidate;
    FSelection:=not FSelection;
   end;
 end;
