@@ -540,14 +540,14 @@ end;
 procedure TQForm2.MouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
 begin
   ListView1.Scroll(0, MouseWheelScrollSpeed);
-  InvalidateRect(ListView1.Handle, Nil, False);
+  ListView1.Invalidate;
   Handled := true;
 end;
 
 procedure TQForm2.MouseWheelUp(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
 begin
   ListView1.Scroll(0, -MouseWheelScrollSpeed);
-  InvalidateRect(ListView1.Handle, Nil, False);
+  ListView1.Invalidate;
   Handled := true;
 end;
 
