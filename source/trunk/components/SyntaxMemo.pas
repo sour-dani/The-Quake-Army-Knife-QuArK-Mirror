@@ -50,6 +50,8 @@ type
                   procedure KeyDown(var Key: Word; Shift: TShiftState); override;
                   procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
                   procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
+                  procedure MouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+                  procedure MouseWheelUp(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
                   procedure CreateWnd; override;
                 public
                   constructor Create(AOwner: TComponent); override;
@@ -74,9 +76,11 @@ begin
   RegisterComponents('Exemples', [TSyntaxMemo]);
 end;
 
-constructor TSyntaxMemo.Create(AOwner: TComponent); 
+constructor TSyntaxMemo.Create(AOwner: TComponent);
 begin
  inherited;
+ OnMouseWheelDown:=MouseWheelDown;
+ OnMouseWheelUp:=MouseWheelUp;
  WantTabs:=True;
 {PlainText:=True;}
  WordWrap:=False;
@@ -275,6 +279,56 @@ procedure TSyntaxMemo.MouseUp;
 begin
  inherited;
  PostMessage(Handle, wm_Command, 0, 0);
+end;
+
+procedure TSyntaxMemo.MouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+var
+  ScrollLines: UInt;
+  DC: HDC;
+  Metrics: TTextMetric;
+begin
+  if SystemParametersInfo(SPI_GETWHEELSCROLLLINES, 0, @ScrollLines, 0) = false then
+    ScrollLines := 3;
+
+  if ScrollLines = WHEEL_PAGESCROLL then
+  begin
+    DC:=GetDC(Handle);
+    try
+      GetTextMetrics(DC, Metrics);
+    finally
+      ReleaseDC(Handle, DC);
+    end;
+    PostMessage(Handle, EM_LINESCROLL, 0, ClientHeight div Metrics.tmHeight);
+  end
+  else
+    PostMessage(Handle, EM_LINESCROLL, 0, ScrollLines);
+  PostMessage(Handle, wm_Command, 0, 0);
+  Handled := true;
+end;
+
+procedure TSyntaxMemo.MouseWheelUp(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+var
+  ScrollLines: UInt;
+  DC: HDC;
+  Metrics: TTextMetric;
+begin
+  if SystemParametersInfo(SPI_GETWHEELSCROLLLINES, 0, @ScrollLines, 0) = false then
+    ScrollLines := 3;
+
+  if ScrollLines = WHEEL_PAGESCROLL then
+  begin
+    DC:=GetDC(Handle);
+    try
+      GetTextMetrics(DC, Metrics);
+    finally
+      ReleaseDC(Handle, DC);
+    end;
+    PostMessage(Handle, EM_LINESCROLL, 0, -ClientHeight div Metrics.tmHeight);
+  end
+  else
+    PostMessage(Handle, EM_LINESCROLL, 0, -ScrollLines);
+  PostMessage(Handle, wm_Command, 0, 0);
+  Handled := true;
 end;
 
 procedure TSyntaxMemo.wmCommand;
