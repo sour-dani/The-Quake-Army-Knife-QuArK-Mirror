@@ -1689,7 +1689,10 @@ begin
     ScrollLines := 3;
   end;
 
-  VertScrollBar.Position := VertScrollBar.Position + LineStep * Integer(ScrollLines);
+  if ScrollLines = WHEEL_PAGESCROLL then
+    VertScrollBar.Position := VertScrollBar.Position + ClientHeight
+  else
+    VertScrollBar.Position := VertScrollBar.Position + LineStep * Integer(ScrollLines);
   Handled := true;
 end;
 
@@ -1703,7 +1706,10 @@ begin
     ScrollLines := 3;
   end;
 
-  VertScrollBar.Position := VertScrollBar.Position - LineStep * Integer(ScrollLines);
+  if ScrollLines = WHEEL_PAGESCROLL then
+    VertScrollBar.Position := VertScrollBar.Position - ClientHeight
+  else
+    VertScrollBar.Position := VertScrollBar.Position - LineStep * Integer(ScrollLines);
   Handled := true;
 end;
 
