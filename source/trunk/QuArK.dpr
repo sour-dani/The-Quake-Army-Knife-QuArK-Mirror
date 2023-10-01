@@ -287,7 +287,7 @@ begin
   {$IFDEF CompiledWithDelphi6}
   //SysUtils.CheckWin32Version was added in Update Pack 2 of Delphi 6,
   //but there is no way to check for which Update Pack is installed,
-  //so let's check for the existance of the function itself.
+  //so let's check for the existence of the function itself.
   {$IF Declared(CheckWin32Version)}
   PatchCheckWin32Version;
   {$IFEND}
