@@ -155,7 +155,6 @@ end;
 procedure TSyntaxMemo.Change;
 begin
  inherited;
- {Paint;}
  Invalidate;
 end;
 
@@ -336,8 +335,7 @@ begin
  if FSelection xor (SelLength>0) then
   begin
    if FSelection then
-    {Paint;}
-     Invalidate;
+    Invalidate;
    FSelection:=not FSelection;
   end;
 end;
