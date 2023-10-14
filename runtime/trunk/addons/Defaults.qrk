@@ -8662,13 +8662,13 @@ QQRKSRC1
     {
       Style = "3"
       Gamma: = {Txt="Gamma correction" Typ="EF1" Hint="Gamma correction to display texture (1=darker, 2=lighter)"}
-      //MarsCaption: = {Txt="Window captions" Typ="X" Cap="Colorful"}
+      //MarsCaption: = {Txt="Window captions" Typ="X" Cap="Colorful" Hint="The titlebar of windows can be enhanced with a gradient of colors. Besides the esthetic aspect, these various colors give a visual clue about the type of data displayed in the window. However, this may cause compatibility troubles."}
       sep: = {Typ="S" Txt = ""}
-      AutoFocus: = {Txt="Activate windows on mouseover" Typ="X" Cap="AutoFocus" Hint="if checked, the focus (active window) follows the mouse between windows (e.g. in the map editor)"}
+      AutoFocus: = {Txt="Activate windows on mouseover" Typ="X" Cap="AutoFocus" Hint="If checked, the focus (active window) follows the mouse between windows (e.g. in the map editor)."}
       sep: = {Typ="S" Txt = ""}
       sep: = {Typ="S" Txt="Button and object icon colors"}
-      Unsel: = {Typ="X" Txt="If not selected" Cap="display blue icons" Hint="Check this to display blue icons instead of brown ones for 'unselected' icons"}
-      Sel: =   {Typ="X" Txt="If selected"     Cap="display blue icons" Hint="Uncheck this to display brown icons instead of blue ones for 'selected' icons"}
+      Unsel: = {Typ="X" Txt="If not selected" Cap="display blue icons" Hint="Check this to display blue icons instead of brown ones for 'unselected' icons."}
+      Sel: =   {Typ="X" Txt="If selected"     Cap="display blue icons" Hint="Uncheck this to display brown icons instead of blue ones for 'selected' icons."}
       IconPath: = {Typ="CL" Txt="Icon size"   Values="images\"$0D"lgicons\"  Items="Normal"$0D"Large (LGIcons needed !)" Hint="Large icons require you to first download the 'LGIcons' pack from the website."}
       sep: = {Typ="S" Bold="0" Txt="(restart QuArK to reload icons with the new colors"}
       sep: = {Typ="S" Bold="0" Txt="  and size after you made changes here)"}
