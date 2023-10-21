@@ -286,7 +286,7 @@ begin
   cTexInfo:=0;
   HullType:=FBsp.FileHandler.GetHullType(FBsp.NeedObjectGameCode);
   q12surf:=FBsp.FileHandler.GetSurfaceType(HullType)=bspSurfQ12;
-  miptex:=SetupSubSet(ssGames, GetGameName(FBsp.NeedObjectGameCode)).Specifics.Values['UsesMipTex']<>'';
+  miptex:=SetupSubSet(ssGames, GetGameName(FBsp.NeedObjectGameCode)).Specifics.Strings['UsesMipTex']<>'';
   case HullType of
    HullQ1:  Size1:=SizeOf(THull);
    HullHx:  Size1:=SizeOf(THullH2);
@@ -691,7 +691,7 @@ begin
     Face.NomTex:=S;
     if not q12surf then
       Face.SetThreePointsUserTex(P1,P2,P3,nil);
-    Face.Specifics.Add(CannotEditFaceYet+'=1');
+    Face.Specifics.AddString(CannotEditFaceYet, '1');
     Surface1^.F:=Face;
     Face.LinkSurface(Surface1);
     PChar(Surface1):=PChar(Dest);

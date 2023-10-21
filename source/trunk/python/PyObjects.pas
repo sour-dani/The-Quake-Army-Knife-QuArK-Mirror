@@ -107,7 +107,7 @@ const
 
 implementation
 
-uses Quarkx, QkExceptions, QkFileObjects, QkObjectClassList, QkExplorer, qhelper, WorkaroundStringCompare;
+uses Quarkx, QkExceptions, QkFileObjects, QkObjectClassList, QkExplorer, qhelper;
 
 {$I DelphiVer.inc}
 
@@ -804,21 +804,20 @@ begin
   with QkObjFromPyObj(self) do
    begin
     Acces;
-    I:=Strict_IndexOfName(Specifics, Spec); //I:=Specifics.IndexOfName(Spec);
+    I:=Specifics.IndexOfName(Spec);
     if I<0 then
      begin
-      I:=Strict_IndexOfName(Specifics, FloatSpecNameOf(Spec)); //I:=Specifics.IndexOfName(FloatSpecNameOf(Spec));
+      I:=Specifics.IndexOfName(FloatSpecNameOf(Spec));
       if I<0 then
        begin
-(*        I:=Strict_IndexOfName(Specifics, IntSpecNameOf(Spec)); //I:=Specifics.IndexOfName(IntSpecNameOf(Spec));
+(*        I:=Specifics.IndexOfName(IntSpecNameOf(Spec));
         if I<0 then
          begin*)
           Result:=PyNoResult;
           Exit;
          end;
-(*        S:=Specifics[I];
-        I:=Length(Spec)+1;
-        N:=(Length(S)-I) div 4;    { SizeOf(Integer) }
+(*        S:=StringsFromIndex[I];
+        N:=Length(S) div SizeOf(Integer);
         PChar(PI):=PChar(S)+I;
         Result:=PyTuple_New(N);
         for J:=0 to N-1 do
@@ -828,10 +827,9 @@ begin
          end;
         Exit;
        end;*)
-      S:=Specifics[I];
-      I:=Length(Spec)+1;
-      N:=(Length(S)-I) div 4;    { SizeOf(Single) }
-      PChar(PF):=PChar(S)+I;
+      S:=Specifics.StringsFromIndex[I];
+      N:=Length(S) div SizeOf(Single);
+      PChar(PF):=PChar(S);
       Result:=PyTuple_New(N);
       for J:=0 to N-1 do
        begin
@@ -840,9 +838,8 @@ begin
        end;
       Exit;
      end;
-    S:=Specifics[I];
-    I:=Length(Spec)+1;
-    Result:=PyString_FromStringAndSize(ToPyChar(S)+I, Length(S)-I);
+    S:=Specifics.StringsFromIndex[I];
+    Result:=PyString_FromStringAndSize(ToPyChar(S), Length(S));
    end;
  except
   Py_XDECREF(Result);
@@ -945,27 +942,27 @@ begin
     if value<>Py_None then
      if value^.ob_type = PyFloat_Type then
       begin
-       Specifics.Values[nSpec]:='';
-(*       Specifics.Values[IntSpecNameOf(nSpec)]:='';*)
-       Specifics.Values[FloatSpecNameOf(nSpec)]:=S;
+       Specifics.Delete(nSpec);
+(*       Specifics.Delete(IntSpecNameOf(nSpec));*)
+       Specifics.Strings[FloatSpecNameOf(nSpec)]:=S;
       end
 (*     else if value^.ob_type = PyInt_Type then
       begin
-       Specifics.Values[nSpec]:='';
-       Specifics.Values[FloatSpecNameOf(nSpec)]:='';
-       Specifics.Values[IntSpecNameOf(nSpec)]:=S;
+       Specifics.Delete(nSpec):='';
+       Specifics.Delete(FloatSpecNameOf(nSpec));
+       Specifics.Strings[IntSpecNameOf(nSpec)]:=S;
       end*)
      else
       begin
-       Specifics.Values[FloatSpecNameOf(nSpec)]:='';
-(*       Specifics.Values[IntSpecNameOf(nSpec)]:='';*)
-       Specifics.Values[nSpec]:=S;
+       Specifics.Delete(FloatSpecNameOf(nSpec));
+(*       Specifics.Delete(IntSpecNameOf(nSpec));*)
+       Specifics.Strings[nSpec]:=S;
       end
     else
      begin
-      Specifics.Values[nSpec]:='';
-      Specifics.Values[FloatSpecNameOf(nSpec)]:='';
-(*       Specifics.Values[IntSpecNameOf(nSpec)]:='';*)
+      Specifics.Delete(nSpec);
+      Specifics.Delete(FloatSpecNameOf(nSpec));
+(*       Specifics.Delete(IntSpecNameOf(nSpec));*)
      end;
    end;
   Result:=0;

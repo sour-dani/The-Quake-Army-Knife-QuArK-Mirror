@@ -271,7 +271,7 @@ begin
     exit;
   end;
 
-  ShaderExt:=SetupGameSet.Specifics.Values['ShaderExt'];
+  ShaderExt:=SetupGameSet.Specifics.Strings['ShaderExt'];
   if ShaderExt<>'' then
     shader_filename:=ConcatPaths([GameShadersPath, shader_filename+ShaderExt])
   else
@@ -470,7 +470,7 @@ begin
       Inc(CTris);
       Inc(Tris2);
     end;
-    Comp.Specifics.Add(S); {tris=...}
+    Comp.Specifics.AddStringFull(S); {tris=...}
   finally
     freemem(Tris);
     freemem(texcoord);
@@ -503,7 +503,7 @@ begin
         Inc(Vertexes2);
         Inc(CVert);
       end;
-      Frame.Specifics.Add(S);
+      Frame.Specifics.AddStringFull(S);
     finally
       FreeMem(Vertexes);
     end;
@@ -548,7 +548,7 @@ var
   TagList: TQList;
   z_result: boolean;
 begin
-  if GetRoot.Specifics.Values['md3_autolink_done']<>'' then
+  if GetRoot.Specifics.Strings['md3_autolink_done']<>'' then
   begin
     Result:=True;
     Exit;
@@ -590,7 +590,7 @@ begin
   finally
     TagList.Free;
   end;
-  GetRoot.Specifics.Values['md3_autolink_done']:='1';
+  GetRoot.Specifics.Strings['md3_autolink_done']:='1';
   result:=z_result;
 end;
 
@@ -621,7 +621,7 @@ begin
   model.acces;
   other_root:=model.getRoot;
   other_root:=QModelRoot(other_root.clone(getroot, false));
-  other_root.Specifics.Values['linked_to']:=tag_name;
+  other_root.Specifics.Strings['linked_to']:=tag_name;
   getroot.SubElements.add(other_root);
 {  for i:=0 to other_root.subelements.count-1 do
   begin

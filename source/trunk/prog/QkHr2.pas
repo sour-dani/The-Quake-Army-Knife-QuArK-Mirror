@@ -124,7 +124,7 @@ begin
       Data:=Spec2;
       SetLength(Data, Length(Spec2)+SizeOf(TPaletteLmp));
       PPaletteLmp(@Data[Length(Spec2)+1])^:=Header.Palette;
-      Specifics.Add(Data);  { "Pal=xxxxx" }
+      Specifics.AddStringFull(Data);  { "Pal=xxxxx" }
 
        { reads the image data }
       Q2MipTex.W:=Header.Width[0];

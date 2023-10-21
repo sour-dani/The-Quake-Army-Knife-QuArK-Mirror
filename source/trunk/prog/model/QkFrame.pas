@@ -107,7 +107,7 @@ begin
     inc(Dest);
   end;
   Specifics.Delete(Specifics.IndexOfName(S0));
-  Specifics.Add(S);
+  Specifics.AddStringFull(S);
 end;
 
 procedure QFrame.TranslateFrame(vec: vec3_t);
@@ -126,7 +126,7 @@ begin
   TranslateVecs(vec, Dest, C);
 
   Specifics.Delete(Specifics.IndexOfName(S0));
-  Specifics.Add(S);
+  Specifics.AddStringFull(S);
 end;
 
 destructor QFrame.Destroy;
@@ -197,8 +197,8 @@ begin
     begin
       currentFrameNumber:=CurrentModelComponent.FrameGroup.SubElements.IndexOf(CurrentModelComponent.CurrentFrame);
       if currentFrameNumber<>-1 then begin
-        bf:=QModelTag(modelRoot.getmisc.FindSubObject(myRoot.Specifics.Values['linked_to'], QModelTag, nil));
-        bf2:=QModelTag(myRoot.getmisc.FindSubObject(myRoot.Specifics.Values['linked_to'], QModelTag, nil));
+        bf:=QModelTag(modelRoot.getmisc.FindSubObject(myRoot.Specifics.Strings['linked_to'], QModelTag, nil));
+        bf2:=QModelTag(myRoot.getmisc.FindSubObject(myRoot.Specifics.Strings['linked_to'], QModelTag, nil));
         o_tag:=QTagFrame(bf.GetTagFrameFromIndex(currentFrameNumber));
         s_tag:=QTagFrame(bf2.GetTagFrameFromIndex(Parent.SubElements.IndexOf(Self)));
       end;
@@ -228,7 +228,7 @@ begin
 //    ScaleVecs(P, Result, sc-bf.GetQ3A_Scale);
     if Specifics.IndexOfName(S0)<>-1 then
       Specifics.Delete(Specifics.IndexofName(S0));
-    Specifics.Add(S);
+    Specifics.AddStringFull(S);
   end;
 end;
 
@@ -258,7 +258,7 @@ begin
     inc(vtxs);
   end;
   Specifics.Delete(Specifics.IndexofName(S0));
-  Specifics.Add(S);
+  Specifics.AddStringFull(S);
 end;
 
 procedure QFrame.ChercheExtremites(var Min, Max: TVect);
@@ -385,7 +385,7 @@ begin
           Inc(Dest);
         end;
         Specifics.Delete(Specifics.IndexofName(S0));
-        Specifics.Add(S);
+        Specifics.AddStringFull(S);
         Result:=True;
         Exit;
       end;

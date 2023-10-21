@@ -99,7 +99,7 @@ begin
 
       BehaviorFlags:=0;
       Setup:=SetupSubSet(ssGeneral, 'DirectX');
-      if Setup.Specifics.Values['HighPrecision']<>'' then
+      if Setup.Specifics.Strings['HighPrecision']<>'' then
         BehaviorFlags:=BehaviorFlags or D3DCREATE_FPU_PRESERVE;
 
       //Check for software/hardware vertex processing
@@ -124,7 +124,7 @@ begin
         Log(LOG_VERBOSE, LoadStr1(6424));
 
       try
-        BackBufferFormat:=StrToInt(Setup.Specifics.Values['BackBufferFormat']);
+        BackBufferFormat:=Setup.Specifics.Integers['BackBufferFormat'];
         if (BackBufferFormat < 0) or (BackBufferFormat > 5) then
         begin
           Log(LOG_WARNING, LoadStr1(6011), ['BackBufferFormat',BackBufferFormat]);
@@ -139,7 +139,7 @@ begin
       end;
 
       try
-        StencilBufferBits:=StrToInt(Setup.Specifics.Values['StencilBufferBits']);
+        StencilBufferBits:=Setup.Specifics.Integers['StencilBufferBits'];
         if (StencilBufferBits < 0) or (StencilBufferBits > 1) then
         begin
           Log(LOG_WARNING, LoadStr1(6011), ['StencilBufferBits',StencilBufferBits]);
@@ -190,7 +190,7 @@ begin
         Log(LOG_WARNING, LoadStr1(6400), ['StencilBufferBits']);
         Exit;
       end;
-      if Setup.Specifics.Values['WorkaroundGDI']<>'' then
+      if Setup.Specifics.Strings['WorkaroundGDI']<>'' then
         PresParm.Flags := D3DPRESENTFLAG_LOCKABLE_BACKBUFFER
       else
         PresParm.Flags := 0;

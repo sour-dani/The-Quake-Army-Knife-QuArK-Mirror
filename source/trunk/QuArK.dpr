@@ -234,7 +234,6 @@ uses
   ToolBoxGroup in 'prog\ToolBoxGroup.pas' {FQToolBoxGroup},
   Travail in 'prog\Travail.pas' {FormTravail},
   Undo in 'prog\Undo.pas',
-  WorkaroundStringCompare in 'prog\WorkaroundStringCompare.pas',
   ZipAbbrevia in 'prog\ZipAbbrevia.pas',
   PyCanvas in 'python\PyCanvas.pas',
   PyControls in 'python\PyControls.pas',

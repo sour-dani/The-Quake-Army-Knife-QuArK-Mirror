@@ -82,7 +82,7 @@ begin
       S:=''
     else begin
       FileObject.Acces;
-      S:=FileObject.Specifics.Values['Game'];
+      S:=FileObject.Specifics.Strings['Game'];
       if S='' then
         S:=LoadStr1(182)
       else
@@ -90,11 +90,11 @@ begin
     end;
     Label1.Caption:=S;
     if FileObject<>Nil then
-      S:=FileObject.Specifics.Values['FileName'];
+      S:=FileObject.Specifics.Strings['FileName'];
     EnterEdit1.Text:=S;
     if FileObject=Nil then
       Exit;
-    S:=FileObject.Specifics.Values['Root'];
+    S:=FileObject.Specifics.Strings['Root'];
     if S='' then
       Exit;  { no data }
     Racine:=FileObject.SubElements.FindName(S);

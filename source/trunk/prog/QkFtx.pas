@@ -134,8 +134,8 @@ begin
             Dec(Source2, Header.Width * 4);
           end;
 
-          Specifics.Add(AlphaData);
-          Specifics.Add(ImgData);
+          Specifics.AddStringFull(AlphaData);
+          Specifics.AddStringFull(ImgData);
         end
         else
         begin
@@ -165,7 +165,7 @@ begin
             Dec(Source2, Header.Width * 4);
           end;
 
-          Specifics.Add(ImgData);
+          Specifics.AddStringFull(ImgData);
         end;
       finally
         FreeMem(Source);

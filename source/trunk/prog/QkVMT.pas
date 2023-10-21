@@ -77,10 +77,8 @@ var
 begin
   for I:=0 to Specifics.Count-1 do
   begin
-    Spec:=Specifics[I];
-    J:=Pos('=', Spec);
-    SpecName:=LeftStr(Spec,J-1);
-    Spec:=RightStr(Spec,Length(Spec)-J);
+    SpecName:=Specifics.Names[I];
+    Spec:=Specifics.StringsFromIndex[I];
 
     //DanielPharos: Ugly, slow and inaccurate way of determining the type...
     SpecDataType:=vlDTInteger;
@@ -165,9 +163,9 @@ begin
 
   if ReverseLink<>nil then
   begin
-    PakFilename:=ReverseLink.Specifics.Values['TexturePakFile'];
+    PakFilename:=ReverseLink.Specifics.Strings['TexturePakFile'];
     if PakFilename='' then
-      PakFilename:=ReverseLink.Specifics.Values['PakFile'];
+      PakFilename:=ReverseLink.Specifics.Strings['PakFile'];
   end
   else
   begin
@@ -178,13 +176,13 @@ begin
   if SubElements.Count>0 then
   begin
 
-  //TexExt:=SetupGameSet.Specifics.Values['TextureFormat'];
+  //TexExt:=SetupGameSet.Specifics.Strings['TextureFormat'];
   TexExt:='.vtf';
   if ReverseLink<>nil then
-    DefaultImageName[0]:=ReverseLink.Specifics.Values['e'];
+    DefaultImageName[0]:=ReverseLink.Specifics.Strings['e'];
   if DefaultImageName[0]<>'' then
   begin
-    FullTextureFile:=SubElements[0].Specifics.Values[DefaultImageName[0]];
+    FullTextureFile:=SubElements[0].Specifics.Strings[DefaultImageName[0]];
     Log(LOG_VERBOSE, 'attempting to load %s', [FullTextureFile]);
     try
       Result:=NeedGameFile(FullTextureFile, PakFilename) as QPixelSet
@@ -195,16 +193,16 @@ begin
   else
   begin
     DefaultImageIndex:=0;
-    DefaultImageName[0]:=SubElements[0].Specifics.Values['%tooltexture'];
-    DefaultImageName[1]:=SubElements[0].Specifics.Values['$basetexture'];
-    DefaultImageName[2]:=SubElements[0].Specifics.Values['$basetexture2'];
-    DefaultImageName[3]:=SubElements[0].Specifics.Values['$2basetexture'];
-    DefaultImageName[4]:=SubElements[0].Specifics.Values['$material'];
-    DefaultImageName[5]:=SubElements[0].Specifics.Values['$bumpmap'];
-    DefaultImageName[6]:=SubElements[0].Specifics.Values['$normalmap'];
-    DefaultImageName[7]:=SubElements[0].Specifics.Values['$dudvmap'];
-    DefaultImageName[8]:=SubElements[0].Specifics.Values['$envmap'];
-    DefaultImageName[9]:=SubElements[0].Specifics.Values['$parallaxmap'];
+    DefaultImageName[0]:=SubElements[0].Specifics.Strings['%tooltexture'];
+    DefaultImageName[1]:=SubElements[0].Specifics.Strings['$basetexture'];
+    DefaultImageName[2]:=SubElements[0].Specifics.Strings['$basetexture2'];
+    DefaultImageName[3]:=SubElements[0].Specifics.Strings['$2basetexture'];
+    DefaultImageName[4]:=SubElements[0].Specifics.Strings['$material'];
+    DefaultImageName[5]:=SubElements[0].Specifics.Strings['$bumpmap'];
+    DefaultImageName[6]:=SubElements[0].Specifics.Strings['$normalmap'];
+    DefaultImageName[7]:=SubElements[0].Specifics.Strings['$dudvmap'];
+    DefaultImageName[8]:=SubElements[0].Specifics.Strings['$envmap'];
+    DefaultImageName[9]:=SubElements[0].Specifics.Strings['$parallaxmap'];
     while ((Result=nil) and (DefaultImageIndex<10)) do
     begin
       if (DefaultImageName[DefaultImageIndex]<>'') then
@@ -328,7 +326,7 @@ begin
 
         Setup:=SetupSubSet(ssFiles, 'VMT');
         try
-          case StrToInt(Setup.Specifics.Values['ParseMode']) of
+          case Setup.Specifics.Integers['ParseMode'] of
           0: vlSetInteger(VTFLIB_VMT_PARSE_MODE, PARSE_MODE_STRICT);
           1: vlSetInteger(VTFLIB_VMT_PARSE_MODE, PARSE_MODE_LOOSE);
           else
@@ -382,17 +380,17 @@ begin
           NODE_TYPE_STRING:
             begin
               NodeValueString:=vlMaterialGetNodeString;
-              StageList[NodeLevel].Specifics.Add(PChar(NodeName)+'='+PChar(NodeValueString));
+              StageList[NodeLevel].Specifics.AddString(PChar(NodeName), PChar(NodeValueString));
             end;
           NODE_TYPE_INTEGER:
             begin
               NodeValueInteger:=vlMaterialGetNodeInteger;
-              StageList[NodeLevel].Specifics.Add(PChar(NodeName)+'='+IntToStr(NodeValueInteger));
+              StageList[NodeLevel].Specifics.AddInteger(PChar(NodeName), NodeValueInteger);
             end;
           NODE_TYPE_SINGLE:
             begin
               NodeValueSingle:=vlMaterialGetNodeSingle;
-              StageList[NodeLevel].Specifics.Add(PChar(NodeName)+'='+FloatToStr(NodeValueSingle));
+              StageList[NodeLevel].Specifics.AddFloat(PChar(NodeName), NodeValueSingle);
             end;
           end;
 

@@ -300,10 +300,10 @@ begin
  RenderMode:=nRenderMode;
 
  Setup:=SetupSubSet(ssGeneral, 'Glide (3DFX)');
- if Setup.Specifics.Values['DisableDWM']<>'' then
+ if Setup.Specifics.Strings['DisableDWM']<>'' then
   DisableDWM();
 
- SetupResolution:=StrToInt(Setup.Specifics.Values['Resolution']); //FIXME: Put in try..except on EConvertError do
+ SetupResolution:=Setup.Specifics.Integers['Resolution']; //FIXME: Put in try..except on EConvertError do
  case SetupResolution of
   0 : begin
         ScreenSizeX:=320;
@@ -393,7 +393,7 @@ begin
  end;
  ScreenCenterX:=ScreenSizeX div 2;
  ScreenCenterY:=ScreenSizeY div 2;
- SetupMirror:=StrToInt(Setup.Specifics.Values['Mirror']); //FIXME: Put in try..except on EConvertError do
+ SetupMirror:=Setup.Specifics.Integers['Mirror']; //FIXME: Put in try..except on EConvertError do
  case SetupMirror of
  0: Origin:=GR_ORIGIN_UPPER_LEFT;
  1: Origin:=GR_ORIGIN_LOWER_LEFT;
@@ -401,7 +401,7 @@ begin
    Origin:=GR_ORIGIN_UPPER_LEFT;  //Default to upper left
  end;
 
- AdapterNo:=StrToInt(Setup.Specifics.Values['AdapterNo']); //FIXME: Put in try..except on EConvertError do
+ AdapterNo:=Setup.Specifics.Integers['AdapterNo']; //FIXME: Put in try..except on EConvertError do
 
  if not GlideLoaded then
   begin
@@ -448,7 +448,7 @@ begin
  if (not Assigned(qrkGlideState)) then
    raise InternalE(LoadStr1(6221));
 
- SetupDither:=StrToInt(Setup.Specifics.Values['Dither']); //FIXME: Put in try..except on EConvertError do
+ SetupDither:=Setup.Specifics.Integers['Dither']; //FIXME: Put in try..except on EConvertError do
  case SetupDither of
  0: qrkGlideState.DitherMode := GR_DITHER_DISABLE;
  1: qrkGlideState.DitherMode := GR_DITHER_2x2;
@@ -457,12 +457,12 @@ begin
    raise InternalE('Invalid Glide dithering value!');
  end;
 
- if Setup.Specifics.Values['Culling']<>'' then
+ if Setup.Specifics.Strings['Culling']<>'' then
    qrkGlideState.CullMode:=GR_CULL_NEGATIVE
  else
    qrkGlideState.CullMode:=GR_CULL_DISABLE;
 
- case StrToInt(Setup.Specifics.Values['TextureFiltering']) of //FIXME: Put in try..except on EConvertError do
+ case Setup.Specifics.Integers['TextureFiltering'] of //FIXME: Put in try..except on EConvertError do
  0: qrkGlideState.TextureFiltering := tfNone;
  1: qrkGlideState.TextureFiltering := tfBilinear;
  2: qrkGlideState.TextureFiltering := tfTrilinear;
@@ -490,7 +490,7 @@ begin
  Setup:=SetupSubSet(ssGeneral, 'Glide (3DFX)');
  if (DisplayMode=dmWindow) or (DisplayMode=dmFullScreen) then
  begin
-   Fog:=Setup.Specifics.Values['Fog']<>'';
+   Fog:=Setup.Specifics.Strings['Fog']<>'';
  end
  else
  begin

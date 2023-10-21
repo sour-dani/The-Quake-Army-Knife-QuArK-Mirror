@@ -443,7 +443,7 @@ begin
    Log(LOG_VERBOSE, 'Initializing Python...');
    InitPython;
 
-   if LaunchOptions.DoInstance and (SetupSubSet(ssGeneral, 'Startup').Specifics.Values['SingleInstance']<>'') then
+   if LaunchOptions.DoInstance and (SetupSubSet(ssGeneral, 'Startup').Specifics.Strings['SingleInstance']<>'') then
    begin
      if MutexError = ERROR_ALREADY_EXISTS then
      begin
@@ -464,14 +464,14 @@ begin
      won't be loaded yet. Change this when the update-screen isn't a nag-screen
      anymore! (Store data in registry?) }
    //Check for updates...
-   if LaunchOptions.DoUpdate and (SetupSubSet(ssGeneral, 'Startup').Specifics.Values['UpdateCheck']<>'') then
+   if LaunchOptions.DoUpdate and (SetupSubSet(ssGeneral, 'Startup').Specifics.Strings['UpdateCheck']<>'') then
    begin
      Log(LOG_VERBOSE, 'Checking for updates...');
      DoUpdate(LaunchOptions.OnlineUpdate, True);
    end;
 
    // Warn for bugs
-   if (SetupSubSet(ssGeneral, 'Startup').Specifics.Values['BugCheck']<>'') then
+   if (SetupSubSet(ssGeneral, 'Startup').Specifics.Strings['BugCheck']<>'') then
      WarnDriverBugs;
 
    // Set-up OS specific things
@@ -542,15 +542,15 @@ begin
  with g_SetupSet[ssGames] do
    for I:=0 to SubElements.Count-1 do
    begin
-     if SubElements[I].Specifics.Values['Game']='' then
+     if SubElements[I].Specifics.Strings['Game']='' then
       continue;
-     if SubElements[I].Specifics.Values['NotInstalled']<>'' then
+     if SubElements[I].Specifics.Strings['NotInstalled']<>'' then
       //Gamemode not installed; do not display in menu
       continue;
-     S:=SubElements[I].Specifics.Values['Code'];
+     S:=SubElements[I].Specifics.Strings['Code'];
      if S<>'' then
      begin
-       T:=SubElements[I].Specifics.Values['BaseMenu'];
+       T:=SubElements[I].Specifics.Strings['BaseMenu'];
        if T<>'' then
        begin
          { DanielPharos: This entire idea comes tumbling down when somebody
@@ -1052,7 +1052,7 @@ begin
      FileRecent.Delete(0);
    L:=TStringList.Create;
    try
-    L.Text:=g_SetupSet[ssGeneral].Specifics.Values['RecentFiles'];
+    L.Text:=g_SetupSet[ssGeneral].Specifics.Strings['RecentFiles'];
     MaxRecentFiles:=Round(SetupSubSet(ssGeneral, 'Display').GetFloatSpec('MaxRecentFiles', 5));
     if MaxRecentFiles<0 then
       MaxRecentFiles:=0;
@@ -1292,7 +1292,7 @@ begin
  for I:=0 to Roots.Count-1 do
   begin
    ToolBox:=Roots[I] as QToolBox;
-   S:=ToolBox.Specifics.Values['ToolBox'];
+   S:=ToolBox.Specifics.Strings['ToolBox'];
    if (S<>'') and not L.Find(S,J) then
     begin
      if L.Count<Result then
@@ -2016,7 +2016,7 @@ begin
  I:=(Sender as TMenuItem).MenuIndex;
  L:=TStringList.Create;
  try
-  L.Text:=g_SetupSet[ssGeneral].Specifics.Values['RecentFiles'];
+  L.Text:=g_SetupSet[ssGeneral].Specifics.Strings['RecentFiles'];
   FileName:=L[I];
  finally
   L.Free;

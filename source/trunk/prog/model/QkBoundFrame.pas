@@ -118,7 +118,7 @@ begin
   PChar(Dest):=PChar(S)+length(S0+'=');
   for i:=0 to 2 do
     Dest^[i]:=pos[i];
-  Specifics.Add(S);
+  Specifics.AddStringFull(S);
 
   S0:=FloatSpecNameOf('mins');
   S:=S0+'=';
@@ -126,7 +126,7 @@ begin
   PChar(Dest):=PChar(S)+length(S0+'=');
   for i:=0 to 2 do
     Dest^[i]:=pos[i];
-  Specifics.Add(S);
+  Specifics.AddStringFull(S);
 
   S0:=FloatSpecNameOf('maxs');
   S:=S0+'=';
@@ -134,7 +134,7 @@ begin
   PChar(Dest):=PChar(S)+length(S0+'=');
   for i:=0 to 2 do
     Dest^[i]:=pos[i];
-  Specifics.Add(S);
+  Specifics.AddStringFull(S);
 
   SetFloatSpec('scale',scale);
 end;
@@ -330,7 +330,7 @@ begin
           Dest^[2]:=Z;
         end;
         Specifics.Delete(Specifics.IndexofName(S0));
-        Specifics.Add(S);
+        Specifics.AddStringFull(S);
         Result:=True;
         Exit;
       end;
@@ -350,7 +350,7 @@ begin
           Dest^[2]:=Z;
         end;
         Specifics.Delete(Specifics.IndexofName(S0));
-        Specifics.Add(S);
+        Specifics.AddStringFull(S);
         Result:=True;
         Exit;
       end;

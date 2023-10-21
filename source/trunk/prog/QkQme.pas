@@ -162,7 +162,7 @@ begin
      S:=Copy(Ids, TailleIds, P^.TailleId)+'=';
      SetLength(S, Length(S)+P^.Taille);
      SourceFile.ReadBuffer(S[P^.TailleId+2], P^.Taille);
-     Q.Specifics.Add(S);
+     Q.Specifics.AddStringFull(S);
      Inc(TailleIds, P^.TailleId);
      Inc(P);
     end;
@@ -251,13 +251,24 @@ procedure TTreeMapSpecCharger(Q: TTreeMap; S: TStream);
 var
  Taille: Word;
  Tampon: String;
+ P, Start: PChar;
+ TMP: string;
 begin
  S.ReadBuffer(Taille, SizeOf(Taille));
  SetLength(Tampon, Taille);
  S.ReadBuffer(Pointer(Tampon)^, Taille);
- Q.Specifics.Text:=Tampon;
- Q.Name:=Q.Specifics.Values['classname'];
- Q.Specifics.Values['classname']:='';
+ P := Pointer(Tampon);
+ while P^ <> #0 do
+ begin
+   Start := P;
+   while not (P^ in [#0, #10, #13]) do Inc(P);
+   SetString(TMP, Start, P - Start);
+   Q.Specifics.AddStringFull(TMP);
+   if P^ = #13 then Inc(P);
+   if P^ = #10 then Inc(P);
+ end;
+ Q.Name:=Q.Specifics.Strings['classname'];
+ Q.Specifics.Delete('classname');
 end;
 
 function TTreeMapEntityCharger(S: TStream; T: PTransfertTreeMap; nParent: QObject) : TTreeMap;
@@ -331,9 +342,9 @@ begin
    or (OldF^.Q2Flags<>0)
    or (OldF^.Q2Value<>0) then
     begin
-     F.Specifics.Values['Contents']:=IntToStr(OldF^.Q2Contents);
-     F.Specifics.Values['Flags']:=IntToStr(OldF^.Q2Flags);
-     F.Specifics.Values['Value']:=IntToStr(OldF^.Q2Value);
+     F.Specifics.Strings['Contents']:=IntToStr(OldF^.Q2Contents); //FIXME: Switch to QkSpecifics.Integers?
+     F.Specifics.Strings['Flags']:=IntToStr(OldF^.Q2Flags); //FIXME: Switch to QkSpecifics.Integers?
+     F.Specifics.Strings['Value']:=IntToStr(OldF^.Q2Value); //FIXME: Switch to QkSpecifics.Integers?
     end;
    Inc(OldF);
   end;
@@ -380,13 +391,13 @@ var
 begin
  Result:=TDuplicator.Create('', nParent);
  TTreeMapSpecCharger(Result, S);
- Result.Specifics.Values['out']:='1';
+ Result.Specifics.Strings['out']:='1';
  Macro:='';
- if Result.Specifics.Values['linear']<>'' then
+ if Result.Specifics.Strings['linear']<>'' then
   Macro:='dup lin'
  else
   begin
-   Sym:=Result.Specifics.Values['sym'];
+   Sym:=Result.Specifics.Strings['sym'];
    if Sym='' then
     Macro:='dup basic'
    else
@@ -400,7 +411,7 @@ begin
       GlobalWarning(FmtLoadStr1(5624, [Sym]));
     end;
   end;
- Result.Specifics.Values['macro']:=Macro;
+ Result.Specifics.Strings['macro']:=Macro;
 end;
 
 function TDiggerCharger(S: TStream; T: PTransfertTreeMap; nParent: QObject) : TTreeMap;
@@ -409,16 +420,16 @@ var
 begin
  Result:=TDuplicator.Create('', nParent);
  LoadGroup(Result, S, T);
- Depth:=Result.Specifics.Values['hollow'];
+ Depth:=Result.Specifics.Strings['hollow'];
  if Depth='' then
   Macro:='digger'
  else
   begin
    Macro:='hollow maker';
-   Result.Specifics.Values['hollow']:='';
-   Result.Specifics.Values['depth']:=Depth;
+   Result.Specifics.Delete('hollow');
+   Result.Specifics.Strings['depth']:=Depth;
   end;
- Result.Specifics.Values['macro']:=Macro;
+ Result.Specifics.Strings['macro']:=Macro;
 end;
 
 procedure QQme1.LoadFile;
@@ -431,20 +442,20 @@ begin
  if ReadAsQmeEntry(Self, F, FSize) then
   begin  { turns this data into a map }
    FillChar(T, SizeOf(T), 0);
-   S:=Specifics.Values['Map'];
+   S:=Specifics.Strings['Map'];
    if S='' then Raise EErrorFmt(5509, [811]);
    M:=SpecAsMemStream(S); try
    Q:=TTreeMapBrushCharger(M, @T, Self);
    SubElements.Add(Q);
    finally M.Free; end;
-   Specifics.Values['Root']:=Q.Name+Q.TypeInfo;
-   Specifics.Values['Map']:='';
-   S:=Specifics.Values['GameCfg'];
-   Specifics.Values['GameCfg']:='';
+   Specifics.Strings['Root']:=Q.Name+Q.TypeInfo;
+   Specifics.Delete('Map');
+   S:=Specifics.Strings['GameCfg'];
+   Specifics.Delete('GameCfg');
    if (S='') or SameText(S, 'Quake') then
-    Specifics.Values['Game']:=GetGameName(mjQuake)
+    Specifics.Strings['Game']:=GetGameName(mjQuake)
    else
-    Specifics.Values['Game']:=S;
+    Specifics.Strings['Game']:=S;
    FixupAllReferences;
   end
  else
@@ -491,8 +502,8 @@ var
 begin
  if ReadAsQmeEntry(Self, F, FSize) then
   begin
-   M:=SpecAsMemStream(Specifics.Values['Data']); try
-   Specifics.Values['Data']:='';
+   M:=SpecAsMemStream(Specifics.Strings['Data']); try
+   Specifics.Delete('Data');
    inherited LoadFile(M, M.Size);
    finally M.Free; end;
   end
@@ -511,23 +522,23 @@ var
  S: String;
  Folder: QPakFolder;
  nFile: QFileObject;
- I, J: Integer;
+ I: Integer;
  M: TMemoryStream;
 begin
  if ReadAsQmeEntry(Self, F, FSize) then
   begin
-   Folder:=GetFolder(Specifics.Values['Path']);
+   Folder:=GetFolder(Specifics.Strings['Path']);
    for I:=Specifics.Count-1 downto 0 do
     begin
-     S:=Specifics[I];
+     S:=Specifics.Names[I];
      if S[1]=':' then
       begin
-       J:=Pos('=',S);
-       nFile:=BuildFileRoot(Copy(S, 2, J-2), Folder);
+       nFile:=BuildFileRoot(Copy(S, 2, MaxInt), Folder);
        Folder.SubElements.Insert(0, nFile);
        nFile.Flags:=nFile.Flags and not ofFileLink;
        M:=TMemoryStream.Create; try
-       M.Write(PChar(S)[J], Length(S)-J);
+       S:=Specifics.StringsFromIndex[I];
+       M.Write(PChar(S)[0], Length(S));
        M.Position:=0;
        nFile.LoadFromStream(M);
        finally M.Free; end;
@@ -564,7 +575,7 @@ var
 begin
  if ReadAsQmeEntry(Self, F, FSize) then
   begin
-   S:=Specifics.Values['FileName'];
+   S:=Specifics.Strings['FileName'];
    if S<>'' then
     LoadedFileLink(S+'.qme', 0);
   end
@@ -584,8 +595,8 @@ var
 begin
  if ReadAsQmeEntry(Self, F, FSize) then
   begin
-   M:=SpecAsMemStream(Specifics.Values['Mdl']); try
-   Specifics.Values['Mdl']:='';
+   M:=SpecAsMemStream(Specifics.Strings['Mdl']); try
+   Specifics.Delete('Mdl');
    inherited LoadFile(M, M.Size);
    finally M.Free; end;
   end

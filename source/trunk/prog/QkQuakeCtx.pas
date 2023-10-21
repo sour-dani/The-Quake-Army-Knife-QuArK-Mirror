@@ -198,7 +198,7 @@ begin
          S:=LoadStr1(5552)
         else
          S:=QFileObject(Q).Filename;
-        GlobalWarning(FmtLoadStr1(5582, [S, SetupGameSet.Name, QuakeContext[I].Specifics.Values['Game']]));
+        GlobalWarning(FmtLoadStr1(5582, [S, SetupGameSet.Name, QuakeContext[I].Specifics.Strings['Game']]));
         QuakeContext.Delete(I);
        end;
      end;
@@ -361,10 +361,10 @@ var
   p_f: QPakFolder;
   j: Integer;
 begin
-  dir:=ConcatPaths([QuakeDir, Specifics.Values['GameDir']]);
+  dir:=ConcatPaths([QuakeDir, Specifics.Strings['GameDir']]);
   paks:=OpenFiles(dir, ListPakFiles(dir));
   try
-    Result:=FindFiles(ConcatPaths([dir, GameMapPath]), ConcatPaths([QuakeDir, Specifics.Values['GameDir'], GameMapPath, '*.bsp']));
+    Result:=FindFiles(ConcatPaths([dir, GameMapPath]), ConcatPaths([QuakeDir, Specifics.Strings['GameDir'], GameMapPath, '*.bsp']));
     ProgressIndicatorStart(5458,paks.count);
     while (Paks.count <> 0) do
     begin
@@ -420,7 +420,7 @@ var
     begin
       Result:=ConstructQObject(nname+ntypeinfo, Parent);
       if s<>'' then
-        Result.Specifics.Add('ToolBox='+s);
+        Result.Specifics.AddString('ToolBox', s);
       Parent.SubElements.Add(Result);
     end;
   end;
@@ -432,21 +432,21 @@ begin
       raise InternalE('addonRoot = nil');
 
     if addonRoot.specifics.IndexOfName('Description')=-1 then
-      addonRoot.specifics.Add(format('Description=Addon for %s',[Specifics.Values['GameDir']]));
+      addonRoot.specifics.AddString('Description', format('Addon for %s',[Specifics.Strings['GameDir']]));
     (*
       Build Textures
     *)
     TexFolders:=nil;
     TexRoot:=QToolBox(GetObject('Textures', QToolbox.TypeInfo, 'Texture Browser...'));
-    if Specifics.Values['GameDir'] <> '' then
-      BuildDynamicFolders(Specifics.Values['GameDir'], TexFolders, false, false, '');
+    if Specifics.Strings['GameDir'] <> '' then
+      BuildDynamicFolders(Specifics.Strings['GameDir'], TexFolders, false, false, '');
 
     if TexFolders<>nil then
     begin
-      TexFolders.Name:=Specifics.Values['GameDir']+' textures';
+      TexFolders.Name:=Specifics.Strings['GameDir']+' textures';
       TexRoot.Flags := TexRoot.Flags or ofTreeViewSubElement;
       if TexRoot.Specifics.IndexOfName('Root')=-1 then
-        TexRoot.Specifics.Add('Root='+TexFolders.GetFullName);
+        TexRoot.Specifics.AddString('Root', TexFolders.GetFullName);
       if TexRoot.SubElements.FindShortName(TexFolders.Name)=nil then
         TexRoot.SubElements.Add(TexFolders)
       else
@@ -614,7 +614,7 @@ var
     begin
       Result:=ConstructQObject(nname+ntypeinfo, Parent);
       if s<>'' then
-        Result.Specifics.Add('ToolBox='+s);
+        Result.Specifics.AddString('ToolBox', s);
       Parent.SubElements.Add(Result);
     end;
   end;
@@ -637,7 +637,7 @@ begin
       raise InternalE('Error obtaining Root (addonRoot = nil)');
 
     if addonRoot.specifics.IndexOfName('Description')=-1 then
-      addonRoot.specifics.Add(format('Description=Addon for %s',[Specifics.Values['GameDir']]));
+      addonRoot.specifics.AddString('Description', format('Addon for %s',[Specifics.Strings['GameDir']]));
     (*
       Now build entities found in .bsp files
     *)
@@ -648,10 +648,10 @@ begin
         TBX:=QToolBox.Create('Toolbox Folders', addonRoot);
         TBX.Flags := TBX.flags or ofTreeViewSubElement;
         addonRoot.Subelements.Add(TBX);
-        TBX.Specifics.Add('ToolBox=New map items...');
-        EntityTBX:=QToolBoxGroup.Create(Format('%s entities', [Specifics.Values['GameDir']]), TBX);
+        TBX.Specifics.AddString('ToolBox', 'New map items...');
+        EntityTBX:=QToolBoxGroup.Create(Format('%s entities', [Specifics.Strings['GameDir']]), TBX);
         TBX.Subelements.Add(EntityTBX);
-        TBX.Specifics.Add('Root='+EntityTBX.GetFullName);
+        TBX.Specifics.AddString('Root', EntityTBX.GetFullName);
         (*
           Convert {...} entites to :e entities
         *)
@@ -672,11 +672,11 @@ begin
           begin
             if e_sl.Names[j] = 'classname' then continue // remove classname specific
             else if (e_sl.Names[j] = 'model') and (e_sl.Values['model'][1]='*') then continue; // remove model specifics if it points to a BSP model
-            Entity.Specifics.Add(e_sl.Strings[j]);
+            Entity.Specifics.AddStringFull(e_sl.Strings[j]);
           end;
-          Entity.Specifics.Add(SpecDesc+'=(insert description here)');
+          Entity.Specifics.AddString(SpecDesc, '(insert description here)');
           if ext=':b' then
-            Entity.Specifics.Add(SpecIncl+'=defpoly');
+            Entity.Specifics.AddString(SpecIncl, 'defpoly');
           if pos('_',Entity.name)<>0 then
           begin
             tb:=copy(Entity.name, 1,pos('_', Entity.Name))+'* entities';
@@ -721,15 +721,15 @@ begin
               eSpec:=QInternal.Create(Entity.Specifics.Names[j], eForm);
               if uppercase(Entity.Specifics.Names[j])='ORIGIN' then
                 hasOrigin:=true;
-              eSpec.Specifics.Add('txt=&');
-              eSpec.Specifics.Add('hint=(insert hint here)');
-              eSpec.Specifics.Add('typ='+GuessArgType(Entity.Specifics.Names[j], Entity.Specifics.Values[Entity.Specifics.Names[j]]));
+              eSpec.Specifics.AddString('txt', '&');
+              eSpec.Specifics.AddString('hint', '(insert hint here)');
+              eSpec.Specifics.AddString('typ', GuessArgType(Entity.Specifics.Names[j], Entity.Specifics.Strings[Entity.Specifics.Names[j]]));
               eSpec.Flags := eSpec.flags or ofTreeViewSubElement;
               Entity.Specifics.Delete(J);
               eForm.SubElements.Add(eSpec);
             end;
             if (Entity.TypeInfo = ':e') and (hasOrigin) then
-              Entity.Specifics.Add('Origin=0 0 0'); // Hack for map editor
+              Entity.Specifics.AddString('Origin', '0 0 0'); // Hack for map editor
           end;
         finally
           entities.free;
@@ -744,7 +744,7 @@ begin
   end;
   ExplorerFromObject(Parent).Refresh;
 
-  ShowMessage(FmtLoadStr1(5834, [ count,getword(count), Specifics.Values['GameDir']]));
+  ShowMessage(FmtLoadStr1(5834, [ count,getword(count), Specifics.Strings['GameDir']]));
 end;
 
  {------------------------}

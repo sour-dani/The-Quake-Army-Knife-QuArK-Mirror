@@ -221,8 +221,8 @@ type
       view, such was worldspawn, whose parent is
       the map-object it is in, but whose TvParent is Nil. }
     procedure SetTvParent(nParent: QObject);
-    function GetIntSpec(const Name: String) : Integer;
-    procedure SetIntSpec(const Name: String; Value: Integer);
+    function GetIntSpec(const Name: String) : Integer; //FIXME: Switch to QkSpecifics.Integer?
+    procedure SetIntSpec(const Name: String; Value: Integer); //FIXME: Switch to QkSpecifics.Integer?
     function GetSelUnique : Boolean;
     { true if object is selected but not any grand* parent }
     procedure SetSelUnique(Value: Boolean);
@@ -294,14 +294,14 @@ type
     function Clone(nParent: QObject; CopySel: Boolean) : QObject;
     procedure CopyAllData(Source: QObject; CopySel: Boolean);
     function IsExplorerItem(Q: QObject) : TIsExplorerItem; virtual;
-    property IntSpec[const Name: String] : Integer read GetIntSpec write SetIntSpec;
+    property IntSpec[const Name: String] : Integer read GetIntSpec write SetIntSpec; //FIXME: Switch to QkSpecifics.Integer?
     property VectSpec[const Name: String] : TVect read GetVectSpec write SetVectSpec;
-(*    function GetIntsSpec(const Name: String; var I: array of Integer) : Boolean;*)
-    function GetFloatSpec(const Name: String; const Default: Single) : Single;
-    procedure SetFloatSpec(const Name: String; const Value: Single);
-    function GetFloatsSpecPartial(const Name: String; var F: array of Single) : Integer;
-    function GetFloatsSpec(const Name: String; var F: array of Single) : Boolean;
-    procedure SetFloatsSpec(const Name: String; const F: array of Single);
+(*    function GetIntsSpec(const Name: String; var I: array of Integer) : Boolean;*) //FIXME: Switch to QkSpecifics.Integer?
+    function GetFloatSpec(const Name: String; const Default: Single) : Single; //FIXME: Switch to QkSpecifics.Float?
+    procedure SetFloatSpec(const Name: String; const Value: Single); //FIXME: Switch to QkSpecifics.Float?
+    function GetFloatsSpecPartial(const Name: String; var F: array of Single) : Integer; //FIXME: Switch to QkSpecifics.Float?
+    function GetFloatsSpec(const Name: String; var F: array of Single) : Boolean; //FIXME: Switch to QkSpecifics.Float?
+    procedure SetFloatsSpec(const Name: String; const F: array of Single); //FIXME: Switch to QkSpecifics.Float?
     function GetSpecArg(const Name: String) : String;
     { Returns "<specific-name>=<args>" }
     function GetArg(const Name: String) : String;
@@ -1066,7 +1066,7 @@ begin
 
   { adds the size of the loaded data }
   for I:=0 to Specifics.Count-1 do
-    Inc(Result, SizeOf(String)+Length(Specifics[I])*SizeOf(Char));
+    Inc(Result, 2*SizeOf(String)+(Length(Specifics.Names[I])+Length(Specifics.StringsFromIndex[I]))*SizeOf(Char));
     //FIXME: This doesn't take into account possible string sharing/pooling between objects!
 
   for I:=0 to SubElements.Count-1 do
@@ -1230,7 +1230,7 @@ begin
 
   if D.Icon<>Nil then
   begin
-    if D.Icon^.ob_type = @TyImage1_Type then
+    if D.Icon^.ob_type = @TyImage_Type then
       Py_INCREF(D.Icon)
     else
     begin
@@ -1243,9 +1243,9 @@ begin
           finally
             Py_DECREF(args);
           end;
-          if (D.Icon<>Nil) and (D.Icon^.ob_type <> @TyImage1_Type) then
+          if (D.Icon<>Nil) and (D.Icon^.ob_type <> @TyImage_Type) then
           begin
-            Log(LOG_WARNING, 'QObject.DisplayDetails: Not a "image1" object; ignoring as icon.');
+            Log(LOG_WARNING, 'QObject.DisplayDetails: Not a "image" object; ignoring as icon.');
             Py_DECREF(D.Icon);
             D.Icon:=Nil;
           end;
@@ -1484,7 +1484,7 @@ begin
         SetLength(Name, Info^.NameSize+1+Size);
         Name[Info^.NameSize+1]:='=';
         F.ReadBuffer(Name[Info^.NameSize+2], Size);
-        Specifics.Add(Name);
+        Specifics.AddStringFull(Name);
       end
       else
       begin
@@ -1771,12 +1771,9 @@ begin
         ItemInfo:=FileItemInfo;
         for I:=0 to Specifics.Count-1 do  { write the Names }
         begin
-          S:=Specifics[I];
-          J:=Pos('=',S)-1;
-          if J<0 then
-            Raise InternalE('Specifics='+Copy(S,1,25)); //FIXME: 25?
-          ItemInfo^.NameSize:=J;
-          Names:=Names + Copy(S, 1, J);
+          S:=Specifics.Names[I];
+          ItemInfo^.NameSize:=Length(S);
+          Names:=Names + S;
           Inc(ItemInfo);
         end;
         if WriteSubElements then
@@ -1799,10 +1796,9 @@ begin
         ItemInfo:=FileItemInfo;
         for I:=0 to Specifics.Count-1 do  { write the actual data }
         begin
-          S:=Specifics[I];
-          J:=ItemInfo^.NameSize+2;
-          Size:=Length(S)-J+1;
-          F.WriteBuffer(S[J], Size);
+          S:=Specifics.StringsFromIndex[I]; //FIXME: Switch to Bytes?
+          Size:=Length(S);
+          F.WriteBuffer(S, Size);
           if Size > qsShortSizeMax then
           begin
             Size2:=RequiredBytesToContainValue(Size);
@@ -1875,7 +1871,7 @@ begin
   S:=cSpec1;
   SetLength(S, Length(cSpec1)+Size);
   F.ReadBuffer(S[Length(cSpec1)+1], Size);
-  Specifics.Add(S);
+  Specifics.AddStringFull(S);
 end;
 
 procedure QObject.SaveUnformatted(F: TStream);
@@ -2120,7 +2116,7 @@ begin
   SubElements.Clear;
 
   for I:=0 to Source.Specifics.Count-1 do
-    Specifics.Add(Source.Specifics[I]);
+    Specifics.Add(Source.Specifics.Items[I]);
 
   SubElements.Capacity:=Source.SubElements.Count;
   for I:=0 to Source.SubElements.Count-1 do
@@ -2163,12 +2159,12 @@ end;
 
 function QObject.GetIntSpec(const Name: String) : Integer;
 begin
-  Result:=PackedStrToInt(Specifics.Values[Name]);
+  Result:=PackedStrToInt(Specifics.Strings[Name]); //FIXME: Switch to Bytes?
 end;
 
 procedure QObject.SetIntSpec(const Name: String; Value: Integer);
 begin
-  Specifics.Values[Name]:=IntToPackedStr(Value);
+  Specifics.Strings[Name]:=IntToPackedStr(Value); //FIXME: Switch to Bytes?
 end;
 
 function QObject.GetVectSpec(const Name: String) : TVect;
@@ -2339,7 +2335,7 @@ function QObject.GetFloatSpec(const Name: String; const Default: Single) : Singl
 var
   S: String;
 begin
-  S:=Specifics.Values[FloatSpecNameOf(Name)];
+  S:=Specifics.Strings[FloatSpecNameOf(Name)]; //FIXME: Switch to Bytes?
   if Length(S) = 4 then   { SizeOf(Single) }
     Move(S[1], Result, 4)   { SizeOf(Single) }
   else
@@ -2356,7 +2352,7 @@ var
 begin
   SetLength(S, 4);   { SizeOf(Single) }
   Move(Value, S[1], 4);   { SizeOf(Single) }
-  Specifics.Values[FloatSpecNameOf(Name)]:=S;
+  Specifics.Strings[FloatSpecNameOf(Name)]:=S; //FIXME: Switch to Bytes?
 end;
 
 (*function QObject.GetIntsSpec(const Name: String; var I: array of Integer) : Boolean;
@@ -2383,7 +2379,7 @@ function QObject.GetFloatsSpec(const Name: String; var F: array of Single) : Boo
 var
   S: String;
 begin
-  S:=Specifics.Values[FloatSpecNameOf(Name)];
+  S:=Specifics.Strings[FloatSpecNameOf(Name)]; //FIXME: Switch to Bytes?
   Result:=Length(S) = Succ(High(F))*4;   { SizeOf(Single) }
   if Result then
     Move(S[1], F[0], Length(S));
@@ -2400,7 +2396,7 @@ function QObject.GetFloatsSpecPartial(const Name: String; var F: array of Single
 var
   S: String;
 begin
-  S:=Specifics.Values[FloatSpecNameOf(Name)];
+  S:=Specifics.Strings[FloatSpecNameOf(Name)]; //FIXME: Switch to Bytes?
   Result:=Length(S) div 4;   { SizeOf(Single) }
   if Result>0 then
   begin
@@ -2424,7 +2420,7 @@ var
 begin
   SetLength(S, Succ(High(F))*4);   { SizeOf(Single) }
   Move(F[0], S[1], Length(S));
-  Specifics.Values[FloatSpecNameOf(Name)]:=S;
+  Specifics.Strings[FloatSpecNameOf(Name)]:=S; //FIXME: Switch to Bytes?
 end;
 
 function QObject.GetSpecArg(const Name: String) : String;
@@ -2441,7 +2437,7 @@ begin
   if I<0 then
     Result:=Name+'='
   else
-    Result:=Specifics[I];
+    Result:=Name+'='+Specifics.StringsFromIndex[I];
 end;
 
 function QObject.GetArg(const Name: String) : String;
@@ -2735,10 +2731,10 @@ begin
         S:=Specifics.Names[I];
         if Length(S) > 0 then
         begin
-          S2:=Specifics.ValueFromIndex[I];
+          S2:=Specifics.StringsFromIndex[I];
 (*          if IsIntSpec(S) then
           begin
-            N:=Length(S2) div 4;    { SizeOf(Integer) }
+            N:=Length(S2) div SizeOf(Integer);
             PChar(PI):=PChar(S2);
             o:=PyTuple_New(N);
             for J:=0 to N-1 do
@@ -2750,7 +2746,7 @@ begin
           end
           else*) if IsFloatSpec(S) then
           begin
-            N:=Length(S2) div 4;    { SizeOf(Single) }
+            N:=Length(S2) div SizeOf(Single);
             PChar(PF):=PChar(S2);
             o:=PyTuple_New(N);
             for J:=0 to N-1 do

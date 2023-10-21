@@ -552,7 +552,7 @@ var
  S: String;
 begin
  HasRootSpec:=True;
- S:=Q.Specifics.Values['Root'];
+ S:=Q.Specifics.Strings['Root'];
  if S='' then
   begin
    Result:=Nil;
@@ -1999,7 +1999,7 @@ end;
 procedure TQkExplorer.RootChanging;
 begin
  if HasRootSpec then
-  Root.Parent.Specifics.Values['Root']:=Root.Name+Root.TypeInfo;
+  Root.Parent.Specifics.Strings['Root']:=Root.Name+Root.TypeInfo;
 end;
 
 procedure TQkExplorer.GetExplorerInfo(var Info: TExplorerInfo);

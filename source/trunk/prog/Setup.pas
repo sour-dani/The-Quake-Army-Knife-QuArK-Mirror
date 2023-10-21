@@ -202,7 +202,7 @@ begin
   Result:=[ieDisplay, ieCanDrop]
  else
   Result:=ieResult[Q is QToolbar];
- if Q.Specifics.Values['Form']='' then
+ if Q.Specifics.Strings['Form']='' then
   Exclude(Result, ieDisplay);
 end;
 
@@ -263,7 +263,7 @@ begin
   try
   {DECKER - changed key from 'TextureFormat', due to possible conflicts with
    TGameBuffer(...)TextureExt in QkTextures.PAS}
-   S := SetupGameSet.Specifics.Values['TextureFileExtensions'];
+   S := SetupGameSet.Specifics.Strings['TextureFileExtensions'];
   except
    S := '';
   end;
@@ -277,7 +277,7 @@ begin
   if g_PakExtensions<>NIL then
    g_PakExtensions.Free;
   try
-   S := SetupGameSet.Specifics.Values['PakFileExtensions'];
+   S := SetupGameSet.Specifics.Strings['PakFileExtensions'];
   except
    S := '';
   end;
@@ -287,7 +287,7 @@ end;
 
 function SetupGameSet : QObject;
 begin
- SetupGameSet:=SetupSubSet(ssGames, g_SetupSet[ssGames].Specifics.Values['GameCfg']);
+ SetupGameSet:=SetupSubSet(ssGames, g_SetupSet[ssGames].Specifics.Strings['GameCfg']);
 end;
 
 function GetSetupPath(Path: String; var Spec: String; var Q: QObject) : Boolean;
@@ -324,22 +324,20 @@ end;
 
 procedure Mix(Target, Q: QObject);
 var
- I, P: Integer;
- S, Spec, Arg: String;
+ I: Integer;
+ Spec, Arg: String;
  Test, NewTarget: QObject;
 begin
  Q.Acces;
  for I:=0 to Q.Specifics.Count-1 do
   begin
-   S:=Q.Specifics[I];
-   P:=Pos('=',S);
-   Spec:=Copy(S,1,P-1);
-   Arg:=Copy(S,P+1,MaxInt);
+   Spec:=Q.Specifics.Names[I];
+   Arg:=Q.Specifics.StringsFromIndex[I];
  (*if (P>1) and (S[P-1]='+') then  { concat with previous values }
     Arg := Target.Specifics.Values[Spec] + Arg;*)
-   Target.Specifics.Values[Spec] := Arg;
+   Target.Specifics.Strings[Spec] := Arg;
    if Arg='' then
-    Target.Specifics.Add(Spec+'=');
+    Target.Specifics.AddString(Spec, '');
   end;
  for I:=0 to Q.SubElements.Count-1 do
   begin
@@ -437,7 +435,7 @@ begin
  if g_SetupSet[ssGeneral]<>Nil then
   begin   { checks version }
    V1:=QuarkVersion + ' ' + QuArKMinorVersion;
-   V2:=g_SetupSet[ssGeneral].Specifics.Values['Version'];
+   V2:=g_SetupSet[ssGeneral].Specifics.Strings['Version'];
    if V1 <> V2 then
     begin
      Log(LOG_CRITICAL, LoadStr1(5206), [V1, V2]);
@@ -475,44 +473,44 @@ begin
  if g_SetupSet[ssGeneral].GetFloatSpec('RunVersion', 5.901)<5.9005 then
   RefreshAssociations(True);
  g_SetupSet[ssGeneral].SetFloatSpec('RunVersion', Version);
- g_SetupSet[ssGeneral].Specifics.Values['Date']:=DateToStr(Date);
- if SetupGameSet.Specifics.Values['Game'] = '' then
-  Raise EErrorFmt(4623, [g_SetupSet[ssGames].Specifics.Values['GameCfg']]);
+ g_SetupSet[ssGeneral].Specifics.Strings['Date']:=DateToStr(Date);
+ if SetupGameSet.Specifics.Strings['Game'] = '' then
+  Raise EErrorFmt(4623, [g_SetupSet[ssGames].Specifics.Strings['GameCfg']]);
 
  //Search through the addons directory to find all installed games
  for I:=0 to g_SetupSet[ssGames].SubElements.Count-1 do
   with g_SetupSet[ssGames].SubElements[I] do
-   if Specifics.Values['Game']<>'' then
-    if Specifics.Values['CheckAddonInstalled']<>'' then
-     if DirectoryExists(GetQPath(pQuArKGameAddon, Specifics.Values['Game'])) then
-      Specifics.Values['NotInstalled']:=''
+   if Specifics.Strings['Game']<>'' then
+    if Specifics.Strings['CheckAddonInstalled']<>'' then
+     if DirectoryExists(GetQPath(pQuArKGameAddon, Specifics.Strings['Game'])) then
+      Specifics.Strings['NotInstalled']:=''
      else
-      Specifics.Values['NotInstalled']:='1';
+      Specifics.Strings['NotInstalled']:='1';
 
  //Make sure we're trying to load a gamemode that is installed.
  //If not, find an installed one
- if SetupGameSet.Specifics.Values['NotInstalled'] <> '' then
+ if SetupGameSet.Specifics.Strings['NotInstalled'] <> '' then
   begin
-   Log(LOG_INFO, LoadStr1(4626), [g_SetupSet[ssGames].Specifics.Values['GameCfg'], SetupFileName]);
+   Log(LOG_INFO, LoadStr1(4626), [g_SetupSet[ssGames].Specifics.Strings['GameCfg'], SetupFileName]);
    with g_SetupSet[ssGames] do
     begin
-     Specifics.Values['GameCfg']:='';
+     Specifics.Strings['GameCfg']:='';
      for I:=0 to SubElements.Count-1 do
-      if SubElements[I].Specifics.Values['NotInstalled']='' then
+      if SubElements[I].Specifics.Strings['NotInstalled']='' then
        begin
-        Specifics.Values['GameCfg']:=SubElements[I].Specifics.Values['Game'];
-        if Specifics.Values['GameCfg']<> '' then
+        Specifics.Strings['GameCfg']:=SubElements[I].Specifics.Strings['Game'];
+        if Specifics.Strings['GameCfg']<> '' then
           //There is at least one gamemode without being an actual gamemode: Steam!
           //So only break if it has a gamename (and thus is a valid gamemode)
           break;
        end;
-     if Specifics.Values['GameCfg']='' then
+     if Specifics.Strings['GameCfg']='' then
       begin
        Log(LOG_CRITICAL, LoadStr1(4624));
        MessageDlg(LoadStr1(4624), mtError, [mbOk], 0);
        Halt(1);   { missing ":config" object }
       end;
-     Log(LOG_INFO, LoadStr1(4627), [Specifics.Values['GameCfg']]);
+     Log(LOG_INFO, LoadStr1(4627), [Specifics.Strings['GameCfg']]);
     end;
   end;
  SetupChanged({scMaximal} {scMinimal} scInit);
@@ -542,18 +540,18 @@ begin
   TTextureManager.FreeNonVisibleTextures;
 
   { initializes QuArK depending on the setup information }
- g_DrawInfo.DefWhiteOnBlack:=SetupSubSet(ssMap, 'Colors').Specifics.Values['InvertedColors']<>'';
+ g_DrawInfo.DefWhiteOnBlack:=SetupSubSet(ssMap, 'Colors').Specifics.Strings['InvertedColors']<>'';
  with SetupSubSet(ssMap, 'Options') do
   begin
-   g_DrawInfo.CacherFaces:=Specifics.Values['HideFaces']<>'';
+   g_DrawInfo.CacherFaces:=Specifics.Strings['HideFaces']<>'';
    g_DrawInfo.TexAntiScroll:=IntSpec['TexAntiScroll'];
   end;
- if SetupSubSet(ssGeneral, 'Display').Specifics.Values['NoFirstRun']='' then
+ if SetupSubSet(ssGeneral, 'Display').Specifics.Strings['NoFirstRun']='' then
   begin
    MessageDlg(LoadStr1(5690), mtInformation, [mbOK], 0);
-   SetupSubSet(ssGeneral, 'Display').Specifics.Values['NoFirstRun']:='1';
+   SetupSubSet(ssGeneral, 'Display').Specifics.Strings['NoFirstRun']:='1';
   end;
- SetMarsCapActive(SetupSubSet(ssGeneral, 'Display').Specifics.Values['MarsCaption']<>'');
+ SetMarsCapActive(SetupSubSet(ssGeneral, 'Display').Specifics.Strings['MarsCaption']<>'');
  ResizeConsole;
 
   { stores the setup infos into the Quarkx Python module }
@@ -576,25 +574,24 @@ end;
 
 procedure StoreDiff(Root, New, Old: QObject);
 var
- I, P: Integer;
- S: String;
+ I: Integer;
+ Spec, Arg: String;
  Cfg, New1, Old1: QObject;
 begin
  Cfg:=ConstructQObject(New.Name+New.TypeInfo, Root);
  Root.SubElements.Add(Cfg);
  for I:=0 to New.Specifics.Count-1 do
   begin
-   S:=New.Specifics[I];
-   P:=Pos('=', S);
-   if Copy(S,P+1,MaxInt) <> Old.Specifics.Values[Copy(S,1,P-1)] then
-    Cfg.Specifics.Add(S);  { this Specifics has been modified }
+   Spec:=New.Specifics.Names[I];
+   Arg:=New.Specifics.StringsFromIndex[I];
+   if Arg <> Old.Specifics.Strings[Spec] then
+    Cfg.Specifics.AddString(Spec, Arg);  { this Specifics has been modified }
   end;
  for I:=0 to Old.Specifics.Count-1 do
   begin
-   S:=Old.Specifics[I];
-   P:=Pos('=', S);
-   if (P<Length(S)) and (New.Specifics.IndexOfName(Copy(S,1,P-1))<0) then
-    Cfg.Specifics.Add(Copy(S,1,P));  { this Specifics has been removed }
+   Spec:=Old.Specifics.Names[I];
+   if New.Specifics.IndexOfName(Spec)<0 then
+    Cfg.Specifics.AddString(Spec, '');  { this Specifics has been removed } //FIXME: How to mark as delete, instead of empty?
   end;
  for I:=0 to New.SubElements.Count-1 do
   begin
@@ -667,7 +664,7 @@ begin
       StoreDiff(SetupQrk, SetupSet2[T], g_SetupSet[T]);
      end;
     SetupQrk.ReadFormat:=Format;
-    SetupQrk.Specifics.Values['Description']:=LoadStr1(5394);
+    SetupQrk.Specifics.Strings['Description']:=LoadStr1(5394);
     SetupQrk.TrySavingNow;
    finally
     SetupQrk.AddRef(-1);
@@ -745,16 +742,16 @@ end;
 procedure UpdateForm1Root;
 begin
  if AddOns=Nil then Exit;
- if AddOns.Specifics.Values['f1r']<>'' then
+ if AddOns.Specifics.Strings['f1r']<>'' then
   begin
    AddOns.SubElements.Delete(AddOns.SubElements.Count-1);
-   AddOns.Specifics.Values['f1r']:='';
+   AddOns.Specifics.Strings['f1r']:='';
    CloseToolBoxes;
   end;
  if g_Form1.Explorer.Roots.Count>0 then
   begin
    AddOns.SubElements.Add(g_Form1.Explorer.Roots[0]);
-   AddOns.Specifics.Values['f1r']:='1';
+   AddOns.Specifics.Strings['f1r']:='1';
   end;
  UpdateAddOnsContent;
 end;
@@ -766,16 +763,16 @@ var
 begin
  L:=TStringList.Create;
  try
-  L.Text:=SetupGameSet.Specifics.Values['AddOns'];
+  L.Text:=SetupGameSet.Specifics.Strings['AddOns'];
   L.Add(NewAddOn.Name+NewAddOn.TypeInfo);
   S:=StringListConcatWithSeparator(L, $0D);
  finally
   L.Free;
  end;
- SetupGameSet.Specifics.Values['AddOns']:=S;
+ SetupGameSet.Specifics.Strings['AddOns']:=S;
  if AddOns=Nil then
   Exit;
- if AddOns.Specifics.Values['f1r']<>'' then
+ if AddOns.Specifics.Strings['f1r']<>'' then
   AddOns.SubElements.Insert(AddOns.SubElements.Count-1, NewAddOn)
  else
   AddOns.SubElements.Add(NewAddOn);
@@ -800,7 +797,7 @@ begin
      SetupGameSet.Specifics.Values['Base'], Result));*)
     L:=TStringList.Create;
     try
-     L.Text:=SetupGameSet.Specifics.Values['AddOns'];
+     L.Text:=SetupGameSet.Specifics.Strings['AddOns'];
      for I:=0 to L.Count-1 do
       try
        Result.SubElements.Add(BindFileQObject(L[I], Result, False));
@@ -924,7 +921,7 @@ function CurrentGameMode: TGameCode;
 var
  S: String;
 begin
- S:=SetupGameSet.Specifics.Values['Code'];
+ S:=SetupGameSet.Specifics.Strings['Code'];
  if S='' then
   Result:=mjQuake
  else
@@ -964,9 +961,9 @@ begin
    begin
     if g_SetupSet[ssGames].SubElements.FindName(nMode+':config')=Nil then
      Raise EErrorFmt(5547, [nMode]);
-    if SetupSubSet(ssGames, nMode).Specifics.Values['Game'] = '' then
+    if SetupSubSet(ssGames, nMode).Specifics.Strings['Game'] = '' then
      Raise EErrorFmt(4623, [nMode]);
-    if SetupSubSet(ssGames, nMode).Specifics.Values['NotInstalled'] <> '' then
+    if SetupSubSet(ssGames, nMode).Specifics.Strings['NotInstalled'] <> '' then
      Raise EErrorFmt(4622, [nMode]);
     if Screen.ActiveForm is TToolBoxForm then
      Raise EErrorFmt(5599, [nMode]);
@@ -974,7 +971,7 @@ begin
      Abort;
     Log(LOG_INFO, LoadStr1(5839), [nMode]);
     ClearGameBuffers(True);
-    g_SetupSet[ssGames].Specifics.Values['GameCfg']:=nMode;
+    g_SetupSet[ssGames].Specifics.Strings['GameCfg']:=nMode;
    {SetupModified:=True;}
     SetupChanged(scGame);
    end;
@@ -992,7 +989,7 @@ begin
    Q:=g_SetupSet[ssGames].SubElements.FindName(nMode+':config');
    if Q=Nil then
     Raise EErrorFmt(5547, [nMode]);
-   S:=Q.Specifics.Values['Code'];
+   S:=Q.Specifics.Strings['Code'];
    if S='' then
     GetGameCode:=mjQuake
    else
@@ -1046,7 +1043,7 @@ begin
  with g_SetupSet[ssGames] do
   for I:=0 to SubElements.Count-1 do
    begin
-    S:=SubElements[I].Specifics.Values['Code'];
+    S:=SubElements[I].Specifics.Strings['Code'];
     if S='' then
      S:=mjQuake;
     if S[1]=nMode then
@@ -1149,8 +1146,8 @@ end;
 
 procedure MakeAssociations(Config: QObject);
 var
- I, P: Integer;
- Command, S, Ext: String;
+ I: Integer;
+ Command, Ext: String;
 {Reg: TRegistry2;}
 begin
  Command:=GetRegCommand;
@@ -1158,11 +1155,11 @@ begin
  Reg.RootKey:=HKEY_CLASSES_ROOT;}
  for I:=0 to Config.Specifics.Count-1 do
   begin
-   S:=Config.Specifics[I];
-   P:=Pos('=',S);
-   if (P>1) and (S[1]='.') and (P<Length(S)) then
+   if not StartsStr('.', Config.Specifics.Names[I]) then continue;
+
+   if Config.Specifics.StringsFromIndex[I]<>'' then
     begin   { must be activated }
-     Ext:=Copy(S, 2, P-2);
+     Ext:=Copy(Config.Specifics.Names[I], 2, MaxInt);
      if not MakeAssociation({Reg,} Ext, Command) then
       GlobalWarning(FmtLoadStr1(5616, [Ext]));
     end;
@@ -1174,7 +1171,7 @@ end;
 
 procedure RefreshAssociations(Forced: Boolean);
 var
- I, P: Integer;
+ I, J: Integer;
  S, S1, Ext, Command: String;
  Active, Activate: Boolean;
  Reg: TRegistry2;
@@ -1186,12 +1183,10 @@ begin
    try
     for I:=0 to Specifics.Count-1 do
      begin
-      S:=Specifics[I];
-      P:=Pos('=',S);
-      if (P=1) or not (S[1]='.') then continue;
+      if not StartsStr('.', Specifics.Names[I]) then continue;
 
-      Activate:=Copy(S,P+1,MaxInt)='!';
-      Ext:=Copy(S, 2, P-2);
+      Activate:=Specifics.StringsFromIndex[I]='!';
+      Ext:=Copy(Specifics.Names[I], 2, MaxInt);
       if Reg=Nil then
        begin
         Reg:=TRegistry2.Create;
@@ -1222,9 +1217,9 @@ begin
          begin
           if not Reg.TryWriteString('AlwaysShowExt', '') then //FIXME: Add an option for this!
            Log(LOG_WARNING, LoadStr1(5861), ['AlwaysShowExt', Ext, S1]);
-          P:=Round(GetFloatSpec('i'+Ext, -1));
-          if (P>=0) and Reg.OpenKey('\'+S1+'\DefaultIcon', True) then
-           if not Reg.TryWriteString('', Format('%s,%d', [Application.ExeName, P])) then
+          J:=Round(GetFloatSpec('i'+Ext, -1));
+          if (J>=0) and Reg.OpenKey('\'+S1+'\DefaultIcon', True) then
+           if not Reg.TryWriteString('', Format('%s,%d', [Application.ExeName, J])) then
             Log(LOG_WARNING, LoadStr1(5861), ['DefaultIcon', Ext, S1]);
           Reg.CloseKey;
          end;
@@ -1246,7 +1241,7 @@ end;
 
 procedure RemoveAssociations;
 var
- I, P: Integer;
+ I: Integer;
  S, S1, Ext, Command: String;
  Active: Boolean;
  Reg: TRegistry2;
@@ -1258,23 +1253,20 @@ begin
    Reg.RootKey:=HKEY_CLASSES_ROOT;
    for I:=0 to Specifics.Count-1 do
     begin
-     S:=Specifics[I];
-     P:=Pos('=',S);
-     if (P>1) and (S[1]='.') then
-      begin
-       Ext:=Copy(S, 2, P-2);
-       Active:=Reg.OpenKey('\.'+Ext, False)
-        and Reg.TryReadString('', S1)
-        and (S1<>'') and Reg.OpenKey('\'+S1+'\shell\open\command', False)
-        and Reg.TryReadString('', S)
-        and SameText(S, Command);
+     if not StartsStr('.', Specifics.Names[I]) then continue;
 
-       if Active then   { must un-associate }
-        if not Reg.OpenKey('\', False)
-        or not Reg.DeleteKey(S1)
-        or not Reg.DeleteKey('.'+Ext) then
+     Ext:=Copy(Specifics.Names[I], 2, MaxInt);
+     Active:=Reg.OpenKey('\.'+Ext, False)
+         and Reg.TryReadString('', S1)
+         and (S1<>'') and Reg.OpenKey('\'+S1+'\shell\open\command', False)
+         and Reg.TryReadString('', S)
+         and SameText(S, Command);
+
+     if Active then   { must un-associate }
+       if not Reg.OpenKey('\', False)
+       or not Reg.DeleteKey(S1)
+       or not Reg.DeleteKey('.'+Ext) then
          GlobalWarning(FmtLoadStr1(5613, [Ext]));
-      end;
     end;
    finally Reg.Free; end;
   end;

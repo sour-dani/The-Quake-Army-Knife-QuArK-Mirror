@@ -173,7 +173,7 @@ procedure TOutputDirDlg.ViewOutputConfig;
 var
  S: String;
 begin
- SetBtnChecked(CheckBox1, CheckedStateOf[SetupGameSet.Specifics.Values['AlwaysPak']<>'']);
+ SetBtnChecked(CheckBox1, CheckedStateOf[SetupGameSet.Specifics.Strings['AlwaysPak']<>'']);
  S:=FindNextAvailablePakFilename(False);
  if S='' then
   Edit1.Text:=FmtLoadStr1(5626, [GettmpQuArK])
@@ -184,10 +184,10 @@ end;
 procedure TOutputDirDlg.CheckBox1Click(Sender: TObject);
 begin
  with SetupGameSet.Specifics do
-  if Values['AlwaysPak']='' then
-   Values['AlwaysPak']:='1'
+  if Strings['AlwaysPak']='' then
+   Strings['AlwaysPak']:='1'
   else
-   Values['AlwaysPak']:='';
+   Strings['AlwaysPak']:='';
  ViewOutputConfig;
 end;
 

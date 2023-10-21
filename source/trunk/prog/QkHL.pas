@@ -105,7 +105,7 @@ begin
      F.ReadBuffer(P^, PalSize*SizeOf(TPaletteLmp1));
   end;
 
- Specifics.Add(Data);  { "Pal=xxxxx" }
+ Specifics.AddStringFull(Data);  { "Pal=xxxxx" }
 end;
 
 procedure QTextureHL.SaveFile(Info: TInfoEnreg1);

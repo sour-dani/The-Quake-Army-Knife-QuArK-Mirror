@@ -168,10 +168,10 @@ function FontToString(Font: TFont) : String;
 
 implementation
 
-uses Types, qdraw, qhelper, qmath, QkUnknown, Undo, TbPalette, Toolbar1, ToolBox1,
-     Setup, QuarkX, QkExceptions, QkFileObjects, QkInclude, QkMacro, QkImages,
-     Python, PyMacros, PyToolbars, PyForms, QkPixelSet, QkObjectClassList,
-     ApplPaths, BrowseForFolder, FileExists2, Console,
+uses StrUtils, Types, qdraw, qhelper, qmath, QkUnknown, Undo, TbPalette,
+     Toolbar1, ToolBox1, Setup, QuarkX, QkExceptions, QkFileObjects, QkInclude,
+     QkMacro, QkImages, Python, PyMacros, PyToolbars, PyForms, QkPixelSet,
+     QkObjectClassList, ApplPaths, BrowseForFolder, FileExists2, Console,
      SystemDetails, Platform, Logging, ExtraFunctionality;
 
 const
@@ -191,6 +191,7 @@ const
  MenuCmdCount = 5;
 
  MemoMaxRows = 35; //Just some arbitrary max...
+ MouseWheelScrollSpeed = 32; //FIXME: Retrieve from system settings?
 
 function GetVKeyName(VkCode: Integer) : String;
 var
@@ -232,7 +233,7 @@ begin
  else
   if (Msg.wParam=wp_UpdateInternals) and (Msg.lParam=ui_FormCfg) then
    begin
-    Caption:=FSrcObj.Specifics.Values['Caption'];
+    Caption:=FSrcObj.Specifics.Strings['Caption'];
     MarsCap.ActiveBeginColor:=FSrcObj.IntSpec['LeftColor'];
     MarsCap.ActiveEndColor:=FSrcObj.IntSpec['RightColor'];
     RedrawWindow(Handle, Nil, 0, rdw_Frame or rdw_Invalidate);
@@ -240,7 +241,7 @@ begin
      begin
      {SetFormIcon(iiDuplicator2);}
       L.Clear;
-      S:=FSrcObj.Specifics.Values['Source'];
+      S:=FSrcObj.Specifics.Strings['Source'];
       if S='' then
        Source:=Nil
       else
@@ -395,8 +396,7 @@ begin
     end;
    if J>=0 then
     begin
-     S:=Base.Specifics[J];
-     S:=Copy(S,Pos('=',S)+1,MaxInt);
+     S:=Base.Specifics.StringsFromIndex[J];
      if not HasValue then
       begin
        Arg:=S;
@@ -443,7 +443,6 @@ end;
 function TFormCfg.GetBitSpec(const Spec: String; Value: Integer) : TCheckBoxState;
 var
  I, J, K: Integer;
- S: String;
  HasValue: Boolean;
  Base: QObject;
 begin
@@ -461,8 +460,7 @@ begin
     end;
    if J>=0 then
     begin
-     S:=Base.Specifics[J];
-     K:=StrToIntDef(Copy(S,Pos('=',S)+1,MaxInt), 0);
+     K:=StrToIntDef(Base.Specifics.StringsFromIndex[J], 0);
      if not HasValue then
       begin
        if K and Value <> 0 then
@@ -502,14 +500,14 @@ begin
   for I:=0 to Links.Count div 2 - 1 do
    if Links[I*2+1]<>Nil then
     for K:=0 to EditTogether.Count-1 do
-     if (J<>K) and (Links[I*2].Specifics.Values[EditTogether[K]]='') then
+     if (J<>K) and (Links[I*2].Specifics.Strings[EditTogether[K]]='') then
       begin
-       Test:=Links[I*2+1].Specifics.Values[EditTogether[K]];
+       Test:=Links[I*2+1].Specifics.Strings[EditTogether[K]];
        if Test<>'' then
         if ActionChanging<>0 then
          g_ListeActions.Add(TSpecificUndo.Create('', EditTogether[K], Test, sp_Auto, Links[I*2]))
         else
-         Links[I*2].Specifics.Values[EditTogether[K]]:=Test;
+         Links[I*2].Specifics.Strings[EditTogether[K]]:=Test;
       end;
 end;
 
@@ -532,7 +530,7 @@ begin
   begin
    if HackLN4 then
     begin
-     S:=Trim(Links[I*2].Specifics.Values[Spec]);
+     S:=Trim(Links[I*2].Specifics.Strings[Spec]);
      J:=Length(S);
      while (J>0) and (S[J]<>' ') do Dec(J);
      S:=nArg + Copy(S,J,MaxInt);
@@ -542,13 +540,13 @@ begin
    if ActionChanging<>0 then
     begin
      case nPosition of
-      sp_Auto: if Links[I*2].Specifics.Values[Spec]=S then Continue;
+      sp_Auto: if Links[I*2].Specifics.Strings[Spec]=S then Continue;
       sp_Supprime: if Links[I*2].Specifics.IndexOfName(Spec)<0 then Continue;
      end;
      g_ListeActions.Add(TSpecificUndo.Create('', Spec, S, nPosition, Links[I*2]));
     end
    else
-    Links[I*2].Specifics.Values[Spec]:=nArg;  { changes the Args directly }
+    Links[I*2].Specifics.Strings[Spec]:=nArg;  { changes the Args directly }
   end;
 end;
 
@@ -608,7 +606,7 @@ end;
 procedure TFormCfg.SpecEditAccept(Sender: TObject);
 var
  Row, I, J: Integer;
- oSpec, nSpec, S, Arg: String;
+ oSpec, nSpec, Arg: String;
  Q: QObject;
 begin
  nSpec:=(Sender as TCustomEdit).Text;
@@ -625,16 +623,15 @@ begin
    if J>=0 then
     begin
      if ActionChanging=0 then
-      Q.Specifics.Values[nSpec]:='';   { removes the target Spec first, it is already exists }
-     S:=Q.Specifics[J];
-     Arg:=Copy(S, Pos('=',S)+1, MaxInt);
+      Q.Specifics.Delete(nSpec);   { removes the target Spec first, it is already exists }
+     Arg:=Q.Specifics.StringsFromIndex[J];
      if ActionChanging<>0 then
       begin
        g_ListeActions.Add(TSpecificUndo.Create('', oSpec, '', sp_Supprime, Q));
        g_ListeActions.Add(TSpecificUndo.Create('', nSpec, Arg, J, Q));
       end
      else    { changes the Spec directly }
-      Q.Specifics[J]:=nSpec+'='+Arg;
+      Q.Specifics.Strings[nSpec]:=Arg;
     end;
   end;
  Form.SubElements[Row].Name:=nSpec;
@@ -653,7 +650,7 @@ begin
  if Arg=LoadStr1(Differs) then Exit;
  MatchSpecItem(Sender, Arg, False);
  with Form.SubElements[(Sender as TControl).Tag-1].Specifics do
-  J:=StrToIntDef(Copy(Values['Typ'],3,MaxInt), 0);  { test if CL### }
+  J:=StrToIntDef(Copy(Strings['Typ'],3,MaxInt), 0);  { test if CL### }
  if J=0 then
   SetArg(Sender, Arg)
  else
@@ -676,7 +673,6 @@ const
 var
  Value, LimitMin, LimitMax: TDouble;
  Arg, Arg1, S: String;
- IsFloat: Boolean;
  N, Needed, P: Integer;
  ValueList, ValuePtr: ^Single;
 begin
@@ -690,12 +686,11 @@ begin
    LimitMax:=GetFloatSpec('Max', None);
    if LimitMax=None then
      LimitMax:=3.4E38; //Approx Single range
-   S:=Specifics.Values['Typ'];
-   IsFloat:=Copy(S,1,2)='EF';
-   if IsFloat then
+   S:=Specifics.Strings['Typ'];
+   if StartsStr('EF', S) then
     begin
-     System.Delete(S,1,2);
-     Needed:=StrToIntDef(S,0);  { expected number of values }
+     System.Delete(S, 1, Length('EF'));
+     Needed:=StrToIntDef(S, 0);  { expected number of values }
      GetMem(ValueList, (Length(Arg)+1) * (SizeOf(Single) div 2));  { could not be more }
      try
       ValuePtr:=ValueList;
@@ -805,8 +800,8 @@ begin
    with Form.SubElements[(Sender as TControl).Tag-1] do
     begin
      Spec:=Name;
-     S:=Specifics.Values['Typ'];
-     if (Upcase(S[2]) = 'N') and (SetupSubSet(ssMap, 'Building').Specifics.Values['NormalizeColors']<>'') then   { must normalize color }
+     S:=Specifics.Strings['Typ'];
+     if (Upcase(S[2]) = 'N') and (SetupSubSet(ssMap, 'Building').Specifics.Strings['NormalizeColors']<>'') then   { must normalize color }
       NormaliseCol1(V);
     end;
    with Sender as TToolbarButton97 do
@@ -893,7 +888,7 @@ begin
  AnyControlEnter(Sender);
  Spec:=Form.SubElements[(Sender as TControl).Tag-1].Name;
  with Form.SubElements[(Sender as TControl).Tag-1].Specifics do
-  Arg:=Copy(Values['Typ'],2,MaxInt);
+  Arg:=Copy(Strings['Typ'],2,MaxInt);
  J:=StrToIntDef(Arg, 0);  { test if X### }
  if J=0 then
   begin
@@ -1003,8 +998,8 @@ begin
      if DefObj=Nil then
       K:=0
      else
-      K:=StrToIntDef(DefObj.Specifics.Values[Spec], 0);
-     K:=StrToIntDef(Links[I*2].Specifics.Values[Spec], K);
+      K:=StrToIntDef(DefObj.Specifics.Strings[Spec], 0);
+     K:=StrToIntDef(Links[I*2].Specifics.Strings[Spec], K);
      nK:=(K and Mask) or Value;
      if K<>nK then
       begin
@@ -1024,7 +1019,7 @@ begin
  else
   for I:=0 to Links.Count div 2 - 1 do
    begin
-    K:=StrToIntDef(Links[I*2].Specifics.Values[Spec], 0);
+    K:=StrToIntDef(Links[I*2].Specifics.Strings[Spec], 0);
     nK:=(K and Mask) or Value;
     if K<>nK then
      begin
@@ -1032,7 +1027,7 @@ begin
        S:=''
       else
        S:=IntToStr(nK);
-      Links[I*2].Specifics.Values[Spec]:=S;  { changes the Args directly }
+      Links[I*2].Specifics.Strings[Spec]:=S;  { changes the Args directly }
      end;
    end;
  Changed;
@@ -1040,7 +1035,7 @@ end;
 
 procedure TFormCfg.ButtonClick(Sender: TObject);
 var
- I,P{,Msg}: Integer;
+ I{, Msg}: Integer;
  FormObj, Q: QObject;
  S: String;
  Pt: TPoint;
@@ -1061,7 +1056,7 @@ begin
 {FormObj.AddRef(+1); try}
  with FormObj do
   begin
-   S:=Specifics.Values['Form'];
+   S:=Specifics.Strings['Form'];
    if S<>'' then
     begin
      {Q:=FindIncludeData1(FOriginalForm, '('+S+')');}
@@ -1112,19 +1107,11 @@ begin
    Q:=SubElements.FindShortName('Data');
    if Q<>Nil then
     for I:=0 to Q.Specifics.Count-1 do
-     begin
-      S:=Q.Specifics[I];
-      P:=Pos('=',S);
-      {loc}SetSpecArg1(Copy(S,1,P-1), Copy(S,P+1,MaxInt), sp_Auto);
-     end;
+     {loc}SetSpecArg1(Q.Specifics.Names[I], Q.Specifics.StringsFromIndex[I], sp_Auto);
    Q:=SubElements.FindShortName('Delete');
    if Q<>Nil then
     for I:=0 to Q.Specifics.Count-1 do
-     begin
-      S:=Q.Specifics[I];
-      P:=Pos('=',S);
-      {loc}SetSpecArg1(Copy(S,1,P-1), Copy(S,P+1,MaxInt), sp_Supprime);
-     end;
+     {loc}SetSpecArg1(Q.Specifics.Names[I], Q.Specifics.StringsFromIndex[I], sp_Supprime);
   {if Msg=wp_FormButtonChanged then
     begin}
      if ActionChanging<>0 then
@@ -1147,7 +1134,7 @@ begin
  Caption:=TToolbarButton97(Sender).Caption;
  with FormObj do
   begin
-   C:=Specifics.Values['Caps'];
+   C:=Specifics.Strings['Caps'];
    Index:=0;
    for I:=1 to length(C) do
    begin
@@ -1157,11 +1144,9 @@ begin
        break;
      end
    end;
-   S:=Specifics.Values['Macro'];
+   S:=Specifics.Strings['Macro'];
    if S<>'' then
-    begin
-       Py_XDECREF(CallMacroEx(Py_BuildValueX('Oi', [@PythonObj, Index]), S));
-    end;
+     Py_XDECREF(CallMacroEx(Py_BuildValueX('Oi', [@PythonObj, Index]), S));
   end;
 end;
 
@@ -1173,14 +1158,14 @@ begin
   FormObj:=Form.SubElements[(Sender as TControl).Tag-1];
   with FormObj do
   begin
-    S:=Specifics.Values['Macro'];
+    S:=Specifics.Strings['Macro'];
     if S<>'' then
     begin
       Py_XDECREF(CallMacro(@PythonObj, S))
     end
     else
     begin
-      S:=Specifics.Values['Code'];
+      S:=Specifics.Strings['Code'];
       if S<>'' then
       begin
         if PyRun_SimpleString(ToPyChar(S)) <> 0 then ShowConsole(True);
@@ -1307,10 +1292,6 @@ begin
 end;
 
 procedure TFormCfg.BrowseButtonClick(Sender: TObject);
-  procedure ConvertCodes(var S:String);
-  begin
-    While pos('$Game',S)<>0 do S:=copy(S,1,pos('$Game',S)-1)+QuakeDir+copy(S,pos('$Game',S)+5,length(S));
-  end; {ConvertCodes}
 var
  Path0, Path, Title, S, FNCopy, Conv, ConvOriginal, SOriginal: String;
  FormObj: QObject;
@@ -1334,18 +1315,18 @@ begin
    GetSingleSpec(Name, Path);
    Path:=ConvertPath(Path);
    Path0:=Path;
-   Title:=Specifics.Values['Typ'];
+   Title:=Specifics.Strings['Typ'];
    case Title[2] of
     'D': begin
 {Decker}
           if (Length(Title)>2) and (Title[3]='L') then
           begin
            {Directory-Dialog, but only returns the _Last_ folder-name. Useful for game-modification folders}
-           Title:=Specifics.Values['Txt'];
+           Title:=Specifics.Strings['Txt'];
            if Title<>'' then
             Title:=#13#10+Title;
-       //    Title:=Specifics.Values['Txt']+Title;
-           Ok:=BrowseForFolderDlg(ValidParentForm(Self).Handle, Path, Title, Specifics.Values['CheckFile']);
+       //    Title:=Specifics.Strings['Txt']+Title;
+           Ok:=BrowseForFolderDlg(ValidParentForm(Self).Handle, Path, Title, Specifics.Strings['CheckFile']);
            if Path<>'' then
            begin
             //Extract the _Last_ folder-name in path, without prefixing backslash
@@ -1357,15 +1338,15 @@ begin
           else
           begin
 {/Decker}
-           Title:=Specifics.Values['Txt'];
+           Title:=Specifics.Strings['Txt'];
          // Lines below cause Title to display twice.
          // 'Hint' was being used causing that also to be displayed incorrectly.
         {   if Title<>'' then
             Title:=#13#10+Title;
-           Title:=Specifics.Values['Txt']+Title;
+           Title:=Specifics.Strings['Txt']+Title;
         }
-           Ok:=BrowseForFolderDlg(ValidParentForm(Self).Handle, Path, Title, Specifics.Values['CheckFile']);
-           Title:=Specifics.Values['Append'];
+           Ok:=BrowseForFolderDlg(ValidParentForm(Self).Handle, Path, Title, Specifics.Strings['CheckFile']);
+           Title:=Specifics.Strings['Append'];
            if (Title<>'') and (Path<>'') then
             begin
              I:=LastPos(PathDelim, Path);
@@ -1379,7 +1360,7 @@ begin
     'T': begin
           if PopupForm<>Nil then
            ClosePopupForm;
-          Title:=Specifics.Values['GameCfg'];
+          Title:=Specifics.Strings['GameCfg'];
           if Title<>'' then
            ChangeGameModeStr(Title, True);
           PopupFormEdit:=TCustomEdit(PathEdit);
@@ -1388,13 +1369,12 @@ begin
           Ok:=False;
          end;
     'P': with TOpenDialog.Create(Self) do try
-           Title:=Specifics.Values['Txt'];
-           S:=ConvertPath(Specifics.Values['BasePath']);
+           Title:=Specifics.Strings['Txt'];
+           S:=ConvertPath(Specifics.Strings['BasePath']);
            If S<>'' then begin
-             ConvertCodes(S);
-             InitialDir:=S;
+             InitialDir:=StringReplace(S, '$Game', QuakeDir, [rfReplaceAll]);
            end else FileName:=Path;
-           DefaultExt:=Specifics.Values['DefExt'];
+           DefaultExt:=Specifics.Strings['DefExt'];
            Filter:=Format('*.%0:s|*.%0:s|%1:s', [DefaultExt, LoadStr1(774)]);
            if CheckWindows98And2000 then
              Options:=[ofFileMustExist, ofHideReadOnly, ofEnableSizing]
@@ -1404,10 +1384,9 @@ begin
            Ok:=Execute;
            If Ok then begin
              FNCopy:=FileName;
-             S:=Specifics.Values['CutPath'];
+             S:=Specifics.Strings['CutPath'];
              If S<>'' then begin //for some entity-specific directory cut-offs
-               ConvertCodes(S);
-               S:=LowerCase(S);
+               S:=LowerCase(StringReplace(S, '$Game', QuakeDir, [rfReplaceAll]));
                SOriginal:=IncludeTrailingPathDelimiter(StringReplace(S,'?',LoadStr1(186),[rfReplaceAll]));
                Conv:=LowerCase(FNCopy);
                ConvOriginal:=ExtractFilePath(Conv);
@@ -1442,9 +1421,9 @@ begin
                end;
                FNCopy:=Conv;
              end;
-             S:=Specifics.Values['DirSep'];
+             S:=Specifics.Strings['DirSep'];
              If S<>'' then FNCopy:=StringReplace(FNCopy,PathDelim,S,[rfReplaceAll]);
-             S:=Specifics.Values['AugPath'];
+             S:=Specifics.Strings['AugPath'];
              FNCopy:=S+FNCopy;
              Path:=FNCopy;
            end;
@@ -1471,7 +1450,7 @@ begin
  if Arg=LoadStr1(Differs) then Exit;
  with Form.SubElements[(Sender as TControl).Tag-1] do
   begin
-   CheckFile:=Specifics.Values['CheckFile'];
+   CheckFile:=Specifics.Strings['CheckFile'];
    if not FileExistsWild(Arg, CheckFile, nil) then
     Raise EErrorFmt(5610, [CheckFile]);
   end;
@@ -1684,7 +1663,6 @@ var
  Lu4: array[1..4] of TDouble;
  Valeurs: vec3_t;
  ValeursV: TVect;
- sTextRows: String;
  TextRows: Integer;
  sScrollBars: String;
  sMinValue, sMaxValue, sValue: String;
@@ -1692,7 +1670,6 @@ var
  fMinValue, fMaxValue, fValue: Single;
  sSteps, sTickFreq: String;
  iSteps, iTickFreq: Integer;
- sDropDownCount: String;
  DropDownCount: Integer;
  Metrics: TTextMetric;
 begin
@@ -1749,7 +1726,7 @@ begin
     SelectMe:=Nil;
     SB.VertScrollBar.Position:=0;
     LastRowTag:=0;
-    GrayForm:=StrToIntDef(Form.Specifics.Values['Style'], 0);
+    GrayForm:=StrToIntDef(Form.Specifics.Strings['Style'], 0); //FIXME: Switch to QkSpecifics.Integer?
     if GrayForm and gfGray = 0 then
      Color:=clWindow
     else
@@ -1793,7 +1770,7 @@ begin
       with Form.SubElements[I].Specifics do
        begin
        {X:=LeftMargin;}
-        HintMsg:=Values['Hint'];
+        HintMsg:=Strings['Hint'];
         if HintMsg<>'' then
          HintMsg:=Format1str(HintPrefix+HintMsg, Spec+'$Hint');
 {Decker}
@@ -1807,7 +1784,7 @@ begin
         and not ((Form.SubElements[I] is QPyMacro) or (Form.SubElements[I] is QToolbarButton)) then
           S:='&E'
         else
-          S:=Values['Txt'];
+          S:=Strings['Txt'];
 {/Decker}
         if S<>'' then
          begin
@@ -1883,7 +1860,7 @@ begin
           end
         else
          begin
-          S:=Values['Typ'];
+          S:=Strings['Typ'];
           {$IFDEF Debug}
           if S='' then
            Raise InternalE('No Typ');
@@ -1904,7 +1881,7 @@ begin
           case Upcase(S[1]) of
            'C': begin   { combo box }
                  EditTogether.Add(Spec);
-                 TextValues:=Format1str(Values['Items'], Spec+'$Items');
+                 TextValues:=Format1str(Strings['Items'], Spec+'$Items');
                  Icone:=1;
                  J:=StrToIntDef(Copy(S,3,MaxInt), 0);
                  if J=0 then
@@ -1932,13 +1909,16 @@ begin
                   csEverywhere: Icone:=0;  { normally found }
                  end;
                  ComboBox:=TEnterComboBox.Create(Self);
-                 sDropDownCount := Values['Rows'];
-                 if sDropDownCount<>'' then
-                 begin
-                   DropDownCount := StrToIntDef(sDropDownCount, 0);
-                   if DropDownCount > 1 then
-                     ComboBox.DropDownCount:=DropDownCount;
+                 try
+                   DropDownCount:=Integers['Rows'];
+                 except
+                   on EStringListError do
+                     DropDownCount:=0;
+                   on EConvertError do
+                     DropDownCount:=0;
                  end;
+                 if DropDownCount > 1 then
+                   ComboBox.DropDownCount:=DropDownCount;
                  if (Length(S) > 1) and (S[2]='L') then
                   ComboBox.Style:=csDropDownList;
                 {if GrayForm and gfGray = 0 then
@@ -1965,13 +1945,13 @@ begin
                  if GrayForm and gfGray = 0 then
                   begin
                    Ctrl:=TCheckBox.Create(Self);
-                   TCheckBox(Ctrl).Caption:=Values['Cap'];
+                   TCheckBox(Ctrl).Caption:=Strings['Cap'];
                    TCheckBox(Ctrl).OnEnter:=AnyControlEnter;
                   end
                  else
                   begin
                    Ctrl:=TToolbarButton97.Create(Self);
-                   TToolbarButton97(Ctrl).Caption:=Values['Cap'];
+                   TToolbarButton97(Ctrl).Caption:=Strings['Cap'];
                   end;
                  Ctrl.SetBounds(X,Y,W,LineHeight);
                  J:=StrToIntDef(Copy(S,2,MaxInt), 0);
@@ -2020,17 +2000,17 @@ begin
                   ExtraVertSpace:=1;
                  Btn:=TToolbarButton97.Create(Self);
                  Btn.SetBounds(X,Y,W,LineHeight+ExtraVertSpace);
-                 Btn.Caption:=Values['Cap'];
+                 Btn.Caption:=Strings['Cap'];
                  Btn.Color:=clBtnFace;
                  Btn.Parent:=SB;
                  Btn.Hint:=HintMsg;
                  Btn.Tag:=I+1;
                  Btn.OnClick:=ButtonClick;
                  ResultCtrl:=Btn;
-                 if PopupFormSpec=':'+Values['Form'] then
+                 if PopupFormSpec=':'+Strings['Form'] then
                   ReclickPopupForm:=Btn;
                 {Lbl:=TLabel.Create(Self);
-                 Lbl.Caption:=Values['Cap'];
+                 Lbl.Caption:=Strings['Cap'];
                  Lbl.Left:=X+LineHeight+5;
                  Lbl.Top:=Y + FontHeight;
                  Lbl.Parent:=SB;}
@@ -2041,8 +2021,8 @@ begin
                   ExtraVertSpace:=1;
                  if (Length(S) > 1) and (S[2]='M') then {Make a row of buttons}
                   begin
-                   N:=StrToInt(Values['Num']);
-                   Captions:=Values['Caps'];
+                   N:=Integers['Num'];
+                   Captions:=Strings['Caps'];
                    J:=X;
                    for BI:=1 to N do
                     begin
@@ -2052,7 +2032,7 @@ begin
                      Btn.Color:=clBtnFace;
                      Btn.Parent:=SB;
                      Btn.OnClick:=PyMMacroClick;
-                     Btn.Hint:=Values['Hint'+IntToStr(BI)];
+                     Btn.Hint:=Strings['Hint'+IntToStr(BI)];
                      Btn.Tag:=I+1;
                      Inc(J,20);
                     end;
@@ -2061,7 +2041,7 @@ begin
                   begin
                    Btn:=TToolbarButton97.Create(Self);
                    Btn.SetBounds(X,Y,W,LineHeight+ExtraVertSpace);
-                   Btn.Caption:=Values['Cap'];
+                   Btn.Caption:=Strings['Cap'];
                    Btn.Color:=clBtnFace;
                    Btn.Parent:=SB;
                    Btn.Hint:=HintMsg;
@@ -2085,7 +2065,7 @@ begin
                   Txt.Width:=X+W-Txt.Left;
                   TLabel(Txt).Caption:=Format1str(TLabel(Txt).Caption, Spec);
                   Found:=GetSingleSpec(Spec, Spec);
-                  Spec:=Values['Bold'];
+                  Spec:=Strings['Bold'];
                   if (Spec='') or (Spec='1') then
                    (Txt as TLabel).Font.Style:=[fsBold];
                   ResultCtrl:=Txt;
@@ -2177,7 +2157,7 @@ begin
                 end;
            'I': begin   { image }
                  Ctrl:=Nil;
-                 Spec:=Values['Image'];
+                 Spec:=Strings['Image'];
                  if Spec<>'' then
                   begin
                    Q:=FindIncludeData1(Form.SubElements[I], Spec, False);
@@ -2194,7 +2174,7 @@ begin
                   end;
                  if Ctrl=Nil then
                   begin
-                   Spec:=Values['Icon'];
+                   Spec:=Bytes['Icon'];
                    if Spec<>'' then
                     begin
                      J:=Round(Form.SubElements[I].GetFloatSpec('IconW', 16));
@@ -2210,7 +2190,7 @@ begin
                   end;
                  if Ctrl=Nil then
                   begin
-                   Spec:=Values['Resource'];
+                   Spec:=Strings['Resource'];
                    if Spec<>'' then
                     begin
                      BmpHandle:=LoadImage(HInstance, PChar(Spec), image_Bitmap, 0,0, 0);
@@ -2249,7 +2229,7 @@ begin
                  if Found=csDiffers then
                   Btn.Caption:=LoadStr1(Differs)
                  else
-                  Btn.Caption:=Values['Cap'];
+                  Btn.Caption:=Strings['Cap'];
                  StringToFont(Btn.Font, Spec);
                  if Found=csEverywhere then
                   Icone:=0;   { normally found }
@@ -2277,11 +2257,12 @@ begin
 {Decker 2002-12-29}
            'M': begin { Memo / Multiline-text-displaybox }
                  Icone := 0;
-                 sTextRows := Values['Rows'];
-                 if sTextRows<>'' then
-                   TextRows := StrToIntDef(sTextRows, 3)
-                 else
-                   TextRows := 3;
+                 try
+                   TextRows := Integers['Rows'];
+                 except
+                   on EConvertError do
+                     TextRows := 3;
+                 end;
                  if TextRows < 1 then
                    TextRows := 1
                  else if TextRows > MemoMaxRows then
@@ -2289,7 +2270,7 @@ begin
                  Memo := TMemo.Create(Self);
                  Memo.SetBounds(X, Y, W, TextRows * LineHeight); { TODO: Maybe calculate the most optimal height, considering WordWrap and the amount of text in ArgValue. }
                  ExtraVertSpace := (TextRows - 1) * LineHeight; { to adjust height for Y below. }
-                 sScrollBars := Values['Scrollbars'];
+                 sScrollBars := Strings['Scrollbars'];
                  if sScrollBars = 'H' then
                    Memo.ScrollBars := ssHorizontal
                  else if sScrollBars = 'V' then
@@ -2326,46 +2307,58 @@ begin
                  if S[2] = 'F' then
                  begin
                    //Float
-                   sMinValue := Values['Min'];
-                   if sMinValue <> '' then
-                     fMinValue := StrToFloatDef(sMinValue, 0.0)
-                   else
-                     fMinValue := 0;
-                   sMaxValue := Values['Max'];
-                   if sMaxValue <> '' then
-                     fMaxValue := StrToFloatDef(sMaxValue, 10.0)
-                   else
-                     fMaxValue := 10;
-                   sMaxValue := Values['Value'];
-                   if sValue <> '' then
-                     fValue := StrToFloatDef(sValue, 0.0)
-                   else
-                     fValue := 0;
+                   try
+                     fMinValue := Floats['Min'];
+                   except
+                     on EConvertError do
+                       //FIXME: LOG!
+                       fMinValue := 0.0;
+                   end;
+                   try
+                     fMaxValue := Floats['Max'];
+                   except
+                     on EConvertError do
+                       //FIXME: LOG!
+                       fMaxValue := 10.0;
+                   end;
+                   try
+                     fValue := Floats['Value'];
+                   except
+                     on EConvertError do
+                       //FIXME: LOG!
+                       fValue := 0.0;
+                   end;
                  end
                  else
                  begin
                    //Integer
-                   sMinValue := Values['Min'];
-                   if sMinValue <> '' then
-                     iMinValue := StrToIntDef(sMinValue, 0)
-                   else
-                     iMinValue := 0;
-                   sMaxValue := Values['Max'];
-                   if sMaxValue <> '' then
-                     iMaxValue := StrToIntDef(sMaxValue, 10)
-                   else
-                     iMaxValue := 10;
-                   sMaxValue := Values['Value'];
-                   if sValue <> '' then
-                     iValue := StrToIntDef(sValue, 0)
-                   else
-                     iValue := 0;
+                   try
+                     iMinValue := Integers['Min'];
+                   except
+                     on EConvertError do
+                       //FIXME: LOG!
+                       iMinValue := 0;
+                   end;
+                   try
+                     iMaxValue := Integers['Max'];
+                   except
+                     on EConvertError do
+                       //FIXME: LOG!
+                       iMaxValue := 10;
+                   end;
+                   try
+                     iValue := Integers['Value'];
+                   except
+                     on EConvertError do
+                       //FIXME: LOG!
+                       iValue := 0;
+                   end;
                  end;
-                 if Values['Labels'] <> '' then
+                 if Strings['Labels'] <> '' then
                    WantLabels := True
                  else
                    WantLabels := False;
-                 if Values['ShowValue'] <> '' then
+                 if Strings['ShowValue'] <> '' then
                    WantValue := True
                  else
                    WantValue := False;
@@ -2411,17 +2404,21 @@ begin
                  TrackBar.Tag:=I+1;
                  TrackBar.Hint:=HintMsg;
                  TrackBar.ShowValue := WantValue;
-                 sSteps := Values['Steps'];
-                 if sSteps <> '' then
-                   iSteps := StrToIntDef(sSteps, 10)
-                 else
-                   iSteps := 10;
+                 try
+                   iSteps := Integers['Steps'];
+                 except
+                   on EConvertError do
+                     //FIXME: LOG!
+                     iSteps := 10;
+                 end;
                  TrackBar.Steps := iSteps;
-                 sTickFreq := Values['TickFreq'];
-                 if sTickFreq <> '' then
-                   iTickFreq := StrToIntDef(sTickFreq, 1)
-                 else
-                   iTickFreq := 1;
+                 try
+                   iTickFreq := Integers['TickFreq'];
+                 except
+                   on EConvertError do
+                     //FIXME: LOG!
+                     iTickFreq := 1;
+                 end;
                  TrackBar.Frequency := iTickFreq;
                  if S[2] = 'F' then
                  begin
@@ -2442,7 +2439,7 @@ begin
                    TrackBar.FloatPosition := StrToFloatDef(ArgValue, 0.0)
                  else
                    TrackBar.IntPosition := StrToIntDef(ArgValue, 0);
-                 Macro:=Values['Macro'];
+                 Macro:=Strings['Macro'];
                  if Macro<>'' then
                   begin
                    //There is a Macro set, so let's call it whenever the value changes
@@ -2611,7 +2608,7 @@ begin
                 {Inc(X, W+MiddleMargin);}
                 end;
           end;
-          if Values['SelectMe']<>'' then
+          if Strings['SelectMe']<>'' then
            SelectMe:=ResultCtrl;   { NOTE: only use in dialog boxes }
          end;
         if ExtraVertSpace>0 then
@@ -2623,9 +2620,9 @@ begin
         if (Found=csNowhere) and (Txt<>Nil) and (Txt is TEnterEdit) then
          TEnterEdit(Txt).ReadOnly:=True;
         if Icone>=0 then
-         Values['@icon']:=IntToStr(Icone);
+         Integers['@icon']:=Icone;
         Inc(Y, LineHeight);
-        Values['@end']:=IntToStr(Y - ExtraVertSpace div 2);
+        Integers['@end']:=Y - ExtraVertSpace div 2;
        end;
      end;
    {Width:=XMax + (RightMargin-MiddleMargin);
@@ -2678,13 +2675,13 @@ end;
 
 procedure TFormCfg.MouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
 begin
-  SB.VertScrollBar.Position := SB.VertScrollBar.Position + 32;
+  SB.VertScrollBar.Position := SB.VertScrollBar.Position + MouseWheelScrollSpeed;
   Handled := true;
 end;
 
 procedure TFormCfg.MouseWheelUp(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
 begin
-  SB.VertScrollBar.Position := SB.VertScrollBar.Position - 32;
+  SB.VertScrollBar.Position := SB.VertScrollBar.Position - MouseWheelScrollSpeed;
   Handled := true;
 end;
 
@@ -2775,11 +2772,11 @@ begin
      if EditNames<>'' then
       begin  { adds a field to edit the name of the object(s) }
        Q:=QInternal.Create('', Form);
-       Q.Specifics.Add('Txt='+EditNames);
+       Q.Specifics.AddString('Txt', EditNames);
        if AllowEditName then
-        Q.Specifics.Add('Typ=EN')
+        Q.Specifics.AddString('Typ', 'EN')
        else
-        Q.Specifics.Add('Typ=ENR');
+        Q.Specifics.AddString('Typ', 'ENR');
        Form.SubElements.Insert(0, Q);
       end;
      if AddRemaining then
@@ -2788,8 +2785,7 @@ begin
        for J:=0 to Links.Count div 2 - 1 do
         for I:=0 to Links[J*2].Specifics.Count-1 do
          begin
-          S:=Links[J*2].Specifics[I];
-          S:=Copy(S, 1, Pos('=',S)-1);
+          S:=Links[J*2].Specifics.Names[I];
           IsFloat:=IsFloatSpec(S);
           if IsFloat then
            S:=NormalSpecOfFloatSpec(S);
@@ -2799,19 +2795,19 @@ begin
             if NeedSep then
              begin    { makes a separator }
               Q:=QInternal.Create('', Form);
-              Q.Specifics.Add('Typ=S');
-              Q.Specifics.Add('Txt='); {Decker 2002-04-07 - fixup for "Decker 2001-06-14", which caused ugly separator in spec/args-view}
+              Q.Specifics.AddString('Typ', 'S');
+              Q.Specifics.Delete('Txt'); {Decker 2002-04-07 - fixup for "Decker 2001-06-14", which caused ugly separator in spec/args-view}
               Form.SubElements.Add(Q);
               NeedSep:=False;
              end;
             { adds the new Spec to the Form }
             Q:=QInternal.Create(S, Form);
             if AllowEdit then
-             Q.Specifics.Add('Txt=&')
+             Q.Specifics.AddString('Txt', '&')
             else
-             Q.Specifics.Add('Txt='+S);
+             Q.Specifics.AddString('Txt', S);
             if IsFloat then
-             Q.Specifics.Add('Typ=EF');
+             Q.Specifics.AddString('Typ', 'EF');
             Form.SubElements.Add(Q);
            end;
          end;
@@ -2822,12 +2818,12 @@ begin
      while I<Form.SubElements.Count do
       with Form.SubElements[I] do
        begin
-        S:=Specifics.Values['Typ'];
+        S:=Specifics.Strings['Typ'];
         if S='' then
-         Specifics.Values['Typ']:='E'
+         Specifics.Strings['Typ']:='E'
         else
          if (S[1]='X') and (Length(S)>1) and (StrToIntDef(Copy(S,2,MaxInt),0)<>0)
-         and (Specifics.Values['Txt']='&') then
+         and (Specifics.Strings['Txt']='&') then
           begin
            S[1]:='x';
            MyName:=Name;
@@ -2835,7 +2831,7 @@ begin
            for J:=0 to Form.SubElements.Count-1 do
             with Form.SubElements[J] do
              if SameText(Name, MyName) then
-              if Specifics.Values['Typ'][1]<>'X' then
+              if Specifics.Strings['Typ'][1]<>'X' then
                begin
                 NeedEdit:=False;
                 Break;
@@ -2843,8 +2839,8 @@ begin
            if NeedEdit then
             begin
              Q:=QInternal.Create(MyName, Form);
-             Q.Specifics.Add('Txt=&');
-             Q.Specifics.Add('Typ=E');
+             Q.Specifics.AddString('Txt', '&');
+             Q.Specifics.AddString('Typ' ,'E');
              Form.SubElements.Insert(I, Q);
              Inc(I);
             end
@@ -2854,7 +2850,7 @@ begin
              for J:=0 to I-1 do
               with Form.SubElements[J] do
                if SameText(Name, MyName) then
-                if Specifics.Values['Typ'] = S then
+                if Specifics.Strings['Typ'] = S then
                  begin
                   DuplicateValue:=True;
                   Break;
@@ -2865,9 +2861,9 @@ begin
                Continue;
               end;
             end;
-           Specifics.Values['Typ']:=S;
+           Specifics.Strings['Typ']:=S;
            S[1]:=' ';
-           Specifics.Values['Txt']:=S+' ';
+           Specifics.Strings['Txt']:=S+' ';
           end;
         Inc(I);
        end;
@@ -2965,7 +2961,7 @@ begin
      repeat
       Inc(I);
      until (I=Form.SubElements.Count)
-        or (Y<StrToIntDef(Form.SubElements[I].Specifics.Values['@end'], 0));
+        or (Y<StrToIntDef(Form.SubElements[I].Specifics.Strings['@end'], 0)); //FIXME: Switch to QkSpecifics.Integer?
     end;
   end;
  Result:=(I>=0) and (I<Form.SubElements.Count);
@@ -3019,10 +3015,10 @@ begin
  DC:=(Sender as TPaintBox).Canvas.Handle;
  for I:=0 to Form.SubElements.Count-1 do
   begin
-   S:=Form.SubElements[I].Specifics.Values['@icon'];
+   S:=Form.SubElements[I].Specifics.Strings['@icon']; //FIXME: Switch to QkSpecifics.Integers?
    if S<>'' then
     ImageList_Draw(ImageList, StrToInt(S), DC, LeftMargin,
-     StrToInt(Form.SubElements[I].Specifics.Values['@end'])-17,
+     StrToInt(Form.SubElements[I].Specifics.Strings['@end'])-17, //FIXME: Switch to QkSpecifics.Integers?
      ILD_NORMAL);
   end;
 end;
@@ -3161,7 +3157,7 @@ begin
     Obj:=PyFloat_FromDouble(nTrackBar.FloatPosition)
    else
     Obj:=PyInt_FromLong(nTrackBar.IntPosition);
-   S:=Specifics.Values['Macro'];
+   S:=Specifics.Strings['Macro'];
    if S<>'' then
     begin
      Py_XDECREF(CallMacroEx(Py_BuildValueX('OO', [@PythonObj, Obj]), S))
@@ -3175,6 +3171,8 @@ begin
 end;
 
 procedure TFormCfg.PopupMenuClick(Sender: TObject);
+const
+ SpecTag = '+~!'; //FIXME: What is this?
 var
  I, Row: Integer;
  Q: QObject;
@@ -3187,9 +3185,9 @@ begin
     else
      begin
       Q:=QInternal.Create(LoadStr1(146), Form);
-      Q.Specifics.Add('Txt=&');
-      Q.Specifics.Add('Typ=ES');   { Edit w/ Specific }
-      Q.Specifics.Add('+~=!');
+      Q.Specifics.AddString('Txt', '&');
+      Q.Specifics.AddString('Typ', 'ES');   { Edit w/ Specific }
+      Q.Specifics.AddString(SpecTag, '');
       Form.SubElements.Add(Q);
       ScrollPos:=-1;
       PreSel:=0;
@@ -3206,50 +3204,37 @@ begin
      Row:=(Sender as TMenuItem).Tag;
      if (Form<>Nil) and (Row>=0) and (Row<Form.SubElements.Count) then
       with Form.SubElements[Row] do
-       if Specifics.IndexOf('+~=!')<0 then
+       if Specifics.IndexOfName(SpecTag)<0 then
         begin
          S:=Name;
-         if Copy(Specifics.Values['Typ'], 1, 2) = 'EF' then
+         if StartsStr('EF', Specifics.Strings['Typ']) then
           S:=FloatSpecNameOf(S);
          SetSpecArg(S, '', sp_Supprime);
         end
        else
         begin
          Form.SubElements.Delete(Row);
-         InitControls;
+         InitControls;  // to cancel selection to keep from causing an error
         end
      else
       PlaySound(SOUND_ERROR);
     end;
   cmd_CopySpec:
     begin
-     GlobalDoCancel{(Self)};
-     Row:=(Sender as TMenuItem).Tag;
-     if (Form<>Nil) and (Row>=0) and (Row<Form.SubElements.Count) then
-      with Form.SubElements[Row] do
-       if Specifics.IndexOf('+~=!')<0 then
-        begin
-         S:=Name;
-         if Copy(Specifics.Values['Typ'], 1, 2) = 'EF' then
-          S:=FloatSpecNameOf(S);
-      Copy(S, 1, 2);
-        end;
-      begin
-       with ValidParentForm(Self) as TQkForm do
-        ProcessEditMsg(edCopy);
-      end;
+     with ValidParentForm(Self) as TQkForm do
+      ProcessEditMsg(edCopy);
     end;
   cmd_PasteSpec:
     begin
      with ValidParentForm(Self) as TQkForm do
       ProcessEditMsg(edPasteObj);
-     InitControls;  // to cancel selction to keep from causing an error
+     InitControls;  // to cancel selection to keep from causing an error
     end;
   cmd_CutSpec:
     begin
      with ValidParentForm(Self) as TQkForm do
       ProcessEditMsg(edCut);
-     InitControls;  // to cancel selction to keep from causing an error
+     InitControls;  // to cancel selection to keep from causing an error
     end;
  end;
 end;
@@ -3286,7 +3271,7 @@ var
   begin
     for B:=False to True do
     begin
-      Result:=Format1str(Frm.Specifics.Values[Spc[Mode xor B]], Frm.Name+'$'+Spc[Mode xor B]);
+      Result:=Format1str(Frm.Specifics.Strings[Spc[Mode xor B]], Frm.Name+'$'+Spc[Mode xor B]);
       if Result<>'' then
         Exit;
     end;

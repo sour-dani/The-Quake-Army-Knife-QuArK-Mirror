@@ -49,7 +49,7 @@ end;
 
 procedure QOsFolder.FinalizeFromText;
 begin
-     ;
+  inherited;
   ReadFolder;
 end;
 
@@ -64,12 +64,12 @@ var
  Base : String;
  allshaders : boolean;
 begin
-  Base:=Specifics.Values['path'];
-  allshaders:=Specifics.Values['allshaders']='1';
-  if Specifics.Values['build']='1' then
+  Base:=Specifics.Strings['path'];
+  allshaders:=Specifics.Strings['allshaders']='1';
+  if Specifics.Strings['build']='1' then
     BuildTextureFolders(Base, QObject(Self))
   else
-    MergeTextureFolders(Base, QObject(Self), allshaders, Specifics.Values['filter']);
+    MergeTextureFolders(Base, QObject(Self), allshaders, Specifics.Strings['filter']);
 end;
 
 function QOsFolder.WriteSubElements;

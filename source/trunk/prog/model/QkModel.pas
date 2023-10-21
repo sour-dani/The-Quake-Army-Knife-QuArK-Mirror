@@ -61,7 +61,7 @@ var
  Q: QObject;
 begin
   Result:=Nil;
-  S:=Specifics.Values['Root'];
+  S:=Specifics.Strings['Root'];
   if S<>'' then begin
     Q:=SubElements.FindName(S);
     if (Q<>Nil) and (Q is QModelRoot) then
@@ -73,8 +73,8 @@ function QModel.OpenWindow;
 begin
   //DanielPharos: Workaround: Set the gamemode (if not set yet)
   //to the current gamemode, so that annoying warning doesn't show
-  if Specifics.Values['Game'] = '' then
-    Specifics.Values['Game'] := GetGameName(CurrentGameMode);
+  if Specifics.Strings['Game'] = '' then
+    Specifics.Strings['Game'] := GetGameName(CurrentGameMode);
   if nOwner=Application then
     Result:=NewPyForm(Self)
   else
@@ -110,7 +110,7 @@ var
   filename: PyObject;
 begin
   Acces;
-  S:=Specifics.Values['FileName'];
+  S:=Specifics.Strings['FileName'];
   if S='' then
     S:=Name;
   BuildCorrectFileName(S);

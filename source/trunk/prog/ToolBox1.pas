@@ -181,7 +181,7 @@ end;
 
 function OpenTextureBrowser : TToolBoxForm;
 begin
- Result:=OpenToolBox(g_SetupSet[ssGeneral].Specifics.Values['TextureBrowser']);
+ Result:=OpenToolBox(g_SetupSet[ssGeneral].Specifics.Strings['TextureBrowser']);
 end;
 
 function BrowseForTextureDlg(const TexName: String; SelectEventWnd: HWnd) : TToolBoxForm;
@@ -450,7 +450,7 @@ begin
   begin
    Source.Acces;
    if (SingleName='')
-   or SameText(Source.Specifics.Values['ToolBox'], SingleName) then
+   or SameText(Source.Specifics.Strings['ToolBox'], SingleName) then
     Roots.Add(Source);  { found a ToolBox ! }
   end
  else
@@ -487,9 +487,8 @@ var
  ToolBoxList: TQList;
 {FirstPrivate: Integer;}
  SetupQrk: QFileObject;
- I, J, P: Integer;
+ I, J: Integer;
 {Node, NodeToSelect: TTreeNode;}
- S: String;
  Q: QToolBox;
  Root: QObject;
  FirstTime: Boolean;
@@ -542,11 +541,7 @@ begin
       ProgressIndicatorIncrement;
       Q:=ToolBoxList[I] as QToolBox;
       for J:=0 to Q.Specifics.Count-1 do
-       begin
-        S:=Q.Specifics[J];
-        P:=Pos('=',S);
-        SetupInfo.Specifics.Values[Copy(S,1,P-1)]:=Copy(S,P+1,MaxInt);
-       end;
+       SetupInfo.Specifics.Add(Q.Specifics.Items[J]);
       Root:=Explorer.FindRootFromSpec(Q);
       if Root=Nil then
        Continue;  { no data }
@@ -582,7 +577,7 @@ begin
    end;
   if FirstTime then
    RestorePositionFrom('Pos', SetupInfo);
-  if SetupInfo.Specifics.Values['Color']<>'' then
+  if SetupInfo.Specifics.Strings['Color']<>'' then //FIXME: Switch to integer?
    begin
     MarsCap.ActiveEndColor:=SetupInfo.IntSpec['Color'];
     UpdateMarsCap;
@@ -590,7 +585,7 @@ begin
  {if SetupInfo.Specifics.Values['Bkgnd']<>'' then
    PanelBig.Color:=SetupInfo.IntSpec['Bkgnd'];}
   Explorer.SetMarsCaption(Self);
-  InfobaseLink:=SetupInfo.Specifics.Values['HTML'];
+  InfobaseLink:=SetupInfo.Specifics.Strings['HTML'];
  finally
   ProgressIndicatorStop;
  end;
@@ -607,7 +602,7 @@ var
  S: String;
  Info: TExplorerInfo;
 begin
- S:=SetupInfo.Specifics.Values['Target'];
+ S:=SetupInfo.Specifics.Strings['Target'];
  if S<>'' then
   for I:=0 to Screen.FormCount-1 do
    begin
@@ -830,7 +825,7 @@ begin
  Q:=Explorer.TMSelUnique;
  if (Q<>Nil) and (Q.TvParent<>Nil) and (Q.TvParent is QToolBoxGroup) then
   begin
-   S:=Q.Specifics.Values[SpecDesc];
+   S:=Q.Specifics.Strings[SpecDesc];
    S2:=InputBox(Q.Name, LoadStr1(5598), S);
    if S<>S2 then
     Undo.Action(Q.Parent, TSpecificUndo.Create(LoadStr1(608),

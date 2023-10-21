@@ -356,13 +356,13 @@ begin
           end;
 
           Setup := SetupSubSet(ssGeneral, 'Startup');
-          if (Setup.Specifics.Values['CheckForNotifications']<>'') and (UpdateIndexFile.NotificationNR>0) then
+          if (Setup.Specifics.Strings['CheckForNotifications']<>'') and (UpdateIndexFile.NotificationNR>0) then
           begin
             for I:=0 to UpdateIndexFile.NotificationNR-1 do
             begin
               with UpdateIndexFile.Notifications[I] do
               begin
-                Dummy := Setup.Specifics.Values['Notification_'+InternalName];
+                Dummy := Setup.Specifics.Strings['Notification_'+InternalName];
                 if Dummy <> '' then
                   try
                     InternalBuildNumber := StrToUInt(Dummy);
@@ -406,13 +406,13 @@ begin
             end;
           end;
 
-          if (Setup.Specifics.Values['CheckForPackages']<>'') and (UpdateIndexFile.PackageNR>0) then
+          if (Setup.Specifics.Strings['CheckForPackages']<>'') and (UpdateIndexFile.PackageNR>0) then
           begin
             for I:=0 to UpdateIndexFile.PackageNR-1 do
             begin
               with UpdateIndexFile.Packages[I] do
               begin
-                Dummy := Setup.Specifics.Values['Package_'+InternalName];
+                Dummy := Setup.Specifics.Strings['Package_'+InternalName];
                 if Dummy <> '' then
                   try
                     InternalBuildNumber := StrToUInt(Dummy);
@@ -482,13 +482,13 @@ begin
               Notifications.Free;
             end;
           end;
-          Setup.Specifics.Values['Notification_'+UpdateIndexFile.Notifications[NotificationIndex].InternalName] := Format('%u', [BuildNumber]);
+          Setup.Specifics.Strings['Notification_'+UpdateIndexFile.Notifications[NotificationIndex].InternalName] := Format('%u', [BuildNumber]);
         end;
 
       //Process packages
       if Length(UpdatePackages)>0 then
       begin
-        if Setup.Specifics.Values['AutomaticInstall'] = '' then
+        if Setup.Specifics.Strings['AutomaticInstall'] = '' then
         begin
           UpdateWindow := TAutoUpdater.Create(nil);
           try
@@ -550,7 +550,7 @@ begin
   UpdatesFound:=False;
   if AllowOnline then
   begin
-    if SetupSubSet(ssGeneral, 'Startup').Specifics.Values['UpdateCheckOnline'] <> '' then
+    if SetupSubSet(ssGeneral, 'Startup').Specifics.Strings['UpdateCheckOnline'] <> '' then
     begin
       //Online update
       DoOfflineUpdate := False;

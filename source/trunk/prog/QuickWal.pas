@@ -91,7 +91,7 @@ begin
     List:=TStringList.Create;
     try
       List.Sorted:=true;
-      FindError:=FindFirst(ConcatPaths([Path, '*'+SetupGameSet.Specifics.Values['PakExt']]), faAnyFile, F);
+      FindError:=FindFirst(ConcatPaths([Path, '*'+SetupGameSet.Specifics.Strings['PakExt']]), faAnyFile, F);
       try
         while FindError=0 do
         begin
@@ -121,7 +121,7 @@ begin
  if ResultFolder=Nil then
   ResultFolder:=QTextureList.Create(Copy(FolderName, 1, Length(FolderName)-1), Nil);
  Result:=QTextureLnk.Create(FolderName+Name, ResultFolder);
- Result.Specifics.Values[Spec]:=Arg;
+ Result.Specifics.Strings[Spec]:=Arg;
  ResultFolder.SubElements.Add(Result);
 end;
 
@@ -133,7 +133,7 @@ begin
     Index:=0;
   end;
   Result:=QTextureLnk.Create(FolderName+Name, ResultFolder);
-  Result.Specifics.Values[Spec]:=Arg;
+  Result.Specifics.Strings[Spec]:=Arg;
   ResultFolder.SubElements.Insert(Index,Result);
 end;
 
@@ -226,9 +226,9 @@ begin
       begin
        Q:=Link1(Folder, Loaded.Name+'/', Tex.Name, 's', Base);
        Q.Name:=Tex.Name;
-       Q.Specifics.Values['d']:=FolderName + Loaded.Name;
+       Q.Specifics.Strings['d']:=FolderName + Loaded.Name;
        if Tex is QTextureHL then
-        Q.Specifics.Values['h']:=Copy(Tex.TypeInfo, 7, 1);
+        Q.Specifics.Strings['h']:=Copy(Tex.TypeInfo, 7, 1);
       end;
     end;
    LinkFolder(Folder, ResultFolder, FolderName);
@@ -271,7 +271,7 @@ begin
       begin
        Q:=Link1(Folder, Name+'/', Tex.Name, 'a', Base); { use 'filename.SHADER/' to indicate what this folder contains }
        Q.Name:=Copy(Tex.Name, Pos('/', Tex.Name)+1, MaxInt);
-       Q.Specifics.Values['b']:=Name;
+       Q.Specifics.Strings['b']:=Name;
       end;
     end;
    LinkFolder(Folder, ResultFolder, FolderName);
@@ -293,7 +293,7 @@ begin
       begin
        Q:=Link1(Folder, Name+'/', Tex.Name, 'a', Base); { use 'filename.MTR/' to indicate what this folder contains }
        Q.Name:=Copy(Tex.Name, Pos('/', Tex.Name)+1, MaxInt);
-       Q.Specifics.Values['b']:=Name;
+       Q.Specifics.Strings['b']:=Name;
       end;
     end;
    LinkFolder(Folder, ResultFolder, FolderName);
@@ -332,9 +332,9 @@ begin
       begin
        Q:=Link1(Folder, Loaded.Name+'/', Tex.Name, 's', Base);
        Q.Name:=Tex.Name;
-       Q.Specifics.Values['d']:=FolderName + Loaded.Name;
+       Q.Specifics.Strings['d']:=FolderName + Loaded.Name;
        if Tex is QTextureHL then
-        Q.Specifics.Values['h']:=Copy(Tex.TypeInfo, 7, 1);
+        Q.Specifics.Strings['h']:=Copy(Tex.TypeInfo, 7, 1);
       end;
     end;
    LinkFolder(Folder, ResultFolder, FolderName, Index);
@@ -377,7 +377,7 @@ begin
       begin
        Q:=Link1(Folder, Name+'/', Tex.Name, 'a', Base); { use 'filename.SHADER/' to indicate what this folder contains }
        Q.Name:=Copy(Tex.Name, Pos('/', Tex.Name)+1, MaxInt);
-       Q.Specifics.Values['b']:=Name;
+       Q.Specifics.Strings['b']:=Name;
       end;
     end;
    LinkFolder(Folder, ResultFolder, FolderName, Index);
@@ -399,7 +399,7 @@ begin
       begin
        Q:=Link1(Folder, Name+'/', Tex.Name, 'a', Base); { use 'filename.MTR/' to indicate what this folder contains }
        Q.Name:=Copy(Tex.Name, Pos('/', Tex.Name)+1, MaxInt);
-       Q.Specifics.Values['b']:=Name;
+       Q.Specifics.Strings['b']:=Name;
       end;
     end;
    LinkFolder(Folder, ResultFolder, FolderName, Index);
@@ -483,8 +483,8 @@ begin
          begin
            Q:=Link1(Folder, FileNameOnly(Name)+'/', Tex.Name, 'a', Base, Index); { use 'filename.SHADER/' to indicate what this folder contains }
            Q.Name:=Copy(Tex.Name, Pos('/', Tex.Name)+1, MaxInt);
-           Q.Specifics.Values['b']:=Name;
-           Q.Specifics.Values['shader']:='1';
+           Q.Specifics.Strings['b']:=Name;
+           Q.Specifics.Strings['shader']:='1';
          end;
        finally
          Path.Free;
@@ -553,7 +553,7 @@ var
  Q: QObject;
  ShaderExt: String;
 begin
-  ShaderExt:=SetupGameSet.Specifics.Values['ShaderExt'];
+  ShaderExt:=SetupGameSet.Specifics.Strings['ShaderExt'];
   if ShaderExt='' then
    Exit;
 
@@ -687,7 +687,7 @@ var
  Loaded: QObject;
  ShortName, ShaderExt: String;
 begin
-  ShaderExt:=SetupGameSet.Specifics.Values['ShaderExt'];
+  ShaderExt:=SetupGameSet.Specifics.Strings['ShaderExt'];
   if ShaderExt='' then
    Exit;
 
@@ -800,13 +800,13 @@ begin
   Q:=QToolboxGroup.Create('New Folder',Nil);
   OsF:=QOSFolder.Create(Base, Q);
   Q.SubElements.Add(OsF);
-  OsF.Specifics.Values['path']:=Base;
+  OsF.Specifics.Strings['path']:=Base;
   if not merged then
-    OsF.Specifics.Values['build']:='1';
+    OsF.Specifics.Strings['build']:='1';
   if allshaders then
-    OsF.Specifics.Values['allshaders']:='1';
+    OsF.Specifics.Strings['allshaders']:='1';
   if Filter<>'' then
-    OsF.Specifics.Values['filter']:=Filter;
+    OsF.Specifics.Strings['filter']:=Filter;
   if merged then
     MergeTextureFolders(Base, OsF, allshaders, Filter)
   else
@@ -820,9 +820,9 @@ begin
   Q:=QToolBoxGroup.Create('New Folder',Nil);
   TxF:=QTextureList.Create(Base, Q);
   Q.SubElements.Add(TxF);
-  TxF.Specifics.Values['path']:=Base;
+  TxF.Specifics.Strings['path']:=Base;
   if Filter<>'' then
-    TxF.Specifics.Values['filter']:=Filter;
+    TxF.Specifics.Strings['filter']:=Filter;
   if merged then
     MergeTextureFolders(Base, QObject(TxF), allshaders, Filter)
   else
@@ -873,7 +873,7 @@ begin
    DiskFolder.Free;
  end;
 
- FindError:=FindFirst(ConcatPaths([Path, '*'+SetupGameSet.Specifics.Values['PakExt']]), faAnyFile, F);
+ FindError:=FindFirst(ConcatPaths([Path, '*'+SetupGameSet.Specifics.Strings['PakExt']]), faAnyFile, F);
  try
   while FindError=0 do
    begin
@@ -973,8 +973,8 @@ begin
     (sub)* folder }
   if Filter<>'' then
   begin
-    PakExt:=SetupGameSet.Specifics.Values['PakExt'];
-    ShaderExt:=SetupGameSet.Specifics.Values['ShaderExt'];
+    PakExt:=SetupGameSet.Specifics.Strings['PakExt'];
+    ShaderExt:=SetupGameSet.Specifics.Strings['ShaderExt'];
     if Copy(Filter,Length(Filter)-Length(PakExt)+1,Length(PakExt))=PakExt then
     { it's a pak }
       PakFilter:=true

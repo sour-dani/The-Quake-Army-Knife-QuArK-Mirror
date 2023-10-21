@@ -138,7 +138,7 @@ var
 begin
  Result.X:=1;  { default value }
  Result.Y:=1;
- S:=Specifics.Values['cnt'];
+ S:=Specifics.Strings['cnt']; //FIXME: Switch to QkSpecifics.Integers?
  if S='' then Exit;
  try
   ReadDoubleArray(S, V);
@@ -155,10 +155,12 @@ var
  S: String;
 begin
  if (nSize.X=1) and (nSize.Y=1) then
-  S:=''  { default size : delete 'cnt' }
+  Specifics.Delete('cnt')  { default size : delete 'cnt' }
  else
+ begin
   S:=IntToStr(nSize.X)+' '+IntToStr(nSize.Y);
- Specifics.Values['cnt']:=S;
+  Specifics.Strings['cnt']:=S; //FIXME: Switch to QkSpecifics.Integers?
+ end;
 end;
 
  { Returns the control points of the mesh }
@@ -202,12 +204,12 @@ begin
  Acces;
  SetMeshSize(Point(Buf.W, Buf.H));  { set mesh size }
  S:=FloatSpecNameOf('v');
- Specifics.Values[S]:='';   { delete old 'v' Specific }
+ Specifics.Delete(S);   { delete old 'v' Specific }
  L:=Buf.W*Buf.H*SizeOf(TMeshControlPoints5);
  SetLength(S, Length('v=') + L);   { make room for 'v=....' in S }
  S[2]:='=';
  Move(Buf.CP^, S[3], L);    { copy the data over the '....' in S }
- Specifics.Add(S);          { add this as new Specific }
+ Specifics.AddStringFull(S);          { add this as new Specific }
 end;
 
 class function TMesh.TypeInfo: String;

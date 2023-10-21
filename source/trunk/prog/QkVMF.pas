@@ -341,7 +341,7 @@ expected one.
   begin
     S1:=S;
     ReadSymbol(sStringQuotedToken);
-    P.Specifics.Add(S1+'='+S);
+    P.Specifics.AddString(S1, S);
     ReadSymbol(sStringQuotedToken);
   end;
 
@@ -421,7 +421,7 @@ expected one.
       g_MapError.AddText(Format(LoadStr1(5816), [FaceNum, BrushNum]));
 
     if side_id<>'' then
-      Surface.Specifics.Values['id']:=side_id;
+      Surface.Specifics.Strings['id']:=side_id;
 
     if (SymbolType=sStringToken) and SameText(S,'dispinfo') then
     begin
@@ -467,7 +467,7 @@ expected one.
             surface.adddists(row,aryd);
             inc(row);
           end;
-          Surface.Specifics.Add(S1+'_'+S2+'='+S);
+          Surface.Specifics.AddString(S1+'_'+S2, S);
           ReadSymbol(sStringQuotedToken);
         end;
         ReadSymbol(sCurlyBracketRight);
@@ -510,25 +510,17 @@ expected one.
 
    procedure AddConnection(var List: TSpecificsList; const outputname, value: string);
    var
-     i,num{,lastfound} : integer;
-
+     num: integer;
+     s: string;
    begin
      num:=0;
-     //lastfound:=0;
-     for i:=0 to list.count-1 do
+     s:=outputname;
+     while list.IndexOfName(s)>=0 do
      begin
-       // count occurences
-       if pos(outputname,list[i])<>0 then
-       begin
-         num:=num+1;
-         //lastfound:=i;
-       end;
+       num:=num+1;
+       s:=outputname + '#'+IntToStr(num);
      end;
-
-     if num>1 then
-       List.Add(outputname + '#'+IntToStr(num)+'=' + value)
-     else
-       List.Add(outputname + '=' + value)
+     List.AddString(s, value)
    end;
 
  begin
@@ -548,7 +540,7 @@ expected one.
        if (S1='classname') then
           classname:=S
        else
-         SpecificList.Add(S1+'='+S);
+         SpecificList.AddString(S1, S);
 
        ReadSymbol(sStringQuotedToken);
      end
@@ -655,7 +647,7 @@ expected one.
    parentgroup.SubElements.Add(group);
 
    if LowerCase(s)='hidden' then
-     group.Specifics.Values[';view']:=IntToStr(vfHidden);
+     group.Specifics.Integers[';view']:=vfHidden;
 
    ReadSymbol(sStringToken);
    ReadSymbol(sCurlyBracketLeft);
@@ -666,7 +658,7 @@ expected one.
      begin
        S1:=S;
        ReadSymbol(sStringQuotedToken);
-       group.Specifics.Add(S1+'='+S);
+       group.Specifics.AddString(S1, S);
        ReadSymbol(sStringQuotedToken);
      end
      else
@@ -701,7 +693,7 @@ expected one.
        Root.Name:=ClassnameWorldspawn;
      end
      else
-       Root.Specifics.Add(S1+'='+S);
+       Root.Specifics.AddString(S1, S);
      ReadSymbol(sStringQuotedToken);
    end;
 
@@ -857,7 +849,7 @@ begin
       try
         ModeJeu:=ReadEntityList(Root, Source, Nil);
         SubElements.Add(Root);
-        Specifics.Values['Root']:=Root.Name+Root.TypeInfo;
+        Specifics.Strings['Root']:=Root.Name+Root.TypeInfo;
         ObjectGameCode:=ModeJeu;
       finally
         Root.AddRef(-1);
@@ -880,7 +872,7 @@ begin
  Log(LOG_VERBOSE, 'Saving VMF file: %s', [self.name]);
  with Info do case Format of
   rf_Default: begin  { as stand-alone file }
-      Root:=SubElements.FindName(Specifics.Values['Root']);
+      Root:=SubElements.FindName(Specifics.Strings['Root']);
       if (Root=Nil) or not (Root is TTreeMapBrush) then
        Raise EError(5558);
       Root.LoadAll;
@@ -891,7 +883,7 @@ begin
        if Specifics.IndexOfName('hxstrings')>=0 then
         begin
          HxStrings:=TStringList.Create;
-         HxStrings.Text:=Specifics.Values['hxstrings'];
+         HxStrings.Text:=Specifics.Strings['hxstrings'];
         end;
 
        { .MAP comment header, which explains that this .MAP has been written
@@ -904,11 +896,11 @@ begin
 
        saveflags:=0;
        MapOptionSpecs:=SetupSubSet(ssMap,'Options').Specifics;
-       if MapOptionSpecs.Values['IgnoreToBuild']<>'' then
+       if MapOptionSpecs.Strings['IgnoreToBuild']<>'' then
          saveflags:=saveflags or soIgnoreToBuild;
-       if MapOptionSpecs.Values['DisableFPCoord']<>'' then
+       if MapOptionSpecs.Strings['DisableFPCoord']<>'' then
          saveflags:=saveflags or soDisableFPCoord;
-        if MapOptionSpecs.Values['UseIntegralVertices']<>'' then
+        if MapOptionSpecs.Strings['UseIntegralVertices']<>'' then
          saveflags:=saveflags or soUseIntegralVertices;
        saveflags:=saveflags or IntSpec['saveflags']; {merge in selonly}
 
@@ -927,7 +919,7 @@ begin
        end;
        Dest.SaveToStream(F);
        if HxStrings<>Nil then
-        Specifics.Values['hxstrings']:=HxStrings.Text;
+        Specifics.Strings['hxstrings']:=HxStrings.Text;
       finally
        Dest.Free;
        List.Free;

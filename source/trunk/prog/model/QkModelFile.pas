@@ -86,12 +86,12 @@ begin
   S:=Spec2;
   SetLength(S, Length(Spec2) + SizeOf(TPaletteLmp));
   Move(GameBuffer(ObjectGameCode)^.PaletteLmp, S[Length(Spec2)+1], SizeOf(TPaletteLmp));
-  Result.Specifics.Add(S);
+  Result.Specifics.AddStringFull(S);
   S:=Spec1;
   DeltaW:=-((Round(Size[0])+3) and not 3);
   SetLength(S, Length(Spec1) - DeltaW*Round(Size[1]));
   P:=PChar(S)+Length(S)+DeltaW;
-  Result.Specifics.Add(S);
+  Result.Specifics.AddStringFull(S);
 end;
 
 function QModelFile.Loaded_Frame(Component: QComponent; const Name: String) : QFrame;
@@ -165,7 +165,7 @@ var
   misc: QMiscGroup;
   BoneGroup: QBoneGroup;
 begin
-  Specifics.Values['FileName']:=ExtractFileName(LoadName);
+  Specifics.Strings['FileName']:=ExtractFileName(LoadName);
   Result:=QModelRoot.Create(LoadStr1(2371), Self);
   SubElements.Add(Result);
   Misc:=QMiscGroup.Create('Misc', Result);
@@ -174,7 +174,7 @@ begin
   BoneGroup:=QBoneGroup.Create('Skeleton', Result);
   BoneGroup.IntSpec['type']:=MDL_GROUP_BONE;
   Result.SubElements.Add(BoneGroup);
-  Specifics.Values['Root']:=Result.Name+Result.TypeInfo;
+  Specifics.Strings['Root']:=Result.Name+Result.TypeInfo;
 end;
 
 function QModelFile.Saving_Root;

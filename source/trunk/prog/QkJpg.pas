@@ -84,7 +84,7 @@ begin
 
   Setup:=SetupSubSet(ssFiles, 'JPG');
   try
-    case StrToInt(Setup.Specifics.Values['SaveFormatDevIL']) of
+    case Setup.Specifics.Integers['SaveFormatDevIL'] of
     0: Flag:=IL_JFIF;
     1: Flag:=IL_EXIF;
     else
@@ -107,7 +107,7 @@ begin
   ilSetInteger(IL_JPG_QUALITY, Flag);
   CheckDevILError(ilGetError);
 
-  if Setup.Specifics.Values['SaveProgressiveDevIL']<>'' then
+  if Setup.Specifics.Strings['SaveProgressiveDevIL']<>'' then
     ilEnable(IL_JPG_PROGRESSIVE)
   else
     ilDisable(IL_JPG_PROGRESSIVE);
@@ -120,7 +120,7 @@ var
 begin
   Setup:=SetupSubSet(ssFiles, 'JPG');
   try
-    case StrToInt(Setup.Specifics.Values['LoadQualityFreeImage']) of
+    case Setup.Specifics.Integers['LoadQualityFreeImage'] of
     0: Result:=JPEG_DEFAULT;
     1: Result:=JPEG_FAST;
     2: Result:=JPEG_ACCURATE;
@@ -134,7 +134,7 @@ begin
       Result:=JPEG_ACCURATE;
   end;
 
-  if Setup.Specifics.Values['LoadCMYKFreeImage']<>'' then
+  if Setup.Specifics.Strings['LoadCMYKFreeImage']<>'' then
     Result:=Result or JPEG_CMYK;
 end;
 
@@ -144,7 +144,7 @@ var
 begin
   Setup:=SetupSubSet(ssFiles, 'JPG');
   try
-    case StrToInt(Setup.Specifics.Values['SaveQualityFreeImage']) of
+    case Setup.Specifics.Integers['SaveQualityFreeImage'] of
     0: Result:=JPEG_DEFAULT;
     1: Result:=JPEG_QUALITYBAD;
     2: Result:=JPEG_QUALITYAVERAGE;
@@ -161,7 +161,7 @@ begin
       Result:=JPEG_QUALITYGOOD;
   end;
 
-  if Setup.Specifics.Values['SaveProgressiveFreeImage']<>'' then
+  if Setup.Specifics.Strings['SaveProgressiveFreeImage']<>'' then
     Result:=Result or JPEG_PROGRESSIVE;
 end;
 
@@ -172,7 +172,7 @@ begin
   Log(LOG_VERBOSE, 'Loading JPG file: %s', [self.name]);
   case ReadFormat of
   rf_Default: begin  { as stand-alone file }
-    LibraryToUse:=SetupSubSet(ssFiles, 'JPG').Specifics.Values['LoadLibrary'];
+    LibraryToUse:=SetupSubSet(ssFiles, 'JPG').Specifics.Strings['LoadLibrary'];
     if LibraryToUse='DevIL' then
       LoadFileDevIL(F, FSize)
     else if LibraryToUse='FreeImage' then
@@ -193,7 +193,7 @@ begin
  with Info do
   case Format of
   rf_Default: begin  { as stand-alone file }
-    LibraryToUse:=SetupSubSet(ssFiles, 'JPG').Specifics.Values['SaveLibrary'];
+    LibraryToUse:=SetupSubSet(ssFiles, 'JPG').Specifics.Strings['SaveLibrary'];
     if LibraryToUse='DevIL' then
       SaveFileDevIL(Info)
     else if LibraryToUse='FreeImage' then

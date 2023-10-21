@@ -122,14 +122,14 @@ begin
    Target.AddRef(+1);
    if ListView1.FindCaption(0, Target.Name+Target.TypeInfo, False, True, False) <> Nil then
     Raise EError(5600);
-   Target.Specifics.Values['Description']:=LoadStr1(5230);
+   Target.Specifics.Strings['Description']:=LoadStr1(5230);
   end;
  ToolBox:=QToolBox.Create(LoadStr1(5258), Target);
  ToolBox.AddRef(+1); try
- ToolBox.Specifics.Values['ToolBox']:=Source.GetToolBoxSingleName;
+ ToolBox.Specifics.Strings['ToolBox']:=Source.GetToolBoxSingleName;
  Folder:=QToolBoxGroup.Create(LoadStr1(5259), ToolBox);
  ToolBox.SubElements.Add(Folder);
- ToolBox.Specifics.Values['Root']:=Folder.Name+Folder.TypeInfo;
+ ToolBox.Specifics.Strings['Root']:=Folder.Name+Folder.TypeInfo;
 
  if RadioButton3.Checked then
   begin

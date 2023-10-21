@@ -361,7 +361,7 @@ begin
         { write .pak entries }
         Repertoire:=TMemoryStream.Create;
         try
-          if Specifics.Values['temp']<>'' then
+          if Specifics.Strings['temp']<>'' then
           begin
             comment:=quark_zip_comment_temp;
           end
@@ -472,7 +472,7 @@ begin
         f.readbuffer(dummystring[1], eocd.zipfilecomment_len); //FIXME: Use ReadaString!
         if dummystring = quark_zip_comment_temp then
         begin
-          Specifics.Values['temp']:= '1';
+          Specifics.Strings['temp']:= '1';
         end;
         //FIXME: Save the comment so we can restore it on save?
       end;

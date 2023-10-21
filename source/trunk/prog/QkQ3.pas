@@ -101,7 +101,8 @@ type
 
 implementation
 
-uses StrUtils, QuarkX, QkExceptions, Game, Travail, QkObjectClassList, Logging, ExtraFunctionality;
+uses StrUtils, QuarkX, QkExceptions, Game, Travail, QkObjectClassList, QkSpecifics,
+  Logging, ExtraFunctionality;
 
 const
  LUMP_ENTITIES = 0;
@@ -255,12 +256,12 @@ begin
  /alex}
  {/tiglari}
 
- TexExt:=SetupGameSet.Specifics.Values['TextureFormat'];
+ TexExt:=SetupGameSet.Specifics.Strings['TextureFormat'];
  if ReverseLink<>nil then
-   DefaultImageName[0]:=ReverseLink.Specifics.Values['e'];
+   DefaultImageName[0]:=ReverseLink.Specifics.Strings['e'];
  if DefaultImageName[0]<>'' then
  begin
-   ImageFileName:=Specifics.Values[DefaultImageName[0]];
+   ImageFileName:=Specifics.Strings[DefaultImageName[0]];
    Log(LOG_VERBOSE, 'attempting to load %s', [ImageFileName]);
    try
      Result:=NeedGameFile(ImageFileName, '') as QPixelSet
@@ -271,8 +272,8 @@ begin
  else
  begin
    DefaultImageIndex:=0;
-   DefaultImageName[0]:=Specifics.Values['q']; // look at the q specific (QTextureLnk.LoadPixelSet)
-   DefaultImageName[1]:=Specifics.Values['qer_editorimage'];
+   DefaultImageName[0]:=Specifics.Strings['q']; // look at the q specific (QTextureLnk.LoadPixelSet)
+   DefaultImageName[1]:=Specifics.Strings['qer_editorimage'];
 
    while ((Result=nil) and (DefaultImageIndex<2)) do
    begin
@@ -374,22 +375,19 @@ var
  I, K: Integer;
  Q: QObject;
 
-  procedure DumpSpec(const Spec, Indent: String);
-  var
-   J: Integer;
+  { dump the specific as a shader or stage attribute }
+  procedure DumpSpec(const Spec: TSpecificsItem; const Indent: String);
   begin
-   J:=Pos('=', Spec);
-     { ignore specifics that cannot be written as text }
-   if (J>0) and not IsFloatSpec(Spec) then //FIXME: and not IsIntSpec(Spec)
-    Result:=Result + Indent + Copy(Spec,1,J-1) + TrimRight(' ' + Copy(Spec,J+1,MaxInt)) + #13#10;
-      { dump the specific as a shader or stage attribute }
+   { ignore specifics that cannot be written as text }
+   if not IsFloatSpec(Spec.Key) then //FIXME: and not IsIntSpec(Spec.Key)
+    Result:=Result + Indent + Spec.Key + TrimRight(' ' + Spec.Value) + #13#10;
   end;
 
 begin
  Result:=Name + #13#10'{'#13#10;
  Acces;
  for I:=0 to Specifics.Count-1 do  { attributes }
-  DumpSpec(Specifics[I], chr(vk_Tab));
+  DumpSpec(Specifics.Items[I], chr(vk_Tab));
  for K:=0 to SubElements.Count-1 do  { stages }
   begin
    Q:=SubElements[K];
@@ -402,7 +400,7 @@ begin
     Result:=Result + chr(vk_Tab) + chr(vk_Tab) + 'map ' + Q.Name + #13#10;
 *)
    for I:=0 to Q.Specifics.Count-1 do  { stage attributes }
-    DumpSpec(Q.Specifics[I], chr(vk_Tab) + chr(vk_Tab));
+    DumpSpec(Q.Specifics.Items[I], chr(vk_Tab) + chr(vk_Tab));
     { stage end }
    Result:=Result + chr(vk_Tab) + '}'#13#10;
   end;
@@ -631,13 +629,13 @@ var
        masked:=true
      else
      if (masked and (Spec='surfaceparm')) then
-       Target.Specifics.Add('_esp_'+Readline+'='+'1');
+       Target.Specifics.AddString('_esp_'+Readline, '1');
    end;
-   Target.Specifics.Add(Spec+'='+ReadLine);
+   Target.Specifics.AddString(Spec, ReadLine);
   end;
 
 begin
- EditableSurfaceParms:=SetupGameSet.Specifics.Values['EditableSurfaceParms']<>'';
+ EditableSurfaceParms:=SetupGameSet.Specifics.Strings['EditableSurfaceParms']<>'';
 
  case ReadFormat of
   rf_Default: begin  { as stand-alone file }
@@ -724,23 +722,23 @@ begin
           Inc(Source);   { skip the closing brace }
 
           { remove the 'map' attribute and use it to set the name of the stage }
-          if Stage.Specifics.Values['map']<>'' then
+          if Stage.Specifics.Strings['map']<>'' then
           begin
-           Stage.Name:=Stage.Specifics.Values['map'];
+           Stage.Name:=Stage.Specifics.Strings['map'];
 (* DECKER
-           Stage.Specifics.Values['map']:='';
+           Stage.Specifics.Delete('map');
 *)
           end
           else
           {DECKER - try 'clampmap' instead }
-          if Stage.Specifics.Values['clampmap']<>'' then
-           Stage.Name:=Stage.Specifics.Values['clampmap']
+          if Stage.Specifics.Strings['clampmap']<>'' then
+           Stage.Name:=Stage.Specifics.Strings['clampmap']
           else
           {DECKER - try 'animmap' instead }
-          if Stage.Specifics.Values['animmap']<>'' then
+          if Stage.Specifics.Strings['animmap']<>'' then
           begin
            { jump over the number and take the first filename in the 'animmap' list }
-           Stage.Name:=SplitString(Stage.Specifics.Values['animmap'], ' ')[1];
+           Stage.Name:=SplitString(Stage.Specifics.Strings['animmap'], ' ')[1];
           end;
          end
         else   { shader attribute }

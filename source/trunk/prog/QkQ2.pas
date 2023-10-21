@@ -240,11 +240,11 @@ begin
     Inc(Pos, Taille1);
     Taille1:=Taille1 div 4;
   end;
-  PasToChar(Result.Animation, Specifics.Values['Anim']);
+  PasToChar(Result.Animation, Specifics.Strings['Anim']);
   { read flags as integer values }
-  Result.Contents:=StrToIntDef(Specifics.Values['Contents'], 0);
-  Result.Flags   :=StrToIntDef(Specifics.Values['Flags'], 0);
-  Result.Value   :=StrToIntDef(Specifics.Values['Value'], 0);
+  Result.Contents:=StrToIntDef(Specifics.Strings['Contents'], 0); //FIXME: Switch to QkSpecifics.Integers?
+  Result.Flags   :=StrToIntDef(Specifics.Strings['Flags'], 0); //FIXME: Switch to QkSpecifics.Integers?
+  Result.Value   :=StrToIntDef(Specifics.Strings['Value'], 0); //FIXME: Switch to QkSpecifics.Integers?
 end;
 
 procedure QTexture2.LoadTextureData(F: TStream; Base, Taille: TStreamPos; const Header: TQ2Miptex; Offsets: PLongInt; NomTex, AnimTex: PChar);
@@ -269,7 +269,7 @@ begin
   begin
     if S[I]='/' then
     begin
-      Specifics.Add('Path='+Copy(S,1,I-1));
+      Specifics.AddString('Path', Copy(S,1,I-1));
       Break;
     end;
   end;
@@ -287,7 +287,7 @@ begin
     SetLength(S, Length(Spec1)+Taille1);
     F.Position:=Base+Offsets^;
     F.ReadBuffer(S[Length(Spec1)+1], Taille1);
-    Specifics.Add(S);
+    Specifics.AddStringFull(S);
     if not ScaleDown(W,H) then
       Break;
     Inc(Offsets);
@@ -297,16 +297,16 @@ begin
   if AnimTex=Nil then
   begin
     if Header.Animation[0]<>0 then
-      Specifics.Add('Anim='+CharToPas(Header.Animation));
+      Specifics.AddString('Anim', CharToPas(Header.Animation));
   end
   else
   begin
     if AnimTex^<>#0 then
-      Specifics.Add('Anim='+AnimTex);
+      Specifics.AddString('Anim', AnimTex);
   end;
-  Specifics.Add('Contents='+IntToStr(Header.Contents));
-  Specifics.Add('Flags='+IntToStr(Header.Flags));
-  Specifics.Add('Value='+IntToStr(Header.Value));
+  Specifics.AddInteger('Contents', Header.Contents);
+  Specifics.AddInteger('Flags', Header.Flags);
+  Specifics.AddInteger('Value', Header.Value);
   F.Position:=Base+Taille;
 end;
 
@@ -361,14 +361,14 @@ end;
 
 function QTexture2.CheckAnim(Seq: Integer) : String;
 begin
-  Result:=Specifics.Values['Anim'];
+  Result:=Specifics.Strings['Anim'];
 end;
 
 function QTexture2.GetTexOpacity : Integer;
 var
   S: String;
 begin
-  S:=Specifics.Values['Contents'];
+  S:=Specifics.Strings['Contents']; //FIXME: Switch to QkSpecifics.Integers?
   if S='' then
     Result:=255
   else
@@ -381,13 +381,13 @@ var
 begin
   if Alpha<>GetTexOpacity then
   begin
-    S:=Specifics.Values['Flags'];
+    S:=Specifics.Strings['Flags']; //FIXME: Switch to QkSpecifics.Integers?
     Alpha:=OpacityToFlags(StrToIntDef(S,0), Alpha);
     if Alpha=0 then
       S:=''
     else
       S:=IntToStr(Alpha);
-    Specifics.Values['Flags']:=S;
+    Specifics.Strings['Flags']:=S;
   end;
 end;
 
@@ -402,7 +402,7 @@ var
   J: Integer;
 begin
   Result:=Name;
-  S:=Specifics.Values['Path'];
+  S:=Specifics.Strings['Path'];
   if S<>'' then
   begin
     J:=Length(Result);

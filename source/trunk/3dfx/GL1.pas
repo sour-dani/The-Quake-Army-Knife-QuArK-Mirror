@@ -905,10 +905,10 @@ begin
     Result.dwFlags:=Result.dwFlags or PFD_DRAW_TO_BITMAP
   else*)
     Result.dwFlags:=Result.dwFlags or PFD_DRAW_TO_WINDOW;
-  if Setup.Specifics.Values['DoubleBuffer']<>'' then
+  if Setup.Specifics.Strings['DoubleBuffer']<>'' then
     Result.dwFlags:=Result.dwFlags or PFD_DOUBLEBUFFER
   else //FIXME: Currently, not allowed to set both!!!
-    if Setup.Specifics.Values['AllowsGDI']<>'' then
+    if Setup.Specifics.Strings['AllowsGDI']<>'' then
       Result.dwFlags:=Result.dwFlags or PFD_SUPPORT_GDI;
   Result.iPixelType:=PFD_TYPE_RGBA;
   Result.cColorBits:=Round(Setup.GetFloatSpec('ColorBits', 0));

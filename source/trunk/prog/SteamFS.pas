@@ -126,9 +126,9 @@ var
   SteamProcessInformation: Process_Information;
 begin
   Setup := SetupSubSet(ssGames, 'Steam');
-  SteamEXEFullPath := ConcatPaths([QuickResolveFilename(Setup.Specifics.Values['Directory']), Setup.Specifics.Values['SteamEXEName']]);
+  SteamEXEFullPath := ConcatPaths([QuickResolveFilename(Setup.Specifics.Strings['Directory']), Setup.Specifics.Strings['SteamEXEName']]);
   Result := ProcessExists(SteamEXEFullPath);
-  if (not Result) and (Setup.Specifics.Values['Autostart']='1') then
+  if (not Result) and (Setup.Specifics.Strings['Autostart']='1') then
   begin
     FillChar(SteamStartupInfo, SizeOf(SteamStartupInfo), 0);
     FillChar(SteamProcessInformation, SizeOf(SteamProcessInformation), 0);
@@ -163,7 +163,7 @@ begin
 
   Setup:=SetupSubSet(ssGames, 'Steam');
 
-  if not (Setup.Specifics.Values['UseQuArKSAS'] <> '') then
+  if not (Setup.Specifics.Strings['UseQuArKSAS'] <> '') then
   begin
     //Don't use QuArKSAS
     Exit;
@@ -173,9 +173,9 @@ begin
   if (SteamCompiler = 'old') or (SteamCompiler = 'source2006') then
   begin
     if (SteamCompiler = 'old') then
-      QuArKSASEXE := Setup.Specifics.Values['QuArKSASEXENameOld']
+      QuArKSASEXE := Setup.Specifics.Strings['QuArKSASEXENameOld']
     else
-      QuArKSASEXE := Setup.Specifics.Values['QuArKSASEXENameSource2006'];
+      QuArKSASEXE := Setup.Specifics.Strings['QuArKSASEXENameSource2006'];
     FullFilename := ConvertPath(FileName);
     I := Pos(PathDelim, FullFilename);
     if (I > 0) then
@@ -191,19 +191,19 @@ begin
   end
   else if (SteamCompiler = 'source2007') then
   begin
-    QuArKSASEXE := Setup.Specifics.Values['QuArKSASEXENameSource2007'];
+    QuArKSASEXE := Setup.Specifics.Strings['QuArKSASEXENameSource2007'];
     GameIDDir := '';
     FullFileName := FileName;
   end
   else if (SteamCompiler = 'source2009') then
   begin
-    QuArKSASEXE := Setup.Specifics.Values['QuArKSASEXENameSource2009'];
+    QuArKSASEXE := Setup.Specifics.Strings['QuArKSASEXENameSource2009'];
     GameIDDir := '';
     FullFileName := FileName;
   end
   else //Includes orangebox and maybe Source2013
   begin
-    QuArKSASEXE := Setup.Specifics.Values['QuArKSASEXENameOrangebox'];
+    QuArKSASEXE := Setup.Specifics.Strings['QuArKSASEXENameOrangebox'];
     GameIDDir := '';
     FullFileName := FileName;
   end;
@@ -249,7 +249,7 @@ begin
 
   //Note: No trailing slashes in paths allowed for QuArKSAS!
   QSASCommandLine:=Format('%s -g %s -gamedir "%s" -o "%s" -overwrite', [QSASFile, SteamAppID, ExcludeTrailingPathDelimiter(GetSteamBaseDir), TmpDirectory]);
-  QSASAdditionalParameters:=Setup.Specifics.Values['ExtractorParameters'];
+  QSASAdditionalParameters:=Setup.Specifics.Strings['ExtractorParameters'];
   if Length(QSASAdditionalParameters)<>0 then
     QSASCommandLine:=QSASCommandLine+' '+QSASAdditionalParameters;
   QSASCommandLine:=QSASCommandLine+' '+FullFilename; //FIXME: Need to quote/escape FullFilename?

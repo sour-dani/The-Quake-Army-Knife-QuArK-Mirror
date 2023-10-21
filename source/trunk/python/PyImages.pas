@@ -28,30 +28,30 @@ uses Windows, Messages, SysUtils, Classes, Graphics, CommCtrl, Python,
      QkObjects, Controls, Forms, ComCtrls, PyControls, QkForm, qmath;
 
 type
- PyImage1 = ^TyImage1;
+ PyImage = ^TyImage;
  PyImageList = ^TyImageList;
  TyImageList = object(TyObject)
                 Handle: HImageList;
                 BkgndColor: TColorRef;
                 Images: array[Boolean] of TList;
-                function NeedImage(nDisabled: Boolean; i: Integer) : PyImage1;
+                function NeedImage(nDisabled: Boolean; i: Integer) : PyImage;
                end;
- TyImage1 = object(TyObject)
-             ImageList: PyImageList;
-             Index: Integer;
-             BitmapCopy: HBitmap;
-             DisabledBmp: TBitmap;
-             function GetDisabledImage : PyImage1;
-             function GetSize : TPoint;
-             procedure Draw(DC: HDC; X,Y: Integer; Opaque: TColorRef);
-             procedure GetIcon(DestIcon: TIcon);
-             function GetMenuBitmap : HBitmap;
-            end;
+ TyImage = object(TyObject)
+            ImageList: PyImageList;
+            Index: Integer;
+            BitmapCopy: HBitmap;
+            DisabledBmp: TBitmap;
+            function GetDisabledImage : PyImage;
+            function GetSize : TPoint;
+            procedure Draw(DC: HDC; X,Y: Integer; Opaque: TColorRef);
+            procedure GetIcon(DestIcon: TIcon);
+            function GetMenuBitmap : HBitmap;
+           end;
  TPyImageControl = class(TGraphicControl)
                    private
                      FOnClick, FOnDraw: PyObject;
-                     FImage1: PyObject;
-                     procedure SetImage1(value: PyObject);
+                     FImage: PyObject;
+                     procedure SetImage(value: PyObject);
                      procedure wmInternalMessage(var Msg: TMessage); message wm_InternalMessage;
                      procedure MouseMoveEvt(Sender: TObject; Shift: TShiftState; X, Y: Integer);
                    protected
@@ -61,7 +61,7 @@ type
                      procedure DragOver(Source: TObject; X,Y: Integer; State: TDragState; var Accept: Boolean); override;
                    public
                      ImageObject: PyControlF;
-                     property Image1: PyObject read FImage1 write SetImage1;
+                     property Image: PyObject read FImage write SetImage;
                      constructor Create(AOwner: TComponent); override;
                      destructor Destroy; override;
                      procedure DragDrop(Source: TObject; X, Y: Integer); override;
@@ -72,8 +72,8 @@ type
 function ImageList_length(self: PyObject) : {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}; cdecl;
 function ImageList_item(self: PyObject; i: {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}) : PyObject; cdecl;
 procedure ImageListDestructor(o: PyObject); cdecl;
-function GetImage1Attr(self: PyObject; attr: PyChar) : PyObject; cdecl;
-procedure Image1Destructor(o: PyObject); cdecl;
+function GetImageAttr(self: PyObject; attr: PyChar) : PyObject; cdecl;
+procedure ImageDestructor(o: PyObject); cdecl;
 
 
 const
@@ -89,12 +89,12 @@ var
    tp_dealloc:     ImageListDestructor;
    tp_as_sequence: @TyImageList_Seq;
    tp_doc:         'A list of fixed-size icon.');
- TyImage1_Type: TyTypeObject =
+ TyImage_Type: TyTypeObject =
   (ob_refcnt:      1;
    tp_name:        'image1';
-   tp_basicsize:   SizeOf(TyImage1);
-   tp_dealloc:     Image1Destructor;
-   tp_getattr:     GetImage1Attr;
+   tp_basicsize:   SizeOf(TyImage);
+   tp_dealloc:     ImageDestructor;
+   tp_getattr:     GetImageAttr;
    tp_doc:         'A single icon in an image list.');
 
  {-------------------}
@@ -258,7 +258,7 @@ end;
 function LoadGlobalImageList(Q: QObject) : Integer;
 var
  Etat: TDisplayDetails;
- Image1: PyImage1;
+ Image: PyImage;
  Bitmap: TBitmap;
  I: Integer;
  BkColor: TColorRef;
@@ -274,10 +274,10 @@ begin
   end;
  if Etat.Icon<>Nil then
   try
-   Image1:=PyImage1(Etat.Icon);
-   Result:=ImageSources.IndexOf(Image1);
+   Image:=PyImage(Etat.Icon);
+   Result:=ImageSources.IndexOf(Image);
    if Result>=0 then Exit;
-   BkColor:=Image1^.ImageList^.BkgndColor;
+   BkColor:=Image^.ImageList^.BkgndColor;
    Bitmap:=TBitmap.Create; try
    Bitmap.Width:=ConstImageSize;
    Bitmap.Height:=ConstImageSize;
@@ -285,7 +285,7 @@ begin
     begin
      Brush.Color:=BkColor;
      FillRect(Rect(0,0, ConstImageSize, ConstImageSize));
-     Image1^.Draw(Handle, 0,0, BkColor);
+     Image^.Draw(Handle, 0,0, BkColor);
     end;
    Result:=0;
    while (Result<ImageSources.Count) and (ImageSources[Result]<>Nil) do
@@ -300,7 +300,7 @@ begin
    else
     GlobalImageList.ReplaceMasked(Result, Bitmap, BkColor);
    finally Bitmap.Free; end;
-   ImageSources[Result]:=Image1;
+   ImageSources[Result]:=Image;
   finally
    Py_DECREF(Etat.Icon);
   end
@@ -310,19 +310,19 @@ end;
 
  {-------------------}
 
-function GetImage1Attr(self: PyObject; attr: PyChar) : PyObject; cdecl;
+function GetImageAttr(self: PyObject; attr: PyChar) : PyObject; cdecl;
 begin
  Result:=nil;
  try
   case attr[0] of
    'd': if StrComp(attr, 'disabledimage')=0 then
          begin
-          Result:=PyImage1(self)^.GetDisabledImage;
+          Result:=PyImage(self)^.GetDisabledImage;
           Exit;
          end;
    's': if StrComp(attr, 'size')=0 then
          begin
-          with PyImage1(self)^.GetSize do
+          with PyImage(self)^.GetSize do
            Result:=Py_BuildValueX('ii', [X,Y]);
           Exit;
          end;
@@ -336,7 +336,7 @@ begin
  end;
 end;
 
-procedure Image1Destructor(o: PyObject); cdecl;
+procedure ImageDestructor(o: PyObject); cdecl;
 var
  I: Integer;
 begin
@@ -347,7 +347,7 @@ begin
     ImageSources[I]:=nil;
   end;
  try
-  with PyImage1(o)^ do
+  with PyImage(o)^ do
    begin
     ImageList^.Images[DisabledBmp<>Nil][Index]:=Nil;
     Py_DECREF(ImageList);
@@ -414,7 +414,7 @@ end;
 
  {-------------------}
 
-procedure MakeDisabledBitmap(Source: PyImage1);
+procedure MakeDisabledBitmap(Source: PyImage);
 { code from TB97 }
 const
   ROP_DSPDxax = $00E20746;
@@ -452,7 +452,7 @@ begin
      FillRect (IRect);
      {CopyRect (Rect(0, 0, IWidth-AddX, IHeight-AddX), DDB.Canvas, ORect);}
      Source^.DisabledBmp:=Nil; try
-     Source^.Draw(Handle, 0,0, FTransparentColor);
+     Source^.Draw(Handle, 0, 0, FTransparentColor);
      finally Source^.DisabledBmp:=TmpImage; end;
 
      { Generate the mask in MonoBmp. Mask FTransparentColor }
@@ -473,20 +473,18 @@ begin
      Brush.Color := clBtnHighlight;
      SetTextColor (Handle, clBlack);
      SetBkColor (Handle, clWhite);
-     BitBlt (Handle, 1, 1, IWidth-1, IHeight-1,
-       MonoBmp.Canvas.Handle, 0, 0, ROP_PSDPxax);
+     BitBlt (Handle, 1, 1, IWidth-1, IHeight-1, MonoBmp.Canvas.Handle, 0, 0, ROP_PSDPxax);
      Brush.Color := clBtnShadow;
      SetTextColor (Handle, clBlack);
      SetBkColor (Handle, clWhite);
-     BitBlt (Handle, 0, 0, IWidth, IHeight,
-       MonoBmp.Canvas.Handle, 0, 0, ROP_PSDPxax);
+     BitBlt (Handle, 0, 0, IWidth, IHeight, MonoBmp.Canvas.Handle, 0, 0, ROP_PSDPxax);
    end;
   finally
    MonoBmp.Free;
   end;
 end;
 
-function TyImageList.NeedImage(nDisabled: Boolean; i: Integer) : PyImage1;
+function TyImageList.NeedImage(nDisabled: Boolean; i: Integer) : PyImage;
 var
  J: Integer;
 begin
@@ -502,7 +500,7 @@ begin
   Py_INCREF(Result)
  else
   begin
-   Result:=PyImage1(PyObject_NEW(@TyImage1_Type));
+   Result:=PyImage(PyObject_NEW(@TyImage_Type));
    with Result^ do
     begin
      ImageList:=@Self;
@@ -532,10 +530,10 @@ end;*)
 
  {-------------------}
 
-function TyImage1.GetDisabledImage : PyImage1;
+function TyImage.GetDisabledImage : PyImage;
 begin
  Result:=ImageList^.NeedImage(True, Index);
-{Result:=PyImage1(PyObject_NEW(@TyImage1_Type));
+{Result:=PyImage(PyObject_NEW(@TyImage_Type));
  Result^.ImageList:=ImageList;
  Py_INCREF(ImageList);
  Result^.Index:=Index;
@@ -543,33 +541,31 @@ begin
  Result^.BitmapCopy:=0;}
 end;
 
-function TyImage1.GetSize : TPoint;
+function TyImage.GetSize : TPoint;
 begin
  Result.X:=0;
  Result.Y:=0;
  ImageList_GetIconSize(ImageList^.Handle, Integer(Result.X), Integer(Result.Y));
 end;
 
-procedure TyImage1.Draw(DC: HDC; X,Y: Integer; Opaque: TColorRef);
+procedure TyImage.Draw(DC: HDC; X,Y: Integer; Opaque: TColorRef);
 begin
  if DisabledBmp<>Nil then
   begin
    if DisabledBmp = DisabledNak then
     MakeDisabledBitmap(@Self);
-   BitBlt(DC, X,Y, DisabledBmp.Width, DisabledBmp.Height,
-    DisabledBmp.Canvas.Handle, 0, 0, srcCopy);
+   BitBlt(DC, X, Y, DisabledBmp.Width, DisabledBmp.Height, DisabledBmp.Canvas.Handle, 0, 0, srcCopy);
   end
  else
-  ImageList_DrawEx(ImageList^.Handle, Index, DC, X,Y, 0,0,
-   Opaque, CLR_NONE, ILD_NORMAL);
+  ImageList_DrawEx(ImageList^.Handle, Index, DC, X, Y, 0, 0, Opaque, CLR_NONE, ILD_NORMAL);
 end;
 
-procedure TyImage1.GetIcon(DestIcon: TIcon);
+procedure TyImage.GetIcon(DestIcon: TIcon);
 begin
  DestIcon.Handle:=ImageList_ExtractIcon(0, ImageList^.Handle, Index);
 end;
 
-function TyImage1.GetMenuBitmap : HBitmap;
+function TyImage.GetMenuBitmap : HBitmap;
 var
  DC, MemDC, MemDC2: HDC;
  P, Dest: TPoint;
@@ -605,8 +601,11 @@ begin
        MemDC2:=CreateCompatibleDC(DC);
        try
         OldBmp2:=SelectObject(MemDC2, BitmapCopy);
-        StretchBlt(MemDC2, 0, 0, Dest.X, Dest.Y, MemDC, 0, 0, P.X, P.Y, srcCopy);
-        SelectObject(MemDC2, OldBmp2);
+        try
+          StretchBlt(MemDC2, 0, 0, Dest.X, Dest.Y, MemDC, 0, 0, P.X, P.Y, srcCopy);
+        finally
+          SelectObject(MemDC2, OldBmp2);
+        end;
        finally
         DeleteDC(MemDC2);
        end;
@@ -634,7 +633,7 @@ begin
  FOnClick:=PyNoResult;
  FOnDraw:=PyNoResult;
  ImageObject:=NewControl(TyImageCtrl_Type, Self);
- FImage1:=PyNoResult;
+ FImage:=PyNoResult;
 {Visible:=False;}
  Color:=clBtnFace;
  ControlStyle:=[csOpaque];
@@ -645,7 +644,7 @@ begin
  ImageObject^.Close;
  Py_DECREF(FOnDraw);
  Py_DECREF(FOnClick);
- Py_DECREF(Image1);
+ Py_DECREF(Image);
  inherited;
 end;
 
@@ -721,14 +720,14 @@ var
 begin
  DC:=Canvas.Handle;
  GetClipBox(DC, R);
- if Image1^.ob_type = @TyImage1_Type then
+ if Image^.ob_type = @TyImage_Type then
   begin
-   P:=PyImage1(Image1)^.GetSize;
-   PyImage1(Image1)^.Draw(DC, 0, 0, CLR_DEFAULT);
+   P:=PyImage(Image)^.GetSize;
+   PyImage(Image)^.Draw(DC, 0, 0, CLR_DEFAULT);
   end
  else
   P:=Point(0,0);
- Canvas.Brush.Color:=Color{PyImage1(Image1)^.ImageList^.BkgndColor};
+ Canvas.Brush.Color:=Color{PyImage(Image)^.ImageList^.BkgndColor};
  R.Left:=P.X;
  Canvas.FillRect(R);
  R.Left:=0;
@@ -748,14 +747,16 @@ begin
  end;
 end;
 
-procedure TPyImageControl.SetImage1;
+procedure TPyImageControl.SetImage;
 begin
- Py_DECREF(FImage1);
- if value^.ob_type = @TyImage1_Type then
+ if FImage=value then
+  Exit;
+ Py_DECREF(FImage);
+ if value^.ob_type = @TyImage_Type then
   begin
-   FImage1:=value;
-   Py_INCREF(FImage1);
-   with PyImage1(value)^.GetSize do
+   FImage:=value;
+   Py_INCREF(FImage);
+   with PyImage(value)^.GetSize do
     begin
      Width:=X;
      Height:=Y;
@@ -764,10 +765,10 @@ begin
   end
  else
   begin
-   FImage1:=PyNoResult;
+   FImage:=PyNoResult;
   {Visible:=False;}
   end;
- Repaint;
+ Invalidate;
 end;
 
 procedure TPyImageControl.DragOver(Source: TObject; X,Y: Integer; State: TDragState; var Accept: Boolean);
@@ -858,7 +859,7 @@ begin
     'i': if StrComp(attr, 'image')=0 then
           begin
            if QkControl<>Nil then
-            Result:=(QkControl as TPyImageControl).Image1
+            Result:=(QkControl as TPyImageControl).Image
            else
             Result:=Py_None;
            Py_INCREF(Result);
@@ -898,7 +899,7 @@ begin
     'i': if StrComp(attr, 'image')=0 then
           begin
            if QkControl<>Nil then
-            (QkControl as TPyImageControl).Image1:=value;
+            (QkControl as TPyImageControl).Image:=value;
            Result:=0;
            Exit;
           end;

@@ -141,8 +141,8 @@ var
 begin
  if (SrcObj<>Nil) and (SrcObj.GetTyp in [typCheckBox, typRadioButton]) then
   begin
-   Enabled:=GetSetupPath(SrcObj.Specifics.Values['Path'], Spec, Q);
-   SetDownEx(Enabled and (Q.Specifics.Values[Spec]<>''));
+   Enabled:=GetSetupPath(SrcObj.Specifics.Strings['Path'], Spec, Q);
+   SetDownEx(Enabled and (Q.Specifics.Strings[Spec]<>''));
   end;
 end;
 
@@ -197,10 +197,10 @@ begin
  C:=SrcObj.GetTyp;
  if C in [typCheckBox, typRadioButton] then
   begin
-   Enabled:=GetSetupPath(SrcObj.Specifics.Values['Path'], Spec, Q);
+   Enabled:=GetSetupPath(SrcObj.Specifics.Strings['Path'], Spec, Q);
    if C=typRadioButton then
     RadioItem:=True;
-   Checked:=Enabled and (Q.Specifics.Values[Spec]<>'');
+   Checked:=Enabled and (Q.Specifics.Strings[Spec]<>'');
   end;
 end;
 
@@ -254,7 +254,7 @@ var
  ShortCuts: TStringList;
  Caption: String;
 begin
- Caption:=Specifics.Values['Caption'];
+ Caption:=Specifics.Strings['Caption'];
  Tb:=Nil;
  try
   if Caption='' then
@@ -290,7 +290,7 @@ begin
     Tb.CanDockLeftRight:=True;
     Tb.CanDockTopBottom:=True;
     Tb.CloseButton:={True}False;
-    Tb.Hint:=Specifics.Values['Hint'];
+    Tb.Hint:=Specifics.Strings['Hint'];
     Tb.DisableAlign;
     try
      for I:=0 to SubElements.Count-1 do
@@ -360,8 +360,8 @@ begin
    with TDynToolbarButton97(Result) do
     begin
      SrcObj:=Self;
-     Caption:=Specifics.Values['Cap'];
-     S:=Specifics.Values['Icon'];
+     Caption:=Specifics.Strings['Cap'];
+     S:=Specifics.Bytes['Icon'];
      if S<>'' then
       begin
        IconW:=Round(GetFloatSpec('IconW', 16));
@@ -371,7 +371,7 @@ begin
        if Bmp<>0 then
         begin
          Glyph.Handle:=Bmp;
-         S:=Specifics.Values['IconDown'];
+         S:=Specifics.Bytes['IconDown'];
          if S<>'' then
           begin
            Bmp:=DataToBmp16(S, IconW);
@@ -412,7 +412,7 @@ begin
        Width:=IconW;
        Height:=DefBtnHeight;
       end;
-     Hint:=Specifics.Values['Hint'];
+     Hint:=Specifics.Strings['Hint'];
      Parent:=nParent;
      if ChrTyp=typMenu then
       begin
@@ -453,8 +453,8 @@ begin
    with TDynMenuItem(Item) do
     begin
      SrcObj:=Self;
-     Caption:=Specifics.Values['Cap'];
-     Hint:=Specifics.Values['Hint'];
+     Caption:=Specifics.Strings['Cap'];
+     Hint:=Specifics.Strings['Hint'];
      if ChrTyp=typMenu then
       for I:=0 to SubElements.Count-1 do
        begin
@@ -465,7 +465,7 @@ begin
      else
       UpdateFromSetup;
     end;
-   S:=Specifics.Values['Shortcut'];
+   S:=Specifics.Strings['Shortcut'];
    if (S<>'') and Assigned(ShortCuts) then
     ShortCuts.AddObject(S, Item);
   end;

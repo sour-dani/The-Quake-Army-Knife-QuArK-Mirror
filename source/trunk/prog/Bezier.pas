@@ -280,7 +280,7 @@ var
 begin
  Result.X:=1;  { default value }
  Result.Y:=1;
- S:=Specifics.Values['cnt'];
+ S:=Specifics.Strings['cnt']; //FIXME: Switch to QkSpecifics.Integers ARRAY?
  if S='' then Exit;
  try
   ReadDoubleArray(S, V);
@@ -298,10 +298,12 @@ var
 begin
  ReallocMem(FMeshCache.CP, 0);   { first invalidates the cache }
  if (nSize.X=1) and (nSize.Y=1) then
-  S:=''  { default size : delete 'cnt' }
+  Specifics.Delete('cnt')  { default size : delete 'cnt' }
  else
+ begin
   S:=IntToStr(nSize.X div 2)+' '+IntToStr(nSize.Y div 2);
- Specifics.Values['cnt']:=S;
+  Specifics.Strings['cnt']:=S; //FIXME: Switch to QkSpecifics.Integers ARRAY?
+ end;
 end;
 
  { Changes the control points and invalidates the cache }
@@ -1003,7 +1005,7 @@ begin
      or (Abs(v3[1]-2*v2[1]+v1[1])>rien2)
      or (Abs(v3[2]-2*v2[2]+v1[2])>rien2) then
       begin   { not smooth }
-       Specifics.Values['smooth']:='';
+       Specifics.Strings['smooth']:='';
        Exit;
       end;
     end;
@@ -1023,13 +1025,13 @@ begin
      or (Abs(v3[1]-2*v2[1]+v1[1])>rien2)
      or (Abs(v3[2]-2*v2[2]+v1[2])>rien2) then
       begin   { not smooth }
-       Specifics.Values['smooth']:='';
+       Specifics.Strings['smooth']:='';
        Exit;
       end;
     end;
   end;
  { smooth }
- Specifics.Values['smooth']:='1';
+ Specifics.Strings['smooth']:='1';
 end;
 
  { finds Bezier patches }

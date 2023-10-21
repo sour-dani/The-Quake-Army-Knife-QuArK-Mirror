@@ -1380,7 +1380,7 @@ begin
     Left:=-2048;
     Parent:=Mgr.Owner;
     if nImage<>Nil then
-     Image1:=nImage;
+     Image:=nImage;
     Result:=ImageObject;
    end;
   Mgr.InsertControl(Result);

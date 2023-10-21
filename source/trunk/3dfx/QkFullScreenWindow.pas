@@ -211,7 +211,7 @@ begin
       ;
     Scene.SetDrawRect(ClientRect);
     Scene.SetViewSize(ClientRect.Right - ClientRect.Left, ClientRect.Bottom - ClientRect.Top);
-    Scene.Init(MapProjView, dmFullScreen, dt3D, rmTextured, Setup.Specifics.Values['Lib'], AllowsGDI);
+    Scene.Init(MapProjView, dmFullScreen, dt3D, rmTextured, Setup.Specifics.Strings['Lib'], AllowsGDI);
     if FullScreenRoot<>nil then
       Q3DObject(FullScreenRoot).AddTo3DScene(Scene);
     Scene.BuildScene(0, nil);

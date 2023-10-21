@@ -84,7 +84,7 @@ begin
 
   Setup:=SetupSubSet(ssFiles, 'DDS');
   try
-    case StrToInt(Setup.Specifics.Values['SaveFormatDevIL']) of
+    case Setup.Specifics.Integers['SaveFormatDevIL'] of
     0: Flag:=IL_DXT1;
     1: Flag:=IL_DXT1A;
     2: Flag:=IL_DXT2;
@@ -125,7 +125,7 @@ begin
   Log(LOG_VERBOSE, 'Loading DDS file: %s', [self.name]);
   case ReadFormat of
   rf_Default: begin  { as stand-alone file }
-    LibraryToUse:=SetupSubSet(ssFiles, 'DDS').Specifics.Values['LoadLibrary'];
+    LibraryToUse:=SetupSubSet(ssFiles, 'DDS').Specifics.Strings['LoadLibrary'];
     if LibraryToUse='DevIL' then
       LoadFileDevIL(F, FSize)
     else if LibraryToUse='FreeImage' then
@@ -155,7 +155,6 @@ var
   LibraryToUse: string;
 
   PSD: TPixelSetDescription;
-  S: String;
   Dest: PByte;
   SourceImg, SourceAlpha, SourcePal, pSourceImg, pSourceAlpha, pSourcePal: PByte;
   RawPal: PByte;
@@ -182,7 +181,7 @@ begin
   case Format of
   rf_Default:
   begin  { as stand-alone file }
-    LibraryToUse:=SetupSubSet(ssFiles, 'DDS').Specifics.Values['SaveLibrary'];
+    LibraryToUse:=SetupSubSet(ssFiles, 'DDS').Specifics.Strings['SaveLibrary'];
     if LibraryToUse='DevIL' then
       SaveFileDevIL(Info)
     //FreeImage has no DDS file saving support (yet?)
@@ -264,18 +263,18 @@ begin
           PaddingSource:=((((Width * 24) + 31) div 32) * 4) - (Width * 3);
         end;
 
-        TexFormat:=2;
-        if PSD.AlphaBits=psa8bpp then
-          S:=SetupSubSet(ssFiles, 'DDS').Specifics.Values['SaveFormatANVDXT']
-        else
-          S:=SetupSubSet(ssFiles, 'DDS').Specifics.Values['SaveFormatNVDXT'];
-        if S<>'' then
-        begin
-          TexFormat:=StrToIntDef(S, 2);
+        try
+          if PSD.AlphaBits=psa8bpp then
+            TexFormat:=SetupSubSet(ssFiles, 'DDS').Specifics.Integers['SaveFormatANVDXT']
+          else
+            TexFormat:=SetupSubSet(ssFiles, 'DDS').Specifics.Integers['SaveFormatNVDXT'];
           if (TexFormat < 0) or (TexFormat > 12) then
             TexFormat := 2;
+        except
+          on EConvertError do
+            //FIXME: Log!
+            TexFormat := 2;
         end;
-
         if PSD.Format = psf8bpp then
         begin
           GetMem(RawPal, 256*3);
@@ -380,16 +379,15 @@ begin
         PSD.Done;
       end;
 
-      S:=SetupSubSet(ssFiles, 'DDS').Specifics.Values['SaveQualityNVDXT'];
-      if S<>'' then
-      begin
-        Quality:=StrToIntDef(S, 2);
+      try
+        Quality:=SetupSubSet(ssFiles, 'DDS').Specifics.Integers['SaveQualityNVDXT'];
         if (Quality < 0) or (Quality > 3) then
           Quality := 2;
-      end
-      else
-        Quality:=2;
-
+      except
+        on EConvertError do
+          //FIXME: Log!
+          Quality := 2;
+      end;
       //NVDXT uses the file extension to identify the format, so we can't use MakeTempFileName here.
       GetTempPath(High(TMPPath)-1, TMPPath);
       NVDXTFileNamePNG:=ConcatPaths([TMPPath, 'QuArK_NVDXT0.PNG']);

@@ -135,7 +135,7 @@ begin
   inherited;
 
   Setup:=SetupSubSet(ssFiles, 'BMP');
-  if Setup.Specifics.Values['SaveRLEDevIL']<>'' then
+  if Setup.Specifics.Strings['SaveRLEDevIL']<>'' then
     Flag:=IL_TRUE
   else
     Flag:=IL_FALSE;
@@ -148,7 +148,7 @@ var
   Setup: QObject;
 begin
   Setup:=SetupSubSet(ssFiles, 'BMP');
-  if Setup.Specifics.Values['SaveRLEFreeImage']<>'' then
+  if Setup.Specifics.Strings['SaveRLEFreeImage']<>'' then
     Result:=BMP_SAVE_RLE
   else
     Result:=BMP_DEFAULT;
@@ -161,7 +161,7 @@ begin
   Log(LOG_VERBOSE, 'Loading BMP file: %s', [self.name]);
   case ReadFormat of
   rf_Default: begin  { as stand-alone file }
-    LibraryToUse:=SetupSubSet(ssFiles, 'BMP').Specifics.Values['LoadLibrary'];
+    LibraryToUse:=SetupSubSet(ssFiles, 'BMP').Specifics.Strings['LoadLibrary'];
     if LibraryToUse='DevIL' then
       LoadFileDevIL(F, FSize)
     else if LibraryToUse='FreeImage' then
@@ -182,7 +182,7 @@ begin
  with Info do
   case Format of
   rf_Default: begin  { as stand-alone file }
-    LibraryToUse:=SetupSubSet(ssFiles, 'BMP').Specifics.Values['SaveLibrary'];
+    LibraryToUse:=SetupSubSet(ssFiles, 'BMP').Specifics.Strings['SaveLibrary'];
     if LibraryToUse='DevIL' then
       SaveFileDevIL(Info)
     else if LibraryToUse='FreeImage' then

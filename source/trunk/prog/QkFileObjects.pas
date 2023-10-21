@@ -790,11 +790,11 @@ var
     end;
     Lu(1);
     if (OnlyValues=True) then
-      Level.Specifics.Add('Items='+Values) { All the Values are actually Items. Go figure! }
+      Level.Specifics.AddString('Items', Values) { All the Values are actually Items. Go figure! }
     else
     begin
-      Level.Specifics.Add('Items='+Items);
-      Level.Specifics.Add('Values='+Values);
+      Level.Specifics.AddString('Items', Items);
+      Level.Specifics.AddString('Values', Values);
     end;
   end;
 
@@ -862,7 +862,7 @@ begin
          begin
           Arg:=StringVal();
           {if IgnoreLevel=0 then}
-           Level.Specifics.Add(NameSpec+'='+Arg);
+           Level.Specifics.AddString(NameSpec, Arg);
          end;
     '''':begin { Float number Specific }
           Arg:='';
@@ -878,14 +878,14 @@ begin
             except
              Raise EErrorFmt(5193, [Filename, Ligne, FmtLoadStr1(5209, [A1])]);
             end;
-            SetLength(Arg, Length(Arg)+4);  { SizeOf(Single) }
-            Move(Value, Arg[Length(Arg)-3], 4);  { SizeOf(Single) }
+            SetLength(Arg, Length(Arg)+SizeOf(Single));
+            Move(Value, Arg[Length(Arg)-3], SizeOf(Single));
             Lu(0);
            end;
           Lu(1);
           NameSpec:=FloatSpecNameOf(NameSpec);
           {if IgnoreLevel=0 then}
-           Level.Specifics.Add(NameSpec+'='+Arg);
+           Level.Specifics.AddString(NameSpec, Arg);
          end;
 (*    '|': begin { Integer number Specific }
           Arg:='';
@@ -1270,8 +1270,8 @@ const
  NonBinaire = [#13, #10, #9, ' '..#126];
  Marge      = 78;
 var
- S, Arg{, Values}: String;
- P, I, J: Integer;
+ SpecName, S, Arg{, Values}: String;
+ I, J: Integer;
  Binaire, Guillemet, Dollar{, FloatOk}: Boolean;
  Car: PChar;
  C: Char;
@@ -1286,21 +1286,22 @@ begin
  ProgressIndicatorStart(5443, Level.SubElements.Count+1); try
  for J:=0 to Level.Specifics.Count-1 do
   begin
-   S:=Level.Specifics[J];
-   P:=Pos('=', S);
-   Arg:=Indent + Copy(S, 1, P-1) + ' = ';
-   if IsFloatSpec(S) and ((Length(S)-P) and 3 = 0) then
+   SpecName:=Level.Specifics.Names[J];
+   if IsFloatSpec(SpecName) then
     begin  { float Specific }
-     Arg[Length(Indent)+1]:=NormalSpecOfFloatSpec(S)[1];
+     S:=Level.Specifics.BytesFromIndex[J];
+     if (Length(S) and 3 <> 0) then
+      raise InternalE('Corrupt float specific!');
+     Arg:=Indent + NormalSpecOfFloatSpec(SpecName) + ' = ';
      C:='''';
-     for I:=1 to (Length(S)-P) div 4 do
+     for I:=1 to Length(S) div SizeOf(Single) do
       begin
        if Length(Arg)>=Marge then
         begin
          L.Add(Arg);
          Arg:=Indent+' ';
         end;
-       Move(S[P+I*4-3], Value, 4);  { SizeOf(Single) }
+       Move(S[I*SizeOf(Single)-3], Value, SizeOf(Single)); //I starts at 1, so -4, but string also starts at 1, so +1 --> -3
        Arg:=Arg + C + ftos1(Value);
        C:=' ';
       end;
@@ -1308,18 +1309,21 @@ begin
      Arg:=Arg+'''';
     end
    else
-(*    if IsIntSpec(S) and ((Length(S)-P) and 3 = 0) then
+(*    if IsIntSpec(SpecName) then
      begin  { integer Specific }
-      Arg[Length(Indent)+2]:=NormalSpecOfIntSpec(S)[2];
+      S:=Level.Specifics.BytesFromIndex[J];
+      if (Length(S) and 3 <> 0) then
+       raise InternalE('Corrupt integer specific!');
+      Arg:=Indent + NormalSpecOfIntSpec(S) + ' = ';
       C:='|';
-      for I:=1 to (Length(S)-P) div 4 do
+      for I:=1 to Length(S) div SizeOf(Integer) do
        begin
         if Length(Arg)>=Marge then
          begin
           L.Add(Arg);
           Arg:=Indent+' ';
          end;
-        Move(S[P+I*4-3], ValueI, 4);  { SizeOf(Integer) }
+        Move(S[I*SizeOf(Integer)-3], ValueI, SizeOf(Integer)); //I starts at 1, so -4, but string also starts at 1, so +1 --> -3
         Arg:=Arg + C + itos(ValueI);
         C:=' ';
        end;
@@ -1327,96 +1331,100 @@ begin
       Arg:=Arg+'|';
      end
     else*)
-     if P=Length(S) then
-      Arg:=Arg+'""'   { empty Specific }
-//     else if (Length(S)=P+1) and (S[P+1]='!') then
-//       Arg:=Arg+'!'
-     else
-      begin  { normal Specific }
-       Binaire:=False;
-       for I:=Length(S) downto P+1 do
-        if not (S[I] in NonBinaire) then
-         begin
-          if (I=Length(S)) and (S[I]=#0) then Continue;  { ignore this case }
-          Binaire:=True;
-          Break;
-         end;
-     (*FloatOk:=False;
-       if Binaire and ((Length(S)-P) and 3 = 0)   { 3 = SizeOf(Single)-1 }
-       and (Length(S)-P<=MaxFloatSpecLength) then
-        begin
-         Values:='''';
-         try
-          for I:=1 to (Length(S)-P) div 4 do
-           begin
-            Move(S[P+I*4-3], Value, 4);  { SizeOf(Single) }
-            if (Value=0)
-            or ((Value>-MaxFloatAccept) and (Value<MaxFloatAccept)
-             and ((Value<-MinFloatAccept) or (Value>MinFloatAccept))) then
-             begin
-             {Value2:=StrToFloat(FloatToStr(Value));
-              if ValueL<>Value2L then
-               begin
-                FloatOk:=False;
-                Break;
-               end;}
-              Values:=Values + ftos1(Value) + ' ';
-             end;
-           end;
-          Values[Length(Values)]:='''';
-          Arg:=Arg+Values;
-          FloatOk:=True;
-         except
-          {FloatOk:=False;}
-         end;
-        end;
-       if not FloatOk then*)
-        begin
-         Guillemet:=False;
-         Dollar:=False;
-         Car:=PChar(S)+P;
-         for I:=P+1 to Length(S) do
+     begin
+      S:=Level.Specifics.StringsFromIndex[J];
+      if Length(S)=0 then
+       Arg:=Indent + SpecName + ' = ""'   { empty Specific }
+//      else if S='!' then
+//        Arg:=Indent + SpecName + ' = !'
+      else
+       begin  { normal Specific }
+        Arg:=Indent + SpecName + ' = ';
+        Binaire:=False;
+        for I:=Length(S) downto 1 do
+         if not (S[I] in NonBinaire) then
           begin
-           if Length(Arg)>=Marge then
-            begin
-             if Guillemet then
-              Arg:=Arg+'"';
-             L.Add(Arg);
-             Arg:=Indent+' ';
-             Guillemet:=False;
-             Dollar:=False;
-            end;
-           if Binaire or not (Car^ in Imprimable) then
-            begin
-             if Guillemet then
-              begin
-               Arg:=Arg+'"';
-               Guillemet:=False;
-              end;
-             if not Dollar then
-              begin
-               Arg:=Arg+'$';
-               Dollar:=True;
-              end;
-             Arg:=Arg+IntToHex(Ord(Car^), 2);
-            end
-           else
-            begin
-             Dollar:=False;
-             if not Guillemet then
-              begin
-               Arg:=Arg+'"'+Car^;
-               Guillemet:=True;
-              end
-             else
-              Arg:=Arg+Car^;
-            end;
-           Inc(Car);
+           if (I=Length(S)) and (S[I]=#0) then Continue;  { ignore this case }
+           Binaire:=True;
+           Break;
           end;
-         if Guillemet then
-          Arg:=Arg+'"';
-        end;
-      end;
+      (*FloatOk:=False;
+        if Binaire and ((Length(S)-P) and 3 = 0)   { 3 = SizeOf(Single)-1 }
+        and (Length(S)-P<=MaxFloatSpecLength) then
+         begin
+          Values:='''';
+          try
+           for I:=1 to (Length(S)-P) div SizeOf(Single) do
+            begin
+             Move(S[P+I*SizeOf(Single)-3], Value, SizeOf(Single));
+             if (Value=0)
+             or ((Value>-MaxFloatAccept) and (Value<MaxFloatAccept)
+              and ((Value<-MinFloatAccept) or (Value>MinFloatAccept))) then
+              begin
+              {Value2:=StrToFloat(FloatToStr(Value));
+               if ValueL<>Value2L then
+                begin
+                 FloatOk:=False;
+                 Break;
+                end;}
+               Values:=Values + ftos1(Value) + ' ';
+              end;
+            end;
+           Values[Length(Values)]:='''';
+           Arg:=Arg+Values;
+           FloatOk:=True;
+          except
+           {FloatOk:=False;}
+          end;
+         end;
+        if not FloatOk then*)
+         begin
+          Guillemet:=False;
+          Dollar:=False;
+          Car:=PChar(S);
+          for I:=1 to Length(S) do
+           begin
+            if Length(Arg)>=Marge then
+             begin
+              if Guillemet then
+               Arg:=Arg+'"';
+              L.Add(Arg);
+              Arg:=Indent+' ';
+              Guillemet:=False;
+              Dollar:=False;
+             end;
+            if Binaire or not (Car^ in Imprimable) then
+             begin
+              if Guillemet then
+               begin
+                Arg:=Arg+'"';
+                Guillemet:=False;
+               end;
+              if not Dollar then
+               begin
+                Arg:=Arg+'$';
+                Dollar:=True;
+               end;
+              Arg:=Arg+IntToHex(Ord(Car^), 2);
+             end
+            else
+             begin
+              Dollar:=False;
+              if not Guillemet then
+               begin
+                Arg:=Arg+'"'+Car^;
+                Guillemet:=True;
+               end
+              else
+               Arg:=Arg+Car^;
+             end;
+            Inc(Car);
+           end;
+          if Guillemet then
+           Arg:=Arg+'"';
+         end;
+       end;
+     end;
    L.Add(Arg);
   end;
  ProgressIndicatorIncrement;
@@ -1994,15 +2002,15 @@ var
 begin   { adds the file to the list of recently opened files }
  L:=TStringList.Create;
  try
-  L.Text:=g_SetupSet[ssGeneral].Specifics.Values['RecentFiles'];
-  MaxRecentFiles:=Round(SetupSubSet(ssGeneral, 'Display').GetFloatSpec('MaxRecentFiles', 5));
+  L.Text:=g_SetupSet[ssGeneral].Specifics.Strings['RecentFiles'];
+  MaxRecentFiles:=Round(SetupSubSet(ssGeneral, 'Display').GetFloatSpec('MaxRecentFiles', 5)); //FIXME: Switch to integer!
   J:=L.IndexOf(FileName);
   if J>=0 then
    L.Delete(J);
   L.Insert(0, FileName);
   while L.Count>MaxRecentFiles do
    L.Delete(MaxRecentFiles);
-  g_SetupSet[ssGeneral].Specifics.Values['RecentFiles']:=StringListConcatWithSeparator(L, $0D);
+  g_SetupSet[ssGeneral].Specifics.Strings['RecentFiles']:=StringListConcatWithSeparator(L, $0D);
   UpdateSetup(scMinimal);
  finally
   L.Free;
@@ -2017,8 +2025,8 @@ var
 begin   { resizes the list of recently opened files to the correct number of files }
  L:=TStringList.Create;
  try
-  L.Text:=g_SetupSet[ssGeneral].Specifics.Values['RecentFiles'];
-  MaxRecentFiles:=Round(SetupSubSet(ssGeneral, 'Display').GetFloatSpec('MaxRecentFiles', 5));
+  L.Text:=g_SetupSet[ssGeneral].Specifics.Strings['RecentFiles'];
+  MaxRecentFiles:=Round(SetupSubSet(ssGeneral, 'Display').GetFloatSpec('MaxRecentFiles', 5)); //FIXME: Switch to integer!
   Resized:=False;
   while L.Count>MaxRecentFiles do
   begin
@@ -2027,7 +2035,7 @@ begin   { resizes the list of recently opened files to the correct number of fil
   end;
   if Resized then
   begin
-    g_SetupSet[ssGeneral].Specifics.Values['RecentFiles']:=StringListConcatWithSeparator(L, $0D);
+    g_SetupSet[ssGeneral].Specifics.Strings['RecentFiles']:=StringListConcatWithSeparator(L, $0D);
     UpdateSetup(scMinimal);
   end;
  finally
@@ -2191,17 +2199,17 @@ end;
 
 procedure QFileObject.ChangeToObjectGameMode;
 begin
- ChangeGameModeStr(Specifics.Values['Game'], True);
+ ChangeGameModeStr(Specifics.Strings['Game'], True);
 end;
 
 function QFileObject.GetObjectGameCode: TGameCode;
 begin
- Result:=GetGameCode(Specifics.Values['Game']);
+ Result:=GetGameCode(Specifics.Strings['Game']);
 end;
 
 procedure QFileObject.SetObjectGameCode(const nCode: TGameCode);
 begin
- Specifics.Values['Game']:=GetGameName(nCode);
+ Specifics.Strings['Game']:=GetGameName(nCode);
 end;
 
 function QFileObject.NeedObjectGameCode: TGameCode;

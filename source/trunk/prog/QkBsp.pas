@@ -1025,7 +1025,7 @@ begin
       Q:=BspEntry[FFileHandler.GetLumpEntities()];
       Q.Acces;
       NonFaces:=0;
-      ReadEntityList(FStructure, Q.Specifics.Values['Data'], Self);
+      ReadEntityList(FStructure, Q.Specifics.Strings['Data'], Self);
       if NonFaces>0 then
         ShowMessage(FmtLoadStr1(5792, [NonFaces]));
     finally
@@ -1080,7 +1080,7 @@ var
  S: String;
 begin
  Acces;
- S:=Specifics.Values['FileName'];
+ S:=Specifics.Strings['FileName'];
  if S='' then
   S:=Name;
  BuildCorrectFileName(S);
@@ -1397,7 +1397,7 @@ begin
   if e=nil then
     raise Exception.Create(LoadStr1(5791));
   e.acces;
-  S:=e.Specifics.Values['Data'];
+  S:=e.Specifics.Strings['Data'];
   for I:=Length(S) downto 1 do
   begin
      if S[I]='}' then
@@ -1534,7 +1534,7 @@ var
       TreeNode.Source:=PLeaf;
     end;
     if Copy(Name,1,5)='First' then
-      TreeNode.Specifics.Values['first']:='1';
+      TreeNode.Specifics.Strings['first']:='1';
     Parent.SubElements.Add(TreeNode);
     TreeNode.Bsp:=Self;
   end;
@@ -1552,12 +1552,12 @@ begin
     with Stats do
     begin
       children:=FirstStats.children+SecStats.children;
-      Result.Specifics.Values['children']:=IntToStr(children);
+      Result.Specifics.Integers['children']:=children;
       empty:=FirstStats.empty+SecStats.empty;
-      Result.Specifics.Values['emptychildren']:=IntToStr(empty);
+      Result.Specifics.Integers['emptychildren']:=empty;
       if children=empty then
       begin
-        Result.Specifics.Values['empty']:='1';
+        Result.Specifics.Strings['empty']:='1';
         Result.Name:=FmtLoadStr1(5862, [Result.Name]);
       end;
     end;
@@ -1668,11 +1668,11 @@ begin
         TexFolder.Subelements.Add(TexFolder2);
       end;
       Link:=QTextureLnk.Create(Tex.name, TexFolder2);
-      Link.Specifics.Add('b='+Name);
+      Link.Specifics.AddString('b', Name);
       if Parent=nil then
-        Link.Specifics.Add('s='+GetBaseDir(Self.Filename, false))
+        Link.Specifics.AddString('s', GetBaseDir(Self.Filename, false))
       else
-        Link.Specifics.Add('s='+GetBaseDir(QFileObject(Parent.Parent).Filename, true));  // in a pak file
+        Link.Specifics.AddString('s', GetBaseDir(QFileObject(Parent.Parent).Filename, true));  // in a pak file
       TexFolder2.Subelements.Add(Link);
     end;
     SortTexFolder(TexFolder);
@@ -1907,8 +1907,8 @@ begin
       inherited Create(nName+' (leaf)', nParent);
     VectSpec['mins']:=MakeVect(mins[0], mins[1], mins[2]);
     VectSpec['maxs']:=MakeVect(maxs[0], maxs[1], maxs[2]);
-    Specifics.Values['leaf']:='1';
-    Specifics.Values['num faces']:=IntToStr(num_leaffaces);
+    Specifics.Strings['leaf']:='1';
+    Specifics.Integers['num faces']:=num_leaffaces;
     Leaf:=true;
     with Stats do
     begin
@@ -1931,7 +1931,7 @@ var
   FirstLFace: PChar;
   LFaceIndex: Integer;
 begin
-   if Specifics.Values['leaf']='' then
+   if Specifics.Strings['leaf']='' then
    begin
      ShowMessage('Faces only for leaves');
      Exit;

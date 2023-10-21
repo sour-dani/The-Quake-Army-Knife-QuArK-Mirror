@@ -213,7 +213,7 @@ begin
 
   Setup:=SetupSubSet(ssFiles, 'DevIL');
   try
-    case StrToInt(Setup.Specifics.Values['MemSpeed']) of
+    case Setup.Specifics.Integers['MemSpeed'] of
     0: Flag:=IL_DONT_CARE;
     1: Flag:=IL_FASTEST;
     2: Flag:=IL_LESS_MEM;
@@ -230,7 +230,7 @@ begin
   CheckDevILError(ilGetError);
   
   try
-    case StrToInt(Setup.Specifics.Values['Compression']) of
+    case Setup.Specifics.Integers['Compression'] of
     0: Flag:=IL_DONT_CARE;
     1: Flag:=IL_USE_COMPRESSION;
     2: Flag:=IL_NO_COMPRESSION;
@@ -387,8 +387,8 @@ begin
         end;
       end;
 
-      Specifics.Add(ImgData);
-      Specifics.Add(PalData);
+      Specifics.AddStringFull(ImgData);
+      Specifics.AddStringFull(PalData);
     end
     else
     begin
@@ -431,8 +431,8 @@ begin
           end;
         end;
 
-        Specifics.Add(AlphaData);
-        Specifics.Add(ImgData);
+        Specifics.AddStringFull(AlphaData);
+        Specifics.AddStringFull(ImgData);
       end
       else
       begin
@@ -465,7 +465,7 @@ begin
           end;
         end;
 
-        Specifics.Add(ImgData);
+        Specifics.AddStringFull(ImgData);
       end;
     end;
 
@@ -789,8 +789,8 @@ begin
         end;
       end;
 
-      Specifics.Add(ImgData);
-      Specifics.Add(PalData);
+      Specifics.AddStringFull(ImgData);
+      Specifics.AddStringFull(PalData);
     end
     else
     begin
@@ -832,8 +832,8 @@ begin
           end;
         end;
 
-        Specifics.Add(AlphaData);
-        Specifics.Add(ImgData);
+        Specifics.AddStringFull(AlphaData);
+        Specifics.AddStringFull(ImgData);
       end
       else
       begin
@@ -865,7 +865,7 @@ begin
           end;
         end;
 
-        Specifics.Add(ImgData);
+        Specifics.AddStringFull(ImgData);
       end;
     end;
 
@@ -1106,7 +1106,7 @@ var
  ScanW: Integer;
 begin
  Size:=GetSize;
- Result:=Specifics.Values['Image1'];
+ Result:=Specifics.Bytes['Image1'];
  if IsTrueColor then
   ScanW:=(Size.X*3+3) and not 3
  else
@@ -1271,15 +1271,15 @@ begin
  if not Result then Exit;
 
  { remove old image data }
- Specifics.Values[ImageSpec]:='';
- Specifics.Values[PaletteSpec]:='';
- Specifics.Values[AlphaSpec]:='';
+ Specifics.Delete(ImageSpec);
+ Specifics.Delete(PaletteSpec);
+ Specifics.Delete(AlphaSpec);
 
  { store the new data }
  SetSize(NewPSD.Size);
- Specifics.Add(ImageData);
- if PaletteData<>'' then Specifics.Add(PaletteData);
- if AlphaData<>'' then Specifics.Add(AlphaData);
+ Specifics.AddStringFull(ImageData);
+ if PaletteData<>'' then Specifics.AddStringFull(PaletteData);
+ if AlphaData<>'' then Specifics.AddStringFull(AlphaData);
 
  finally NewPSD.Done; end;
 end;
@@ -1347,9 +1347,9 @@ var
  PalStr: String;
 begin
  SetSize(Point(W,H));
- Specifics.Values['Image1']:=Data;
+ Specifics.Bytes['Image1']:=Data;
  SetString(PalStr, PChar(@Lmp), SizeOf(TPaletteLmp));
- Specifics.Values['Pal']:=PalStr;
+ Specifics.Bytes['Pal']:=PalStr;
 end;
 
 (*procedure QImage.PasteImageDC(NeededGame: Char; DC: HDC; W,H: Integer);
@@ -1636,8 +1636,8 @@ begin
    Inc(DestScanLine, DestScanW);
   end;
  Result:=QImage(QObjectClass(ClassType).Create(Name, Nil));
- Result.Specifics.Add(Data);
- Result.Specifics.Add(Specifics[Specifics.IndexOfName(FloatSpecNameOf('Size'))]);
+ Result.Specifics.AddStringFull(Data);
+ Result.Specifics.AddStringFull(Specifics.Strings[FloatSpecNameOf('Size')]);
 end;
 
 procedure QImage.ImageConvertTo(NewPSD: TPixelSetDescription);

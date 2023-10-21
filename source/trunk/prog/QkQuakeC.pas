@@ -166,7 +166,7 @@ begin
      Q.Acces;
      SL.Add(#255 + Q.Name);
      SL1:=TStringList.Create; try
-     SL1.Text:=Q.Specifics.Values['Data'];
+     SL1.Text:=Q.Specifics.Strings['Data'];
      SL.AddStrings(SL1);
      finally SL1.Free; end;
     end;
@@ -304,20 +304,20 @@ var
 begin
  if SyntaxFonts=Nil then Exit;
  Setup:=SetupSubSet(ssGeneral, 'QuakeC');
- if Setup.Specifics.Values['Enabled']='' then
+ if Setup.Specifics.Strings['Enabled']='' then
   ClearSyntaxFontData
  else
   begin
    if SyntaxFonts^.KeyWords=Nil then
     SyntaxFonts^.KeyWords:=TStringList.Create;
    SyntaxFonts^.KeyWords.Sorted:=False;
-   SyntaxFonts^.KeyWords.Text:=Setup.Specifics.Values['KeyWords'];
+   SyntaxFonts^.KeyWords.Text:=Setup.Specifics.Strings['KeyWords'];
    SyntaxFonts^.KeyWords.Sorted:=True;
    for I:=0 to NbCouleurs-1 do
     begin
      if SyntaxFonts^.Fonts[I]=Nil then
       SyntaxFonts^.Fonts[I]:=TFont.Create;
-     StringToFont(SyntaxFonts^.Fonts[I], Setup.Specifics.Values['Font'+IntToStr(I)]);
+     StringToFont(SyntaxFonts^.Fonts[I], Setup.Specifics.Strings['Font'+IntToStr(I)]);
     end;
   end;
 end;
@@ -359,7 +359,7 @@ begin
       MAJ:=True; try
       FCommentsOk.Free;
       FCommentsOk:=Nil;
-      CodeEditor.Lines.Text:=FileObject.Specifics.Values['data'];
+      CodeEditor.Lines.Text:=FileObject.Specifics.Strings['data'];
       finally MAJ:=False; end;
      end;
  end;

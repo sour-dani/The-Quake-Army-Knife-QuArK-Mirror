@@ -852,7 +852,7 @@ var
 begin
  if Application.Active and Control.CanFocus then
   begin
-   if SetupSubSet(ssGeneral, 'Display').Specifics.Values['AutoFocus']='' then
+   if SetupSubSet(ssGeneral, 'Display').Specifics.Strings['AutoFocus']='' then
     Exit;
    A:=GetParentForm(Control);
    if A=Nil then Exit;

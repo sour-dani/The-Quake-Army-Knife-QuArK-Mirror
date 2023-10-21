@@ -72,7 +72,7 @@ var
 begin
  Textures.Free;
  Textures:=Nil;
- if StartsStr(AHint, 'TEX?') then
+ if StartsStr('TEX?', AHint) then
   begin
    S:=Copy(AHint, 5, MaxInt);
    if (S<>'') and (S[Length(S)]=';') then

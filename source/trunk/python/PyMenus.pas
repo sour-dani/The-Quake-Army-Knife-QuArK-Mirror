@@ -203,9 +203,9 @@ begin
             obj:=PyObject_GetAttrString(ListItem, 'menuicon');
             if obj=Nil then Exit;
             try
-             if obj^.ob_type = @TyImage1_Type then
+             if obj^.ob_type = @TyImage_Type then
               begin
-               nInfo.hbmpUnchecked:=PyImage1(obj)^.GetMenuBitmap;
+               nInfo.hbmpUnchecked:=PyImage(obj)^.GetMenuBitmap;
                nInfo.hbmpChecked:=nInfo.hbmpUnchecked;
               end;
             finally Py_DECREF(obj); end;

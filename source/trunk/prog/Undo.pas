@@ -289,7 +289,7 @@ begin
        S:=LoadStr1(5528)
       else
        S:=FmtLoadStr1(5529, [S]);
-      if Q.Specifics.Values['QuArKProtected']<>'' then
+      if Q.Specifics.Strings['QuArKProtected']<>'' then
        S:=S+LoadStr1(5553);
       if MessageDlg(S, mtWarning, mbOkCancel, 0) <> mrOk then
        Abort;
@@ -1105,8 +1105,7 @@ begin
      Position:=nPosition;
    if nPosition>=0 then   { suppression de l'ancien Specific }
     begin
-     nArg:=Strings[nPosition];
-     nArg:=Copy(nArg, Pos('=',nArg)+1, MaxInt);
+     nArg:=StringsFromIndex[nPosition];
      Delete(nPosition);
      if Position>nPosition then
       Dec(Position);
@@ -1121,9 +1120,9 @@ begin
     end;
    if Position>=0 then   { ajout d'un Specific }
     if Position>=Count then
-     Add(Spec+'='+Arg)
+     AddString(Spec, Arg)
     else
-     Insert(Position, Spec+'='+Arg)
+     InsertString(Position, Spec, Arg)
    else
     Arg:='';
   end;
@@ -1170,7 +1169,8 @@ var
 begin
  Result:=inherited MemorySize(Loaded, LoadNow);
  for I:=0 to OldSpec.Count-1 do
-  Inc(Result, 6+Length(OldSpec[I]));
+  Inc(Result, 6+(SizeOf(Char)*Length(OldSpec.Names[I]))
+               +(SizeOf(Char)*Length(OldSpec.StringsFromIndex[I])));
 end;
 
 procedure TSetSpecificsUndo.DoAtom;
@@ -1439,18 +1439,17 @@ end;*)
 
 procedure ListeActionsCopie(Source, Dest: QObject; Efface: Boolean);
 var
- I, P: Integer;
+ I: Integer;
  Q: QObject;
- SpecArg: String;
+ SpecArg: TSpecificsItem;
 begin
  if Efface then
   g_ListeActions.Add(TSetSpecificsUndo.Create('', Source.Specifics, Dest))
  else
   for I:=0 to Source.Specifics.Count-1 do
    begin
-    SpecArg:=Source.Specifics[I];
-    P:=Pos('=', SpecArg);
-    g_ListeActions.Add(TSpecificUndo.Create('', Copy(SpecArg,1,P-1), Copy(SpecArg,P+1,MaxInt), sp_Auto, Dest));
+    SpecArg:=Source.Specifics.Items[I];
+    g_ListeActions.Add(TSpecificUndo.Create('', SpecArg.Key, SpecArg.Value, sp_Auto, Dest));
    end;
  for I:=0 to Dest.SubElements.Count-1 do
   begin

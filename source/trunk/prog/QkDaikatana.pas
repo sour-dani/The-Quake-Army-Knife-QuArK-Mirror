@@ -56,10 +56,10 @@ procedure CheckTexName(const Texture: QTexture2; const nName: String);
 var
   TexName: String;
 begin
-  if SetupSubSet(ssFiles, 'Textures').Specifics.Values['TextureNameCheck']<>'' then
+  if SetupSubSet(ssFiles, 'Textures').Specifics.Strings['TextureNameCheck']<>'' then
   begin
     TexName := Texture.GetTexName;
-    if ((nName = '') or (TexName = '')) and (SetupSubSet(ssFiles, 'Textures').Specifics.Values['TextureEmptyNameValid']<>'') then
+    if ((nName = '') or (TexName = '')) and (SetupSubSet(ssFiles, 'Textures').Specifics.Strings['TextureEmptyNameValid']<>'') then
       Exit;
     if not SameText(nName, TexName) then
       GlobalWarning(FmtLoadStr1(5569, [nName, TexName]));
@@ -90,7 +90,7 @@ begin
   begin
     if S[I]='/' then
     begin
-      Texture.Specifics.Add('Path='+Copy(S,1,I-1));
+      Texture.Specifics.AddString('Path', Copy(S,1,I-1));
       Break;
     end;
   end;
@@ -126,7 +126,7 @@ begin
     SetLength(S, Length(Spec1)+Taille1);
     F.Position:=Base+Header.Indexes[I];
     F.ReadBuffer(S[Length(Spec1)+1], Taille1);
-    Texture.Specifics.Add(S);
+    Texture.Specifics.AddStringFull(S);
     if not ScaleDown(W,H) then
       Break;
   end;
@@ -135,14 +135,14 @@ begin
   S:=Spec2;
   SetLength(S, Length(Spec2)+768);
   Move(Header.Palette, S[Length(Spec2)+1], 768);
-  Texture.Specifics.Add(S);
+  Texture.Specifics.AddStringFull(S);
 
   if Header.Animation[0]<>0 then
-    Texture.Specifics.Add('Anim='+CharToPas(Header.Animation));
+    Texture.Specifics.AddString('Anim', CharToPas(Header.Animation));
 
-  Texture.Specifics.Add('Contents='+IntToStr(Header.Contents));
-  Texture.Specifics.Add('Flags='+IntToStr(Header.Flags));
-  Texture.Specifics.Add('Value='+IntToStr(Header.Value));
+  Texture.Specifics.AddInteger('Contents', Header.Contents);
+  Texture.Specifics.AddInteger('Flags', Header.Flags);
+  Texture.Specifics.AddInteger('Value', Header.Value);
   F.Position:=Base+Taille;
 end;
 

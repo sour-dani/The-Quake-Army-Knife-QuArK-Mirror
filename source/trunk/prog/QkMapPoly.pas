@@ -1877,7 +1877,7 @@ end;
 
 function GameSupportsBrushPrim : Boolean;
 begin
-  Result:=(SetupGameSet.Specifics.Values['SupportsBrushPrim']<>'');
+  Result:=(SetupGameSet.Specifics.Strings['SupportsBrushPrim']<>'');
 end;
 
 procedure TPolyhedron.Dessiner;
@@ -2325,7 +2325,7 @@ begin
  Result.Flags:=FFlags and ofCloneFlags;
 {for I:=0 to Specifics.Count-1 do
   Result.Specifics.Add(Specifics[I]);}
- Result.Specifics.AddStrings(Specifics);
+ Result.Specifics.Assign(Specifics);
 end;
 
 function TPolyhedron.EnumAretes(Sommet: PVertex; var nVertices: TFVertexTable) : Integer;
@@ -2670,7 +2670,7 @@ begin
     V[3]:=T2.X; V[4]:=T2.Y;
     V[5]:=T3.X; V[6]:=T3.Y;
     SetFloatsSpec('tv', V);
-    Specifics.Values['m']:='';
+    Specifics.Strings['m']:='';
   end;
 end;
 
@@ -2792,7 +2792,7 @@ begin
  TexP[3].X:=(TexP[3].X-TexP[1].X)*CorrH;
  TexP[3].Y:=(TexP[3].Y-TexP[1].Y)*CorrH;
  TexP[3].Z:=(TexP[3].Z-TexP[1].Z)*CorrH;
- if (SetupSubSet(ssMap,'Options').Specifics.Values['DontCenterThreePoints']<>'1') then
+ if (SetupSubSet(ssMap,'Options').Specifics.Strings['DontCenterThreePoints']<>'1') then
  begin
    TexP[4]:=CentreFace;
    CorrW:=1;
@@ -2921,7 +2921,7 @@ begin
   begin
     GetThreePointsT(TexP[1], TexP[2], TexP[3]);
     SetThreePointsEnhEx(TexP[1], TexP[2], TexP[3], Normale);
-    Specifics.Values['tv']:='';
+    Specifics.Strings['tv']:='';
   end;
 end;
 
@@ -3002,7 +3002,7 @@ end;
 begin
  Result:=True;
  prvVertexCount:=0;
- S:=Specifics.Values['d'];
+ S:=Specifics.Strings['d'];
  if S='' then
   begin
    Dist:=0;
@@ -3017,7 +3017,7 @@ begin
      Result:=False;  { bad face }
     end;
   end;
- S:=Specifics.Values['n'];
+ S:=Specifics.Strings['n'];
  if S='' then
   begin
    Normale:=Origine;
@@ -3118,12 +3118,12 @@ end;}
 
 function TTexturedTreeMap.GetNomTex : String;
 begin
- GetNomTex:=Specifics.Values['tex'];
+ GetNomTex:=Specifics.Strings['tex'];
 end;
 
 procedure TTexturedTreeMap.SetNomTex(const nTex : String);
 begin
- Specifics.Values['tex']:=nTex;
+ Specifics.Strings['tex']:=nTex;
 end;
 {var
  Tx: QObject;
@@ -3676,15 +3676,15 @@ end;
 
 function TTexturedTreeMap.GetTextureMirror : Boolean;
 begin
- GetTextureMirror:=Specifics.Values['m']<>'';
+ GetTextureMirror:=Specifics.Strings['m']<>'';
 end;
 
 procedure TTexturedTreeMap.SetTextureMirror(Value: Boolean);
 begin
  if Value then
-  Specifics.Values['m']:='1'
+  Specifics.Strings['m']:='1'
  else
-  Specifics.Values['m']:='';
+  Specifics.Strings['m']:='';
 end;
 
 procedure TFace.OperationInScene(Aj: TAjScene; PosRel: Integer);
@@ -3715,17 +3715,17 @@ end;
 
 destructor TFace.Destroy;
 begin
- if (Flags and ofNotLoadedToMemory <> 0) or (Specifics.Values[TmpFaceSpec]='') then
+ if (Flags and ofNotLoadedToMemory <> 0) or (Specifics.Strings[TmpFaceSpec]='') then
   DestroyFace;
  inherited;
 end;
 
 procedure TFace.InvalidateFace;
 begin
- if Specifics.Values[CannotEditFaceYet]<>'' then
+ if Specifics.Strings[CannotEditFaceYet]<>'' then
   Raise EError(5640);  { FIXME }
  {$IFDEF Debug}
- if Specifics.Values[TmpFaceSpec]<>'' then
+ if Specifics.Strings[TmpFaceSpec]<>'' then
   Raise InternalE(TmpFaceSpec);
  {$ENDIF}
  DestroyFace;
@@ -3940,7 +3940,7 @@ end;
 function TFace.CloneFaceTmp : TFace;
 begin
  Result:=TFace(Clone(Parent, False));
- TFace(Result).Specifics.Values[TmpFaceSpec]:='1';
+ TFace(Result).Specifics.Strings[TmpFaceSpec]:='1';
  TFace(Result).Normale:=Normale;
  TFace(Result).Dist:=Dist;
  TFace(Result).FFaceOfPoly:=FFaceOfPoly;
@@ -4199,7 +4199,7 @@ begin
      if (Parent = nil) then
        exit;
 
-     S:=Parent^.Specifics.Values['rendermode'];
+     S:=Parent^.Specifics.Strings['rendermode']; //FIXME: Switch to QkSpecifics.Integers
      if S<>'' then
      begin
        case StrToInt(S) of
@@ -4217,11 +4217,11 @@ begin
        begin
          if Result.Mode=trmColor then
          begin
-           S:=Parent^.Specifics.Values['rendercolor'];
+           S:=Parent^.Specifics.Strings['rendercolor']; //FIXME: Switch to QkSpecifics.Float ARRAY
            ReadDoubleArray(S, C);
            for val:=0 to 2 do result.Color[val]:=trunc(C[val]) mod 256;
          end;
-         S:=Parent^.Specifics.Values['renderamt'];
+         S:=Parent^.Specifics.Strings['renderamt']; //FIXME: Switch to QkSpecifics.Integers
          if S<>'' then
            Result.Value:=StrToIntDef(S,255); // If conversion to integer fails, make sure "no transparency" is the default (100% opaque = 255)
          if (result.Mode=trmSolid) and (result.Value<>0) then
@@ -4237,7 +4237,7 @@ begin
    end;
  end; // hl and hl2
  {/DECKER}
- S:=Specifics.Values['Contents'];
+ S:=Specifics.Strings['Contents']; //FIXME: Switch to QkSpecifics.Integers
  if S<>'' then
  begin
    Result.Value:=OpacityFromFlags(StrToIntDef(S,0));

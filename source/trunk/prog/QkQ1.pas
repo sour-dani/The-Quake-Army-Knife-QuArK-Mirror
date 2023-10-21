@@ -197,7 +197,7 @@ var
   WriteTo: String;
   Q: QFileObject;
 begin
-  WriteTo:=SetupGameSet.Specifics.Values['Palette'];
+  WriteTo:=SetupGameSet.Specifics.Bytes['Palette'];
   if (Length(WriteTo)>1) and (WriteTo[1]=':') then
   begin
     Q:=QPcx.Create('', Nil);
@@ -206,9 +206,9 @@ begin
       S:=Spec2+'=';
       SetLength(S, Length(Spec2)+1+SizeOf(TPaletteLmp));
       Move(GameBuffer(mjAny)^.PaletteLmp, PChar(S)[Length(Spec2)+1], SizeOf(TPaletteLmp));
-      Q.Specifics.Add(S);
+      Q.Specifics.AddStringFull(S);
       Q.SetFloatsSpec('Size', cDummySize);
-      Q.Specifics.Values[Spec1]:=#0#0#0#0;
+      Q.Specifics.Bytes[Spec1]:=#0#0#0#0;
       Q.SaveInFile(rf_Default, OutputFile(Copy(WriteTo, 2, MaxInt)));
     finally
       Q.AddRef(-1);
@@ -271,7 +271,7 @@ begin
           SetLength(S, Length(Spec1)+Taille1);
           F.Position:=Base+Header.Indexes[I];
           F.ReadBuffer(S[Length(Spec1)+1], Taille1);
-          Specifics.Add(S);
+          Specifics.AddStringFull(S);
           Taille1:=Taille1 div 4;  { next images are scaled-down }
         end;
         F.Position:=Base+Max;

@@ -83,7 +83,7 @@ begin
   inherited;
 
   Setup:=SetupSubSet(ssFiles, 'PNG');
-  if Setup.Specifics.Values['InterlaceDevIL']<>'' then
+  if Setup.Specifics.Strings['InterlaceDevIL']<>'' then
     Flag:=IL_TRUE
   else
     Flag:=IL_FALSE;
@@ -108,7 +108,7 @@ begin
   Log(LOG_VERBOSE, 'Loading PNG file: %s', [self.name]);
   case ReadFormat of
   rf_Default: begin  { as stand-alone file }
-    LibraryToUse:=SetupSubSet(ssFiles, 'PNG').Specifics.Values['LoadLibrary'];
+    LibraryToUse:=SetupSubSet(ssFiles, 'PNG').Specifics.Strings['LoadLibrary'];
     if LibraryToUse='DevIL' then
       LoadFileDevIL(F, FSize)
     else if LibraryToUse='FreeImage' then
@@ -129,7 +129,7 @@ begin
  with Info do
   case Format of
   rf_Default: begin  { as stand-alone file }
-    LibraryToUse:=SetupSubSet(ssFiles, 'PNG').Specifics.Values['SaveLibrary'];
+    LibraryToUse:=SetupSubSet(ssFiles, 'PNG').Specifics.Strings['SaveLibrary'];
     if LibraryToUse='DevIL' then
       SaveFileDevIL(Info)
     else if LibraryToUse='FreeImage' then

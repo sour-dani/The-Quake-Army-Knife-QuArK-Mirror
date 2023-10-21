@@ -125,7 +125,7 @@ begin
     Q2:=Q;
    { copy all data from Q2 into Target }
    for J:=0 to Q2.Specifics.Count-1 do
-    Target.Specifics.Add(Q2.Specifics[J]);
+    Target.Specifics.Add(Q2.Specifics.Items[J]);
    for J:=0 to Q2.SubElements.Count-1 do
     begin
      N:=Q2.SubElements[J].Clone(Target, False);

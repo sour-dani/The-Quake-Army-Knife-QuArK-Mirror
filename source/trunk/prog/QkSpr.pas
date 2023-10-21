@@ -126,18 +126,13 @@ uses CommCtrl, Math, Quarkx, QkExceptions, QkPcx, QkTextures, QkObjectClassList;
 
  {------------------------}
 
-Procedure MySetIntSpec(s:QSprFile; ident:String; value:Integer);
-begin
-  s.Specifics.Values[ident]:=inttostr(value);
-end;
-
 Function MyIntSpec(s:QSprFile; const ident:String):Integer;
 begin
   if s.Specifics.IndexOfName(ident)=-1 then
     result:=0
   else
     try
-      result:=strtoint(s.Specifics.Values[ident]);
+      result:=s.Specifics.Integers[ident];
     except
       on EConvertError do result:=0;
     end;
@@ -148,7 +143,7 @@ begin
   if s.Specifics.IndexOfName(ident)=-1 then
     result:=''
   else
-    result:=s.Specifics.Values[ident];
+    result:=s.Specifics.Strings[ident];
 end;
 
 Function MyFloatSpec(s:QSprFile; const ident:String):Single;
@@ -157,7 +152,7 @@ begin
     result:=0.0
   else
     try
-      result:=strtofloat(s.Specifics.Values[ident]);
+      result:=s.Specifics.Floats[ident];
     except
       on EConvertError do result:=0.0;
     end;
@@ -224,11 +219,11 @@ begin
   if dst.version<>1 then
     raise EErrorFmt(5800, [dst.version,2]);
   ObjectGameCode:=mjQuake;
-  Self.Specifics.Add(format('SPR_STYPE=%d',[dst.sType]));
-  Self.Specifics.Add(format('SPR_TXTYPE=%d',[-1]));
-  Self.Specifics.Add(format('SPR_RADIUS=%f',[dst.boundingradius]));
-  Self.Specifics.Add(format('SPR_WIDTH=%d',[dst.width]));
-  Self.Specifics.Add(format('SPR_HEIGHT=%d',[dst.height]));
+  Self.Specifics.AddInteger('SPR_STYPE', dst.sType);
+  Self.Specifics.AddInteger('SPR_TXTYPE', -1);
+  Self.Specifics.AddFloat('SPR_RADIUS', dst.boundingradius);
+  Self.Specifics.AddInteger('SPR_WIDTH', dst.width);
+  Self.Specifics.AddInteger('SPR_HEIGHT', dst.height);
   //FIXME: If dst.numframes < 1 THEN ERROR! Invalid number of frames!
   for i:=1 to dst.numframes do begin
     fs.ReadBuffer(group,4);
@@ -282,12 +277,12 @@ begin
   if dst.version<>2 then
     raise EErrorFmt(5774, [dst.version,2]);
   ObjectGameCode:=mjHalfLife;
-  Self.Specifics.Add(format('SPR_STYPE=%d',[dst.sType]));
-  Self.Specifics.Add(format('SPR_TXTYPE=%d',[dst.texformat]));
-  Self.Specifics.Add(format('SPR_RADIUS=%f',[dst.boundingradius]));
-  Self.Specifics.Add(format('SPR_WIDTH=%d',[dst.width]));
-  Self.Specifics.Add(format('SPR_HEIGHT=%d',[dst.height]));
-  Self.Specifics.Add(format('SPR_NOFRAMES=%d',[dst.numframes]));
+  Self.Specifics.AddInteger('SPR_STYPE', dst.sType);
+  Self.Specifics.AddInteger('SPR_TXTYPE', dst.texformat);
+  Self.Specifics.AddFloat('SPR_RADIUS', dst.boundingradius);
+  Self.Specifics.AddInteger('SPR_WIDTH', dst.width);
+  Self.Specifics.AddInteger('SPR_HEIGHT', dst.height);
+  Self.Specifics.AddInteger('SPR_NOFRAMES', dst.numframes);
 
   fs.ReadBuffer(FShort,2);
   for i:=0 to FShort-1 do begin
@@ -489,24 +484,24 @@ begin
   if dst.version<>2 then
     raise EErrorFmt(5802, [dst.version,2]);
   ObjectGameCode:=mjQuake2;
-  Self.Specifics.Add(format('SPR_STYPE=%d',[-1]));
-  Self.Specifics.Add(format('SPR_TXTYPE=%d',[-1]));
-  Self.Specifics.Add(format('SPR_RADIUS=%s',['N / A']));
-  Self.Specifics.Add(format('SPR_WIDTH=%s',['N / A']));
-  Self.Specifics.Add(format('SPR_HEIGHT=%s',['N / A']));
-  Self.Specifics.Add(format('SPR_NOFRAMES=%d',[Dst.noframes]));
+  Self.Specifics.AddInteger('SPR_STYPE', -1);
+  Self.Specifics.AddInteger('SPR_TXTYPE', -1);
+  Self.Specifics.AddString('SPR_RADIUS', 'N / A');
+  Self.Specifics.AddString('SPR_WIDTH', 'N / A');
+  Self.Specifics.AddString('SPR_HEIGHT', 'N / A');
+  Self.Specifics.AddInteger('SPR_NOFRAMES', Dst.noframes);
   fillchar(Frame,sizeof(Frame),#0);
   For i:=1 to dst.Noframes do begin
     f.Readbuffer(frame,sizeof(frame));
     str:=frame.fn;
     setlength(str,pos(#0,frame.fn));
-    Self.Specifics.Add(Format('SPR_FRAME%d_CAPTION=%d',[i,i]));
-    Self.Specifics.Add(Format('SPR_FRAME%d_FTYPE=%s',[i,str]));
-    Self.Specifics.Add(Format('SPR_FRAME%d_XORG=%d',[i,frame.x]));
-    Self.Specifics.Add(Format('SPR_FRAME%d_YORG=%d',[i,frame.y]));
-    Self.Specifics.Add(Format('SPR_FRAME%d_WIDTH=%d',[i,frame.w]));
-    Self.Specifics.Add(Format('SPR_FRAME%d_HEIGHT=%d',[i,frame.h]));
-    Self.Specifics.Add(Format('SPR_FRAME%d_IDATASIZE=%s',[i,'N / A']));
+    Self.Specifics.AddInteger(Format('SPR_FRAME%d_CAPTION',[i]), i);
+    Self.Specifics.AddString(Format('SPR_FRAME%d_FTYPE',[i]), str);
+    Self.Specifics.AddInteger(Format('SPR_FRAME%d_XORG',[i]), frame.x);
+    Self.Specifics.AddInteger(Format('SPR_FRAME%d_YORG',[i]), frame.y);
+    Self.Specifics.AddInteger(Format('SPR_FRAME%d_WIDTH',[i]), frame.w);
+    Self.Specifics.AddInteger(Format('SPR_FRAME%d_HEIGHT',[i]), frame.h);
+    Self.Specifics.AddString(Format('SPR_FRAME%d_IDATASIZE',[i]), 'N / A');
 //    Loaded_FrameFile(self, fStr); //FIXME: Doesn't Work. Wonder Why??
   end;
 end;
@@ -606,12 +601,12 @@ begin
   else if ObjectGameCode=mjHalfLife then
     Move(pal,S[Length(Spec1)+1],sizeof(TPaletteLmp));
   palout:=s;
-  Result.Specifics.Add(S);
+  Result.Specifics.AddStringFull(S);
   S:=Spec2;
   DeltaW:=-((Round(Size[0])+3) and not 3);
   SetLength(S, Length(Spec2) - DeltaW*Round(Size[1]));
   P:=PChar(S)+Length(S)+DeltaW;
-  Result.Specifics.Add(S);
+  Result.Specifics.AddStringFull(S);
 end;
 
 function QSprFile.Loaded_FrameFile(Root: QObject; const Name: String) : QImage;
@@ -730,13 +725,13 @@ begin
   cnt:=myintspec(s,'SPR_NOFRAMES');
   for i:=1 to cnt do begin
     li:=ListView1.Items.add;
-    li.Caption:=s.Specifics.Values[format('SPR_FRAME%d_CAPTION',[i])];
-    li.SubItems.add(s.Specifics.Values[format('SPR_FRAME%d_FTYPE',[i])]);
-    li.SubItems.add(s.Specifics.Values[format('SPR_FRAME%d_XORG',[i])]);
-    li.SubItems.add(s.Specifics.Values[format('SPR_FRAME%d_YORG',[i])]);
-    li.SubItems.add(s.Specifics.Values[format('SPR_FRAME%d_WIDTH',[i])]);
-    li.SubItems.add(s.Specifics.Values[format('SPR_FRAME%d_HEIGHT',[i])]);
-    li.SubItems.add(s.Specifics.Values[format('SPR_FRAME%d_IDATASIZE',[i])]);
+    li.Caption:=s.Specifics.Strings[format('SPR_FRAME%d_CAPTION',[i])];
+    li.SubItems.add(s.Specifics.Strings[format('SPR_FRAME%d_FTYPE',[i])]);
+    li.SubItems.add(s.Specifics.Strings[format('SPR_FRAME%d_XORG',[i])]); //FIXME: Some of these are integers!!!
+    li.SubItems.add(s.Specifics.Strings[format('SPR_FRAME%d_YORG',[i])]);
+    li.SubItems.add(s.Specifics.Strings[format('SPR_FRAME%d_WIDTH',[i])]);
+    li.SubItems.add(s.Specifics.Strings[format('SPR_FRAME%d_HEIGHT',[i])]);
+    li.SubItems.add(s.Specifics.Strings[format('SPR_FRAME%d_IDATASIZE',[i])]);
   end;
 end;
 
@@ -785,12 +780,12 @@ end;
 
 procedure TQSprForm.ComboBox2Change(Sender: TObject);
 begin
-  MySetIntSpec(QSprFile(FileObject), 'SPR_STYPE', Combobox2.ItemIndex);
+  QSprFile(FileObject).Specifics.Integers['SPR_STYPE']:=Combobox2.ItemIndex;
 end;
 
 procedure TQSprForm.ComboBox3Change(Sender: TObject);
 begin
-  MySetIntSpec(QSprFile(FileObject), 'SPR_TXTYPE', Combobox3.ItemIndex);
+  QSprFile(FileObject).Specifics.Integers['SPR_TXTYPE']:=Combobox3.ItemIndex;
 end;
 
 initialization

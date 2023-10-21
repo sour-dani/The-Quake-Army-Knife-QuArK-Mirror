@@ -127,7 +127,7 @@ begin
          if A<>0 then
           HasAlpha:=True;
         end;
-      Specifics.Add(Data);  { "Pal=xxxxx" }
+      Specifics.AddStringFull(Data);  { "Pal=xxxxx" }
 
       if HasAlpha then
        begin
@@ -136,16 +136,16 @@ begin
         P:=@Data[Length(Spec3)+1];
         for I:=0 to 255 do
          P[I]:=Chr(Header.Palette[I].A);
-        Specifics.Add(Data);  { "Alpha=xxxx" }
+        Specifics.AddStringFull(Data);  { "Alpha=xxxx" }
        end;
 
        { reads misc flags }
       IntSpec['PalCrc']:=Header.PalCrc;
-      Specifics.Add('direct='+IntToStr(Header.direct));
+      Specifics.AddInteger('direct', Header.direct);
       SetFloatSpec('animtime', Header.animtime);
       SetFloatSpec('nonlit', Header.nonlit);
-      Specifics.Add('directangle='+IntToStr(Header.directangle));
-      Specifics.Add('trans_angle='+IntToStr(Header.trans_angle));
+      Specifics.AddInteger('directangle', Header.directangle);
+      Specifics.AddInteger('trans_angle', Header.trans_angle);
     { tiglari: this shouldn't be set since it shouldn't be in .swl's
 	   at all, nor in tex. def. files, it's a label for grouping light
 	   sources that go on & off together, treated as a string in the
@@ -161,9 +161,9 @@ begin
 	  the three floats (2 dec places)
 	  SetFloatsSpec('color', Header.color); }
 
-      Specifics.Add('color='+FloatToStrF(Header.color[0],ffFixed,7,2)+' '+
-                             FloatToStrF(Header.color[1],ffFixed,7,2)+ ' '+
-                             FloatToStrF(Header.color[2],ffFixed,7,2));
+      Specifics.AddStringFull('color='+FloatToStrF(Header.color[0],ffFixed,7,2)+' '+
+                                       FloatToStrF(Header.color[1],ffFixed,7,2)+ ' '+
+                                       FloatToStrF(Header.color[2],ffFixed,7,2));
 
        { reads the image data }
       Q2MipTex.W:=Header.Width;
@@ -205,7 +205,7 @@ var
          G:=Lmp^[I,1];
          B:=Lmp^[I,2];
         end;
-      S:=Specifics.Values['Alpha'];
+      S:=Specifics.Bytes['Alpha'];
       for I:=1 to Length(S) do
        Header.Palette[I-1].A:=Ord(S[I]);
 
@@ -220,15 +220,15 @@ var
         Taille:=Taille div 4;
        end;
 
-      StrPLCopy(Header.AnimName, Specifics.Values['Anim'], SizeOf(Header.AnimName));
-      Header.Contents:=StrToIntDef(Specifics.Values['Contents'], 0);
-      Header.Flags   :=StrToIntDef(Specifics.Values['Flags'], 0);
-      Header.Value   :=StrToIntDef(Specifics.Values['Value'], 0);
-      Header.direct  :=StrToIntDef(Specifics.Values['direct'], 0);
+      StrPLCopy(Header.AnimName, Specifics.Strings['Anim'], SizeOf(Header.AnimName));
+      Header.Contents:=StrToIntDef(Specifics.Strings['Contents'], 0); //FIXME: Switch to QkSpecifics.Integers?
+      Header.Flags   :=StrToIntDef(Specifics.Strings['Flags'], 0); //FIXME: Switch to QkSpecifics.Integers?
+      Header.Value   :=StrToIntDef(Specifics.Strings['Value'], 0); //FIXME: Switch to QkSpecifics.Integers?
+      Header.direct  :=StrToIntDef(Specifics.Strings['direct'], 0); //FIXME: Switch to QkSpecifics.Integers?
       Header.animtime    :=GetFloatSpec('animtime', 0.2);
       Header.nonlit      :=GetFloatSpec('nonlit', 0.0);
-      Header.directangle :=StrToIntDef(Specifics.Values['directangle'], 0);
-      Header.trans_angle :=StrToIntDef(Specifics.Values['trans_angle'], 0);
+      Header.directangle :=StrToIntDef(Specifics.Strings['directangle'], 0); //FIXME: Switch to QkSpecifics.Integers?
+      Header.trans_angle :=StrToIntDef(Specifics.Strings['trans_angle'], 0); //FIXME: Switch to QkSpecifics.Integers?
    {  tiglari: removing this one, see above
       Header.directstyle :=GetFloatSpec('directstyle', 0.0);  }
       Header.translucence :=GetFloatSpec('translucence', 0.0);
@@ -237,7 +237,7 @@ var
       Header.trans_mag :=GetFloatSpec('trans_mag', 0.0);
     { tiglari: revising rep to string
       GetFloatsSpec('color', Header.color); }
-      ReadDoubleArray(Specifics.Values['color'], Cl);
+      ReadDoubleArray(Specifics.Strings['color'], Cl); //FIXME: Switch to QkSpecifics.Integers?
     { tiglari: this looks real dumb, is there a cast construction or something
        that could be used instead? }
       for I:=0 to 2 do

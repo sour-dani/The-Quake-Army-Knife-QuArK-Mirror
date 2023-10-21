@@ -208,7 +208,7 @@ begin
  Result:=Nil;
  if texture_name<>'' then
  begin
-   Filename:=ConcatPaths([GameTexturesPath, texture_name+SetupGameSet.Specifics.Values['TextureFormat']]);
+   Filename:=ConcatPaths([GameTexturesPath, texture_name+SetupGameSet.Specifics.Strings['TextureFormat']]);
    Log(LOG_VERBOSE, 'attempting to load %s', [Filename]);
    Result:=NeedGameFile(Filename, '') as QPixelSet;
  end;

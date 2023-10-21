@@ -200,6 +200,7 @@ const
  InactiveEndColor   = clSilver;
  InactiveFontColor  = clSilver;
  AppSeparator       = ' -  ';
+ MouseWheelScrollSpeed = 32; //FIXME: Retrieve from system settings?
 
 var
  MarsCapActive: Boolean;
@@ -421,13 +422,13 @@ end;
 
 procedure TQkForm.MouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
 begin
-  VertScrollBar.Position := VertScrollBar.Position + 32;
+  VertScrollBar.Position := VertScrollBar.Position + MouseWheelScrollSpeed;
   Handled := true;
 end;
 
 procedure TQkForm.MouseWheelUp(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
 begin
-  VertScrollBar.Position := VertScrollBar.Position - 32;
+  VertScrollBar.Position := VertScrollBar.Position - MouseWheelScrollSpeed;
   Handled := true;
 end;
 
@@ -556,9 +557,9 @@ end;
 procedure TQkForm.SetFormIcon(Index: Integer);
 begin
 {MarsCap.IconIndex:=Index;}
- if (InternalImages[Index,0]<>Nil) and (InternalImages[Index,0]^.ob_type = @TyImage1_Type) then
+ if (InternalImages[Index,0]<>Nil) and (InternalImages[Index,0]^.ob_type = @TyImage_Type) then
   begin
-   PyImage1(InternalImages[Index,0])^.GetIcon(Icon);
+   PyImage(InternalImages[Index,0])^.GetIcon(Icon);
 {GradCaption(Self, MarsCap);} UpdateMarsCap;
   end;
 end;
@@ -801,7 +802,7 @@ begin
      for I:=0 to Base.Count-1 do
       begin
        Result:=Base[I];
-       if Result.Specifics.Values['Caption']=Toolbar.Caption then
+       if Result.Specifics.Strings['Caption']=Toolbar.Caption then
         Exit;  { found it }
       end;
     end;
@@ -832,7 +833,7 @@ var
 begin
  Q:=tbReadAny(Toolbar, Value, ExtraData);
  if Q<>Nil then
-  Result:=Q.Specifics.Values[Value]
+  Result:=Q.Specifics.Strings[Value]
  else
   Result:=Default;
 end;
@@ -862,7 +863,7 @@ procedure tbWriteString(Toolbar: TToolbar97; const Value, Data: String;
     const ExtraData: Pointer);
 begin
  if PTbInfo(ExtraData)^.SubTb=Odd(Toolbar.Tag) then
-  tbWriteAny(Toolbar, ExtraData).Specifics.Values[Value]:=Data;
+  tbWriteAny(Toolbar, ExtraData).Specifics.Strings[Value]:=Data;
 end;
 
 procedure TQkForm.RestorePositionFrom(const Tag: String; Source: QObject);
@@ -874,7 +875,7 @@ var
 begin
  Ok:=False;
  Source.Acces;
- if Source.Specifics.Values[Tag]='max' then
+ if Source.Specifics.Strings[Tag]='max' then
   begin
    if BorderStyle<>bsSizeToolWin then
     begin
@@ -964,7 +965,7 @@ begin
    if Q is QToolbar then
     begin
      Q.Acces;
-     Result:=Q.Specifics.Values[Specific];
+     Result:=Q.Specifics.Strings[Specific];
      if Result<>'' then Exit;
     end;
   end;
@@ -982,8 +983,8 @@ begin
  Dest.Acces;
  case WindowState of
   wsMaximized: begin
-                Dest.Specifics.Values[FloatSpecNameOf(Tag)]:='';
-                Dest.Specifics.Values[Tag]:='max';
+                Dest.Specifics.Delete(FloatSpecNameOf(Tag));
+                Dest.Specifics.Strings[Tag]:='max';
                end;
   wsNormal: begin
              XMax:=1/TailleMaximaleEcranX;
@@ -993,7 +994,7 @@ begin
              V[1]:=R.Top   *YMax;
              V[2]:=R.Right *XMax;
              V[3]:=R.Bottom*YMax;
-             Dest.Specifics.Values[Tag]:='';
+             Dest.Specifics.Delete(Tag);
              Dest.SetFloatsSpec(Tag, V);
             end;
  else Exit;

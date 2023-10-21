@@ -96,14 +96,14 @@ begin
      nQ.DisplayDetails(True, E);
      if E.Icon<>Nil then
       try
-       Sz:=PyImage1(E.Icon)^.GetSize;
+       Sz:=PyImage(E.Icon)^.GetSize;
        Image1.Picture.Bitmap.Width:=Sz.X;
        Image1.Picture.Bitmap.Height:=Sz.Y;
        with Image1.Picture.Bitmap.Canvas do
         begin
         {Brush.Color:=clBtnFace;
          FillRect(Rect(0,0, Sz.X, Sz.Y));}
-         PyImage1(E.Icon)^.Draw(Handle, 0,0, ColorToRGB(clBtnFace));
+         PyImage(E.Icon)^.Draw(Handle, 0,0, ColorToRGB(clBtnFace));
         end;
       finally
        Py_DECREF(E.Icon);

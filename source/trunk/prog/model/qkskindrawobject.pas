@@ -52,7 +52,7 @@ const
 var
   S: String;
 begin
-  S:=Specifics.Values[SpecColor2];
+  S:=Specifics.Strings[SpecColor2]; //FIXME: Switch to QkSpecifics.Integers?
   if S<>'' then begin
     C:=clNone;
     try

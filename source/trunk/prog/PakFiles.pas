@@ -109,7 +109,7 @@ var
   Filename1, Filename2: String;
   PakNumber1, PakNumber2: Integer;
 begin
-  PakOfficialFormat:=SetupGameSet.Specifics.Values['PakOfficialFormat'];
+  PakOfficialFormat:=SetupGameSet.Specifics.Strings['PakOfficialFormat'];
   //This function only works properly when fed filename already in the right format!
   I:=Pos('*', PakOfficialFormat);
   if I=0 then
@@ -120,7 +120,7 @@ begin
 
   Filename1:=ExtractFilename(List[Index1]);
   S:=Copy(Filename1, I, Length(Filename1)-Length(PakOfficialFormat)+1);
-  if SetupGameSet.Specifics.Values['PakFormatHex']<>'' then
+  if SetupGameSet.Specifics.Strings['PakFormatHex']<>'' then
     try
       PakNumber1:=StrToInt('$'+S);
     except
@@ -137,7 +137,7 @@ begin
 
   Filename2:=ExtractFilename(List[Index2]);
   S:=Copy(Filename2, I, Length(Filename2)-Length(PakOfficialFormat)+1);
-  if SetupGameSet.Specifics.Values['PakFormatHex']<>'' then
+  if SetupGameSet.Specifics.Strings['PakFormatHex']<>'' then
     try
       PakNumber2:=StrToInt('$'+S);
     except
@@ -166,7 +166,7 @@ var
 begin
  Log(LOG_VERBOSE, 'TGetPakNames.CreatePakList: %s %s %s %s', [Path, CustomFilter, BoolToStr(Backwards), BoolToStr(SearchForTemp)]);
  StrList.Clear;
- PakFileExt:=SetupGameSet.Specifics.Values['PakExt'];
+ PakFileExt:=SetupGameSet.Specifics.Strings['PakExt'];
  if SearchForTemp then
    //We're going to search for QuArK's temp pak files,
    //so we have to force-search ALL pak files.
@@ -175,7 +175,7 @@ begin
    if CustomFilter<>'' then
      PakFileFilter:=CustomFilter
    else
-     PakFileFilter:=SetupGameSet.Specifics.Values['PakFormat'];
+     PakFileFilter:=SetupGameSet.Specifics.Strings['PakFormat'];
  if PakFileFilter='' then
  begin
    if PakFileExt<>'' then
@@ -186,8 +186,8 @@ begin
  I:=Pos('#', PakFileFilter);
  if I>0 then
  begin
-   if SetupGameSet.Specifics.Values['PakFormatHex']<>'' then
-     PakFileMaxNumber:=StrToInt('$'+SetupGameSet.Specifics.Values['PakMaxNumber'])
+   if SetupGameSet.Specifics.Strings['PakFormatHex']<>'' then
+     PakFileMaxNumber:=StrToInt('$'+SetupGameSet.Specifics.Strings['PakMaxNumber'])
    else
      PakFileMaxNumber:=SetupGameSet.IntSpec['PakMaxNumber'];
    if PakFileMaxNumber<=0 then
@@ -195,7 +195,7 @@ begin
    //Setup a list of strings; example: "PAK0.PAK", "PAK1.PAK", ...
    for J:=0 to PakFileMaxNumber do
    begin
-     if SetupGameSet.Specifics.Values['PakFormatHex']<>'' then
+     if SetupGameSet.Specifics.Strings['PakFormatHex']<>'' then
        S := LeftStr(PakFileFilter, I-1) + IntToHex(J, 1) + RightStr(PakFileFilter, Length(PakFileFilter) - I)
      else
        S := LeftStr(PakFileFilter, I-1) + IntToStr(J) + RightStr(PakFileFilter, Length(PakFileFilter) - I);
@@ -206,9 +206,9 @@ begin
  else
  begin
    //First, let's find all the official pak-files.
-   if SetupGameSet.Specifics.Values['PakOfficialFormat']<>'' then
+   if SetupGameSet.Specifics.Strings['PakOfficialFormat']<>'' then
    begin
-     if FindFirst(ConcatPaths([Path, SetupGameSet.Specifics.Values['PakOfficialFormat']]), faAnyFile, sr) = 0 then
+     if FindFirst(ConcatPaths([Path, SetupGameSet.Specifics.Strings['PakOfficialFormat']]), faAnyFile, sr) = 0 then
      begin
        try
          repeat
@@ -267,7 +267,7 @@ var
  FoundFreeOne: Boolean;
 begin
  GameModDir:=GetGameDir;
- if (SetupGameSet.Specifics.Values['AlwaysPak']='')
+ if (SetupGameSet.Specifics.Strings['AlwaysPak']='')
  and (GameModDir=GettmpQuArK) and not Force then
  begin
    FindNextAvailablePakFilename:='';  // no pak file to write
@@ -280,7 +280,7 @@ begin
    GetPakNames.CreatePakList(ExpandFileName(GameModDir), '', True, True);
    if GetPakNames.GetNextPakName(True, AvailablePakFile, True) = false then
    begin
-     PakFileExt:=SetupGameSet.Specifics.Values['PakExt'];
+     PakFileExt:=SetupGameSet.Specifics.Strings['PakExt'];
      PakFileMaxNumber:=SetupGameSet.IntSpec['PakMaxNumber'];
      if PakFileMaxNumber<=0 then
        PakFileMaxNumber:=9;

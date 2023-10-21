@@ -129,7 +129,7 @@ begin
   Log(LOG_VERBOSE, 'Loading PCX file: %s', [self.name]);
   case ReadFormat of
   rf_Default: begin  { as stand-alone file }
-    LibraryToUse:=SetupSubSet(ssFiles, 'PCX').Specifics.Values['LoadLibrary'];
+    LibraryToUse:=SetupSubSet(ssFiles, 'PCX').Specifics.Strings['LoadLibrary'];
     if LibraryToUse='DevIL' then
       LoadFileDevIL(F, FSize)
     else if LibraryToUse='FreeImage' then
@@ -226,14 +226,14 @@ begin
          end;
         ProgressIndicatorIncrement;
        end;
-      Specifics.Add(Data);  { "Data=xxxxx" }
+      Specifics.AddStringFull(Data);  { "Data=xxxxx" }
 
        { reads the palette }
       F.Seek(FSize+1, soCurrent);  { skips remaining data if any (should not) }
       Data:=Spec2;
       SetLength(Data, Length(Spec2)+pcxTaillePalette);
       F.ReadBuffer(Data[Length(Spec2)+1], pcxTaillePalette);
-      Specifics.Add(Data);  { "Pal=xxxxx" }
+      Specifics.AddStringFull(Data);  { "Pal=xxxxx" }
       finally ProgressIndicatorStop; end;
     end
     else

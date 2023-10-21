@@ -83,14 +83,14 @@ begin
   inherited;
 
   Setup:=SetupSubSet(ssFiles, 'TGA');
-  if Setup.Specifics.Values['SaveRLEDevIL']<>'' then
+  if Setup.Specifics.Strings['SaveRLEDevIL']<>'' then
     Flag:=IL_TRUE
   else
     Flag:=IL_FALSE;
   ilSetInteger(IL_TGA_RLE, Flag);
   CheckDevILError(ilGetError);
 
-  if Setup.Specifics.Values['CreateStampDevIL']<>'' then
+  if Setup.Specifics.Strings['CreateStampDevIL']<>'' then
     Flag:=IL_TRUE
   else
     Flag:=IL_FALSE;
@@ -115,7 +115,7 @@ begin
   Log(LOG_VERBOSE, 'Loading TGA file: %s', [self.name]);
   case ReadFormat of
   rf_Default: begin  { as stand-alone file }
-    LibraryToUse:=SetupSubSet(ssFiles, 'TGA').Specifics.Values['LoadLibrary'];
+    LibraryToUse:=SetupSubSet(ssFiles, 'TGA').Specifics.Strings['LoadLibrary'];
     if LibraryToUse='DevIL' then
       LoadFileDevIL(F, FSize)
     else if LibraryToUse='FreeImage' then
@@ -136,7 +136,7 @@ begin
  with Info do
   case Format of
   rf_Default: begin  { as stand-alone file }
-    LibraryToUse:=SetupSubSet(ssFiles, 'TGA').Specifics.Values['SaveLibrary'];
+    LibraryToUse:=SetupSubSet(ssFiles, 'TGA').Specifics.Strings['SaveLibrary'];
     if LibraryToUse='DevIL' then
       SaveFileDevIL(Info)
     else if LibraryToUse='FreeImage' then

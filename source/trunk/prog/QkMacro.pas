@@ -60,8 +60,9 @@ procedure ExecuteObjectMacros(Sender: TComponent; Obj: QObject);
 
 implementation
 
-uses Controls, Forms, Console, FormCfg, Platform, Python, Setup, QkExplorer, QkFileObjects,
-  QkForm, QkFormCfg, QkInclude, QkObjectClassList, qmath, Qk3D, Quarkx, ToolBox1, QkExceptions;
+uses StrUtils, Controls, Forms, Console, FormCfg, Platform, Python, Setup, QkExplorer,
+  QkFileObjects, QkForm, QkFormCfg, QkInclude, QkObjectClassList, qmath, Qk3D, Quarkx,
+  ToolBox1, QkExceptions, ExtraFunctionality;
 
  {------------------------}
 
@@ -191,12 +192,12 @@ begin
       MacroStr:=Copy(MacroStr, 1, J-1);
       case S[I+1] of
        ':': if GetSetupPath(MacroStr, S1, Q1) then
-             MacroStr:=Q1.Specifics.Values[S1]
+             MacroStr:=Q1.Specifics.Strings[S1]
             else
              MacroStr:='';
       {'$': FindFreeMacro(MacroStr, True);
        '£': FindFreeMacro(MacroStr, False);}
-       '~': MacroStr:=Source.Specifics.Values[MacroStr];
+       '~': MacroStr:=Source.Specifics.Strings[MacroStr];
       else
        Raise EError(5579);
       end;
@@ -237,21 +238,20 @@ begin
  PlaceInclBack:=TStringList.Create; try
  PlaceInclBack.Delimiter:=',';
  Q.Acces;
- Q.Specifics.Values[SpecDesc]:='';
+ Q.Specifics.Delete(SpecDesc);
  repeat
   for I:=0 to Q.Specifics.Count-1 do
    begin
-    S:=Q.Specifics[I];
-    J:=Pos('=', S);
-    if (J>3) and (S[J-2]='[') and (S[J-1]=']') then   { process macro }
-     Q.Specifics[I]:=Copy(S, 1, J-3)+'='+Process1(Q, Source, Copy(S, J+1, MaxInt));
+    S:=Q.Specifics.Names[I];
+    if EndsStr(S, '[]') then   { process macro }
+     Q.Specifics.Strings[LeftStr(S, Length(S)-2)]:=Process1(Q, Source, Q.Specifics.StringsFromIndex[I]);
    end;
   for I:=0 to Q.SubElements.Count-1 do
    ProcessMacros(Q.SubElements[I], Source);
 
-  S:=Q.Specifics.Values[SpecIncl];
+  S:=Q.Specifics.Strings[SpecIncl];
   if S='' then Break;
-  Q.Specifics.Values[SpecIncl]:='';
+  Q.Specifics.Delete(SpecIncl);
   L:=TStringList.Create; try
   L.Text:=S;
   for J:=0 to L.Count-1 do
@@ -266,12 +266,12 @@ begin
   end;
   finally L.Free; end;
  until False;
- Q.Specifics.Values[SpecIncl]:=PlaceInclBack.DelimitedText;
+ Q.Specifics.Strings[SpecIncl]:=PlaceInclBack.DelimitedText;
  finally PlaceInclBack.Free; end;
 
- S:=Q.Specifics.Values[SpecCopy];
+ S:=Q.Specifics.Strings[SpecCopy];
  if S='' then Exit;
- Q.Specifics.Values[SpecCopy]:='';
+ Q.Specifics.Delete(SpecCopy);
  L:=TStringList.Create; try
  L.Text:=S;
  for J:=0 to L.Count-1 do
@@ -282,21 +282,21 @@ end;
 (*var
  I, J: Integer;
 begin
- S:=Q.Specifics.Values[SpecIncl];
+ S:=Q.Specifics.Strings[SpecIncl];
  if S<>'' then
   begin
-   Q.Specifics.Values[SpecIncl]:='';
+   Q.Specifics.Delete(SpecIncl);
    L:=TStringList.Create; try
    L.Text:=S;
    for J:=0 to L.Count-1 do
     DoIncludeData(Q, Gr.SubElements[I], L[J]);
    finally L.Free; end;
   end;
- S:=Q.Specifics.Values[SpecTexture];
+ S:=Q.Specifics.Strings[SpecTexture];
  if S<>'' then
   begin
-   ReplaceWithDefaultTex(Q, S, SetupGameSet.Specifics.Values['TextureDef']);
-   Q.Specifics.Values[SpecTexture]:='';
+   ReplaceWithDefaultTex(Q, S, SetupGameSet.Specifics.Strings['TextureDef']);
+   Q.Specifics.Delete(SpecTexture);
   end;
 end;*)
 
@@ -310,12 +310,12 @@ procedure DrawMapMacros(Entity: QObject; Macros, Entities: TQList);
      Width: Integer;
      Color: TColorRef;
     begin
-     S:=Q.Specifics.Values['width'];
+     S:=Q.Specifics.Strings['width']; //FIXME: Switch to QkSpecifics.Float?
      if S='' then
       Width:=2
      else
       Width:=Round(ReadNumValueEx(S));
-     S:=Q.Specifics.Values['color'];
+     S:=Q.Specifics.Strings['color']; //FIXME: Switch to QkSpecifics.Integer?
      if S='' then
       Color:=MapColors(lcAxes)
      else
@@ -337,11 +337,11 @@ procedure DrawMapMacros(Entity: QObject; Macros, Entities: TQList);
     Q.Acces;
     if SameText(Q.Name, 'DrawMap') then
      begin
-      S:=Q.Specifics.Values['Spec'];
+      S:=Q.Specifics.Strings['Spec'];
       if S='' then Exit;
-      Arg:=Q.Specifics.Values['Arg'];
+      Arg:=Q.Specifics.Strings['Arg'];
       if ((Arg='') and (Entity.Specifics.IndexOfName(S)>=0))
-      or ((Arg<>'') and SameText(Entity.Specifics.Values[S],Arg)) then
+      or ((Arg<>'') and SameText(Entity.Specifics.Strings[S],Arg)) then
        begin  { "Entity" has the matching Specific }
         for J:=0 to Q.SubElements.Count-1 do
          begin
@@ -355,14 +355,14 @@ procedure DrawMapMacros(Entity: QObject; Macros, Entities: TQList);
      end
     else if SameText(Q.Name, 'find') then
      begin
-      S:=Q.Specifics.Values['Spec'];
+      S:=Q.Specifics.Strings['Spec'];
       if S='' then Exit;
-      Arg:=Q.Specifics.Values['Arg'];
+      Arg:=Q.Specifics.Strings['Arg'];
       for I:=0 to Entities.Count-1 do   { search for matching entities }
        begin
         Test:=Entities[I];
         if ((Arg='') and (Test.Specifics.IndexOfName(S)>=0))
-        or ((Arg<>'') and (CompareText(Test.Specifics.Values[S],Arg)=0)) then
+        or ((Arg<>'') and (CompareText(Test.Specifics.Strings[S],Arg)=0)) then
          begin  { found an entity }
           for J:=0 to Q.SubElements.Count-1 do
            begin
@@ -377,9 +377,9 @@ procedure DrawMapMacros(Entity: QObject; Macros, Entities: TQList);
      end
     else if SameText(Q.Name, 'Circle') then
      begin
-      V1:=ReadVector(Q.Specifics.Values['center']);
+      V1:=ReadVector(Q.Specifics.Strings['center']); //FIXME: Switch to QkSpecifics.Floats?
       Pt1:=Proj(V1);
-      R:=ReadNumValueEx(Q.Specifics.Values['radius']);
+      R:=ReadNumValueEx(Q.Specifics.Strings['radius']); //FIXME: Switch to QkSpecifics.Floats?
       J:=Round(R*g_pProjZ);
       Pen:=SelectPen;
       Ellipse(g_DrawInfo.DC, Pt1.X-J, Pt1.Y-J, Pt1.X+J, Pt1.Y+J);
@@ -388,15 +388,15 @@ procedure DrawMapMacros(Entity: QObject; Macros, Entities: TQList);
      end
     else if SameText(Q.Name, 'Arrow') then
      begin
-      V1:=ReadVector(Q.Specifics.Values['from']);
+      V1:=ReadVector(Q.Specifics.Strings['from']); //FIXME: Switch to QkSpecifics.Floats?
       Pt1:=Proj(V1);
-      V2:=ReadVector(Q.Specifics.Values['to']);
+      V2:=ReadVector(Q.Specifics.Strings['to']); //FIXME: Switch to QkSpecifics.Floats?
       Pt2:=Proj(V2);
       Pt3.X:=Pt2.X-Pt1.X;
       Pt3.Y:=Pt2.Y-Pt1.Y;
       R:=Sqrt(Sqr(Pt3.X)+Sqr(Pt3.Y));
       if R<rien then Exit;
-      S:=Q.Specifics.Values['arrow'];
+      S:=Q.Specifics.Strings['arrow']; //FIXME: Switch to QkSpecifics.Integer?
       if S='' then
        J:=5
       else
@@ -441,7 +441,7 @@ function QMacro.GetTyp: Char;
 var
  S: String;
 begin
- S:=Specifics.Values['Typ'];
+ S:=Specifics.Strings['Typ'];
  if S='' then
   Result:=#0
  else
@@ -461,7 +461,7 @@ begin
 
  Gr:=QExplorerGroup.Create(LoadStr1(5119), Nil);
  Gr.AddRef(+1); try
- S:=Specifics.Values['Create'];
+ S:=Specifics.Strings['Create'];
  if S<>'' then
   DoIncludeData(Gr, Self, S);
  Result:=CopyToOutside(Gr);
@@ -509,23 +509,23 @@ begin
       end;
     end;
   typCheckBox:
-    if GetSetupPath(Specifics.Values['Path'], Spec, Q) then
+    if GetSetupPath(Specifics.Strings['Path'], Spec, Q) then
      begin
-      if Q.Specifics.Values[Spec]='' then
-       Q.Specifics.Values[Spec]:='1'
+      if Q.Specifics.Strings[Spec]='' then
+       Q.Specifics.Strings[Spec]:='1'
       else
-       Q.Specifics.Values[Spec]:='';
+       Q.Specifics.Strings[Spec]:='';
       UpdateSetup(scNormal);
       Exit;
      end;
   typRadioButton:
-    if GetSetupPath(Specifics.Values['Path'], Spec, Q) then
+    if GetSetupPath(Specifics.Strings['Path'], Spec, Q) then
      begin
-      Q.Specifics.Values[Spec]:='1';
+      Q.Specifics.Strings[Spec]:='1';
       ClearList:=TStringList.Create; try
-      ClearList.Text:=Specifics.Values['Clear'];
+      ClearList.Text:=Specifics.Strings['Clear'];
       for I:=0 to ClearList.Count-1 do
-       Q.Specifics.Values[ClearList[I]]:='';
+       Q.Specifics.Strings[ClearList[I]]:='';
       finally ClearList.Free; end;
       UpdateSetup(scNormal);
       Exit;
@@ -538,14 +538,14 @@ begin
     end;
   typToolBox:
     begin
-     ShowToolBox(Specifics.Values['ToolBox']);
+     ShowToolBox(Specifics.Strings['ToolBox']);
      Exit;
     end;
   typMenu:
     Exit;
   typCode:
     begin
-      Spec:=Specifics.Values['Code'];
+      Spec:=Specifics.Strings['Code'];
       if Spec<>'' then
       begin
         if PyRun_SimpleString(ToPyChar(Spec)) <> 0 then ShowConsole(True);
@@ -554,7 +554,12 @@ begin
     end;
   typMacro:
     begin
-     I:=StrToIntDef(Specifics.Values['count'], 1);
+     try
+      I:=Specifics.Integers['count'];
+     except
+      on EConvertError do
+       I:=1;
+     end;
      while I>0 do
       begin
        ExecuteObjectMacros(Sender, Self);

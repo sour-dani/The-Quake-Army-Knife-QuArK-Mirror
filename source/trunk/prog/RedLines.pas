@@ -141,7 +141,7 @@ end;
 procedure TRedLineButton.Paint;
 var
  Icons: PyObject;
- Icon1: PyImage1;
+ Icon: PyImage;
  N: Integer;
  F: TCustomForm;
 begin
@@ -157,10 +157,10 @@ begin
    else
     N:=0;
   end;
- Icon1:=PyImage1(PyTuple_GetItem(Icons, Ord(Bottom)*3 + N));
- if (Icon1=Nil) or (Icon1^.ob_type <> @TyImage1_Type) then Exit;
+ Icon:=PyImage(PyTuple_GetItem(Icons, Ord(Bottom)*3 + N));
+ if (Icon=Nil) or (Icon^.ob_type <> @TyImage_Type) then Exit;
  if LineY1>0 then DrawLine(LineY1-1);
- Icon1^.Draw(Canvas.Handle, 0,0, ColorToRGB(clWindow));
+ Icon^.Draw(Canvas.Handle, 0,0, ColorToRGB(clWindow));
  if LineY1>0 then DrawLine(LineY1-1);
 end;
 

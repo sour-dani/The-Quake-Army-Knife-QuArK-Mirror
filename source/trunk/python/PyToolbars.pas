@@ -69,7 +69,7 @@ type
     property PageTabs: Byte read FPageTabs write SetPageTabs;
   end;
 
-  TQkBtnGlyph = array[0..5] of PyImage1;
+  TQkBtnGlyph = array[0..5] of PyImage;
 
   TMouseTracker = class(TGraphicControl)
   private
@@ -207,9 +207,9 @@ begin
    FillChar(Icons, SizeOf(Icons), 0)
   else
    if PyArg_ParseTupleX(obj, 'O!O!O!O!O!O!',
-    [@TyImage1_Type, @Icons[0], @TyImage1_Type, @Icons[1],
-     @TyImage1_Type, @Icons[2], @TyImage1_Type, @Icons[3],
-     @TyImage1_Type, @Icons[4], @TyImage1_Type, @Icons[5]])=0 then Exit;
+    [@TyImage_Type, @Icons[0], @TyImage_Type, @Icons[1],
+     @TyImage_Type, @Icons[2], @TyImage_Type, @Icons[3],
+     @TyImage_Type, @Icons[4], @TyImage_Type, @Icons[5]])=0 then Exit;
  finally Py_DECREF(obj); end;
 
  Btn:=TQkToolbarButton.Create(Owner);

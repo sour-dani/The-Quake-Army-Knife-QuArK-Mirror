@@ -218,7 +218,7 @@ begin
    if I>=0 then
     Q.Specifics.Delete(I);
   end;
- Q.Specifics.Add(WriteString);
+ Q.Specifics.AddStringFull(WriteString);
 end;
 
 function QRawFileObject.GetReadStream(var S: TStream) : TStreamPos;
@@ -241,7 +241,7 @@ begin
     end;
    I:=Q.Specifics.IndexOfName('Data');
    if I>=0 then
-    Data:=Q.Specifics[I];
+    Data:=Q.Specifics.StringsFromIndex[I];
   end;
  Result:=Length(Data)-Base;
  if Result<=0 then

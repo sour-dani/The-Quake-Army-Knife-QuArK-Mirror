@@ -322,14 +322,14 @@ begin
   FogColor:=Setup.IntSpec['FogColor'];
   {FrameColor:=Setup.IntSpec['FrameColor'];}
   Setup:=SetupSubSet(ssGeneral, 'DirectX');
-  if Setup.Specifics.Values['DisableDWM']<>'' then
+  if Setup.Specifics.Strings['DisableDWM']<>'' then
     DisableDWM();
   if (DisplayMode=dmWindow) or (DisplayMode=dmFullScreen) then
   begin
-    Fog:=Setup.Specifics.Values['Fog']<>'';
-    Transparency:=Setup.Specifics.Values['Transparency']<>'';
-    Lighting:=Setup.Specifics.Values['Lights']<>'';
-    Culling:=Setup.Specifics.Values['Culling']<>'';
+    Fog:=Setup.Specifics.Strings['Fog']<>'';
+    Transparency:=Setup.Specifics.Strings['Transparency']<>'';
+    Lighting:=Setup.Specifics.Strings['Lights']<>'';
+    Culling:=Setup.Specifics.Strings['Culling']<>'';
   end
   else
   begin
@@ -339,9 +339,10 @@ begin
     Culling:=False;
   end;
   VCorrection2:=2*Setup.GetFloatSpec('VCorrection',1);
-  AllowsGDI:=Setup.Specifics.Values['AllowsGDI']<>'';
-  Dithering:=Setup.Specifics.Values['Dither']<>'';
-  if Setup.Specifics.Values['TextureFiltering'] = '1' then
+  AllowsGDI:=Setup.Specifics.Strings['AllowsGDI']<>'';
+  Dithering:=Setup.Specifics.Strings['Dither']<>'';
+  //FIXME: Use a 'case' instead!
+  if Setup.Specifics.Strings['TextureFiltering'] = '1' then
   begin
     TextureFiltering := tfBilinear;
 
@@ -357,7 +358,7 @@ begin
     if (l_Res <> D3D_OK) then
       raise EErrorFmt(6403, ['SetSamplerState(D3DSAMP_MIPFILTER)', DXGetErrorString9(l_Res)]);
   end
-  else if Setup.Specifics.Values['TextureFiltering'] = '2' then
+  else if Setup.Specifics.Strings['TextureFiltering'] = '2' then
   begin
     TextureFiltering := tfTrilinear;
 
@@ -373,7 +374,7 @@ begin
     if (l_Res <> D3D_OK) then
       raise EErrorFmt(6403, ['SetSamplerState(D3DSAMP_MIPFILTER)', DXGetErrorString9(l_Res)]);
   end
-  else if Setup.Specifics.Values['TextureFiltering'] = '3' then
+  else if Setup.Specifics.Strings['TextureFiltering'] = '3' then
   begin
     TextureFiltering := tfAnisotropic;
 
@@ -410,7 +411,7 @@ begin
       raise EErrorFmt(6403, ['SetSamplerState(D3DSAMP_MIPFILTER)', DXGetErrorString9(l_Res)]);
   end;
   if AllowsGDI then
-    WorkaroundGDI:=Setup.Specifics.Values['WorkaroundGDI']<>''
+    WorkaroundGDI:=Setup.Specifics.Strings['WorkaroundGDI']<>''
   else
     WorkaroundGDI:=false;
 

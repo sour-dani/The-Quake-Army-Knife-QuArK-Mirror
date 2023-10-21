@@ -510,7 +510,7 @@ var
    Description, S: String;
    FDescriptionLeft: Integer;
    FDescLeftOk: Boolean;
-   Image1: PyImage1;
+   Image: PyImage;
    C: array of TColor;
    L: TColorBoxList;
 //   FoundAColor: Boolean;
@@ -561,7 +561,7 @@ var
          if Flags and eoDescription <> 0 then
           begin
            Item.Acces;
-           Description:=Item.Specifics.Values[SpecDesc];
+           Description:=Item.Specifics.Strings[SpecDesc];
           end
          else
           Description:='';
@@ -622,9 +622,9 @@ var
            Py_XINCREF(Etat.Icon);
           end;
          try
-          Image1:=PyImage1(Etat.Icon);
-          if (Image1=Nil)
-          or not ImageList_DrawEx(Image1^.ImageList^.Handle, Image1^.Index,
+          Image:=PyImage(Etat.Icon);
+          if (Image=Nil)
+          or not ImageList_DrawEx(Image^.ImageList^.Handle, Image^.Index,
            DC, X,Y+YOffset, IconSize,IconSize, BkColor, BkColor, Mode[Item.Flags and ofNotLoadedToMemory <> 0]) then
             begin
              R.Left:=X;
@@ -635,8 +635,8 @@ var
           Py_XDECREF(Etat.Icon);
          end;
          if (Item.Flags and (ofFileLink or ofTreeViewSubElement) = ofFileLink or ofTreeViewSubElement)
-         and (InternalImages[iiLinkOverlay,0]<>Nil) and (InternalImages[iiLinkOverlay,0]^.ob_type = @TyImage1_Type) then
-          with PyImage1(InternalImages[iiLinkOverlay,0])^ do
+         and (InternalImages[iiLinkOverlay,0]<>Nil) and (InternalImages[iiLinkOverlay,0]^.ob_type = @TyImage_Type) then
+          with PyImage(InternalImages[iiLinkOverlay,0])^ do
            ImageList_DrawEx(ImageList^.Handle, Index, DC, X,Y+YOffset, IconSize,IconSize, CLR_NONE, CLR_DEFAULT, ILD_TRANSPARENT);
 
          R.Left:=X+IconSize;
@@ -648,7 +648,7 @@ var
            for M:=0 to L.Count-1 do
             begin
              C[M]:=clNone;
-             S:=Item.Specifics.Values[L[M]];
+             S:=Item.Specifics.Strings[L[M]];
              if S<>'' then
               try
                if L.ColorType[M] = 'L' then
@@ -827,7 +827,7 @@ begin
  MinusDC:=CreateCompatibleDC(DC);
  MinusBmp1:=SelectObject(MinusDC, MyTVMinusSign);
  try
-  SetWindowOrgEx(DC, HorzScrollBar.Position, VertScrollBar.Position, Nil);
+  SetWindowOrgEx(DC, HorzScrollBar.Position, VertScrollBar.Position, Nil); //FIXME: Are we handling RightToLeft properly here?
   VisibleRect:=PaintInfo.rcPaint;
   OffsetRect(VisibleRect, HorzScrollBar.Position, VertScrollBar.Position);
 
@@ -1661,7 +1661,7 @@ begin
       R.Right:=ClientWidth;
       Inc(R.Top);
       Dec(R.Bottom);
-      OffsetRect(R, -HorzScrollBar.Position, -VertScrollBar.Position);
+      OffsetRect(R, -HorzScrollBar.Position, -VertScrollBar.Position); //FIXME: Are we handling RightToLeft properly here?
       if EditInfo=Nil then
        begin
         New(EditInfo);

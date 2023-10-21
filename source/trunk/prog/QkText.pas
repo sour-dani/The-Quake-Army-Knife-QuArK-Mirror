@@ -177,13 +177,13 @@ var
  H: THandle;
  P: PChar;
 begin
- Data:=Specifics.Values['Data'];
+ Data:=Specifics.Strings['Data']; //FIXME: Or BYTES?
  if Data='' then Exit;
  H:=GlobalAlloc(gmem_Moveable or gmem_DDEShare, Length(Data)+1);
  if H<>0 then
   begin
    P:=GlobalLock(H);
-   Move(Data[1], P^, Length(Data)+1);
+   Move(Data[1], P^, Length(Data)+1); //FIXME: Char or Bytes?!?
    GlobalUnlock(H);
    SetClipboardData(CF_TEXT, H);
    HasText:=True;
@@ -298,7 +298,7 @@ begin
         Memo1.WordWrap:=True;
         Memo1.ScrollBars:=ssVertical;
        end;
-      Memo1.Lines.Text:=FileObject.Specifics.Values['data'];
+      Memo1.Lines.Text:=FileObject.Specifics.Strings['data'];
       finally MAJ:=False; end;
      end;
  end;

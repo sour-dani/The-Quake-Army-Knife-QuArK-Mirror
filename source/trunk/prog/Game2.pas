@@ -134,7 +134,7 @@ begin
      Q.AddRef(+1);
      try
       Q.Acces;
-      SubItems.Add(Q.Specifics.Values['Description']);
+      SubItems.Add(Q.Specifics.Strings['Description']);
       ImageIndex:=LoadGlobalImageList(Q);
       MakeVisible(False);
       ListView1.Repaint;

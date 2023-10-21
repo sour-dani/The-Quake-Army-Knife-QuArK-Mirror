@@ -285,7 +285,7 @@ begin
      Lmp[I,2]:=I;
    end;
    {PaletteFile:=Nil;}
-   S:=SetupGameSet.Specifics.Values['Palette'];
+   S:=SetupGameSet.Specifics.Bytes['Palette'];
    if S<>'' then
    begin
      if S[1]=':' then
@@ -293,7 +293,7 @@ begin
        L:=GetQuakeContext;
        for J:=0 to L.Count-1 do
        begin
-         S:=L[J].Specifics.Values['Palette'];
+         S:=L[J].Specifics.Bytes['Palette'];
          if S<>'' then
          begin
            I:=Length(S);
@@ -334,8 +334,8 @@ begin
    GameBuffer1^.RefCount:=1;
   {GameBuffer1^.AddOns:=Nil;}
    GameBuffer1^.GameName:=SetupGameSet.Name;
-   GameBuffer1^.TextureExt:=SetupGameSet.Specifics.Values['TextureFormat'];
-   GameBuffer1^.UnifiedPalette:={PaletteFile<>Nil}SetupGameSet.Specifics.Values['UnifiedPalette']<>'';
+   GameBuffer1^.TextureExt:=SetupGameSet.Specifics.Strings['TextureFormat'];
+   GameBuffer1^.UnifiedPalette:={PaletteFile<>Nil}SetupGameSet.Specifics.Strings['UnifiedPalette']<>'';
    GameBuffer1^.PaletteLmp:=Lmp;
    PaletteFromLmp(Lmp, GameBuffer1^.BitmapInfo, @GameBuffer1^.Palette, @GameBuffer1^.PaletteReelle);
  end;
@@ -427,7 +427,7 @@ begin
   L:=GetQuakeContext;
   for I:=L.Count-1 downto 0 do
    begin
-    GameDir:=L[I].Specifics.Values['GameDir'];
+    GameDir:=L[I].Specifics.Strings['GameDir'];
     if GameDir<>'' then
      begin
       Result:=ConvertPath(GameDir);
@@ -436,7 +436,7 @@ begin
    end;
   {/tiglari }
  end;
- Result:=SetupGameSet.Specifics.Values['tmpQuArK'];
+ Result:=SetupGameSet.Specifics.Strings['tmpQuArK'];
  if Result='' then
   Result:='tmpQuArK';
  Result:=ConvertPath(Result);
@@ -444,7 +444,7 @@ end;
 
 function GetBaseDir : String;
 begin
- Result:=SetupGameSet.Specifics.Values['BaseDir'];
+ Result:=SetupGameSet.Specifics.Strings['BaseDir'];
  if Result='*auto*' then
    Result:=GetSteamBaseDir;
  Result:=ConvertPath(Result);
@@ -455,17 +455,17 @@ var
   SteamLibraryPath: String;
   S: String;
 begin
- Result:=SetupGameSet.Specifics.Values['Directory']; //This should have been called GameExecutablePath
+ Result:=SetupGameSet.Specifics.Strings['Directory']; //This should have been called GameExecutablePath
  if Result='*auto*' then
  begin
-   SteamLibraryPath := SetupGameSet.Specifics.Values['SteamLibraryPath'];
+   SteamLibraryPath := SetupGameSet.Specifics.Strings['SteamLibraryPath'];
    if SteamLibraryPath='' then
      SteamLibraryPath:='%steampath%';
-   S := SetupGameSet.Specifics.Values['GameFileLayout'];
+   S := SetupGameSet.Specifics.Strings['GameFileLayout'];
    if S = 'username' then
-     Result := ConcatPaths([SteamLibraryPath, SetupSubSet(ssGames, 'Steam').Specifics.Values['SteamAppsDirectory'], '%steamuser%', '%steamgamedir%'])
+     Result := ConcatPaths([SteamLibraryPath, SetupSubSet(ssGames, 'Steam').Specifics.Strings['SteamAppsDirectory'], '%steamuser%', '%steamgamedir%'])
    else if S = 'common' then
-     Result := ConcatPaths([SteamLibraryPath, SetupSubSet(ssGames, 'Steam').Specifics.Values['SteamAppsDirectory'], '%steamcommon%', '%steamgamedir%'])
+     Result := ConcatPaths([SteamLibraryPath, SetupSubSet(ssGames, 'Steam').Specifics.Strings['SteamAppsDirectory'], '%steamcommon%', '%steamgamedir%'])
    else
    begin
      //Shouldn't happen!
@@ -514,7 +514,7 @@ begin
   L:=GetQuakeContext;
   for I:=0 to L.Count-1 do
   begin
-    GameDir:=L[I].Specifics.Values['GameDir'];
+    GameDir:=L[I].Specifics.Strings['GameDir'];
     if GameDir<>'' then
     begin
       Inc(Count);
@@ -609,7 +609,7 @@ var
  begin
    Result := '';
    Setup := SetupGameset;
-   if (Setup.Specifics.Values['UseQrkGroupFolder']<>'') then
+   if (Setup.Specifics.Strings['UseQrkGroupFolder']<>'') then
    begin
      Q := obj.Parent;
      while (Q <> nil) and (Q.Parent <> nil) do
@@ -630,10 +630,10 @@ var
      exit;
    path:=StringReplace(path, '%output%', argument_outputfile, [rfReplaceAll]);
    path:=StringReplace(path, '%grouppath%', argument_grouppath, [rfReplaceAll]);
-   if Setup.Specifics.Values['BuildPgmsDir']<>'' then
-     path:=StringReplace(path, '%buildpgmsdir%', Setup.Specifics.Values['BuildPgmsDir'], [rfReplaceAll]);
+   if Setup.Specifics.Strings['BuildPgmsDir']<>'' then
+     path:=StringReplace(path, '%buildpgmsdir%', Setup.Specifics.Strings['BuildPgmsDir'], [rfReplaceAll]);
 
-   if SetupGameSet.Specifics.Values['Steam']='1' then
+   if SetupGameSet.Specifics.Strings['Steam']='1' then
      path:=StringReplace(path, '%sourcesdkdir%', SourceSDKDir, [rfReplaceAll]); //Can contain %basepath%
 
    path:=StringReplace(path, '%mappath%', argument_mappath, [rfReplaceAll]);
@@ -647,13 +647,13 @@ var
    path:=StringReplace(path, '%basedir%', setupbasedir, [rfReplaceAll]);
    path:=StringReplace(path, '%quarkpath%', GetQPath(pQuArK), [rfReplaceAll]);
 
-   if SetupGameSet.Specifics.Values['Steam']='1' then
+   if SetupGameSet.Specifics.Strings['Steam']='1' then
    begin
-     path:=StringReplace(path, '%steampath%',    SteamSetup.Specifics.Values['SteamDirectory'], [rfReplaceAll]);
+     path:=StringReplace(path, '%steampath%',    SteamSetup.Specifics.Strings['SteamDirectory'], [rfReplaceAll]);
      path:=StringReplace(path, '%steamappid%',   SteamAppID, [rfReplaceAll]);
      path:=StringReplace(path, '%steamgamedir%', GetSteamGameDir, [rfReplaceAll]);
-     path:=StringReplace(path, '%steamuser%',    SteamSetup.Specifics.Values['SteamUser'], [rfReplaceAll]);
-     path:=StringReplace(path, '%steamcommon%',  SteamSetup.Specifics.Values['CommonDirectory'], [rfReplaceAll]); 
+     path:=StringReplace(path, '%steamuser%',    SteamSetup.Specifics.Strings['SteamUser'], [rfReplaceAll]);
+     path:=StringReplace(path, '%steamcommon%',  SteamSetup.Specifics.Strings['CommonDirectory'], [rfReplaceAll]); 
    end;
  end;
 
@@ -686,7 +686,7 @@ begin
   end;
   if FileToResolve.FileType <> ftPath then
   begin
-    if (S<>'') and (Setup.Specifics.Values[S]<>'') then
+    if (S<>'') and (Setup.Specifics.Strings[S]<>'') then
     begin
       // stupid program that wants to run in the base dir
       Result.Workdir := ConcatPaths([setupdirectory, setupbasedir]);
@@ -706,7 +706,7 @@ begin
     end;
 
     //Steam path changes
-    if SetupGameSet.Specifics.Values['Steam']='1' then
+    if SetupGameSet.Specifics.Strings['Steam']='1' then
       if FileToResolve.FileType = ftTool then
         if (GetSteamCompiler = 'source2007') or (GetSteamCompiler = 'source2009') or (GetSteamCompiler = 'orangebox') or (GetSteamCompiler = 'source2013sp') or (GetSteamCompiler = 'source2013mp') then
         begin
@@ -717,7 +717,7 @@ begin
             Result.Workdir:=LeftStr(Result.Workdir, I-1);
         end;
 
-    MapExt := Setup.Specifics.Values['MapExt'];
+    MapExt := Setup.Specifics.Strings['MapExt'];
     if MapExt = '' then
       MapExt := '.map';
     argument_mapfile := ConcatPaths([argument_mappath, FileToResolve.AFilename + MapExt]);
@@ -774,7 +774,7 @@ begin
   L:=GetQuakeContext;
   for I:=L.Count-1 downto 0 do
   begin
-    SourceDir:=L[I].Specifics.Values['SourceDir'];
+    SourceDir:=L[I].Specifics.Strings['SourceDir'];
     if SourceDir<>'' then
       Dirs.Add(SourceDir);
   end;
@@ -883,7 +883,7 @@ begin
   L:=GetQuakeContext;
   for I:=L.Count-1 downto 0 do
   begin
-    SourceDir:=L[I].Specifics.Values['SourceDir'];
+    SourceDir:=L[I].Specifics.Strings['SourceDir'];
     if SourceDir<>'' then
     begin
       Result:=GetGameFileBase(SourceDir, FileName, PakFile, False);
@@ -932,10 +932,10 @@ function GetGameFileBase(const BaseDir, FileName, PakFileName: String; LookInCD:
    CD, CDDir: String;
  begin
    Result:='';
-   CDDir:=SetupGameSet.Specifics.Values['CDDir'];
+   CDDir:=SetupGameSet.Specifics.Strings['CDDir'];
    if CDDir='' then
      Exit;  // no CD to look in
-   CD:=SetupGameSet.Specifics.Values['CD'];
+   CD:=SetupGameSet.Specifics.Strings['CD'];
    if CD='' then
      Exit; // no CD drive configured
    Result:=ConcatPaths([CD, CDDir, BaseDir]);
@@ -1008,12 +1008,12 @@ begin
     end;
 
     //Steam filesystem access
-    if SetupGameSet.Specifics.Values['Steam']='1' then
+    if SetupGameSet.Specifics.Strings['Steam']='1' then
     begin
       SteamRunning := RunSteam;
 
       if not SteamRunning then
-        Log(LOG_WARNING, 'Steam is not running. Unable to extract files from it.')
+        Log(LOG_WARNING, 'Steam is not running. Unable to extract files from it.') //FIXME: Move to dict!
       else
       begin
         RestartAliasing(FileName);
@@ -1488,7 +1488,7 @@ begin
  try
    L:=TStringList.Create;
    try
-     L.Text:=SetupGameSet.Specifics.Values['AddOns'];
+     L.Text:=SetupGameSet.Specifics.Strings['AddOns'];
      for I:=0 to L.Count-1 do
       with ListView1.Items.Add do
        begin
@@ -1498,7 +1498,7 @@ begin
         if Q<>Nil then
          begin
           Q.Acces;
-          SubItems.Add(Q.Specifics.Values['Description']);
+          SubItems.Add(Q.Specifics.Strings['Description']);
          end;
        end;
    finally
@@ -1556,7 +1556,7 @@ var
   CheckDir: String;
   TryingToFind: String;
 begin
-  CheckDir:=SetupGameSet.Specifics.Values['CheckDirectory'];
+  CheckDir:=SetupGameSet.Specifics.Strings['CheckDirectory'];
   Result:=FileExistsWild(QuickResolveFilename(QuakeDir), CheckDir, @TryingToFind);
   if not Result then
   begin
@@ -1577,21 +1577,21 @@ end;
 
 function GameMapPath : String;
 begin
-  Result:=SetupGameSet.Specifics.Values['MapPath'];
+  Result:=SetupGameSet.Specifics.Strings['MapPath'];
   if Result='' then
     Result:='maps';
 end;
 
 function GameModelPath : String;
 begin
-  Result:=SetupGameSet.Specifics.Values['MdlPath'];
+  Result:=SetupGameSet.Specifics.Strings['MdlPath'];
   if Result='' then
     Result:='models';
 end;
 
 function GameShaderList : String;
 begin
-  Result:=SetupGameSet.Specifics.Values['ShaderList'];
+  Result:=SetupGameSet.Specifics.Strings['ShaderList'];
   if Result='' then
     Result:=ConcatPaths([GameShadersPath, 'shaderlist.txt']);
 end;
@@ -1600,10 +1600,10 @@ function SteamAppID : String;
 var
   S: String;
 begin
-  Result := SetupGameSet.Specifics.Values['SteamAppID'];
+  Result := SetupGameSet.Specifics.Strings['SteamAppID'];
   if Result = '*auto*' then
   begin
-    S := SetupGameSet.Specifics.Values['SteamGame'];
+    S := SetupGameSet.Specifics.Strings['SteamGame'];
     if S = 'HL2' then
       Result := '220'
     else if S = 'CSS' then
@@ -1637,10 +1637,10 @@ function GetSteamGameDir : String;
 var
   S: String;
 begin
-  Result := SetupGameSet.Specifics.Values['GameDir'];
+  Result := SetupGameSet.Specifics.Strings['GameDir'];
   if Result = '*auto*' then
   begin
-    S := SetupGameSet.Specifics.Values['SteamGame'];
+    S := SetupGameSet.Specifics.Strings['SteamGame'];
     if S = 'HL2' then
       Result := 'half-life 2'
     else if S = 'CSS' then
@@ -1679,10 +1679,10 @@ function GetSteamBaseDir : String;
 var
   S: String;
 begin
-  Result := SetupGameSet.Specifics.Values['BaseDir'];
+  Result := SetupGameSet.Specifics.Strings['BaseDir'];
   if Result = '*auto*' then
   begin
-    S := SetupGameSet.Specifics.Values['SteamGame'];
+    S := SetupGameSet.Specifics.Strings['SteamGame'];
     if S = 'HL2' then
       Result := 'hl2'
     else if S = 'CSS' then
@@ -1716,10 +1716,10 @@ function SourceSDKDir : String;
 var
   S: String;
 begin
-  Result := SetupGameSet.Specifics.Values['SourceSDKDir'];
+  Result := SetupGameSet.Specifics.Strings['SourceSDKDir'];
   if Result = '*auto*' then
   begin
-    S := SetupGameSet.Specifics.Values['SteamGame'];
+    S := SetupGameSet.Specifics.Strings['SteamGame'];
     if (S = 'HL2') or (S = 'CSS') or (S = 'HL2:DM') or (S = 'HL:DM:S') or (S = 'Portal') or (S = 'TF2') then
       Result := '%basepath%\bin'
     else
@@ -1753,10 +1753,10 @@ function GetSteamCompiler : String;
 var
   S: String;
 begin
-  Result := SetupGameSet.Specifics.Values['Compiler'];
+  Result := SetupGameSet.Specifics.Strings['Compiler'];
   if Result = '*auto*' then
   begin
-    S := SetupGameSet.Specifics.Values['SteamGame'];
+    S := SetupGameSet.Specifics.Strings['SteamGame'];
     if S = 'HL2' then
       Result := 'source2009'
     else if S = 'CSS' then
@@ -1862,7 +1862,7 @@ begin
     finally
       L.Free;
     end;
-    SetupGameSet.Specifics.Values['AddOns']:=S;
+    SetupGameSet.Specifics.Strings['AddOns']:=S;
     ModalResult:=mrOk;
   end
   else

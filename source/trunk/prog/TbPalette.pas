@@ -142,7 +142,7 @@ begin
    Spec:=nSpec;
     { reads the palette from the object }
    FillChar(PaletteLmp, SizeOf(PaletteLmp), 0);
-   S:=Link.Specifics.Values[Spec];
+   S:=Link.Specifics.Bytes[Spec];
    I:=Length(S);
    if I>SizeOf(TPaletteLmp) then I:=SizeOf(TPaletteLmp);
    Move(PChar(S)^, PaletteLmp, I);
@@ -247,7 +247,7 @@ var
 begin
  Editing;
  SetString(S, PChar(@Lmp), SizeOf(Lmp));
- if S<>Link.Specifics.Values[Spec] then
+ if S<>Link.Specifics.Bytes[Spec] then
   Undo.Action(Link, TSpecificUndo.Create(LoadStr1(595), Spec, S, sp_Auto, Link));
 end;
 

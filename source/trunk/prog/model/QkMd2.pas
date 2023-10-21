@@ -193,7 +193,7 @@ begin
         Inc(Tris);
         Inc(CTris);
        end;
-      Comp.Specifics.Add(S);    { Tris= }
+      Comp.Specifics.AddStringFull(S);    { Tris= }
     finally
       FreeMem(STData);
     end;
@@ -232,7 +232,7 @@ begin
             CVert^[K]:=v[K]*FrameData^.scale[K]+FrameData^.translate[K];
         Inc(CVert);
        end;
-      Frame.Specifics.Add(S);
+      Frame.Specifics.AddStringFull(S);
      end;
   finally
     FreeMem(FrameData);

@@ -61,7 +61,7 @@ begin
   CVert^[0]:=P[0];
   CVert^[1]:=P[1];
   CVert^[2]:=P[2];
-  Specifics.Add(s);
+  Specifics.AddStringFull(s);
 end;
 
 function QTagFrame.GetPosition: vec3_p;
@@ -88,7 +88,7 @@ begin
   SetLength(S, Length(Spec2)+SizeOf(TMatrixTransformation));
   PChar(CVert):=PChar(S)+Length(Spec2);
   Move(P, CVert^, Sizeof(TMatrixTransformation));
-  Specifics.Add(s);
+  Specifics.AddStringFull(s);
 end;
 
 procedure QTagFrame.GetRotMatrix(var P: PMatrixTransformation);

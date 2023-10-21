@@ -211,7 +211,7 @@ function GetMapFormat(const nMode: TGameCode) : TMapFormatTypes;
 var
   S : PChar;
 begin
-  S:=PChar(SetupSubSet(ssGames, GetGameName(nMode)).Specifics.Values['OutputMapFormat']);
+  S:=PChar(SetupSubSet(ssGames, GetGameName(nMode)).Specifics.Strings['OutputMapFormat']);
   if      StrComp(S, 'Classic Quake')    = 0 then Result := CQType
   else if StrComp(S, 'Quark etp')        = 0 then Result := QetpType
   else if StrComp(S, 'Valve 220')        = 0 then Result := V220Type
@@ -226,8 +226,6 @@ begin
 end;
 
 procedure ResolveMapSaveSettings(var MapSaveSettings: TMapSaveSettings);
-var
-  MapOptionSpecs : TSpecificsList;
 begin
   with MapSaveSettings do
   begin
@@ -245,13 +243,19 @@ begin
       MapVersion:=0;
       if GameCode=mjDoom3 then
       begin
-        MapOptionSpecs:=SetupSubSet(ssFiles,'MAP').Specifics;
-        if MapOptionSpecs.Values['SaveMapVersion'] = '1' then
-          MapVersion:=1
-        else if MapOptionSpecs.Values['SaveMapVersion'] = '2' then
-          MapVersion:=2
-        else
-          MapVersion:=2;
+        try
+          case SetupSubSet(ssFiles,'MAP').Specifics.Integers['SaveMapVersion'] of
+          1: MapVersion:=1;
+          2: MapVersion:=2;
+          else
+            //FIXME: Log!
+            MapVersion:=2;
+          end;
+        except
+          on EConvertError do
+            //FIXME: Log!
+            MapVersion:=2;
+        end;
       end;
       if GameCode=mjQuake4 then
         MapVersion:=3;
@@ -343,7 +347,7 @@ end;
 
 function QMap.GetOutputMapFileName : String;
 begin
- Result:=Specifics.Values['FileName'];
+ Result:=Specifics.Strings['FileName'];
  if Result='' then
   Result:=Name;
  BuildCorrectFileName(Result);
@@ -714,7 +718,7 @@ expected one.
      if (C=#13) or ((C=#10) and not Juste13) then
        Inc(LineNoBeingParsed);
      Juste13:=C=#13;
-     if StartsStr(S,'"') and EndsStr(S,'"') then
+     if StartsStr('"', S) and EndsStr('"', S) then
      begin
        S:=MidStr(S,2,Length(S)-2);
        SymbolType:=sStringQuotedToken;
@@ -986,8 +990,8 @@ expected one.
      if not (Q is QTextureSin) then
        Q:=Nil;
    end;
-   Contents:=StrToInt(Q.Specifics.Values['Contents']);
-   Flags:=StrToInt(Q.Specifics.Values['Flags']);
+   Contents:=Q.Specifics.Integers['Contents'];
+   Flags:=Q.Specifics.Integers['Flags'];
    while SymbolType=sStringToken do
    begin  { verbose but fast, c.f. QkSin: QTextureSin.LoadFile }
     if S = 'color' then  { three following values }
@@ -1002,14 +1006,14 @@ expected one.
       ThreeSing[2] := NumericValue;
       S1 := S1+' '+FloatToStrF(NumericValue,ffFixed,7,2);
       ReadSymbol(sNumValueToken);
-      Surface.Specifics.Add('color='+S1);
+      Surface.Specifics.AddString('color', S1); //FIXME: Switch to QkSpecifics.Integers?
     { Surface.SetFloatsSpec('color', ThreeSing);  }
      end
     else
     if S = 'directstyle' then { following string value }
      begin
       ReadSymbol(sStringToken);
-      Surface.Specifics.Add('directstyle='+S);
+      Surface.Specifics.AddString('directstyle', S);
       ReadSymbol(sStringToken);
      end
     else
@@ -1031,12 +1035,12 @@ expected one.
                 end;
         'd' : if S1 = 'direct' then
                 begin
-                 Surface.Specifics.Add('direct='+IntToStr(Round(LastValue)));
+                 Surface.Specifics.AddInteger('direct', Round(LastValue));
                 end
               else
               if S1 = 'directangle' then
                 begin
-                 Surface.Specifics.Add('directangle='+IntToStr(Round(LastValue)));
+                 Surface.Specifics.AddInteger('directangle', Round(LastValue));
                 end;
         'f' : if S1 = 'friction' then
                 begin
@@ -1044,7 +1048,7 @@ expected one.
                 end;
         'l' : if S1 = 'lightvalue' then { assuming that this is the old Value }
                 begin
-                  Surface.Specifics.Add('Value='+IntToStr(Round(LastValue)));
+                  Surface.Specifics.AddInteger('Value', Round(LastValue));
                 end;
         'n' : if S1 = 'nonlitvalue' then { note name discrepancy }
                 begin
@@ -1066,15 +1070,15 @@ expected one.
               else
               if S1 = 'trans_angle' then
                 begin
-                 Surface.Specifics.Add('trans_angle='+IntToStr(Round(LastValue)));
+                 Surface.Specifics.AddInteger('trans_angle', Round(LastValue));
                 end;
      end
     end
    end;
    { now set Flags & Contents }
    S1 := IntToStr(Flags);
-   Surface.Specifics.Values['Contents']:=IntToStr(Contents);
-   Surface.Specifics.Values['Flags']:=IntToStr(Flags);
+   Surface.Specifics.Integers['Contents']:=Contents;
+   Surface.Specifics.Integers['Flags']:=Flags;
   { /tiglari }
  end;
 
@@ -1098,7 +1102,7 @@ expected one.
          ReadSymbol(sStringToken);
          if Symboltype=sStringToken then
          begin
-           Surface.Specifics.Values['_esp_'+S]:=Val
+           Surface.Specifics.Strings['_esp_'+S]:=Val
          end;
          ReadSymbol(sStringToken);
        end;
@@ -1108,7 +1112,7 @@ expected one.
      if S='surfaceLight' then
      begin
        ReadSymbol(sStringToken);
-       Surface.Specifics.Values['surfaceLight']:=S;
+       Surface.Specifics.Strings['surfaceLight']:=S;
        ReadSymbol(sNumValueToken);
      end
      else
@@ -1127,14 +1131,14 @@ expected one.
      if S='surfaceAngle' then
      begin
        ReadSymbol(sStringToken);
-       Surface.Specifics.Values['surfaceAngle']:=S;
+       Surface.Specifics.Strings['surfaceAngle']:=S;
        ReadSymbol(sNumValueToken);
      end
      else
      if s='surfaceDensity' then
      begin
        ReadSymbol(sStringToken);
-       Surface.Specifics.Values['surfaceDensity']:=S;
+       Surface.Specifics.Strings['surfaceDensity']:=S;
        ReadSymbol(sNumValueToken);
      end
      else
@@ -1196,29 +1200,29 @@ expected one.
    XY: String;
  begin
    //Lightmap name
-   Surface.Specifics.Values['CoD2_lightmap']:=S;
+   Surface.Specifics.Strings['CoD2_lightmap']:=S;
    ReadSymbol(sStringToken);
 
    //Lightmap size
    XY:=FloatToStrF(NumericValue,ffFixed,7,2);
    ReadSymbol(sNumValueToken);
    XY:=XY+' '+FloatToStrF(NumericValue,ffFixed,7,2);
-   Surface.Specifics.Values['CoD2_lightmap_size']:=XY;
+   Surface.Specifics.Strings['CoD2_lightmap_size']:=XY;
    ReadSymbol(sNumValueToken);
 
    //Lightmap shift
    XY:=FloatToStrF(NumericValue,ffFixed,7,2);
    ReadSymbol(sNumValueToken);
    XY:=XY+' '+FloatToStrF(NumericValue,ffFixed,7,2);
-   Surface.Specifics.Values['CoD2_lightmap_shift']:=XY;
+   Surface.Specifics.Strings['CoD2_lightmap_shift']:=XY;
    ReadSymbol(sNumValueToken);
 
    //Lightmap rotate
-   Surface.Specifics.Values['CoD2_lightmap_rotate']:=FloatToStrF(NumericValue,ffFixed,7,2);
+   Surface.Specifics.Strings['CoD2_lightmap_rotate']:=FloatToStrF(NumericValue,ffFixed,7,2);
    ReadSymbol(sNumValueToken);
 
    //Lightmap skew
-   Surface.Specifics.Values['CoD2_lightmap_skew']:=FloatToStrF(NumericValue,ffFixed,7,2);
+   Surface.Specifics.Strings['CoD2_lightmap_skew']:=FloatToStrF(NumericValue,ffFixed,7,2);
    ReadSymbol(sNumValueToken);
  end;
 
@@ -1245,7 +1249,7 @@ expected one.
        S:=Copy(S, Length(TexPath), MaxInt);
    end;
 
-   if SetupGameSet.Specifics.Values['TextureNameUppercase']<>'' then
+   if SetupGameSet.Specifics.Strings['TextureNameUppercase']<>'' then
      S:=LowerCase(S);
    Q2Tex:=Q2Tex or ContainsText(S, '/');
 
@@ -1348,7 +1352,7 @@ expected one.
        S:=Copy(S, Length(TexPath), MaxInt);
    end;
 
-   if SetupGameSet.Specifics.Values['TextureNameUppercase']<>'' then
+   if SetupGameSet.Specifics.Strings['TextureNameUppercase']<>'' then
      S:=LowerCase(S);
    Q2Tex:=Q2Tex or ContainsText(S, '/');
 
@@ -1435,7 +1439,7 @@ expected one.
        S:=Copy(S, Length(TexPath), MaxInt);
    end;
 
-   if SetupGameSet.Specifics.Values['TextureNameUppercase']<>'' then
+   if SetupGameSet.Specifics.Strings['TextureNameUppercase']<>'' then
      S:=LowerCase(S);
    Q2Tex:=Q2Tex or ContainsText(S, '/');
 
@@ -1529,7 +1533,7 @@ expected one.
        S:=Copy(S, Length(TexPath), MaxInt);
    end;
 
-   if SetupGameSet.Specifics.Values['TextureNameUppercase']<>'' then
+   if SetupGameSet.Specifics.Strings['TextureNameUppercase']<>'' then
      S:=LowerCase(S);
    Q2Tex:=Q2Tex or ContainsText(S, '/');
 
@@ -1614,7 +1618,7 @@ expected one.
     P.SubElements.Add(Surface);
     Surface.SetThreePoints(V[1], V[3], V[2]);
 
-    if SetupGameSet.Specifics.Values['TextureNameUppercase']<>'' then
+    if SetupGameSet.Specifics.Strings['TextureNameUppercase']<>'' then
       S:=LowerCase(S);
     Q2Tex:=Q2Tex or ContainsText(S, '/');
 
@@ -1691,16 +1695,16 @@ expected one.
         if SymbolType<>sNumValueToken then
          begin
           Result:=mjHexen;
-          P.Specifics.Values['H2_light']:=IntToStr(Round(NumericValue));
+          P.Specifics.Integers['H2_light']:=Round(NumericValue);
           //FIXME: Could also be bad Call of Duty 2 file (when the 'iwmap 4' header is missing)
          end
         else
          begin  { Quake 2, Heretic2, FAKK2, EF2, Mohaa : read the three fields }
           ContentsFlags:=NumericValue1;
-          Surface.Specifics.Values['Contents']:=IntToStr(NumericValue1);
-          Surface.Specifics.Values['Flags']:=IntToStr(Round(NumericValue));
+          Surface.Specifics.Integers['Contents']:=NumericValue1;
+          Surface.Specifics.Integers['Flags']:=Round(NumericValue);
           ReadSymbol(sNumValueToken);
-          Surface.Specifics.Values['Value']:=IntToStr(Round(NumericValue));
+          Surface.Specifics.Integers['Value']:=Round(NumericValue);
           ReadSymbol(sNumValueToken);
           if Result=mjQuake then
             Result:=mjNotQuake1;
@@ -1722,13 +1726,13 @@ expected one.
               //Result:=mjKMQuake2;
               NumericValue2:=Round(NumericValue);
               ReadSymbol(sNumValueToken);
-              Surface.Specifics.Values['KMQuake2_color']:=IntToStr(NumericValue1) + ' ' + IntToStr(NumericValue2) + ' ' + IntToStr(Round(NumericValue));
+              Surface.Specifics.Strings['KMQuake2_color']:=IntToStr(NumericValue1) + ' ' + IntToStr(NumericValue2) + ' ' + IntToStr(Round(NumericValue));
               ReadSymbol(sNumValueToken);
              end
             else
              begin
               Result:=mjCoD;
-              Surface.Specifics.Add('CoD_samplesize='+IntToStr(NumericValue1));
+              Surface.Specifics.AddInteger('CoD_samplesize', NumericValue1);
              end;
           end;
          end;
@@ -1857,7 +1861,7 @@ expected one.
         S:=Copy(S, Length(TexPath), MaxInt);
     end;
 
-    if SetupGameSet.Specifics.Values['TextureNameUppercase']<>'' then
+    if SetupGameSet.Specifics.Strings['TextureNameUppercase']<>'' then
       S:=LowerCase(S);
     Q2Tex:=Q2Tex or ContainsText(S, '/');
 
@@ -1875,10 +1879,10 @@ expected one.
     begin
       NumericValue1:=Round(NumericValue);
       ReadSymbol(sNumValueToken);
-      Surface.Specifics.Values['Contents']:=IntToStr(NumericValue1);
-      Surface.Specifics.Values['Flags']:=IntToStr(Round(NumericValue));
+      Surface.Specifics.Integers['Contents']:=NumericValue1;
+      Surface.Specifics.Integers['Flags']:=Round(NumericValue);
       ReadSymbol(sNumValueToken);
-      Surface.Specifics.Values['Value']:=IntToStr(Round(NumericValue));
+      Surface.Specifics.Integers['Value']:=Round(NumericValue);
       ReadSymbol(sNumValueToken);
       Result:=mjNotQuake1;
     end
@@ -1996,7 +2000,7 @@ expected one.
         S:=Copy(S, Length(TexPath), MaxInt);
     end;
 
-    if SetupGameSet.Specifics.Values['TextureNameUppercase']<>'' then
+    if SetupGameSet.Specifics.Strings['TextureNameUppercase']<>'' then
       S:=LowerCase(S);
     Q2Tex:=Q2Tex or ContainsText(S, '/');
 
@@ -2275,7 +2279,7 @@ begin
                 System.Delete(S, I, 1);
                end;
             end;
-            L.Add(S1+'='+S);
+            L.AddString(S1, S);
             { stuff for dealing with model attributes in BSP entity lists }
             if (BSP<>Nil) and SameText(S1, 'model') and (S<>'') and (S[1]='*') then
              begin
@@ -2498,8 +2502,8 @@ begin
         EntitePoly:=TTreeMapSpec(HullList[I]);
         if EntitePoly<>Nil then
          begin
-          if EntitePoly.Specifics.Values['origin']<>'' then
-           Delta:=ReadVector(EntitePoly.Specifics.Values['origin'])
+          if EntitePoly.Specifics.Strings['origin']<>'' then
+           Delta:=ReadVector(EntitePoly.Specifics.Strings['origin']) //FIXME: Switch to QkSpecifics.Floats?
           else
            Delta:=OriginVectorZero;
           BspHull:=BSP.CreateHull(I, EntitePoly as TTreeMapGroup, Delta);
@@ -2590,7 +2594,7 @@ begin
       try
         ModeJeu:=ReadEntityList(Racine, Source, Nil);
         SubElements.Add(Racine);
-        Specifics.Values['Root']:=Racine.Name+Racine.TypeInfo;
+        Specifics.Strings['Root']:=Racine.Name+Racine.TypeInfo;
         ObjectGameCode:=ModeJeu;
       finally
         Racine.AddRef(-1);
@@ -2612,7 +2616,7 @@ var
 begin
  with Info do case Format of
   rf_Default: begin  { as stand-alone file }
-      Root:=SubElements.FindName(Specifics.Values['Root']);
+      Root:=SubElements.FindName(Specifics.Strings['Root']);
       if (Root=Nil) or not (Root is TTreeMapBrush) then
        Raise EError(5558);
       Root.LoadAll;
@@ -2623,7 +2627,7 @@ begin
        if Specifics.IndexOfName('hxstrings')>=0 then
         begin
          HxStrings:=TStringList.Create;
-         HxStrings.Text:=Specifics.Values['hxstrings'];
+         HxStrings.Text:=Specifics.Strings['hxstrings'];
         end;
 
        { .MAP comment header, which explains that this .MAP has been written
@@ -2641,12 +2645,12 @@ begin
        begin
          // Rowdy: write an extra line to indicate we are using version 1 .map file
          // format or Doom 3's default version 2.
-         if MapOptionSpecs.Values['SaveMapVersion'] = '1' then
+         if MapOptionSpecs.Strings['SaveMapVersion'] = '1' then
          begin
            MapSaveSettings.MapVersion:=1;
            Dest.Add('Version 1');
          end
-         else if MapOptionSpecs.Values['SaveMapVersion'] = '2' then
+         else if MapOptionSpecs.Strings['SaveMapVersion'] = '2' then
          begin
            MapSaveSettings.MapVersion:=2;
            Dest.Add('Version 2');
@@ -2670,11 +2674,11 @@ begin
        Dest.Text:=Dest.Text;   { #13 -> #13#10 }
 
        saveflags:=0;
-       if SetupSubSet(ssMap,'Options').Specifics.Values['IgnoreToBuild']<>'' then
+       if SetupSubSet(ssMap,'Options').Specifics.Strings['IgnoreToBuild']<>'' then
          saveflags:=saveflags or soIgnoreToBuild;
-       if not (MapOptionSpecs.Values['UseFPCoord']<>'') then
+       if not (MapOptionSpecs.Strings['UseFPCoord']<>'') then
          saveflags:=saveflags or soDisableFPCoord;
-       if not (MapOptionSpecs.Values['UseIntegralVertices']<>'') then
+       if not (MapOptionSpecs.Strings['UseIntegralVertices']<>'') then
          saveflags:=saveflags or soUseIntegralVertices;
        saveflags:=saveflags or IntSpec['saveflags']; {merge in selonly}
 
@@ -2687,7 +2691,7 @@ begin
        end;
        Dest.SaveToStream(F);
        if HxStrings<>Nil then
-        Specifics.Values['hxstrings']:=HxStrings.Text;
+        Specifics.Strings['hxstrings']:=HxStrings.Text;
       finally
        Dest.Free;
        List.Free;
@@ -2794,7 +2798,7 @@ procedure RitualSurfaceParms(F: TTexturedTreeMap; var S: String);
 var
   Q: QPixelSet;
   S1, SpecStr, Spec, Val, Val2: String;
-  I, Pozzie: Integer;
+  I: Integer;
   Single3: array[1..3] of Single;
   { tiglari }
   rval : Single; { for Value/lightvalue }
@@ -2803,14 +2807,13 @@ begin
   if Q<>Nil then Q:=Q.LoadPixelSet;      { load it }
   for I := 0 to F.Specifics.Count-1 do
   begin
-    SpecStr:=F.Specifics.Strings[I];
-    if Copy(SpecStr,0,5)='_esp_' then
+    SpecStr:=F.Specifics.Names[I];
+    if StartsStr('_esp_', SpecStr) then
     begin
-      Pozzie:=Pos('=', SpecStr);
-      Spec:=Copy(SpecStr,6,Pozzie-6);
-      Val:=Copy(SpecStr,Pozzie+1,Maxint);
+      Spec:=Copy(SpecStr,6,MaxInt);
+      Val:=F.Specifics.StringsFromIndex[I];
       { we only want to write it if it's different from the shader's spec }
-      Val2:=Q.Specifics.Values['_esp_'+Spec];
+      Val2:=Q.Specifics.Strings['_esp_'+Spec];
       if Val='1' then  // the face is positively specified
       begin
         if Val2<>'1' then  // the shader is not specified
@@ -2822,7 +2825,7 @@ begin
     end;
   end;
   { tiglari - now write the other face properties }
-  S1:=F.Specifics.Values['surfaceLight'];
+  S1:=F.Specifics.Strings['surfaceLight'];
   if (S1<>'') then
     S:=S+' surfaceLight '+S1;
   if F.GetFloatsSpec('surfaceColor',Single3) then
@@ -2831,10 +2834,10 @@ begin
     S:=S+' '+FloatToStrF(Single3[2], ffFixed, MAX_PRECISION, 6);
     S:=S+' '+FloatToStrF(Single3[3], ffFixed, MAX_PRECISION, 6);
   end;
-  S1:=F.Specifics.Values['surfaceAngle'];
+  S1:=F.Specifics.Strings['surfaceAngle'];
   if (S1<>'') then
     S:=S+' surfaceAngle '+S1;
-  S1:=F.Specifics.Values['surfaceDensity'];
+  S1:=F.Specifics.Strings['surfaceDensity'];
   if (S1<>'') then
     S:=S+' surfaceDensity '+S1;
   rval:=F.GetFloatSpec('subdivisions',0);
@@ -2899,11 +2902,11 @@ begin
   if Specifics.Values['mapversion']='220' then
     Flags2:=Flags2 + soWriteValve220, except we'll leave 6dx the same for now
   else }
-  if (Specifics.Values['mapversion']='6DX') or (Specifics.Values[';mapversion']='6DX') then
+  if (Specifics.Strings['mapversion']='6DX') or (Specifics.Strings[';mapversion']='6DX') then
     Flags2:=Flags2 + soWrite6DXHierarky;
 
   if MapSaveSettings.MapFormat=V220Type then
-    Specifics.Values['mapversion']:='220';
+    Specifics.Strings['mapversion']:='220';
   I := GetFirstEntityNo;
  end
  else
@@ -2921,7 +2924,7 @@ begin
      for I:=Polyedres.Count-1 downto 0 do
       with TPolyedre(Polyedres[I]) do
        if CheckPolyhedron and (Faces.Count>0)
-       and (StrToIntDef(PSurface(Faces[0]).F.Specifics.Values['Contents'], 0) and ContentsOrigin <> 0) then
+       and (StrToIntDef(PSurface(Faces[0]).F.Specifics.Strings['Contents'], 0) and ContentsOrigin <> 0) then //FIXME: Switch to QkSpecifics.Integers?
         begin
          V1.X:=MaxInt;
          V1.Y:=MaxInt;
@@ -3009,8 +3012,8 @@ procedure SaveAsMapTextTTreeMapSpec(ObjectToSave: QObject; MapSaveSettings: TMap
 const
  LineStarts: array[Boolean] of String = (' "', '"');
 var
- S, Msg, LineStart,outputname: String;
- P1, I, J, P, hashpos: Integer;
+ SpecName, Msg, LineStart,outputname: String;
+ P1, I, J, hashpos: Integer;
  typedspecs:Bool;
  DoneNameSpecific: boolean; // Rowdy: for Doom 3
 begin
@@ -3030,21 +3033,20 @@ begin
  Dest.Add('{');
  LineStart:=LineStarts[Flags2 and soBSP <> 0];
  Dest.Add(LineStart+SpecClassname+'" "'+Name+'"');
+
  typedspecs:=false;
  for J:=0 to Specifics.Count-1 do
  begin
-   S:=Specifics[J];
-
    // process untyped specifics
-   hashpos:=Pos('#', Specifics.Names[J]);
+   SpecName:=Specifics.Names[J];
+   hashpos:=Pos('#', SpecName);
    if (MapSaveSettings.MapFormat<>HL2Type) or ((hashpos=0) or (hashpos=1)) then
    begin
-     if (S<>'') and (S[1]<>';') and not IsFloatSpec(S) then //FIXME: IsIntSpec?
+     if (SpecName[1]<>';') and not IsFloatSpec(SpecName) then //FIXME: IsIntSpec?
      begin
-       P:=Pos('=', S);
-       Msg:=Copy(S, P+1, MaxInt);
+       Msg:=Specifics.StringsFromIndex[J];
        // special processing for hxstrings
-       if (S[1]='#') and (HxStrings<>Nil) then
+       if (SpecName[1]='#') and (HxStrings<>Nil) then
        begin
          I:=0;
          while (I<HxStrings.Count) and (Msg<>HxStrings[I]) do
@@ -3053,7 +3055,6 @@ begin
           HxStrings.Add(Msg);
          Msg:=IntToStr(I+1);
          P1:=2;
-         Dec(P);
        end
        else
          P1:=1;
@@ -3061,10 +3062,10 @@ begin
        if Msg<>'' then
        begin
        {$ENDIF}
-         Dest.Add(LineStart+Copy(S, P1, P-1)+'" "'+Msg+'"');
+         Dest.Add(LineStart+Copy(SpecName, P1, MaxInt)+'" "'+Msg+'"');
          // Rowdy: Doom 3 requires each entity to have a unique "name" specific
          // and we can use the entity number for that
-         if LowerCase(Copy(S, P1, P-1)) = 'name' then
+         if LowerCase(Copy(SpecName, P1, MaxInt)) = 'name' then
            DoneNameSpecific:=True;
        {$IFDEF RemoveEmptySpecs}
        end;
@@ -3081,19 +3082,18 @@ begin
    Dest.Add('  {');
    for J:=0 to Specifics.Count-1 do
    begin
-     S:=Specifics[J];
-     P:=Pos('=', S);
-     Msg:=Copy(S, P+1, MaxInt);
+     SpecName:=Specifics.Names[J];
+     Msg:=Specifics.StringsFromIndex[J];
 
 // not needed in map file
-//     hashpos:=Pos('input#',S);
+//     hashpos:=Pos('input#',SpecName);
 //     if hashpos <> 0 then
-//       Dest.Add('   "'+Copy(S, 7, P-7)+'" "'+Msg+'"');
+//       Dest.Add('   "'+Copy(SpecName, Length('input#')+1, MaxInt)+'" "'+Msg+'"');
 
-     hashpos:=Pos('output#',S);
+     hashpos:=Pos('output#',SpecName);
      if hashpos <> 0 then
      begin
-       outputname:=Copy(S, 8, P-8);
+       outputname:=Copy(SpecName, Length('output#')+1, MaxInt);
        for i := length(outputname) downto 1 do
        begin
          if outputname[i] in ['0'..'9'] then
@@ -3198,8 +3198,8 @@ begin
  Brush.Add(' {');
 
  if MapFormat=HL2Type then
-  if Specifics.Values['id']<>'' then
-   Brush.Add('   "id" "'+Specifics.Values['id']+'"');
+  if Specifics.Strings['id']<>'' then
+   Brush.Add('   "id" "'+Specifics.Strings['id']+'"');
 
  if MapFormat=BPType then
  begin
@@ -3323,11 +3323,11 @@ var
 
   function CheckFieldDefault(const spec, linkspec:String; const Q:QPixelSet) : String;
   begin
-   Result:=F.Specifics.Values[spec];
+   Result:=F.Specifics.Strings[spec];
    if Result<>'' then   { if spec was found in the face, we are done }
     Exit;
    if Q<>Nil then   { is there a texture link to look into for default flags ? }
-    Result:=Q.Specifics.Values[linkspec];   { yes }
+    Result:=Q.Specifics.Strings[linkspec];   { yes }
    if Result='' then
     Result:='0';      { if not found at all, supply a numeric default }
   end;
@@ -3344,18 +3344,18 @@ var
   procedure StashIntFlag(const spec : String);
   var val : string;
   begin
-    val:=F.Specifics.Values[spec];
+    val:=F.Specifics.Strings[spec];
     if val<>'' then
-      if val<>Q.Specifics.Values[spec] then
+      if val<>Q.Specifics.Strings[spec] then
         S:=S+' '+spec+' '+val+'.0'
   end;
 
   procedure StashStrFlag(const spec : String);
   var val : string;
   begin
-    val:=F.Specifics.Values[spec];
+    val:=F.Specifics.Strings[spec];
     if val <>'' then
-       if val<>Q.Specifics.Values[spec] then
+       if val<>Q.Specifics.Strings[spec] then
          S:=S+' '+spec+' '+val;
   end;
 
@@ -3520,7 +3520,7 @@ var
     UOff:=-Dot(QV0,P0);
     VOff:=-Dot(QV1,P0);
 
-    if (SetupSubSet(ssFiles, 'Textures').Specifics.Values['UnwrapCoordinates']<>'') then
+    if (SetupSubSet(ssFiles, 'Textures').Specifics.Strings['UnwrapCoordinates']<>'') then
     begin
       //DanielPharos: Normalize the texture shift. If we don't do this,
       //this causes a *lot* of texture info entries in the BSP file.
@@ -3816,8 +3816,8 @@ begin
  S:='  ';
  if MapSaveSettings.MapFormat=HL2Type then
  begin
-   if F.Specifics.values['id']<>'' then
-     S:=S+'  "id" "'+F.Specifics.values['id']+'"'#13#10'  ';
+   if F.Specifics.Strings['id']<>'' then
+     S:=S+'  "id" "'+F.Specifics.Strings['id']+'"'#13#10'  ';
    S:=S+'  "plane" "';
  end;
 
@@ -3890,9 +3890,9 @@ begin
    if MapSaveSettings.MapVersion>1 then
      TextureName:='"'+ConcatPaths([GameTexturesPath, TextureName])+'"';
 
-   if SetupGameSet.Specifics.Values['TextureNameUppercase']<>'' then
+   if SetupGameSet.Specifics.Strings['TextureNameUppercase']<>'' then
      TextureName:=UpperCase(TextureName);
-   if not (SetupGameSet.Specifics.Values['TextureNameDontReverseSlashes']<>'') then
+   if not (SetupGameSet.Specifics.Strings['TextureNameDontReverseSlashes']<>'') then
      TextureName:=ReverseSlashes(TextureName);
 
    if MapSaveSettings.MapFormat=HL2Type then
@@ -3914,7 +3914,7 @@ begin
 
         ApproximateParams(Normale, PT, Params, Mirror); {does scale}
 
-        if (SetupSubSet(ssFiles, 'Textures').Specifics.Values['UnwrapCoordinates']<>'') then
+        if (SetupSubSet(ssFiles, 'Textures').Specifics.Strings['UnwrapCoordinates']<>'') then
         begin
           //DanielPharos: Normalize the texture shift. If we don't do this,
           //this causes a *lot* of texture info entries in the BSP file.
@@ -3975,8 +3975,8 @@ begin
 
  if MapSaveSettings.GameCode=mjHexen then
   begin
-   if (F.Parent<>nil) and (F.Parent is TPolyhedron) and (TPolyhedron(F.Parent).Specifics.Values['H2_light']<>'') then
-    S:=S+' '+TPolyhedron(F.Parent).Specifics.Values['H2_light']
+   if (F.Parent<>nil) and (F.Parent is TPolyhedron) and (TPolyhedron(F.Parent).Specifics.Strings['H2_light']<>'') then
+    S:=S+' '+TPolyhedron(F.Parent).Specifics.Strings['H2_light']
    else
     S:=S+' -1';
   end
@@ -4010,14 +4010,14 @@ begin
     StashFloatFlag('animtime', 2);
     StashIntFlag('trans_angle');
     StashStrFlag('color');
-    WriteNonDefaultFlags(F.Specifics.Values['Flags'],StrToInt(Q.Specifics.Values['Flags']), FlagsTable);
-    WriteNonDefaultFlags(F.Specifics.Values['Contents'],StrToInt(Q.Specifics.Values['Flags']), ContentsTable);
+    WriteNonDefaultFlags(F.Specifics.Strings['Flags'],StrToInt(Q.Specifics.Strings['Flags']), FlagsTable); //FIXME: Switch to QkSpecifics.Integers?
+    WriteNonDefaultFlags(F.Specifics.Strings['Contents'],StrToInt(Q.Specifics.Strings['Flags']), ContentsTable); //FIXME: Switch to QkSpecifics.Integers?
     { maybe the internal storage of these should be changed to fit
       the Sin file format }
-    S1:=F.Specifics.Values['Value'];
+    S1:=F.Specifics.Strings['Value'];
     if S1<>'' then
-      if Q.Specifics.Values['Value']<>S1 then
-        S:=S+' lightvalue '+F.Specifics.Values['Value'];
+      if Q.Specifics.Strings['Value']<>S1 then
+        S:=S+' lightvalue '+F.Specifics.Strings['Value'];
   {  StashFloatFlag('nonlitvalue', 2);   { Nun functiona }
     rval:=F.GetFloatSpec('nonlit', -1);
     if rval >= 0 then
@@ -4055,24 +4055,24 @@ begin
   else
   if (MapSaveSettings.GameCode=mjCOD2) then
   begin
-    if F.Specifics.Values['CoD2_lightmap']<>'' then
-      S:=S+' '+F.Specifics.Values['CoD2_lightmap']
+    if F.Specifics.Strings['CoD2_lightmap']<>'' then
+      S:=S+' '+F.Specifics.Strings['CoD2_lightmap']
     else
       S:=S+' lightmap_gray';
-    if F.Specifics.Values['CoD2_lightmap_size']<>'' then
-      S:=S+' '+F.Specifics.Values['CoD2_lightmap_size']
+    if F.Specifics.Strings['CoD2_lightmap_size']<>'' then
+      S:=S+' '+F.Specifics.Strings['CoD2_lightmap_size']
     else
       S:=S+' 16384 16384';
-    if F.Specifics.Values['CoD2_lightmap_shift']<>'' then
-      S:=S+' '+F.Specifics.Values['CoD2_lightmap_shift']
+    if F.Specifics.Strings['CoD2_lightmap_shift']<>'' then
+      S:=S+' '+F.Specifics.Strings['CoD2_lightmap_shift']
     else
       S:=S+' 0 0';
-    if F.Specifics.Values['CoD2_lightmap_rotate']<>'' then
-      S:=S+' '+F.Specifics.Values['CoD2_lightmap_rotate']
+    if F.Specifics.Strings['CoD2_lightmap_rotate']<>'' then
+      S:=S+' '+F.Specifics.Strings['CoD2_lightmap_rotate']
     else
       S:=S+' 0';
-    if F.Specifics.Values['CoD2_lightmap_skew']<>'' then
-      S:=S+' '+F.Specifics.Values['CoD2_lightmap_skew']
+    if F.Specifics.Strings['CoD2_lightmap_skew']<>'' then
+      S:=S+' '+F.Specifics.Strings['CoD2_lightmap_skew']
     else
       S:=S+' 0';
   end
@@ -4084,10 +4084,10 @@ begin
     MOHAA's face-flags, we now just write them to the .MAP so
     the MOHAA-Q3MAP.EXE will be happy.}
   begin
-    S1:=F.Specifics.Values['Contents'];
-    S2:=F.Specifics.Values['Flags'];
-    S3:=F.Specifics.Values['Value'];
-    if (SetupGameSet.Specifics.Values['ForceFaceFlags']='1')
+    S1:=F.Specifics.Strings['Contents'];
+    S2:=F.Specifics.Strings['Flags'];
+    S3:=F.Specifics.Strings['Value'];
+    if (SetupGameSet.Specifics.Strings['ForceFaceFlags']='1')
     or (S1<>'') or (S2<>'') or (S3<>'') then
     //Decker - force write face-flags for certain games (MOHAA and EF2)
     begin
@@ -4099,9 +4099,9 @@ begin
       if (MapSaveSettings.GameCode=mjFAKK2) or (MapSaveSettings.GameCode=mjEF2) or (MapSaveSettings.GameCode=mjMOHAA) then
         RitualSurfaceParms(F, S)
       else if (MapSaveSettings.GameCode=mjCOD) then
-        S:=S+' '+F.Specifics.Values['CoD_samplesize']
-      else if F.Specifics.Values['KMQuake2_color']<>'' then //if (MapSaveSettings.GameCode=mjKMQuake2) then
-        S:=S+' '+F.Specifics.Values['KMQuake2_color'];
+        S:=S+' '+F.Specifics.Strings['CoD_samplesize']
+      else if F.Specifics.Strings['KMQuake2_color']<>'' then //if (MapSaveSettings.GameCode=mjKMQuake2) then
+        S:=S+' '+F.Specifics.Strings['KMQuake2_color'];
 
     end;
   end;
@@ -4111,12 +4111,12 @@ begin
 
   if (MapSaveSettings.MapFormat=HL2Type) then
   begin
-    if F.Specifics.values['lightmapscale']<>'' then
-      S:=S+#13#10'    "lightmapscale" "'+F.Specifics.values['lightmapscale']+'"'
+    if F.Specifics.Strings['lightmapscale']<>'' then
+      S:=S+#13#10'    "lightmapscale" "'+F.Specifics.Strings['lightmapscale']+'"'
     else
       S:=S+#13#10'    "lightmapscale" "16"';
-    if F.Specifics.values['smoothing_groups']<>'' then
-      S:=S+#13#10'    "smoothing_groups" "'+F.Specifics.values['smoothing_groups']+'"'
+    if F.Specifics.Strings['smoothing_groups']<>'' then
+      S:=S+#13#10'    "smoothing_groups" "'+F.Specifics.Strings['smoothing_groups']+'"'
     else
       S:=S+#13#10'    "smoothing_groups" "0"';
   end;
@@ -4161,9 +4161,9 @@ begin
    if MapSaveSettings.MapVersion>1 then
      TextureName:='"'+ConcatPaths([GameTexturesPath, TextureName])+'"';
 
-   if SetupGameSet.Specifics.Values['TextureNameUppercase']<>'' then
+   if SetupGameSet.Specifics.Strings['TextureNameUppercase']<>'' then
      TextureName:=UpperCase(TextureName);
-   if not (SetupGameSet.Specifics.Values['TextureNameDontReverseSlashes']<>'') then
+   if not (SetupGameSet.Specifics.Strings['TextureNameDontReverseSlashes']<>'') then
      TextureName:=ReverseSlashes(TextureName);
 
    Target.Add('   ' + TextureName);
@@ -4292,7 +4292,7 @@ begin
    else
     begin
      FileObject.Acces;
-     S:=FileObject.Specifics.Values['Game'];
+     S:=FileObject.Specifics.Strings['Game'];
      if S='' then
       S:=LoadStr1(182)
      else
@@ -4303,7 +4303,7 @@ begin
     S:=(FileObject as QMap).GetOutputMapFileName;
    EnterEdit1.Text:=S;
    if FileObject=Nil then Exit;
-   S:=FileObject.Specifics.Values['Root'];
+   S:=FileObject.Specifics.Strings['Root'];
    if S='' then Exit;  { no data }
    Root:=FileObject.SubElements.FindName(S);
    if (Root=Nil) or not (Root is TTreeMap) then Exit;  { no data }

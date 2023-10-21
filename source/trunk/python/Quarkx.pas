@@ -810,8 +810,8 @@ begin
   im2:=Nil;
   if PyArg_ParseTupleX(args, 'iO|O', [@J, @im, @im2])=0 then
    Exit;
-  if ((im^.ob_type <> @TyImage1_Type) and (PyCallable_Check(im)=0))
-  or ((im2<>Nil) and (im2^.ob_type <> @TyImage1_Type) and (PyCallable_Check(im2)=0)) then
+  if ((im^.ob_type <> @TyImage_Type) and (PyCallable_Check(im)=0))
+  or ((im2<>Nil) and (im2^.ob_type <> @TyImage_Type) and (PyCallable_Check(im2)=0)) then
    Raise EError(4431);
   if (J<0) or (J>=InternalImagesCount) then
    Raise EError(4430);
@@ -2298,14 +2298,14 @@ var
   SI: TStartupInfo;
   PI: TProcessInformation;
 begin
-  if StartsStr(URL, '*') then
+  if StartsStr('*', URL) then
   begin
     //This is a full link
     S:=Copy(URL, 2, MaxInt); //Remove the '*'
 
     //FIXME: DanielPharos: We need a better, more general way of checking
     //for known protocols...
-    if StartsStr(S, 'file://') or StartsStr(S, 'http://') or StartsStr(S, 'https://') then
+    if StartsStr('file://', S) or StartsStr('http://', S) or StartsStr('https://', S) then
       FullFile:=S
     else
       FullFile:='file:///'+S;
@@ -2321,7 +2321,7 @@ begin
       S:=FullFile;
     if not FileExists(S) then
     begin
-      if SetupSubSet(ssGeneral, 'Display').Specifics.Values['OnlineHelp']<>'' then
+      if SetupSubSet(ssGeneral, 'Display').Specifics.Strings['OnlineHelp']<>'' then
       begin
         Log(LOG_WARNING, LoadStr1(5228), [URL]);
         FullFile:=QuArKInfobase+URL
@@ -2691,7 +2691,7 @@ begin
    for I:=0 to L.Count-1 do
     begin
      Q:=L[I];
-     S:=Q.Specifics.Values['Root'];
+     S:=Q.Specifics.Strings['Root'];
      if S='' then Continue;   { no data }
      T:=Q.SubElements.FindName(S);
      if T=Nil then
@@ -2699,7 +2699,7 @@ begin
        Log(LOG_PYTHON, LOG_WARNING, LoadStr1(5851), [S]);
        Continue;
       end;
-     S:=Q.Specifics.Values['ToolBox'];
+     S:=Q.Specifics.Strings['ToolBox'];
 
      AlreadyOpen:=ToolBoxClosed;
      for J:=0 to Screen.FormCount-1 do
@@ -2808,16 +2808,16 @@ begin
     with ConstructQObject('heapstatus', Nil) do
     begin
       Result:=@PythonObj;
-      SpecificsAdd('TotalAddrSpace='+UIntToStr(TotalAddrSpace));
-      SpecificsAdd('TotalUncommitted='+UIntToStr(TotalUncommitted));
-      SpecificsAdd('TotalCommitted='+UIntToStr(TotalCommitted));
-      SpecificsAdd('TotalAllocated='+UIntToStr(TotalAllocated));
-      SpecificsAdd('TotalFree='+UIntToStr(TotalFree));
-      SpecificsAdd('FreeSmall='+UIntToStr(FreeSmall));
-      SpecificsAdd('FreeBig='+UIntToStr(FreeBig));
-      SpecificsAdd('Unused='+UIntToStr(Unused));
-      SpecificsAdd('Overhead='+UIntToStr(Overhead));
-      SpecificsAdd('HeapErrorCode='+UIntToStr(HeapErrorCode));
+      Specifics.AddInteger('TotalAddrSpace', TotalAddrSpace);
+      Specifics.AddInteger('TotalUncommitted', TotalUncommitted);
+      Specifics.AddInteger('TotalCommitted', TotalCommitted);
+      Specifics.AddInteger('TotalAllocated', TotalAllocated);
+      Specifics.AddInteger('TotalFree', TotalFree);
+      Specifics.AddInteger('FreeSmall', FreeSmall);
+      Specifics.AddInteger('FreeBig', FreeBig);
+      Specifics.AddInteger('Unused', Unused);
+      Specifics.AddInteger('Overhead', Overhead);
+      Specifics.AddInteger('HeapErrorCode', HeapErrorCode);
       Py_INCREF(Result);
     end;
   {$ELSE}
@@ -2826,16 +2826,16 @@ begin
     with ConstructQObject('heapstatus', Nil) do
     begin
       Result:=@PythonObj;
-      Specifics.Add('TotalAddrSpace=0');
-      Specifics.Add('TotalUncommitted=0');
-      Specifics.Add('TotalCommitted=0');
-      Specifics.Add('TotalAllocated=0');
-      Specifics.Add('TotalFree=0');
-      Specifics.Add('FreeSmall=0');
-      Specifics.Add('FreeBig=0');
-      Specifics.Add('Unused=0');
-      Specifics.Add('Overhead=0');
-      Specifics.Add('HeapErrorCode=0');
+      Specifics.AddInteger('TotalAddrSpace', 0);
+      Specifics.AddInteger('TotalUncommitted', 0);
+      Specifics.AddInteger('TotalCommitted', 0);
+      Specifics.AddInteger('TotalAllocated', 0);
+      Specifics.AddInteger('TotalFree', 0);
+      Specifics.AddInteger('FreeSmall', 0);
+      Specifics.AddInteger('FreeBig', 0);
+      Specifics.AddInteger('Unused', 0);
+      Specifics.AddInteger('Overhead', 0);
+      Specifics.AddInteger('HeapErrorCode', 0);
       Py_INCREF(Result);
     end;
   {$ENDIF}
@@ -3307,7 +3307,7 @@ begin
  if not RegType(TyWindow_Type,    'window_type') then Exit;
  if not RegType(TyToolbar_Type,   'toolbar_type') then Exit;
  if not RegType(TyImageList_Type, 'imagelist_type') then Exit;
- if not RegType(TyImage1_Type,    'image1_type') then Exit;
+ if not RegType(TyImage_Type,     'image_type') then Exit;
  if not RegType(TyPanel_Type,     'panel_type') then Exit;
 {if not RegType(TyFile_Type,      'file_type') then Exit;}
  if not RegType(TyObject_Type,    'object_type') then Exit;

@@ -88,7 +88,7 @@ begin
     if PSD.AlphaBits=psa8bpp then
     begin
       try
-        case StrToInt(Setup.Specifics.Values['SaveFormatADevIL']) of
+        case Setup.Specifics.Integers['SaveFormatADevIL'] of
         0: Flag:=IL_DXT1;
         1: Flag:=IL_DXT5;
         2: Flag:=IL_DXT3;
@@ -107,7 +107,7 @@ begin
     else
     begin
       try
-        case StrToInt(Setup.Specifics.Values['SaveFormatDevIL']) of
+        case Setup.Specifics.Integers['SaveFormatDevIL'] of
         0: Flag:=IL_DXT1;
         1: Flag:=IL_DXT5;
         2: Flag:=IL_DXT3;
@@ -160,7 +160,7 @@ begin
   Log(LOG_VERBOSE, 'Loading VTF file: %s', [self.name]);
   case ReadFormat of
     rf_Default: begin  { as stand-alone file }
-      LibraryToUse:=SetupSubSet(ssFiles, 'VTF').Specifics.Values['LoadLibrary'];
+      LibraryToUse:=SetupSubSet(ssFiles, 'VTF').Specifics.Strings['LoadLibrary'];
       if LibraryToUse='DevIL' then
         LoadFileDevIL(F, FSize)
       else if LibraryToUse='VTFLib' then
@@ -177,7 +177,7 @@ begin
 
         Setup:=SetupSubSet(ssFiles, 'VTF');
         try
-          case StrToInt(Setup.Specifics.Values['DXTQualityVTFLib']) of
+          case Setup.Specifics.Integers['DXTQualityVTFLib'] of
           0: Flag:=DXT_QUALITY_LOW;
           1: Flag:=DXT_QUALITY_MEDIUM;
           2: Flag:=DXT_QUALITY_HIGH;
@@ -257,8 +257,8 @@ begin
                 Inc(DestAlpha, Width);
               end;
 
-              Specifics.Add(AlphaData);
-              Specifics.Add(ImgData);
+              Specifics.AddStringFull(AlphaData);
+              Specifics.AddStringFull(ImgData);
             end
             else
             begin
@@ -285,7 +285,7 @@ begin
                 Inc(DestImg, 3 * Width);
               end;
 
-              Specifics.Add(ImgData);
+              Specifics.AddStringFull(ImgData);
             end;
           finally
             FreeMem(RawData);
@@ -315,7 +315,6 @@ var
   DummyImage: QImage;
   PSD: TPixelSetDescription;
   TexSize : longword;
-  S: String;
   RawBuffer: PByte;
   RawData, RawData2: PvlByte;
   SourceImg, SourceAlpha, Dest, pSourceImg, pSourceAlpha, pDest: PChar;
@@ -334,7 +333,7 @@ begin
   case Format of
   rf_Default:
   begin  { as stand-alone file }
-    LibraryToUse:=SetupSubSet(ssFiles, 'VTF').Specifics.Values['LoadLibrary'];
+    LibraryToUse:=SetupSubSet(ssFiles, 'VTF').Specifics.Strings['LoadLibrary'];
     if LibraryToUse='DevIL' then
       SaveFileDevIL(Info)
     else if LibraryToUse='VTFLib' then
@@ -352,8 +351,6 @@ begin
       try
         if vlBindImage(VTFImage)=vlFalse then
           LogAndRaiseError(FmtLoadStr1(5721, [FormatName, 'vlBindImage']));
-
-        TexFormat := IMAGE_FORMAT_DXT5;
 
         if not IsTrueColor then
         begin
@@ -373,21 +370,16 @@ begin
 
           if PSD.AlphaBits = psa8bpp then
           begin
-            S:=SetupSubSet(ssFiles, 'VTF').Specifics.Values['SaveFormatA'];
-            if S<>'' then
-            begin
-              try
-                TexFormat:=StrToInt(S);
-                if (TexFormat < 0) or (TexFormat >= IMAGE_FORMAT_COUNT) then
-                  //FIXME: Log!
-                  TexFormat := IMAGE_FORMAT_DXT5;
-              except
-                on EConvertError do
-                  //FIXME: Log!
-                  TexFormat := IMAGE_FORMAT_DXT5;
-              end;
-            end;
-            ImageFormat:=IMAGE_FORMAT_RGBA8888;
+            try
+              TexFormat:=SetupSubSet(ssFiles, 'VTF').Specifics.Integers['SaveFormatA'];
+              if (TexFormat < 0) or (TexFormat >= IMAGE_FORMAT_COUNT) then
+                //FIXME: Log!
+                TexFormat := IMAGE_FORMAT_DXT5;
+            except
+              on EConvertError do
+                //FIXME: Log!
+                TexFormat := IMAGE_FORMAT_DXT5;
+            end;            ImageFormat:=IMAGE_FORMAT_RGBA8888;
             GetMem(RawData2, Width * Height * 4);
             try
               SourceImg:=PChar(PSD.Data) + Width * Height * 3;
@@ -422,21 +414,16 @@ begin
           end
           else
           begin
-            S:=SetupSubSet(ssFiles, 'VTF').Specifics.Values['SaveFormat'];
-            if S<>'' then
-            begin
-              try
-                TexFormat:=StrToInt(S);
-                if (TexFormat < 0) or (TexFormat >= IMAGE_FORMAT_COUNT) then
-                  //FIXME: Log!
-                  TexFormat := IMAGE_FORMAT_DXT5;
-              except
-                on EConvertError do
-                  //FIXME: Log!
-                  TexFormat := IMAGE_FORMAT_DXT5;
-              end;
-            end;
-            ImageFormat:=IMAGE_FORMAT_RGB888;
+            try
+              TexFormat:=SetupSubSet(ssFiles, 'VTF').Specifics.Integers['SaveFormat'];
+              if (TexFormat < 0) or (TexFormat >= IMAGE_FORMAT_COUNT) then
+                //FIXME: Log!
+                TexFormat := IMAGE_FORMAT_DXT5;
+            except
+              on EConvertError do
+                //FIXME: Log!
+                TexFormat := IMAGE_FORMAT_DXT5;
+            end;            ImageFormat:=IMAGE_FORMAT_RGB888;
             GetMem(RawData2, Width * Height * 3);
             try
               SourceImg:=PChar(PSD.Data) + Width * Height * 3;
@@ -472,7 +459,7 @@ begin
           DummyImage.Free;
 
         //Find out which version of VTF file we want to save
-        VTFSaveVersion:=SetupSubSet(ssFiles, 'VTF').Specifics.Values['SaveVersion'];
+        VTFSaveVersion:=SetupSubSet(ssFiles, 'VTF').Specifics.Strings['SaveVersion'];
         I:=Pos('.', VTFSaveVersion);
         if I>0 then
         begin

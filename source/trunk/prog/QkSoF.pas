@@ -101,14 +101,14 @@ begin
 
       m32header.Id:=MIP32_VERSION;
       StrPCopy(m32header.Name, Name); //@Need to verify string length!
-      StrPCopy(m32header.Altname, Specifics.Values['Texture_Substitution_Path']);
-      StrPCopy(m32header.Animname, Specifics.Values['Next_Frame_Path']);
-      StrPCopy(m32header.Damagename, Specifics.Values['Damage_Texture_Path']);
+      StrPCopy(m32header.Altname, Specifics.Strings['Texture_Substitution_Path']);
+      StrPCopy(m32header.Animname, Specifics.Strings['Next_Frame_Path']);
+      StrPCopy(m32header.Damagename, Specifics.Strings['Damage_Texture_Path']);
       m32header.scale_x:=1.0;
       m32header.scale_y:=1.0;
-      m32header.Contents:=StrToIntDef(Specifics.Values['Contents'], 0);
-      m32header.Flags   :=StrToIntDef(Specifics.Values['Flags'], 0);
-      m32header.Value   :=StrToIntDef(Specifics.Values['Value'], 0);
+      m32header.Contents:=StrToIntDef(Specifics.Strings['Contents'], 0);
+      m32header.Flags   :=StrToIntDef(Specifics.Strings['Flags'], 0);
+      m32header.Value   :=StrToIntDef(Specifics.Strings['Value'], 0);
 
       with PSD.Size do
       begin
@@ -161,10 +161,10 @@ var
   TexName: String;
 begin
   //Copied and slightly modified from QkTextures!
-  if SetupSubSet(ssFiles, 'Textures').Specifics.Values['TextureNameCheck']<>'' then
+  if SetupSubSet(ssFiles, 'Textures').Specifics.Strings['TextureNameCheck']<>'' then
   begin
     TexName := Name;
-    if ((nName = '') or (TexName = '')) and (SetupSubSet(ssFiles, 'Textures').Specifics.Values['TextureEmptyNameValid']<>'') then
+    if ((nName = '') or (TexName = '')) and (SetupSubSet(ssFiles, 'Textures').Specifics.Strings['TextureEmptyNameValid']<>'') then
       Exit;
     if not SameText(nName, TexName) then
       GlobalWarning(FmtLoadStr1(5569, [nName, TexName]));
@@ -245,7 +245,7 @@ begin
      F.readbuffer(m32header, sizeof(m32header));
      if m32header.Id <> MIP32_VERSION then
        raise Exception.Create('Not a valid m32 file!');
-     Specifics.Add(format('Texture_Path=%s',[m32header.Name]));
+     Specifics.AddString('Texture_Path', m32header.Name);
 
      //Verify if the texturename matches the filename
      S:=m32header.Name;
@@ -253,19 +253,19 @@ begin
      begin
        if S[I]='/' then
        begin
-         Specifics.Add('Path='+Copy(S,1,I-1));
+         Specifics.AddString('Path', Copy(S,1,I-1));
          S:=RightStr(S, Length(S)-I);
          Break;
        end;
      end;
      CheckTexName(S);
 
-     Specifics.Add(format('Texture_Substitution_Path=%s',[m32header.Altname]));
-     Specifics.Add(format('Next_Frame_Path=%s',[m32header.Animname]));
-     Specifics.Add(format('Damage_Texture_Path=%s',[m32header.Damagename]));
-     Specifics.Add(format('Contents=%d',[m32header.contents]));
-     Specifics.Add(format('Flags=%d',[m32header.flags]));
-     Specifics.Add(format('Value=%d',[m32header.value]));
+     Specifics.AddString('Texture_Substitution_Path', m32header.Altname);
+     Specifics.AddString('Next_Frame_Path', m32header.Animname);
+     Specifics.AddString('Damage_Texture_Path', m32header.Damagename);
+     Specifics.AddString('Contents', format('%d',[m32header.contents]));
+     Specifics.AddString('Flags', format('%d',[m32header.flags]));
+     Specifics.AddString('Value', format('%d',[m32header.value]));
 
      V[1]:=m32header.Width[0];
      V[2]:=m32header.Height[0];
@@ -274,8 +274,8 @@ begin
      F.Position:=org+m32header.Offsets[0];
      ReadRGBA(f, rgb, a, m32header.Width[0], m32header.Height[0]);
 
-     specifics.add(rgb);
-     specifics.add(a);
+     specifics.AddStringFull(rgb);
+     specifics.AddStringFull(a);
   end;
  else inherited;
  end;

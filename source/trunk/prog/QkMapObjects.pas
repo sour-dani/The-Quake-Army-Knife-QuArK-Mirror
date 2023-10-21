@@ -224,14 +224,14 @@ var
   l_MapCommentsPrefix: String;
 begin
   { If user has choosen to disable .MAP comments, then return an empty string. }
-  if not (SetupSubSet(ssFiles,'MAP').Specifics.Values['WriteComments'] <> '') then
+  if not (SetupSubSet(ssFiles,'MAP').Specifics.Strings['WriteComments'] <> '') then
   begin
     Result := '';
     Exit;
   end;
 
   { Read the comments-prefix from the games' configuration, and make sure it is not empty }
-  l_MapCommentsPrefix := Trim(SetupGameSet.Specifics.Values['MapCommentsPrefix']);
+  l_MapCommentsPrefix := Trim(SetupGameSet.Specifics.Strings['MapCommentsPrefix']);
   if (l_MapCommentsPrefix = '') then
   begin
     Raise EErrorFmt(5701, [SetupGameSet.Name]);
@@ -388,7 +388,7 @@ begin
   begin
     SubElement:=TTreeMap(SubElements[I]);
     if SubElement is TTreeMapSpec then
-      if SubElement.Specifics.Values['nolinear']<>'' then
+      if SubElement.Specifics.Strings['nolinear']<>'' then
         continue;
     SubElement.Deplacement(PasGrille);
   end;
@@ -616,12 +616,12 @@ end;*)
 
 function TTreeMap.GetNegative: String;
 begin
- Result:=Specifics.Values['neg'];
+ Result:=Specifics.Strings['neg'];
 end;
 
 procedure TTreeMap.SetNegative(const Neg: String);
 begin
- Specifics.Values['neg']:=Neg;
+ Specifics.Strings['neg']:=Neg;
 end;
 
  {------------------------}
@@ -1047,7 +1047,7 @@ const
 var
  S: String;
 begin
- S:=Specifics.Values[SpecColor2];
+ S:=Specifics.Strings[SpecColor2]; //FIXME: Switch to QkSpecifics.Integers?
  if S<>'' then
   begin
    if g_DrawInfo.BasePen=White_pen then
@@ -1084,7 +1084,7 @@ end;
 
 procedure TTreeMapEntity.SetOrigin;
 begin
- Specifics.Values['origin']:=vtos(nOrigin);
+ Specifics.Strings['origin']:=vtos(nOrigin); //FIXME: Switch to QkSpecifics.Float ARRAY?
  FOrigin:=nOrigin;
  FHasOrigin:=True;
 end;
@@ -1094,7 +1094,7 @@ var
  S: String;
 {Nouveau: TVect;}
 begin
- S:=Specifics.Values['origin'];
+ S:=Specifics.Strings['origin']; //FIXME: Switch to QkSpecifics.Float ARRAY?
 {Result:=(S<>'') xor (Ancien and FHasOrigin);}
  FHasOrigin:=S<>'';
  if FHasOrigin then
@@ -1229,7 +1229,7 @@ begin
  case J of
   6: Result:=True;
   7: begin
-      S:=Specifics.Values['scale'];
+      S:=Specifics.Strings['scale']; //FIXME: Switch to QkSpecifics.Float
       if S<>'' then
        try
         BBox[6]:=StrToFloat(S);
@@ -1245,7 +1245,7 @@ begin
   begin
     // if a binary float specific could not be found,
     // try a string !
-    S:=Specifics.Values['bbox'];
+    S:=Specifics.Strings['bbox']; //FIXME: Switch to QkSpecifics.Float ARRAY?
     if S<>'' then
     begin
       boxindex:=0;
@@ -1606,7 +1606,7 @@ var
  ModelOrg: vec3_t;
  RotVec: TVect;
  SkinDescr: String;
- spec,comp_name: string;
+ spec: string;
  c: QComponent;
  AnglesDefined:bool;
  mRotationMatrix:TMatrixTransformation;
@@ -1624,13 +1624,13 @@ begin
  Q.Acces;
 
  // here the specific is evaluated
- FullMdlPath:=Q.Specifics.Values['mdl'];
+ FullMdlPath:=Q.Specifics.Strings['mdl'];
  if FullMdlPath='' then
    Exit;
  if (FullMdlPath[1]='[') and (FullMdlPath[length(FullMdlPath)]=']') then // uses model specified in entity (ie like in misc_model)
  begin
    spec:=copy(FullMdlPath, 2, length(FullMdlPath)-2);
-   FullMdlPath:=Specifics.Values[spec];
+   FullMdlPath:=Specifics.Strings[spec];
  end;
 
  MdlPathOffset:=1;
@@ -1656,7 +1656,7 @@ begin
 
    { loads mdl }
    try
-   MdlBase:=Q.Specifics.Values['mdlbase'];
+   MdlBase:=Q.Specifics.Strings['mdlbase'];
    if MdlBase='' then
      FileObj1:=NeedGameFile(MdlPath, '')
    else
@@ -1670,14 +1670,14 @@ begin
    Mdl:=QModel(FileObj1);
    Mdl.Acces;
 
-   S:=Q.Specifics.Values['mdlframe'];
+   S:=Q.Specifics.Strings['mdlframe'];
    if S<>'' then
      QModelFile(Mdl).getRoot.setFramesByName(S)
    else
      QModelFile(Mdl).getRoot.setFrames(Round(Q.GetFloatSpec('mdlframe', 0)));
 
    // Check for auto-link tagging for .md3 files and derivatives
-   if Q.Specifics.Values['md3_autolink']='1' then
+   if Q.Specifics.Strings['md3_autolink']='1' then
      if (mdl is QMD3File) then
        QMD3File(mdl).TryAutoLoadParts;
 
@@ -1685,15 +1685,14 @@ begin
    begin
      if Q.Specifics.Names[i][1]=':' then  // text after a ':' is component name (for setting the frame number)
      begin
-       comp_name:=Copy(Q.Specifics.Names[i], 2, length(Q.Specifics[i])-2);
-       c:=QComponent(mdl.findsubobject(comp_name, QComponent, QModelRoot));
+       c:=QComponent(mdl.findsubobject(Copy(Q.Specifics.Names[i], 2, MaxInt), QComponent, QModelRoot));
        if c=nil then
          continue; // not found
-       S:=Q.Specifics.Values[Q.Specifics.Names[i]];
+       S:=Q.Specifics.Strings[Q.Specifics.Names[i]];
        if S<>'' then
          c.CurrentFrame:=c.GetFrameFromName(S)
        else
-         c.CurrentFrame:=c.GetFrameFromIndex(Round(Q.GetFloatSpec(Q.Specifics.Names[i], 0)));
+         c.CurrentFrame:=c.GetFrameFromIndex(Round(Q.GetFloatSpec(Q.Specifics.Names[i], 0))); //FIXME: IntSpec!
      end;
    end;
 
@@ -1719,7 +1718,7 @@ begin
    mRotationMatrix:=MatriceIdentite;
 
    // analyse angles specific first!
-   S:=Specifics.Values['angles'];
+   S:=Specifics.Strings['angles']; //FIXME: Switch to QkSpecifics.Floats?
    if (S<>'') then
    begin
      rotvec:=ReadVector(s);
@@ -1727,7 +1726,7 @@ begin
      AnglesDefined:=true;
    end;
 
-   S:=Specifics.Values['angle'];
+   S:=Specifics.Strings['angle']; //FIXME: Switch to QkSpecifics.Floats?
    if (S<>'') and (S<>'0') and (S<>'360') and not AnglesDefined then
    begin
      rotvec.X:=Round(StrToFloatDef(S, 0)) mod 360;
@@ -1755,7 +1754,7 @@ begin
        if Frame1=Nil then
          Continue;
 
-       S:=Q.Specifics.Values['mdlskin'];
+       S:=Q.Specifics.Strings['mdlskin'];
        if S<>'' then
          Skin1:=Component.GetSkinFromName(S)
        else
@@ -1813,7 +1812,7 @@ begin
 
          { find alpha }
          Model^.ModelAlpha:=255;
-         S:=Q.Specifics.Values['mdlopacity'];
+         S:=Q.Specifics.Strings['mdlopacity']; //FIXME: Switch to QkSpecifics.Float?
          try
            if S<>'' then
              Model^.ModelAlpha:=Round(255*StrToFloat(S));
@@ -1821,7 +1820,7 @@ begin
          end;
 
          { find mode }
-         S:=Q.Specifics.Values['mdlrendermode'];
+         S:=Q.Specifics.Strings['mdlrendermode']; //FIXME: Switch to QkSpecifics.Integer?
          if S<>'' then
            case StrToInt(S) of
            0: Model^.ModelRenderMode:=trmNormal;
@@ -1900,10 +1899,10 @@ begin
 
     if SameText(Copy(Name,1,5), SpecLight) then
     begin
-      Light:=StrToIntDef(Specifics.Values[SpecLight], 0);
+      Light:=StrToIntDef(Specifics.Strings[SpecLight], 0); //FIXME: Switch to QkSpecifics.Integers?
       if Light<=0 then
       begin
-        S:=Specifics.Values[SpecLight2];
+        S:=Specifics.Strings[SpecLight2]; //FIXME: Switch to QkSpecifics.Floats?
         if S='' then
           Exit;
         try
@@ -1922,7 +1921,7 @@ begin
       begin
         FoundAColor:=false;
         Color:=clWhite;
-        S:=Specifics.Values[SpecColor2];
+        S:=Specifics.Strings[SpecColor2]; //FIXME: Switch to QkSpecifics.Floats?
         if S<>'' then
         begin
           try
@@ -2131,7 +2130,7 @@ begin
  if Specifics.IndexOfName(';view')<0 then
   Result:=0   { optimized exit path }
  else
-  Result:=StrToIntDef(Specifics.Values[';view'], 0);
+  Result:=StrToIntDef(Specifics.Strings[';view'], 0); //FIXME: Switch to QkSpecifics.Integer?
 end;
 
 procedure TTreeMapGroup.SetViewFlags(Flags: Integer);
@@ -2142,7 +2141,7 @@ begin
   P:=sp_Supprime
  else
   P:=sp_Auto;
- Action(Self, TSpecificUndo.Create(LoadStr1(590), ';view', IntToStr(Flags), P, Self));
+ Action(Self, TSpecificUndo.Create(LoadStr1(590), ';view', IntToStr(Flags), P, Self)); //FIXME: Save as INTEGER?
 end;
 
 procedure TTreeMapGroup.AddTo3DScene(Scene: TObject);

@@ -313,7 +313,7 @@ begin
        Raise EErrorFmt(5186, [LoadName]);
       if (Header.Code1=SignatureQuArKPAK1)
       and (Header.Code2=SignatureQuArKPAK2) then
-       Specifics.Values['temp']:='1';
+       Specifics.Strings['temp']:='1';
       if (Header.Intro.PosRep + Header.Intro.TailleRep > FSize)
       or (Header.Intro.PosRep<SizeOf(TIntroPak))
       or (Header.Intro.TailleRep<0) then
@@ -533,7 +533,7 @@ begin
        { cannot use AccesCopying because the .pak folder hierarchy is not stored directly in the .pak }
       Origine:=F.Position;
       Header.Intro.Signature:=0;
-      if Specifics.Values['temp']<>'' then
+      if Specifics.Strings['temp']<>'' then
        begin
         Header.Code1:=SignatureQuArKPAK1;
         Header.Code2:=SignatureQuArKPAK2;

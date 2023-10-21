@@ -111,7 +111,7 @@ begin
         f:=QFrame(CurrentFrame.Clone(fg, true))
       else begin
         f:=QFrame.Create('new frame', fg);
-        f.specifics.add(FloatSpecNameOf('Vertices='));
+        f.specifics.addstringfull(FloatSpecNameOf('Vertices='));
       end;
       fg.subelements.add(f);
 
@@ -183,7 +183,7 @@ begin
         inc(tris);
       end;
       Specifics.Delete(Specifics.IndexofName(Spec1));
-      Specifics.Add(S);
+      Specifics.AddStringFull(S);
 
     end;
     Result:=PyNoResult;
@@ -331,7 +331,7 @@ end;
 function QComponent.GetSkinDescr(Static: Boolean) : String;
 begin
   if Static then
-    Result:=':'+Specifics.Values['ssd']
+    Result:=':'+Specifics.Strings['ssd']
   else
     Result:=':'+IntToHex(FSkinCounter, 8);
 end;
@@ -439,10 +439,10 @@ begin
       Result:=Self;
     end else begin
       Result:=QComponent.Create('', Nil);
-      Result.Specifics.Add(GetSpecArg('Tris'));
+      Result.Specifics.AddStringFull(GetSpecArg('Tris'));
       Result.CurrentSkin:=nSkin;
     end;
-  Result.Specifics.Values['ssd']:=StaticBase;
+  Result.Specifics.Strings['ssd']:=StaticBase;
   Result.AddRef(+1);
 end;
 
@@ -598,8 +598,8 @@ begin
         ProgressIndicatorIncrement;
         S:=GetSpecArg(Spec1);
         UniqueString(S);
-        Specifics.Values[Spec1]:='';
-        Specifics.Add(S);
+        Specifics.Delete(Spec1);
+        Specifics.AddStringFull(S);
         for I:=1 to Triangles(CTris) do begin
           for J:=0 to 2 do begin
             if CTris^[J].VertexNo >= VertexCount then
@@ -623,8 +623,8 @@ begin
             FrSourcePts^:=CVertJ^;
             Inc(FrSourcePts);
           end;
-          FrameObj.Specifics.Values[FloatSpecNameOf(Spec2)]:='';
-          FrameObj.Specifics.Add(S);
+          FrameObj.Specifics.Delete(FloatSpecNameOf(Spec2));
+          FrameObj.Specifics.AddStringFull(S);
         end;
         ProgressIndicatorIncrement;
       finally
@@ -645,7 +645,7 @@ const
 var
   S: String;
 begin
-  S:=Specifics.Values[SpecColor2];
+  S:=Specifics.Strings[SpecColor2]; //FIXME: Switch to QkSpecifics.Integers?
   if S<>'' then begin
     C:=clNone;
     try
@@ -1202,7 +1202,7 @@ begin
       end;
       if Specifics.IndexofName(Spec1)<>-1 then
         Specifics.Delete(Specifics.IndexofName(Spec1));
-      Specifics.Add(S);
+      Specifics.AddStringFull(S);
       Result:=True;
       Exit;
     end;
@@ -1220,7 +1220,7 @@ function QComponent.TreeViewColorBoxes : TColorBoxList;
 begin
   Result:=TColorBoxList.Create;
   Result.Add('comp_color1', 'LI');
-  if Specifics.Values['usecolor2'] = '1' then
+  if Specifics.Strings['usecolor2'] = '1' then
     Result.Add('comp_color2', 'LI');
 end;
 

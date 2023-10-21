@@ -170,12 +170,12 @@ function cDraw(self, args: PyObject) : PyObject; cdecl;
 var
  P: TPoint;
  Color: TColorRef;
- im: PyImage1;
+ im: PyImage;
 begin
  Result:=Nil;
  try
   Color:=CLR_NONE;
-  if PyArg_ParseTupleX(args, 'O!ii', [@TyImage1_Type, @im, @P.X, @P.Y, @Color])=0 then
+  if PyArg_ParseTupleX(args, 'O!ii', [@TyImage_Type, @im, @P.X, @P.Y, @Color])=0 then
    Exit;
   if Assigned(PyCanvasObj(self)^.Canvas) then
    im^.Draw(PyCanvasObj(self)^.Canvas.Handle, P.X, P.Y, Color);
@@ -231,7 +231,7 @@ begin
       if not PSD.IsGamePalette(mjAny) then
        lgr:=0;  { cannot fade out textures with their custom palette }
       {GameInfo:=QTextureFile(Tex).LoadPaletteInfo; try}
-      if SetupGameSet.Specifics.Values['Gradient']='' then
+      if SetupGameSet.Specifics.Strings['Gradient']='' then
        lgr:=0;  { cannot fade out textures without a global game palette }
       {GameInfo^.BitmapInfo.bmiHeader.biWidth:=W;
       GameInfo^.BitmapInfo.bmiHeader.biHeight:=H;}
@@ -245,7 +245,7 @@ begin
       try
        if lgr<>0 then
         begin
-         ColorMap:=NeedGameFile(SetupGameSet.Specifics.Values['Gradient'], '');
+         ColorMap:=NeedGameFile(SetupGameSet.Specifics.Strings['Gradient'], '');
          ColorMap.Acces;
          if ColorMap is QImage then
           begin

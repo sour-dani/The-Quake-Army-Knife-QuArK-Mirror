@@ -282,7 +282,7 @@ begin
  Hint:=BlueHintPrefix;
  TabStop:=True;
  Renderer:='';
- DoubleBuffered:=(ConfigSrc.Specifics.Values['DoubleBuffered']<>'');
+ DoubleBuffered:=(ConfigSrc.Specifics.Strings['DoubleBuffered']<>'');
  ViewMode:=vmWireframe;
  ViewType:=vtEditor;
  DrawMode:=dmFull;
@@ -427,7 +427,7 @@ begin
  if SceneConfigSubSrc=Nil then
  begin
    if Renderer='' then
-    S:=SetupSubSet(ssGeneral, '3D View').Specifics.Values['Lib']
+    S:=SetupSubSet(ssGeneral, '3D View').Specifics.Strings['Lib']
    else
     S:=Renderer;
    if S='qrksoftg.dll' then
@@ -460,7 +460,7 @@ begin
   Invalidate;
  with ConfigSrc do
   begin
-   DoubleBuffered:=(Specifics.Values['DoubleBuffered']<>'') and (ViewMode = vmWireframe); //FIXME: Currently only works properly for wireframe mode, due to SetViewDC.
+   DoubleBuffered:=(Specifics.Strings['DoubleBuffered']<>'') and (ViewMode = vmWireframe); //FIXME: Currently only works properly for wireframe mode, due to SetViewDC.
    if MapViewProj is TCameraCoordinates then
     DisplayType:=dt3D
    else if MapViewProj is T3DCoordinates then
@@ -484,14 +484,14 @@ begin
     begin
      if (Scene is TSoftwareSceneObject) or (Scene is TGLSceneObject) or (Scene is TDirect3DSceneObject) then
      begin
-       StillQuality:=StrToIntDef(ConfigSubSrc.Specifics.Values['StillQuality'], 0);
-       MovingQuality:=StrToIntDef(ConfigSubSrc.Specifics.Values['MovingQuality'], 2);
+       StillQuality:=StrToIntDef(ConfigSubSrc.Specifics.Strings['StillQuality'], 0); //FIXME: Switch to QkSpecifics.Integers?
+       MovingQuality:=StrToIntDef(ConfigSubSrc.Specifics.Strings['MovingQuality'], 2); //FIXME: Switch to QkSpecifics.Integers?
        Scene.ChangeQuality(StillQuality);
      end;
-     if Specifics.Values['Entities']='' then
+     if Specifics.Strings['Entities']='' then
       ve1:=veNever
      else
-      if Specifics.Values['EntityBoxes']<>'' then
+      if Specifics.Strings['EntityBoxes']<>'' then
        ve1:=veBoxes
       else
        ve1:=veModels;
@@ -525,7 +525,7 @@ begin
       end;
 
       if Renderer='' then
-       RenderLib:=Specifics.Values['Lib']
+       RenderLib:=Specifics.Strings['Lib']
       else
        RenderLib:=Renderer;
 
@@ -1746,7 +1746,7 @@ begin
    SetAnimation(False);
    DeleteScene;
    ViewMode:=Vm;
-   DoubleBuffered:=(ConfigSrc.Specifics.Values['DoubleBuffered']<>'') and (ViewMode = vmWireframe); //FIXME: Currently only works properly for wireframe mode, due to SetViewDC.
+   DoubleBuffered:=(ConfigSrc.Specifics.Strings['DoubleBuffered']<>'') and (ViewMode = vmWireframe); //FIXME: Currently only works properly for wireframe mode, due to SetViewDC.
    if Vm=vmWireframe then
     Color:=BoxColor
    else

@@ -762,15 +762,15 @@ begin
   FogColor:=Setup.IntSpec['FogColor'];
   {FrameColor:=Setup.IntSpec['FrameColor'];}
   Setup:=SetupSubSet(ssGeneral, 'OpenGL');
-  if Setup.Specifics.Values['DisableDWM']<>'' then
+  if Setup.Specifics.Strings['DisableDWM']<>'' then
     DisableDWM();
   if (DisplayMode=dmWindow) or (DisplayMode=dmFullScreen) then
   begin
-    Fog:=Setup.Specifics.Values['Fog']<>'';
-    Transparency:=Setup.Specifics.Values['Transparency']<>'';
-    Lighting:=Setup.Specifics.Values['Lights']<>'';
-    Culling:=Setup.Specifics.Values['Culling']<>'';
-    GLLightingQuality:=StrToIntDef(Setup.Specifics.Values['LightingQuality'], 4);
+    Fog:=Setup.Specifics.Strings['Fog']<>'';
+    Transparency:=Setup.Specifics.Strings['Transparency']<>'';
+    Lighting:=Setup.Specifics.Strings['Lights']<>'';
+    Culling:=Setup.Specifics.Strings['Culling']<>'';
+    GLLightingQuality:=StrToIntDef(Setup.Specifics.Strings['LightingQuality'], 4); //FIXME: Switch to QkSpecifics.Integers?
     LightParams.ZeroLight:=Setup.GetFloatSpec('Ambient', 0.2);
   end
   else
@@ -790,33 +790,34 @@ begin
   FullBright.SoftwareRange:=0.0;
   FullBright.IntensityScale:=1.0;
 
-  Dithering:=Setup.Specifics.Values['Dither']<>'';
+  Dithering:=Setup.Specifics.Strings['Dither']<>'';
   VCorrection2:=2*Setup.GetFloatSpec('VCorrection',1);
-  AllowsGDI:=Setup.Specifics.Values['AllowsGDI']<>'';
-  DisplayLists:=Setup.Specifics.Values['GLLists']<>'';
-  if Setup.Specifics.Values['TextureFiltering'] = '0' then
+  AllowsGDI:=Setup.Specifics.Strings['AllowsGDI']<>'';
+  DisplayLists:=Setup.Specifics.Strings['GLLists']<>'';
+  //FIXME: Use a 'case' instead!
+  if Setup.Specifics.Strings['TextureFiltering'] = '0' then
     TextureFiltering := tfNone
-  else if Setup.Specifics.Values['TextureFiltering'] = '1' then
+  else if Setup.Specifics.Strings['TextureFiltering'] = '1' then
     TextureFiltering := tfBilinear
-  else if Setup.Specifics.Values['TextureFiltering'] = '2' then
+  else if Setup.Specifics.Strings['TextureFiltering'] = '2' then
     TextureFiltering := tfTrilinear
-  else if Setup.Specifics.Values['TextureFiltering'] = '3' then
+  else if Setup.Specifics.Strings['TextureFiltering'] = '3' then
     TextureFiltering := tfAnisotropic
   else
   begin
     //Backward compatibility
     Log(LOG_WARNING, LoadStr1(6306));
-    if Setup.Specifics.Values['Bilinear']<>'' then
+    if Setup.Specifics.Strings['Bilinear']<>'' then
       TextureFiltering := tfBilinear
     else
       TextureFiltering := tfNone;
   end;
-  DoubleBuffered:=Setup.Specifics.Values['DoubleBuffer']<>'';
+  DoubleBuffered:=Setup.Specifics.Strings['DoubleBuffer']<>'';
   if AllowsGDI then
-    WorkaroundGDI:=Setup.Specifics.Values['WorkaroundGDI']<>''
+    WorkaroundGDI:=Setup.Specifics.Strings['WorkaroundGDI']<>''
   else
     WorkaroundGDI:=false;
-  WorkaroundFPExceptions:=Setup.Specifics.Values['WorkaroundFPExceptions']<>'';
+  WorkaroundFPExceptions:=Setup.Specifics.Strings['WorkaroundFPExceptions']<>'';
 
   SetViewDC(True);
   try

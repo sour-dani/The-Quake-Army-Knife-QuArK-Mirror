@@ -30,7 +30,7 @@ function GetUndoModule(DoDebutAction: Boolean = True) : PyObject;
 
 implementation
 
-uses Quarkx, QkExceptions, PyObjects, WorkaroundStringCompare;
+uses Quarkx, QkExceptions, PyObjects;
 
 function uOk(self, args: PyObject) : PyObject; cdecl;
 var
@@ -143,11 +143,11 @@ begin
   if obj2=Py_None then
    begin
     nArg:='';
-    if (Strict_IndexOfName(Q.Specifics, nSpec)<0) then //Q.Specifics.IndexOfName(nSpec)
+    if (Q.Specifics.IndexOfName(nSpec)<0) then
      begin
-      if (Strict_IndexOfName(Q.Specifics, FloatSpecNameOf(nSpec))>0) then //Q.Specifics.IndexOfName(FloatSpecNameOf(nSpec))
+      if (Q.Specifics.IndexOfName(FloatSpecNameOf(nSpec))>=0) then
        nSpec:=FloatSpecNameOf(nSpec);
-      (*if (Strict_IndexOfName(Q.Specifics, IntSpecNameOf(nSpec))>0) then //Q.Specifics.IndexOfName(IntSpecNameOf(nSpec))
+      (*if (Q.Specifics.IndexOfName(IntSpecNameOf(nSpec)))>=0) then
        nSpec:=IntSpecNameOf(nSpec);*)
      end;
     nPosition:=sp_Supprime;

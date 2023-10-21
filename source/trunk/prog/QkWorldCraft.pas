@@ -289,8 +289,8 @@ var
 
       //FIXME: OldTex.smooth
       //FIXME: OldTex.material
-     Surface.Specifics.Values['Contents']:=IntToStr(OldTex.q2contents);
-     Surface.Specifics.Values['Flags']:=IntToStr(OldTex.q2surface);
+     Surface.Specifics.Integers['Contents']:=OldTex.q2contents;
+     Surface.Specifics.Integers['Flags']:=OldTex.q2surface;
 
      Params[1]:=OldTex.shift[0];
      Params[2]:=OldTex.shift[1];
@@ -306,8 +306,8 @@ var
 
      //FIXME: OldTex33.smooth
      //FIXME: OldTex33.material
-     Surface.Specifics.Values['Contents']:=IntToStr(OldTex33.q2contents);
-     Surface.Specifics.Values['Flags']:=IntToStr(OldTex33.q2surface);
+     Surface.Specifics.Integers['Contents']:=OldTex33.q2contents;
+     Surface.Specifics.Integers['Flags']:=OldTex33.q2surface;
      //FIXME: OldTex33.nLightmapScale
      //FIXME if texture.nLightmapScale == 0 then Use Default Value from GameConfig
 
@@ -426,7 +426,7 @@ var
  begin
    Key:=ReadRMFString();
    Value:=ReadRMFString();
-   obj.Specifics.Values[Key]:=Value;
+   obj.Specifics.Strings[Key]:=Value;
  end;
 
  procedure LoadEditGameClass(var obj : TTreeMap);
@@ -563,7 +563,7 @@ begin
         Racine.FixupAllReferences;
 
         SubElements.Add(Racine);
-        Specifics.Values['Root']:=Racine.Name+Racine.TypeInfo;
+        Specifics.Strings['Root']:=Racine.Name+Racine.TypeInfo;
         ObjectGameCode:=ModeJeu;
       finally
         Racine.AddRef(-1);

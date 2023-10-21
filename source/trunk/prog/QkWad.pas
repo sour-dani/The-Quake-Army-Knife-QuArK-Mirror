@@ -260,7 +260,7 @@ begin
         if Header.PosRep + I > FSize then
           Raise EErrorFmt(5186, [LoadName]);
 
-        WorkaroundGFX := SetupSubSet(ssFiles, 'WAD').Specifics.Values['WorkaroundGFX']<>'';
+        WorkaroundGFX := SetupSubSet(ssFiles, 'WAD').Specifics.Strings['WorkaroundGFX']<>'';
 
         GetMem(Entrees, I);
         try
@@ -807,11 +807,11 @@ begin
     TimerAnimation.Enabled:=False;
     TimerAnimation.Tag:=-1;
 
-    LoadNoOfTexAtEachCall := StrToInt(SetupSubSet(ssToolbars, 'Texture Browser').Specifics.Values['ImageListLoadNoOfTexAtEachCall']); //FIXME: Check for convert error!
+    LoadNoOfTexAtEachCall := SetupSubSet(ssToolbars, 'Texture Browser').Specifics.Integers['ImageListLoadNoOfTexAtEachCall']; //FIXME: Check for convert error!
     if (LoadNoOfTexAtEachCall < 1) then
       LoadNoOfTexAtEachCall := 1; { Load atleast one texture for each call to this function }
 
-    TexDimension := StrToInt(SetupSubSet(ssToolbars, 'Texture Browser').Specifics.Values['ImageListTextureDimension']); //FIXME: Check for convert error!
+    TexDimension := SetupSubSet(ssToolbars, 'Texture Browser').Specifics.Integers['ImageListTextureDimension']; //FIXME: Check for convert error!
     TexDimension := 16 * (TexDimension div 16); { Allow only steps of 16 }
     if (TexDimension < 32) then
       TexDimension := 32; { Minimum dimension is 32x32 }
@@ -878,7 +878,7 @@ begin
       BaseImage:=ImageList1.Count;
       TextureTitle:=QTexture(TexLoop[0]).Name + #13 + ' ';
 
-      if QTexture(TexLoop[0]).Specifics.Values['shader']='1' then
+      if QTexture(TexLoop[0]).Specifics.Strings['shader']='1' then
         TextureTitle:=TextureTitle + '(shader)';
 
       SelectNow:=False;

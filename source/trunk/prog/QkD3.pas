@@ -82,7 +82,8 @@ type
 
 implementation
 
-uses StrUtils, Quarkx, QkExceptions, QkObjectClassList, Game, Setup, Travail, Logging, ExtraFunctionality;
+uses StrUtils, Quarkx, QkExceptions, QkObjectClassList, Game, Setup, Travail, QkSpecifics,
+  Logging, ExtraFunctionality;
 
 {------------------------}
 
@@ -115,12 +116,12 @@ begin
  Acces;
  Result:=Nil;
 
- TexExt:=SetupGameSet.Specifics.Values['TextureFormat'];
+ TexExt:=SetupGameSet.Specifics.Strings['TextureFormat'];
  if ReverseLink<>nil then
-   DefaultImagename[0]:=ReverseLink.Specifics.Values['e'];
+   DefaultImagename[0]:=ReverseLink.Specifics.Strings['e'];
  if DefaultImageName[0]<>'' then
  begin
-    ImageFileName:=Specifics.Values[DefaultImageName[0]];
+    ImageFileName:=Specifics.Strings[DefaultImageName[0]];
     Log(LOG_VERBOSE, 'attempting to load %s', [ImageFileName]);
     try
       Result:=NeedGameFile(ImageFileName, '') as QPixelSet
@@ -131,12 +132,12 @@ begin
  else
  begin
    DefaultImageIndex:=0;
-   DefaultImageName[0]:=Specifics.Values['q']; // look at the q specific (QTextureLnk.LoadPixelSet)
-   DefaultImageName[1]:=Specifics.Values['qer_editorimage'];
-   DefaultImageName[2]:=Specifics.Values['map'];
-   DefaultImageName[3]:=Specifics.Values['diffusemap'];
-   DefaultImageName[4]:=Specifics.Values['specularmap'];
-   DefaultImageName[5]:=Specifics.Values['bumpmap']; //FIXME: Doesn't work!
+   DefaultImageName[0]:=Specifics.Strings['q']; // look at the q specific (QTextureLnk.LoadPixelSet)
+   DefaultImageName[1]:=Specifics.Strings['qer_editorimage'];
+   DefaultImageName[2]:=Specifics.Strings['map'];
+   DefaultImageName[3]:=Specifics.Strings['diffusemap'];
+   DefaultImageName[4]:=Specifics.Strings['specularmap'];
+   DefaultImageName[5]:=Specifics.Strings['bumpmap']; //FIXME: Doesn't work!
 
    while ((Result=nil) and (DefaultImageIndex<6)) do
    begin
@@ -222,22 +223,19 @@ var
  I, K: Integer;
  Q: QObject;
 
-  procedure DumpSpec(const Spec, Indent: String);
-  var
-   J: Integer;
+  { dump the specific as a shader or stage attribute }
+  procedure DumpSpec(const Spec: TSpecificsItem; const Indent: String);
   begin
-   J:=Pos('=', Spec);
    { ignore specifics that cannot be written as text }
-   if (J>0) and not IsFloatSpec(Spec) then //FIXME: and not IsIntSpec(Spec)
-    Result:=Result + Indent + Copy(Spec,1,J-1) + TrimRight(' ' + Copy(Spec,J+1,MaxInt)) + #13#10;
-    { dump the specific as a shader or stage attribute }
+   if not IsFloatSpec(Spec.Key) then //FIXME: and not IsIntSpec(Spec.Key)
+    Result:=Result + Indent + Spec.Key + TrimRight(' ' + Spec.Value) + #13#10;
   end;
 
 begin
  Result:=Name + #13#10'{'#13#10;
  Acces;
  for I:=0 to Specifics.Count-1 do  { attributes }
-  DumpSpec(Specifics[I], chr(vk_Tab));
+  DumpSpec(Specifics.Items[I], chr(vk_Tab));
  for K:=0 to SubElements.Count-1 do  { stages }
   begin
    Q:=SubElements[K];
@@ -245,7 +243,7 @@ begin
    { stage intro }
    Result:=Result + chr(vk_Tab) + '{'#13#10;
    for I:=0 to Q.Specifics.Count-1 do  { stage attributes }
-    DumpSpec(Q.Specifics[I], chr(vk_Tab) + chr(vk_Tab));
+    DumpSpec(Q.Specifics.Items[I], chr(vk_Tab) + chr(vk_Tab));
    { stage end }
    Result:=Result + chr(vk_Tab) + '}'#13#10;
   end;
@@ -470,15 +468,15 @@ var
        masked:=true
      else
      if (masked and (Spec='surfaceparm')) then
-       Target.Specifics.Add('_esp_'+Readline+'='+'1');
+       Target.Specifics.AddString('_esp_'+Readline, '1');
    end;
-   Target.Specifics.Add(Spec+'='+ReadLine);
+   Target.Specifics.AddString(Spec, ReadLine);
   end;
 
 begin
  Filename:=Self.GetFullName;
  
- EditableSurfaceParms:=SetupGameSet.Specifics.Values['EditableSurfaceParms']<>'';
+ EditableSurfaceParms:=SetupGameSet.Specifics.Strings['EditableSurfaceParms']<>'';
 
  case ReadFormat of
   rf_Default: begin  { as stand-alone file }
@@ -606,31 +604,31 @@ begin
           Inc(Source);   { skip the closing brace }
 
           { remove the 'map' attribute and use it to set the name of the stage }
-          if Stage.Specifics.Values['map']<>'' then
-            Stage.Name:=Stage.Specifics.Values['map']
-            // cdunde Stage.Specifics.Values['map']:='';
+          if Stage.Specifics.Strings['map']<>'' then
+            Stage.Name:=Stage.Specifics.Strings['map']
+            // cdunde Stage.Specifics.Delete('map'):='';
           else
             // cdunde - try 'diffusemap' instead
-            if Stage.Specifics.Values['diffusemap']<>'' then
-              Stage.Name:=Stage.Specifics.Values['diffusemap']
+            if Stage.Specifics.Strings['diffusemap']<>'' then
+              Stage.Name:=Stage.Specifics.Strings['diffusemap']
           else
             // cdunde - try 'qer_editorimage' instead
-            if Stage.Specifics.Values['qer_editorimage']<>'' then
-              Stage.Name:=Stage.Specifics.Values['qer_editorimage']
+            if Stage.Specifics.Strings['qer_editorimage']<>'' then
+              Stage.Name:=Stage.Specifics.Strings['qer_editorimage']
           else
             // cdunde - try 'specularmap' instead
-            if Stage.Specifics.Values['specularmap']<>'' then
-              Stage.Name:=Stage.Specifics.Values['specularmap']
+            if Stage.Specifics.Strings['specularmap']<>'' then
+              Stage.Name:=Stage.Specifics.Strings['specularmap']
           else
             // cdunde - try 'bumpmap' instead
-            if Stage.Specifics.Values['bumpmap']<>'' then
-              Stage.Name:=Stage.Specifics.Values['bumpmap']
+            if Stage.Specifics.Strings['bumpmap']<>'' then
+              Stage.Name:=Stage.Specifics.Strings['bumpmap']
           else
             // cdunde - try 'animmap' instead
-            if Stage.Specifics.Values['animmap']<>'' then
+            if Stage.Specifics.Strings['animmap']<>'' then
               begin
                 // jump over the number and take the first filename in the 'animmap' list
-                Stage.Name:=SplitString(Stage.Specifics.Values['animmap'], ' ')[1];
+                Stage.Name:=SplitString(Stage.Specifics.Strings['animmap'], ' ')[1];
               end;
          end
         else   { shader attribute }

@@ -1765,7 +1765,7 @@ begin
 
    { the maximum width/height dimension, to reduce memory-consumption if possible }
    try
-     TextureMaxDimension:=1 shl StrToInt(SetupSubSet(ssGeneral, '3D view').Specifics.Values['TextureMaxDimension']);
+     TextureMaxDimension:=1 shl SetupSubSet(ssGeneral, '3D view').Specifics.Integers['TextureMaxDimension'];
    except
      on EConvertError do
        //FIXME: Log!
@@ -1993,7 +1993,7 @@ begin
  if Renderer<>'' then
   S:=Renderer
  else
-  S:=SetupSubSet(ssGeneral, '3D View').Specifics.Values['Lib'];
+  S:=SetupSubSet(ssGeneral, '3D View').Specifics.Strings['Lib'];
  if S='qrksoftg.dll' then
   Result:=TSoftwareSceneObject.Create
  else if S='glide2x.dll' then

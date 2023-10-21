@@ -123,7 +123,7 @@ begin
   if Specifics.IndexofName(PosSpec)<>-1 then
     //FIXME: BAD CODING TACTIC!
     Specifics.Delete(Specifics.IndexofName(PosSpec));
-  Specifics.Add(s);
+  Specifics.AddStringFull(s);
 end;
 
 function QModelBone.GetPosition: vec3_p;
@@ -151,7 +151,7 @@ begin
   if Specifics.IndexofName(RotSpec)<>-1 then
     //FIXME: BAD CODING TACTIC!
     Specifics.Delete(Specifics.IndexofName(RotSpec));
-  Specifics.Add(s);
+  Specifics.AddStringFull(s);
 end;
 
 procedure QModelBone.GetRotMatrix(var P: PMatrixTransformation);
@@ -347,7 +347,7 @@ begin
         if Specifics.IndexofName(PosSpec)<>-1 then
           //FIXME: BAD CODING TACTIC!
           Specifics.Delete(Specifics.IndexofName(PosSpec));
-        Specifics.Add(S);
+        Specifics.AddStringFull(S);
         Result:=True;
         Exit;
       end;
@@ -375,7 +375,7 @@ begin
         if Specifics.IndexofName(RotSpec)<>-1 then
           //FIXME: BAD CODING TACTIC!
           Specifics.Delete(Specifics.IndexofName(RotSpec));
-        Specifics.Add(S);
+        Specifics.AddStringFull(S);
         Result:=True;
         Exit;
       end;
@@ -415,7 +415,7 @@ begin
         if Specifics.IndexofName(VertSpec)<>-1 then
           //FIXME: BAD CODING TACTIC!
           Specifics.Delete(Specifics.IndexofName(VertSpec));
-        Specifics.Add(S);
+        Specifics.AddStringFull(S);
         Result:=True;
         Exit;
       end
@@ -455,7 +455,7 @@ begin
         if Specifics.IndexofName(VertPosSpec)<>-1 then
           //FIXME: BAD CODING TACTIC!
           Specifics.Delete(Specifics.IndexofName(VertPosSpec));
-        Specifics.Add(S);
+        Specifics.AddStringFull(S);
         Result:=True;
         Exit;
       end;

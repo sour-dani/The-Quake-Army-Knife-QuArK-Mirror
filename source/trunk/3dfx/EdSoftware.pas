@@ -349,7 +349,7 @@ begin
   RendererSizeY:=200;
  if (DisplayMode=dmWindow) or (DisplayMode=dmFullScreen) then
  begin
-   Fog:=Setup.Specifics.Values['Fog']<>'';
+   Fog:=Setup.Specifics.Strings['Fog']<>'';
  end
  else
  begin

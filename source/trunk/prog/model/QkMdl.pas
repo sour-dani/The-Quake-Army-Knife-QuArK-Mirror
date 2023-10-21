@@ -752,7 +752,7 @@ texcoord:=@texbox;
       Inc(CTris);
       Inc(Tris2);
     end;
-    Comp.Specifics.Add(S); {tris=...}
+    Comp.Specifics.AddStringFull(S); {tris=...}
   finally
 //    freemem(Tris);
 //    freemem(texcoord);
@@ -790,7 +790,7 @@ texcoord:=@texbox;
         Inc(Vertexes2);
         Inc(CVert);
       end;
-      Frame.Specifics.Add(S);
+      Frame.Specifics.AddStringFull(S);
     finally
 //      FreeMem(Vertexes);
     end;
@@ -876,7 +876,7 @@ begin
         Root := Loaded_Root;
         C := Loaded_Component(Root, '');
         ObjectGameCode := mjNotQuake2;
-        Root.Specifics.Values['seamtrick'] := '1';
+        Root.Specifics.Strings['seamtrick'] := '1';
         Size[1] := mdl.synctype;
         Size[2] := mdl.flags;
         Root.SetFloatsSpec('flags', Size);
@@ -905,7 +905,7 @@ begin
             Inc(SkinCounter);
             if NextTime <> nil then begin
               if K = 1 then
-                SkinObj.Specifics.Values['group'] := '1';
+                SkinObj.Specifics.Strings['group'] := '1';
               SkinObj.SetFloatSpec('duration', NextTime^ - PreviousTime);
               PreviousTime := NextTime^;
               Inc(NextTime);
@@ -967,7 +967,7 @@ begin
                 Inc(Tris);
                 Inc(CTris);
               end;
-            C.Specifics.Add(S); { Tris= }
+            C.Specifics.AddStringFull(S); { Tris= }
           finally
             FreeMem(Triangles);
           end;
@@ -996,7 +996,7 @@ begin
               FrameObj := Loaded_Frame(C, CharToPas(Frame.Nom));
               if NextTime <> nil then begin
                 if K = 1 then
-                  FrameObj.Specifics.Values['group'] := '1';
+                  FrameObj.Specifics.Strings['group'] := '1';
                 FrameObj.SetFloatSpec('duration', NextTime^ - PreviousTime);
                 PreviousTime := NextTime^;
                 Inc(NextTime);
@@ -1014,7 +1014,7 @@ begin
                 Inc(FrSource);
                 Inc(CVert);
               end;
-              FrameObj.Specifics.Add(S);
+              FrameObj.Specifics.AddStringFull(S);
             end;
           end;
         finally
@@ -1136,7 +1136,7 @@ begin
               end else begin
                 while (I + SkinGroup.count < SkinList.Count)
                   and (QImage(SkinList.Items1[I + SkinGroup.count]).GetFloatSpec('duration', 0) > 0)
-                  and (QImage(SkinList.Items1[I + SkinGroup.count]).Specifics.Values['group'] = '') do
+                  and (QImage(SkinList.Items1[I + SkinGroup.count]).Specifics.Strings['group'] = '') do
                   Inc(SkinGroup.count);
                 J := 1;
                 F.WriteBuffer(J, SizeOf(LongInt));
@@ -1303,7 +1303,7 @@ begin
                     FrameObj.ChercheExtremites(Min, Max);
                     while (I + FrameGroup.count < FrameList.Count)
                       and (QFrame(FrameList.Items1[I + FrameGroup.count]).GetFloatSpec('duration', 0) > 0)
-                      and (QFrame(FrameList.Items1[I + FrameGroup.count]).Specifics.Values['group'] = '') do begin
+                      and (QFrame(FrameList.Items1[I + FrameGroup.count]).Specifics.Strings['group'] = '') do begin
                       QFrame(FrameList.Items1[I + FrameGroup.count]).ChercheExtremites(Min, Max);
                       Inc(FrameGroup.count);
                     end;

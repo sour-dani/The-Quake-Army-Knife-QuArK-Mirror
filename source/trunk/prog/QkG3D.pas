@@ -179,7 +179,7 @@ begin
       if Header.Version<>GBSP_VERSION then
         Raise EErrorFmt(5509, [85]);
 
-      FBsp.Specifics.Values['BSPTime']:=Format('%d-%d-%d-%d-%d-%d-%d-%d',
+      FBsp.Specifics.Strings['BSPTime']:=Format('%d-%d-%d-%d-%d-%d-%d-%d',
         [Header.BSPTime.wYear,
          Header.BSPTime.wMonth,
          Header.BSPTime.wDayOfWeek,

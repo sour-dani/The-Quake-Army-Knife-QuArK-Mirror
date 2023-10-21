@@ -152,7 +152,7 @@ begin
        Tpb.SetBounds(X, TrashBtn.Top, Canvas.TextWidth(Tpb.Caption)+16, TrashBtn.Height);
        Tpb.Tag:={$IFDEF DelphiXE2orNewerCompiler}NativeInt{$ELSE}LongInt{$ENDIF}(NewObjList[I]);
        Tpb.OnClick:=InsertNewObj;
-       Tpb.Hint:=NewObjList[I].Specifics.Values[SpecDesc];
+       Tpb.Hint:=NewObjList[I].Specifics.Strings[SpecDesc];
        Inc(X, Tpb.Width);
       end;
     end;
@@ -229,7 +229,7 @@ begin
    I:=0;
    while I<SubElements.Count-1 do
    begin
-     if SubElements[I].Specifics.Values['NotInstalled']<>'' then
+     if SubElements[I].Specifics.Strings['NotInstalled']<>'' then
        SubElements.Delete(I)
      else
        Inc(I);
@@ -265,7 +265,7 @@ begin
  Gr.AddRef(+1); try
  Q:=Q.Clone(Nil, False);
  Gr.SubElements.Add(Q);
- Q.Specifics.Values[SpecDesc]:='';
+ Q.Specifics.Delete(SpecDesc);
  Explorer.DropObjectsNow(Gr, '', True);
  finally Gr.AddRef(-1); end;
 end;
@@ -280,7 +280,7 @@ begin
 {nFormCfg:=Nil;}
  if T<>Nil then
   begin
-   S:=T.Specifics.Values['Form'];
+   S:=T.Specifics.Strings['Form'];
    if S<>'' then
     begin
      { builds a FormCfg based on this form }

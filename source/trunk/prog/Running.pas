@@ -139,7 +139,7 @@ begin
  I:=0;
  Result:=QFileObjectClass(Q.ClassType);
  repeat
-  Cmd:=Config1.Specifics.Values[Result.TypeInfo];
+  Cmd:=Config1.Specifics.Strings[Result.TypeInfo];
   if Cmd<>'' then Exit;
   Inc(I);
   Result:=QFileObject(Q).TestConversionType(I);

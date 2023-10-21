@@ -227,12 +227,12 @@ const
 
 function GameTexturesPath : String;
 begin
-  Result:=SetupGameSet.Specifics.Values['TexturesPath'];
+  Result:=SetupGameSet.Specifics.Strings['TexturesPath'];
 end;
 
 function GameShadersPath : String;
 begin
-  Result:=SetupGameSet.Specifics.Values['ShadersPath'];
+  Result:=SetupGameSet.Specifics.Strings['ShadersPath'];
   if Result='' then
   begin
     Log(LOG_INFO, FmtLoadStr1(4460, ['ShadersPath', 'TexturesPath']));
@@ -242,7 +242,7 @@ end;
 
 function GameMaterialsPath : String;
 begin
-  Result:=SetupGameSet.Specifics.Values['MaterialsPath'];
+  Result:=SetupGameSet.Specifics.Strings['MaterialsPath'];
   if Result='' then
   begin
     Log(LOG_INFO, FmtLoadStr1(4460, ['MaterialsPath', 'ShadersPath']));
@@ -412,12 +412,12 @@ var
                     try
                       if PSD.AlphaBits = psa8bpp then
                       begin
-                        TexFormat2:=SetupGameSet.Specifics.Values['TextureWriteFormatA'];
+                        TexFormat2:=SetupGameSet.Specifics.Strings['TextureWriteFormatA'];
                         if TexFormat2 = '' then
-                          TexFormat2:=SetupGameSet.Specifics.Values['TextureWriteFormat'];
+                          TexFormat2:=SetupGameSet.Specifics.Strings['TextureWriteFormat'];
                       end
                       else
-                        TexFormat2:=SetupGameSet.Specifics.Values['TextureWriteFormat'];
+                        TexFormat2:=SetupGameSet.Specifics.Strings['TextureWriteFormat'];
                     finally
                       PSD.Done;
                     end;
@@ -461,7 +461,7 @@ var
     SRec: TSearchRec;
     Q: QFileObject;
   begin
-    S:=SetupGameSet.Specifics.Values['ExtractFiles'];
+    S:=SetupGameSet.Specifics.Strings['ExtractFiles'];
     if S<>'' then
     begin
       FilesList:=TStringList.Create;
@@ -561,7 +561,7 @@ var
   begin
     { write several texture files (.wal, .m8, .swl, .tga...) }
     needColormap:=False;
-    walTrick:=SetupGameSet.Specifics.Values['walTrick']<>'';
+    walTrick:=SetupGameSet.Specifics.Strings['walTrick']<>'';
 
     ProgressIndicatorStart(5453, TexList.Count);
     try
@@ -622,7 +622,7 @@ var
         end;
 
         begin   { shaders stuff }
-          S:=SetupGameSet.Specifics.Values['TextureShaders'];
+          S:=SetupGameSet.Specifics.Strings['TextureShaders'];
           if ShaderFile<>Nil then
           begin  { write the shaders file }
             if S='' then
@@ -686,7 +686,7 @@ begin
       begin
         if L.Count>0 then    { do not attempt to write any texture-related file if no texture is to be written }
         begin
-          TexWad:=SetupGameSet.Specifics.Values['TextureWad'];
+          TexWad:=SetupGameSet.Specifics.Strings['TextureWad'];
 
           if TexWad<>'' then
             CreateWadFile(TexWad, TexList)
@@ -903,24 +903,24 @@ begin
   Acces;
   if Link=Nil then
   begin  { load the linked texture }
-    TexName:=Specifics.Values['n'];
+    TexName:=Specifics.Strings['n'];
     if TexName='' then
       TexName:=Name;
-    DefaultImageName:=Specifics.Values['q'];
+    DefaultImageName:=Specifics.Strings['q'];
 
     for I:=Low(StdGameTextureLinks) to High(StdGameTextureLinks) do
     begin
-      S:=Specifics.Values[StdGameTextureLinks[I].LinkSpecificChar];
+      S:=Specifics.Strings[StdGameTextureLinks[I].LinkSpecificChar];
       if S<>'' then
       begin   { standard link }
         if CurrentGameMode=mjHL2 then
         begin
           try // failing to load the textures produces an exception
-            Link:=NeedGameFileBase(S, ConcatPaths([GameTexturesPath, TexName+GameBuffer(StdGameTextureLinks[I].GameMode)^.TextureExt]), Specifics.Values['PakFile']) as QPixelSet;
+            Link:=NeedGameFileBase(S, ConcatPaths([GameTexturesPath, TexName+GameBuffer(StdGameTextureLinks[I].GameMode)^.TextureExt]), Specifics.Strings['PakFile']) as QPixelSet;
           except
             // fall back to vtf file loading if default texture extension (vmt) fails
             if Link=Nil then
-              Link:=NeedGameFileBase(S, ConcatPaths([GameTexturesPath, TexName+'.vtf']), Specifics.Values['PakFile']) as QPixelSet;
+              Link:=NeedGameFileBase(S, ConcatPaths([GameTexturesPath, TexName+'.vtf']), Specifics.Strings['PakFile']) as QPixelSet;
           end;
           if Link=Nil then
             Raise EErrorFmt(5755, [TexName, Arg]);
@@ -945,9 +945,9 @@ begin
         rather than having to put this info into datakp.qrk}
         if CurrentGameMode=mjKingPin then
         begin
-          Link.Specifics.Add('Contents='+Specifics.Values['c']);
-          Link.Specifics.Add('Flags='+Specifics.Values['f']);
-          Link.Specifics.Add('Value='+Specifics.Values['v']);
+          Link.Specifics.AddString('Contents', Specifics.Strings['c']); //FIXME: Switch to QkSpecifics.Integers?
+          Link.Specifics.AddString('Flags', Specifics.Strings['f']); //FIXME: Switch to QkSpecifics.Integers?
+          Link.Specifics.AddString('Value', Specifics.Strings['v']); //FIXME: Switch to QkSpecifics.Integers?
         end
 {end  --- kingpin texture flag hack}
         else if CurrentGameMode=mjDK then
@@ -956,7 +956,7 @@ begin
           S:=Spec2;
           SetLength(S, Length(Spec2) + SizeOf(TPaletteLmp));
           Move(GameBuffer(ObjectGameCode)^.PaletteLmp, S[Length(Spec2)+1], SizeOf(TPaletteLmp));
-          Link.Specifics.Add(S);
+          Link.Specifics.AddStringFull(S);
         end;
         Break;
       end;
@@ -964,13 +964,13 @@ begin
 
     if Link=Nil then
     begin    { link to a texture found within another file (.wad or .bsp) }
-      S:=Specifics.Values['a'];
+      S:=Specifics.Strings['a'];
       if S<>'' then
       begin   { Quake 3 }
-        Arg:=Specifics.Values['b'];
+        Arg:=Specifics.Strings['b'];
         if Arg<>'' then
         begin { shader (Q3) or material (D3) or similar}
-          ShaderType:=SetupGameSet.Specifics.Values['ShadersType'];
+          ShaderType:=SetupGameSet.Specifics.Strings['ShadersType'];
           if ShaderType=mjDoom3 then
            begin
             // the revised code (Doom 3 material)
@@ -999,7 +999,7 @@ begin
               Raise EErrorFmt(5755, [TexName, Arg]);
 
             if DefaultImageName<>'' then
-              Link.Specifics.Values['q']:=DefaultImageName;
+              Link.Specifics.Strings['q']:=DefaultImageName;
            end
           else if ShaderType=mjQ3A then
            begin
@@ -1014,7 +1014,7 @@ begin
               Raise EErrorFmt(5698, [TexName, Arg]);
 
             if DefaultImageName<>'' then
-              Link.Specifics.Values['q']:=DefaultImageName;
+              Link.Specifics.Strings['q']:=DefaultImageName;
            end
           else if ShaderType=mjCoD2 then
             Link:=NeedGameFileBase(S, ConcatPaths([GameShadersPath, TexName]), '') as QCoD2Material
@@ -1022,7 +1022,7 @@ begin
            Raise EErrorFmt(4461, [ShaderType, 'ShadersType'])
         end
         else  { direct (non-shader) }
-          Link:=NeedGameFileBase(S, ConcatPaths([GameTexturesPath, TexName+SetupGameSet.Specifics.Values['TextureFormat']]), '') as QPixelSet;
+          Link:=NeedGameFileBase(S, ConcatPaths([GameTexturesPath, TexName+SetupGameSet.Specifics.Strings['TextureFormat']]), '') as QPixelSet;
 
         Link.AddRef(+1);
         try
@@ -1036,10 +1036,10 @@ begin
       end
       else
       begin
-        S:=Specifics.Values['d'];
+        S:=Specifics.Strings['d'];
         if S<>'' then
         begin  { .wad file link }
-          Ext:=Specifics.Values['h']; { Half-Life texture link }
+          Ext:=Specifics.Strings['h']; { Half-Life texture link }
           if Ext='' then
           begin
             ChangeGameMode(mjNotQuake2, True);
@@ -1052,7 +1052,7 @@ begin
             Ext:='.wad3_'+Ext;   { Half-Life .wad file }
           end;
 
-          Arg:=Specifics.Values['s'];
+          Arg:=Specifics.Strings['s'];
           if Arg='' then
             Raise EError(5518);
 
@@ -1079,8 +1079,8 @@ begin
         end
         else
         begin  { Quake 1 link }
-          S:=Specifics.Values['b'];
-          Arg:=Specifics.Values['s'];
+          S:=Specifics.Strings['b'];
+          Arg:=Specifics.Strings['s'];
           if (S='') or (Arg='') then
             Raise EError(5518);
           ChangeGameMode(mjNotQuake2, True);
@@ -1126,27 +1126,27 @@ begin
   Acces;
   for I:=Low(StdGameTextureLinks) to High(StdGameTextureLinks) do
   begin
-    if Specifics.Values[StdGameTextureLinks[I].LinkSpecificChar]<>'' then
+    if Specifics.Strings[StdGameTextureLinks[I].LinkSpecificChar]<>'' then
     begin
       Result:=StdGameTextureLinks[I].GameMode;
       Exit;
     end;
   end;
 
-  if Specifics.Values['a']<>'' then
+  if Specifics.Strings['a']<>'' then
     Result:=mjQ3A
   else
   begin
-    if Specifics.Values['d']<>'' then
+    if Specifics.Strings['d']<>'' then
     begin
-      if Specifics.Values['h']<>'' then
+      if Specifics.Strings['h']<>'' then
         Result:=mjHalfLife
       else
         Result:=mjNotQuake2;
     end
     else
     begin
-      if Specifics.Values['b']<>'' then
+      if Specifics.Strings['b']<>'' then
         Result:=mjNotQuake2
       else
         Raise EError(5518);
@@ -1232,7 +1232,7 @@ begin
     if Source is QTextureFile then
     begin
       for J:=Low(CopySpecifics) to High(CopySpecifics) do
-        Specifics.Values[CopySpecifics[J]]:=Source.Specifics.Values[CopySpecifics[J]];
+        Specifics.Strings[CopySpecifics[J]]:=Source.Specifics.Strings[CopySpecifics[J]];
     end;
   end;
 end;
@@ -1319,13 +1319,13 @@ begin
         Exit;
 
       for I:=0 to (cp and cpIndexesMax)-1 do
-        Specifics.Values['Image'+ImgCodes[I]]:='';
+        Specifics.Delete('Image'+ImgCodes[I]);
+      Specifics.Delete(Spec2);
 
-      Specifics.Values[Spec2]:='';
       SetSize(NewPSD.Size);
-      Specifics.Add(Data);
+      Specifics.AddStringFull(Data);
       if Pal<>'' then
-        Specifics.Add(Pal);
+        Specifics.AddStringFull(Pal);
 
       W:=NewPSD.Size.X;
       H:=NewPSD.Size.Y;
@@ -1343,7 +1343,7 @@ begin
                  NewPSD.ColorPalette, PByte(PChar(Data1)+Length('Image#=')), //FIXME: Unicode!
                  NewPSD.Size.X, NewPSD.Size.Y, NewPSD.ScanLine,
                  W, H, W);
-        Specifics.Add(Data1);
+        Specifics.AddStringFull(Data1);
       end;
 
       if NewPSD.AlphaBits=psaGlobalAlpha then
@@ -1623,7 +1623,7 @@ begin
       Raise EErrorFmt(5504, ['image #'+IntToStr(I)]);
 
   Spec:='Image'+ImgCodes[I];  { '1' to '4' }
-  Result:=Specifics.Values[Spec];
+  Result:=Specifics.Bytes[Spec];
 
   if Length(Result) <> W*H then
     Raise EErrorFmt(5504, [Spec]);
@@ -1748,10 +1748,10 @@ procedure QTextureFile.CheckTexName;
 var
   TexName: String;
 begin
-  if SetupSubSet(ssFiles, 'Textures').Specifics.Values['TextureNameCheck']<>'' then
+  if SetupSubSet(ssFiles, 'Textures').Specifics.Strings['TextureNameCheck']<>'' then
   begin
     TexName := GetTexName;
-    if ((nName = '') or (TexName = '')) and (SetupSubSet(ssFiles, 'Textures').Specifics.Values['TextureEmptyNameValid']<>'') then
+    if ((nName = '') or (TexName = '')) and (SetupSubSet(ssFiles, 'Textures').Specifics.Strings['TextureEmptyNameValid']<>'') then
       Exit;
     if not SameText(nName, TexName) then
       GlobalWarning(FmtLoadStr1(5569, [nName, TexName]));
@@ -1850,11 +1850,11 @@ begin
           begin
             if GNG>=mjQuake2 then
             begin
-              Self.Path    .Text:=Specifics.Values['Path'];
-              Self.Contents.Text:=Specifics.Values['Contents'];
-              Self.Flags   .Text:=Specifics.Values['Flags'];
-              Self.Value   .Text:=Specifics.Values['Value'];
-              Self.Anim    .Text:=Specifics.Values['Anim'];
+              Self.Path    .Text:=Specifics.Strings['Path'];
+              Self.Contents.Text:=Specifics.Strings['Contents'];
+              Self.Flags   .Text:=Specifics.Strings['Flags'];
+              Self.Value   .Text:=Specifics.Strings['Value'];
+              Self.Anim    .Text:=Specifics.Strings['Anim'];
             end;
           end;
         except
@@ -1867,7 +1867,7 @@ begin
       end;
       if FileObject is QTextureLnk then
       begin
-        S:=FileObject.Specifics.Values['n'];
+        S:=FileObject.Specifics.Strings['n'];
         if S='' then
         begin
           LinkTo.Text:=FileObject.Name;
@@ -1878,11 +1878,11 @@ begin
           LinkTo.Text:=S;
           LinkTo.Color:=clWindow;
         end;
-        S:=FileObject.Specifics.Values['w'];
+        S:=FileObject.Specifics.Strings['w'];
         if S='' then
-          S:=FileObject.Specifics.Values['m'];
+          S:=FileObject.Specifics.Strings['m'];
         if S='' then
-          S:=FileObject.Specifics.Values['i'];
+          S:=FileObject.Specifics.Strings['i'];
         if S<>'' then
         begin
           Label8.Visible:=False;
@@ -1894,12 +1894,12 @@ begin
         end
         else
         begin
-          SrcBsp.Text:=FileObject.Specifics.Values['b'];
+          SrcBsp.Text:=FileObject.Specifics.Strings['b'];
         {SrcBsp.Color:=clWindow;
           SrcBsp.ParentFont:=True;}
           Label8.Visible:=True;
           Label9.Visible:=True;
-          S:=FileObject.Specifics.Values['s'];
+          S:=FileObject.Specifics.Strings['s'];
         end;
         BaseDir.Text:=S;
       end;
@@ -2233,11 +2233,11 @@ begin
     Abort;
   end;
 
-  if FileObject.Specifics.Values['w']<>'' then  { Quake 2 }
+  if FileObject.Specifics.Strings['w']<>'' then  { Quake 2 }
     Spec:='w'
-  else if FileObject.Specifics.Values['m']<>'' then  { Heretic 2 }
+  else if FileObject.Specifics.Strings['m']<>'' then  { Heretic 2 }
     Spec:='m'
-  else if FileObject.Specifics.Values['i']<>'' then  { Sin }
+  else if FileObject.Specifics.Strings['i']<>'' then  { Sin }
     Spec:='i'
   else
     Spec:='s';

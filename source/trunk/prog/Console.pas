@@ -418,7 +418,7 @@ begin
  if ConsoleFont=0 then
   begin
    ConsoleFont:=CreateFont(ConsoleFontHeight, 0, 0, 0, FW_DONTCARE, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH or FF_DONTCARE, Nil);
-   Str:=StringOfChar('M', ConsoleWidth);
+   Str:=StringOfChar('M', ConsoleWidth); //FIXME: This is a bad way of getting the maximum width!
    Font:=SelectObject(DC, ConsoleFont); try
    if GetTextExtentPoint32(DC, PChar(Str), ConsoleWidth, Size) then
     begin
@@ -433,7 +433,7 @@ begin
     LineHeight:=ConsoleFontHeight;
    finally SelectObject(DC, Font); end;
   end;
- X:=Display.HorzScrollBar.Position;
+ X:=Display.HorzScrollBar.Position; //FIXME: Are we handling RightToLeft properly here?
  Y:=Display.VertScrollBar.Position;
  Top:=(rcPaint.Top+Y) div LineHeight;
  if Top<0 then Top:=0;
