@@ -1708,7 +1708,7 @@ class BaseEditor:
         if (text is not None) and (self.layout.hinttext != text) and (text[:1]!="?"):
             self.layout.hinttext = text
             if self.layout.hintcontrol is not None:
-                self.layout.hintcontrol.repaint()
+                self.layout.hintcontrol.invalidate()
         return self.layout.hinttext
 
 
