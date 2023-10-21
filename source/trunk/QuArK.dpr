@@ -80,7 +80,7 @@ uses
   GL1 in '3dfx\GL1.pas',
   Glide in '3dfx\Glide.pas',
   form_Model in 'prog\model\form_Model.pas' {FQMdl},
-  Qk3ds in 'prog\model\Qk3ds.pas',
+  //Qk3ds in 'prog\model\Qk3ds.pas',
   QkBoneGroup in 'prog\model\QkBoneGroup.pas',
   QkBoundFrame in 'prog\model\QkBoundFrame.pas',
   QkComponent in 'prog\model\QkComponent.pas',
