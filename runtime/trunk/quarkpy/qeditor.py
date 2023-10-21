@@ -707,23 +707,18 @@ class Compass:
         x = x - 48
         y = 48 - y
         if x*x + y*y > 10:
-
             #
             # Compute the image index corresponding to the mouse click.
             #
-
             imgcount = len(self.Images)
             i = int((math.atan2(y,x) * imgcount / pi2 + 0.5) % imgcount)
 
             #
             # Compute the corresponding angle.
             #
-
             angle1 = i*pi2/imgcount
             if angle1 != self.angle:
-
                 # Animate the Compass.
-
                 start = 0
                 delay = 0
                 if (i-self.i)%imgcount <= imgcount/2:
@@ -735,6 +730,7 @@ class Compass:
                         start = quarkx.wait(delay, start)
                         delay = 10
                         ctrl.image = self.Images[self.i]
+                        ctrl.update()
                 else:
                     #
                     # Clockwise
@@ -744,11 +740,11 @@ class Compass:
                         start = quarkx.wait(delay, start)
                         delay = 10
                         ctrl.image = self.Images[self.i]
+                        ctrl.update()
 
                 #
                 # Update the map views with the new angle.
                 #
-
                 self.Update(angle1)
                 setviews(self.views, 'angle', self.angle)
 
@@ -767,6 +763,7 @@ class Compass:
         if i!=self.i:
             self.i = i
             self.ctrl.image = self.Images[self.i]
+            self.ctrl.invalidate()
 
 
     def AngleChanged(self, view):
@@ -803,16 +800,14 @@ class Compass:
             elif y<0:
                 y = 0
             cv.textout(x,y,s)
-        cv.fontname = "Small Fonts"
-        cv.fontsize = 5
-        cv.fontcolor = 0xCCFCFB
         cv.fontname = "MS Serif"
         cv.fontbold = 1
+        cv.fontcolor = 0xCCFCFB
         angle(48+0.46*dx, 48-0.46*dy, "X")
         angle(48-0.23*dy, 48-0.23*dx, "Y")
         cv.fontcolor = 0x2020B0
         cv.fontsize = 8
-        angle(48+dx, 47-dy, "O")
+        angle(48+dx, 47-dy, "0")
         cv.fontcolor = qutils.BLACK
         angle(48-dy, 48-dx, "90")
         angle(48-dx, 48+dy, "180")
