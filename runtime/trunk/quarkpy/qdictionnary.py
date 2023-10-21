@@ -514,7 +514,7 @@ Strings = {
     4428: "Write error (disk may be full)",
     4429: "Unknown attribute",
     4430: "Internal icon index out of bounds",
-    4431: "Image1 object expected",
+    4431: "Image object expected",
     4432: "QuArK File object attribute not found",
     4433: "Internal error",
     4434: "Callable object expected",
