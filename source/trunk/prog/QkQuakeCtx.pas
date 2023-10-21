@@ -409,7 +409,7 @@ var
     begin
       if Parent.SubElements[i].typeinfo = ntypeinfo then
       begin
-        if Parent.Subelements[i].GetArg('ToolBox')=s then
+        if Parent.Subelements[i].Specifics.Strings['ToolBox']=s then
         begin
           result:=Parent.SubElements[i];
           break;
@@ -603,7 +603,7 @@ var
     begin
       if Parent.SubElements[i].typeinfo = ntypeinfo then
       begin
-        if Parent.Subelements[i].GetArg('ToolBox')=s then
+        if Parent.Subelements[i].Specifics.Strings['ToolBox']=s then
         begin
           result:=Parent.SubElements[i];
           break;

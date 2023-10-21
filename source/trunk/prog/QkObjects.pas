@@ -304,8 +304,6 @@ type
     procedure SetFloatsSpec(const Name: String; const F: array of Single); //FIXME: Switch to QkSpecifics.Float?
     function GetSpecArg(const Name: String) : String;
     { Returns "<specific-name>=<args>" }
-    function GetArg(const Name: String) : String;
-    { Returns "<args>" }
    {procedure SetTextsSpec(const Name: String; const L: TStrings);}
     function FindSubObject(const nName: String; WantClass, BrowseClass: QObjectClass) : QObject;
     function LocateSubElement(const LocName: String; var Index: Integer) : QObject; overload;
@@ -2438,20 +2436,6 @@ begin
     Result:=Name+'='
   else
     Result:=Name+'='+Specifics.StringsFromIndex[I];
-end;
-
-function QObject.GetArg(const Name: String) : String;
-{ (Comment by Decker 2001-02-23)
- Returns the string; "args", for the specific-name in question. If the
- specific-name can not be found, an empty string is returned.
-}
-var
-  I: Integer;
-  S: String;
-begin
-  S:=GetSpecArg(Name);
-  I:=Pos('=', S);
-  Result:=Copy(S, I+1, MaxInt);
 end;
 
 function QObject.FindSubObject(const nName: String; WantClass, BrowseClass: QObjectClass) : QObject;
