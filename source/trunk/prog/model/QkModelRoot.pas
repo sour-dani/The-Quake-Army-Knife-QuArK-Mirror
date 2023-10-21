@@ -32,7 +32,6 @@ type
     procedure SetCurrentComponent(const nComponent: QComponent);
   public
     class function TypeInfo: String; override;
-    function Triangles(var P: PComponentTris) : Integer;
     function PyGetAttr(attr: PyChar) : PyObject; override;
     function PySetAttr(attr: PyChar; value: PyObject) : Boolean; override;
     property CurrentComponent : QComponent read FCurrentComponentObj write SetCurrentComponent;
@@ -199,24 +198,6 @@ end;
 class function QModelRoot.TypeInfo;
 begin
   TypeInfo:=':mr';
-end;
-
-function QModelRoot.Triangles(var P: PComponentTris) : Integer;
-var
-  L: TQList;
-begin
-  L:=TQList.Create;
-  try
-    FindAllSubObjects('', QComponent, Nil, L);
-    if L.count<0 then
-    begin
-      result:=0;
-      exit;
-    end;
-    Result:=QComponent(L.Items1[0]).Triangles(p);
-  finally
-    L.Free;
-  end;
 end;
 
 function QModelRoot.PyGetAttr(attr: PyChar) : PyObject;

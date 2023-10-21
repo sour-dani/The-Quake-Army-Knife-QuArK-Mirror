@@ -552,7 +552,7 @@ begin
         end;
 
          { save st verts }
-       mdl.num_tris:=Root.Triangles(CTriangles);
+       mdl.num_tris:=Root.CurrentComponent.Triangles(CTriangles);
        CTris:=CTriangles;
        GlCmds:=TList.Create;
        L:=TList.Create;

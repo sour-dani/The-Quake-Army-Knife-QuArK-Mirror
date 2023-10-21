@@ -272,7 +272,7 @@ begin
        Raise EErrorFmt(5672, [LoadName, S]);
 
       with ReadMd2File(F, Origine, mdl) do
-       for I:=1 to Triangles(CTris) do
+       for I:=1 to CurrentComponent.Triangles(CTris) do
         begin
          for J:=0 to 2 do
           with CTris^[J] do
