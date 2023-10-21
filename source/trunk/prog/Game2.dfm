@@ -12,7 +12,6 @@ object AddOnsAddDlg: TAddOnsAddDlg
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   Position = poScreenCenter
-  OldCreateOrder = True
   OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy

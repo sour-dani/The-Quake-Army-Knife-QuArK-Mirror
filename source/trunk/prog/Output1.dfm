@@ -6,6 +6,8 @@ object OutputDirDlg: TOutputDirDlg
   Caption = 'Temporary directories and files for the game %s'
   ClientHeight = 348
   ClientWidth = 425
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
@@ -191,6 +193,7 @@ object OutputDirDlg: TOutputDirDlg
       Height = 17
       Hint = '2026'
       BorderStyle = bsNone
+      Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
@@ -290,6 +293,7 @@ object OutputDirDlg: TOutputDirDlg
       Height = 17
       Hint = '2026'
       BorderStyle = bsNone
+      Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'

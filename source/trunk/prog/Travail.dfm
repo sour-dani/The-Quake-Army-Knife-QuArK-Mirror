@@ -7,7 +7,6 @@ object FormTravail: TFormTravail
   ClientWidth = 297
   Color = clActiveCaption
   ParentFont = True
-  OldCreateOrder = True
   Position = poOwnerFormCenter
   PixelsPerInch = 96
   TextHeight = 13
@@ -41,8 +40,6 @@ object FormTravail: TFormTravail
       Top = 40
       Width = 217
       Height = 15
-      Min = 0
-      Max = 100
       TabOrder = 0
     end
     object ButtonStop: TPanel

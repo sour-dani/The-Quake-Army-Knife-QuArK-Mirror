@@ -234,9 +234,9 @@ object QuickWalParser: TQuickWalParser
     Height = 17
     Hint = 
       'A dynamic texture-list will show whatever textures that'#13'exists i' +
-      'n the chosen folder, when QuArK starts.'#13'A non-dynamic texture-l' +
-      'ist takes a persistent '#39'snapshot'#39#13'of the textures that can be fo' +
-      'und in the folder now.'
+      'n the chosen folder, when QuArK starts.'#13'A non-dynamic texture-li' +
+      'st takes a persistent '#39'snapshot'#39#13'of the textures that can be fou' +
+      'nd in the folder now.'
     Caption = 'Dynamic'
     Checked = True
     State = cbChecked

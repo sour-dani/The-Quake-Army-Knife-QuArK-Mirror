@@ -8,7 +8,6 @@ object PyFullscreenWnd: TPyFullscreenWnd
   ClientWidth = 115
   Color = clBtnFace
   ParentFont = True
-  OldCreateOrder = True
   Position = poDefaultPosOnly
   OnMouseMove = FormMouseMove
   PixelsPerInch = 96

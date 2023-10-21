@@ -1,5 +1,4 @@
 inherited FQGroup: TFQGroup
-  Caption = 'FQGroup'
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel [0]
@@ -235,6 +234,7 @@ inherited FQGroup: TFQGroup
       BevelOuter = bvNone
       Caption = 'Panel2'
       Color = clInactiveCaption
+      Font.Charset = DEFAULT_CHARSET
       Font.Color = clInactiveCaptionText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'

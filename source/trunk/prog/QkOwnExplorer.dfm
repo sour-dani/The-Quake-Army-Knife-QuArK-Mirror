@@ -7,8 +7,8 @@ inherited QFormExplorer: TQFormExplorer
     Width = 409
     Height = 246
     Align = alClient
-    ParentBackground = False
     BevelOuter = bvNone
+    ParentBackground = False
     TabOrder = 4
   end
 end

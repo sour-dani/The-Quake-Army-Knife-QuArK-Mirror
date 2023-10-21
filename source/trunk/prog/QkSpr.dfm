@@ -3,7 +3,6 @@ inherited QSprForm: TQSprForm
   Top = 549
   Width = 532
   Height = 415
-  Caption = 'QSprForm'
   PixelsPerInch = 96
   TextHeight = 13
   inherited topdock: TDock97

@@ -1,5 +1,4 @@
 inherited FQUnknown: TFQUnknown
-  Caption = 'FQUnknown'
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel

@@ -5,6 +5,8 @@ object NewFolderDlg: TNewFolderDlg
   Caption = 'New Toolbox Folder...'
   ClientHeight = 293
   ClientWidth = 427
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
@@ -196,8 +198,6 @@ object NewFolderDlg: TNewFolderDlg
     Top = 123
     Width = 305
     Height = 81
-    OnClick = ListView1Click
-    OnDblClick = OkBtnClick
     Columns = <
       item
         Caption = 'File'
@@ -209,14 +209,17 @@ object NewFolderDlg: TNewFolderDlg
         WidthType = (
           -1)
       end>
-    ReadOnly = False
+    Font.Charset = DEFAULT_CHARSET
     Font.Color = clGrayText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     HideSelection = False
+    ParentFont = False
     TabOrder = 0
     ViewStyle = vsReport
+    OnClick = ListView1Click
+    OnDblClick = OkBtnClick
   end
   object RadioButton1: TRadioButton
     Left = 24
@@ -225,6 +228,7 @@ object NewFolderDlg: TNewFolderDlg
     Height = 17
     Caption = 'In the .qrk file opened in the main window'
     Checked = True
+    Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
@@ -241,6 +245,7 @@ object NewFolderDlg: TNewFolderDlg
     Width = 377
     Height = 17
     Caption = 'In an already registered Add-on :'
+    Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
@@ -256,6 +261,7 @@ object NewFolderDlg: TNewFolderDlg
     Width = 377
     Height = 17
     Caption = 'In a new Add-on'
+    Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
@@ -267,7 +273,6 @@ object NewFolderDlg: TNewFolderDlg
   end
   object SaveDialog1: TSaveDialog
     DefaultExt = 'qrk'
-    FileEditStyle = fsEdit
     Options = [ofOverwritePrompt, ofHideReadOnly, ofNoChangeDir]
     Left = 368
     Top = 200

@@ -1,5 +1,5 @@
 object HelpPopup: THelpPopup
-  Left = 50
+  Left = 238
   Top = 430
   Width = 304
   Height = 245
@@ -14,7 +14,6 @@ object HelpPopup: THelpPopup
   Font.Style = []
   FormStyle = fsStayOnTop
   KeyPreview = True
-  OldCreateOrder = True
   OnClick = FormClicked
   OnDeactivate = FormDeactivate
   OnKeyDown = FormKeyDown

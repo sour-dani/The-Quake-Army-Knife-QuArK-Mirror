@@ -4,6 +4,7 @@ object ConsoleForm: TConsoleForm
   Width = 435
   Height = 300
   Color = clBlack
+  Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
@@ -105,6 +106,7 @@ object ConsoleForm: TConsoleForm
         Width = 427
         Height = 23
         Color = clBlack
+        Font.Charset = DEFAULT_CHARSET
         Font.Color = clWhite
         Font.Height = -12
         Font.Name = 'Courier New'

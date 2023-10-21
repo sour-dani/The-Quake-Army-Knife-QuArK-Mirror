@@ -1,5 +1,4 @@
 inherited QForm2: TQForm2
-  Caption = 'QForm2'
   OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
@@ -9,18 +8,18 @@ inherited QForm2: TQForm2
     Width = 409
     Height = 246
     Align = alClient
-    OnDblClick = ListView1DblClick
     Columns = <>
     DragMode = dmAutomatic
-    ReadOnly = True
     MultiSelect = True
-    OnDragDrop = ListView1DragDrop
-    OnDragOver = ListView1DragOver
-    OnStartDrag = ListView1StartDrag
-    OnEndDrag = ListView1EndDrag
-    OnMouseDown = ListView1MouseDown
+    ReadOnly = True
     TabOrder = 4
     ViewStyle = vsList
+    OnDblClick = ListView1DblClick
+    OnEndDrag = ListView1EndDrag
+    OnDragDrop = ListView1DragDrop
+    OnDragOver = ListView1DragOver
     OnKeyDown = ListView1KeyDown
+    OnMouseDown = ListView1MouseDown
+    OnStartDrag = ListView1StartDrag
   end
 end

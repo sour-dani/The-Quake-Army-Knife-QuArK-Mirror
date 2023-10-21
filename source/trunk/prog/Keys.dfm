@@ -4,6 +4,8 @@ object KeyDlg: TKeyDlg
   BorderStyle = bsDialog
   ClientHeight = 239
   ClientWidth = 393
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
@@ -18,7 +20,6 @@ object KeyDlg: TKeyDlg
     Top = 8
     Width = 377
     Height = 185
-    OnDblClick = ListView1DblClick
     Columns = <
       item
         Width = 100
@@ -26,12 +27,12 @@ object KeyDlg: TKeyDlg
       item
         Width = 271
       end>
-    ReadOnly = False
     HideSelection = False
+    SmallImages = ImageList1
     TabOrder = 2
     ViewStyle = vsReport
+    OnDblClick = ListView1DblClick
     OnKeyPress = ListView1KeyPress
-    SmallImages = ImageList1
   end
   object BitBtn1: TBitBtn
     Left = 176

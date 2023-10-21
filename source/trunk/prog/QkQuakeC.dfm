@@ -21,6 +21,7 @@ inherited FQQuakeC: TFQQuakeC
       Align = alBottom
       AutoSize = False
       Color = clRed
+      Font.Charset = DEFAULT_CHARSET
       Font.Color = clYellow
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
@@ -34,6 +35,7 @@ inherited FQQuakeC: TFQQuakeC
       Width = 405
       Height = 228
       Align = alClient
+      Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
       Font.Name = 'Courier New'

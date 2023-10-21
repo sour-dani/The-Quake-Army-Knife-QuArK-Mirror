@@ -7,7 +7,6 @@ object AutoUpdateInstaller: TAutoUpdateInstaller
   Caption = 'QuArK - Online Update Installer'
   Color = clBtnFace
   ParentFont = True
-  OldCreateOrder = True
   Position = poScreenCenter
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
