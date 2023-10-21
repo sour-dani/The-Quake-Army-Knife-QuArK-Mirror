@@ -55,8 +55,8 @@ type
     class function TypeInfo: String; override;
     function IsAllowedParent(nParent: QObject) : Boolean; override;
     procedure ObjectState(var E: TEtatObjet); override;
-    function Triangles(var P: PComponentTris) : Integer;
-    function VertexLinks(var P: PBoneVertexLink) : Integer;
+    function Triangles(var N: Integer; var P: PComponentTris) : String;
+    //function VertexLinks(var N: Integer; var P: PBoneVertexLink) : String;
     function GetSkinDescr(Static: Boolean) : String;
     property CurrentSkin : QImage read FCurrentSkin write SetCurrentSkin;
     property CurrentFrame : QFrame read FCurrentFrameObj write SetCurrentFrame;
@@ -134,6 +134,7 @@ const
 var
   index, cnt, i, j: Integer;
   tris, tris2, dest: PComponentTris;
+  trisB: String;
   S: String;
   f1, f2, f3: boolean;
   v1,v2,v3: Integer;
@@ -143,7 +144,7 @@ begin
     if PyArg_ParseTupleX(args, 'iii', [@v1, @v2, @v3])=0 then
       exit;
     with QkObjFromPyObj(self) as QComponent do begin
-      cnt:=Triangles(tris2);
+      trisB:=Triangles(cnt, tris2);
       tris:=tris2;
       // Find number of triangles not containing vertex 'index'
       index:=-1;
@@ -362,34 +363,32 @@ begin
   end;
 end;
 
-//function QComponent.Triangles(var S: String) : Integer; //FIXME: TByteDynArray
-function QComponent.Triangles(var P: PComponentTris) : Integer;
+//Helper function that does all the casting for you. Note that the pointer returned
+//points INTO the string, so don't use the pointer after letting the string go out-of-scope!
+function QComponent.Triangles(var N: Integer; var P: PComponentTris) : String; //FIXME: TByteDynArray
 const
   SpecTris = 'Tris';
-var
-  S: String;
 begin
   if IntSpec['show']=0 then
   begin
-    Result:=0;
+    Result:='';
+    N:=0;
+    P:=nil;
     Exit;
   end;
-  S:=Specifics.Bytes[SpecTris];
-  PChar(P):=PChar(S);
-  Result:=Length(S) div SizeOf(TComponentTris);
+  Result:=Specifics.Bytes[SpecTris];
+  PChar(P):=PChar(Result); //FIXME: PArithByte
+  N:=Length(Result) div SizeOf(TComponentTris);
 end;
 
-//function QComponent.VertexLinks(var S: String) : Integer; //FIXME: TByteDynArray
-function QComponent.VertexLinks(var P: PBoneVertexLink) : Integer;
+{function QComponent.VertexLinks(var N: Integer; var P: PBoneVertexLink) : String; //FIXME: TByteDynArray
 const
   SpecVertexLinks = 'VertexLinks';
-var
-  S: String;
 begin
-  S:=Specifics.Bytes[SpecVertexLinks];
-  PChar(P):=PChar(S);
-  Result:=Length(S) div SizeOf(TBoneVertexLink);
-end;
+  Result:=Specifics.Bytes[SpecVertexLinks];
+  PChar(P):=PChar(Result); //FIXME: PArithByte
+  N:=Length(Result) div SizeOf(TBoneVertexLink);
+end;}
 
 procedure QComponent.AddTo3DScene(Scene: TObject);
 var
@@ -534,7 +533,7 @@ type
   TVertexMap = array[0..MaxCVertices-1] of Integer;
 var
   Bits: TBits;
-  I, J, B: Integer;
+  I, J, B, N: Integer;
   CVert, CVertJ, CVertK: vec3_p;
   VertexCount, nVertexCount, Target: Integer;
   VertexMap: ^TVertexMap;
@@ -609,11 +608,9 @@ begin
           Exit;  { no changes }
         Bits.Size:=0;
         ProgressIndicatorIncrement;
-        S:=GetSpecArg(SpecTris);
+        S:=Triangles(N, CTris);
         UniqueString(S);
-        Specifics.Delete(SpecTris);
-        Specifics.AddStringFull(S);
-        for I:=1 to Triangles(CTris) do
+        for I:=1 to N do
         begin
           for J:=0 to 2 do
           begin
@@ -623,6 +620,7 @@ begin
           end;
           Inc(CTris);
         end;
+        Specifics.Bytes[SpecTris]:=S;
         for I:=0 to VertexCount-1 do
           VertexMap^[VertexMap^[I]]:=I;
         ProgressIndicatorIncrement;
@@ -769,6 +767,7 @@ var
   I, J, K, TrisCount, FillTrisCount: Integer;
   L: TList;
   CTris: PComponentTris;
+  CTrisB: String;
   ProjPts: ^TProjArray;
   SourceTris, Tris: PTriangleInfo;
   v3p: array[0..2] of vec3_p;
@@ -809,7 +808,7 @@ begin
       Inc(v3p[0]);
     end;
     Mode3D:=not CCoord.FlatDisplay;
-    TrisCount:=Triangles(CTris);
+    CTrisB:=Triangles(TrisCount, CTris);
     GetMem(SourceTris, TrisCount * SizeOf(TTriangleInfo));
     try
       Tris:=SourceTris;
@@ -1008,8 +1007,9 @@ procedure QComponent.AnalyseClic(Liste: PyObject);
 type
   vec3_array_t = array[0..MaxCVertices-1] of record v3: vec3_t end;
 var
-  I, Count, L, PrevL: Integer;
+  I, Count, J, L, PrevL: Integer;
   CTris: PComponentTris;
+  CTrisB: String;
   CVertArray: ^vec3_array_t;
   V: array[0..2] of TVect;
   W1, W2: TVect;
@@ -1023,10 +1023,14 @@ begin
   W2.X:=g_DrawInfo.Clic2.X - g_DrawInfo.Clic.X;
   W2.Y:=g_DrawInfo.Clic2.Y - g_DrawInfo.Clic.Y;
   W2.Z:=g_DrawInfo.Clic2.Z - g_DrawInfo.Clic.Z;
-  for I:=0 to Triangles(CTris)-1 do begin
-    if (CTris^[0].VertexNo < Count) and (CTris^[0].VertexNo < Count) and (CTris^[0].VertexNo < Count) then begin
+  CTrisB:=Triangles(J, CTris);
+  for I:=0 to J-1 do
+  begin
+    if (CTris^[0].VertexNo < Count) and (CTris^[0].VertexNo < Count) and (CTris^[0].VertexNo < Count) then
+    begin
       for L:=0 to 2 do
-        with V[L], CVertArray^[CTris^[L].VertexNo] do begin
+        with V[L], CVertArray^[CTris^[L].VertexNo] do
+        begin
           X:=v3[0];
           Y:=v3[1];
           Z:=v3[2];
@@ -1041,10 +1045,12 @@ begin
         PrevL:=L;
         Inc(L);
       until L=3;
-      if L=3 then begin
+      if L=3 then
+      begin
         d0:=Dot(V[0], Normale);
         d1:=Dot(V[1], Normale);
-        if Abs(d1-d0)>rien then begin
+        if Abs(d1-d0)>rien then
+        begin
           dv:=Dot(g_DrawInfo.Clic, Normale);
           f:=(d1-dv) / (d1-d0);
           W1:=W2;
@@ -1068,7 +1074,8 @@ end;
 
 function QComponent.GetOriginOfComponent(mode: Integer): TVect;
 var
-  tris, tris_o: PComponentTris;
+  Tris, CTris: PComponentTris;
+  CTrisB: String;
   numtris, i, j: integer;
 begin
   result:={Origine}OriginVectorZero;
@@ -1077,15 +1084,17 @@ begin
       raise exception.create('not implemented yet');
     end;
     1: begin  // st vertices
-      numtris:=triangles(tris_o);
+      CTrisB:=triangles(numtris, CTris);
       if numtris = 0 then
        exit;
-      tris:=tris_o;
+      Tris:=CTris;
       result.z:=0;
-      for i:=0 to numtris-1 do begin
-        for j:=0 to 2 do begin
-          result.x:=result.x+tris^[j].s;
-          result.y:=result.y+tris^[j].t;
+      for i:=0 to numtris-1 do
+      begin
+        for j:=0 to 2 do
+        begin
+          result.x:=result.x+Tris^[j].s;
+          result.y:=result.y+Tris^[j].t;
         end;
       end;
       result.x:=result.x / (numtris * 3);
@@ -1098,42 +1107,53 @@ function QComponent.PyGetAttr(attr: PyChar) : PyObject;
 var
   I, L, Count: Integer;
   CTris: PComponentTris;
+  CTrisB: String;
   tri: PyObject;
 begin
   Result:=inherited PyGetAttr(attr);
   if Result<>Nil then Exit;
   for I:=Low(MethodTable) to High(MethodTable) do
-    if StrComp(attr, MethodTable[I].ml_name) = 0 then begin
+    if StrComp(attr, MethodTable[I].ml_name) = 0 then
+    begin
       Result:=PyCFunction_New(MethodTable[I], @PythonObj);
       Exit;
     end;
   case attr[0] of
-    'c': if StrComp(attr, 'currentframe')=0 then begin
+    'c': if StrComp(attr, 'currentframe')=0 then
+    begin
       Result:=GetPyObj(CurrentFrame);
       Exit;
-    end else if StrComp(attr, 'currentskin')=0 then begin
+    end
+    else if StrComp(attr, 'currentskin')=0 then
+    begin
       Result:=GetPyObj(CurrentSkin);
       Exit;
     end;
-    'f': if StrComp(attr, 'filltris')=0 then begin
+    'f': if StrComp(attr, 'filltris')=0 then
+    begin
       if FSelTris=Nil then
         FSelTris:=PyList_New(0);
       Result:=FSelTris;
       Py_INCREF(Result);
       Exit;
     end;
-    's': if StrComp(attr, 'skindrawobject')=0 then begin
+    's': if StrComp(attr, 'skindrawobject')=0 then
+    begin
       Result:=GetPyObj(SDO);
       Exit;
     end;
-    'g': if StrComp(attr, 'group_frame')=0 then begin
+    'g': if StrComp(attr, 'group_frame')=0 then
+    begin
       Result:=GetPyObj(FrameGroup);
       Exit;
-    end else if StrComp(attr, 'group_skin')=0 then begin
+    end
+    else if StrComp(attr, 'group_skin')=0 then
+    begin
       Result:=GetPyObj(SkinGroup);
       Exit;
     end;
-    'i': if StrComp(attr, 'info')=0 then begin
+    'i': if StrComp(attr, 'info')=0 then
+    begin
       if FInfo=Nil then
         Result:=Py_None
       else
@@ -1141,17 +1161,22 @@ begin
       Py_INCREF(Result);
       Exit;
     end;
-    'o': if StrComp(attr, 'origin_comp')=0 then begin
+    'o': if StrComp(attr, 'origin_comp')=0 then
+    begin
       Result:=MakePyVect(GetOriginOfComponent(0));
       Exit;
-    end else if StrComp(attr, 'originst')=0 then begin
+    end
+    else if StrComp(attr, 'originst')=0 then
+    begin
       Result:=MakePyVect(GetOriginOfComponent(1));
       Exit;
     end;
-    't': if StrComp(attr, 'triangles')=0 then begin
-      Count:=Triangles(CTris);
+    't': if StrComp(attr, 'triangles')=0 then
+    begin
+      CTrisB:=Triangles(Count, CTris);
       Result:=PyList_New(Count);
-      for I:=0 to Count-1 do begin
+      for I:=0 to Count-1 do
+      begin
         tri:=PyTuple_New(3);
         for L:=0 to 2 do
           with CTris^[L] do

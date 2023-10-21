@@ -454,6 +454,7 @@ var
   Size: array[0..1] of Single;
   Z: array[0..MAX_SKINNAME-1] of Byte;
   CTris, CTriangles: PComponentTris;
+  CTrianglesB: String;
   stData: Pointer;
   TrisData, Tris: dtriangle_p;
   FrameData: daliasframe_p;
@@ -550,7 +551,7 @@ begin
         end;
 
          { save st verts }
-       mdl.num_tris:=Root.CurrentComponent.Triangles(CTriangles);
+       CTrianglesB:=Root.CurrentComponent.Triangles(mdl.num_tris, CTriangles);
        CTris:=CTriangles;
        GlCmds:=TList.Create;
        L:=TList.Create;

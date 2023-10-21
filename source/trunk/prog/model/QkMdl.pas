@@ -1096,6 +1096,7 @@ var
   STData: PVertxArray;
   Triangles, Tris: ^itriangle_t;
   CTriangles, CTris: PComponentTris;
+  CTrianglesB: String;
   CVertArray: ^vec3_array_t;
   CVert: vec3_p;
   Frame: frame_t;
@@ -1249,7 +1250,7 @@ begin
             Taille1 := InputVertexCount * SizeOf(PVertexNode);
             VertexMap:=AllocMem(Taille1);
             try
-              mdl.numtris := TheComp.Triangles(CTriangles);
+              CTrianglesB:=TheComp.Triangles(mdl.numtris, CTriangles);
               CTris := CTriangles;
               for I := 1 to mdl.numtris do begin
                 for K := 0 to 2 do begin

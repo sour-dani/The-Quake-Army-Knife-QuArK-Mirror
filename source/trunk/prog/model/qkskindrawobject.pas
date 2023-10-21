@@ -78,10 +78,11 @@ var
   skin_dims: array[1..2] of single;
   numtris: Integer;
   triangles: PComponentTris;
+  CTrisB: String;
   aTris: PTri;
 begin
   comp.GetFloatsSpec('skinsize', skin_dims);
-  numtris:=comp.Triangles(triangles);
+  CTrisB:=comp.Triangles(numtris, triangles);
   GetMem(Tris, sizeof(TTri)*NumTris);
   aTris:=Tris;
   result:=numtris;

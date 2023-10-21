@@ -768,6 +768,7 @@ var
   vec3: vec3_p;
   CVert, CVert2: vec3_p;
   CTris, CTriangles: PComponentTris;
+  CTrianglesB: String;
   Vertexes, Vertexes2: PMD3Vertex;
   TrisData, Tris: PMD3Triangle;
   TexCoord, TexCoord2: PMD3TexVec;
@@ -951,7 +952,7 @@ begin
 
              mesh.Triangle_Start:=F.Position-Position1;
 
-             mesh.Triangle_num:=Comp.Triangles(CTriangles);
+             CTrianglesB:=Comp.Triangles(mesh.Triangle_num, CTriangles);
              GetMem(TrisData, mesh.Triangle_num * SizeOf(TMD3Triangle));
              Tris:=TrisData;
              CTris:=CTriangles;

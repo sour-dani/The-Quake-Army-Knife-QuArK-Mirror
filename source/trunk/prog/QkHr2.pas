@@ -223,8 +223,9 @@ var
  Hr2Entry: THr2Entry;
  Hr2Header: THr2Header;
  S: String;
- I, J: Integer;
+ I, J, K: Integer;
  CTris: PComponentTris;
+ CTrisB: String;
 begin
  case ReadFormat of
   rf_Default: begin  { as stand-alone file }
@@ -272,13 +273,16 @@ begin
        Raise EErrorFmt(5672, [LoadName, S]);
 
       with ReadMd2File(F, Origine, mdl) do
-       for I:=1 to CurrentComponent.Triangles(CTris) do
+      begin
+       CTrisB:=CurrentComponent.Triangles(K, CTris);
+       for I:=1 to K do
         begin
          for J:=0 to 2 do
           with CTris^[J] do
            T:=T;  { .m8 skins are top-down, but .pcx skins were bottom-up }
          Inc(CTris);
         end;
+      end;
      end;
  else inherited;
  end;
