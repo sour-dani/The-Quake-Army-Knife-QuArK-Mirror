@@ -617,7 +617,7 @@ function QMd3File.AttachModelToTag(const Tag_Name: string; model: QModelFile): b
 var
   other_root: QModelRoot;
 begin
-//  Log('attaching %s to %s',[self.name, model.name]);
+  Log(LOG_VERBOSE, 'attaching %s to %s', [self.name, model.name]);
   model.acces;
   other_root:=model.getRoot;
   other_root:=QModelRoot(other_root.clone(getroot, false));
