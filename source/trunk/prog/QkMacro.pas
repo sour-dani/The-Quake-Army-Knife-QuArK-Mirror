@@ -249,9 +249,10 @@ begin
   for I:=0 to Q.SubElements.Count-1 do
    ProcessMacros(Q.SubElements[I], Source);
 
-  S:=Q.Specifics.Strings[SpecIncl];
-  Q.Specifics.Delete(SpecIncl);
-  if S='' then Break;
+  I:=Q.Specifics.IndexOfName(SpecIncl);
+  if I<0 then Break;
+  S:=Q.Specifics.StringsFromIndex[I];
+  Q.Specifics.Delete(I);
   L:=TStringList.Create; try
   L.Text:=S;
   for J:=0 to L.Count-1 do
@@ -266,12 +267,14 @@ begin
   end;
   finally L.Free; end;
  until False;
- Q.Specifics.Strings[SpecIncl]:=PlaceInclBack.DelimitedText;
+ if PlaceInclBack.Count<>0 then
+  Q.Specifics.Strings[SpecIncl]:=PlaceInclBack.DelimitedText;
  finally PlaceInclBack.Free; end;
 
- S:=Q.Specifics.Strings[SpecCopy];
- if S='' then Exit;
- Q.Specifics.Delete(SpecCopy);
+ I:=Q.Specifics.IndexOfName(SpecCopy);
+ if I<0 then Exit;
+ S:=Q.Specifics.StringsFromIndex[I];
+ Q.Specifics.Delete(I);
  L:=TStringList.Create; try
  L.Text:=S;
  for J:=0 to L.Count-1 do
