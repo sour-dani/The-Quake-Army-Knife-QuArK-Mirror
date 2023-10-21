@@ -202,10 +202,11 @@ var
 begin
   Index:=IndexOfName(Name);
   if Index<0 then
+  begin
     if raiseError then
-      Error(@SListIndexError, Index)
-    else
-      Exit;
+      Error(@SListIndexError, Index);
+    Exit;
+  end;
   Finalize(FList^[Index]);
   Dec(FCount);
   if Index < FCount then
@@ -362,13 +363,13 @@ begin
       System.Move(FList^[Index], FList^[Index + 1],
         (FCount - Index) * SizeOf(TSpecificsItem));
     Inc(FCount);
+    with FList^[Index] do
+    begin
+      Pointer(Key) := nil;
+      Pointer(Value) := nil;
+    end;
   end;
-  with FList^[Index] do
-  begin
-    Pointer(Key) := nil;
-    Pointer(Value) := nil;
-  end;
-  FList^[Index] := Item;
+  FList^[Index]:=Item;
 end;
 
 procedure TSpecificsList.InsertFloat(Index: Integer; const Name: String; const F: Single);
@@ -381,14 +382,14 @@ begin
       System.Move(FList^[Index], FList^[Index + 1],
         (FCount - Index) * SizeOf(TSpecificsItem));
     Inc(FCount);
+    with FList^[Index] do
+    begin
+      Pointer(Key) := nil;
+      Pointer(Value) := nil;
+      Key := Name;
+    end;
   end;
-  with FList^[Index] do
-  begin
-    Pointer(Key) := nil;
-    Key := Name;
-    Pointer(Value) := nil;
-    Value := FloatToStr(F);
-  end;
+  FList^[Index].Value := FloatToStr(F);
 end;
 
 procedure TSpecificsList.InsertInteger(Index: Integer; const Name: String; const I: Integer);
@@ -401,14 +402,14 @@ begin
       System.Move(FList^[Index], FList^[Index + 1],
         (FCount - Index) * SizeOf(TSpecificsItem));
     Inc(FCount);
+    with FList^[Index] do
+    begin
+      Pointer(Key) := nil;
+      Pointer(Value) := nil;
+      Key := Name;
+    end;
   end;
-  with FList^[Index] do
-  begin
-    Pointer(Key) := nil;
-    Key := Name;
-    Pointer(Value) := nil;
-    Value := IntToStr(I);
-  end;
+  FList^[Index].Value := IntToStr(I);
 end;
 
 procedure TSpecificsList.InsertString(Index: Integer; const Name: String; const S: string);
@@ -421,14 +422,14 @@ begin
       System.Move(FList^[Index], FList^[Index + 1],
         (FCount - Index) * SizeOf(TSpecificsItem));
     Inc(FCount);
+    with FList^[Index] do
+    begin
+      Pointer(Key) := nil;
+      Key := Name;
+      Pointer(Value) := nil;
+    end;
   end;
-  with FList^[Index] do
-  begin
-    Pointer(Key) := nil;
-    Key := Name;
-    Pointer(Value) := nil;
-    Value := S;
-  end;
+  FList^[Index].Value := S;
 end;
 
 procedure TSpecificsList.Put(Index: Integer; const Item: TSpecificsItem);
