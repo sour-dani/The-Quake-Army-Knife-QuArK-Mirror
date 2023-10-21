@@ -329,7 +329,7 @@ begin
           Dest^[1]:=Y;
           Dest^[2]:=Z;
         end;
-        Specifics.Delete(Specifics.IndexofName(S0));
+        Specifics.Delete(S0);
         Specifics.AddStringFull(S);
         Result:=True;
         Exit;
@@ -349,7 +349,7 @@ begin
           Dest^[1]:=Y;
           Dest^[2]:=Z;
         end;
-        Specifics.Delete(Specifics.IndexofName(S0));
+        Specifics.Delete(S0);
         Specifics.AddStringFull(S);
         Result:=True;
         Exit;

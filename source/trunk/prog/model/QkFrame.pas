@@ -106,7 +106,7 @@ begin
     inc(p);
     inc(Dest);
   end;
-  Specifics.Delete(Specifics.IndexOfName(S0));
+  Specifics.Delete(S0);
   Specifics.AddStringFull(S);
 end;
 
@@ -125,7 +125,7 @@ begin
 
   TranslateVecs(vec, Dest, C);
 
-  Specifics.Delete(Specifics.IndexOfName(S0));
+  Specifics.Delete(S0);
   Specifics.AddStringFull(S);
 end;
 
@@ -196,7 +196,8 @@ begin
     if CurrentModelComponent<>nil then
     begin
       currentFrameNumber:=CurrentModelComponent.FrameGroup.SubElements.IndexOf(CurrentModelComponent.CurrentFrame);
-      if currentFrameNumber<>-1 then begin
+      if currentFrameNumber<>-1 then
+      begin
         bf:=QModelTag(modelRoot.getmisc.FindSubObject(myRoot.Specifics.Strings['linked_to'], QModelTag, nil));
         bf2:=QModelTag(myRoot.getmisc.FindSubObject(myRoot.Specifics.Strings['linked_to'], QModelTag, nil));
         o_tag:=QTagFrame(bf.GetTagFrameFromIndex(currentFrameNumber));
@@ -226,8 +227,7 @@ begin
     RotateVecs(MultiplieMatrices(M^,M1^), P, Result);
     TranslateVecs(Vec3Diff(o_Tag.GetPosition^, s_tag.getPosition^), P, Result);
 //    ScaleVecs(P, Result, sc-bf.GetQ3A_Scale);
-    if Specifics.IndexOfName(S0)<>-1 then
-      Specifics.Delete(Specifics.IndexofName(S0));
+    Specifics.Delete(S0);
     Specifics.AddStringFull(S);
   end;
 end;
@@ -257,7 +257,7 @@ begin
     end;
     inc(vtxs);
   end;
-  Specifics.Delete(Specifics.IndexofName(S0));
+  Specifics.Delete(S0);
   Specifics.AddStringFull(S);
 end;
 
@@ -384,7 +384,7 @@ begin
           end;
           Inc(Dest);
         end;
-        Specifics.Delete(Specifics.IndexofName(S0));
+        Specifics.Delete(S0);
         Specifics.AddStringFull(S);
         Result:=True;
         Exit;

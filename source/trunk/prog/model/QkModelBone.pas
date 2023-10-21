@@ -120,9 +120,7 @@ begin
   CVert^[0]:=P[0];
   CVert^[1]:=P[1];
   CVert^[2]:=P[2];
-  if Specifics.IndexofName(PosSpec)<>-1 then
-    //FIXME: BAD CODING TACTIC!
-    Specifics.Delete(Specifics.IndexofName(PosSpec));
+  Specifics.Delete(PosSpec);
   Specifics.AddStringFull(s);
 end;
 
@@ -148,9 +146,7 @@ begin
   SetLength(S, RotSpecLen+SizeOf(TMatrixTransformation));
   PChar(CVert):=PChar(S)+RotSpecLen;
   Move(P, CVert^, Sizeof(TMatrixTransformation));
-  if Specifics.IndexofName(RotSpec)<>-1 then
-    //FIXME: BAD CODING TACTIC!
-    Specifics.Delete(Specifics.IndexofName(RotSpec));
+  Specifics.Delete(RotSpec);
   Specifics.AddStringFull(s);
 end;
 
@@ -344,9 +340,7 @@ begin
           DestP^[1]:=Y;
           DestP^[2]:=Z;
         end;
-        if Specifics.IndexofName(PosSpec)<>-1 then
-          //FIXME: BAD CODING TACTIC!
-          Specifics.Delete(Specifics.IndexofName(PosSpec));
+        Specifics.Delete(PosSpec);
         Specifics.AddStringFull(S);
         Result:=True;
         Exit;
@@ -372,9 +366,7 @@ begin
           DestM^[3][2]:=M[3][2];
           DestM^[3][3]:=M[3][3];
         end;
-        if Specifics.IndexofName(RotSpec)<>-1 then
-          //FIXME: BAD CODING TACTIC!
-          Specifics.Delete(Specifics.IndexofName(RotSpec));
+        Specifics.Delete(RotSpec);
         Specifics.AddStringFull(S);
         Result:=True;
         Exit;
@@ -412,9 +404,7 @@ begin
           end;
         end;
         //FIXME: Check for ref counters bugs!
-        if Specifics.IndexofName(VertSpec)<>-1 then
-          //FIXME: BAD CODING TACTIC!
-          Specifics.Delete(Specifics.IndexofName(VertSpec));
+        Specifics.Delete(VertSpec);
         Specifics.AddStringFull(S);
         Result:=True;
         Exit;
@@ -452,9 +442,7 @@ begin
           end;
         end;
         //FIXME: Check for ref counters bugs!
-        if Specifics.IndexofName(VertPosSpec)<>-1 then
-          //FIXME: BAD CODING TACTIC!
-          Specifics.Delete(Specifics.IndexofName(VertPosSpec));
+        Specifics.Delete(VertPosSpec);
         Specifics.AddStringFull(S);
         Result:=True;
         Exit;

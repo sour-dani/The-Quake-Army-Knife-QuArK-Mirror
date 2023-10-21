@@ -182,7 +182,7 @@ begin
         end;
         inc(tris);
       end;
-      Specifics.Delete(Specifics.IndexofName(Spec1));
+      Specifics.Delete(Spec1);
       Specifics.AddStringFull(S);
 
     end;
@@ -1200,8 +1200,7 @@ begin
         end;
         Inc(Dest);
       end;
-      if Specifics.IndexofName(Spec1)<>-1 then
-        Specifics.Delete(Specifics.IndexofName(Spec1));
+      Specifics.Delete(Spec1);
       Specifics.AddStringFull(S);
       Result:=True;
       Exit;
