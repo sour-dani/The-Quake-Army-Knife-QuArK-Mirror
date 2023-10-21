@@ -250,8 +250,8 @@ begin
    ProcessMacros(Q.SubElements[I], Source);
 
   S:=Q.Specifics.Strings[SpecIncl];
-  if S='' then Break;
   Q.Specifics.Delete(SpecIncl);
+  if S='' then Break;
   L:=TStringList.Create; try
   L.Text:=S;
   for J:=0 to L.Count-1 do
@@ -283,9 +283,9 @@ end;
  I, J: Integer;
 begin
  S:=Q.Specifics.Strings[SpecIncl];
+ Q.Specifics.Delete(SpecIncl);
  if S<>'' then
   begin
-   Q.Specifics.Delete(SpecIncl);
    L:=TStringList.Create; try
    L.Text:=S;
    for J:=0 to L.Count-1 do

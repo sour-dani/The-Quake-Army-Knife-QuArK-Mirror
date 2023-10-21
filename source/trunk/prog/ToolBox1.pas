@@ -376,11 +376,11 @@ begin
   begin
    Q:=Result.SubElements[I];
    Q.Acces;
-   Q.Specifics.Values[SpecDesc]:='';
+   Q.Specifics.Delete(SpecDesc);
    S:=Q.Specifics.Values[SpecIncl];
+   Q.Specifics.Delete(SpecIncl);
    if S<>'' then
     begin
-     Q.Specifics.Values[SpecIncl]:='';
      L:=TStringList.Create; try
      L.Text:=S;
      for J:=0 to L.Count-1 do
@@ -391,7 +391,7 @@ begin
    if S<>'' then
     begin
      ReplaceWithDefaultTex(Q, S, SetupGameSet.Specifics.Values['TextureDef']);
-     Q.Specifics.Values[SpecTexture]:='';
+     Q.Specifics.Delete(SpecTexture);
     end;
   end;
 end;*)
