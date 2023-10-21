@@ -419,6 +419,7 @@ var
  Gauche: Integer;
  TextePreparation: String;
  Brush: HBrush;
+ CTrisB: String;
  CTris: PComponentTris;
  CVertex: vec3_p;
  v3p: array[0..2] of vec3_p;
@@ -605,7 +606,7 @@ begin
        end
        else
        begin
-         J:=Model3DInfo^.Base.Triangles(CTris);
+         CTrisB:=Model3DInfo^.Base.Triangles(J, CTris);
          AddSurfaceRef(Model3DInfo^.Base.GetSkinDescr(Model3DInfo^.StaticSkin), J * VertexSize3m, Model3DInfo^.Base.CurrentSkin);
          if nVertexList2<>Nil then
          begin
@@ -994,7 +995,7 @@ begin
          PList:=PSurfaces(TexNames.Objects[J]);
          if PList^.Surf=Nil then
          begin
-           GetMem(PList^.Surf, PList^.SurfSize);
+           GetMem(PList^.Surf, PList^.SurfSize); //FIXME: Maybe zero-init, so in case of exceptions we don't have garbage in our surface-list
            Surf3D:=PList^.Surf;
          end
          else
@@ -1002,7 +1003,8 @@ begin
 
          stScaleModel(PList^.Texture, CorrW, CorrH);
 
-         for J:=1 to Base.Triangles(CTris) do
+         CTrisB:=Base.Triangles(K, CTris);
+         for J:=1 to K do
          begin
            PV:=PArithByte(Surf3D) + SizeOf(TSurface3D) + SurfaceExtraSize;
            for L:=0 to 2 do
