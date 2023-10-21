@@ -94,6 +94,7 @@ begin
  Hourglass:=False;
  try
   MenuCount:=GetMenuItemCount(Menu);
+  //if MenuCount=-1 then FIXME: Log! Raise!
   while MenuCount>Count do
    begin
     Dec(MenuCount);

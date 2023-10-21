@@ -131,7 +131,7 @@ end;
 
 procedure DynamicPaletteToolbar(Pal: TToolbar97; nLink: QObject; const nSpec: String);
 var
- S: String;
+ S: String; //FIXME: B: TByteDynArray;
  I: Integer;
 begin
  with TTbPal(Pal) do
@@ -243,7 +243,7 @@ end;
 
 procedure TTbPal.SetPaletteLmp;
 var
- S: String;
+ S: String; //FIXME: B: TByteDynArray;
 begin
  Editing;
  SetString(S, PChar(@Lmp), SizeOf(Lmp));

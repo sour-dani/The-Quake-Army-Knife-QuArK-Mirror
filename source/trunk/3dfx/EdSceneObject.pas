@@ -1633,7 +1633,7 @@ end;
  Src, Bmp1: HBitmap;
  Size: TPoint;
  I, MemSize: Integer;
- S: String;
+ B: TByteDynArray;
  Dest: PArithByte;
  Format: TMQIDF;
 begin
@@ -1665,17 +1665,17 @@ begin
   SelectPalette(SrcDC, GameInfo^.Palette, False);
   RealizePalette(SrcDC);
   if Q<>Nil then
-   S:=Q.GetTexImage(0)
+   B:=Q.GetTexImage(0)
   else
-   S:=Image1.GetImage;
-  CopyToDC(Src, GameInfo^.BmpInfo, PChar(S), 0, 0);
+   B:=Image1.GetImage;
+  CopyToDC(Src, GameInfo^.BmpInfo, PByte(B[0]), 0, 0);
 
   Dest:=PArithByte(info.data);
   MemSize:=w1*h1;
   for I:=0 to 3 do
    begin
-    S:=MakePalettedImageData(mjAny, SrcDC, Size.X, Size.Y, w1 shr I, h1 shr I, Format);
-    Move(PChar(S)^, Dest^, MemSize);
+    B:=MakePalettedImageData(mjAny, SrcDC, Size.X, Size.Y, w1 shr I, h1 shr I, Format);
+    Move(S[0], Dest^, MemSize);
     if info.largeLod=info.smallLod then Break;
     Inc(Dest, MemSize);
     MemSize:=MemSize div 4;

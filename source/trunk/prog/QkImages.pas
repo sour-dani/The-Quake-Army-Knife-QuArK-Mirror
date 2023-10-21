@@ -46,14 +46,14 @@ type
              class function FormatName : String; virtual;
              function OpenWindow(nOwner: TComponent) : TQForm1; override;
             {procedure PasteImageDC(NeededGame: Char; DC: HDC; W,H: Integer);}
-             procedure SetQuakeImageData(const Lmp: TPaletteLmp; const Data: String; W,H: Integer);
+             procedure SetPalettedImageData(const Lmp: TPaletteLmp; const Data: String; W,H: Integer); //FIXME: TByteDynArray
            public
              function TestConversionType(I: Integer) : QFileObjectClass; override;
              procedure ObjectState(var E: TEtatObjet); override;
              function IsTrueColor : Boolean;
              procedure NotTrueColor;
             {function GetSize : TPoint;}
-             function GetImage1 : String;
+             function GetImage1 : String; //FIXME: TByteDynArray;
              procedure GetImageData1(var Buf; BufSize: Integer);
              function GetImagePtr1 : PByte;
             {function GetBitmapImage : TBitmap;}
@@ -268,8 +268,8 @@ type
   TRGBA = array[0..3] of Byte;
 var
   RawBuffer, Source: PByte;
-  ImgData, PalData, AlphaData: String;
-  DestImg, DestPal, DestAlpha: PChar;
+  ImgData, PalData, AlphaData: String; //FIXME: TByteDynArray;
+  DestImg, DestPal, DestAlpha: PChar; //FIXME: PArithByte;
   I, J: Integer;
   Width, Height: Integer;
   PaddingSource, PaddingDest: Integer;
@@ -698,8 +698,8 @@ type
 var
   RawBuffer, Source: PByte;
   SourcePalette: PRGBQuad;
-  ImgData, PalData, AlphaData: String;
-  DestImg, DestPal, DestAlpha: PChar;
+  ImgData, PalData, AlphaData: String; //FIXME: TByteDynArray;
+  DestImg, DestPal, DestAlpha: PChar; //FIXME: PArithByte;
   I, J: Integer;
   K: Cardinal;
   Width, Height: Integer;
@@ -891,7 +891,7 @@ var
   PSD: TPixelSetDescription;
   RawBuffer, Dest: PByte;
   DestPalette: PRGBQuad;
-  SourceImg, SourceAlpha, SourcePal, pSourceImg, pSourceAlpha, pSourcePal: PChar;
+  SourceImg, SourceAlpha, SourcePal, pSourceImg, pSourceAlpha, pSourcePal: PChar; //FIXME: PArithByte;
   Width, Height: Integer;
   PaddingSource, PaddingDest: Integer;
   I, J: Integer;
@@ -1100,7 +1100,7 @@ begin
  Result.Y:=Round(V[2]);
 end;*)
 
-function QImage.GetImage1 : String;
+function QImage.GetImage1 : String; //FIXME: TByteDynArray;
 var
  Size: TPoint;
  ScanW: Integer;
@@ -1235,7 +1235,7 @@ const
  AlphaSpec = 'Alpha';
 var
  NewPSD: TPixelSetDescription;
- ImageData, PaletteData, AlphaData: String;
+ ImageData, PaletteData, AlphaData: String; //FIXME: TByteDynArray;
 begin
  Acces;
  { we use PSDConvert to copy and if necessary convert data from
@@ -1250,19 +1250,19 @@ begin
    NewPSD.ScanLine:=-((PSD.Size.X+3) and not 3);
    PaletteData:=PaletteSpec+'=';
    SetLength(PaletteData, (Length(PaletteSpec)+1) + SizeOf(TPaletteLmp));
-   NewPSD.ColorPalette:=PPaletteLmp(PChar(PaletteData)+(Length(PaletteSpec)+1));
+   NewPSD.ColorPalette:=PPaletteLmp(PChar(PaletteData)+(Length(PaletteSpec)+1)); //FIXME: PArithByte
    NewPSD.Palette:=pspVariable;  { variable palette }
   end;
  ImageData:=ImageSpec+'=';
  SetLength(ImageData, (Length(ImageSpec)+1) - NewPSD.ScanLine*PSD.Size.Y);
- NewPSD.Data:=PChar(ImageData) + (Length(ImageSpec)+1);  { expected data }
+ NewPSD.Data:=PChar(ImageData) + (Length(ImageSpec)+1);  { expected data } //FIXME: PArithByte
 
  if PSD.AlphaBits > psaNoAlpha then
   begin
    AlphaData:=AlphaSpec+'=';
    SetLength(AlphaData, (Length(AlphaSpec)+1) + PSD.Size.X*PSD.Size.Y);
    NewPSD.AlphaBits:=psa8bpp;   { expected alpha }
-   NewPSD.AlphaData:=PChar(AlphaData)+(Length(AlphaSpec)+1);
+   NewPSD.AlphaData:=PChar(AlphaData)+(Length(AlphaSpec)+1); //FIXME: PArithByte
    NewPSD.AlphaScanLine:=-PSD.Size.X;
   end;
 
@@ -1342,9 +1342,9 @@ begin
  Result.Palette:=Palette1;
 end;}
 
-procedure QImage.SetQuakeImageData(const Lmp: TPaletteLmp; const Data: String; W,H: Integer);
+procedure QImage.SetPalettedImageData(const Lmp: TPaletteLmp; const Data: String; W,H: Integer); //FIXME: TByteDynArray;
 var
- PalStr: String;
+ PalStr: String; //FIXME: TByteDynArray;
 begin
  SetSize(Point(W,H));
  Specifics.Bytes['Image1']:=Data;
@@ -1354,7 +1354,7 @@ end;
 
 (*procedure QImage.PasteImageDC(NeededGame: Char; DC: HDC; W,H: Integer);
 begin
- SetQuakeImageData(NeededGame, MakePalettedImageData(NeededGame, DC, W,H, W,H, dfWinFormat), W,H);
+ SetPalettedImageData(NeededGame, MakePalettedImageData(NeededGame, DC, W,H, W,H, dfWinFormat), W,H);
 end;
 
 procedure QImage.PasteBitmapH;
@@ -1433,7 +1433,7 @@ begin
     end;
    end;
 
-  SetQuakeImageData(Game^.PaletteLmp, PChar(Data), BmpInfo.bmiHeader.biWidth, BmpInfo.bmiHeader.biHeight);
+  SetPalettedImageData(Game^.PaletteLmp, PChar(Data), BmpInfo.bmiHeader.biWidth, BmpInfo.bmiHeader.biHeight); //FIXME: Remove PChar
  finally
   if Data<>nil then FreeMem(Data);
  end;
@@ -1467,7 +1467,7 @@ begin
       Data:=GetWinImage;
       Load~Texture.LoadPaletteLmp(Lmp);
      end;
-    SetQuakeImageData(Lmp^, Data, Header.W, Header.H);
+    SetPalettedImageData(Lmp^, Data, Header.W, Header.H);
    end
   else
    Result:=False;
@@ -1604,11 +1604,11 @@ function QImage.ConvertToTrueColor;
 const
  Spec1 = 'Image1=';
 var
- SrcScanLine, DestScanLine: PChar;
+ SrcScanLine, DestScanLine: PChar; //FIXME: PArithByte;
  Size: TPoint;
  SrcScanW, DestScanW, I, J, K: Integer;
  Lmp: TPaletteLmp;
- Data: String;
+ Data: String; //FIXME: TByteDynArray;
  Exchange: Byte;
 begin
  Size:=GetSize;
@@ -1624,8 +1624,8 @@ begin
  DestScanW:=(K+3) and not 3;
  Data:=Spec1;
  SetLength(Data, Length(Spec1)+DestScanW*Size.Y);
- DestScanLine:=PChar(Data)+Length(Spec1);
- SrcScanLine:=PChar(GetImagePtr1);
+ DestScanLine:=PChar(Data)+Length(Spec1); //FIXME: PArithByte
+ SrcScanLine:=PChar(GetImagePtr1); //FIXME: PArithByte
  for J:=1 to Size.Y do
   begin
    for I:=0 to Size.X-1 do

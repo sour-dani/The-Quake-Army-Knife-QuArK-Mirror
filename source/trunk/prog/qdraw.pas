@@ -328,7 +328,7 @@ end;
 
  {------------------------}
 
-function DataToBmp16(const S: String; W: Integer) : HBitmap;
+function DataToBmp16(const S: String; W: Integer) : HBitmap; //FIXME: Binary data!
 type
  TColors16 = array[0..15] of LongWord;
 const
@@ -360,34 +360,35 @@ var
  DC: HDC;
 begin
  if S='' then
-  Result:=0
- else
   begin
-   ScanW:=((W+7) and not 7) div 2;
-   FillChar(BmpInfo, SizeOf(BmpInfo), 0);
-   with BmpInfo.bmiHeader do
-    begin
-     biSize:=SizeOf(TBitmapInfoHeader);
-     biWidth:=W;
-     biHeight:=Length(S) div ScanW;
-     biPlanes:=1;
-     biBitCount:=4;
-    end;
-   BmpInfo.bmiColors:=Colors16;
-   DC:=GetDC(GetDesktopWindow);
-   try
-    Result:=CreateToDC(DC, BitmapInfo, PChar(S));
-   {Result:=CreateBitmap(W, BitmapInfo.bmiHeader.biHeight, 1, 4, Nil);
-    if Result<>0 then
-     SetDIBits(DC, Result, 0, BitmapInfo.bmiHeader.biHeight, PChar(S),
-      BitmapInfo, dib_Pal_Colors);}
-   finally
-    ReleaseDC(GetDesktopWindow, DC);
-   end;
+   Result:=0;
+   Exit;
   end;
+
+ ScanW:=((W+7) and not 7) div 2;
+ FillChar(BmpInfo, SizeOf(BmpInfo), 0);
+ with BmpInfo.bmiHeader do
+  begin
+   biSize:=SizeOf(TBitmapInfoHeader);
+   biWidth:=W;
+   biHeight:=Length(S) div ScanW;
+   biPlanes:=1;
+   biBitCount:=4;
+  end;
+ BmpInfo.bmiColors:=Colors16;
+ DC:=GetDC(GetDesktopWindow);
+ try
+  Result:=CreateToDC(DC, BitmapInfo, PChar(S));
+ {Result:=CreateBitmap(W, BitmapInfo.bmiHeader.biHeight, 1, 4, Nil);
+  if Result<>0 then
+   SetDIBits(DC, Result, 0, BitmapInfo.bmiHeader.biHeight, PChar(S),
+    BitmapInfo, dib_Pal_Colors);}
+ finally
+  ReleaseDC(GetDesktopWindow, DC);
+ end;
 end;
 
-(*procedure DataToBmp16(const S: String; W: Integer; Bmp: TBitmap);
+(*procedure DataToBmp16(const S: String; W: Integer; Bmp: TBitmap); //FIXME: Binary data!
 var
  M: TMemoryStream;
  FileHeader: TBitmapFileHeader;

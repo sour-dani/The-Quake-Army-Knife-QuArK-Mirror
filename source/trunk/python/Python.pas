@@ -1122,7 +1122,7 @@ begin
   if PyErr_Occurred<>Nil then
     Exit;
   if Assigned(PyGC_Collect) then
-    PyGC_Collect;
+    PyGC_Collect; //FIXME: PythonEnd code?
 end;
 
 function PyObject_NEW(t: PyTypeObject) : PyObject;

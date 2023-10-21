@@ -168,7 +168,7 @@ function FontToString(Font: TFont) : String;
 
 implementation
 
-uses StrUtils, Types, qdraw, qhelper, qmath, QkUnknown, Undo, TbPalette,
+uses StrUtils, Types, Math, qdraw, qhelper, qmath, QkUnknown, Undo, TbPalette,
      Toolbar1, ToolBox1, Setup, QuarkX, QkExceptions, QkFileObjects, QkInclude,
      QkMacro, QkImages, Python, PyMacros, PyToolbars, PyForms, QkPixelSet,
      QkObjectClassList, ApplPaths, BrowseForFolder, FileExists2, Console,
@@ -546,7 +546,7 @@ begin
      g_ListeActions.Add(TSpecificUndo.Create('', Spec, S, nPosition, Links[I*2]));
     end
    else
-    Links[I*2].Specifics.Strings[Spec]:=nArg;  { changes the Args directly }
+    Links[I*2].Specifics.Strings[Spec]:=nArg; //Changes the Args directly
   end;
 end;
 
@@ -590,7 +590,7 @@ begin
   end
  else
   for I:=0 to Links.Count div 2 - 1 do
-   Links[I*2].Name:=nName;  { changes the names directly }
+   Links[I*2].Name:=nName; //Changes the names directly
  Changed;
 end;
 
@@ -612,7 +612,7 @@ begin
  nSpec:=(Sender as TCustomEdit).Text;
  CheckValidSpec(nSpec);
  Row:=(Sender as TControl).Tag-1;
- oSpec:=Form.SubElements[Row].Name;  { old Spec name }
+ oSpec:=Form.SubElements[Row].Name; //Old Spec name
  if oSpec=nSpec then Exit;
  if ActionChanging<>0 then
   DebutAction;
@@ -623,15 +623,15 @@ begin
    if J>=0 then
     begin
      if ActionChanging=0 then
-      Q.Specifics.Delete(nSpec);   { removes the target Spec first, it is already exists }
+      Q.Specifics.Delete(nSpec); //Removes the target Spec first, it is already exists
      Arg:=Q.Specifics.StringsFromIndex[J];
      if ActionChanging<>0 then
       begin
        g_ListeActions.Add(TSpecificUndo.Create('', oSpec, '', sp_Supprime, Q));
        g_ListeActions.Add(TSpecificUndo.Create('', nSpec, Arg, J, Q));
       end
-     else    { changes the Spec directly }
-      Q.Specifics.Strings[nSpec]:=Arg;
+     else
+      Q.Specifics.Strings[nSpec]:=Arg; //Changes the Spec directly
     end;
   end;
  Form.SubElements[Row].Name:=nSpec;
@@ -650,7 +650,7 @@ begin
  if Arg=LoadStr1(Differs) then Exit;
  MatchSpecItem(Sender, Arg, False);
  with Form.SubElements[(Sender as TControl).Tag-1].Specifics do
-  J:=StrToIntDef(Copy(Strings['Typ'],3,MaxInt), 0);  { test if CL### }
+  J:=StrToIntDef(Copy(Strings['Typ'],3,MaxInt), 0); //Test if CL###
  if J=0 then
   SetArg(Sender, Arg)
  else
@@ -682,16 +682,16 @@ begin
   begin
    LimitMin:=GetFloatSpec('Min', None);
    if LimitMin=None then
-     LimitMin:=-3.4E38; //Approx Single range
+     LimitMin:=-MaxSingle;
    LimitMax:=GetFloatSpec('Max', None);
    if LimitMax=None then
-     LimitMax:=3.4E38; //Approx Single range
+     LimitMax:=MaxSingle;
    S:=Specifics.Strings['Typ'];
    if StartsStr('EF', S) then
     begin
      System.Delete(S, 1, Length('EF'));
-     Needed:=StrToIntDef(S, 0);  { expected number of values }
-     GetMem(ValueList, (Length(Arg)+1) * (SizeOf(Single) div 2));  { could not be more }
+     Needed:=StrToIntDef(S, 0); //Expected number of values
+     GetMem(ValueList, (Length(Arg)+1) * (SizeOf(Single) div 2)); //Could not be more
      try
       ValuePtr:=ValueList;
       N:=0;
@@ -1160,16 +1160,12 @@ begin
   begin
     S:=Specifics.Strings['Macro'];
     if S<>'' then
-    begin
       Py_XDECREF(CallMacro(@PythonObj, S))
-    end
     else
     begin
       S:=Specifics.Strings['Code'];
       if S<>'' then
-      begin
         if PyRun_SimpleString(ToPyChar(S)) <> 0 then ShowConsole(True);
-      end
     end;
   end;
 end;
@@ -1292,6 +1288,10 @@ begin
 end;
 
 procedure TFormCfg.BrowseButtonClick(Sender: TObject);
+  procedure ConvertCodes(var S:String);
+  begin
+    While pos('$Game',S)<>0 do S:=copy(S,1,pos('$Game',S)-1)+QuakeDir+copy(S,pos('$Game',S)+5,length(S));
+  end; {ConvertCodes}
 var
  Path0, Path, Title, S, FNCopy, Conv, ConvOriginal, SOriginal: String;
  FormObj: QObject;
@@ -1371,9 +1371,13 @@ begin
     'P': with TOpenDialog.Create(Self) do try
            Title:=Specifics.Strings['Txt'];
            S:=ConvertPath(Specifics.Strings['BasePath']);
-           If S<>'' then begin
-             InitialDir:=StringReplace(S, '$Game', QuakeDir, [rfReplaceAll]);
-           end else FileName:=Path;
+           If S<>'' then
+           begin
+             ConvertCodes(S);
+             InitialDir:=S;
+           end
+           else
+             FileName:=Path;
            DefaultExt:=Specifics.Strings['DefExt'];
            Filter:=Format('*.%0:s|*.%0:s|%1:s', [DefaultExt, LoadStr1(774)]);
            if CheckWindows98And2000 then
@@ -1382,37 +1386,52 @@ begin
              Options:=[ofFileMustExist, ofHideReadOnly];
            again:
            Ok:=Execute;
-           If Ok then begin
+           if Ok then
+           begin
              FNCopy:=FileName;
              S:=Specifics.Strings['CutPath'];
-             If S<>'' then begin //for some entity-specific directory cut-offs
-               S:=LowerCase(StringReplace(S, '$Game', QuakeDir, [rfReplaceAll]));
+             if S<>'' then //for some entity-specific directory cut-offs
+             begin
+               ConvertCodes(S);
+               S:=LowerCase(S);
                SOriginal:=IncludeTrailingPathDelimiter(StringReplace(S,'?',LoadStr1(186),[rfReplaceAll]));
                Conv:=LowerCase(FNCopy);
                ConvOriginal:=ExtractFilePath(Conv);
-               while Length(S)<>0 do begin
-                 Case S[1] of
-                   PathDelim:begin
+               while Length(S)<>0 do
+               begin
+                 case S[1] of
+                   PathDelim:
+                   begin
                      Conv:=Copy(Conv,2,Length(Conv));
-                     S:=Copy(S,2,Length(S));
+                     S:=Copy(S,2,MaxInt);
                    end;
-                   else begin
+                   else
+                   begin
                      joker:= S[1] = '?';
                      I:=Pos(PathDelim,Conv);
-                     If I<>0 then begin
-                       if joker then begin
+                     if I<>0 then
+                     begin
+                       if joker then
+                       begin
                          Conv:=Copy(Conv,I,Length(Conv));
-                         S:=Copy(S,2,Length(S));
-                       end else begin
-                         if (Copy(Conv,1,I-1)=Copy(S,1,I-1)) and ((I=Pos(PathDelim,S)) or (I=Length(S)+1)) then begin
+                         S:=Copy(S,2,MaxInt);
+                       end
+                       else
+                       begin
+                         if (Copy(Conv,1,I-1)=Copy(S,1,I-1)) and ((I=Pos(PathDelim,S)) or (I=Length(S)+1)) then
+                         begin
                            Conv:=Copy(Conv,I,Length(Conv));
-                           S:=Copy(S,I,Length(S));
-                         end else begin
+                           S:=Copy(S,I,MaxInt);
+                         end
+                         else
+                         begin
                            Application.MessageBox(PChar(FmtLoadStr1(5656,[ConvOriginal,SOriginal])),PChar(LoadStr1(400)), MB_ICONWARNING or MB_OK);
                            goto again;
                          end;
                        end;
-                     end else begin
+                     end
+                     else
+                     begin
                        Application.MessageBox(PChar(FmtLoadStr1(5656,[ConvOriginal,SOriginal])),PChar(LoadStr1(400)), MB_ICONWARNING or MB_OK);
                        goto again;
                      end;
@@ -2820,7 +2839,7 @@ begin
        begin
         S:=Specifics.Strings['Typ'];
         if S='' then
-         Specifics.Strings['Typ']:='E'
+         Specifics.Strings['Typ']:='E' //FIXME: Log a warning?
         else
          if (S[1]='X') and (Length(S)>1) and (StrToIntDef(Copy(S,2,MaxInt),0)<>0)
          and (Specifics.Strings['Txt']='&') then
@@ -3144,13 +3163,11 @@ end;
 
 procedure TFormCfg.TrackBarChange(Sender: TObject);
 var
- FormObj: QObject;
  S: String;
  Obj: PyObject;
  nTrackBar: TTrackBar2;
 begin
- FormObj:=Form.SubElements[(Sender as TControl).Tag-1];
- with FormObj do
+ with Form.SubElements[(Sender as TControl).Tag-1] do
   begin
    nTrackBar:=(Sender as TTrackBar2);
    if nTrackBar.AmIFloat then
@@ -3159,9 +3176,7 @@ begin
     Obj:=PyInt_FromLong(nTrackBar.IntPosition);
    S:=Specifics.Strings['Macro'];
    if S<>'' then
-    begin
-     Py_XDECREF(CallMacroEx(Py_BuildValueX('OO', [@PythonObj, Obj]), S))
-    end;
+    Py_XDECREF(CallMacroEx(Py_BuildValueX('OO', [@PythonObj, Obj]), S));
   end;
 end;
 
@@ -3186,7 +3201,7 @@ begin
      begin
       Q:=QInternal.Create(LoadStr1(146), Form);
       Q.Specifics.AddString('Txt', '&');
-      Q.Specifics.AddString('Typ', 'ES');   { Edit w/ Specific }
+      Q.Specifics.AddString('Typ', 'ES'); //Edit w/ Specific
       Q.Specifics.AddString(SpecTag, '');
       Form.SubElements.Add(Q);
       ScrollPos:=-1;

@@ -81,8 +81,8 @@ var
   V: array[1..2] of Single;
   I, J: Integer;
   PaddingDest: Integer;
-  ImgData, AlphaData: String;
-  DestImg, DestAlpha: PChar;
+  ImgData, AlphaData: String; //FIXME: TByteDynArray;
+  DestImg, DestAlpha: PChar; //FIXME: PArithByte;
 begin
  case ReadFormat of
   rf_Default: begin  { as stand-alone file }

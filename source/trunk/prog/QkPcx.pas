@@ -117,7 +117,7 @@ var
  Header: TPcxHeader;
  XSize, YSize, ScanW, I, J, K, L: Integer;
  V: array[1..2] of Single;
- Data: String;
+ Data: String; //FIXME: TByteDynArray;
  ScanLine: PArithByte;
  Byte1, Byte2: Byte;
  InBuffer: String;
