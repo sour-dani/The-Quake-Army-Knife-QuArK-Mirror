@@ -315,7 +315,8 @@ var
   rad:Single;
   w,h,z:Longint;
   P:PByte;
-  SkinObj : QImage;
+  Image1B: String;
+  SkinObj: QImage;
   Spr: QSprite;
   pt:TPoint;
 begin
@@ -350,7 +351,7 @@ begin
     f.WriteBuffer(z,4);
     f.WriteBuffer(pt.x,4);
     f.WriteBuffer(pt.y,4);
-    P:=SkinObj.GetImagePtr1;
+    Image1B:=SkinObj.GetImage1(P);
     Delta:=(w + 3) and not 3;
     Inc(P, Delta*h);   { FIXME: check palette }
     for J:=1 to h do begin
@@ -407,7 +408,8 @@ var
   rad:Single;
   w,h,z:Longint;
   P:PByte;
-  SkinObj : QImage;
+  Image1B: String;
+  SkinObj: QImage;
   bt:Byte;
   pt:TPoint;
   Pal:TPaletteLmp;
@@ -442,15 +444,18 @@ begin
     raise EError(5502);
   SkinObj:=QImage(Spr.SubElements[0]); // use palette of first image for sprite.
   SkinObj.NotTrueColor;
-  skinobj.GetPalette1(pal);
-  for i:=0 to 255 do begin
-    for j:=0 to 2 do begin
+  skinobj.GetPaletteNonPtr(pal);
+  for i:=0 to 255 do
+  begin
+    for j:=0 to 2 do
+    begin
       bt:=ord(pal[i,j]);
       f.WriteBuffer(bt,1);
     end;
   end;
 
-  for i:=1 to cnt do begin
+  for i:=1 to cnt do
+  begin
     SkinObj:=QImage(Spr.SubElements[i-1]);
     SkinObj.NotTrueColor;
     pt:=SkinObj.GetSize;
@@ -459,10 +464,11 @@ begin
     f.WriteBuffer(z,4);
     f.WriteBuffer(pt.x,4);
     f.WriteBuffer(pt.y,4);
-    P:=SkinObj.GetImagePtr1;
+    Image1B:=SkinObj.GetImage1(P);
     Delta:=(w + 3) and not 3;
     Inc(P, Delta*h);   { FIXME: check palette }
-    for J:=1 to h do begin
+    for J:=1 to h do
+    begin
       Dec(P, Delta);
       F.WriteBuffer(P^, w);
     end;

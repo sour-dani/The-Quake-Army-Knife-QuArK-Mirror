@@ -68,8 +68,8 @@ end;
 
 procedure QFtx.LoadFile(F: TStream; FSize: TStreamPos);
 const
-  Spec1 = 'Image1=';
-  Spec3 = 'Alpha=';
+  Spec1 = 'Image1';
+  Spec3 = 'Alpha';
 type
   PRGBA = ^TRGBA;
   TRGBA = array[0..3] of Byte;
@@ -104,15 +104,13 @@ begin
         if Header.has_alpha <> 0 then
         begin
           //Allocate quarks image buffers
-          ImgData:=Spec1;
-          AlphaData:=Spec3;
-          SetLength(ImgData,   Length(Spec1) + ((Header.width * 3) + PaddingDest) * Header.height); //RGB buffer
-          SetLength(AlphaData, Length(Spec3) + (Header.width * Header.height)); //alpha buffer
+          SetLength(ImgData,   ((Header.width * 3) + PaddingDest) * Header.height); //RGB buffer
+          SetLength(AlphaData, Header.width * Header.height); //alpha buffer
 
           Source2:=Source;
           Inc(Source2, Header.width * Header.height * 4);
-          DestImg:=PChar(ImgData) + Length(Spec1);
-          DestAlpha:=PChar(AlphaData) + Length(Spec3);
+          DestImg:=PChar(ImgData); //FIXME: PByte
+          DestAlpha:=PChar(AlphaData); //FIXME: PByte
           for J:=0 to Header.height-1 do
           begin
             Dec(Source2, Header.Width * 4);
@@ -134,18 +132,17 @@ begin
             Dec(Source2, Header.Width * 4);
           end;
 
-          Specifics.AddStringFull(AlphaData);
-          Specifics.AddStringFull(ImgData);
+          Specifics.Bytes[Spec3]:=AlphaData;
+          Specifics.Bytes[Spec1]:=ImgData;
         end
         else
         begin
           //Allocate quarks image buffers
-          ImgData:=Spec1;
-          SetLength(ImgData,   Length(Spec1) + ((Header.width * 3) + PaddingDest) * Header.height); //RGB buffer
+          SetLength(ImgData,   ((Header.width * 3) + PaddingDest) * Header.height); //RGB buffer
 
           Source2:=Source;
           Inc(Source2, Header.width * Header.height * 4);
-          DestImg:=PChar(ImgData) + Length(Spec1);
+          DestImg:=PChar(ImgData);
           for J:=0 to Header.height-1 do
           begin
             Dec(Source2, Header.Width * 4);
@@ -165,7 +162,7 @@ begin
             Dec(Source2, Header.Width * 4);
           end;
 
-          Specifics.AddStringFull(ImgData);
+          Specifics.Bytes[Spec1]:=ImgData;
         end;
       finally
         FreeMem(Source);
@@ -176,9 +173,6 @@ begin
 end;
 
 procedure QFtx.SaveFile(Info: TInfoEnreg1);
-const
-  Spec1 = 'Image1=';
-  Spec3 = 'Alpha=';
 type
   PRGB = ^TRGB;
   TRGB = array[0..2] of Byte;

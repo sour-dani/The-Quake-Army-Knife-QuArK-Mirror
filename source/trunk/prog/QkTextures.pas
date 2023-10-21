@@ -1165,7 +1165,6 @@ function QTextureFile.ScaledDownDescription(I: Integer) : TPixelSetDescription;
 const
   Spec1 = 'Image#';
   Spec2 = 'Pal';
-  LenSpec2 = Length(Spec2)+1;
 var
  {Size: TPoint;}
   Spec, S, Pal: String;
@@ -1182,11 +1181,11 @@ begin
   else
   begin
     Result.Palette:=pspVariable;
-    Pal:=GetSpecArg(Spec2);
-    if Length(Pal) < SizeOf(TPaletteLmp) + LenSpec2 then
+    Pal:=Specifics.Bytes[Spec2];
+    if Length(Pal) < SizeOf(TPaletteLmp) then
       Result.ColorPalette:=@GameBuffer(BaseGame)^.PaletteLmp
     else
-      Result.ColorPalette:=PPaletteLmp(PChar(Pal)+LenSpec2);
+      Result.ColorPalette:=PPaletteLmp(PByte(Pal));
   end;
 
   Spec:=Spec1;
@@ -1208,12 +1207,12 @@ begin
 
   Result.Size.X:=W;
   Result.Size.Y:=H;
-  S:=GetSpecArg(Spec);
+  S:=Specifics.Bytes[Spec];
 
-  if Length(S) < (Length(Spec1)+1) + Result.Size.X*Result.Size.Y then
+  if Length(S) < Result.Size.X*Result.Size.Y then
     Raise EErrorFmt(5534, [Spec]);
 
-  Result.Data:=PChar(S)+(Length(Spec1)+1);
+  Result.Data:=PByte(S);
   Result.ScanLine:=Result.Size.X;
 
   Result.GlobalAlphaValue:=GetTexOpacity;
@@ -1272,8 +1271,8 @@ end;
 
 function QTextureFile.SetDescription(const PSD: TPixelSetDescription; Confirm: TSDConfirm) : Boolean;
 const
+  Spec1 = 'Image1';
   Spec2 = 'Pal';
-  LenSpec2 = Length(Spec2+'=');
 var
   NewPSD: TPixelSetDescription;
   cp, I, W, H: Integer;
@@ -1293,9 +1292,8 @@ begin
     else
     begin
       NewPSD.Palette:=pspVariable;
-      Pal:=Spec2+'=';
-      SetLength(Pal, LenSpec2+SizeOf(TPaletteLmp));
-      NewPSD.ColorPalette:=PPaletteLmp(PChar(Pal)+LenSpec2);
+      SetLength(Pal, SizeOf(TPaletteLmp));
+      NewPSD.ColorPalette:=PPaletteLmp(PByte(Pal));
       { set the ColorPalette pointer but don't initialize the palette;
       pspVariable tells PSDConvert to store the new palette there. }
     end;
@@ -1308,9 +1306,8 @@ begin
     NewPSD.Size:=PSD.Size;
     RoundTextureSize(NewPSD.Size, cp);
     NewPSD.ScanLine:=NewPSD.Size.X;
-    Data:='Image1=';
-    SetLength(Data, Length('Image#=')+NewPSD.Size.X*NewPSD.Size.Y);
-    NewPSD.Data:=PChar(Data)+Length('Image#=');
+    SetLength(Data, NewPSD.Size.X*NewPSD.Size.Y);
+    NewPSD.Data:=PByte(Data);
 
     ProgressIndicatorStart(5449, 4);
     try
@@ -1323,9 +1320,9 @@ begin
       Specifics.Delete(Spec2);
 
       SetSize(NewPSD.Size);
-      Specifics.AddStringFull(Data);
+      Specifics.Bytes[Spec1]:=Data;
       if Pal<>'' then
-        Specifics.AddStringFull(Pal);
+        Specifics.Bytes[Spec2]:=Pal;
 
       W:=NewPSD.Size.X;
       H:=NewPSD.Size.Y;
@@ -1337,13 +1334,12 @@ begin
         if I<=4 then
           ProgressIndicatorIncrement;
 
-        Data1:='Image' + ImgCodes[I] + '=';
-        SetLength(Data1, Length('Image#=') + W*H);
+        SetLength(Data1, W*H);
         Resample(NewPSD.ColorPalette, NewPSD.Data,
-                 NewPSD.ColorPalette, PByte(PChar(Data1)+Length('Image#=')), //FIXME: Unicode!
+                 NewPSD.ColorPalette, PByte(Data1),
                  NewPSD.Size.X, NewPSD.Size.Y, NewPSD.ScanLine,
                  W, H, W);
-        Specifics.AddStringFull(Data1);
+        Specifics.Bytes['Image' + ImgCodes[I]]:=Data1;
       end;
 
       if NewPSD.AlphaBits=psaGlobalAlpha then

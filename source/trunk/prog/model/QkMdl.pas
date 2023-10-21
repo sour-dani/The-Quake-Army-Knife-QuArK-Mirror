@@ -1091,6 +1091,7 @@ var
   SkinGroup: skingroup_t;
   FrameGroup: framegroup_t;
   P: PByte;
+  Image1B: String;
   SkinObj: QImage;
   SkinSize: TPoint;
   STData: PVertxArray;
@@ -1143,30 +1144,39 @@ begin
 
             mdl.id := SignatureMdl;
             mdl.version := VersionMdl;
-            if Root.GetFloatsSpec('flags', Size) then begin
+            if Root.GetFloatsSpec('flags', Size) then
+            begin
               mdl.synctype := Round(Size[1]);
               mdl.flags := Round(Size[2]);
             end;
-            for I := 0 to SkinList.Count - 1 do begin
-              if SkinList.Items1[I] is QImage then begin
+            for I := 0 to SkinList.Count - 1 do
+            begin
+              if SkinList.Items1[I] is QImage then
+              begin
                 SkinObj := QImage(SkinList.Items1[I]);
                 SkinSize := SkinObj.GetSize;
-                if mdl.skinwidth = 0 then begin
+                if mdl.skinwidth = 0 then
+                begin
                   mdl.skinwidth := SkinSize.X;
                   mdl.skinheight := SkinSize.Y;
-                end else
+                end
+                else
                   if (mdl.skinwidth <> SkinSize.X) or (mdl.skinheight <> SkinSize.Y) then
                     raise EErrorFmt(2433, ['SkinSize']);
               end;
             end;
             Delta := (mdl.skinwidth + 3) and not 3;
             I := 0;
-            while I < SkinList.Count do begin
+            while I < SkinList.Count do
+            begin
               SkinGroup.count := 1;
-              if QImage(SkinList.Items1[I]).GetFloatSpec('duration', 0) <= 0 then begin { not in a skin group }
+              if QImage(SkinList.Items1[I]).GetFloatSpec('duration', 0) <= 0 then { not in a skin group }
+              begin
                 J := 0;
                 F.WriteBuffer(J, SizeOf(LongInt));
-              end else begin
+              end
+              else
+              begin
                 while (I + SkinGroup.count < SkinList.Count)
                   and (QImage(SkinList.Items1[I + SkinGroup.count]).GetFloatSpec('duration', 0) > 0)
                   and (QImage(SkinList.Items1[I + SkinGroup.count]).Specifics.Strings['group'] = '') do
@@ -1177,19 +1187,22 @@ begin
                 SetLength(Times, SkinGroup.count * SizeOf(Single));
                 PChar(NextTime) := PChar(Times);
                 PreviousTime := 0;
-                for J := 0 to SkinGroup.count - 1 do begin
+                for J := 0 to SkinGroup.count - 1 do
+                begin
                   PreviousTime := PreviousTime + QImage(SkinList.Items1[I + J]).GetFloatSpec('duration', 0);
                   NextTime^ := PreviousTime;
                   Inc(NextTime);
                 end;
                 F.WriteBuffer(Times[1], SkinGroup.count * SizeOf(Single));
               end;
-              for J := 0 to SkinGroup.count - 1 do begin
+              for J := 0 to SkinGroup.count - 1 do
+              begin
                 SkinObj := QImage(SkinList.Items1[I]);
                 SkinObj.NotTrueColor;
-                P := SkinObj.GetImagePtr1;
+                Image1B := SkinObj.GetImage1(P);
                 Inc(P, Delta * mdl.skinheight); { FIXME: check palette }
-                for K := 1 to mdl.skinheight do begin
+                for K := 1 to mdl.skinheight do
+                begin
                   Dec(P, Delta);
                   F.WriteBuffer(P^, mdl.skinwidth);
                 end;
@@ -1207,11 +1220,14 @@ begin
             Max.Y := -MaxInt;
             Max.Z := -MaxInt;
             InputVertexCount := 0;
-            for I := 0 to FrameList.Count - 1 do begin
-              if FrameList.Items1[I] is QFrame then begin
+            for I := 0 to FrameList.Count - 1 do
+            begin
+              if FrameList.Items1[I] is QFrame then
+              begin
                 FrameObj := QFrame(FrameList.Items1[I]);
                 J := FrameObj.GetVertices(CVert);
-                if J > 0 then begin
+                if J > 0 then
+                begin
                   if InputVertexCount = 0 then
                     InputVertexCount := J
                   else

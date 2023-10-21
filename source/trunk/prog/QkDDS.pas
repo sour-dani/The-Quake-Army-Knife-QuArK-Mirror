@@ -142,10 +142,6 @@ var
   DevILLoaded: Boolean;
 
 procedure QDDS.SaveFile(Info: TInfoEnreg1);
-const
-  Spec1 = 'Image1=';
-  Spec2 = 'Pal=';
-  Spec3 = 'Alpha=';
 type
   PRGB = ^TRGB;
   TRGB = array[0..2] of Byte;

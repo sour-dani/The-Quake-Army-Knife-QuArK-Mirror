@@ -69,8 +69,8 @@ end;
 
 function QModelFile.Loaded_Skin(Component: QComponent; const Name: String; const Size: array of Single; var P: PChar; var DeltaW: Integer) : QImage;
 const
-  Spec1 = 'Image1=';
-  Spec2 = 'Pal=';
+  Spec1 = 'Image1';
+  Spec2 = 'Pal';
 var
   S: String;
   Skins: QSkinGroup;
@@ -83,15 +83,13 @@ begin
   if component<>nil then
     Skins.SubElements.Add(Result);
   Result.SetFloatsSpec('Size', Size);
-  S:=Spec2;
-  SetLength(S, Length(Spec2) + SizeOf(TPaletteLmp));
+  SetLength(S, SizeOf(TPaletteLmp));
   Move(GameBuffer(ObjectGameCode)^.PaletteLmp, S[Length(Spec2)+1], SizeOf(TPaletteLmp));
-  Result.Specifics.AddStringFull(S);
-  S:=Spec1;
+  Result.Specifics.Bytes[Spec2]:=S;
   DeltaW:=-((Round(Size[0])+3) and not 3);
-  SetLength(S, Length(Spec1) - DeltaW*Round(Size[1]));
-  P:=PChar(S)+Length(S)+DeltaW;
-  Result.Specifics.AddStringFull(S);
+  SetLength(S, -DeltaW*Round(Size[1]));
+  P:=PChar(S)+DeltaW;
+  Result.Specifics.Bytes[Spec1]:=S;
 end;
 
 function QModelFile.Loaded_Frame(Component: QComponent; const Name: String) : QFrame;

@@ -91,8 +91,7 @@ end;
 
 procedure QM8.LoadFile(F: TStream; FSize: TStreamPos);
 const
- Spec1 = 'Image1=';
- Spec2 = 'Pal=';
+ Spec2 = 'Pal';
 var
  Header: TM8Header;
  Q2MipTex: TQ2MipTex;
@@ -121,10 +120,9 @@ begin
        end;
 
        { reads the palette }
-      Data:=Spec2;
-      SetLength(Data, Length(Spec2)+SizeOf(TPaletteLmp));
-      PPaletteLmp(@Data[Length(Spec2)+1])^:=Header.Palette;
-      Specifics.AddStringFull(Data);  { "Pal=xxxxx" }
+      SetLength(Data, SizeOf(TPaletteLmp));
+      Move(Header.Palette, Data, SizeOf(TPaletteLmp));
+      Specifics.Bytes[Spec2]:=Data;
 
        { reads the image data }
       Q2MipTex.W:=Header.Width[0];

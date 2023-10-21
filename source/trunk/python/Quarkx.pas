@@ -2871,6 +2871,7 @@ var
   Q: QPixelSet;
   Image: QImage;
   P: PByte;
+  Image1B: String;
   ImageSize: TPoint;
   ScanlineWidth: Integer;
   Red, Green, Blue: Byte;
@@ -2886,7 +2887,7 @@ begin
     if not (Q is QImage) then
      raise EError(2600);
     Image:=QImage(Q);
-    P:=Image.GetImagePtr1;
+    Image1B:=Image.GetImage1(P);
     if P = nil then
      raise EError(2601);
     ImageSize:=Image.GetSize;
@@ -2930,6 +2931,7 @@ var
   Q: QPixelSet;
   Image: QImage;
   P: PByte;
+  Image1B: String;
   ImageSize: TPoint;
   ScanlineWidth: Integer;
 begin
@@ -2945,7 +2947,7 @@ begin
     if not (Q is QImage) then
      raise EError(2600);
     Image:=QImage(Q);
-    P:=Image.GetImagePtr1;
+    Image1B:=Image.GetImage1(P);
     if P = nil then
      raise EError(2601);
     ImageSize:=Image.GetSize;
@@ -2991,6 +2993,7 @@ var
   Q: QPixelSet;
   Image: QImage;
   P: PPaletteLmp;
+  PalB: String;
   Red, Green, Blue: Byte;
 begin
   Result:=Nil;
@@ -3005,7 +3008,7 @@ begin
     if not (Q is QImage) then
      raise EError(2600);
     Image:=QImage(Q);
-    P:=Image.GetPalettePtr1;
+    PalB:=Image.GetPalette(P);
     if P = nil then
      raise EError(2602);
     if Image.IsTrueColor then
@@ -3032,6 +3035,7 @@ var
   Q: QPixelSet;
   Image: QImage;
   P: PPaletteLmp;
+  PalB: String;
 begin
   Result:=Nil;
   try
@@ -3048,7 +3052,7 @@ begin
     if not (Q is QImage) then
      raise EError(2600);
     Image:=QImage(Q);
-    P:=Image.GetPalettePtr1;
+    PalB:=Image.GetPalette(P);
     if P = nil then
      raise EError(2602);
     if Image.IsTrueColor then
@@ -3073,6 +3077,7 @@ var
   Q: QPixelSet;
   Image: QImage;
   P: PByte;
+  AlphaB: String;
   ImageSize: TPoint;
 begin
   Result:=Nil;
@@ -3086,7 +3091,7 @@ begin
     if not (Q is QImage) then
      raise EError(2600);
     Image:=QImage(Q);
-    P:=Image.GetAlphaPtr1;
+    AlphaB:=Image.GetAlpha(P);
     if P = nil then
      raise EError(2603);
     ImageSize:=Image.GetSize;
@@ -3111,6 +3116,7 @@ var
   Q: QPixelSet;
   Image: QImage;
   P: PByte;
+  AlphaB: String;
   ImageSize: TPoint;
 begin
   Result:=Nil;
@@ -3127,7 +3133,7 @@ begin
     if not (Q is QImage) then
      raise EError(2600);
     Image:=QImage(Q);
-    P:=Image.GetAlphaPtr1;
+    AlphaB:=Image.GetAlpha(P);
     if P = nil then
      raise EError(2603);
     ImageSize:=Image.GetSize;

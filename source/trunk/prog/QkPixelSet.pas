@@ -42,9 +42,9 @@ type
                          AlphaBits: TPixelSetAlpha;
                          Size: TPoint;       { X and Y size, > 0 }
                          ScanLine: Integer;  { negative if bottom-up }
-                         Data: Pointer;
+                         Data: PByte; //Note: Dangerous! Pointer into internal data storage!
                          AlphaScanLine: Integer;
-                         AlphaData: Pointer;
+                         AlphaData: PByte; //Note: Dangerous! Pointer into internal data storage!
                          GlobalAlphaValue: Byte;
                          ColorPalette: PPaletteLmp;
                          procedure Init;

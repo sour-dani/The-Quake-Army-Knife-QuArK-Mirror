@@ -264,7 +264,7 @@ end;
 
 function GameBuffer(const NeededGame: Char) : PGameBuffer;
 const
- Start = Length('Data=');
+ SpecData = 'Data';
 var
  Lmp: TPaletteLmp;
  PaletteFile: QFileObject;
@@ -312,18 +312,15 @@ begin
          if PaletteFile is QImage then
          begin
            QImage(PaletteFile).NotTrueColor;
-           QImage(PaletteFile).GetPalette1(Lmp);
+           QImage(PaletteFile).GetPaletteNonPtr(Lmp);
          end
          else
          begin
-           S:=PaletteFile.GetSpecArg('Data');
-           I:=Length(S)-Start;
-           if I<0 then
-             I:=0
-           else
+           S:=PaletteFile.Specifics.Bytes['Data'];
+           I:=Length(S);
            if I>SizeOf(Lmp) then
              I:=SizeOf(Lmp);
-           Move(PChar(S)[Start], Lmp, I);
+           Move(PByte(S), Lmp, I);
          end;
        finally
          PaletteFile.AddRef(-1);

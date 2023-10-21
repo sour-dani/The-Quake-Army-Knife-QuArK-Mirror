@@ -53,13 +53,12 @@ type
              function IsTrueColor : Boolean;
              procedure NotTrueColor;
             {function GetSize : TPoint;}
-             function GetImage1 : String; //FIXME: TByteDynArray;
+             function GetImage1(var P: PByte; Check: Boolean=true) : String; //FIXME: TByteDynArray;
              procedure GetImageData1(var Buf; BufSize: Integer);
-             function GetImagePtr1 : PByte;
             {function GetBitmapImage : TBitmap;}
-             procedure GetPalette1(var Data: TPaletteLmp);
-             function GetPalettePtr1 : PPaletteLmp;
-             function GetAlphaPtr1 : PByte;
+             function GetPalette(var P: PPaletteLmp; Check: Boolean=true) : String; //FIXME: TByteDynArray;
+             procedure GetPaletteNonPtr(var Data: TPaletteLmp; Check: Boolean=true);
+             function GetAlpha(var P: PByte; Check: Boolean=true) : String; //FIXME: TByteDynArray;
              procedure PasteBitmap(Game: PGameBuffer; Bitmap: TBitmap);
             {procedure PasteBitmapH(NeededGame: Char; Handle: HBitmap);}
              procedure CopyImageToDC(DC: HDC; Left, Top: Integer);
@@ -120,7 +119,8 @@ function TestConversionImages(var I: Integer{; Exclude: QImage}) : QImageClass;
 implementation
 
 uses Types, QkPcx, QkBmp, QkTga, QkDDS, QkFTX, QkIwi, QkJpg, QkPng, QkSoF, QkVTF,
-     TbPalette, qmath, Quarkx, QkExceptions, CCode, Undo, Travail, Setup, Logging;
+     TbPalette, qmath, Quarkx, QkExceptions, CCode, Undo, Travail, Setup,
+     Logging, ExtraFunctionality;
 
 {$R *.DFM}
 
@@ -1100,19 +1100,27 @@ begin
  Result.Y:=Round(V[2]);
 end;*)
 
-function QImage.GetImage1 : String; //FIXME: TByteDynArray;
+//Helper function that does all the casting for you. Note that the pointer returned
+//points INTO the string, so don't use the pointer after letting the string go out-of-scope!
+function QImage.GetImage1(var P: PByte; Check: Boolean) : String; //FIXME: TByteDynArray;
+const
+ Spec1 = 'Image1';
 var
  Size: TPoint;
  ScanW: Integer;
 begin
- Size:=GetSize;
- Result:=Specifics.Bytes['Image1'];
- if IsTrueColor then
-  ScanW:=(Size.X*3+3) and not 3
- else
-  ScanW:=(Size.X+3) and not 3;
- if Length(Result) < ScanW*Size.Y then
-  Raise EErrorFmt(5534, ['Image1']);
+ Result:=Specifics.Bytes[Spec1];
+ if Check then
+ begin
+   Size:=GetSize;
+   if IsTrueColor then
+     ScanW:=(Size.X*3+3) and not 3
+    else
+     ScanW:=(Size.X+3) and not 3;
+   if Length(Result) < ScanW*Size.Y then
+     Raise EErrorFmt(5534, ['Image1']);
+ end;
+ P:=PByte(PChar(Result)); //FIXME: PByte
 end;
 
 procedure QImage.GetImageData1(var Buf; BufSize: Integer);
@@ -1134,48 +1142,57 @@ begin
   end;
 end;
 
-function QImage.GetImagePtr1 : PByte;
-const
- Spec1 = 'Image1';
-var
- S: String;
-begin
- S:=GetSpecArg(Spec1);
- Result:=PByte(PChar(S)+(Length(Spec1)+1));
-end;
-
-procedure QImage.GetPalette1(var Data: TPaletteLmp);
+//Helper function that does all the casting for you. Note that the pointer returned
+//points INTO the string, so don't use the pointer after letting the string go out-of-scope!
+function QImage.GetPalette(var P: PPaletteLmp; Check: Boolean) : String;
 const
  Spec2 = 'Pal';
-var
- Pal: String;
 begin
- Pal:=GetSpecArg(Spec2);
- if Length(Pal)-(Length(Spec2)+1) < SizeOf(TPaletteLmp) then
-  Raise EErrorFmt(5534, [Spec2]);
- Move((PChar(Pal)+(Length(Spec2)+1))^, Data, SizeOf(TPaletteLmp));
+ Result:=Specifics.Bytes[Spec2];
+ if Check then
+ begin
+   if Length(Result) < SizeOf(TPaletteLmp) then
+     Raise EErrorFmt(5534, [Spec2]);
+ end;
+ PChar(P):=PChar(Result); //FIXME: PByte
 end;
 
-function QImage.GetPalettePtr1 : PPaletteLmp;
+procedure QImage.GetPaletteNonPtr(var Data: TPaletteLmp; Check: Boolean);
 const
  Spec2 = 'Pal';
 var
  S: String;
 begin
- S:=GetSpecArg(Spec2);
- if Length(S)-(Length(Spec2)+1) < SizeOf(TPaletteLmp) then
-  Raise EErrorFmt(5534, [Spec2]);
- PChar(Result):=PChar(S)+(Length(Spec2)+1);
+ S:=Specifics.Bytes[Spec2];
+ if Check then
+ begin
+   if Length(S) < SizeOf(TPaletteLmp) then
+      Raise EErrorFmt(5534, [Spec2]);
+ end;
+ Move(PChar(S)^, Data, SizeOf(TPaletteLmp)); //FIXME: PByte
 end;
 
-function QImage.GetAlphaPtr1 : PByte;
+//Helper function that does all the casting for you. Note that the pointer returned
+//points INTO the string, so don't use the pointer after letting the string go out-of-scope!
+function QImage.GetAlpha(var P: PByte; Check: Boolean) : String;
 const
  Spec3 = 'Alpha';
 var
- S: String;
+ Size: TPoint;
+ ScanW: Integer;
 begin
- S:=GetSpecArg(Spec3);
- Result:=PByte(PChar(S)+(Length(Spec3)+1));
+ Result:=Specifics.Bytes[Spec3];
+ if Check then
+ begin
+   Size:=GetSize;
+   if IsTrueColor then
+     ScanW:=(Size.X*3+3) and not 3
+   else
+     ScanW:=(Size.X+3) and not 3;
+   if Length(Result) < ScanW*Size.Y then
+     Raise EErrorFmt(5534, ['Alpha']);
+ end;
+ P:=PByte(PChar(Result)); //FIXME: PByte
 end;
 
 {procedure QImage.GetAsTexture3D(var P: TTexture3D);
@@ -1198,12 +1215,12 @@ function QImage.Description : TPixelSetDescription;
 const
  AlphaSpec = 'Alpha';
 var
- S: String;
+ B: String; //FIXME: TByteDynArray
 begin
 {Acces; included in GetSize}
  Result.Init;
  Result.Size:=GetSize;
- Result.Data:=GetImagePtr1;
+ GetImage1(Result.Data);
  if IsTrueColor then
   begin
    Result.Format:=psf24bpp;
@@ -1213,14 +1230,14 @@ begin
   begin
    Result.Format:=psf8bpp;
    Result.Palette:=pspVariable;
-   Result.ColorPalette:=GetPalettePtr1;
+   GetPalette(Result.ColorPalette);
    Result.ScanLine:=-((Result.Size.X+3) and not 3);
   end;
- S:=GetSpecArg(AlphaSpec);
- if Length(S) = (Length(AlphaSpec)+1) + Result.Size.X*Result.Size.Y then
+ B:=Specifics.Bytes[AlphaSpec];
+ if Length(B) = Result.Size.X*Result.Size.Y then
   begin
    Result.AlphaBits:=psa8bpp;
-   Result.AlphaData:=PChar(S)+(Length(AlphaSpec)+1);
+   Result.AlphaData:=PByte(PChar(B)); //FIXME: PByte
    Result.AlphaScanLine:=-Result.Size.X;
   end
   else
@@ -1255,14 +1272,14 @@ begin
   end;
  ImageData:=ImageSpec+'=';
  SetLength(ImageData, (Length(ImageSpec)+1) - NewPSD.ScanLine*PSD.Size.Y);
- NewPSD.Data:=PChar(ImageData) + (Length(ImageSpec)+1);  { expected data } //FIXME: PArithByte
+ NewPSD.Data:=PByte(PChar(ImageData)); //FIXME: PByte
 
  if PSD.AlphaBits > psaNoAlpha then
   begin
    AlphaData:=AlphaSpec+'=';
    SetLength(AlphaData, (Length(AlphaSpec)+1) + PSD.Size.X*PSD.Size.Y);
    NewPSD.AlphaBits:=psa8bpp;   { expected alpha }
-   NewPSD.AlphaData:=PChar(AlphaData)+(Length(AlphaSpec)+1); //FIXME: PArithByte
+   NewPSD.AlphaData:=PByte(PChar(AlphaData)); //FIXME: PByte
    NewPSD.AlphaScanLine:=-PSD.Size.X;
   end;
 
@@ -1499,7 +1516,7 @@ begin
      biBitCount:=8;
      biSizeImage:=((Size.X+3) and not 3)*Size.Y;
      biClrImportant:=255;
-     GetPalette1(Lmp);
+     GetPaletteNonPtr(Lmp);
      PaletteLmpToBmpInfo(Lmp, BmpInfo);
      Result:=SizeOf(TBitmapInfo256);
     end;
@@ -1514,6 +1531,8 @@ var
  Lmp: TPaletteLmp;
  BitmapInfo: TBitmapInfo256;
  Palette, Pal1: HPalette;
+ Data: PByte;
+ Image1B: String; //FIXME: TByteDynArray
 begin
  if IsTrueColor then
   begin
@@ -1522,7 +1541,7 @@ begin
   end
  else
   begin
-   GetPalette1(Lmp);
+   GetPaletteNonPtr(Lmp);
    PaletteFromLmp(Lmp, BitmapInfo, @Palette, Nil);
   end;
  try
@@ -1543,7 +1562,8 @@ begin
       LogWindowsError(GetLastError(), 'RealizePalette(DC)');
    end;
   try
-    DrawToDC(DC, BitmapInfo, GetImagePtr1, Left, Top);
+    Image1B:=GetImage1(Data);
+    DrawToDC(DC, BitmapInfo, Data, Left, Top);
   finally
    if Pal1<>0 then
     if SelectPalette(DC, Pal1, False) = GDI_ERROR then
@@ -1582,12 +1602,13 @@ procedure QImage.CopyExtraData;
 var
  BmpInfo: TBitmapInfo256;
  H: THandle;
- Data: Pointer;
- P: PChar;
+ Data: PByte;
+ Image1B: String;
+ P: PByte;
  Base: Cardinal;
 begin  { copy a bitmap version of the data to the clipboard }
  Base:=GetBitmapInfo1(BmpInfo);
- Data:=GetImagePtr1;
+ Image1B:=GetImage1(Data);
  H:=GlobalAlloc(gmem_Moveable or gmem_DDEShare, Base+BmpInfo.bmiHeader.biSizeImage);
  if H<>0 then
   begin
@@ -1602,17 +1623,18 @@ end;
 
 function QImage.ConvertToTrueColor;
 const
- Spec1 = 'Image1=';
+ Spec1 = 'Image1';
 var
- SrcScanLine, DestScanLine: PChar; //FIXME: PArithByte;
+ SrcScanLine, DestScanLine: PByte;
  Size: TPoint;
  SrcScanW, DestScanW, I, J, K: Integer;
+ Image1B: String;
  Lmp: TPaletteLmp;
  Data: String; //FIXME: TByteDynArray;
  Exchange: Byte;
 begin
  Size:=GetSize;
- GetPalette1(Lmp);
+ GetPaletteNonPtr(Lmp);
  for I:=0 to 255 do
   begin
    Exchange:=Lmp[I,0];
@@ -1622,22 +1644,21 @@ begin
  SrcScanW:=(Size.X+3) and not 3;
  K:=Size.X*3;
  DestScanW:=(K+3) and not 3;
- Data:=Spec1;
- SetLength(Data, Length(Spec1)+DestScanW*Size.Y);
- DestScanLine:=PChar(Data)+Length(Spec1); //FIXME: PArithByte
- SrcScanLine:=PChar(GetImagePtr1); //FIXME: PArithByte
+ SetLength(Data, DestScanW*Size.Y);
+ DestScanLine:=PByte(PChar(Data)); //FIXME: PByte
+ Image1B:=GetImage1(SrcScanLine);
  for J:=1 to Size.Y do
   begin
    for I:=0 to Size.X-1 do
-    PPaletteLmp(DestScanLine)^[I]:=Lmp[Ord(SrcScanLine[I])];
+    PPaletteLmp(DestScanLine)^[I]:=Lmp[PByte(PArithByte(SrcScanLine)+I)^];
    if K<DestScanW then
-    FillChar(DestScanLine[K], DestScanW-K, 0);
+    FillChar(PByte(PArithByte(DestScanLine)+K)^, DestScanW-K, 0);
    Inc(SrcScanLine, SrcScanW);
    Inc(DestScanLine, DestScanW);
   end;
  Result:=QImage(QObjectClass(ClassType).Create(Name, Nil));
- Result.Specifics.AddStringFull(Data);
- Result.Specifics.AddStringFull(Specifics.Strings[FloatSpecNameOf('Size')]);
+ Result.Specifics.Bytes[Spec1]:=Data;
+ Result.Specifics.Strings[FloatSpecNameOf('Size')]:=Specifics.Strings[FloatSpecNameOf('Size')]; //FIXME: Convert to float
 end;
 
 procedure QImage.ImageConvertTo(NewPSD: TPixelSetDescription);
