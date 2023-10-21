@@ -55,7 +55,7 @@ type
 implementation
 
 uses Quarkx, QkExceptions, PyObjects, QkObjectClassList, QkComponent, QkModelRoot,
-     QkModelTag, QkFrameGroup, QkMiscGroup, QkTagFrame, PyMath;
+     QkModelTag, QkFrameGroup, QkMiscGroup, QkTagFrame, PyMath, Logging;
 
 function QFrame.IsAllowedParent(nParent: QObject) : Boolean;
 begin
@@ -88,6 +88,8 @@ begin
 end;
 
 procedure QFrame.RotateFrame(matrice: TMatrixTransformation);
+const
+  VertSpec = 'Vertices';
 var
   p, p_org: vec3_p;
   S0,s:String;
@@ -96,7 +98,7 @@ var
 begin
   c:=GetVertices(p_org);
   p:=p_org;
-  S0:=FloatSpecNameOf('Vertices');
+  S0:=FloatSpecNameOf(VertSpec);
   S:=S0+'=';
   SetLength(S, Length(S)+SizeOf(vec3_t)*c);
   PChar(Dest):=PChar(S)+Length(S0+'=');
@@ -111,6 +113,8 @@ begin
 end;
 
 procedure QFrame.TranslateFrame(vec: vec3_t);
+const
+  VertSpec = 'Vertices';
 var
   p_org: vec3_p;
   S0,s:String;
@@ -118,7 +122,7 @@ var
   Dest: vec3_p;
 begin
   c:=GetVertices(p_org);
-  S0:=FloatSpecNameOf('Vertices');
+  S0:=FloatSpecNameOf(VertSpec);
   S:=S0+'=';
   SetLength(S, Length(S)+SizeOf(vec3_t)*c);
   PChar(Dest):=PChar(S)+Length(S0+'=');
@@ -148,26 +152,27 @@ end;
 
 function QFrame.GetBoneMovement(var P: PBoneRec): Integer;
 const
-  BoneSpec = Length('BoneMovement=');
+  BoneSpec = 'BoneMovement';
 var
   s: String;
 begin
-  S:=GetSpecArg('BoneMovement');
+  S:=GetSpecArg(BoneSpec);
   Result:=0;
   if S='' then
     Exit;
-  Result:=(Length(S) - BoneSpec) div SizeOf(TBoneRec);
+  Result:=(Length(S) - Length(BoneSpec + '=')) div SizeOf(TBoneRec);
   if Result<=0 then begin
     Result:=0;
     Exit;
   end;
-  PChar(P):=PChar(S) + BoneSpec;
+  PChar(P):=PChar(S) + Length(BoneSpec + '=');
 end;
 
 function QFrame.GetVertices(var P: vec3_p) : Integer;
 const
-  VertSpec = Length('Vertices=');
-  RefSpec = Length('RefFrame=');
+  VertSpec = 'Vertices';
+  RefSpec = 'RefFrame';
+  NewVertSpec = 'NewVertices';
 var
   S: String;
   currentModelComponent: QComponent;
@@ -202,24 +207,25 @@ begin
         bf2:=QModelTag(myRoot.getmisc.FindSubObject(myRoot.Specifics.Strings['linked_to'], QModelTag, nil));
         o_tag:=QTagFrame(bf.GetTagFrameFromIndex(currentFrameNumber));
         s_tag:=QTagFrame(bf2.GetTagFrameFromIndex(Parent.SubElements.IndexOf(Self)));
+        Log(LOG_VERBOSE, 'Connecting tag %s from model %s to model %s', [myRoot.Specifics.Strings['linked_to'], modelRoot.Name, myRoot.Name]);
       end;
     end;
   end;
-  S:=GetSpecArg(FloatSpecNameOf('Vertices'));
+  S:=GetSpecArg(FloatSpecNameOf(VertSpec));
   if S='' then
     Exit;
-  Result:=(Length(S) - VertSpec) div SizeOf(vec3_t);
+  Result:=(Length(S) - Length(VertSpec + '=')) div SizeOf(vec3_t);
   if Result<=0 then begin
     Result:=0;
     Exit;
   end;
-  PChar(P):=PChar(S) + VertSpec;
+  PChar(P):=PChar(S) + Length(VertSpec+'=');
   if (s_tag<>nil)and(o_tag<>nil)and(bf<>nil)and(bf2<>nil) then
   begin
-    S0:=FloatSpecNameOf('NewVertices');
+    S0:=FloatSpecNameOf(NewVertSpec);
     S:=S0+'=';
-    SetLength(S, Length('NewVertices=')+SizeOf(vec3_t)*Result);
-    PChar(New):=PChar(S)+Length('NewVertices=');
+    SetLength(S, Length(NewVertSpec+'=')+SizeOf(vec3_t)*Result);
+    PChar(New):=PChar(S)+Length(NewVertSpec+'=');
     Move(P^, New^, Result*SizeOf(Vec3_T));
     P:=New;
     s_Tag.GetRotMatrix(m);
@@ -234,7 +240,7 @@ end;
 
 Procedure QFrame.RemoveVertex(index: Integer);
 const
-  BaseSize = Length('Vertices=');
+  VertSpec = 'Vertices';
 var
   I, Count: Integer;
   S, S0: String;
@@ -244,10 +250,10 @@ begin
   count:=GetVertices(vtxs);
   if index>count then
     exit;
-  S0:=FloatSpecNameOf('Vertices');
+  S0:=FloatSpecNameOf(VertSpec);
   S:=S0+'=';
-  SetLength(S, BaseSize+SizeOf(vec3_t)*(Count-1));
-  PChar(Dest):=PChar(S)+BaseSize;
+  SetLength(S, Length(VertSpec+'=')+SizeOf(vec3_t)*(Count-1));
+  PChar(Dest):=PChar(S)+Length(VertSpec+'=');
   for i:=1 to count do begin
     if i<>index then begin
       Dest^[0]:=vtxs^[0];
@@ -334,7 +340,7 @@ end;
 
 function QFrame.PySetAttr(attr: PyChar; value: PyObject) : Boolean;
 const
-  BaseSize = Length('Vertices=');
+  VertSpec = 'Vertices';
 var
   I, Count: Integer;
   P: PyVect;
@@ -367,10 +373,10 @@ begin
         Count:=PyObject_Length(value);
         if Count<0 then
           Exit;
-        S0:=FloatSpecNameOf('Vertices');
+        S0:=FloatSpecNameOf(VertSpec);
         S:=S0+'=';
-        SetLength(S, BaseSize+SizeOf(vec3_t)*Count);
-        PChar(Dest):=PChar(S)+BaseSize;
+        SetLength(S, Length(VertSpec+'=')+SizeOf(vec3_t)*Count);
+        PChar(Dest):=PChar(S)+Length(VertSpec+'=');
         for I:=0 to Count-1 do begin
           P:=PyVect(PyList_GetItem(value, I));
           if P=Nil then
