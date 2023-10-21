@@ -130,8 +130,7 @@ end;
 
 function qRemoveTriangle(self, args: PyObject) : PyObject; cdecl;
 const
-  Spec1 = 'Tris';
-  BaseSize = Length('Tris=');
+  SpecTris = 'Tris';
 var
   index, cnt, i, j: Integer;
   tris, tris2, dest: PComponentTris;
@@ -160,10 +159,10 @@ begin
       end;
       if index=-1 then
         exit;
-      S:=Spec1+'=';
-      // Recompute size of specific.
-      SetLength(S, BaseSize+SizeOf(TComponentTris)*(cnt-1));
-      PChar(Dest):=PChar(S)+BaseSize;
+
+      // Compute size of specific.
+      SetLength(S, SizeOf(TComponentTris)*(cnt-1));
+      PChar(Dest):=PChar(S);
 
       // Recreate triangles array specific.
       tris:=tris2;
@@ -182,8 +181,7 @@ begin
         end;
         inc(tris);
       end;
-      Specifics.Delete(Spec1);
-      Specifics.AddStringFull(S);
+      Specifics.Bytes[SpecTris]:=S;
 
     end;
     Result:=PyNoResult;
@@ -364,30 +362,33 @@ begin
   end;
 end;
 
+//function QComponent.Triangles(var S: String) : Integer; //FIXME: TByteDynArray
 function QComponent.Triangles(var P: PComponentTris) : Integer;
 const
-  Spec1 = 'Tris';
+  SpecTris = 'Tris';
 var
   S: String;
 begin
-  if IntSpec['show']=0 then begin
-    result:=0;
-    exit;
+  if IntSpec['show']=0 then
+  begin
+    Result:=0;
+    Exit;
   end;
-  S:=GetSpecArg(Spec1);
-  PChar(P):=PChar(S)+(Length(Spec1)+1);
-  Result:=(Length(S)-(Length(Spec1)+1)) div SizeOf(TComponentTris);
+  S:=Specifics.Bytes[SpecTris];
+  PChar(P):=PChar(S);
+  Result:=Length(S) div SizeOf(TComponentTris);
 end;
 
+//function QComponent.VertexLinks(var S: String) : Integer; //FIXME: TByteDynArray
 function QComponent.VertexLinks(var P: PBoneVertexLink) : Integer;
 const
-  Spec1 = 'VertexLinks';
+  SpecVertexLinks = 'VertexLinks';
 var
   S: String;
 begin
-  S:=GetSpecArg(Spec1);
-  PChar(P):=PChar(S)+(Length(Spec1)+1);
-  Result:=(Length(S)-(Length(Spec1)+1)) div SizeOf(TBoneVertexLink);
+  S:=Specifics.Bytes[SpecVertexLinks];
+  PChar(P):=PChar(S);
+  Result:=Length(S) div SizeOf(TBoneVertexLink);
 end;
 
 procedure QComponent.AddTo3DScene(Scene: TObject);
@@ -430,16 +431,21 @@ begin
 end;
 
 function QComponent.QuickSetSkin(const nSkin: QImage; const StaticBase: String) : QComponent;
+const
+  SpecTris = 'Tris';
 begin
   if nSkin = FCurrentSkin then
     Result:=Self
   else
-    if FCurrentSkin = Nil then begin
+    if FCurrentSkin = Nil then
+    begin
       CurrentSkin:=nSkin;
       Result:=Self;
-    end else begin
+    end
+    else
+    begin
       Result:=QComponent.Create('', Nil);
-      Result.Specifics.AddStringFull(GetSpecArg('Tris'));
+      Result.Specifics.Add(Specifics.Items[Specifics.IndexOfName('SpecTris')]);
       Result.CurrentSkin:=nSkin;
     end;
   Result.Specifics.Strings['ssd']:=StaticBase;
@@ -522,8 +528,8 @@ end;
 
 function QComponent.MergeVertices(const Frames: TQList) : Boolean;
 const
-  Spec1 = 'Tris';
-  Spec2 = 'Vertices';
+  SpecTris = 'Tris';
+  SpecVertices = 'Vertices';
 type
   TVertexMap = array[0..MaxCVertices-1] of Integer;
 var
@@ -539,7 +545,8 @@ var
 begin
   Result:=False;
   VertexCount:=-1;
-  for I:=0 to Frames.Count-1 do begin
+  for I:=0 to Frames.Count-1 do
+  begin
     J:=(Frames[I] as QFrame).GetVertices(CVert);
     if VertexCount=-1 then
       VertexCount:=J
@@ -554,11 +561,13 @@ begin
     Bits:=TBits.Create;
     try
       Bits.Size:=VertexCount*(VertexCount-1) div 2;
-      for I:=0 to Frames.Count-1 do begin
+      for I:=0 to Frames.Count-1 do
+      begin
         B:=0;
         QFrame(Frames[I]).GetVertices(CVert);
         CVertJ:=CVert;
-        for J:=2 to VertexCount do begin
+        for J:=2 to VertexCount do
+        begin
           CVertK:=CVert;
           Inc(CVertJ);
           repeat
@@ -576,10 +585,13 @@ begin
       try
         B:=0;
         nVertexCount:=0;
-        for I:=0 to VertexCount-1 do begin
+        for I:=0 to VertexCount-1 do
+        begin
           Target:=-1;
-          for J:=0 to I-1 do begin
-            if not Bits[B] then begin
+          for J:=0 to I-1 do
+          begin
+            if not Bits[B] then
+            begin
               VertexMap^[I]:=VertexMap^[J];
               Inc(B, I-J);
               Target:=J;
@@ -587,7 +599,8 @@ begin
             end;
             Inc(B);
           end;
-          if Target<0 then begin
+          if Target<0 then
+          begin
             VertexMap^[I]:=nVertexCount;
             Inc(nVertexCount);
           end;
@@ -596,12 +609,14 @@ begin
           Exit;  { no changes }
         Bits.Size:=0;
         ProgressIndicatorIncrement;
-        S:=GetSpecArg(Spec1);
+        S:=GetSpecArg(SpecTris);
         UniqueString(S);
-        Specifics.Delete(Spec1);
+        Specifics.Delete(SpecTris);
         Specifics.AddStringFull(S);
-        for I:=1 to Triangles(CTris) do begin
-          for J:=0 to 2 do begin
+        for I:=1 to Triangles(CTris) do
+        begin
+          for J:=0 to 2 do
+          begin
             if CTris^[J].VertexNo >= VertexCount then
               Raise EError(5667);
             CTris^[J].VertexNo:=VertexMap^[CTris^[J].VertexNo];
@@ -611,20 +626,20 @@ begin
         for I:=0 to VertexCount-1 do
           VertexMap^[VertexMap^[I]]:=I;
         ProgressIndicatorIncrement;
-        for I:=0 to Frames.Count-1 do begin
+        for I:=0 to Frames.Count-1 do
+        begin
           FrameObj:=QFrame(Frames[I]);
           FrameObj.GetVertices(CVert);
-          S:=FloatSpecNameOf(Spec2)+'=';
-          SetLength(S, Length(Spec2+'=') + nVertexCount*SizeOf(vec3_t));
-          PChar(FrSourcePts):=PChar(S) + Length(Spec2+'=');
-          for J:=0 to nVertexCount-1 do begin
+          SetLength(S, nVertexCount*SizeOf(vec3_t));
+          PChar(FrSourcePts):=PChar(S);
+          for J:=0 to nVertexCount-1 do
+          begin
             CVertJ:=CVert;
             Inc(CVertJ, VertexMap^[J]);
             FrSourcePts^:=CVertJ^;
             Inc(FrSourcePts);
           end;
-          FrameObj.Specifics.Delete(FloatSpecNameOf(Spec2));
-          FrameObj.Specifics.AddStringFull(S);
+          FrameObj.Specifics.Bytes[FloatSpecNameOf(SpecVertices)]:=S;
         end;
         ProgressIndicatorIncrement;
       finally
@@ -773,7 +788,8 @@ var
 Label
   PreExit;
 begin
-  if CurrentFrame=Nil then begin
+  if CurrentFrame=Nil then
+  begin
     CurrentFrame:=GetFrameFromIndex(0);
     if CurrentFrame=Nil then
       Goto PreExit;
@@ -783,7 +799,8 @@ begin
   GetMem(ProjPts, FCurrentFrameCount * SizeOf(TPointProj));
   try
     v3p[0]:=FCurrentFrame;
-    for I:=0 to FCurrentFrameCount-1 do begin
+    for I:=0 to FCurrentFrameCount-1 do
+    begin
       V1.X:=v3p[0]^[0];
       V1.Y:=v3p[0]^[1];
       V1.Z:=v3p[0]^[2];
@@ -796,14 +813,17 @@ begin
     GetMem(SourceTris, TrisCount * SizeOf(TTriangleInfo));
     try
       Tris:=SourceTris;
-      for I:=1 to TrisCount do begin
-        with Tris^ do begin
+      for I:=1 to TrisCount do
+      begin
+        with Tris^ do
+        begin
           OowMin:=-MaxInt;
           total:=0;
           SourceCTris:=CTris;
           for K:=0 to 2 do begin
             J:=CTris^[K].VertexNo;
-            if J > FCurrentFrameCount then begin    // ignore the invalid triangle 
+            if J > FCurrentFrameCount then    // ignore the invalid triangle
+            begin 
               Dec(TrisCount);
               Dec(Tris);
               Break;
@@ -825,38 +845,47 @@ begin
       try
         L.Capacity:=TrisCount;
         Tris:=SourceTris;
-        for I:=1 to TrisCount do begin
+        for I:=1 to TrisCount do
+        begin
           L.Add(Tris);
           Inc(Tris);
         end;
         {L.Sort(ByOow);} //FIXME: draws all the filltris triangles wrong
         NewPen:=0;
         DeletePen:=0;
-        if g_DrawInfo.GreyBrush <> 0 then begin    // if color changes must be made now 
-          if not Odd(SelMult) then begin
+        if g_DrawInfo.GreyBrush <> 0 then    // if color changes must be made now
+        begin
+          if not Odd(SelMult) then
+          begin
             C1:=clDefault;
             CouleurDessin(C1);
             if C1<>clDefault then
               if C1=clNone then
                 NewPen:=GetStockObject(Null_pen)
-              else begin
+              else
+              begin
                 DeletePen:=CreatePen(ps_Solid, 0, C1);
                 NewPen:=DeletePen;
               end;
           end;
         end;
-        if NewPen<>0 then begin
+        if NewPen<>0 then
+        begin
           OldPen:=g_DrawInfo.BlackBrush;
           g_DrawInfo.BlackBrush:=NewPen;
-        end else
+        end
+        else
           OldPen:=0;
         SetupComponentDC(CDC);
-        if g_DrawInfo.SelectedBrush<>0 then begin
+        if g_DrawInfo.SelectedBrush<>0 then
+        begin
           SelectObject(g_DrawInfo.DC, g_DrawInfo.SelectedBrush);
           SetROP2(g_DrawInfo.DC, R2_CopyPen);
           CurPenMode:=0;
           ScrAnd0:=0;
-        end else begin
+        end
+        else
+        begin
           CurPenMode:=-1;
           if g_DrawInfo.ModeAff=0 then
             ScrAnd0:=0
@@ -870,17 +899,21 @@ begin
             FillTrisCount:=PyObject_Length(FSelTris);
           Back:=False;
           Hollow:=True;
-          for I:=0 to TrisCount-1 do begin
+          for I:=0 to TrisCount-1 do
+          begin
             Tris:=PTriangleInfo(L[I]);
-            if I<FillTrisCount then begin
+            if I<FillTrisCount then
+            begin
               obj:=PyList_GetItem(FSelTris, I);
               if obj=Nil then
                 exit;
-              if obj^.ob_type=PyTuple_Type then begin
+              if obj^.ob_type=PyTuple_Type then
+              begin
                 if PyArg_ParseTupleX(obj, 'OO;filltris format error', [@patterns[False], @patterns[True]])=0 then
                   exit;//Goto PreExit;
                 with Tris^ do
-                  for K:=0 to 2 do begin
+                  for K:=0 to 2 do
+                  begin
                     v3p[K]:=FCurrentFrame;
                     Inc(v3p[K], SourceCTris^[K].VertexNo);
                   end;
@@ -894,9 +927,11 @@ begin
                 Back:=CCoord.PositiveHalf(Normale.X, Normale.Y, Normale.Z,
                          Normale.X * v3p[0]^[0] + Normale.Y * v3p[0]^[1] + Normale.Z * v3p[0]^[2]);
                 obj:=patterns[Back];
-                if obj <> Py_None then begin
+                if obj <> Py_None then
+                begin
                   Hollow:=False;
-                  if obj^.ob_type <> PyTuple_Type then begin
+                  if obj^.ob_type <> PyTuple_Type then
+                  begin
                     C1:=PyInt_AsLong(obj);
                     C2:=C1;
                   end else
@@ -908,23 +943,30 @@ begin
               end;
             end;
             ScrAnd:=ScrAnd0;
-            with Tris^ do begin
-              for K:=0 to 2 do begin
+            with Tris^ do
+            begin
+              for K:=0 to 2 do
+              begin
                 Pts[K]:=Vertices[K]^;
                 ScrAnd:=ScrAnd and Pts[K].OffScreen;
               end;
             end;
-            if ScrAnd<>0 then begin
+            if ScrAnd<>0 then
+            begin
               NewPenMode:=1;
               if (g_DrawInfo.ModeAff=2) or (ScrAnd and CCoord.HiddenRegions <> 0) then
                 Continue;
             end else
               NewPenMode:=0;
-            if NewPenMode<>CurPenMode then begin
-              if NewPenMode=0 then begin
+            if NewPenMode<>CurPenMode then
+            begin
+              if NewPenMode=0 then
+              begin
                 SelectObject(g_DrawInfo.DC, g_DrawInfo.BlackBrush);
                 SetROP2(g_DrawInfo.DC, R2_CopyPen);
-              end else begin
+              end
+              else
+              begin
                 SelectObject(g_DrawInfo.DC, g_DrawInfo.GreyBrush);
                 SetROP2(g_DrawInfo.DC, g_DrawInfo.MaskR2);
               end;
@@ -939,7 +981,8 @@ begin
           end;  { note: "Continue" used in the loop }
         finally
           CloseComponentDC(CDC);
-          if OldPen<>0 then begin
+          if OldPen<>0 then
+          begin
             SelectObject(g_DrawInfo.DC, OldPen);
             g_DrawInfo.BlackBrush:=OldPen;
             if DeletePen<>0 then
@@ -1123,8 +1166,7 @@ end;
 
 function QComponent.PySetAttr(attr: PyChar; value: PyObject) : Boolean;
 const
-  Spec1 = 'Tris';
-  BaseSize = Length('Tris=');
+  SpecTris = 'Tris';
 var
   Q: QObject;
   S: String;
@@ -1137,21 +1179,26 @@ begin
   Result:=inherited PySetAttr(attr, value);
   if not Result then
     case attr[0] of
-    'c': if StrComp(attr, 'currentframe')=0 then begin
+    'c': if StrComp(attr, 'currentframe')=0 then
+    begin
       Q:=QkObjFromPyObj(value);
       if not (Q is QFrame) then
         Q:=Nil;
       CurrentFrame:=QFrame(Q);
       Result:=True;
       Exit;
-    end else if StrComp(attr, 'currentskin') = 0 then begin
+    end
+    else if StrComp(attr, 'currentskin') = 0 then
+    begin
       Q:=QkObjFromPyObj(value);
       if not (Q is QImage) and not (Q is QTexture) then //FIXME: Adding the QTexture is a bad idea, actually...
         Q:=Nil;
       CurrentSkin:=QImage(Q);
       Result:=True;
       Exit;
-    end else if StrComp(attr, 'currentframeindex') = 0 then begin
+    end
+    else if StrComp(attr, 'currentframeindex') = 0 then
+    begin
       I:=0;
       if PyArg_ParseTupleX(value,'i',[@i])=0 then
         Exit;
@@ -1159,40 +1206,47 @@ begin
       Result:=True;
       Exit;
     end;
-    'f': if StrComp(attr, 'filltris')=0 then begin
+    'f': if StrComp(attr, 'filltris')=0 then
+    begin
       Py_XDECREF(FSelTris);
-      if value^.ob_type = PyList_Type then begin
+      if value^.ob_type = PyList_Type then
+      begin
         FSelTris:=value;
         Py_INCREF(value);
-      end else
+      end
+      else
         FSelTris:=Nil;
       Result:=True;
       Exit;
     end;
-    'i': if StrComp(attr, 'info')=0 then begin
+    'i': if StrComp(attr, 'info')=0 then
+    begin
       Py_XDECREF(FInfo);
       FInfo:=value;
       Py_INCREF(value);
       Result:=True;
       Exit;
     end;
-    't': if StrComp(attr, 'triangles')=0 then begin
+    't': if StrComp(attr, 'triangles')=0 then
+    begin
       Count:=PyObject_Length(value);
       if Count<0 then
         Exit;
-      S:=Spec1+'=';
-      SetLength(S, BaseSize+SizeOf(TComponentTris)*Count);
-      PChar(Dest):=PChar(S)+BaseSize;
-      for I:=0 to Count-1 do begin
+      SetLength(S, SizeOf(TComponentTris)*Count);
+      PChar(Dest):=PChar(S);
+      for I:=0 to Count-1 do
+      begin
         tri:=PyList_GetItem(value, I);
         if tri=Nil then
           Exit;
         if PyArg_ParseTupleX(tri, 'OOO;a triangle needs three points', [@pt[0], @pt[1], @pt[2]])=0 then
           Exit;
-        for L:=0 to 2 do begin
+        for L:=0 to 2 do
+        begin
           if PyArg_ParseTupleX(pt[L], 'iii;bad tripoint format', [@VN, @SS, @TT])=0 then
             Exit;
-          with Dest^[L] do begin
+          with Dest^[L] do
+          begin
             VertexNo:=VN;
             S:=SS;
             T:=TT;
@@ -1200,8 +1254,7 @@ begin
         end;
         Inc(Dest);
       end;
-      Specifics.Delete(Spec1);
-      Specifics.AddStringFull(S);
+      Specifics.Bytes[SpecTris]:=S;
       Result:=True;
       Exit;
     end;

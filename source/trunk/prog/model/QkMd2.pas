@@ -138,8 +138,8 @@ end;
 
 function QMd2File.ReadMd2File(F: TStream; Origine: TStreamPos; const mdl: dmdl_t) : QModelRoot;
 const
-  Spec1 = 'Tris=';
-  Spec2 = 'Vertices=';
+  SpecTris = 'Tris';
+  SpecVertices = 'Vertices';
 type
   dstvert_array = array[0..MaxCVertices-1] of dstvert_t;
 var
@@ -175,11 +175,10 @@ begin
       F.ReadBuffer(STData^, J);
 
       J:=mdl.num_tris*SizeOf(TComponentTris);
-      S:=Spec1;
-      SetLength(S, Length(Spec1)+J);
+      SetLength(S, J);
 
       Tris:=TrisData;
-      PChar(CTris):=PChar(S)+Length(Spec1);
+      PChar(CTris):=PChar(S);
       for I:=1 to mdl.num_tris do
        begin
         for J:=0 to 2 do
@@ -193,7 +192,7 @@ begin
         Inc(Tris);
         Inc(CTris);
        end;
-      Comp.Specifics.AddStringFull(S);    { Tris= }
+      Comp.Specifics.Bytes[SpecTris]:=S;
     finally
       FreeMem(STData);
     end;
@@ -222,9 +221,8 @@ begin
      begin
       F.ReadBuffer(FrameData^, mdl.framesize);
       Frame:=Loaded_Frame(Comp, CharToPas(FrameData^.name));
-      S:=FloatSpecNameOf(Spec2);
-      SetLength(S, Length(Spec2)+mdl.num_xyz*SizeOf(vec3_t));
-      PChar(CVert):=PChar(S)+Length(Spec2);
+      SetLength(S, mdl.num_xyz*SizeOf(vec3_t));
+      PChar(CVert):=PChar(S);
       for J:=0 to mdl.num_xyz-1 do
        begin
         with FrameData^.verts[J] do
@@ -232,7 +230,7 @@ begin
             CVert^[K]:=v[K]*FrameData^.scale[K]+FrameData^.translate[K];
         Inc(CVert);
        end;
-      Frame.Specifics.AddStringFull(S);
+      Frame.Specifics.Bytes[FloatSpecNameOf(SpecVertices)]:=S;
      end;
   finally
     FreeMem(FrameData);

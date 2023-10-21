@@ -22,20 +22,9 @@ unit Qk3ds;
 
 interface
 
-{$IFDEF 3DS_MAX_DEBUG}
 uses
   SysUtils, Classes, QkObjects, QkFileObjects, QkImages, Python, Game, QkModelFile,
   Graphics, Windows, QkModelRoot, QkMdlObject, QkFrame, QkComponent;
-
-const
-  TAG_MAIN      = $4d4d;
-  TAG_VERSION   = $0002;
-  TAG_3DEDIT    = $3d3d;
-  TAG_OBJECT    = $4000;
-  TAG_MESH      = $4100;
-  TAG_VERTEX    = $4110;
-  TAG_TRIANGLE  = $4120;
-  TAG_TEXVERTEX = $4140;
 
 type
   TChunkHeader = packed record
@@ -65,6 +54,16 @@ type
 implementation
 
 uses QuarkX, qmath, Setup, Travail, QkObjectClassList;
+
+const
+  TAG_MAIN      = $4d4d;
+  TAG_VERSION   = $0002;
+  TAG_3DEDIT    = $3d3d;
+  TAG_OBJECT    = $4000;
+  TAG_MESH      = $4100;
+  TAG_VERTEX    = $4110;
+  TAG_TRIANGLE  = $4120;
+  TAG_TEXVERTEX = $4140;
 
 class function Q3DSFile.TypeInfo;
 begin
@@ -205,8 +204,8 @@ type
 
 Procedure Q3dsFile.ReadMesh(F: TStream; FSize: TStreamPos; Parent: TChunkHeader; org: TStreamPos; Comp: QComponent);
 const
-  Spec1 = 'Tris=';
-  Spec2 = 'Vertices=';
+  SpecTris = 'Tris';
+  SpecVertices = 'Vertices';
 var
   found: boolean;
   texvert: ^ttexarray;
@@ -241,9 +240,8 @@ begin
       raise exception.create('Cannot read .3ds File (mesh has no faces/triangles)'#13#10'Q3dsfile.ReadObject: SkipUntilFound(TAG_TRIANGLES)=false');
     f.readbuffer(chunk, sizeof(chunk));
     f.readbuffer(num_faces, sizeof(word));
-    S:=Spec1;
-    SetLength(S, Length(Spec1)+num_faces*SizeOf(TComponentTris));
-    PChar(CTris):=PChar(S)+Length(Spec1);
+    SetLength(S, num_faces*SizeOf(TComponentTris));
+    PChar(CTris):=PChar(S);
     for i:=1 to num_faces do begin
       f.readbuffer(abcf, sizeof(abcf));
       for k:=0 to 2 do begin
@@ -253,7 +251,7 @@ begin
       end;
       inc(CTris);
     end;
-    comp.Specifics.Add(s);
+    comp.Specifics.Bytes[SpecTris]:=s;
   finally
     freemem(texvert, num_texvert * sizeof(ttexvert))
   end;
@@ -267,17 +265,16 @@ begin
     raise exception.create('Cannot read .3ds File (mesh has no vertices)'#13#10'Q3dsfile.ReadObject: SkipUntilFound(TAG_VERTEX)=false');
   f.readbuffer(chunk, sizeof(chunk));
   f.readbuffer(num_vert, sizeof(word));
-  S:=FloatSpecNameOf(Spec2);
-  SetLength(S, Length(Spec2)+num_vert*SizeOf(vec3_t));
-  PChar(CVert):=PChar(S)+Length(Spec2);
-  for i:=1 to num_vert do begin
+  SetLength(S, num_vert*SizeOf(vec3_t));
+  PChar(CVert):=PChar(S);
+  for i:=1 to num_vert do
+  begin
     f.readbuffer(v, sizeof(v));
-    for k:=0 to 2 do begin
+    for k:=0 to 2 do
       CVert^[k]:=V[k];
-    end;
     Inc(CVert);
   end;
-  FrameObj.Specifics.Add(S);
+  FrameObj.Specifics.Bytes[FloatSpecNameOf(SpecVertices)]:=S;
 end;
 
 procedure Q3DSFile.LoadFile(F: TStream; FSize: TStreamPos);
@@ -316,9 +313,4 @@ end;
 
 initialization
   RegisterQObject(Q3DSFile, 'u');
-{$ELSE}
-
-implementation
-
-{$ENDIF} {3DS_MAX_DEBUG}
 end.

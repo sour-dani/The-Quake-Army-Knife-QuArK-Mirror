@@ -120,8 +120,8 @@ end;
 {
 procedure QMdlFile.LoadHLModel(F: TStream; FSize: TStreamPos);
 const
-  Spec1 = 'Tris=';
-  Spec2 = 'Vertices=';
+  SpecTris = 'Tris';
+  SpecVertices = 'Vertices';
 type
   tri_array = array of array[0..2] of mtriangle_t;
 var
@@ -151,23 +151,28 @@ begin
   ObjectGameCode := mjHalflife;
   F.ReadBuffer(Header, sizeof(StudioHdr_T));
   f.seek(f_origin + Header.bodypartindex, sobeginning);
-  for i := 0 to header.numbodyparts - 1 do begin
+  for i := 0 to header.numbodyparts - 1 do
+  begin
     f.readbuffer(bp, sizeof(mstudiobodyparts_t));
     f.seek(f_origin + bp.modelindex, sobeginning);
-    for z := 0 to bp.nummodels-1 do begin
+    for z := 0 to bp.nummodels-1 do
+    begin
       f.readbuffer(model, sizeof(mstudiomodel_t));
       f.seek(f_origin + model.meshindex, sobeginning);
-      for j := 0 to model.nummesh - 1 do begin
+      for j := 0 to model.nummesh - 1 do
+      begin
         f.readbuffer(mesh, sizeof(mstudiomesh_t));
         Comp := Loaded_Component(Root, Format('Body%d.Model%d.Mesh%d', [i, z, j]));
         f.seek(f_origin + mesh.trisIndex, sobeginning);
         f.readbuffer(cmd, 2);
         k := 0;
-        setlength(atri, mesh.numtris );
+        setlength(atri, mesh.numtris);
         try
           FillChar(atri, mesh.numtris * (sizeof(mtriangle_t) * 3), 0);
-          while cmd <> 0 do begin
-            if (cmd < 0) then begin
+          while cmd <> 0 do
+          begin
+            if (cmd < 0) then
+            begin
               cmd := -cmd;
               f.readbuffer(tri[0], sizeof(mtriangle_t));
               atri[k][0].s := tri[0].s;
@@ -178,7 +183,8 @@ begin
               atri[k][1].t := tri[1].t;
               bb := k;
               cmd := cmd - 2;
-              for ii := cmd downto 1 do begin
+              for ii := cmd downto 1 do
+              begin
                 k := k + 1;
                 f.readbuffer(tri[2], sizeof(mtriangle_t));
                 atri[k][0].vertindex := tri[0].vertindex;
@@ -198,7 +204,9 @@ begin
                 bb := k;
                 tri[1] := tri[2];
               end;
-            end else begin
+            end
+            else
+            begin
               f.readbuffer(tri[0], sizeof(mtriangle_t));
               atri[k][0].s := tri[0].s;
               atri[k][0].t := tri[0].t;
@@ -208,7 +216,8 @@ begin
               atri[k][1].t := tri[1].t;
               bb := k;
               cmd := cmd - 2;
-              for ii := cmd downto 1 do begin
+              for ii := cmd downto 1 do
+              begin
                 k := k + 1;
                 f.readbuffer(tri[2], sizeof(mtriangle_t));
                 atri[k][0].vertindex := tri[0].vertindex;
@@ -236,36 +245,37 @@ begin
           if mesh.numtris <> k then
             raise exception.createfmt('QkMdl.pas -> QMdlFile.LoadHLModel: mesh.numtris<>k on mesh no [%d,%d] (%d<>%d)', [i, j, mesh.numtris, k]);
           // Convert atri^ to TComponentTris...
-          S := Spec1;
-          SetLength(S, Length(Spec1) + (mesh.numtris * Sizeof(TComponentTris)));
-          PChar(CTris) := PChar(S) + Length(Spec1);
-          for ii := 1 to mesh.numtris do begin
-            //          Log('Triangle %d = {',[ii]);
-            for jj := 0 to 2 do begin
+          SetLength(S, mesh.numtris * Sizeof(TComponentTris));
+          PChar(CTris) := PChar(S);
+          for ii := 1 to mesh.numtris do
+          begin
+            for jj := 0 to 2 do
+            begin
               CTris^[jj].VertexNo := atri[ii][jj].vertindex;
               CTris^[jj].S := atri[ii][jj].S;
               CTris^[jj].T := atri[ii][jj].T;
-              //            Log('  (VertexNo: %d, S:%d, T:%d)',[CTris^[jj].VertexNo, CTris^[jj].S, CTris^[jj].T]);
             end;
-            //          Log('}{');
             inc(CTris);
           end;
-          Comp.SpecificsAdd(S);
+          Comp.Specifics.Bytes[SpecTris]:=S;
           // Load Dummy Frame (HACK!)
           DFrame := Loaded_Frame(Comp, 'Dummy');
-          S := FloatSpecNameOf(Spec2);
-          SetLength(S, (sizeof(vec3_t) * model.numverts) + Length(Spec2));
-          PChar(CVert) := PChar(S) + Length(Spec2);
+          SetLength(S, sizeof(vec3_t) * model.numverts));
+          PChar(CVert) := PChar(S);
           F.Seek(f_Origin + model.vertindex, soBeginning);
           F.ReadBuffer(CVert^, model.numverts * sizeof(vec3_t));
-          DFrame.SpecificsAdd(S);
+          DFrame.Specifics.Bytes[FloatSpecNameOf(SpecVertices)]:=S;
+
           // Load Textures
-          if (header.numtextures > 0) and (header.textureindex <> 0) and (header.numtextures <= MAXSTUDIOSKINS) then begin
+          if (header.numtextures > 0) and (header.textureindex <> 0) and (header.numtextures <= MAXSTUDIOSKINS) then
+          begin
             f.seek(f_origin + header.textureindex, soBeginning);
-            for ii := 1 to header.numtextures do begin
+            for ii := 1 to header.numtextures do
+            begin
               f.readbuffer(tex, sizeof(tex));
               Skin := Loaded_Skin(Comp, string(tex.name), [tex.width, tex.height], p, dw);
-              for jj := 1 to tex.height do begin
+              for jj := 1 to tex.height do
+              begin
                 f.ReadBuffer(P^, tex.width);
                 Inc(P, dw);
               end;
@@ -307,9 +317,9 @@ end;
 
 
 Procedure LoadHL2VTX(const Fname: string);
-const
-  SpecTris = 'Tris=';
-  SpecVtx = 'Vertices=';
+//const
+//  SpecTris = 'Tris';
+//  SpecVtx = 'Vertices';
 type
   hl2_vtx_fileHeader_t = record
     // file version as defined by OPTIMIZED_MODEL_FILE_VERSION
@@ -438,8 +448,8 @@ end;
 
 Procedure QMdlFile.ReadHL2Model(F: TStream; FileSize: TStreamPos);
 const
-  SpecTris = 'Tris=';
-  SpecVtx = 'Vertices=';
+  SpecTris = 'Tris';
+  SpecVtx = 'Vertices';
 type
   hl2_model_t = record
     id: Longint;
@@ -731,10 +741,9 @@ texcoord:=@texbox;
   //-- PROCESS TRIANGLES + TEXTURE CO-ORDS
   //-----------------------------------------------------------
   try
-    S:=SpecTris;
-    SetLength(S, Length(SpecTris)+Triangle_num*SizeOf(TComponentTris));
+    SetLength(S, Triangle_num*SizeOf(TComponentTris));
     Tris2:=Tris;
-    PChar(CTris):=PChar(S)+Length(SpecTris);
+    PChar(CTris):=PChar(S);
     for I:=1 to Triangle_num do
     begin
       for J:=0 to 2 do
@@ -752,7 +761,7 @@ texcoord:=@texbox;
       Inc(CTris);
       Inc(Tris2);
     end;
-    Comp.Specifics.AddStringFull(S); {tris=...}
+    Comp.Specifics.Bytes[SpecTris]:=S;
   finally
 //    freemem(Tris);
 //    freemem(texcoord);
@@ -776,9 +785,8 @@ texcoord:=@texbox;
       //-----------------------------------------------------------
       //-- PROCESS VERTEXES
       //-----------------------------------------------------------
-      S:=FloatSpecNameOf(SpecVtx);
-      SetLength(S, Length(SpecVtx)+Vertex_num*SizeOf(vec3_t));
-      PChar(CVert):=PChar(S)+Length(SpecVtx);
+      SetLength(S, Vertex_num*SizeOf(vec3_t));
+      PChar(CVert):=PChar(S);
       Vertexes2:=Vertexes;
       for J:=0 to vertex_Num-1 do
       begin
@@ -790,7 +798,7 @@ texcoord:=@texbox;
         Inc(Vertexes2);
         Inc(CVert);
       end;
-      Frame.Specifics.AddStringFull(S);
+      Frame.Specifics.Bytes[FloatSpecNameOf(SpecVtx)]:=S;
     finally
 //      FreeMem(Vertexes);
     end;
@@ -800,8 +808,8 @@ end;
 
 procedure QMdlFile.LoadFile(F: TStream; FSize: TStreamPos);
 const
-  Spec1 = 'Tris=';
-  Spec2 = 'Vertices=';
+  SpecTris = 'Tris';
+  SpecVertices = 'Vertices';
 type
   PVertxArray = ^TVertxArray;
   TVertxArray = array[0..MaxCVertices-1] of stvert_t;
@@ -860,7 +868,8 @@ begin
         else
         begin
           if (mdl.id <> SignatureMdl) or (mdl.version <> VersionMdl) then
-            if ((mdl.id = SignatureHLMdl) or (mdl.id = SignatureHLMdlS)) and (mdl.version = VersionHLMdl) then begin
+            if ((mdl.id = SignatureHLMdl) or (mdl.id = SignatureHLMdlS)) and (mdl.version = VersionHLMdl) then
+            begin
 //              Inc(FSize, SizeOf(Mdl));
 //              F.Seek(-SizeOf(Mdl), soCurrent);
 //              LoadHLModel(F, FSize);
@@ -886,36 +895,44 @@ begin
         Size[2] := mdl.skinheight;
         {Taille1:=mdl.skinwidth * mdl.skinheight;}
         SkinCounter := 0;
-        for I := 1 to mdl.numskins do begin
+        for I := 1 to mdl.numskins do
+        begin
           Read1(J, SizeOf(LongInt));
-          if J = 0 then begin
+          if J = 0 then
+          begin
             SkinGroup.count := 1;
             NextTime := nil;
-          end else begin
+          end
+          else
+          begin
             Read1(SkinGroup, SizeOf(SkinGroup));
             SetLength(Times, SkinGroup.count * SizeOf(Single));
             PChar(NextTime) := PChar(Times);
             Read1(NextTime^, SkinGroup.count * SizeOf(Single));
           end;
           PreviousTime := 0;
-          for K := 1 to SkinGroup.count do begin
+          for K := 1 to SkinGroup.count do
+          begin
             J := F.Position;
             SkinObj := Loaded_Skin(C, FmtLoadStr1(2372, [SkinCounter]), Size, P, DeltaW);
             F.Position := J;
             Inc(SkinCounter);
-            if NextTime <> nil then begin
+            if NextTime <> nil then
+            begin
               if K = 1 then
                 SkinObj.Specifics.Strings['group'] := '1';
               SkinObj.SetFloatSpec('duration', NextTime^ - PreviousTime);
               PreviousTime := NextTime^;
               Inc(NextTime);
             end;
-            for J := 1 to mdl.skinheight do begin
+            for J := 1 to mdl.skinheight do
+            begin
               Read1(P^, mdl.skinwidth);
               Inc(P, DeltaW);
             end;
           end;
         end;
+
         { load Skin Vertices and Triangles }
         Taille1 := SizeOf(stvert_t) * mdl_ra.numstverts;
         GetMem(STData, Taille1);
@@ -928,19 +945,23 @@ begin
             Read1(Triangles^, Taille1);
 
             J := mdl.numtris * SizeOf(TComponentTris);
-            S := Spec1;
-            SetLength(S, Length(Spec1) + J);
+            SetLength(S, J);
 
             Delta := mdl.skinwidth div 2;
             Tris := Triangles;
-            PChar(CTris) := PChar(S) + Length(Spec1);
-            if RA then begin
-              for I := 1 to mdl.numtris do begin { PoP Models }
+            PChar(CTris) := PChar(S);
+            if RA then
+            begin
+              for I := 1 to mdl.numtris do { PoP Models }
+              begin
                 Derriere := TrisRA^.facesfront = 0;
-                for J := 0 to 2 do begin
-                  with CTris^[J] do begin
+                for J := 0 to 2 do
+                begin
+                  with CTris^[J] do
+                  begin
                     VertexNo := TrisRA^.index_xyz[J];
-                    with STData^[TrisRA^.index_st[J]] do begin
+                    with STData^[TrisRA^.index_st[J]] do
+                    begin
                       S := ss;
                       T := tt;
                       if Derriere and (onseam and $20 <> 0) then
@@ -951,13 +972,17 @@ begin
                 Inc(TrisRA);
                 Inc(CTris);
               end;
-            end else { default Q1 and H2 Models }
-              for I := 1 to mdl.numtris do begin
+            end
+            else { default Q1 and H2 Models }
+              for I := 1 to mdl.numtris do
+              begin
                 Derriere := Tris^.facesfront = 0;
                 for J := 0 to 2 do
-                  with CTris^[J] do begin
+                  with CTris^[J] do
+                  begin
                     VertexNo := Tris^.index_xyz[J];
-                    with STData^[Tris^.index_xyz[J]] do begin
+                    with STData^[Tris^.index_xyz[J]] do
+                    begin
                       S := ss;
                       T := tt;
                       if Derriere and (onseam and $20 <> 0) then
@@ -967,45 +992,52 @@ begin
                 Inc(Tris);
                 Inc(CTris);
               end;
-            C.Specifics.AddStringFull(S); { Tris= }
+            C.Specifics.Bytes[SpecTris]:=S;
           finally
             FreeMem(Triangles);
           end;
         finally
           FreeMem(STData);
         end;
+
         { load frames }
         Taille1 := SizeOf(trivertx_t) * mdl.numverts;
         GetMem(FrSourcePts, Taille1);
         try
-          for I := 1 to mdl.numframes do begin
+          for I := 1 to mdl.numframes do
+          begin
             Read1(J, SizeOf(LongInt));
-            if J = 0 then begin
+            if J = 0 then
+            begin
               FrameGroup.count := 1;
               NextTime := nil;
-            end else begin
+            end
+            else
+            begin
               Read1(FrameGroup, SizeOf(FrameGroup));
               SetLength(Times, FrameGroup.count * SizeOf(Single));
               PChar(NextTime) := PChar(Times);
               Read1(NextTime^, FrameGroup.count * SizeOf(Single));
             end;
             PreviousTime := 0;
-            for K := 1 to FrameGroup.count do begin
+            for K := 1 to FrameGroup.count do
+            begin
               Read1(Frame, SizeOf(Frame));
               Read1(FrSourcePts^, Taille1);
               FrameObj := Loaded_Frame(C, CharToPas(Frame.Nom));
-              if NextTime <> nil then begin
+              if NextTime <> nil then
+              begin
                 if K = 1 then
                   FrameObj.Specifics.Strings['group'] := '1';
                 FrameObj.SetFloatSpec('duration', NextTime^ - PreviousTime);
                 PreviousTime := NextTime^;
                 Inc(NextTime);
               end;
-              S := FloatSpecNameOf(Spec2);
-              SetLength(S, Length(Spec2) + mdl.numverts * SizeOf(vec3_t));
-              PChar(CVert) := PChar(S) + Length(Spec2);
+              SetLength(S, mdl.numverts * SizeOf(vec3_t));
+              PChar(CVert) := PChar(S);
               FrSource := FrSourcePts;
-              for J := 0 to mdl.numverts - 1 do begin
+              for J := 0 to mdl.numverts - 1 do
+              begin
                 with FrSource^ do begin
                   CVert^[0] := mdl.scale[0] * X + mdl.origin[0];
                   CVert^[1] := mdl.scale[1] * Y + mdl.origin[1];
@@ -1014,7 +1046,7 @@ begin
                 Inc(FrSource);
                 Inc(CVert);
               end;
-              FrameObj.Specifics.AddStringFull(S);
+              FrameObj.Specifics.Bytes[FloatSpecNameOf(SpecVertices)]:=S;
             end;
           end;
         finally

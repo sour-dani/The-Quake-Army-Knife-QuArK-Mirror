@@ -314,8 +314,8 @@ end;
 
 Procedure QMD3File.ReadMesh(fs: TStream; Root: QModelRoot);
 const
-  Spec1 = 'Tris=';
-  Spec2 = 'Vertices=';
+  SpecTris = 'Tris';
+  SpecVertices = 'Vertices';
 type
   PVertxArray = ^TVertxArray;
   TVertxArray = array[0..0] of TMD3TexVec;
@@ -437,10 +437,9 @@ begin
   //-- PROCESS TRIANGLES + TEXTURE CO-ORDS
   //-----------------------------------------------------------
   try
-    S:=Spec1;
-    SetLength(S, Length(Spec1)+mhead.Triangle_num*SizeOf(TComponentTris));
+    SetLength(S, mhead.Triangle_num*SizeOf(TComponentTris));
     Tris2:=Tris;
-    PChar(CTris):=PChar(S)+Length(Spec1);
+    PChar(CTris):=PChar(S);
     for I:=1 to mhead.Triangle_num do
     begin
       for J:=0 to 2 do
@@ -470,7 +469,7 @@ begin
       Inc(CTris);
       Inc(Tris2);
     end;
-    Comp.Specifics.AddStringFull(S); {tris=...}
+    Comp.Specifics.Bytes[SpecTris]:=S;
   finally
     freemem(Tris);
     freemem(texcoord);
@@ -489,9 +488,8 @@ begin
       //-----------------------------------------------------------
       //-- PROCESS VERTEXES
       //-----------------------------------------------------------
-      S:=FloatSpecNameOf(Spec2);
-      SetLength(S, Length(Spec2)+mhead.Vertex_num*SizeOf(vec3_t));
-      PChar(CVert):=PChar(S)+Length(Spec2);
+      SetLength(S, mhead.Vertex_num*SizeOf(vec3_t));
+      PChar(CVert):=PChar(S);
       Vertexes2:=Vertexes;
       for J:=0 to mhead.vertex_Num-1 do
       begin
@@ -503,7 +501,7 @@ begin
         Inc(Vertexes2);
         Inc(CVert);
       end;
-      Frame.Specifics.AddStringFull(S);
+      Frame.Specifics.Bytes[FloatSpecNameOf(SpecVertices)]:=S;
     finally
       FreeMem(Vertexes);
     end;
