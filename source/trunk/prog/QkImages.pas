@@ -258,9 +258,9 @@ end;
 
 procedure QImage.LoadFileDevIL(F: TStream; FSize: TStreamPos);
 const
-  Spec1 = 'Image1=';
-  Spec2 = 'Pal=';
-  Spec3 = 'Alpha=';
+  Spec1 = 'Image1';
+  Spec2 = 'Pal';
+  Spec3 = 'Alpha';
 type
   PRGB = ^TRGB;
   TRGB = array[0..2] of Byte;
@@ -325,10 +325,8 @@ begin
       PaddingDest:=((((Width * 8) + 31) div 32) * 4) - (Width * 1);
 
       //Allocate quarks image buffers
-      ImgData:=Spec1;
-      PalData:=Spec2;
-      SetLength(ImgData,   Length(Spec1) + (Width + PaddingDest) * Height); //RGB buffer
-      SetLength(PalData,   Length(Spec2) + (256 * 3)); //palette buffer
+      SetLength(ImgData,   (Width + PaddingDest) * Height); //RGB buffer
+      SetLength(PalData,   256 * 3); //palette buffer
 
       ilConvertImage(IL_COLOUR_INDEX, IL_UNSIGNED_BYTE);
       CheckDevILError(ilGetError);
@@ -349,7 +347,7 @@ begin
       Source:=PByte(ilGetPalette);
       CheckDevILError(ilGetError);
 
-      DestPal:=PChar(PalData) + Length(Spec2);
+      DestPal:=PChar(PalData);
       for I:=0 to PaletteSize-1 do
       begin
         PRGB(DestPal)^[0]:=PRGB(Source)^[0];
@@ -370,7 +368,7 @@ begin
       CheckDevILError(ilGetError);
       PaddingSource:=0;
 
-      DestImg:=PChar(ImgData) + Length(Spec1);
+      DestImg:=PChar(ImgData);
       for J:=0 to Height-1 do
       begin
         for I:=0 to Width-1 do
@@ -387,8 +385,8 @@ begin
         end;
       end;
 
-      Specifics.AddStringFull(ImgData);
-      Specifics.AddStringFull(PalData);
+      Specifics.Bytes[Spec1]:=ImgData;
+      Specifics.Bytes[Spec2]:=PalData;
     end
     else
     begin
@@ -398,10 +396,8 @@ begin
       if ilHasAlpha then
       begin
         //Allocate quarks image buffers
-        ImgData:=Spec1;
-        AlphaData:=Spec3;
-        SetLength(ImgData,   Length(Spec1) + ((Width * 3) + PaddingDest) * Height); //RGB buffer
-        SetLength(AlphaData, Length(Spec3) + (Width * Height)); //alpha buffer
+        SetLength(ImgData,   ((Width * 3) + PaddingDest) * Height); //RGB buffer
+        SetLength(AlphaData, Width * Height); //alpha buffer
 
         ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
         CheckDevILError(ilGetError);
@@ -409,8 +405,8 @@ begin
         CheckDevILError(ilGetError);
         PaddingSource:=0;
 
-        DestImg:=PChar(ImgData) + Length(Spec1);
-        DestAlpha:=PChar(AlphaData) + Length(Spec3);
+        DestImg:=PChar(ImgData);
+        DestAlpha:=PChar(AlphaData);
         for J:=0 to Height-1 do
         begin
           for I:=0 to Width-1 do
@@ -431,14 +427,13 @@ begin
           end;
         end;
 
-        Specifics.AddStringFull(AlphaData);
-        Specifics.AddStringFull(ImgData);
+        Specifics.Bytes[Spec3]:=AlphaData;
+        Specifics.Bytes[Spec2]:=ImgData;
       end
       else
       begin
         //Allocate quarks image buffers
-        ImgData:=Spec1;
-        SetLength(ImgData,   Length(Spec1) + ((Width * 3) + PaddingDest) * Height); //RGB buffer
+        SetLength(ImgData,   ((Width * 3) + PaddingDest) * Height); //RGB buffer
 
         ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
         CheckDevILError(ilGetError);
@@ -446,7 +441,7 @@ begin
         CheckDevILError(ilGetError);
         PaddingSource:=0;
 
-        DestImg:=PChar(ImgData) + Length(Spec1);
+        DestImg:=PChar(ImgData);
         for J:=0 to Height-1 do
         begin
           for I:=0 to Width-1 do
@@ -465,7 +460,7 @@ begin
           end;
         end;
 
-        Specifics.AddStringFull(ImgData);
+        Specifics.Bytes[Spec1]:=ImgData;
       end;
     end;
 
@@ -479,10 +474,6 @@ begin
 end;
 
 procedure QImage.SaveFileDevIL(Info: TInfoEnreg1);
-const
-  Spec1 = 'Image1=';
-  Spec2 = 'Pal=';
-  Spec3 = 'Alpha=';
 type
   PRGB = ^TRGB;
   TRGB = array[0..2] of Byte;
@@ -687,9 +678,9 @@ end;
 
 procedure QImage.LoadFileFreeImage(F: TStream; FSize: TStreamPos);
 const
-  Spec1 = 'Image1=';
-  Spec2 = 'Pal=';
-  Spec3 = 'Alpha=';
+  Spec1 = 'Image1';
+  Spec2 = 'Pal';
+  Spec3 = 'Alpha';
 type
   PRGB = ^TRGB;
   TRGB = array[0..2] of Byte;
@@ -739,10 +730,8 @@ begin
       //This is the padding for the 'Image1'-RGB array
       PaddingDest:=((((Width * 8) + 31) div 32) * 4) - (Width * 1);
 
-      ImgData:=Spec1;
-      PalData:=Spec2;
-      SetLength(ImgData,   Length(Spec1) + (Width + PaddingDest) * Height); //RGB buffer
-      SetLength(PalData,   Length(Spec2) + (256 * 3)); //palette buffer
+      SetLength(ImgData,   (Width + PaddingDest) * Height); //RGB buffer
+      SetLength(PalData,   256 * 3); //palette buffer
 
       FIConvertedImage:=FreeImage_ConvertTo8Bits(FIImage);
       SourcePalette:=FreeImage_GetPalette(FIConvertedImage);
@@ -751,7 +740,7 @@ begin
       if (PaletteSize=0) or (PaletteSize>256) then
         LogAndRaiseError(FmtLoadStr1(5738, [FormatName]));
 
-      DestPal:=PChar(PalData) + Length(Spec2);
+      DestPal:=PChar(PalData);
       for K:=0 to PaletteSize-1 do
       begin
         PRGB(DestPal)^[0]:=SourcePalette.rgbRed;
@@ -772,7 +761,7 @@ begin
       Pitch:=FreeImage_GetPitch(FIConvertedImage);
       PaddingSource:=Pitch - (Width * 1);
 
-      DestImg:=PChar(ImgData) + Length(Spec1);
+      DestImg:=PChar(ImgData);
       for J:=0 to Height-1 do
       begin
         for I:=0 to Width-1 do
@@ -789,8 +778,8 @@ begin
         end;
       end;
 
-      Specifics.AddStringFull(ImgData);
-      Specifics.AddStringFull(PalData);
+      Specifics.Bytes[Spec1]:=ImgData;
+      Specifics.Bytes[Spec2]:=PalData;
     end
     else
     begin
@@ -800,18 +789,16 @@ begin
       if FreeImage_IsTransparent(FIImage) then
       begin
         //Allocate quarks image buffers
-        ImgData:=Spec1;
-        AlphaData:=Spec3;
-        SetLength(ImgData,   Length(Spec1) + ((Width * 3) + PaddingDest) * Height); //RGB buffer
-        SetLength(AlphaData, Length(Spec3) + (Width * Height)); //alpha buffer
+        SetLength(ImgData,   ((Width * 3) + PaddingDest) * Height); //RGB buffer
+        SetLength(AlphaData, Width * Height); //alpha buffer
 
         FIConvertedImage:=FreeImage_ConvertTo32Bits(FIImage);
         Source:=FreeImage_GetBits(FIConvertedImage);
         Pitch:=FreeImage_GetPitch(FIConvertedImage);
         PaddingSource:=Pitch - (Width * 4);
 
-        DestImg:=PChar(ImgData) + Length(Spec1);
-        DestAlpha:=PChar(AlphaData) + Length(Spec3);
+        DestImg:=PChar(ImgData);
+        DestAlpha:=PChar(AlphaData);
         for J:=0 to Height-1 do
         begin
           for I:=0 to Width-1 do
@@ -832,21 +819,20 @@ begin
           end;
         end;
 
-        Specifics.AddStringFull(AlphaData);
-        Specifics.AddStringFull(ImgData);
+        Specifics.Bytes[Spec3]:=AlphaData;
+        Specifics.Bytes[Spec1]:=ImgData;
       end
       else
       begin
         //Allocate quarks image buffers
-        ImgData:=Spec1;
-        SetLength(ImgData,   Length(Spec1) + ((Width * 3) + PaddingDest) * Height); //RGB buffer
+        SetLength(ImgData,   ((Width * 3) + PaddingDest) * Height); //RGB buffer
 
         FIConvertedImage:=FreeImage_ConvertTo24Bits(FIImage);
         Source:=FreeImage_GetBits(FIConvertedImage);
         Pitch:=FreeImage_GetPitch(FIConvertedImage);
         PaddingSource:=Pitch - (Width * 3);
 
-        DestImg:=PChar(ImgData) + Length(Spec1);
+        DestImg:=PChar(ImgData);
         for J:=0 to Height-1 do
         begin
           for I:=0 to Width-1 do
@@ -865,7 +851,7 @@ begin
           end;
         end;
 
-        Specifics.AddStringFull(ImgData);
+        Specifics.Bytes[Spec1]:=ImgData;
       end;
     end;
 
@@ -878,10 +864,6 @@ begin
 end;
 
 procedure QImage.SaveFileFreeImage(Info: TInfoEnreg1);
-const
-  Spec1 = 'Image1=';
-  Spec2 = 'Pal=';
-  Spec3 = 'Alpha=';
 type
   PRGB = ^TRGB;
   TRGB = array[0..2] of Byte;
@@ -1115,7 +1097,7 @@ begin
    Size:=GetSize;
    if IsTrueColor then
      ScanW:=(Size.X*3+3) and not 3
-    else
+   else
      ScanW:=(Size.X+3) and not 3;
    if Length(Result) < ScanW*Size.Y then
      Raise EErrorFmt(5534, ['Image1']);
@@ -1208,7 +1190,7 @@ begin
  I:=Specifics.IndexOfName('Image1');
  if I<0 then
   Raise EErrorFmt(5534, ['Image1']);
- P.BitsSource:=Specifics[I];
+ P.BitsSource:=Specifics.BytesFromIndex[I];
 end;}
 
 function QImage.Description : TPixelSetDescription;
@@ -1265,19 +1247,16 @@ begin
  else
   begin
    NewPSD.ScanLine:=-((PSD.Size.X+3) and not 3);
-   PaletteData:=PaletteSpec+'=';
-   SetLength(PaletteData, (Length(PaletteSpec)+1) + SizeOf(TPaletteLmp));
-   NewPSD.ColorPalette:=PPaletteLmp(PChar(PaletteData)+(Length(PaletteSpec)+1)); //FIXME: PArithByte
+   SetLength(PaletteData, SizeOf(TPaletteLmp));
+   NewPSD.ColorPalette:=PPaletteLmp(PChar(PaletteData)); //FIXME: PArithByte
    NewPSD.Palette:=pspVariable;  { variable palette }
   end;
- ImageData:=ImageSpec+'=';
- SetLength(ImageData, (Length(ImageSpec)+1) - NewPSD.ScanLine*PSD.Size.Y);
+ SetLength(ImageData, -NewPSD.ScanLine*PSD.Size.Y);
  NewPSD.Data:=PByte(PChar(ImageData)); //FIXME: PByte
 
  if PSD.AlphaBits > psaNoAlpha then
   begin
-   AlphaData:=AlphaSpec+'=';
-   SetLength(AlphaData, (Length(AlphaSpec)+1) + PSD.Size.X*PSD.Size.Y);
+   SetLength(AlphaData, PSD.Size.X*PSD.Size.Y);
    NewPSD.AlphaBits:=psa8bpp;   { expected alpha }
    NewPSD.AlphaData:=PByte(PChar(AlphaData)); //FIXME: PByte
    NewPSD.AlphaScanLine:=-PSD.Size.X;
@@ -1294,14 +1273,15 @@ begin
 
  { store the new data }
  SetSize(NewPSD.Size);
- Specifics.AddStringFull(ImageData);
- if PaletteData<>'' then Specifics.AddStringFull(PaletteData);
- if AlphaData<>'' then Specifics.AddStringFull(AlphaData);
+ Specifics.Bytes[ImageSpec]:=ImageData;
+ if PaletteData<>'' then Specifics.Bytes[PaletteSpec]:=PaletteData;
+ if AlphaData<>'' then Specifics.Bytes[AlphaSpec]:=AlphaData;
 
  finally NewPSD.Done; end;
 end;
 (*const
- Spec1 = 'Image1=';
+ Spec1 = 'Image1';
+ Spec2 = 'Pal';
 var
  V: array[1..2] of Single;
  S: String;
@@ -1313,20 +1293,19 @@ begin
  SetFloatsSpec('Size', V);
  if PSD.Colors=Nil then
   begin  { true color ]
-   Specifics.Values['Pal']:='';
+   Specifics.Delete(Spec2);
    LineLength:=PSD.Size.X*3;
   end
  else
   begin
-   Specifics... 'Pal';
+   Specifics... Spec2;
    LineLength:=PSD.Size.X;
   end;
- Specifics.Values['Image1']:='';
- S:=Spec1;
+ Specifics.Delete(Spec1]);
  nScanLine:=-((LineLength+3) and not 3);
- SetLength(S, Length(Spec1)-nScanLine*PSD.Size.Y);
+ SetLength(S, -nScanLine*PSD.Size.Y);
  if nScanLine=PSD.ScanLine then   { fast version ]
-  Move(PSD.Data^, PChar(S)[Length(Spec1)], Length(S)-Length(Spec1))
+  Move(PSD.Data^, PChar(S), Length(S))
  else
   begin
    Src:=StartPointer(PSD);
@@ -1339,7 +1318,7 @@ begin
      Inc(Src, PSD.ScanLine);
     end;
   end;
- Specifics.Add(S);
+ Specifics.Bytes[Spec1]:=S;
 end;*)
 
 {function QImage.GetBitmapImage : TBitmap;
@@ -1360,13 +1339,16 @@ begin
 end;}
 
 procedure QImage.SetPalettedImageData(const Lmp: TPaletteLmp; const Data: String; W,H: Integer); //FIXME: TByteDynArray;
+const
+ Spec1 = 'Image1';
+ Spec2 = 'Pal';
 var
  PalStr: String; //FIXME: TByteDynArray;
 begin
  SetSize(Point(W,H));
- Specifics.Bytes['Image1']:=Data;
+ Specifics.Bytes[Spec1]:=Data;
  SetString(PalStr, PChar(@Lmp), SizeOf(TPaletteLmp));
- Specifics.Bytes['Pal']:=PalStr;
+ Specifics.Bytes[Spec2]:=PalStr;
 end;
 
 (*procedure QImage.PasteImageDC(NeededGame: Char; DC: HDC; W,H: Integer);
@@ -1576,6 +1558,8 @@ begin
 end;
 
 {function QImage.MakeDIBSection(DC: HDC) : HBitmap;
+const
+ Spec1 = 'Image1';
 var
  BmpInfo: TBitmapInfo256;
  BitmapInfo: TBitmapInfo absolute BmpInfo;
@@ -1588,14 +1572,14 @@ begin
  GetPalette(Lmp);
  PaletteFromLmp(Lmp, BmpInfo, Nil, Nil);
  Size:=GetSize;
- Data:=GetSpecArg('Image1');
+ Data:=GetSpecArg(Spec1);
  ImageSize:=((Size.X+3) and not 3) * Size.Y;
- if Length(Data)-Length('Image1=') < ImageSize then
+ if Length(Data)-(Length(Spec1)+1) < ImageSize then
   Raise EErrorFmt(5534, ['Image1']);
  Result:=CreateDIBSection(DC, BitmapInfo,
   dib_RGB_Colors, Bits, Nil, 0);
  if Result<>0 then
-  Move(Data[Length('Image1=')+1], Bits^, ImageSize);
+  Move(Data[Length(Spec1)+1+1], Bits^, ImageSize);
 end;}
 
 procedure QImage.CopyExtraData;
