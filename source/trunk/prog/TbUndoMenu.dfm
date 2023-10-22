@@ -10,7 +10,6 @@ object UndoDlg: TUndoDlg
   Caption = 'Undo / Redo'
   Color = clBtnFace
   ParentFont = True
-  OldCreateOrder = True
   Position = poDefaultPosOnly
   OnDestroy = FormDestroy
   OnDeactivate = FormDeactivate

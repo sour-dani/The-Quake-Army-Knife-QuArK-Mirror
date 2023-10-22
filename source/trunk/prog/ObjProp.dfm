@@ -8,7 +8,6 @@ object FormObjProp: TFormObjProp
   ClientWidth = 344
   Color = clBtnFace
   ParentFont = True
-  OldCreateOrder = True
   Position = poDefaultPosOnly
   OnCreate = FormCreate
   PixelsPerInch = 96

@@ -6,7 +6,6 @@ object TextBoxForm: TTextBoxForm
   ClientWidth = 472
   Color = clBtnFace
   ParentFont = True
-  OldCreateOrder = True
   Position = poOwnerFormCenter
   OnResize = FormResize
   PixelsPerInch = 96

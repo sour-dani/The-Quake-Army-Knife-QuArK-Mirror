@@ -7,7 +7,6 @@ object QForm1: TQForm1
   Color = clBtnFace
   ParentFont = True
   KeyPreview = True
-  OldCreateOrder = True
   Position = poDefault
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery

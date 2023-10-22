@@ -7,7 +7,6 @@ object RunForm: TRunForm
   ClientWidth = 393
   Color = clBtnFace
   ParentFont = True
-  OldCreateOrder = True
   Position = poOwnerFormCenter
   OnActivate = FormActivate
   OnCreate = FormCreate

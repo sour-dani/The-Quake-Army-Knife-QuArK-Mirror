@@ -7,7 +7,6 @@ object ConfigDlg: TConfigDlg
   Color = clBtnFace
   ParentFont = True
   KeyPreview = True
-  OldCreateOrder = True
   Position = poDefault
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery

@@ -5,7 +5,6 @@ object ToolBoxForm: TToolBoxForm
   Height = 312
   Color = clBtnFace
   ParentFont = True
-  OldCreateOrder = True
   Position = poDefaultPosOnly
   OnActivate = FormActivate
   OnClose = FormClose

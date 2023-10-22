@@ -8,7 +8,6 @@ object AboutBox: TAboutBox
   ClientWidth = 753
   Color = clBtnFace
   ParentFont = True
-  OldCreateOrder = True
   Position = poScreenCenter
   OnCreate = FormCreate
   PixelsPerInch = 96
