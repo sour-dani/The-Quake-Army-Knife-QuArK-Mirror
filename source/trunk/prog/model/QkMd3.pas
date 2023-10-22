@@ -551,39 +551,31 @@ begin
     Result:=True;
     Exit;
   end;
+  Log(LOG_VERBOSE, 'Starting MD3 autoload parts...');
   z_result:=true;
   mg:=GetRoot.GetMisc;
   TagList:=TQList.Create;
   try
-    for i:=0 to mg.Subelements.count-1 do
-    begin
-      if mg.Subelements[i] is QModelTag then
-      begin
-        tag:=QModelTag(mg.Subelements[i]);
-        TagList.Add(tag);
-      end;
-    end;
+    mg.FindAllSubObjects('', QModelTag, Nil, TagList);
     AbsolutePath:=ConcatPaths([QuakeDir, GetBaseDir]);
     for i:=0 to TagList.count-1 do
     begin
-      if TagList[i] is QModelTag then
-      begin
-        tag:=QModelTag(TagList[i]);
-        TagFilename:=TagNameToMd3FileName(tag.name, name);
-        if TagFilename='' then
-          continue;
-        fname:=GetFullFilename;
-        fname:=extractfilepath(fname);
-        if CheckForRelativePath(fname)<>'' then
-          //Probably a pak-file; cut it off
-          fname:=copy(fname, pos(PathDelim, fname)+1, length(fname)-pos(PathDelim,fname)+1)
-        else
-          //Probably a full path... cut off the basedir
-          if StartsStr(fname, AbsolutePath) then
-            fname:=Copy(fname, length(AbsolutePath), MaxInt);
-        fname:=fname+TagFilename;
-        z_result:=z_result and AttachModelToTagFromFilename(tag.name, fname);
-      end;
+      tag:=QModelTag(TagList[i]);
+      Log(LOG_VERBOSE, 'Processing MD3 tag %s', [tag.name]);
+      TagFilename:=TagNameToMd3FileName(tag.name, name);
+      if TagFilename='' then
+        continue;
+      fname:=GetFullFilename;
+      fname:=extractfilepath(fname);
+      if CheckForRelativePath(fname)<>'' then
+        //Probably a pak-file; cut it off
+        fname:=copy(fname, pos(PathDelim, fname)+1, length(fname)-pos(PathDelim,fname)+1)
+      else
+        //Probably a full path... cut off the basedir
+        if StartsStr(fname, AbsolutePath) then
+          fname:=Copy(fname, length(AbsolutePath), MaxInt);
+      fname:=fname+TagFilename;
+      z_result:=z_result and AttachModelToTagFromFilename(tag.name, fname);
     end;
   finally
     TagList.Free;
@@ -615,7 +607,7 @@ function QMd3File.AttachModelToTag(const Tag_Name: string; model: QModelFile): b
 var
   other_root: QModelRoot;
 begin
-  Log(LOG_VERBOSE, 'attaching %s to %s', [self.name, model.name]);
+  Log(LOG_VERBOSE, 'attaching loaded %s to %s', [model.name, self.name]);
   model.acces;
   other_root:=model.getRoot;
   other_root:=QModelRoot(other_root.clone(getroot, false));

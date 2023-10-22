@@ -49,7 +49,6 @@ type
     function GetBoneMovement(var P: PBoneRec): Integer;
     procedure TranslateFrame(vec: vec3_t);
     procedure RotateFrame(matrice: TMatrixTransformation);
-    function GetRoot(RootParent: Boolean): QObject;
   end;
 
 implementation
@@ -68,48 +67,26 @@ begin
     Result:=false;
 end;
 
-function QFrame.GetRoot(RootParent: Boolean): QObject;
-var
-  O: QObject;
-begin
-  O:=Self.Parent;
-  while o<>nil do
-  begin
-    if O is QModelRoot then break;
-    O:=O.Parent;
-  end;
-  if o<>nil then
-  begin
-    if RootParent and (o.Parent is QModelRoot) then
-      o:=o.Parent;
-  end;
-  if o = self then o:=nil;
-  Result:=o;
-end;
-
 procedure QFrame.RotateFrame(matrice: TMatrixTransformation);
 const
   VertSpec = 'Vertices';
 var
   p, p_org: vec3_p;
-  S0,s:String;
+  s:String;
   j,c: integer;
   Dest: vec3_p;
 begin
   c:=GetVertices(p_org);
   p:=p_org;
-  S0:=FloatSpecNameOf(VertSpec);
-  S:=S0+'=';
-  SetLength(S, Length(S)+SizeOf(vec3_t)*c);
-  PChar(Dest):=PChar(S)+Length(S0+'=');
+  SetLength(S, SizeOf(vec3_t)*c);
+  PChar(Dest):=PChar(S);
   for j:=1 to c do
   begin
     Dest^:=MatrixMultByVect(matrice, p^);
     inc(p);
     inc(Dest);
   end;
-  Specifics.Delete(S0);
-  Specifics.AddStringFull(S);
+  Specifics.Bytes[FloatSpecNameOf(VertSpec)]:=S;
 end;
 
 procedure QFrame.TranslateFrame(vec: vec3_t);
@@ -117,20 +94,17 @@ const
   VertSpec = 'Vertices';
 var
   p_org: vec3_p;
-  S0,s:String;
+  s:String;
   c: integer;
   Dest: vec3_p;
 begin
   c:=GetVertices(p_org);
-  S0:=FloatSpecNameOf(VertSpec);
-  S:=S0+'=';
-  SetLength(S, Length(S)+SizeOf(vec3_t)*c);
-  PChar(Dest):=PChar(S)+Length(S0+'=');
+  SetLength(S, SizeOf(vec3_t)*c);
+  PChar(Dest):=PChar(S);
 
   TranslateVecs(vec, Dest, C);
 
-  Specifics.Delete(S0);
-  Specifics.AddStringFull(S);
+  Specifics.Bytes[FloatSpecNameOf(VertSpec)]:=S;
 end;
 
 destructor QFrame.Destroy;
@@ -150,39 +124,40 @@ begin
   E.IndexImage:=iiFrame;
 end;
 
-function QFrame.GetBoneMovement(var P: PBoneRec): Integer;
+function QFrame.GetBoneMovement(var P: PBoneRec): Integer; //FIXME: Don't return a pointer to a stack variable!
 const
   BoneSpec = 'BoneMovement';
 var
   s: String;
 begin
-  S:=GetSpecArg(BoneSpec);
+  S:=Specifics.Bytes[BoneSpec]; //FIXME: FloatSpec?
   Result:=0;
   if S='' then
     Exit;
-  Result:=(Length(S) - Length(BoneSpec + '=')) div SizeOf(TBoneRec);
-  if Result<=0 then begin
+  Result:=Length(S) div SizeOf(TBoneRec);
+  if Result<=0 then
+  begin
     Result:=0;
     Exit;
   end;
-  PChar(P):=PChar(S) + Length(BoneSpec + '=');
+  PChar(P):=PChar(S);
 end;
 
-function QFrame.GetVertices(var P: vec3_p) : Integer;
+function QFrame.GetVertices(var P: vec3_p) : Integer; //FIXME: Don't return a pointer to a stack variable!
 const
   VertSpec = 'Vertices';
   RefSpec = 'RefFrame';
   NewVertSpec = 'NewVertices';
 var
-  S: String;
+  S, S2: String;
   currentModelComponent: QComponent;
   currentFrameNumber: Integer;
   bf,bf2: QModelTag;
   o_tag,s_tag: QTagFrame;
+  O: QObject;
   myRoot, modelRoot: QModelRoot;
   m,m1: PMatrixTransformation;
-  new: vec3_p;
-  s0: string;
+  New: vec3_p;
 //  sc: double;
 begin
   result:=0;
@@ -190,8 +165,23 @@ begin
   o_tag:=nil;
   bf:=nil;
   bf2:=nil;
-  myRoot:=QModelRoot(GetRoot(false));
-  modelRoot:=QModelRoot(GetRoot(true));
+
+  O:=Parent;
+  while O<>nil do
+  begin
+    if O is QModelRoot then Break;
+    O:=O.Parent;
+  end;
+  myRoot:=QModelRoot(O);
+
+  if myRoot<>nil then
+  begin
+    if (MyRoot.Parent is QModelRoot) then
+      O:=O.Parent;
+  end;
+  if O = Self then O:=nil;
+  modelRoot:=QModelRoot(O);
+
   if myRoot<>modelRoot then
   begin
     //This only happens if a model is loaded INSIDE another model using (MD3-)tagging.
@@ -211,30 +201,38 @@ begin
       end;
     end;
   end;
-  S:=GetSpecArg(FloatSpecNameOf(VertSpec));
+  S:=Specifics.Bytes[FloatSpecNameOf(VertSpec)];
   if S='' then
     Exit;
-  Result:=(Length(S) - Length(VertSpec + '=')) div SizeOf(vec3_t);
-  if Result<=0 then begin
-    Result:=0;
-    Exit;
-  end;
-  PChar(P):=PChar(S) + Length(VertSpec+'=');
-  if (s_tag<>nil)and(o_tag<>nil)and(bf<>nil)and(bf2<>nil) then
+  Result:=Length(S) div SizeOf(vec3_t);
+  PChar(P):=PChar(S);
+  if (s_tag<>nil) and (o_tag<>nil) and (bf<>nil) and (bf2<>nil) then
   begin
-    S0:=FloatSpecNameOf(NewVertSpec);
-    S:=S0+'=';
-    SetLength(S, Length(NewVertSpec+'=')+SizeOf(vec3_t)*Result);
-    PChar(New):=PChar(S)+Length(NewVertSpec+'=');
+    //Allocate new storage for the new vertices
+    SetLength(S2, SizeOf(vec3_t)*Result);
+    PChar(New):=PChar(S2);
+
+    //Copy the old vertices into New
     Move(P^, New^, Result*SizeOf(Vec3_T));
-    P:=New;
+
+    //Get the rotation matrices of the connected tags
     s_Tag.GetRotMatrix(m);
+    if m=nil then
+      Exit;
     o_Tag.GetRotMatrix(m1);
+    if m1=nil then
+      Exit;
+
+    //Rotate the vertices so the tags align
     RotateVecs(MultiplieMatrices(M^,M1^), P, Result);
+
+    //Move the vertices so the tags are at the same position
     TranslateVecs(Vec3Diff(o_Tag.GetPosition^, s_tag.getPosition^), P, Result);
 //    ScaleVecs(P, Result, sc-bf.GetQ3A_Scale);
-    Specifics.Delete(S0);
-    Specifics.AddStringFull(S);
+
+    //Store the new vertices and return them
+    Specifics.Bytes[FloatSpecNameOf(NewVertSpec)]:=S2;
+    PChar(P):=PChar(S2);
   end;
 end;
 
@@ -243,19 +241,20 @@ const
   VertSpec = 'Vertices';
 var
   I, Count: Integer;
-  S, S0: String;
+  S: String;
   Dest: vec3_p;
   vtxs: vec3_p;
 begin
   count:=GetVertices(vtxs);
   if index>count then
-    exit;
-  S0:=FloatSpecNameOf(VertSpec);
-  S:=S0+'=';
-  SetLength(S, Length(VertSpec+'=')+SizeOf(vec3_t)*(Count-1));
-  PChar(Dest):=PChar(S)+Length(VertSpec+'=');
-  for i:=1 to count do begin
-    if i<>index then begin
+    Exit;
+  SetLength(S, SizeOf(vec3_t)*(Count-1));
+  PChar(Dest):=PChar(S);
+  //FIXME: Instead of copying one-by-one, do a bulk-Move.
+  for i:=1 to count do
+  begin
+    if i<>index then
+    begin
       Dest^[0]:=vtxs^[0];
       Dest^[1]:=vtxs^[1];
       Dest^[2]:=vtxs^[2];
@@ -263,8 +262,7 @@ begin
     end;
     inc(vtxs);
   end;
-  Specifics.Delete(S0);
-  Specifics.AddStringFull(S);
+  Specifics.Bytes[FloatSpecNameOf(VertSpec)]:=S;
 end;
 
 procedure QFrame.ChercheExtremites(var Min, Max: TVect);

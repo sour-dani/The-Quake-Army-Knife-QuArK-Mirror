@@ -50,58 +50,60 @@ end;
 
 procedure QTagFrame.SetPosition(P: vec3_t);
 const
-  Spec2 = 'origin=';
+  SpecOrigin = 'origin';
 var
   CVert: vec3_p;
-  s: string;
+  S: string;
 begin
-  S:=FloatSpecNameOf(Spec2);
-  SetLength(S, Length(Spec2)+SizeOf(vec3_t));
-  PChar(CVert):=PChar(S)+Length(Spec2);
+  SetLength(S, SizeOf(vec3_t));
+  PChar(CVert):=PChar(S);
   CVert^[0]:=P[0];
   CVert^[1]:=P[1];
   CVert^[2]:=P[2];
-  Specifics.AddStringFull(s);
+  Specifics.Bytes[FloatSpecNameOf(SpecOrigin)]:=S;
 end;
 
 function QTagFrame.GetPosition: vec3_p;
 const
-  Spec2 = 'origin=';
+  SpecOrigin = 'origin';
 var
-  s: string;
+  S: string;
 begin
-  Result:=nil;
-  S:=GetSpecArg(FloatSpecNameOf('origin'));
+  S:=Specifics.Bytes[FloatSpecNameOf(SpecOrigin)];
   if S='' then
+  begin
+    Result:=nil;
     Exit;
-  PChar(Result):=PChar(S) + Length(Spec2);
+  end;
+  PChar(Result):=PChar(S);
 end;
 
 procedure QTagFrame.SetRotMatrix(P: TMatrixTransformation);
 const
-  Spec2 = 'rotmatrix=';
+  SpecRotMatrix = 'rotmatrix';
 var
   CVert: vec3_p;
-  s: string;
+  S: string;
 begin
-  S:=FloatSpecNameOf(Spec2);
-  SetLength(S, Length(Spec2)+SizeOf(TMatrixTransformation));
-  PChar(CVert):=PChar(S)+Length(Spec2);
+  SetLength(S, SizeOf(TMatrixTransformation));
+  PChar(CVert):=PChar(S);
   Move(P, CVert^, Sizeof(TMatrixTransformation));
-  Specifics.AddStringFull(s);
+  Specifics.Bytes[FloatSpecNameOf(SpecRotMatrix)]:=S;
 end;
 
 procedure QTagFrame.GetRotMatrix(var P: PMatrixTransformation);
 const
-  Spec2 = 'rotmatrix=';
+  SpecRotMatrix = 'rotmatrix';
 var
   s: string;
 begin
-  P:=nil;
-  S:=GetSpecArg(FloatSpecNameOf('rotmatrix'));
+  S:=Specifics.Bytes[FloatSpecNameOf(SpecRotMatrix)];
   if S='' then
+  begin
+    P:=nil;
     Exit;
-  PChar(P):=PChar(S) + Length(Spec2);
+  end;
+  PChar(P):=PChar(S);
 end;
 
 class function QTagFrame.TypeInfo;
