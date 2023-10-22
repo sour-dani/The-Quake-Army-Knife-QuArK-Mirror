@@ -229,10 +229,10 @@ begin
       Exit;
 
     //Rotate the vertices so the tags align
-    RotateVecs(MultiplieMatrices(M^,M1^), P, Result);
+    RotateVecs(MultiplieMatrices(M^,M1^), New, Result);
 
     //Move the vertices so the tags are at the same position
-    TranslateVecs(Vec3Diff(o_Tag.GetPosition^, s_tag.getPosition^), P, Result);
+    TranslateVecs(Vec3Diff(o_Tag.GetPosition^, s_tag.getPosition^), New, Result);
 //    ScaleVecs(P, Result, sc-bf.GetQ3A_Scale);
 
     //Store the new vertices and return them
