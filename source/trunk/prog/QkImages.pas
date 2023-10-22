@@ -428,7 +428,7 @@ begin
         end;
 
         Specifics.Bytes[Spec3]:=AlphaData;
-        Specifics.Bytes[Spec2]:=ImgData;
+        Specifics.Bytes[Spec1]:=ImgData;
       end
       else
       begin
