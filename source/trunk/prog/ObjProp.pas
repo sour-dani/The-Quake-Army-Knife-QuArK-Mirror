@@ -47,12 +47,13 @@ type
     procedure FormCreate(Sender: TObject);
     procedure OkBtnClick(Sender: TObject);
     procedure PasteBtnClick(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
     procedure SaveBtnClick(Sender: TObject);
   private
     List: TQList;
     PasteTo: TQkForm;
   public
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
   end;
 
  {------------------------}
@@ -172,13 +173,24 @@ end;
 
  {------------------------}
 
+constructor TFormObjProp.Create(AOwner: TComponent);
+begin
+ List:=TQList.Create;
+ inherited;
+end;
+
+destructor TFormObjProp.Destroy;
+begin
+ inherited;
+ List.Free;
+end;
+
 procedure TFormObjProp.FormCreate(Sender: TObject);
 begin
  MarsCap.ActiveBeginColor:=clGreen;
  MarsCap.ActiveEndColor:=clTeal;
  UpdateMarsCap;
 {SetFormIcon(}
- List:=TQList.Create;
 end;
 
 procedure TFormObjProp.OkBtnClick(Sender: TObject);
@@ -230,11 +242,6 @@ begin
    PasteTo.ProcessEditMsg(edPasteObj);
    Close;
   end;
-end;
-
-procedure TFormObjProp.FormDestroy(Sender: TObject);
-begin
- List.Free;
 end;
 
 {procedure TFormObjProp.ListBox1Click(Sender: TObject);

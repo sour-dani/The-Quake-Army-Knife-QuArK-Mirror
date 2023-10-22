@@ -11,7 +11,6 @@ object FormObjProp: TFormObjProp
   OldCreateOrder = True
   Position = poDefaultPosOnly
   OnCreate = FormCreate
-  OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
   object Bevel1: TBevel
