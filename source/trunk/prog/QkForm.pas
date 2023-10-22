@@ -27,7 +27,7 @@ interface
 
 uses Windows, Messages, Classes, SysUtils, Controls, Forms,
      QkObjects, Menus, TB97, StdCtrls, ComCtrls, CommCtrl,
-     {$IFNDEF NoMarsCaption} marsCap, {$ENDIF} Graphics, ExtraFunctionality;
+     {$IFNDEF NoMarsCaption} marsCap, {$ENDIF} Graphics;
 
 {$I DelphiVer.inc}
 
@@ -192,7 +192,7 @@ implementation
 uses QkFileObjects, qmath, Setup, Qk1, Toolbar1, ToolBox1,
      TbUndoMenu, Undo, ObjProp, Config, Game, Dialogs, Logging,
      QkMacro, FormCfg, Running, Output1, PyImages, Quarkx, QConsts,
-     QkExplorer, PyToolbars, PyControls, QkFormCfg, Platform;
+     QkExplorer, PyToolbars, PyControls, QkFormCfg, Platform, ExtraFunctionality;
 
 const
  ActiveFontColor    = clWhite;
@@ -388,7 +388,10 @@ destructor TQkForm.Destroy;
 var
  Dummy: TCloseAction;
 begin
- Log(LOG_VERBOSE, 'Now closing form... (%s)', [Self.Caption]);
+ if PPointer(@WindowProc) <> nil then
+  Log(LOG_VERBOSE, 'Now closing form... (%s)', [Self.Caption])
+ else
+  Log(LOG_VERBOSE, 'Now closing form... (%s)', [Self.WindowText]);
  if Assigned(OnClose) then
   begin
    Dummy:=caFree;
