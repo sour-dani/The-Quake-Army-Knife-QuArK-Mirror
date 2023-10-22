@@ -146,7 +146,7 @@ end;
 function QFrame.GetVertices(var P: vec3_p) : Integer; //FIXME: Don't return a pointer to a stack variable!
 const
   VertSpec = 'Vertices';
-  RefSpec = 'RefFrame';
+  //RefSpec = 'RefFrame';
   NewVertSpec = 'NewVertices';
 var
   S, S2: String;
@@ -160,12 +160,16 @@ var
   New: vec3_p;
 //  sc: double;
 begin
-  result:=0;
-  s_tag:=nil;
-  o_tag:=nil;
-  bf:=nil;
-  bf2:=nil;
+  S:=Specifics.Bytes[FloatSpecNameOf(VertSpec)];
+  if S='' then
+  begin
+    Result:=0;
+    Exit;
+  end;
+  Result:=Length(S) div SizeOf(vec3_t);
+  PChar(P):=PChar(S);
 
+  //Now handle MD3 tags (if any) by moving the vertices appropriately
   O:=Parent;
   while O<>nil do
   begin
@@ -182,30 +186,31 @@ begin
   if O = Self then O:=nil;
   modelRoot:=QModelRoot(O);
 
-  if myRoot<>modelRoot then
+  if myRoot=modelRoot then
+    //Not a frame from a tagged model
+    Exit;
+
+  s_tag:=nil;
+  o_tag:=nil;
+  bf:=nil;
+  bf2:=nil;
+
+  CurrentModelComponent:=modelRoot.CurrentComponent;
+  if CurrentModelComponent=nil then
+    CurrentModelComponent:=modelRoot.GetComponentFromIndex(0);
+  if CurrentModelComponent<>nil then
   begin
-    //This only happens if a model is loaded INSIDE another model using (MD3-)tagging.
-    CurrentModelComponent:=modelRoot.CurrentComponent;
-    if CurrentModelComponent=nil then
-      CurrentModelComponent:=modelRoot.GetComponentFromIndex(0);
-    if CurrentModelComponent<>nil then
+    currentFrameNumber:=CurrentModelComponent.FrameGroup.SubElements.IndexOf(CurrentModelComponent.CurrentFrame);
+    if currentFrameNumber<>-1 then
     begin
-      currentFrameNumber:=CurrentModelComponent.FrameGroup.SubElements.IndexOf(CurrentModelComponent.CurrentFrame);
-      if currentFrameNumber<>-1 then
-      begin
-        bf:=QModelTag(modelRoot.getmisc.FindSubObject(myRoot.Specifics.Strings['linked_to'], QModelTag, nil));
-        bf2:=QModelTag(myRoot.getmisc.FindSubObject(myRoot.Specifics.Strings['linked_to'], QModelTag, nil));
-        o_tag:=QTagFrame(bf.GetTagFrameFromIndex(currentFrameNumber));
-        s_tag:=QTagFrame(bf2.GetTagFrameFromIndex(Parent.SubElements.IndexOf(Self)));
-        Log(LOG_VERBOSE, 'Connecting tag %s from model %s to model %s', [myRoot.Specifics.Strings['linked_to'], modelRoot.Name, myRoot.Name]);
-      end;
+      bf:=QModelTag(modelRoot.getmisc.FindSubObject(myRoot.Specifics.Strings['linked_to'], QModelTag, nil));
+      bf2:=QModelTag(myRoot.getmisc.FindSubObject(myRoot.Specifics.Strings['linked_to'], QModelTag, nil));
+      o_tag:=QTagFrame(bf.GetTagFrameFromIndex(currentFrameNumber));
+      s_tag:=QTagFrame(bf2.GetTagFrameFromIndex(Parent.SubElements.IndexOf(Self)));
+      Log(LOG_VERBOSE, 'Connecting tag %s from model %s to model %s', [myRoot.Specifics.Strings['linked_to'], modelRoot.Name, myRoot.Name]);
     end;
   end;
-  S:=Specifics.Bytes[FloatSpecNameOf(VertSpec)];
-  if S='' then
-    Exit;
-  Result:=Length(S) div SizeOf(vec3_t);
-  PChar(P):=PChar(S);
+
   if (s_tag<>nil) and (o_tag<>nil) and (bf<>nil) and (bf2<>nil) then
   begin
     //Allocate new storage for the new vertices
