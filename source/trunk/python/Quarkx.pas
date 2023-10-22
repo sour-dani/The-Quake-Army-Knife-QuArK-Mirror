@@ -43,6 +43,7 @@ var
  {-------------------}
 
 procedure InitPython;
+procedure ConnectToPython;
 procedure ShutdownPython;
 function LoadStr1(I: Integer) : String;
 function FmtLoadStr1(I: Integer; const Args: array of const) : String;
@@ -93,6 +94,7 @@ uses Classes, Dialogs, Graphics, CommCtrl, ExtCtrls, Controls,
 const
  PythonSetupString  = 'import sys'#10'sys.path = ["%s", "%s"]'#10'import quarkpy'; //Note that we sanitize sys.path
  PythonRunPackage   = 'quarkpy.RunQuArK()';
+ PythonShutdown     = 'quarkpy.QuArK_shutdown()';
  FatalErrorText     = 'Cannot initialize the Python interpreter. QuArK cannot start. Be sure QuArK is correctly installed; reinstall it if required.';
  FatalErrorCaption  = 'QuArK Python';
  PythonNotFound     = 'Could not locate Python interpreter. QuArK cannot start.';
@@ -3600,7 +3602,7 @@ var ProbableCauseOfFatalError: array[-9..6] of String = (
    {-9}    ' (Unable to initialize Python module "Quarkx")',
    {-8}    ' (Unable to find "quarkpy" directory or incorrect file versions)',
    {-7}    ' (Unable to find or execute "quarkpy.__init__.py", function "RunQuArK()")',
-   {-6}    '',
+   {-6}    ' (Failed to run "quarkpy.__init__.py", function "QuArK_shutdown()")',
    {-5}    '',
    {-4}    '',
    {-3}    '',
@@ -3620,8 +3622,6 @@ var
   P: PChar;
   S: String;
 begin
- while Screen.FormCount>0 do
-  Screen.Forms[0].Free;
  if Err=3 then
   P:=PythonNotFound
  else
@@ -3663,12 +3663,18 @@ begin
  }
  if PyRun_SimpleString(ToPyChar(S))<>0 then FatalError(-8);
  InitSetup;
+
+ PythonCodeEnd;
+ PythonLoaded := True;
+end;
+
+procedure ConnectToPython;
+begin
  { runs quarkpy.RunQuArK(), defined in quarkpy.__init__.py;
    mostly sets up icons and stuff like that.}
  if PyRun_SimpleString(PythonRunPackage)<>0 then FatalError(-7);
  PythonCodeEnd;
  PythonUpdateAllForms;
- PythonLoaded := True;
 end;
 
 procedure ShutdownPython;
@@ -3678,12 +3684,8 @@ var
 begin
   if not PythonLoaded then
    Exit;
-  obj:=GetEmptyTuple;
-  try
-    Py_XDECREF(CallMacro(obj, 'shutdown'));
-  finally
-    Py_DECREF(obj);
-  end;
+
+  if PyRun_SimpleString(PythonShutdown)<>0 then FatalError(-6);
 // PyDict_SetItemString(QuarkxDict, 'setupset', Py_None);
 
   ClickForm(nil);
@@ -3695,14 +3697,15 @@ begin
 
   //Empty the pool
   SizeDownPython;
-  for I:=Pool.Count-1 downto 0 do
-  begin
-    obj:=PyObject(Pool.Objects[I]);
-    if obj^.ob_refcnt > 1 then
-      Log(LOG_PYTHON, LOG_INFO, LoadStr1(5833), [obj^.ob_type.tp_name, obj^.ob_refcnt]);
-    Pool.Delete(I);
-    Py_DECREF(obj);
-  end;
+  if Pool<>nil then
+    for I:=Pool.Count-1 downto 0 do
+    begin
+      obj:=PyObject(Pool.Objects[I]);
+      if obj^.ob_refcnt > 1 then
+        Log(LOG_PYTHON, LOG_INFO, LoadStr1(5833), [obj^.ob_type.tp_name, obj^.ob_refcnt]);
+      Pool.Delete(I);
+      Py_DECREF(obj);
+    end;
 
   //Release the PyObjects we are holding onto
   Py_XDECREF(Py_None);

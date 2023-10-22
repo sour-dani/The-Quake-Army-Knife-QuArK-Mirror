@@ -165,25 +165,6 @@ def MACRO_helpmenu(text):
     getattr(qeditor, helpfn[text])()
 
 
-def MACRO_shutdown(text):
-    import qutils
-
-    del qutils.ico_objects
-    del qutils.ico_editor
-
-    for key in qutils.ico_dict.keys():
-        del qutils.ico_dict[key]
-    del qutils.ico_dict
-
-    try:
-        del quarkx.redlinesicons
-    except AttributeError:
-        pass
-
-    import qconsole
-    qconsole.shutdown()
-
-
 #
 #    ---- Dialog Boxes ----
 #

@@ -206,6 +206,8 @@ type
    {procedure wmCommand(var Msg: TMessage); message wm_Command;}
   public
     property Explorer: TQrkExplorer read FExplorer;
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
     procedure StartIdleJob(nEvent: TIdleJobEvent; nControl: TObject);
     procedure AbortIdleJob(nControl: TObject);
     procedure Save(AskName: Integer);
@@ -270,105 +272,14 @@ begin
   OpenLogFile;
 end;
 
- (*procedure TForm1Button1Click(Sender: TObject);
-var
- P,Q: QObject;
- U: TUndoObject;
-begin
- P:=Explorer.TMSelUnique;
- if P=Nil then
-  if Explorer.Roots.Count=0 then
-   begin
-    P:=BuildFileRoot('Bonjour !.qrk', Nil);
-    SetExplorerRoot(P as QFileObject);
-    {VolatileData.SubElements.Add(P);}
-   end
-  else
-   P:=Explorer.Roots[0];
- if Random(2)=1 then
-  Q:=QExplorerGroup.Create('Sous-élément', P)
- else
-  Q:=QQuakeC.Create('QuakeC', P);
- U:=TQObjectUndo.Create('temp', Nil, Q);
- Action(Explorer.Roots[0], U);
-end;*)
+ {------------------------}
 
-procedure TForm1.ClearExplorer;
-var
- Q: QFileObject;
-begin
- Explorer.MAJAffichage(Nil);
- try
-  if Explorer.Roots.Count>0 then
-   begin
-    Q:=Explorer.Roots[0] as QFileObject;
-    if Q.Flags and ofModified<>0 then
-     begin
-      ActivateNow(Self);
-      case MessageDlg(FmtLoadStr1(5212, [Explorer.Roots[0].Name]), mtConfirmation, mbYesNoCancel, 0) of
-       mrYes: begin
-               Explorer.CloseUndoObjects;
-               Save(fm_Save);
-              end;
-       mrNo: ;
-      else Abort;
-      end;
-     end;
-    Q.CloseUndo;
-    SavePendingFiles(True);
-   end;
- {ClearUndo(0);}
-  Explorer.ClearView;
-  UpdateForm1Root;
- finally
-  Explorer.InvalidatePaintBoxes(0);
- end;
-end;
-
-procedure TForm1.SetExplorerRoot(Root: QFileObject);
-begin
- ClearExplorer;
- Explorer.AddRoot(Root);
- UpdateForm1Root;
-{Timer1Timer(Nil);}
-end;
-
-function TForm1.NeedExplorerRoot : QExplorerGroup;
-begin
- if Explorer.Roots.Count=0 then
-  begin
-   FileMenu.PopupComponent:=File1;
-   News1Click(Nil);
-  end;
- Result:=Explorer.Roots[0] as QExplorerGroup;
-end;
-
-procedure TForm1.FormCreate(Sender: TObject);
-
- function FindAlphabeticInsert(const NewCaption: String; List: TMenuItem; Count: Integer; Start: Integer = 0) : Integer;
- var
-  I: Integer;
- begin
-  for I:=Start to Count-1 do
-  begin
-   if (NewCaption < List[I].Caption) then
-   begin
-    Result:=I;
-    Exit;
-   end;
-  end;
-  Result:=Count;
- end;
-
+constructor TForm1.Create(AOwner: TComponent);
 const
  TimerID = 0;
 var
- Item, BaseItem: TMenuItem;
  I: Integer;
- ItemIndex: Integer;
- S, T: String;
- L: TStringList;
- C: TColor;
+ S: String;
  Splash: TSplashScreen;
  MutexError: DWORD;
  LaunchOptions: TCmdLineOptions;
@@ -463,7 +374,7 @@ begin
      but then the option in the Defaults will have to be removed, since it
      won't be loaded yet. Change this when the update-screen isn't a nag-screen
      anymore! (Store data in registry?) }
-   //Check for updates...
+   //Check for updates
    if LaunchOptions.DoUpdate and (SetupSubSet(ssGeneral, 'Startup').Specifics.Strings['UpdateCheck']<>'') then
    begin
      Log(LOG_VERBOSE, 'Checking for updates...');
@@ -477,6 +388,10 @@ begin
    // Set-up OS specific things
    InitViewport16;
 
+   // Load the main form fully
+   inherited;
+   ConnectToPython;
+   LoadingComplete:=True;
  finally
    // Wait for splash screen to close
    if LaunchOptions.DoSplash then
@@ -494,7 +409,54 @@ begin
      Splash.Close;
    end;
  end;
+end;
 
+destructor TForm1.Destroy;
+begin
+ inherited;
+ ShutdownPython;
+ FreeConsole;
+
+ if OnlyOnceMutex <> 0 then
+ begin
+   ReleaseMutex(OnlyOnceMutex);
+   CloseHandle(OnlyOnceMutex);
+   OnlyOnceMutex:=0;
+ end;
+
+ // Restore original exception handling
+ Application.OnException:=OldException;
+ OldException:=nil;
+
+ // And we're gone!
+ g_Form1:=nil;
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+
+ function FindAlphabeticInsert(const NewCaption: String; List: TMenuItem; Count: Integer; Start: Integer = 0) : Integer;
+ var
+  I: Integer;
+ begin
+  for I:=Start to Count-1 do
+  begin
+   if (NewCaption < List[I].Caption) then
+   begin
+    Result:=I;
+    Exit;
+   end;
+  end;
+  Result:=Count;
+ end;
+
+var
+ Item, BaseItem: TMenuItem;
+ I: Integer;
+ ItemIndex: Integer;
+ S, T: String;
+ L: TStringList;
+ C: TColor;
+begin
  Log(LOG_VERBOSE, 'Preparing QuArK Explorer...');
 
 (*ImageList1.Handle:=ImageList_LoadImage(HInstance, MakeIntResource(101),
@@ -618,8 +580,79 @@ begin
 
 {Image1.Picture.Bitmap.LoadFromResourceName(HInstance, 'QUARKLOGO');
  StatusBar1.SimpleText:=FmtLoadStr1(1, [QuArKVersion]);}
+end;
 
- LoadingComplete:=True;
+(*procedure TForm1Button1Click(Sender: TObject);
+var
+ P,Q: QObject;
+ U: TUndoObject;
+begin
+ P:=Explorer.TMSelUnique;
+ if P=Nil then
+  if Explorer.Roots.Count=0 then
+   begin
+    P:=BuildFileRoot('Bonjour !.qrk', Nil);
+    SetExplorerRoot(P as QFileObject);
+    {VolatileData.SubElements.Add(P);}
+   end
+  else
+   P:=Explorer.Roots[0];
+ if Random(2)=1 then
+  Q:=QExplorerGroup.Create('Sous-élément', P)
+ else
+  Q:=QQuakeC.Create('QuakeC', P);
+ U:=TQObjectUndo.Create('temp', Nil, Q);
+ Action(Explorer.Roots[0], U);
+end;*)
+
+procedure TForm1.ClearExplorer;
+var
+ Q: QFileObject;
+begin
+ Explorer.MAJAffichage(Nil);
+ try
+  if Explorer.Roots.Count>0 then
+   begin
+    Q:=Explorer.Roots[0] as QFileObject;
+    if Q.Flags and ofModified<>0 then
+     begin
+      ActivateNow(Self);
+      case MessageDlg(FmtLoadStr1(5212, [Explorer.Roots[0].Name]), mtConfirmation, mbYesNoCancel, 0) of
+       mrYes: begin
+               Explorer.CloseUndoObjects;
+               Save(fm_Save);
+              end;
+       mrNo: ;
+      else Abort;
+      end;
+     end;
+    Q.CloseUndo;
+    SavePendingFiles(True);
+   end;
+ {ClearUndo(0);}
+  Explorer.ClearView;
+  UpdateForm1Root;
+ finally
+  Explorer.InvalidatePaintBoxes(0);
+ end;
+end;
+
+procedure TForm1.SetExplorerRoot(Root: QFileObject);
+begin
+ ClearExplorer;
+ Explorer.AddRoot(Root);
+ UpdateForm1Root;
+{Timer1Timer(Nil);}
+end;
+
+function TForm1.NeedExplorerRoot : QExplorerGroup;
+begin
+ if Explorer.Roots.Count=0 then
+  begin
+   FileMenu.PopupComponent:=File1;
+   News1Click(Nil);
+  end;
+ Result:=Explorer.Roots[0] as QExplorerGroup;
 end;
 
 procedure TForm1.cmSysColorChange(var Msg: TWMSysCommand);
@@ -694,7 +727,7 @@ begin
       else
        begin
         {There are more IdleJobs in the chain, do the Round-Robin technique:
-         Put the IdleJob thats just been executed, at the bottom of the
+         Put the IdleJob that's just been executed, at the bottom of the
          IdleJobs chain - tricky tricky!}
         Q:=IdleJobs;
         while Q^.Next<>Nil do
@@ -707,7 +740,7 @@ begin
   end;
  if Done then
   begin
-   SizeDownGameFiles;
+   SizeDownGameFiles; //FIXME: Move into IdleJob? How to make sure it's the last one to run?
   {SaveSetupNow;}
   end;
 {$IFDEF MemTester}
@@ -1615,18 +1648,7 @@ begin
  end;
  // QObjectClassList.Free;
 
- ShutdownPython;
- FreeConsole;
- Application.OnException:=OldException;
- OldException:=nil;
- g_Form1:=nil;
  Application.UnHookMainWindow(WindowHook);
- if OnlyOnceMutex <> 0 then
- begin
-   ReleaseMutex(OnlyOnceMutex);
-   CloseHandle(OnlyOnceMutex);
-   OnlyOnceMutex:=0;
- end;
 end;
 
 procedure TForm1.Saveentryasfile1Click(Sender: TObject);

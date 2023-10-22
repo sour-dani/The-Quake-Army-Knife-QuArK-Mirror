@@ -13,24 +13,25 @@ Start-up code launched by QuArK to initialize the package "quarkpy"
 # errors in other modules can be displayed.
 
 
-# ------- start-up code, DO NOT MODIFY --------
+#
+# ------- DO NOT MODIFY --------
+#
 
 import quarkx
 quarkx.Setup1(None)   # don't change this !
 
+# redirect stdout and stderr
 import qconsole
 
+# connect the dictionary, so that LoadStr1 can work
 import qdictionnary
-quarkx.Setup1(qdictionnary.Strings)   # don't change this !
+quarkx.Setup1(qdictionnary.Strings)
 
+# version sanity check
 if qdictionnary.Strings[0] != quarkx.version:
     print "QuArK", quarkx.version
     print "Python code (from quarkpy\\qdictionnary.py)", qdictionnary.Strings[0]
     raise RuntimeError("QuArK program and Python code versions don't match! Please reinstall QuArK.")
-
-# ------- start-up code ends here --------
-
-
 
 # the following keys will be sent to an edit box before they are seen as menu shortcut
 quarkx.editshortcuts = [
@@ -52,7 +53,6 @@ quarkx.editshortcuts = [
     "PgDn"
 ]
 
-
 # set up the build modes for the big "GO!" button
 quarkx.buildmodes = [
 #Broken!  "Complete rebuild + play",                        # 0
@@ -73,9 +73,9 @@ quarkx.buildcodes = [
   "P",   # 6
 ]
 
-
+# Separate function, so we can call this after this module and quarkx are initialized
 def RunQuArK():
-    print " --- QuArK ---  Quake Army Knife (%s)" % (quarkx.version)
+    print " --- QuArK ---  Quake Army Knife (%s)" % (quarkx.version, )
 
     import qmacro
     quarkx.Setup1(qmacro.__dict__)    # don't change this !
@@ -112,3 +112,25 @@ def RunQuArK():
     s = "QuAr&K's Forums site"
     qmacro.helpfn[s] = "Help6"
     quarkx.helpmenuitem(s)
+
+# Revert everything we did here
+def QuArK_shutdown():
+    import sys
+    if "qutils" in sys.modules:
+        import qutils
+
+        del qutils.ico_objects
+        del qutils.ico_editor
+
+        for key in qutils.ico_dict.keys():
+            del qutils.ico_dict[key]
+        del qutils.ico_dict
+
+    try:
+        del quarkx.redlinesicons
+    except AttributeError:
+        pass
+
+    # Switch back to the original stdout and stderr
+    import qconsole
+    qconsole.shutdown()

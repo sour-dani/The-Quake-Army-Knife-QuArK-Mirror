@@ -300,7 +300,7 @@ def loadmdleditor():
 #
 # Icon sets that aren't always loaded should go into this
 #   dictionary, indexed by their names.  The dictionary
-#   is cleaned up in qmacro.MACRO_shutdown to avoid
+#   is cleaned up in QuArK_shutdown to avoid
 #   live pointer memory leaks.
 #
 ico_dict = {}
