@@ -1655,7 +1655,6 @@ begin
      mdlpath:=copy(mdlpath, 2, length(mdlpath)-1);
 
    { loads mdl }
-   try
    MdlBase:=Q.Specifics.Strings['mdlbase'];
    if MdlBase='' then
      FileObj1:=NeedGameFile(MdlPath, '')
@@ -1850,10 +1849,7 @@ begin
    finally
      L.Free;
    end;
-   except
-   {rien}
-   end;
-  end; //while J
+  end; //while MdlPathOffset
 end;
 
 procedure TTreeMapEntity.AddTo3DScene(Scene: TObject);
