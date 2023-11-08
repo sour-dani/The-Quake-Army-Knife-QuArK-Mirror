@@ -1,0 +1,6488 @@
+QQRKSRC1
+
+{
+  QuArKProtected = "1"
+  Description = "Add-on for Copper"
+
+  Copper directory infos.qctx =
+  {
+    Game = "Quake 1"
+    SourceDir = "copper"
+    GameDir = "copper"
+  }
+
+  Toolbox Folders.qtx =
+  {
+    Toolbox = "New map items..."
+    Root = "Entities for copper.qtxfolder"
+    Entities for copper.qtxfolder =
+    {
+      ;desc = "Created from copper.fgd"
+      air_* entities.qtxfolder =
+      {
+        air_bubbles:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Air bubble emitter."
+          wait = "1"
+          rand = "1"
+          size = "0 0 0"
+          count = "1"
+        }
+      }
+      ambient_* entities.qtxfolder =
+      {
+        ambient_comp_hum:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Computer background sounds"
+          volume = "1"
+        }
+        ambient_drip:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Dripping sound"
+          volume = "0.75"
+        }
+        ambient_drone:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Engine/machinery sound"
+          volume = "0.55"
+        }
+        ambient_flouro_buzz:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Fluorescent buzzing sound"
+          volume = "1"
+        }
+        ambient_light_buzz:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Buzzing sound from light"
+          volume = "0.85"
+        }
+        ambient_sound:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Custom ambient sound"
+          volume = "1"
+        }
+        ambient_suck_wind:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Wind sound"
+          volume = "1"
+        }
+        ambient_swamp1:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Frogs croaking"
+          volume = "0.75"
+        }
+        ambient_swamp2:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Frogs croaking B"
+          volume = "0.5"
+        }
+        ambient_thunder:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Thunder sound"
+          volume = "0.5"
+        }
+      }
+      event_* entities.qtxfolder =
+      {
+        event_lightning:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Chthon lightning. Fires targets on a successful zap."$0A"Se"
+           "tup is weird and special: it must find two func_doors each with a "
+           "'target' (not targetname) of 'lightning', and it will branch the l"
+           "ightning between the bottom center of each door. If both doors are"
+           " closed it won't hurt Ch'thon, but if both are open, it will, and "
+           "otherwise lightning won't happen at all. Lightning doesn't actuall"
+           "y have to go through Ch'thon."
+        }
+      }
+      func_* entities.qtxfolder =
+      {
+        func_bobbing:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Bobbing platform."$0A"Moves in a smooth sine wave. Build at"
+           " the center of motion, specify 'wait' for the wavelength in second"
+           "s and 'distance' for the amplitude (distance from end to end) in u"
+           "nits. Use 'delay' to set a phase offset (0-1)."$0A"Trigger to free"
+           "ze in place or reactivate. If any 'don't stop until' spawnflags ar"
+           "e checked, the bobber will keep oscillating until it reaches one o"
+           "f the designated positions and stop there."$0A"Set both 'pos1' & '"
+           "pos2' to override the two apex positions (ends of the bob) to buil"
+           "d and light your plat wherever."
+        }
+        func_bobbing_point:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Bobbing platform."$0A"Moves in a smooth sine wave. Build at"
+           " the center of motion, specify 'wait' for the wavelength in second"
+           "s and 'distance' for the amplitude (distance from end to end) in u"
+           "nits. Use 'delay' to set a phase offset (0-1)."$0A"Trigger to free"
+           "ze in place or reactivate. If any 'don't stop until' spawnflags ar"
+           "e checked, the bobber will keep oscillating until it reaches one o"
+           "f the designated positions and stop there."$0A"Set both 'pos1' & '"
+           "pos2' to override the two apex positions (ends of the bob) to buil"
+           "d and light your plat wherever."
+        }
+        func_bossgate:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Boss Gate."$0A"If players have NOT completed all episodes, "
+           "it fires its targets."$0A"If players have completed all episodes, "
+           "it self-removes."
+        }
+        func_button:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Button. When a button is touched, it moves some distance in"
+           " the direction of its angle, triggers all of its targets, waits so"
+           "me time, then returns to its original position where it can be tri"
+           "ggered again."$0A"Acts as if touched when triggered. Depresses its"
+           "elf when locked by a target_lock to look inactive."$0A"Alt Target "
+           "Pattern: 'target' when touched, 'target2' when fully depressed, 't"
+           "arget3' when returning, 'target4' when fully out."
+          speed = "40"
+          lip = "4"
+          distance = "0.0"
+          wait = "1"
+        }
+        func_button_skill:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Special button for selecting skill level. Will always be pr"
+           "essed when the skill corresponding to the chosen spawnflag is set."
+           " Changes its state automatically when other skill buttons are pres"
+           "sed, when trigger_setskills are touched, or when skill is changed "
+           "live at the console."$0A"Alt Target Pattern: 'target' when touched"
+           ", 'target2' when fully depressed, 'target3' when returning, 'targe"
+           "t4' when fully out."
+          spawnflags = "2"
+          speed = "40"
+          lip = "4"
+          distance = "0.0"
+        }
+        func_detail:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Group of brushes which aren't abusive to bsp"
+        }
+        func_detail_fence:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Group of brushes which aren't solid, or abusive to bsp or g"
+           "eometry, and are two-sided"
+        }
+        func_detail_illusionary:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Group of brushes which aren't solid, or abusive to bsp or g"
+           "eometry"
+        }
+        func_detail_wall:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Group of brushes which aren't abusive to bsp or geometry"
+        }
+        func_door:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Door. Opens; closes."$0A"If two doors touch, they are assum"
+           "ed to be connected and operate as a unit. Targets, targetnames, an"
+           "d the Crusher and Toggle spawnflags are safely shared between link"
+           "ed doors automatically."$0A"Doors will not link if either has the "
+           "'don't link' spawnflag, if they have different targetnames, or dif"
+           "ferent key requirements."$0A"Alt Target Pattern: 'target' when sta"
+           "rting to open, 'target2' when opened, 'target3' when starting to c"
+           "lose, 'target4' when closed."
+          speed = "100"
+          speed2 = "0"
+          sounds = "0"
+          wait = "3"
+          lip = "8"
+          distance = "0.0"
+          dmg = "2"
+          health = "0"
+        }
+        func_door_secret:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Secret door. Slides back, then to the side."$0A"There are t"
+           "hree ways to configure how this door moves:"$0A"1) Set 'Angle'. Th"
+           "e secret door will first move to the right of that angle by t_widt"
+           "h units, then in the direction of that angle by t_length units. t_"
+           "width and t_length default to the size of the door on those axes i"
+           "f left blank. The first move can be altered with the 'move left fi"
+           "rst' or 'move down first' spawnflags."$0A"2) Set 'dest1' and 'dest"
+           "2'. These are (x y z) vectors in worldspace corresponding to the f"
+           "irst and second move, which will be scaled to the size of t_width "
+           "and t_length."$0A"3) Target a path_corner which targets a second p"
+           "ath_corner. The door will move by its minimum corner like a func_t"
+           "rain."$0A"Activating this door with a trigger while it is opening "
+           "will have no effect. Activating it while it is waiting open will r"
+           "eset its wait time (holding it open). Activating it while it is cl"
+           "osing will cause it to reverse direction and open again. This lets"
+           " you put a trigger_multiple in a secret room behind a func_door_se"
+           "cret to hold it open as long as a player is inside."
+          dmg = "2"
+          speed = "50"
+          speed2 = "50"
+          wait = "2"
+          sounds = "3"
+        }
+        func_episodegate:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Episode Gate."$0A"If players have completed the episode, it"
+           " fires its targets."$0A"If players have NOT completed the episode,"
+           " it self-removes."$0A"Match svflags to the svflags of an item_sigi"
+           "l to respond to that rune instead."$0A"If multiple svflags or epis"
+           "ode spawnflags are set, gate will spawn if the player has ANY of t"
+           "hose runes. To require them all, check 'Require All Specified'."
+          spawnflags = "1"
+        }
+        func_explobox:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Customizable exploding container."$0A"Explodes when trigger"
+           "ed or shot. Fires targets when it explodes."
+          dmg = "150"
+        }
+        func_flytrain:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Acts as a func_train with PATH_SPEED and SMOOTH_SPEED set, "
+           "with additional random motion and and gentle smoothing at stops, s"
+           "tarts, and hard corners. Will fire all targets of a pathcorner on "
+           "arrival, but does not normally fire its own targets."$0A"Alt Targe"
+           "t Pattern: 'target' selects path start, 'target2' on each pathcorn"
+           "er arrival, 'target3' on each departure, 'target4' on termination"
+          width = "8"
+          height = "8"
+        }
+        func_flytrain_point:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Acts as a func_train with PATH_SPEED and SMOOTH_SPEED set, "
+           "with additional random motion and and gentle smoothing at stops, s"
+           "tarts, and hard corners. Will fire all targets of a pathcorner on "
+           "arrival, but does not normally fire its own targets."$0A"Alt Targe"
+           "t Pattern: 'target' selects path start, 'target2' on each pathcorn"
+           "er arrival, 'target3' on each departure, 'target4' on termination"
+        }
+        func_group:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Group of brushes for in-editor use"
+        }
+        func_illusionary:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Nonsolid, untriggerable static wall"
+          alpha = "1"
+        }
+        func_plat:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Elevator platform."$0A"Plats are always drawn in the extend"
+           "ed position, so they will light correctly."$0A"If the plat is the "
+           "target of another trigger or button, it will start out disabled in"
+           " the top position until it is triggered, when it will lower and be"
+           "come a normal plat."$0A"If the plat targets a trigger once/multipl"
+           "e/multiple_box, it will override the plat's default activation zon"
+           "e (consuming the trigger)."$0A"Movement distance can be defined wi"
+           "th 'height' or 'lip'. By instead setting 'pos1' & 'pos2' you can d"
+           "irectly override the top and bottom positions, allowing the plat t"
+           "o be built anywhere else in the map. This is useful for building a"
+           " plat where it will be lit the best."$0A"The 'low trigger volume' "
+           "spawnflag will put the activation zone only at the bottom of the m"
+           "ovement course, instead of the whole vertical."$0A"Alt Target Patt"
+           "ern: 'target' upon rising, 'target2' upon reaching top, 'target3' "
+           "upon descending, 'target4' upon reaching bottom."
+          speed = "150"
+          height = "0"
+          lip = "8"
+          dmg = "1"
+          wait = "3"
+          sounds = "2"
+        }
+        func_train:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Moving platform that players can ride."$0A"Its origin is th"
+           "e min corner of the train."$0A"The train spawns at the first targe"
+           "t it is pointing at. If the train is the target of a button or tri"
+           "gger, it will not begin moving until activated."$0A"Will fire all "
+           "targets of a pathcorner on arrival, but does not normally fire its"
+           " own targets."$0A"If 'Speed from path' is set, the train will inhe"
+           "rit the 'speed' value from path_corners as it reaches them. If 'bl"
+           "end speed smoothly' is also set, the train will instead smoothly b"
+           "lend to its destination's 'speed' as it travels to it."$0A"If a pa"
+           "th_corner's speed is -1, the func_train's move when LEAVING that c"
+           "orner will be to snap instantly to the next corner."$0A"The 'Toggl"
+           "e' spawnflag allows starting and stopping the motion anywhere on t"
+           "he train's path (default is to ignore triggerings when in motion)."
+           $0A"Setting 'health' will allow the train to be shot to trigger it "
+           "whenever it could normally be triggered (toggle spawnflag applies)"
+           "."$0A"Alt Target Pattern: 'target' selects path start, 'target2' o"
+           "n each pathcorner arrival, 'target3' on each departure, 'target4' "
+           "on termination"
+        }
+        func_train_point:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Moving platform that players can ride."$0A"The point entity"
+           " is the origin, even if a model is specified."$0A"The train spawns"
+           " at the first target it is pointing at. If the train is the target"
+           " of a button or trigger, it will not begin moving until activated."
+           $0A"Will fire all targets of a pathcorner on arrival, but does not "
+           "normally fire its own targets."$0A"If 'Speed from path' is set, th"
+           "e train will inherit the 'speed' value from path_corners as it rea"
+           "ches them. If 'blend speed smoothly' is also set, the train will i"
+           "nstead smoothly blend to its destination's 'speed' as it travels t"
+           "o it."$0A"If a path_corner's speed is -1, the func_train's move wh"
+           "en LEAVING that corner will be to snap instantly to the next corne"
+           "r."$0A"The 'Toggle' spawnflag allows starting and stopping the mot"
+           "ion anywhere on the train's path (default is to ignore triggerings"
+           " when in motion)."$0A"Alt Target Pattern: 'target' selects path st"
+           "art, 'target2' on each pathcorner arrival, 'target3' on each depar"
+           "ture, 'target4' on termination"
+        }
+        func_void:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "for holes into which one should not fall"$0A"Texture this w"
+           "ith black (or sky?) and cover the bottom of the pit with it.  Auto"
+           "matically offsets its own visual model upward, to hide pesky heads"
+           " and scrag corpses underneath.  Also automatically spawns a start-"
+           "of-plunge trigger of the same size 'height' units above itself tha"
+           "t plays a yell sound and fades out the view of clients as they sta"
+           "rt to fall in."$0A"The player's view will have faded completely by"
+           " the time they touch the bottom, so we hold them in stasis for a l"
+           "ittle while longer there before splatting them, to imply the pit i"
+           "s deeper than it really is. The player can therefore feel like the"
+           "y fall for a long time before crash landing in darkness without yo"
+           "u having to build a pit that deep."$0A"Fires all targets when a cl"
+           "ient touches the plunge trigger (ie the yell, not the splat)."$0A"I"
+           "f the func_void's first target is an info_teleport_destination, it"
+           " will hurt the player and teleport him to the destination. If the "
+           "damage is enough to kill the player, it continues with the fade an"
+           "d splat as normal without teleporting."
+          delay = "3"
+          height = "128"
+          lip = "32"
+          dmg = "60"
+          fadecolor = "0 0 0"
+          noise = "player/q3fall.wav"
+          noise2 = "player/splat1.wav"
+        }
+        func_wall:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Wall. Changes its texture(s) to alternate ones (e.g. basebt"
+           "n), if triggered."$0A"Not static: Use a func_static for inconseque"
+           "ntial bmodels."$0A"If 'Illusionary' is set, wall will always be no"
+           "nsolid."$0A"If 'Toggle Visibility' is set, will disappear and reap"
+           "pear when triggered instead of flipping texture."
+        }
+        func_wall_point:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Wall. Changes its texture(s) to alternate ones (e.g. basebt"
+           "n), if triggered."$0A"Not static: Use a func_static for inconseque"
+           "ntial bmodels."$0A"Select a .bsp or .mdl to show with 'model'."$0A
+           "If 'Illusionary' is set, wall will always be nonsolid. If you use "
+           "a .mdl you MUST set this flag (or consider a misc_model instead?)"$0A
+           "If 'Toggle Visibility' is set, will disappear and reappear when tr"
+           "iggered instead of flipping texture."
+        }
+      }
+      info_* entities.qtxfolder =
+      {
+        info_intermission:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Intermission camera"
+        }
+        info_notnull:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Wildcard entity"
+        }
+        info_null:e =
+        {
+          origin = "0 0 0"
+          ;desc = "info_null (spotlight target)"$0A"Not present in game."
+        }
+        info_player_coop:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Player cooperative start"
+        }
+        info_player_deathmatch:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Deathmatch start"
+        }
+        info_player_start:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Player 1 start. Fires targets when a player spawns here."
+        }
+        info_player_start2:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Player episode return point. Fires targets when a player sp"
+           "awns here."
+          style = "0"
+        }
+        info_player_start_test:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Developer-only spawn point"
+        }
+        info_teleport_destination:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Teleporter destination"
+        }
+        info_teleport_target:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Triggerable Teleporter destination"$0A"This is a usable des"
+           "tination marker that acts as its own teleporter.  When triggered, "
+           "the activator is teleported to this spot."$0A"If 'Act On Targets' "
+           "is set, teleports its targets intead of firing them and ignores th"
+           "e activator."$0A"If 'Player only' or 'Monsters only' is checked, t"
+           "his can only be activated by players or monsters respectively."$0A
+           "Set 'Push forward' if you want the teleport-exit forward velocity "
+           "effect, or 'No teleflash' to plop an entity here silently."$0A"PLA"
+           "YER_ONLY"$0909"only players will teleport"$0A"PUSH"$090909"chuck t"
+           "he player forward like a trigger_teleport does"$0A"TRIGGER_FIRST"$09
+           "first use turns it on, and every subsequent use teleports"$0A"NOFL"
+           "ASH"$090909"don't spawn telefog or make noise"$0A"MONSTER_ONLY"$09
+           "only monsters will teleport"
+        }
+      }
+      item_* entities.qtxfolder =
+      {
+        item_armor1:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Green armor (100pts, 30%)"
+        }
+        item_armor2:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Yellow armor (150pts, 50%)"
+        }
+        item_armorInv:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Red armor (200pts, 70%)"
+        }
+        item_artifact_envirosuit:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Envirosuit. Player takes no damage from water or slime for "
+           "30 seconds. Lava damage is reduced by one height step, enabling wa"
+           "ding in foot-deep lava."
+        }
+        item_artifact_invisibility:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Ring of Shadows. Player is invisible for 30 seconds. Monste"
+           "rs will not awaken on sight, but they will on hearing sound (like "
+           "gunfire). Awakened monsters will try to attack an invisible player"
+           " and do an inaccurate job, possibly starting infights."$0A"monster"
+           "_dog can still smell an invisible player, but monster_tarbaby can'"
+           "t find the player at all."
+        }
+        item_artifact_invulnerability:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Pentagram of Protection. Player is invulnerable for 30 seco"
+           "nds (both health and armor)."
+        }
+        item_artifact_super_damage:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Quad Damage. Player's attacks do 4x damage and they stop pa"
+           "ying attention to anything else."
+        }
+        item_backpack:e =
+        {
+          origin = "0 0 0"
+          ;desc = "A forgotten explorer's backpack. Grants a paltry sum of she"
+           "lls and nails (about half a small pack of each). Grants armor inst"
+           "ead of any ammo the player already has maxed."
+        }
+        item_cells:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Thunderbolt Ammo, 6/12 cells"
+        }
+        item_health:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Health pack, +25"
+        }
+        item_key1:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Silver Key. Player can carry up to 15. Remember to set worl"
+           "dtype on worldspawn!"
+        }
+        item_key2:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Gold Key. Player can carry up to 15. Remember to set worldt"
+           "ype on worldspawn!"
+        }
+        item_rockets:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Rockets, 4/8"
+        }
+        item_shells:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Shells, 20/40"
+        }
+        item_sigil:e =
+        {
+          origin = "0 0 0"
+          ;desc = "End of episode rune.  Can be customized through keyvalue ma"
+           "nipulation to serve as any generic cross-map inventory item."
+          spawnflags = "1"
+        }
+        item_spikes:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Nailgun/Perforator ammo, 25/50"
+        }
+      }
+      light_* entities.qtxfolder =
+      {
+        light_candle:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Animated candle. Trigger to turn on or off."$0A"If triggere"
+           "d to turn on and off, all candles with a matching targetname will "
+           "ignite or go out as well."$0A"Choose size with 'width' and 'height"
+           "' (leave either at 0 for random selection)."
+          width = "0"
+          height = "0"
+        }
+        light_flame_large_yellow:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Large yellow flame"
+        }
+        light_flame_small_white:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Small white flame (same as light_flame_small_yellow)"
+        }
+        light_flame_small_yellow:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Small yellow flame"
+        }
+        light_fluoro:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Humming fluorescent light source"
+        }
+        light_fluorospark:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Sparking flickering light source"
+        }
+        light_globe:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Globe light"
+        }
+        light_torch_small_walltorch:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Small walltorch"
+        }
+      }
+      misc_* entities.qtxfolder =
+      {
+        misc_explobox:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Large exploding container, 150 damage."$0A"Explodes when tr"
+           "iggered or shot. Fires targets when it explodes."$0A"will do enoug"
+           "h damage to set off other barrels at up to ~172u distance (center "
+           "to center)."
+        }
+        misc_explobox2:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Small exploding container, 100 damage."$0A"Explodes when tr"
+           "iggered or shot. Fires targets when it explodes."$0A"will do enoug"
+           "h damage to set off other barrels at up to ~128u distance (center "
+           "to center)."
+        }
+        misc_external_map:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Put another map in your map"
+        }
+        misc_fireball:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Lavaball Launcher."$0A"Fires randomly. Trigger to toggle on"
+           "/off."
+          delay = "0"
+          wait = "3"
+          rand = "5"
+          speed = "1000"
+          movedir = "0 0 1"
+          mangle = "50 50 100"
+          dmg = "20"
+        }
+        misc_model:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Display a model. Will not be solid! Use clip to block playe"
+           "rs/monsters, or a func_wall made of skip to block weapons."
+          frame = "0"
+          skin = "0"
+        }
+        misc_particlefield:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Makes dots appear continuously within its bounds. Trigger t"
+           "o toggle on/off."
+        }
+        misc_particlefield_box:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Makes dots appear continuously within its bounds. Trigger t"
+           "o toggle on/off."
+        }
+        misc_teleporttrain:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Flying teleporter destination"$0A"Annoying spiky ball which"
+           " players who have beaten Quake understand as a moving teleport tar"
+           "get. The teleball itself behaves like a func_flytrain."
+        }
+      }
+      monster_* entities.qtxfolder =
+      {
+        monster_army:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Grunt"
+        }
+        monster_boss:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Ch'thon. Throws lava bombs until electrocuted to death."$0A
+           "The more health he's lost, and the higher the skill level the play"
+           "er is on, the more accurately he leads his shots."$0A"The E1M7 bos"
+           "s fight requires an event_lightning."$0A"If 'shootable' is set, he"
+           "'ll bleed when shot, and die the old-fashioned way when shot enoug"
+           "h. Can even be telefragged. Health defaults to 1000."
+          health = "1000"
+        }
+        monster_demon1:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Fiend"
+        }
+        monster_dog:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Rottweiler"
+        }
+        monster_enforcer:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Enforcer"
+        }
+        monster_fish:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Rotfish"
+        }
+        monster_hell_knight:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Death knight"
+        }
+        monster_knight:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Knight"
+        }
+        monster_ogre:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Ogre"
+        }
+        monster_oldone:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Shubby"$0A"can be killed by traditional telefrag or in seve"
+           "ral new ways:"$0A"- being triggered 'strength' times"$0A"- being d"
+           "amaged for more than 10000 hp 'strength' times"$0A"both of the abo"
+           "ve cause one thrashy roary anim that flickers the lights and cause"
+           "s a screenshake."$0A"death will trigger the finale cutscene, unles"
+           "s 'Don't end level' is checked, in which case Shub will just die l"
+           "ike any other monster."
+          strength = "3"
+          map = "start"
+          message = "congratulations and well done etc..."
+        }
+        monster_shalrath:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Vore"
+        }
+        monster_shambler:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Shambler"
+        }
+        monster_tarbaby:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Spawn"
+        }
+        monster_wizard:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Scrag"
+        }
+        monster_zombie:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Zombie"
+        }
+      }
+      other entities.qtxfolder =
+      {
+        light:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Invisible light source"
+        }
+        worldspawn:b =
+        {
+          ;desc = "World entity"
+          worldtype = "0"
+          sounds = "0"
+          _lavaalpha = "1.0"
+          _telealpha = "1.0"
+          _dirt = "0"
+          _dirtdepth = "128"
+          _dirtscale = "1.0"
+          _dirtgain = "1.0"
+        }
+      }
+      path_* entities.qtxfolder =
+      {
+        path_corner:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Waypoint for platforms and monsters. Will stop here for goo"
+           "d if no path_corner is targeted by this entity."$0A"Monsters who w"
+           "ait here will turn to face 'angle'."$0A"Checking the Bezier spawnf"
+           "lag will make this pathcorner act as a bilinear control point - me"
+           "aning curved motion - between the previous and next pathcorner in "
+           "the chain (train only, no monster patrols). 'count' will change th"
+           "e number of steps of interpolation along the curve the train will "
+           "make."
+          delay = "0"
+          wait = "0"
+          speed = "0"
+        }
+      }
+      target_* entities.qtxfolder =
+      {
+        target_autosave:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Saves the game when triggered by a player. Never appears in"
+           " multiplayer."$0A"the bprint tends to stomp any other prints on sc"
+           "reen in most quake clients, so use a delayed trigger_relay if you "
+           "fire this from an important pickup/trigger_counter/something else "
+           "that puts text on screen more important than the autosave blurb."
+          message = "auto"
+        }
+        target_changelevel:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Target: Change level."$0A"When this is triggered, the playe"
+           "r is sent to the map listed in the 'map' variable. The view will g"
+           "o to the info_intermission spot and display stats."
+        }
+        target_debris:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Emits debris chunks"
+          count = "3"
+          delay = "0"
+          size = "0 0 0"
+          speed = "128"
+          mangle = "0 0 0"
+          frame = "0"
+          alpha = "1"
+        }
+        target_drop:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Target Drop. Causes all targeted items which are suspended "
+           "to drop when triggered."
+        }
+        target_explosion:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Causes one or more explosions when triggered, same appearan"
+           "ce as a rocket/grenade blast."
+          count = "1"
+          delay = "0"
+          wait = "1"
+          rand = "0"
+          size = "0 0 0"
+          dmg = "0"
+        }
+        target_fade:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Target: Fade"$0A"Changes the alpha of its targets over time"
+           " from 'alpha' to 'alpha2'."$0A"If this targets brushmodels with sw"
+           "itchable shadows or lightstyles, the lighting will fade appropriat"
+           "ely."$0A"If 'Blend By Distance' is set, it will set alpha immediat"
+           "ely based on how far the activator is from its origin."$0A"'One Wa"
+           "y' in distance mode constrains motion along 'angle' to the positiv"
+           "e direction, instead of symmetrically."$0A"Alt Target Pattern: in "
+           "distance mode, target is fading object, target2 on begin fade (ent"
+           "er distance range), target3 on complete fade (enter lip range), ta"
+           "rget4 on exit distance range"
+          alpha = "1.0"
+          alpha2 = "0.0"
+        }
+        target_fogblend:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Target: Fog Blend"$0A"Activator's fog will be blended over "
+           "time from start to end values."$0A"- will 'stuffcmd' up to 20 time"
+           "s per frame so try not to make this take too long, but as an optim"
+           "ization, Copper will avoid sending the stuffcmd if it determines t"
+           "hat the fog difference frame over frame is not visually significan"
+           "t."$0A"- a bug in most quake engine ports will reset the eye posit"
+           "ion smoothing that happens when climbing stairs or riding a plat o"
+           "n every frame that a 'stuffcmd' is sent, so fog transitions during"
+           " upwards motion will cause noticeable stuttering."
+        }
+        target_heal:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Target : Heal."$0A"Heals activator for 'healamount' when tr"
+           "iggered. Use for healing pools, first aid dispensers, etc."$0A"If "
+           "it has any targets, it heals them instead, even doors and buttons."
+           " This will not reset 'dead' doors or buttons with a wait of -1."$0A
+           "If 'trigger first' and 'auto set count' are set, will choose 'coun"
+           "t' based on how much health the activator needs when first trigger"
+           "ed, for dirty lazy automatic game balance. Use 'lip' and 'max_heal"
+           "th' to constrain this."
+          healamount = "5"
+          count = "-1"
+          strength = "1"
+        }
+        target_items:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Target: Give. Adds weapons, ammo, items, health, armor, and"
+           "/or runes to the activating player when triggered."$0A"Spawnflag U"
+           "sage:"$0A"'Take': subtract specified inventory amounts instead of "
+           "adding"$0A"- subtracting enough health WILL kill the player"$0A"- "
+           "will fire its targets if all items are successfully taken"$0A"- wi"
+           "ll print 'message' if fewer than all items are successfully taken"$0A
+           "'Override': force the player's inventory to all specified amounts "
+           "(mainly useful triggered from spawnpoints), specify -1 for any key"
+           "value to force a 0 (-1 does not work for items or health)"$0A"'Tes"
+           "t Only': behaves like TAKE, but without taking anything"$0A"- fire"
+           "s targets if activator has the matching inventory"$0A"- prints 'me"
+           "ssage' if not"$0A"- TEST with TAKE will reverse the test (fire if "
+           "player doesn't have)"$0A"- beware of how this interacts with trigg"
+           "ers: it will only test the first client to touch a trigger in coop"
+           "!"$0A"'Minimum': for numeric amounts, give the player enough to ha"
+           "ve a minimum of the amount specified"$0A"'Flash screen': flash the"
+           " recipient's screen when triggered, defaults to being stealthy"
+          length = "0"
+        }
+        target_kill:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Removes all targets when triggered. for targets you really "
+           "don't like."
+          delay = "0"
+        }
+        target_lightstyle:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Target : Lightstyle"$0A"Changes a global lightstyle when tr"
+           "iggered."
+          style = "0"
+          count = "0"
+          delay = "0"
+        }
+        target_lock:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Locks and unlocks targeted entities independent of their to"
+           "ggle/start_open/etc states.  Works on various entities:"$0A"- A lo"
+           "cked func_door won't respond to touches or triggers. Use this for "
+           "doors behind temporary bars."$0A"- A locked func_plat behaves as a"
+           "n unreleased LOW_TRIGGER plat"$0A"- A locked trigger_relay will no"
+           "t fire or evaluate at all"$0A"- Locked path_corners are not consid"
+           "ered valid patrol/train destinations"$0A"- Locked trigger volumes "
+           "(once/multi/teleport/secret/changelevel/push/monsterjump) will not"
+           " activate when touched or triggered"$0A"If 'wait' is set, will aut"
+           "omatically undo itself after 'wait' seconds."
+          wait = "0"
+          rand = "0"
+        }
+        target_meat_fireworks:e =
+        {
+          origin = "0 0 0"
+          ;desc = "trigger for meat"
+          count = "1"
+          delay = "0"
+          wait = "1"
+          rand = "0"
+          size = "0 0 0"
+          speed = "128"
+          mangle = "0 0 1"
+        }
+        target_multiprint:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Target : Multiprint"$0A"This entity will print a different "
+           "string every time it's triggered.  Prints 'message', 'noise', 'noi"
+           "se1', 'noise2', 'noise3', then 'noise4.'  Once all strings are use"
+           "d up, it will fire its targets instead (so several of these can be"
+           " chained if you really need that"$0A"many prints in a row)."
+        }
+        target_playercount:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Target: Playercount."$0A"Checks the number of players curre"
+           "ntly connected when triggered, and fires exclusively one of target"
+           "/2/3/4 depending on the count. If one player is connected, it only"
+           " fires 'target', if two are connected it fires 'target2', and so o"
+           "n."$0A"If 'Less Or Equal' is set, fires all targetnames UP TO the "
+           "current player count (so with four players connected, all four tar"
+           "gets would fire instead of just target4)."$0A"If 'Two Players Per'"
+           " is set, requires double the number of players for each threshhold"
+           " (for scaling up to 8 players)."$0A
+        }
+        target_screenshake:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Shakes the screen. Jostles the view of all clients, but doe"
+           "sn't physically move their bounding boxes or apply velocities."$0A
+           "Total shake duration is length + delay + wait."
+          strength = "1.0"
+          distance = "0"
+        }
+        target_secret:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Secret counter trigger.  Player gets a secret credit when t"
+           "riggered.  Note when using a target_secret: if triggered by touchi"
+           "ng an item, and the item can't be picked up (because of health/arm"
+           "or/ammo limits already being met, etc), it won't fire its targets "
+           "and thus the target_secret won't give credit. Use a trigger in tha"
+           "t case."$0A"Set the 'supersecret' spawnflag to hide its existence "
+           "in the total until it's found. Think very carefully if you actuall"
+           "y want to use this."
+        }
+        target_setskill:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Target: Set Skill"
+        }
+        target_sound:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Custom triggered sound. Will play one sound every time it i"
+           "s triggered."$0A"You can set up to five sounds on this entity to c"
+           "ycle through in order (or shuffle, with the 'random' spawnflag). T"
+           "hey will not cut each other off, so triggering this entity more fr"
+           "equently than the length of the sounds will overlap them."
+          volume = "1"
+          delay = "1"
+          count = "0"
+          wait = "0"
+          rand = "0"
+          style = "0"
+        }
+        target_state:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Target : State."$0A"Holds a numeric variable, or tests othe"
+           "r entities for theirs before firing targets."$0A"Set 'state' to in"
+           "itial value. triggering this will cycle the value (swapping 0 and "
+           "1)."$0A"If 'Relay' spawnflag is checked, it acts as a relay instea"
+           "d of holding state. It fires its targets based on the value of the"
+           " 'state' member of another entity, specified by setting 'state' to"
+           " the value it has to match and 'include' to that entity's targetna"
+           "me. This can be another target_state, or any other entity which ha"
+           "s a 'state', such as doors or plats."$0A"0: off (lights/etc)/top ("
+           "plats)/open (doors)/pushed (buttons)"$0A"1: on (lights/etc)/bottom"
+           " (plats)/closed (doors)/unpushed (buttons)"$0A"2: going up (plats)"
+           "/opening (doors)/pushing (buttons)"$0A"3: going down (plats)/closi"
+           "ng (doors)/unpushing (buttons)"$0A"A trigger_counter's 'state' is "
+           "its current trigger count."$0A"If 'Inverse' spawnflag is set, will"
+           " decrement when triggered instead of increment. If both 'Relay' an"
+           "d 'Inverse', will fire targets if the state of 'include' is anythi"
+           "ng other than a match."
+          count = "1"
+        }
+        target_telefog:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Causes a flash of teleport fog."
+          count = "1"
+          delay = "0"
+          wait = "1"
+          size = "0 0 0"
+          rand = "0"
+        }
+      }
+      trap_* entities.qtxfolder =
+      {
+        trap_lightning:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Lightning shooter. Trigger to turn on, trigger again to tur"
+           "n off. Fires 10 times per second, unless 'One-shot' spawnflag is c"
+           "hecked."$0A"You can choose from three power levels, set by selecti"
+           "ng 'strength':"$0A"1: 10dmg/100dps. Does not penetrate targets. Us"
+           "es thin LG beam. One-shot lasts 0.1 seconds. Default."$0A"2: 30dmg"
+           "/300dps. Penetrates targets. Uses thick Shambler beam. One-shot la"
+           "sts 0.3 seconds."$0A"3: Instakill. Penetrates targets. Uses fat Ch"
+           "thon beam. One-shot lasts 1 second. Does 1k damage to a Chthon and"
+           " 10k damage to a Shub."
+          delay = "0"
+        }
+        trap_shooter:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Continuous shooter. Trigger to turn on and off."
+        }
+        trap_spikeshooter:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Triggered shooter. Trigger to fire one shot."
+        }
+      }
+      trigger_* entities.qtxfolder =
+      {
+        trigger_changelevel:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Trigger: Change level."$0A"When the player touches this, he"
+           " gets sent to the map listed in the 'map' variable. The view will "
+           "go to the info_intermission spot and display stats."
+        }
+        trigger_counter:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Trigger: Counter."$0A"Acts as an intermediary for an action"
+           " that takes multiple inputs."$0A"If nomessage is not set, it will "
+           "print '1 more...' etc when triggered and 'sequence complete' when "
+           "finished. After the counter has been triggered 'count' times, it w"
+           "ill fire all of it's targets and remove itself, unless 'repeat' ha"
+           "s been set, in which case it resets after 'wait' seconds."$0A"If t"
+           "he 'Eager Reset' spawnflag is set, the relay will reset 'wait' sec"
+           "onds after ANY input, which has the effect of requiring all trigge"
+           "ring inputs to happen within a window of 'wait' seconds."
+          count = "2"
+        }
+        trigger_fogblend:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Trigger: Fog Blend"$0A"Acts as a smoothly blending portal b"
+           "etween two zones of different fog. Sets the fog for any client pas"
+           "sing through it, blending their global fog settings between start "
+           "and end values proportional to their position within the trigger."$0A
+           "fog_sky/fog_sky2 will affect r_skyfog at the same time if both are"
+           " non-zero. Use -1 if you really want 0."$0A"- will 'stuffcmd' up t"
+           "o 20 times per frame so try not to make these huge, but as an opti"
+           "mization, Copper will avoid sending the stuffcmd if it determines "
+           "that the fog difference frame over frame is not visually significa"
+           "nt."$0A"- a bug in most quake engine ports will reset the eye posi"
+           "tion smoothing that happens when climbing stairs or riding a plat "
+           "on every frame that a 'stuffcmd' is sent, so fog transitions durin"
+           "g upwards motion will cause noticeable stuttering."
+        }
+        trigger_hurt:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Trigger: Hurt. Any creature touching this will be damaged."$0A
+           "Resist the urge to put a tiny one of these on every light_flame."
+        }
+        trigger_hurt_box:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Trigger: Hurt. Any creature touching this will be damaged."$0A
+           "Quoth2-style edict-saving bounding box trigger: define size with '"
+           "size', and the trigger volume will be that size centered on the tr"
+           "igger's origin."$0A"Resist the urge to put a tiny one of these on "
+           "every light_flame."
+        }
+        trigger_monsterjump:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Trigger: Monster jump. Monsters that touch this will 'jump'"
+           " in the direction of the trigger's angle, if they meet its conditi"
+           "ons."$0A"Use the 'Only if target in front'/'below' spawnflags to p"
+           "revent monsters from being thrown off of ledges away from the play"
+           "er after the player has climbed up there."$0A"Use the 'no large mo"
+           "nsters', 'no small monsters', and 'only melee monsters' spawnflags"
+           " to fine-tune which monsters jump and which don't if necessary. If"
+           " this isn't fine-grained enough, the 'include' and 'exclude' keys "
+           "can be set to specific monster classnames, or targetnames, to exem"
+           "pt matching monsters from those rules. If that isn't fine-grained "
+           "enough, consider two overlapping monsterjumps with different, more"
+           " specific rules."
+        }
+        trigger_monsterjump_box:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Trigger: Monster jump. Monsters that touch this will 'jump'"
+           " in the direction of the trigger's angle, if they meet its conditi"
+           "ons."$0A"Use the 'Only if target in front'/'below' spawnflags to p"
+           "revent monsters from being thrown off of ledges away from the play"
+           "er after the player has climbed up there."$0A"Use the 'no large mo"
+           "nsters', 'no small monsters', and 'only melee monsters' spawnflags"
+           " to fine-tune which monsters jump and which don't if necessary. If"
+           " this isn't fine-grained enough, the 'include' and 'exclude' keys "
+           "can be set to specific monster classnames, or targetnames, to exem"
+           "pt matching monsters from those rules. If that isn't fine-grained "
+           "enough, consider two overlapping monsterjumps with different, more"
+           " specific rules."$0A"Quoth2-style edict-saving bounding box trigge"
+           "r: define bounds size with 'size' - trigger volume will be centere"
+           "d on the trigger's origin."
+        }
+        trigger_multiple:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Trigger multiple. Variable sized repeatable trigger."$0A"Mu"
+           "st be targeted at one or more entities."$0A"Spawnflags:"$0A"'No To"
+           "uch': only triggered by other entities, not by touching (legacy; j"
+           "ust use a trigger relay)"$0A"'All Clients': will trigger once per "
+           "client touching it on the same frame before waiting (default behav"
+           "ior is to trigger only for the first touch event, ie the lowest-nu"
+           "mbered client). use if you want to trigger a target_items or targe"
+           "t_heal and have every client in the trigger affected by the result"
+           "."$0A"'Trigger First': won't be touchable until triggered once by "
+           "something else"$0A"'Monsters Will Activate': monsters will fire th"
+           "is trigger (and count as activator, so be careful)"
+          wait = "0.2"
+        }
+        trigger_multiple_box:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Trigger multiple. Variable sized repeatable trigger."$0A"Mu"
+           "st be targeted at one or more entities."$0A"Quoth2-style edict-sav"
+           "ing bounding box trigger: define size with 'size', and the trigger"
+           " volume will be that size centered on the trigger's origin."$0A"Sp"
+           "awnflags:"$0A"'No Touch': only triggered by other entities, not by"
+           " touching (legacy; just use a trigger relay)"$0A"'All Clients': wi"
+           "ll trigger once per client touching it on the same frame before wa"
+           "iting (default behavior is to trigger only for the first touch eve"
+           "nt, ie the lowest-numbered client). use if you want to trigger a t"
+           "arget_items or target_heal and have every client in the trigger af"
+           "fected by the result."$0A"'Trigger First': won't be touchable unti"
+           "l triggered once by something else"$0A"'Monsters Will Activate': m"
+           "onsters will fire this trigger (and count as activator, so be care"
+           "ful)"
+          wait = "0.2"
+        }
+        trigger_once:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Trigger multiple. Variable sized trigger."$0A"Must be targe"
+           "ted at one or more entities. Wait is always -1: removes itself aft"
+           "er one use."$0A"Spawnflags:"$0A"'No Touch': only triggered by othe"
+           "r entities, not by touching (legacy; just use a trigger relay)"$0A
+           "'All Clients': will trigger once per client touching it on the sam"
+           "e frame before waiting (default behavior is to trigger only for th"
+           "e first touch event, ie the lowest-numbered client). use if you wa"
+           "nt to trigger a target_items or target_heal and have every client "
+           "in the trigger affected by the result."$0A"'Trigger First': won't "
+           "be touchable until triggered once by something else"$0A"'Monsters "
+           "Will Activate': monsters will fire this trigger (and count as acti"
+           "vator, so be careful)"
+        }
+        trigger_once_box:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Trigger multiple. Variable sized trigger."$0A"Must be targe"
+           "ted at one or more entities. Wait is always -1: removes itself aft"
+           "er one use."$0A"Quoth2-style edict-saving bounding box trigger: de"
+           "fine size with 'size', and the trigger volume will be that size ce"
+           "ntered on the trigger's origin."$0A"Spawnflags:"$0A"'No Touch': on"
+           "ly triggered by other entities, not by touching (legacy; just use "
+           "a trigger relay)"$0A"'All Clients': will trigger once per client t"
+           "ouching it on the same frame before waiting (default behavior is t"
+           "o trigger only for the first touch event, ie the lowest-numbered c"
+           "lient). use if you want to trigger a target_items or target_heal a"
+           "nd have every client in the trigger affected by the result."$0A"'T"
+           "rigger First': won't be touchable until triggered once by somethin"
+           "g else"$0A"'Monsters Will Activate': monsters will fire this trigg"
+           "er (and count as activator, so be careful)"
+        }
+        trigger_onlyregistered:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Trigger: Registered only"
+        }
+        trigger_push:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Trigger: Push."$0A"Entities that come in contact with this "
+           "are pushed."$0A"The 'Add Velocity' spawnflag will add to the playe"
+           "r's velocity rather than overriding it (like wind tunnels do), so "
+           "the player can still move around and push against the current. Goo"
+           "d for flowing water. Players will not be accelerated faster than '"
+           "speed2' if it is set."$0A"The 'Tunnel Center' spawnflag will suck "
+           "players towards the center of the brush in the direction of travel"
+           " to avoid them getting hung up on corners."
+          speed = "1000"
+          speed2 = "0"
+          noise = "ambience/windfly.wav"
+          angles = "0 0 0"
+        }
+        trigger_relay:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Trigger: Relay."$0A"This fixed size trigger cannot be touch"
+           "ed, it can only be fired by other events. Target this with a targe"
+           "t_lock to selectively disable/reenable it for logic fun."
+          count = "0"
+        }
+        trigger_secret:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Secret counter trigger. Player gets a secret credit when to"
+           "uched."
+        }
+        trigger_secret_box:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Trigger : Secret"$0A"Counts as a secret, trigger to give cr"
+           "edit"
+        }
+        trigger_setskill:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Trigger: Set Skill"
+        }
+        trigger_teleport:b =
+        {
+          ;incl = "defpoly"
+          ;desc = "Trigger: Teleporter."$0A"Any object touching this will be t"
+           "ransported to the corresponding info_teleport_destination entity."$0A
+           "The 'Not Triggerable' spawnflag: default behavior for a teleporter"
+           " with a targetname is to only teleport what's touching it when tri"
+           "ggered. this will preserve ordinary no-targetname behavior (if you"
+           "'re using the teleporter's targetname for a killtarget for example"
+           ")."
+        }
+        trigger_teleport_box:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Trigger: Teleporter."$0A"Any object touching this will be t"
+           "ransported to the corresponding info_teleport_destination entity."$0A
+           "Quoth2-style edict-saving bounding box trigger: define bounds size"
+           " with 'size' - trigger volume will be centered on the trigger's or"
+           "igin."$0A"The 'Not Triggerable' spawnflag: default behavior for a "
+           "teleporter with a targetname is to only teleport what's touching i"
+           "t when triggered. this will preserve ordinary no-targetname behavi"
+           "or (if you're using the teleporter's targetname for a killtarget f"
+           "or example)."
+        }
+        trigger_timer:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Trigger: Timer"$0A"Fires its targets once every 'wait' seco"
+           "nds once activated. If 'count' is set, it will only fire that many"
+           " times and then stop. Set 'rand' to add a random extra delay to th"
+           "e wait interval."
+          count = "0"
+        }
+      }
+      weapon_* entities.qtxfolder =
+      {
+        weapon_axe:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Axe."
+        }
+        weapon_grenadelauncher:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Grenade launcher."$0A"5 rockets."
+        }
+        weapon_lightning:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Thunderbolt."$0A"12 cells."
+        }
+        weapon_nailgun:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Nailgun."$0A"30 nails."
+        }
+        weapon_rocketlauncher:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Rocket launcher."$0A"5 rockets."
+        }
+        weapon_shotgun:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Shotgun."$0A"5 Shells."
+        }
+        weapon_supernailgun:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Perforator (Super Nailgun)."$0A"30 nails."
+        }
+        weapon_supershotgun:e =
+        {
+          origin = "0 0 0"
+          ;desc = "Double-barreled shotgun."$0A"10 shells."
+        }
+      }
+    }
+  }
+  Entity Forms.fctx =
+  {
+    t_Angle:incl =
+    {
+      angle: =
+      {
+        txt = "&"
+        hint = "Direction (0-360 yaw, or -1 for up/-2 for down)"
+      }
+    }
+    t_Appearflags:incl =
+    {
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X256"
+        cap = "Not on Easy"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X512"
+        cap = "Not on Normal"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1024"
+        cap = "Not on Hard+"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2048"
+        cap = "Not in Deathmatch"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4096"
+        cap = "Only in Coop"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X8192"
+        cap = "Not in Coop"
+      }
+    }
+    t_Targetname:incl =
+    {
+      targetname: =
+      {
+        txt = "&"
+        hint = "Name"
+      }
+      impulse: =
+      {
+        txt = "&"
+        hint = "Can activate with this impulse"
+      }
+    }
+    t_Target:incl =
+    {
+      target: =
+      {
+        txt = "&"
+        hint = "Target: activate anything with a matching targetname"
+      }
+      target2: =
+      {
+        txt = "&"
+        hint = "Target 2: activate anything with a matching targetname"
+      }
+      target3: =
+      {
+        txt = "&"
+        hint = "Target 3: activate anything with a matching targetname"
+      }
+      target4: =
+      {
+        txt = "&"
+        hint = "Target 4: activate anything with a matching targetname"
+      }
+      killtarget: =
+      {
+        txt = "&"
+        hint = "Killtarget: REMOVE anything with a matching targetname"
+      }
+      delay: =
+      {
+        txt = "&"
+        hint = "Delay before activating targets"
+      }
+    }
+    t_Deathtype:incl =
+    {
+      deathtype: =
+      {
+        txt = "&"
+        hint = "Obituary message. Printed after dead player's name, so format "
+         "accordingly (ie 'was burnt to a crisp')"
+      }
+    }
+    t_Bounds:incl =
+    {
+      size: =
+      {
+        txt = "&"
+        hint = "Bounds size, centered (x y z)"
+      }
+    }
+    t_Phong:incl =
+    {
+      _phong: =
+      {
+        txt = "&"
+        hint = "Use phong smoothing"
+      }
+      _phong_angle: =
+      {
+        txt = "&"
+        hint = "Phong angle"
+      }
+    }
+    t_Func:incl =
+    {
+      t_Phong = "!"
+    }
+    t_FuncInvis:incl =
+    {
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X128"
+        cap = "Start Invisible"
+      }
+    }
+    t_AltTarget:incl =
+    {
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X16384"
+        cap = "Alt Target Pattern"
+      }
+    }
+    t_path_corner:incl =
+    {
+      t_Appearflags = "!"
+      t_Targetname = "!"
+      t_Angle = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X16"
+        cap = "Bezier point"
+      }
+      target: =
+      {
+        txt = "&"
+        hint = "Target: next path_corner to move to"
+      }
+      target2: =
+      {
+        txt = "&"
+        hint = "Target 2: trains will activate all matching on arrival"
+      }
+      target3: =
+      {
+        txt = "&"
+        hint = "Target 3: trains will activate all matching on arrival"
+      }
+      target4: =
+      {
+        txt = "&"
+        hint = "Target 4: trains will activate all matching on arrival"
+      }
+      killtarget: =
+      {
+        txt = "&"
+        hint = "Killtarget: trains will remove all matching on arrival"
+      }
+      delay: =
+      {
+        txt = "&"
+        hint = "Delay before activating targets"
+      }
+      wait: =
+      {
+        txt = "&"
+        hint = "Wait time (seconds)"
+      }
+      speed: =
+      {
+        txt = "&"
+        hint = "A visiting func_train to change its speed to this. If 'speed' "
+         "is -1, the func_train's move when LEAVING that corner will be to sna"
+         "p instantly to the next corner."
+      }
+      count: =
+      {
+        txt = "&"
+        hint = "override steps of interpolation along this bezier curve segmen"
+         "t"
+      }
+    }
+    path_corner:form =
+    {
+      t_path_corner = "!"
+    }
+    t_target_meat_fireworks:incl =
+    {
+      t_Appearflags = "!"
+      t_Targetname = "!"
+      count: =
+      {
+        txt = "&"
+        hint = "Repeat meat"
+      }
+      delay: =
+      {
+        txt = "&"
+        hint = "Delay before first meat"
+      }
+      wait: =
+      {
+        txt = "&"
+        hint = "Wait between meat"
+      }
+      rand: =
+      {
+        txt = "&"
+        hint = "Random extra wait before meat"
+      }
+      size: =
+      {
+        txt = "&"
+        hint = "Random location within bounds"
+      }
+      speed: =
+      {
+        txt = "&"
+        hint = "Speed of meat"
+      }
+      mangle: =
+      {
+        txt = "&"
+        hint = "Override meat vector"
+      }
+    }
+    target_meat_fireworks:form =
+    {
+      t_target_meat_fireworks = "!"
+    }
+    t_Item:incl =
+    {
+      t_Appearflags = "!"
+      t_Target = "!"
+      t_Targetname = "!"
+      message: =
+      {
+        txt = "&"
+        hint = "Override Pickup Message"
+      }
+      wait: =
+      {
+        txt = "&"
+        hint = "Respawn interval. Default 0 is never respawn."
+      }
+      count: =
+      {
+        txt = "&"
+        hint = "Respawn count. Default 0 is respawn forever (if 'wait' is set)"
+         ". -4 will auto-scale the count to the number of clients in coop."
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "Suspended"
+      }
+    }
+    t_target_drop:incl =
+    {
+      t_Appearflags = "!"
+      t_Targetname = "!"
+      target: =
+      {
+        txt = "&"
+        hint = "Target: acts on all items with a matching targetname"
+      }
+      target2: =
+      {
+        txt = "&"
+        hint = "Target 2: acts on all items with a matching targetname"
+      }
+      target3: =
+      {
+        txt = "&"
+        hint = "Target 3: acts on all items with a matching targetname"
+      }
+      target4: =
+      {
+        txt = "&"
+        hint = "Target 4: acts on all items with a matching targetname"
+      }
+    }
+    target_drop:form =
+    {
+      t_target_drop = "!"
+    }
+    t_TrigItems:incl =
+    {
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "E1 complete"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "E2 complete"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "E3 complete"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X8"
+        cap = "E4 complete"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X16"
+        cap = "Unused"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X32"
+        cap = "Unused"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X64"
+        cap = "Unused"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X128"
+        cap = "Unused"
+      }
+      items: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Shotgun"
+      }
+      items: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Super Shotgun"
+      }
+      items: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "Nailgun"
+      }
+      items: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X8"
+        cap = "Perforator"
+      }
+      items: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X16"
+        cap = "Grenade Laucher"
+      }
+      items: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X32"
+        cap = "Rocket Launcher"
+      }
+      items: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X64"
+        cap = "Lightning Gun"
+      }
+      items: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4096"
+        cap = "Axe"
+      }
+      items: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X131072"
+        cap = "Silver Key"
+      }
+      items: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X262144"
+        cap = "Gold Key"
+      }
+      items: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X524288"
+        cap = "Ring"
+      }
+      items: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1048576"
+        cap = "Pent"
+      }
+      items: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2097152"
+        cap = "Biosuit"
+      }
+      items: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4194304"
+        cap = "Quad"
+      }
+      ammo_shells: =
+      {
+        txt = "&"
+        hint = "Shells"
+      }
+      ammo_nails: =
+      {
+        txt = "&"
+        hint = "Nails"
+      }
+      ammo_rockets: =
+      {
+        txt = "&"
+        hint = "Rockets"
+      }
+      ammo_cells: =
+      {
+        txt = "&"
+        hint = "Cells"
+      }
+      health: =
+      {
+        txt = "&"
+        hint = "Health"
+      }
+      armorvalue: =
+      {
+        txt = "&"
+        hint = "Armor"
+      }
+      armortype: =
+      {
+        txt = "&"
+        hint = "Armor Strength"
+        typ = "C"
+        items = "Ignore"$0D"Green (30%)"$0D"Yellow (50%)"$0D"Red (70%)"
+        values = "0.0"$0D"0.3"$0D"0.5"$0D"0.7"
+      }
+    }
+    t_target_items:incl =
+    {
+      t_Appearflags = "!"
+      t_Target = "!"
+      t_Targetname = "!"
+      t_TrigItems = "!"
+      t_Deathtype = "!"
+      length: =
+      {
+        txt = "&"
+        hint = "Override powerup duration"
+      }
+      message: =
+      {
+        txt = "&"
+        hint = "Message to print if Take was unsuccessful"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Take instead"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Override instead"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "Flash screen"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X8"
+        cap = "Test only"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X16"
+        cap = "Minimum"
+      }
+      weapon: =
+      {
+        txt = "&"
+        hint = "Force Select Weapon"
+        typ = "C"
+        items = "Don't"$0D"Shotgun"$0D"Super Shotgun"$0D"Nailgun"$0D"Perforato"
+         "r"$0D"Grenade Laucher"$0D"Rocket Launcher"$0D"Lightning Gun"$0D"Axe"
+        values = "0"$0D"1"$0D"2"$0D"4"$0D"8"$0D"16"$0D"32"$0D"64"$0D"4096"
+      }
+      noise: =
+      {
+        txt = "&"
+        hint = "wav file to play on activator"
+      }
+    }
+    target_items:form =
+    {
+      t_target_items = "!"
+    }
+    t_item_health:incl =
+    {
+      bbox = '0 0 0 32 32 24'
+      t_Item = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Small, +15"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Megahealth, +100"
+      }
+    }
+    item_health:form =
+    {
+      t_item_health = "!"
+    }
+    t_item_armor1:incl =
+    {
+      bbox = '-16 -16 0 16 16 56'
+      t_Item = "!"
+    }
+    item_armor1:form =
+    {
+      t_item_armor1 = "!"
+    }
+    t_item_armor2:incl =
+    {
+      bbox = '-16 -16 0 16 16 56'
+      t_Item = "!"
+    }
+    item_armor2:form =
+    {
+      t_item_armor2 = "!"
+    }
+    t_item_armorInv:incl =
+    {
+      bbox = '-16 -16 0 16 16 56'
+      t_Item = "!"
+    }
+    item_armorInv:form =
+    {
+      t_item_armorInv = "!"
+    }
+    t_Weapon:incl =
+    {
+      bbox = '-16 -16 0 16 16 56'
+      t_Item = "!"
+    }
+    t_weapon_shotgun:incl =
+    {
+      t_Weapon = "!"
+    }
+    weapon_shotgun:form =
+    {
+      t_weapon_shotgun = "!"
+    }
+    t_weapon_supershotgun:incl =
+    {
+      t_Weapon = "!"
+    }
+    weapon_supershotgun:form =
+    {
+      t_weapon_supershotgun = "!"
+    }
+    t_weapon_nailgun:incl =
+    {
+      t_Weapon = "!"
+    }
+    weapon_nailgun:form =
+    {
+      t_weapon_nailgun = "!"
+    }
+    t_weapon_supernailgun:incl =
+    {
+      t_Weapon = "!"
+    }
+    weapon_supernailgun:form =
+    {
+      t_weapon_supernailgun = "!"
+    }
+    t_weapon_grenadelauncher:incl =
+    {
+      t_Weapon = "!"
+    }
+    weapon_grenadelauncher:form =
+    {
+      t_weapon_grenadelauncher = "!"
+    }
+    t_weapon_rocketlauncher:incl =
+    {
+      t_Weapon = "!"
+    }
+    weapon_rocketlauncher:form =
+    {
+      t_weapon_rocketlauncher = "!"
+    }
+    t_weapon_lightning:incl =
+    {
+      t_Weapon = "!"
+    }
+    weapon_lightning:form =
+    {
+      t_weapon_lightning = "!"
+    }
+    t_weapon_axe:incl =
+    {
+      t_Weapon = "!"
+    }
+    weapon_axe:form =
+    {
+      t_weapon_axe = "!"
+    }
+    t_Ammo:incl =
+    {
+      bbox = '0 0 0 32 32 32'
+      t_Item = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Large box (2x)"
+      }
+    }
+    t_item_shells:incl =
+    {
+      t_Ammo = "!"
+    }
+    item_shells:form =
+    {
+      t_item_shells = "!"
+    }
+    t_item_spikes:incl =
+    {
+      t_Ammo = "!"
+    }
+    item_spikes:form =
+    {
+      t_item_spikes = "!"
+    }
+    t_item_rockets:incl =
+    {
+      t_Ammo = "!"
+    }
+    item_rockets:form =
+    {
+      t_item_rockets = "!"
+    }
+    t_item_cells:incl =
+    {
+      t_Ammo = "!"
+    }
+    item_cells:form =
+    {
+      t_item_cells = "!"
+    }
+    t_item_artifact_invulnerability:incl =
+    {
+      bbox = '-16 -16 -24 16 16 32'
+      t_Item = "!"
+    }
+    item_artifact_invulnerability:form =
+    {
+      t_item_artifact_invulnerability = "!"
+    }
+    t_item_artifact_envirosuit:incl =
+    {
+      bbox = '-16 -16 -24 16 16 32'
+      t_Item = "!"
+    }
+    item_artifact_envirosuit:form =
+    {
+      t_item_artifact_envirosuit = "!"
+    }
+    t_item_artifact_invisibility:incl =
+    {
+      bbox = '-16 -16 -24 16 16 32'
+      t_Item = "!"
+    }
+    item_artifact_invisibility:form =
+    {
+      t_item_artifact_invisibility = "!"
+    }
+    t_item_artifact_super_damage:incl =
+    {
+      bbox = '-16 -16 -24 16 16 32'
+      t_Item = "!"
+    }
+    item_artifact_super_damage:form =
+    {
+      t_item_artifact_super_damage = "!"
+    }
+    t_item_key1:incl =
+    {
+      bbox = '-16 -16 -24 16 16 32'
+      t_Item = "!"
+    }
+    item_key1:form =
+    {
+      t_item_key1 = "!"
+    }
+    t_item_key2:incl =
+    {
+      bbox = '-16 -16 -24 16 16 32'
+      t_Item = "!"
+    }
+    item_key2:form =
+    {
+      t_item_key2 = "!"
+    }
+    t_svFlags:incl =
+    {
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Episode 1"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Episode 2"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "Episode 3"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X8"
+        cap = "Episode 4"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X16"
+        cap = "Bit 5"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X32"
+        cap = "Bit 6"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X64"
+        cap = "Bit 7"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X128"
+        cap = "Bit 8"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X256"
+        cap = "Bit 9"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X512"
+        cap = "Bit 10"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1024"
+        cap = "Bit 11"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2048"
+        cap = "Bit 12"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4096"
+        cap = "Bit 13"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X8192"
+        cap = "Bit 14"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X16384"
+        cap = "Bit 15"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X32768"
+        cap = "Bit 16"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X65536"
+        cap = "Bit 17"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X131072"
+        cap = "Bit 18"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X262144"
+        cap = "Bit 19"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X524288"
+        cap = "Bit 20"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1048576"
+        cap = "Bit 21"
+      }
+    }
+    t_item_sigil:incl =
+    {
+      bbox = '-16 -16 -24 16 16 32'
+      t_Item = "!"
+      t_svFlags = "!"
+      noise: =
+      {
+        txt = "&"
+        hint = "Override pickup noise"
+      }
+      model: =
+      {
+        txt = "&"
+        hint = "Override model"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Episode 1"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Episode 2"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "Episode 3"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X8"
+        cap = "Episode 4"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X16"
+        cap = "Suspended"
+      }
+    }
+    item_sigil:form =
+    {
+      t_item_sigil = "!"
+    }
+    t_item_backpack:incl =
+    {
+      bbox = '-16 -16 0 16 16 40'
+      t_Item = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Big (2x, red, +2 rockets/4 cells)"
+      }
+    }
+    item_backpack:form =
+    {
+      t_item_backpack = "!"
+    }
+    t_worldspawn:incl =
+    {
+      message: =
+      {
+        txt = "&"
+        hint = "Map name"
+      }
+      worldtype: =
+      {
+        txt = "&"
+        hint = "Key Style"
+        typ = "C"
+        items = "Medieval"$0D"Runemetal"$0D"Base"
+        values = "0"$0D"1"$0D"2"
+      }
+      sounds: =
+      {
+        txt = "&"
+        hint = "CD track to play"
+      }
+      light: =
+      {
+        txt = "&"
+        hint = "Ambient light"
+      }
+      gravity: =
+      {
+        txt = "&"
+        hint = "Gravity"
+      }
+      sky: =
+      {
+        txt = "&"
+        hint = "Skybox"
+      }
+      _skyfog: =
+      {
+        txt = "&"
+        hint = "Sky fog strength"
+      }
+      _wateralpha: =
+      {
+        txt = "&"
+        hint = "Water alpha"
+      }
+      _lavaalpha: =
+      {
+        txt = "&"
+        hint = "Lava alpha"
+      }
+      _telealpha: =
+      {
+        txt = "&"
+        hint = "Tele alpha"
+      }
+      _sunlight: =
+      {
+        txt = "&"
+        hint = "Sunlight"
+      }
+      _sun_mangle: =
+      {
+        txt = "&"
+        hint = "Sun mangle (Yaw pitch roll)"
+      }
+      _sunlight_color: =
+      {
+        txt = "&"
+        hint = "Sun color"
+      }
+      _dirt: =
+      {
+        txt = "&"
+        hint = "use dirtmapping"
+      }
+      _dirtdepth: =
+      {
+        txt = "&"
+        hint = "length of dirt rays"
+      }
+      _dirtscale: =
+      {
+        txt = "&"
+        hint = "Scale factor used in dirt calculations, higher is darker"
+      }
+      _dirtgain: =
+      {
+        txt = "&"
+        hint = "Exponent used in dirt calculation, lower is darker"
+      }
+    }
+    worldspawn:form =
+    {
+      t_worldspawn = "!"
+    }
+    t_PlayerClass:incl =
+    {
+      bbox = '-16 -16 -24 16 16 32'
+      t_Appearflags = "!"
+      t_Angle = "!"
+      t_Fog = "!"
+      t_Target = "!"
+    }
+    t_info_player_start:incl =
+    {
+      t_PlayerClass = "!"
+    }
+    info_player_start:form =
+    {
+      t_info_player_start = "!"
+    }
+    t_info_player_start2:incl =
+    {
+      t_PlayerClass = "!"
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Episode 1"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Episode 2"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "Episode 3"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X8"
+        cap = "Episode 4"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X16"
+        cap = "Bit 5"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X32"
+        cap = "Bit 6"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X64"
+        cap = "Bit 7"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X128"
+        cap = "Bit 8"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X256"
+        cap = "Bit 9"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X512"
+        cap = "Bit 10"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1024"
+        cap = "Bit 11"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2048"
+        cap = "Bit 12"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4096"
+        cap = "Bit 13"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X8192"
+        cap = "Bit 14"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X16384"
+        cap = "Bit 15"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X32768"
+        cap = "Bit 16"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X65536"
+        cap = "Bit 17"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X131072"
+        cap = "Bit 18"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X262144"
+        cap = "Bit 19"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X524288"
+        cap = "Bit 20"
+      }
+      svflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1048576"
+        cap = "Bit 21"
+      }
+      style: =
+      {
+        txt = "&"
+        hint = "Requirement"
+        typ = "C"
+        items = "Have Any"$0D"Must Have All"$0D"Must Not Have Any"
+        values = "0"$0D"1"$0D"2"
+      }
+    }
+    info_player_start2:form =
+    {
+      t_info_player_start2 = "!"
+    }
+    t_info_player_start_test:incl =
+    {
+      t_PlayerClass = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Spawn at this one plz"
+      }
+    }
+    info_player_start_test:form =
+    {
+      t_info_player_start_test = "!"
+    }
+    t_info_player_deathmatch:incl =
+    {
+      t_PlayerClass = "!"
+    }
+    info_player_deathmatch:form =
+    {
+      t_info_player_deathmatch = "!"
+    }
+    t_info_player_coop:incl =
+    {
+      t_PlayerClass = "!"
+      t_Targetname = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Trigger first"
+      }
+    }
+    info_player_coop:form =
+    {
+      t_info_player_coop = "!"
+    }
+    t_Monster:incl =
+    {
+      t_Angle = "!"
+      t_Appearflags = "!"
+      t_Target = "!"
+      t_Targetname = "!"
+      t_Deathtype = "!"
+      t_AltTarget = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Ambush"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X16"
+        cap = "Triggered Spawn"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X32"
+        cap = "No Teleflash on Spawn"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X64"
+        cap = "Don't Spawn If Would Telefrag"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X128"
+        cap = "Spawn Angry"
+      }
+      movedir: =
+      {
+        txt = "&"
+        hint = "Auto jump velocity on spawn/awaken (x y z, in worldspace)"
+      }
+      rmovedir: =
+      {
+        txt = "&"
+        hint = "Angle-relative auto jump velocity on spawn/awaken (forward rig"
+         "ht up)"
+      }
+      count: =
+      {
+        txt = "&"
+        hint = "If triggered: Number of times a spawn can be triggered before "
+         "stopping. -1 for infinite spawns, -4 to auto-scale the count to the "
+         "number of clients in coop."
+      }
+      wait: =
+      {
+        txt = "&"
+        hint = "If triggered: Pause before spawning"
+      }
+      rand: =
+      {
+        txt = "&"
+        hint = "If triggered: Random extra time before spawning"
+      }
+      netname: =
+      {
+        txt = "&"
+        hint = "If triggered: Spawned monster(s) will have this targetname"
+      }
+    }
+    t_func_door:incl =
+    {
+      t_Angle = "!"
+      t_Appearflags = "!"
+      t_Targetname = "!"
+      t_Target = "!"
+      t_Func = "!"
+      t_FuncInvis = "!"
+      t_AltTarget = "!"
+      speed: =
+      {
+        txt = "&"
+        hint = "Speed"
+      }
+      speed2: =
+      {
+        txt = "&"
+        hint = "Close Speed (if different from open speed)"
+      }
+      sounds: =
+      {
+        txt = "&"
+        hint = "Sound"
+        typ = "C"
+        items = "Silent"$0D"Stone"$0D"Machine"$0D"Stone Chain"$0D"Screechy Met"
+         "al"$0D"Winchy secret door"$0D"Base secret door"
+        values = "0"$0D"1"$0D"2"$0D"3"$0D"4"$0D"5"$0D"6"
+      }
+      noise1: =
+      {
+        txt = "&"
+        hint = "Override stop sound"
+      }
+      noise2: =
+      {
+        txt = "&"
+        hint = "Override move sound"
+      }
+      noise3: =
+      {
+        txt = "&"
+        hint = "Override key-required sound"
+      }
+      noise4: =
+      {
+        txt = "&"
+        hint = "Override key-unlocked sound"
+      }
+      wait: =
+      {
+        txt = "&"
+        hint = "Wait before close"
+      }
+      lip: =
+      {
+        txt = "&"
+        hint = "Lip remaining at end of move"
+      }
+      distance: =
+      {
+        txt = "&"
+        hint = "Distance to travel (overrides Lip)"
+      }
+      dmg: =
+      {
+        txt = "&"
+        hint = "Damage inflicted when blocked"
+      }
+      message: =
+      {
+        txt = "&"
+        hint = "Message printed when the door is touched if it is a trigger do"
+         "or and it hasn't been fired yet. If locked, will print this instead "
+         "of default silver/gold message."
+      }
+      health: =
+      {
+        txt = "&"
+        hint = "Health (shootable)"
+      }
+      targetname: =
+      {
+        txt = "&"
+        hint = "Name. If set, no touch field will be spawned and a remote butt"
+         "on or trigger must activates the door, UNLESS the door is only targe"
+         "ted by a target_lock."
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Starts Open"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "Don't link with touching"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X8"
+        cap = "Gold Key"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X16"
+        cap = "Silver Key"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X32"
+        cap = "Toggle"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X64"
+        cap = "Crusher"
+      }
+    }
+    func_door:form =
+    {
+      t_func_door = "!"
+    }
+    t_func_door_secret:incl =
+    {
+      t_Appearflags = "!"
+      t_Targetname = "!"
+      t_Target = "!"
+      t_Func = "!"
+      angle: =
+      {
+        txt = "&"
+        hint = "Determines direction of SECOND move. FIRST move is to the RIGH"
+         "T relative to 'angle'."
+      }
+      t_width: =
+      {
+        txt = "&"
+        hint = "First move length"
+      }
+      t_length: =
+      {
+        txt = "&"
+        hint = "Second move length"
+      }
+      dmg: =
+      {
+        txt = "&"
+        hint = "Damage when blocked"
+      }
+      speed: =
+      {
+        txt = "&"
+        hint = "Speed of first move"
+      }
+      speed2: =
+      {
+        txt = "&"
+        hint = "Speed of second move"
+      }
+      wait: =
+      {
+        txt = "&"
+        hint = "Wait before closing"
+      }
+      dest1: =
+      {
+        txt = "&"
+        hint = "Force vector for first move (requires dest2)"
+      }
+      dest2: =
+      {
+        txt = "&"
+        hint = "Force vector for second move (requires dest1)"
+      }
+      sounds: =
+      {
+        txt = "&"
+        hint = "Sounds"
+        typ = "C"
+        items = "Medieval"$0D"Metal"$0D"Base"
+        values = "1"$0D"2"$0D"3"
+      }
+      message: =
+      {
+        txt = "&"
+        hint = "Message"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Open once"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Move left first"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "Move down first"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X8"
+        cap = "Not shootable"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X16"
+        cap = "Always shootable"
+      }
+    }
+    func_door_secret:form =
+    {
+      t_func_door_secret = "!"
+    }
+    t_func_button:incl =
+    {
+      t_Appearflags = "!"
+      t_Angle = "!"
+      t_Target = "!"
+      t_Targetname = "!"
+      t_Func = "!"
+      t_FuncInvis = "!"
+      t_AltTarget = "!"
+      speed: =
+      {
+        txt = "&"
+        hint = "Speed"
+      }
+      health: =
+      {
+        txt = "&"
+        hint = "Health (shootable if > 0)"
+      }
+      lip: =
+      {
+        txt = "&"
+        hint = "Lip remaining at end of move"
+      }
+      distance: =
+      {
+        txt = "&"
+        hint = "Distance to travel (overrides Lip)"
+      }
+      sounds: =
+      {
+        txt = "&"
+        hint = "Sounds"
+        typ = "C"
+        items = "None/Custom (set 'noise')"$0D"Steam metal"$0D"Wooden clunk"$0D
+         "Metallic clink"$0D"In-out"$0D"Trigger noise (big light switch)"
+        values = "-1"$0D"0"$0D"1"$0D"2"$0D"3"$0D"4"
+      }
+      wait: =
+      {
+        txt = "&"
+        hint = "Delay before reset"
+      }
+      message: =
+      {
+        txt = "&"
+        hint = "Message"
+      }
+      noise: =
+      {
+        txt = "&"
+        hint = "Wav to play if sounds is -1"
+      }
+    }
+    func_button:form =
+    {
+      t_func_button = "!"
+    }
+    t_func_button_skill:incl =
+    {
+      t_Appearflags = "!"
+      t_Angle = "!"
+      t_Target = "!"
+      t_Func = "!"
+      t_AltTarget = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Easy"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Normal"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "Hard"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X8"
+        cap = "Nightmaaare"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X16"
+        cap = "No centerprint"
+      }
+      speed: =
+      {
+        txt = "&"
+        hint = "Speed"
+      }
+      health: =
+      {
+        txt = "&"
+        hint = "Health (shootable if > 0)"
+      }
+      lip: =
+      {
+        txt = "&"
+        hint = "Lip remaining at end of move"
+      }
+      distance: =
+      {
+        txt = "&"
+        hint = "Distance to travel (overrides Lip)"
+      }
+      sounds: =
+      {
+        txt = "&"
+        hint = "Sounds"
+        typ = "C"
+        items = "None/Custom (set 'noise')"$0D"Steam metal"$0D"Wooden clunk"$0D
+         "Metallic clink"$0D"In-out"$0D"Trigger noise (big light switch)"
+        values = "-1"$0D"0"$0D"1"$0D"2"$0D"3"$0D"4"
+      }
+      message: =
+      {
+        txt = "&"
+        hint = "Override skill selected message"
+      }
+      noise: =
+      {
+        txt = "&"
+        hint = "Wav to play if sounds is -1"
+      }
+    }
+    func_button_skill:form =
+    {
+      t_func_button_skill = "!"
+    }
+    t_TriggerSounds:incl =
+    {
+      sounds: =
+      {
+        txt = "&"
+        hint = "Sounds"
+        typ = "C"
+        items = "None"$0D"Secret"$0D"Doot doot"$0D"Large switch"$0D"Force sile"
+         "nt print"
+        values = "0"$0D"1"$0D"2"$0D"3"$0D"-1"
+      }
+      noise: =
+      {
+        txt = "&"
+        hint = "Choose wav to play"
+      }
+    }
+    t_TriggerNoTargets:incl =
+    {
+      t_Appearflags = "!"
+      t_Targetname = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "trigger first"
+      }
+    }
+    t_Trigger:incl =
+    {
+      t_TriggerNoTargets = "!"
+      t_Target = "!"
+      message: =
+      {
+        txt = "&"
+        hint = "message to display when triggered"
+      }
+    }
+    t_TriggerMulti:incl =
+    {
+      t_Trigger = "!"
+      t_TriggerSounds = "!"
+      t_Angle = "!"
+      health: =
+      {
+        txt = "&"
+        hint = "solid, must be killed to activate"
+      }
+      count: =
+      {
+        txt = "&"
+        hint = "limit uses before self destructing"
+      }
+      angle: =
+      {
+        txt = "&"
+        hint = "Direction player must be facing to trigger (0-360 yaw, or -1 f"
+         "or up/-2 for down)"
+      }
+      angles: =
+      {
+        txt = "&"
+        hint = "Direction player must be facing to trigger, specifically (pitc"
+         "h yaw roll)"
+      }
+      distance: =
+      {
+        txt = "&"
+        hint = "Width of facing cone (in degrees) if angle or angles is set"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "No touch"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X8"
+        cap = "Monsters Will Fire"
+      }
+    }
+    t_trigger_multiple:incl =
+    {
+      t_TriggerMulti = "!"
+      wait: =
+      {
+        txt = "&"
+        hint = "Retriggering Interval"
+      }
+    }
+    trigger_multiple:form =
+    {
+      t_trigger_multiple = "!"
+    }
+    t_trigger_multiple_box:incl =
+    {
+      t_TriggerMulti = "!"
+      t_Bounds = "!"
+      wait: =
+      {
+        txt = "&"
+        hint = "Retriggering Interval"
+      }
+    }
+    trigger_multiple_box:form =
+    {
+      t_trigger_multiple_box = "!"
+    }
+    t_trigger_once:incl =
+    {
+      t_TriggerMulti = "!"
+    }
+    trigger_once:form =
+    {
+      t_trigger_once = "!"
+    }
+    t_trigger_once_box:incl =
+    {
+      t_TriggerMulti = "!"
+      t_Bounds = "!"
+    }
+    trigger_once_box:form =
+    {
+      t_trigger_once_box = "!"
+    }
+    t_Secret:incl =
+    {
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Supersecret"
+      }
+      sounds: =
+      {
+        txt = "&"
+        hint = "Sounds"
+        typ = "C"
+        items = "None"$0D"secret"$0D"beep beep"$0D"large switch"
+        values = "0"$0D"1"$0D"2"$0D"3"
+      }
+      message: =
+      {
+        txt = "&"
+        hint = "Message"
+      }
+    }
+    t_target_secret:incl =
+    {
+      t_Secret = "!"
+      t_Targetname = "!"
+    }
+    target_secret:form =
+    {
+      t_target_secret = "!"
+    }
+    t_trigger_secret:incl =
+    {
+      t_Trigger = "!"
+      t_Secret = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Notouch (legacy)"
+      }
+    }
+    trigger_secret:form =
+    {
+      t_trigger_secret = "!"
+    }
+    t_trigger_secret_box:incl =
+    {
+      t_Trigger = "!"
+      t_Secret = "!"
+      t_Bounds = "!"
+    }
+    trigger_secret_box:form =
+    {
+      t_trigger_secret_box = "!"
+    }
+    t_Setskill:incl =
+    {
+      message: =
+      {
+        txt = "&"
+        hint = "Skill"
+        typ = "C"
+        items = "Easy"$0D"Normal"$0D"Hard"$0D"NIGHTMAAARE"
+        values = "0"$0D"1"$0D"2"$0D"3"
+      }
+    }
+    t_target_setskill:incl =
+    {
+      t_Setskill = "!"
+      t_Targetname = "!"
+    }
+    target_setskill:form =
+    {
+      t_target_setskill = "!"
+    }
+    t_trigger_setskill:incl =
+    {
+      t_Setskill = "!"
+      t_Trigger = "!"
+    }
+    trigger_setskill:form =
+    {
+      t_trigger_setskill = "!"
+    }
+    t_trigger_onlyregistered:incl =
+    {
+      t_Trigger = "!"
+    }
+    trigger_onlyregistered:form =
+    {
+      t_trigger_onlyregistered = "!"
+    }
+    t_Hurt:incl =
+    {
+      t_TriggerNoTargets = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Just Kill Them"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Biosuits are Immune"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X8"
+        cap = "Don't Hurt Monsters"
+      }
+      dmg: =
+      {
+        txt = "&"
+        hint = "Damage"
+      }
+      delay: =
+      {
+        txt = "&"
+        hint = "Interval (seconds)"
+      }
+    }
+    t_trigger_hurt:incl =
+    {
+      t_Hurt = "!"
+    }
+    trigger_hurt:form =
+    {
+      t_trigger_hurt = "!"
+    }
+    t_trigger_hurt_box:incl =
+    {
+      t_Hurt = "!"
+      t_Bounds = "!"
+    }
+    trigger_hurt_box:form =
+    {
+      t_trigger_hurt_box = "!"
+    }
+    t_trigger_push:incl =
+    {
+      t_Angle = "!"
+      t_TriggerNoTargets = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Push once"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Add Velocity"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "Trigger First"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X8"
+        cap = "Tunnel Center"
+      }
+      speed: =
+      {
+        txt = "&"
+        hint = "Speed (will be divided by 10, sorry, blame id software)"
+      }
+      speed2: =
+      {
+        txt = "&"
+        hint = "Speed Limit"
+      }
+      noise: =
+      {
+        txt = "&"
+        hint = "Looping sound"
+      }
+      angles: =
+      {
+        txt = "&"
+        hint = "Specific direction (pitch yaw roll)"
+      }
+    }
+    trigger_push:form =
+    {
+      t_trigger_push = "!"
+    }
+    t_Monsterjump:incl =
+    {
+      t_TriggerNoTargets = "!"
+      t_Angle = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "No large monsters"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "No small monsters"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X8"
+        cap = "Only melee monsters"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X16"
+        cap = "Only if target in front"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X32"
+        cap = "Only if target below"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X64"
+        cap = "Additive push"
+      }
+      wait: =
+      {
+        txt = "&"
+        hint = "Interval (-1 for once only)"
+      }
+      speed: =
+      {
+        txt = "&"
+        hint = "Jump Speed"
+      }
+      height: =
+      {
+        txt = "&"
+        hint = "Jump Height"
+      }
+      include: =
+      {
+        txt = "&"
+        hint = "Allow this classname of monster, or monsters with this targetn"
+         "ame, no matter what"
+      }
+      exclude: =
+      {
+        txt = "&"
+        hint = "Ignore this classname of monster, or monsters with this target"
+         "name, no matter what"
+      }
+      distance: =
+      {
+        txt = "&"
+        hint = "Width of facing cone (in degrees) if 'only in front' is set"
+      }
+    }
+    t_trigger_monsterjump:incl =
+    {
+      t_Monsterjump = "!"
+    }
+    trigger_monsterjump:form =
+    {
+      t_trigger_monsterjump = "!"
+    }
+    t_trigger_monsterjump_box:incl =
+    {
+      t_Monsterjump = "!"
+      t_Bounds = "!"
+    }
+    trigger_monsterjump_box:form =
+    {
+      t_trigger_monsterjump_box = "!"
+    }
+    t_info_teleport_destination:incl =
+    {
+      bbox = '-16 -16 0 16 16 48'
+      t_Appearflags = "!"
+      t_Angle = "!"
+      t_Targetname = "!"
+      t_Fog = "!"
+    }
+    info_teleport_destination:form =
+    {
+      t_info_teleport_destination = "!"
+    }
+    t_info_teleport_target:incl =
+    {
+      bbox = '-16 -16 -8 16 16 40'
+      t_Appearflags = "!"
+      t_Angle = "!"
+      t_Fog = "!"
+      t_Trigger = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Player only"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Push forward"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X8"
+        cap = "Act On Targets"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X16"
+        cap = "No teleflash"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X32"
+        cap = "Monsters only"
+      }
+      count: =
+      {
+        txt = "&"
+        hint = "Remove after this many uses"
+      }
+    }
+    info_teleport_target:form =
+    {
+      t_info_teleport_target = "!"
+    }
+    t_Teleport:incl =
+    {
+      t_Appearflags = "!"
+      t_Target = "!"
+      t_Targetname = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Player only"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Silent"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X8"
+        cap = "Not triggerable (ignore targetname)"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X16"
+        cap = "No teleflash"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X32"
+        cap = "Monsters only"
+      }
+      count: =
+      {
+        txt = "&"
+        hint = "Limited uses"
+      }
+    }
+    t_trigger_teleport:incl =
+    {
+      t_Trigger = "!"
+      t_Teleport = "!"
+    }
+    trigger_teleport:form =
+    {
+      t_trigger_teleport = "!"
+    }
+    t_trigger_teleport_box:incl =
+    {
+      t_Trigger = "!"
+      t_Teleport = "!"
+      t_Bounds = "!"
+    }
+    trigger_teleport_box:form =
+    {
+      t_trigger_teleport_box = "!"
+    }
+    t_ChangeLevel:incl =
+    {
+      map: =
+      {
+        txt = "&"
+        hint = "Next map"
+      }
+      message: =
+      {
+        txt = "&"
+        hint = "Intermission text (limit one page)"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "No intermission"
+      }
+    }
+    t_trigger_changelevel:incl =
+    {
+      t_Trigger = "!"
+      t_ChangeLevel = "!"
+    }
+    trigger_changelevel:form =
+    {
+      t_trigger_changelevel = "!"
+    }
+    t_target_changelevel:incl =
+    {
+      t_Appearflags = "!"
+      t_Targetname = "!"
+      t_ChangeLevel = "!"
+    }
+    target_changelevel:form =
+    {
+      t_target_changelevel = "!"
+    }
+    t_info_intermission:incl =
+    {
+      t_Fog = "!"
+      t_Appearflags = "!"
+      angles: =
+      {
+        txt = "&"
+        hint = "Camera angle (Pitch Yaw Roll, positive pitch down)"
+      }
+      mangle: =
+      {
+        txt = "&"
+        hint = "Camera angle (Pitch Yaw Roll, positive pitch down)"
+      }
+    }
+    info_intermission:form =
+    {
+      t_info_intermission = "!"
+    }
+    t_trigger_relay:incl =
+    {
+      t_Appearflags = "!"
+      t_TriggerSounds = "!"
+      t_Target = "!"
+      t_Targetname = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Only print message once"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Choose one target at random"
+      }
+      message: =
+      {
+        txt = "&"
+        hint = "Print when triggered"
+      }
+      count: =
+      {
+        txt = "&"
+        hint = "Limit uses (then self destruct)"
+      }
+    }
+    trigger_relay:form =
+    {
+      t_trigger_relay = "!"
+    }
+    t_target_state:incl =
+    {
+      t_Appearflags = "!"
+      t_Target = "!"
+      t_Targetname = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Relay"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Inverse"
+      }
+      style: =
+      {
+        txt = "&"
+        hint = "Comparison operator for relay"
+        typ = "C"
+        items = "self = include"$0D"self < include"$0D"self <= include"$0D"sel"
+         "f > include"$0D"self >= include"
+        values = "1"$0D"2"$0D"3"$0D"4"$0D"5"
+      }
+      include: =
+      {
+        txt = "&"
+        hint = "Targetname of entity to monitor"
+      }
+      count: =
+      {
+        txt = "&"
+        hint = "Max state value to cycle to. if > 1, state will be incremented"
+         " on each trigger to a maximum of 'count' before cycling to 0."
+      }
+      state: =
+      {
+        txt = "&"
+        hint = "Value"
+      }
+    }
+    target_state:form =
+    {
+      t_target_state = "!"
+    }
+    t_target_lock:incl =
+    {
+      t_Targetname = "!"
+      t_Appearflags = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Targeted entities start locked"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Lock only"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "Unlock only"
+      }
+      target: =
+      {
+        txt = "&"
+        hint = "Target: acts on all with matching targetname"
+      }
+      target2: =
+      {
+        txt = "&"
+        hint = "Target 2: acts on all with matching targetname"
+      }
+      target3: =
+      {
+        txt = "&"
+        hint = "Target 3: acts on all with matching targetname"
+      }
+      target4: =
+      {
+        txt = "&"
+        hint = "Target 4: acts on all with matching targetname"
+      }
+      wait: =
+      {
+        txt = "&"
+        hint = "Wait before undoing"
+      }
+      rand: =
+      {
+        txt = "&"
+        hint = "Additional random wait"
+      }
+    }
+    target_lock:form =
+    {
+      t_target_lock = "!"
+    }
+    t_trigger_counter:incl =
+    {
+      t_Appearflags = "!"
+      t_Target = "!"
+      t_Targetname = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "No Message"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Repeat"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "Eager Reset"
+      }
+      count: =
+      {
+        txt = "&"
+        hint = "Count before trigger"
+      }
+      message: =
+      {
+        txt = "&"
+        hint = "Message"
+      }
+    }
+    trigger_counter:form =
+    {
+      t_trigger_counter = "!"
+    }
+    t_trigger_timer:incl =
+    {
+      t_Appearflags = "!"
+      t_Target = "!"
+      t_Targetname = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Start On"
+      }
+      count: =
+      {
+        txt = "&"
+        hint = "Limit"
+      }
+      wait: =
+      {
+        txt = "&"
+        hint = "Interval"
+      }
+      rand: =
+      {
+        txt = "&"
+        hint = "Random Extra Interval"
+      }
+    }
+    trigger_timer:form =
+    {
+      t_trigger_timer = "!"
+    }
+    t_target_playercount:incl =
+    {
+      t_Appearflags = "!"
+      t_Target = "!"
+      t_Targetname = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Less Or Equal"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Two Players Per"
+      }
+    }
+    target_playercount:form =
+    {
+      t_target_playercount = "!"
+    }
+    t_func_plat:incl =
+    {
+      t_Appearflags = "!"
+      t_Targetname = "!"
+      t_Func = "!"
+      t_Target = "!"
+      t_AltTarget = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Low trigger volume"
+      }
+      target: =
+      {
+        txt = "&"
+        hint = "Custom activation trigger"
+      }
+      speed: =
+      {
+        txt = "&"
+        hint = "Speed"
+      }
+      height: =
+      {
+        txt = "&"
+        hint = "Travel altitude (can be negative)"
+      }
+      lip: =
+      {
+        txt = "&"
+        hint = "Lip remaining at bottom of move"
+      }
+      dmg: =
+      {
+        txt = "&"
+        hint = "Punishment for banging your head"
+      }
+      wait: =
+      {
+        txt = "&"
+        hint = "Apex pause time"
+      }
+      pos1: =
+      {
+        txt = "&"
+        hint = "Override top position (x y z)"
+      }
+      pos2: =
+      {
+        txt = "&"
+        hint = "Override bottom position (x y z)"
+      }
+      sounds: =
+      {
+        txt = "&"
+        hint = "Sound"
+        typ = "C"
+        items = "Silent"$0D"Base fast"$0D"Chain Slow"
+        values = "-1"$0D"1"$0D"2"
+      }
+    }
+    func_plat:form =
+    {
+      t_func_plat = "!"
+    }
+    t_TrainSounds:incl =
+    {
+      sounds: =
+      {
+        txt = "&"
+        hint = "Sound"
+        typ = "C"
+        items = "Silent/Override"$0D"Ratchet Metal"$0D"Base Lift"
+        values = "0"$0D"1"$0D"2"
+      }
+    }
+    t_Train:incl =
+    {
+      t_Appearflags = "!"
+      t_Targetname = "!"
+      t_TrainSounds = "!"
+      t_Func = "!"
+      t_AltTarget = "!"
+      speed: =
+      {
+        txt = "&"
+        hint = "Speed (units per second)"
+      }
+      target: =
+      {
+        txt = "&"
+        hint = "Target to start at"
+      }
+      dmg: =
+      {
+        txt = "&"
+        hint = "Damage on block"
+      }
+      noise: =
+      {
+        txt = "&"
+        hint = "Override stop sound"
+      }
+      noise1: =
+      {
+        txt = "&"
+        hint = "Override move sound"
+      }
+      pausetime: =
+      {
+        txt = "&"
+        hint = "Default wait time"
+      }
+    }
+    t_Flytrain:incl =
+    {
+      t_Train = "!"
+      width: =
+      {
+        txt = "&"
+        hint = "Horizontal drift range"
+      }
+      height: =
+      {
+        txt = "&"
+        hint = "Vertical drift range"
+      }
+    }
+    t_func_flytrain:incl =
+    {
+      t_Flytrain = "!"
+      width: =
+      {
+        txt = "&"
+        hint = "Horizontal drift range"
+      }
+      height: =
+      {
+        txt = "&"
+        hint = "Vertical drift range"
+      }
+    }
+    func_flytrain:form =
+    {
+      t_func_flytrain = "!"
+    }
+    t_func_flytrain_point:incl =
+    {
+      t_Flytrain = "!"
+      model: =
+      {
+        txt = "&"
+        hint = "Model to use"
+      }
+    }
+    func_flytrain_point:form =
+    {
+      t_func_flytrain_point = "!"
+    }
+    t_func_train:incl =
+    {
+      t_Train = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Speed from path"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Toggle"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "Blend speed smoothly"
+      }
+      health: =
+      {
+        txt = "&"
+        hint = "Health (shootable if > 0)"
+      }
+    }
+    func_train:form =
+    {
+      t_func_train = "!"
+    }
+    t_func_train_point:incl =
+    {
+      t_Train = "!"
+      model: =
+      {
+        txt = "&"
+        hint = "Model to use"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Speed from path"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Toggle"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "Blend speed smoothly"
+      }
+    }
+    func_train_point:form =
+    {
+      t_func_train_point = "!"
+    }
+    t_Bob:incl =
+    {
+      t_Appearflags = "!"
+      t_Targetname = "!"
+      t_TrainSounds = "!"
+      t_Angle = "!"
+      t_Func = "!"
+      t_FuncInvis = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Start off"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Crusher (no reverse)"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "Don't stop until low pos"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X8"
+        cap = "Don't stop until mid pos"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X16"
+        cap = "Don't stop until high pos"
+      }
+      wait: =
+      {
+        txt = "&"
+        hint = "Period (Wavelength)"
+      }
+      distance: =
+      {
+        txt = "&"
+        hint = "Length (Amplitude)"
+      }
+      delay: =
+      {
+        txt = "&"
+        hint = "Starting offset (0-1) (Phase)"
+      }
+      dmg: =
+      {
+        txt = "&"
+        hint = "Damage when blocked"
+      }
+      noise: =
+      {
+        txt = "&"
+        hint = "Override stop sound"
+      }
+      noise1: =
+      {
+        txt = "&"
+        hint = "Override move sound"
+      }
+      pos1: =
+      {
+        txt = "&"
+        hint = "Override peak position (relative)"
+      }
+      pos2: =
+      {
+        txt = "&"
+        hint = "Override trough position (relative)"
+      }
+    }
+    t_func_bobbing:incl =
+    {
+      t_Bob = "!"
+    }
+    func_bobbing:form =
+    {
+      t_func_bobbing = "!"
+    }
+    t_func_bobbing_point:incl =
+    {
+      t_Bob = "!"
+      model: =
+      {
+        txt = "&"
+        hint = "Model to use"
+      }
+    }
+    func_bobbing_point:form =
+    {
+      t_func_bobbing_point = "!"
+    }
+    t_misc_teleporttrain:incl =
+    {
+      t_Flytrain = "!"
+      target: =
+      {
+        txt = "&"
+        hint = "First stop target"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Start invisible"
+      }
+    }
+    misc_teleporttrain:form =
+    {
+      t_misc_teleporttrain = "!"
+    }
+    t_Light:incl =
+    {
+      bbox = '-8 -8 -8 8 8 8'
+      light: =
+      {
+        txt = "&"
+        hint = "Brightness"
+      }
+      _color: =
+      {
+        txt = "&"
+        hint = "Color"
+      }
+      wait: =
+      {
+        txt = "&"
+        hint = "Fade distance multiplier"
+      }
+      mangle: =
+      {
+        txt = "&"
+        hint = "Spotlight aim (yaw pitch roll, neg. pitch is down)"
+      }
+      angle: =
+      {
+        txt = "&"
+        hint = "Spotlight cone angle"
+      }
+      _softangle: =
+      {
+        txt = "&"
+        hint = "Spotlight inner cone angle"
+      }
+      _dirt: =
+      {
+        txt = "&"
+        hint = "Override dirt"
+      }
+      message: =
+      {
+        txt = "&"
+        hint = "override the style string directly for the assigned style (cla"
+         "shes will overwrite each other)"
+      }
+      target: =
+      {
+        txt = "&"
+        hint = "Entity to aim at"
+      }
+      delay: =
+      {
+        txt = "&"
+        hint = "Attenuation"
+        typ = "C"
+        items = "Linear falloff (Default)"$0D"Inverse distance falloff"$0D"Inv"
+         "erse distance squared"$0D"No falloff"$0D"Local minlight"$0D"Inverse "
+         "distance squared B"
+        values = "0"$0D"1"$0D"2"$0D"3"$0D"4"$0D"5"
+      }
+      style: =
+      {
+        txt = "&"
+        hint = "Appearance"
+        typ = "C"
+        items = "Normal"$0D"Fluorescent flicker"$0D"Slow, strong pulse"$0D"Slo"
+         "w pulse, black"$0D"Gentle pulse, no black"$0D"Flicker A"$0D"Flicker "
+         "B"$0D"Candle A"$0D"Candle B"$0D"Candle C"$0D"Fast strobe"$0D"Slow st"
+         "robe"
+        values = "0"$0D"10"$0D"2"$0D"11"$0D"5"$0D"1"$0D"6"$0D"3"$0D"7"$0D"8"$0D
+         "4"$0D"9"
+      }
+    }
+    t_LightTriggerable:incl =
+    {
+      t_Light = "!"
+      t_Targetname = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Start off"
+      }
+    }
+    t_Flame:incl =
+    {
+      volume: =
+      {
+        txt = "&"
+        hint = "Crackle Volume"
+      }
+      distance: =
+      {
+        txt = "&"
+        hint = "Crackle Range"
+        typ = "C"
+        items = "Ambient"$0D"Monster Idle"$0D"Monster Bark"$0D"Global (plz no)"
+        values = "0"$0D"1"$0D"2"$0D"3"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Silent"
+      }
+    }
+    t_light:incl =
+    {
+      t_LightTriggerable = "!"
+    }
+    light:form =
+    {
+      t_light = "!"
+    }
+    t_light_fluoro:incl =
+    {
+      t_LightTriggerable = "!"
+    }
+    light_fluoro:form =
+    {
+      t_light_fluoro = "!"
+    }
+    t_light_fluorospark:incl =
+    {
+      t_Light = "!"
+    }
+    light_fluorospark:form =
+    {
+      t_light_fluorospark = "!"
+    }
+    t_light_globe:incl =
+    {
+      t_Light = "!"
+    }
+    light_globe:form =
+    {
+      t_light_globe = "!"
+    }
+    t_light_torch_small_walltorch:incl =
+    {
+      bbox = '-4 -4 -12 4 4 20'
+      t_Light = "!"
+      t_Flame = "!"
+    }
+    light_torch_small_walltorch:form =
+    {
+      t_light_torch_small_walltorch = "!"
+    }
+    t_light_flame_large_yellow:incl =
+    {
+      bbox = '-8 -8 -12 8 8 20'
+      t_Light = "!"
+      t_Flame = "!"
+    }
+    light_flame_large_yellow:form =
+    {
+      t_light_flame_large_yellow = "!"
+    }
+    t_light_flame_small_yellow:incl =
+    {
+      bbox = '-4 -4 -12 4 4 20'
+      t_Light = "!"
+      t_Flame = "!"
+    }
+    light_flame_small_yellow:form =
+    {
+      t_light_flame_small_yellow = "!"
+    }
+    t_light_flame_small_white:incl =
+    {
+      bbox = '-4 -4 -12 4 4 20'
+      t_Light = "!"
+      t_Flame = "!"
+    }
+    light_flame_small_white:form =
+    {
+      t_light_flame_small_white = "!"
+    }
+    t_light_candle:incl =
+    {
+      bbox = '-4 -4 0 4 4 16'
+      t_LightTriggerable = "!"
+      width: =
+      {
+        txt = "&"
+        hint = "Width"
+        typ = "C"
+        items = "Random"$0D"Narrow"$0D"Medium"$0D"Thick"
+        values = "0"$0D"1"$0D"2"$0D"3"
+      }
+      height: =
+      {
+        txt = "&"
+        hint = "Height"
+        typ = "C"
+        items = "Random"$0D"Short"$0D"Medium"$0D"Tall"
+        values = "0"$0D"1"$0D"2"$0D"3"
+      }
+    }
+    light_candle:form =
+    {
+      t_light_candle = "!"
+    }
+    t_target_lightstyle:incl =
+    {
+      t_Appearflags = "!"
+      t_Targetname = "!"
+      message: =
+      {
+        txt = "&"
+        hint = "Brightness pattern"
+      }
+      style: =
+      {
+        txt = "&"
+        hint = "Lightstyle to change (0-63)"
+      }
+      count: =
+      {
+        txt = "&"
+        hint = "Limit uses"
+      }
+      delay: =
+      {
+        txt = "&"
+        hint = "Delay before activation"
+      }
+      target: =
+      {
+        txt = "&"
+        hint = "Target: acts on all with matching targetname"
+      }
+      target2: =
+      {
+        txt = "&"
+        hint = "Target 2: acts on all with matching targetname"
+      }
+      target3: =
+      {
+        txt = "&"
+        hint = "Target 3: acts on all with matching targetname"
+      }
+      target4: =
+      {
+        txt = "&"
+        hint = "Target 4: acts on all with matching targetname"
+      }
+    }
+    target_lightstyle:form =
+    {
+      t_target_lightstyle = "!"
+    }
+    t_Explobox:incl =
+    {
+      t_Appearflags = "!"
+      t_Target = "!"
+      t_Targetname = "!"
+      health: =
+      {
+        txt = "&"
+        hint = "Hit points (-1 to be immune and trigger-only)"
+      }
+      wait: =
+      {
+        txt = "&"
+        hint = "Respawn interval. Default 0 is never respawn."
+      }
+      count: =
+      {
+        txt = "&"
+        hint = "Respawn count. Default 0 is respawn forever (if 'wait' is set)"
+         ". -4 will auto-scale the count to the number of clients in coop."
+      }
+    }
+    t_misc_explobox:incl =
+    {
+      bbox = '0 0 0 32 32 64'
+      t_Explobox = "!"
+      t_FuncInvis = "!"
+    }
+    misc_explobox:form =
+    {
+      t_misc_explobox = "!"
+    }
+    t_misc_explobox2:incl =
+    {
+      bbox = '0 0 0 32 32 32'
+      t_Explobox = "!"
+      t_FuncInvis = "!"
+    }
+    misc_explobox2:form =
+    {
+      t_misc_explobox2 = "!"
+    }
+    t_func_explobox:incl =
+    {
+      t_Explobox = "!"
+      t_FuncInvis = "!"
+      dmg: =
+      {
+        txt = "&"
+        hint = "Explosion damage (-1 will force 0)"
+      }
+    }
+    func_explobox:form =
+    {
+      t_func_explobox = "!"
+    }
+    t_info_null:incl =
+    {
+      t_Targetname = "!"
+    }
+    info_null:form =
+    {
+      t_info_null = "!"
+    }
+    t_info_notnull:incl =
+    {
+      t_Appearflags = "!"
+      t_Target = "!"
+      t_Targetname = "!"
+      use: =
+      {
+        txt = "&"
+        hint = "self.use"
+      }
+      think: =
+      {
+        txt = "&"
+        hint = "self.think"
+      }
+      nextthink: =
+      {
+        txt = "&"
+        hint = "nextthink"
+      }
+      noise: =
+      {
+        txt = "&"
+        hint = "noise"
+      }
+      touch: =
+      {
+        txt = "&"
+        hint = "self.touch"
+      }
+    }
+    info_notnull:form =
+    {
+      t_info_notnull = "!"
+    }
+    t_misc_external_map:incl =
+    {
+      _external_map: =
+      {
+        txt = "&"
+        hint = "Filename of .map to import"
+      }
+      _external_map_classname: =
+      {
+        txt = "&"
+        hint = "Classname to turn imported worldspawn into"
+      }
+      _external_map_angles: =
+      {
+        txt = "&"
+        hint = "Rotation (pitch yaw roll, negative pitch is up)"
+      }
+      _external_map_angle: =
+      {
+        txt = "&"
+        hint = "Rotation (yaw only)"
+      }
+      _external_map_scale: =
+      {
+        txt = "&"
+        hint = "Scale (one value or x y z)"
+      }
+    }
+    misc_external_map:form =
+    {
+      t_misc_external_map = "!"
+    }
+    t_misc_model:incl =
+    {
+      t_Appearflags = "!"
+      t_Targetname = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Trigger Visibility"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Start Invisible"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "Play 2nd anim once"
+      }
+      model: =
+      {
+        txt = "&"
+        hint = "Filename of model (mdl or bsp)"
+      }
+      mangle: =
+      {
+        txt = "&"
+        hint = "Orientation (pitch yaw roll, positive pitch is down)"
+      }
+      frame: =
+      {
+        txt = "&"
+        hint = "frame of mdl to display"
+      }
+      skin: =
+      {
+        txt = "&"
+        hint = "skin of mdl to display"
+      }
+      pos1: =
+      {
+        txt = "&"
+        hint = "override frame with an animation (firstframe startframe lastfr"
+         "ame)"
+      }
+      pos2: =
+      {
+        txt = "&"
+        hint = "if triggerable, second animation to toggle to"
+      }
+      ideal_yaw: =
+      {
+        txt = "&"
+        hint = "Randomize orientation"
+        typ = "C"
+        items = "Set Orientation"$0D"Random yaw"
+        values = "0"$0D"1"
+      }
+    }
+    misc_model:form =
+    {
+      t_misc_model = "!"
+    }
+    t_target_heal:incl =
+    {
+      t_Targetname = "!"
+      t_Appearflags = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Overheal (ignore max)"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Ignore non-players"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "First trigger activates"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X8"
+        cap = "Auto-set 'count' on trigger-first"
+      }
+      target: =
+      {
+        txt = "&"
+        hint = "Target: acts on all with matching targetname"
+      }
+      target2: =
+      {
+        txt = "&"
+        hint = "Target 2: acts on all with matching targetname"
+      }
+      target3: =
+      {
+        txt = "&"
+        hint = "Target 3: acts on all with matching targetname"
+      }
+      target4: =
+      {
+        txt = "&"
+        hint = "Target 4: acts on all with matching targetname"
+      }
+      healamount: =
+      {
+        txt = "&"
+        hint = "Healing per use"
+      }
+      count: =
+      {
+        txt = "&"
+        hint = "Lifetime healing limit"
+      }
+      strength: =
+      {
+        txt = "&"
+        hint = "Scale auto-limit (-4 to scale by number of clients)"
+      }
+      lip: =
+      {
+        txt = "&"
+        hint = "Minimum target health for auto-limit"
+      }
+      max_health: =
+      {
+        txt = "&"
+        hint = "Maximum target health for auto-limit"
+      }
+    }
+    target_heal:form =
+    {
+      t_target_heal = "!"
+    }
+    t_target_kill:incl =
+    {
+      t_Targetname = "!"
+      t_Appearflags = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Murder monsters instead of removing"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Remove one target at random"
+      }
+      target: =
+      {
+        txt = "&"
+        hint = "Target: removes all with matching targetname"
+      }
+      target2: =
+      {
+        txt = "&"
+        hint = "Target 2: removes all with matching targetname"
+      }
+      target3: =
+      {
+        txt = "&"
+        hint = "Target 3: removes all with matching targetname"
+      }
+      target4: =
+      {
+        txt = "&"
+        hint = "Target 4: removes all with matching targetname"
+      }
+      killtarget: =
+      {
+        txt = "&"
+        hint = "Killtarget: removes all with matching targetname"
+      }
+      delay: =
+      {
+        txt = "&"
+        hint = "Delay before removing"
+      }
+    }
+    target_kill:form =
+    {
+      t_target_kill = "!"
+    }
+    t_target_autosave:incl =
+    {
+      t_Targetname = "!"
+      t_Appearflags = "!"
+      message: =
+      {
+        txt = "&"
+        hint = "Change save filename"
+      }
+    }
+    target_autosave:form =
+    {
+      t_target_autosave = "!"
+    }
+    t_misc_fireball:incl =
+    {
+      t_Appearflags = "!"
+      t_Targetname = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Start off"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Launch when triggered (no toggle)"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "Explode on contact"
+      }
+      delay: =
+      {
+        txt = "&"
+        hint = "Pause before first ball"
+      }
+      wait: =
+      {
+        txt = "&"
+        hint = "Pause between balls"
+      }
+      rand: =
+      {
+        txt = "&"
+        hint = "Random extra pause before ball"
+      }
+      speed: =
+      {
+        txt = "&"
+        hint = "Speed"
+      }
+      movedir: =
+      {
+        txt = "&"
+        hint = "Launch Dir"
+      }
+      mangle: =
+      {
+        txt = "&"
+        hint = "Random velocity addition (x y z)"
+      }
+      dmg: =
+      {
+        txt = "&"
+        hint = "Contact damage"
+      }
+    }
+    misc_fireball:form =
+    {
+      t_misc_fireball = "!"
+    }
+    t_target_multiprint:incl =
+    {
+      t_Appearflags = "!"
+      t_Targetname = "!"
+      t_Target = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Silent"
+      }
+      message: =
+      {
+        txt = "&"
+        hint = "First print"
+      }
+      noise: =
+      {
+        txt = "&"
+        hint = "Second print"
+      }
+      noise1: =
+      {
+        txt = "&"
+        hint = "Third print"
+      }
+      noise2: =
+      {
+        txt = "&"
+        hint = "Fourth print"
+      }
+      noise3: =
+      {
+        txt = "&"
+        hint = "Fifth print"
+      }
+      noise4: =
+      {
+        txt = "&"
+        hint = "Sixth print"
+      }
+    }
+    target_multiprint:form =
+    {
+      t_target_multiprint = "!"
+    }
+    t_Shooter:incl =
+    {
+      t_Appearflags = "!"
+      t_Target = "!"
+      t_Targetname = "!"
+      t_Angle = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Spike"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Laser"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "Ogre Grenade"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X16"
+        cap = "Fire At Activator"
+      }
+      movedir: =
+      {
+        txt = "&"
+        hint = "Override launch vector (x y z)"
+      }
+      volume: =
+      {
+        txt = "&"
+        hint = "Override sound volume"
+      }
+      delay: =
+      {
+        txt = "&"
+        hint = "Pause before first shot"
+      }
+      speed: =
+      {
+        txt = "&"
+        hint = "Launch velocity for grenades"
+      }
+    }
+    t_trap_spikeshooter:incl =
+    {
+      t_Shooter = "!"
+    }
+    trap_spikeshooter:form =
+    {
+      t_trap_spikeshooter = "!"
+    }
+    t_trap_shooter:incl =
+    {
+      t_Shooter = "!"
+      delay: =
+      {
+        txt = "&"
+        hint = "Delay before first shot, so multiple shooters can be staggered"
+      }
+      wait: =
+      {
+        txt = "&"
+        hint = "Interval between shots"
+      }
+      rand: =
+      {
+        txt = "&"
+        hint = "Random extra time between shots"
+      }
+    }
+    trap_shooter:form =
+    {
+      t_trap_shooter = "!"
+    }
+    t_trap_lightning:incl =
+    {
+      t_Appearflags = "!"
+      t_Target = "!"
+      t_Targetname = "!"
+      t_Angle = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "One-shot"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Aim At Activator"
+      }
+      movedir: =
+      {
+        txt = "&"
+        hint = "Override aim vector (x y z) - length of vector sets distance"
+      }
+      delay: =
+      {
+        txt = "&"
+        hint = "Pause before firing, if oneshot"
+      }
+      strength: =
+      {
+        txt = "&"
+        hint = "Beam Power"
+        typ = "C"
+        items = "Small, 10dmg"$0D"Medium, 30dmg"$0D"Large, instagib"
+        values = "1"$0D"2"$0D"3"
+      }
+    }
+    trap_lightning:form =
+    {
+      t_trap_lightning = "!"
+    }
+    t_Wall:incl =
+    {
+      t_Appearflags = "!"
+      t_Targetname = "!"
+      t_Func = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Illusionary"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Toggle Visible+Solid"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "Start Invisible"
+      }
+      noise: =
+      {
+        txt = "&"
+        hint = "Sound to play when triggered"
+      }
+      noise2: =
+      {
+        txt = "&"
+        hint = "Sound to accompany touch message"
+      }
+      message: =
+      {
+        txt = "&"
+        hint = "Message when touched"
+      }
+      wait: =
+      {
+        txt = "&"
+        hint = "Flip back after this long"
+      }
+      alpha: =
+      {
+        txt = "&"
+        hint = "Opacity (GLQuake+ only) (-1 = 0)"
+      }
+    }
+    t_func_wall:incl =
+    {
+      t_Wall = "!"
+    }
+    func_wall:form =
+    {
+      t_func_wall = "!"
+    }
+    t_func_wall_point:incl =
+    {
+      t_Wall = "!"
+      model: =
+      {
+        txt = "&"
+        hint = "External model"
+      }
+      mangle: =
+      {
+        txt = "&"
+        hint = "Orientation of external model"
+      }
+    }
+    func_wall_point:form =
+    {
+      t_func_wall_point = "!"
+    }
+    t_func_illusionary:incl =
+    {
+      t_Appearflags = "!"
+      t_Func = "!"
+      alpha: =
+      {
+        txt = "&"
+        hint = "Opacity (GLQuake only) (-1 = 0)"
+      }
+    }
+    func_illusionary:form =
+    {
+      t_func_illusionary = "!"
+    }
+    t_func_episodegate:incl =
+    {
+      t_Appearflags = "!"
+      t_Target = "!"
+      t_Func = "!"
+      t_svFlags = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Episode 1"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Episode 2"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "Episode 3"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X8"
+        cap = "Episode 4"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X16"
+        cap = "Reverse Outcome"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X32"
+        cap = "Require All Specified"
+      }
+    }
+    func_episodegate:form =
+    {
+      t_func_episodegate = "!"
+    }
+    t_func_bossgate:incl =
+    {
+      t_Appearflags = "!"
+      t_Target = "!"
+      t_Func = "!"
+    }
+    func_bossgate:form =
+    {
+      t_func_bossgate = "!"
+    }
+    t_FuncOffline:incl =
+    {
+      t_Phong = "!"
+    }
+    t_func_group:incl =
+    {
+      t_FuncOffline = "!"
+    }
+    func_group:form =
+    {
+      t_func_group = "!"
+    }
+    t_func_detail:incl =
+    {
+      t_FuncOffline = "!"
+    }
+    func_detail:form =
+    {
+      t_func_detail = "!"
+    }
+    t_func_detail_wall:incl =
+    {
+      t_FuncOffline = "!"
+    }
+    func_detail_wall:form =
+    {
+      t_func_detail_wall = "!"
+    }
+    t_func_detail_illusionary:incl =
+    {
+      t_FuncOffline = "!"
+    }
+    func_detail_illusionary:form =
+    {
+      t_func_detail_illusionary = "!"
+    }
+    t_func_detail_fence:incl =
+    {
+      t_FuncOffline = "!"
+    }
+    func_detail_fence:form =
+    {
+      t_func_detail_fence = "!"
+    }
+    t_Ambient:incl =
+    {
+      t_Appearflags = "!"
+      distance: =
+      {
+        txt = "&"
+        hint = "Attenuation"
+        typ = "C"
+        items = "Ambient"$0D"Monster Idle"$0D"Monster Bark"$0D"Global"
+        values = "0"$0D"1"$0D"2"$0D"3"
+      }
+    }
+    t_ambient_sound:incl =
+    {
+      t_Ambient = "!"
+      noise: =
+      {
+        txt = "&"
+        hint = "path to .wav"
+      }
+      volume: =
+      {
+        txt = "&"
+        hint = "Volume"
+      }
+    }
+    ambient_sound:form =
+    {
+      t_ambient_sound = "!"
+    }
+    t_ambient_suck_wind:incl =
+    {
+      t_Ambient = "!"
+      volume: =
+      {
+        txt = "&"
+        hint = "Volume"
+      }
+    }
+    ambient_suck_wind:form =
+    {
+      t_ambient_suck_wind = "!"
+    }
+    t_ambient_drone:incl =
+    {
+      t_Ambient = "!"
+      volume: =
+      {
+        txt = "&"
+        hint = "Volume"
+      }
+    }
+    ambient_drone:form =
+    {
+      t_ambient_drone = "!"
+    }
+    t_ambient_flouro_buzz:incl =
+    {
+      t_Ambient = "!"
+      volume: =
+      {
+        txt = "&"
+        hint = "Volume"
+      }
+    }
+    ambient_flouro_buzz:form =
+    {
+      t_ambient_flouro_buzz = "!"
+    }
+    t_ambient_drip:incl =
+    {
+      t_Ambient = "!"
+      volume: =
+      {
+        txt = "&"
+        hint = "Volume"
+      }
+    }
+    ambient_drip:form =
+    {
+      t_ambient_drip = "!"
+    }
+    t_ambient_comp_hum:incl =
+    {
+      t_Ambient = "!"
+      volume: =
+      {
+        txt = "&"
+        hint = "Volume"
+      }
+    }
+    ambient_comp_hum:form =
+    {
+      t_ambient_comp_hum = "!"
+    }
+    t_ambient_thunder:incl =
+    {
+      t_Ambient = "!"
+      volume: =
+      {
+        txt = "&"
+        hint = "Volume"
+      }
+    }
+    ambient_thunder:form =
+    {
+      t_ambient_thunder = "!"
+    }
+    t_ambient_light_buzz:incl =
+    {
+      t_Ambient = "!"
+      volume: =
+      {
+        txt = "&"
+        hint = "Volume"
+      }
+    }
+    ambient_light_buzz:form =
+    {
+      t_ambient_light_buzz = "!"
+    }
+    t_ambient_swamp1:incl =
+    {
+      t_Ambient = "!"
+      volume: =
+      {
+        txt = "&"
+        hint = "Volume"
+      }
+    }
+    ambient_swamp1:form =
+    {
+      t_ambient_swamp1 = "!"
+    }
+    t_ambient_swamp2:incl =
+    {
+      t_Ambient = "!"
+      volume: =
+      {
+        txt = "&"
+        hint = "Volume"
+      }
+    }
+    ambient_swamp2:form =
+    {
+      t_ambient_swamp2 = "!"
+    }
+    t_target_sound:incl =
+    {
+      t_Ambient = "!"
+      t_Targetname = "!"
+      noise: =
+      {
+        txt = "&"
+        hint = "path to .wav"
+      }
+      noise1: =
+      {
+        txt = "&"
+        hint = "optional additional .wav to cycle"
+      }
+      noise2: =
+      {
+        txt = "&"
+        hint = "optional additional .wav to cycle"
+      }
+      noise3: =
+      {
+        txt = "&"
+        hint = "optional additional .wav to cycle"
+      }
+      noise4: =
+      {
+        txt = "&"
+        hint = "optional additional .wav to cycle"
+      }
+      volume: =
+      {
+        txt = "&"
+        hint = "Volume"
+      }
+      delay: =
+      {
+        txt = "&"
+        hint = "Delay"
+      }
+      count: =
+      {
+        txt = "&"
+        hint = "Limit Uses"
+      }
+      wait: =
+      {
+        txt = "&"
+        hint = "Time between sounds, if toggle"
+      }
+      rand: =
+      {
+        txt = "&"
+        hint = "Random extra time between sounds, if toggle"
+      }
+      style: =
+      {
+        txt = "&"
+        hint = "Force sound channel"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Random next sound"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Play on player"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "Toggle"
+      }
+      target: =
+      {
+        txt = "&"
+        hint = "Optional target to play sound on"
+      }
+    }
+    target_sound:form =
+    {
+      t_target_sound = "!"
+    }
+    t_Fog:incl =
+    {
+      fog_density: =
+      {
+        txt = "&"
+        hint = "Fog Density (-1 for clear)"
+      }
+      fog_color: =
+      {
+        txt = "&"
+        hint = "Fog Color"
+      }
+      fog_sky: =
+      {
+        txt = "&"
+        hint = "Sky Fog Density (-1 for clear sky)"
+      }
+    }
+    t_FogShift:incl =
+    {
+      fog_density: =
+      {
+        txt = "&"
+        hint = "Start Fog Density (-1 for clear)"
+      }
+      fog_color: =
+      {
+        txt = "&"
+        hint = "Start Fog Color"
+      }
+      fog_sky: =
+      {
+        txt = "&"
+        hint = "Start Sky Fog Density (-1 for clear sky)"
+      }
+      fog_density2: =
+      {
+        txt = "&"
+        hint = "End Fog Density (-1 for clear)"
+      }
+      fog_color2: =
+      {
+        txt = "&"
+        hint = "End Fog Color"
+      }
+      fog_sky2: =
+      {
+        txt = "&"
+        hint = "End Sky Fog Density (-1 for clear sky)"
+      }
+    }
+    t_trigger_fogblend:incl =
+    {
+      t_Appearflags = "!"
+      t_Targetname = "!"
+      t_FogShift = "!"
+      distance: =
+      {
+        txt = "&"
+        hint = "Length of blend distance (defaults to size of trigger)"
+      }
+      angle: =
+      {
+        txt = "&"
+        hint = "Axis of motion of blend (points toward end values)"
+      }
+    }
+    trigger_fogblend:form =
+    {
+      t_trigger_fogblend = "!"
+    }
+    t_target_fogblend:incl =
+    {
+      t_Appearflags = "!"
+      t_Targetname = "!"
+      t_FogShift = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "One-Way Only"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Reverse Start/End"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "All clients"
+      }
+      delay: =
+      {
+        txt = "&"
+        hint = "Pause before starting blend"
+      }
+      speed: =
+      {
+        txt = "&"
+        hint = "Time to blend (-1 for instant)"
+      }
+      speed2: =
+      {
+        txt = "&"
+        hint = "Time to blend back, if different (-1 for instant)"
+      }
+    }
+    target_fogblend:form =
+    {
+      t_target_fogblend = "!"
+    }
+    t_func_void:incl =
+    {
+      t_Target = "!"
+      t_Appearflags = "!"
+      delay: =
+      {
+        txt = "&"
+        hint = "how long the player should 'fall' before the splat"
+      }
+      height: =
+      {
+        txt = "&"
+        hint = "how high above the func_void the plunge trigger should spawn. "
+         "do not make this high enough that players will touch it without fall"
+         "ing in or they'll hear random screaming noises as they walk around a"
+         "nd that'll be strange."
+      }
+      lip: =
+      {
+        txt = "&"
+        hint = "distance to raise the visual model"
+      }
+      dmg: =
+      {
+        txt = "&"
+        hint = "pain to apply before salvation teleport"
+      }
+      fadecolor: =
+      {
+        txt = "&"
+        hint = "color to fade the screen to while falling"
+      }
+      noise: =
+      {
+        txt = "&"
+        hint = "fall sound"
+      }
+      noise2: =
+      {
+        txt = "&"
+        hint = "splat sound"
+      }
+    }
+    func_void:form =
+    {
+      t_func_void = "!"
+    }
+    t_Particlefield:incl =
+    {
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Start on"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Suck inward"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "Blow outward"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X8"
+        cap = "Single burst when triggered"
+      }
+      speed: =
+      {
+        txt = "&"
+        hint = "Clumps per second"
+      }
+      speed2: =
+      {
+        txt = "&"
+        hint = "Dots per clump"
+      }
+      health: =
+      {
+        txt = "&"
+        hint = "Color"
+        typ = "C"
+        items = "Dark grey"$0D"Light grey"$0D"Dark dirt brown"$0D"Light dirt b"
+         "rown"$0D"Dark sky blue"$0D"Light sky blue"$0D"Dark grass green"$0D"L"
+         "ight grass green"$0D"Dark red"$0D"Red"$0D"Dark green"$0D"Greenish or"
+         "ange "$0D"Copper"$0D"Gold"$0D"Dark flesh"$0D"Light flesh"$0D"Pale pu"
+         "rple"$0D"Dull purple"$0D"Reddish purple"$0D"Dark reddish purple"$0D"E"
+         "ggshell"$0D"Dark eggshell"$0D"Turquoise"$0D"Dark turquoise"$0D"Yello"
+         "w"$0D"Dark yellow"$0D"Rich blue"$0D"Dark blue"$0D"Deep lava"$0D"Brig"
+         "ht lava"$0D"Cyan/yellow/white confetti"$0D"Red/yellow/white confetti"
+        values = "0"$0D"8"$0D"16"$0D"24"$0D"32"$0D"40"$0D"48"$0D"56"$0D"64"$0D
+         "72"$0D"80"$0D"88"$0D"96"$0D"104"$0D"112"$0D"120"$0D"128"$0D"136"$0D"1"
+         "44"$0D"152"$0D"160"$0D"168"$0D"176"$0D"184"$0D"192"$0D"200"$0D"208"$0D
+         "216"$0D"224"$0D"232"$0D"240"$0D"248"
+      }
+      movedir: =
+      {
+        txt = "&"
+        hint = "Velocity of particles (x y z)"
+      }
+      wait: =
+      {
+        txt = "&"
+        hint = "Interval"
+      }
+      velocity: =
+      {
+        txt = "&"
+        hint = "Direction of optional sweep effect (x y z)"
+      }
+      distance: =
+      {
+        txt = "&"
+        hint = "Sleep if all players are further than this distance"
+      }
+      target: =
+      {
+        txt = "&"
+        hint = "Optional name of entity to center effect on"
+      }
+    }
+    t_misc_particlefield_box:incl =
+    {
+      t_Targetname = "!"
+      t_Appearflags = "!"
+      t_Bounds = "!"
+      t_Particlefield = "!"
+    }
+    misc_particlefield_box:form =
+    {
+      t_misc_particlefield_box = "!"
+    }
+    t_misc_particlefield:incl =
+    {
+      t_Targetname = "!"
+      t_Appearflags = "!"
+      t_Particlefield = "!"
+    }
+    misc_particlefield:form =
+    {
+      t_misc_particlefield = "!"
+    }
+    t_target_screenshake:incl =
+    {
+      t_Targetname = "!"
+      t_Appearflags = "!"
+      length: =
+      {
+        txt = "&"
+        hint = "Duration of full intensity (sustain)"
+      }
+      delay: =
+      {
+        txt = "&"
+        hint = "Time to ramp up from 0 (attack)"
+      }
+      wait: =
+      {
+        txt = "&"
+        hint = "Time to ramp down quake intensity to 0."
+      }
+      strength: =
+      {
+        txt = "&"
+        hint = "Intensity of quake. 1 is a hearty rumble, 10 is spasmodic bord"
+         "ering on hilarious."
+      }
+      distance: =
+      {
+        txt = "&"
+        hint = "Attenuation distance; 0 is global"
+      }
+    }
+    target_screenshake:form =
+    {
+      t_target_screenshake = "!"
+    }
+    t_target_explosion:incl =
+    {
+      t_Targetname = "!"
+      t_Appearflags = "!"
+      t_Deathtype = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Tarbaby blast "
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Puff blast"
+      }
+      count: =
+      {
+        txt = "&"
+        hint = "Repeat count"
+      }
+      delay: =
+      {
+        txt = "&"
+        hint = "Delay before first blast"
+      }
+      wait: =
+      {
+        txt = "&"
+        hint = "Wait between blasts"
+      }
+      rand: =
+      {
+        txt = "&"
+        hint = "Random extra wait before blasts"
+      }
+      size: =
+      {
+        txt = "&"
+        hint = "Explode somewhere randomly chosen within a box of this size (x"
+         " y z)"
+      }
+      dmg: =
+      {
+        txt = "&"
+        hint = "Splash damage"
+      }
+    }
+    target_explosion:form =
+    {
+      t_target_explosion = "!"
+    }
+    t_target_telefog:incl =
+    {
+      t_Targetname = "!"
+      t_Appearflags = "!"
+      count: =
+      {
+        txt = "&"
+        hint = "Repeat count"
+      }
+      delay: =
+      {
+        txt = "&"
+        hint = "Delay before first flash"
+      }
+      wait: =
+      {
+        txt = "&"
+        hint = "Wait between flashes"
+      }
+      size: =
+      {
+        txt = "&"
+        hint = "Flash somewhere randomly chosen within a box of this size (x y"
+         " z)"
+      }
+      rand: =
+      {
+        txt = "&"
+        hint = "Random extra before flashes"
+      }
+    }
+    target_telefog:form =
+    {
+      t_target_telefog = "!"
+    }
+    t_air_bubbles:incl =
+    {
+      t_Appearflags = "!"
+      t_Targetname = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Start off"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X8"
+        cap = "Single burst when triggered"
+      }
+      wait: =
+      {
+        txt = "&"
+        hint = "Bubble interval"
+      }
+      rand: =
+      {
+        txt = "&"
+        hint = "Random extra interval"
+      }
+      size: =
+      {
+        txt = "&"
+        hint = "Emit from random places within a box of this size"
+      }
+      count: =
+      {
+        txt = "&"
+        hint = "Bubbles to emit at once if single burst"
+      }
+      distance: =
+      {
+        txt = "&"
+        hint = "Sleep if all players are further than this distance"
+      }
+    }
+    air_bubbles:form =
+    {
+      t_air_bubbles = "!"
+    }
+    t_target_debris:incl =
+    {
+      t_Appearflags = "!"
+      t_Targetname = "!"
+      count: =
+      {
+        txt = "&"
+        hint = "Number of chunks"
+      }
+      delay: =
+      {
+        txt = "&"
+        hint = "Delay before first emit"
+      }
+      size: =
+      {
+        txt = "&"
+        hint = "Random location within bounds"
+      }
+      speed: =
+      {
+        txt = "&"
+        hint = "Speed of chunks"
+      }
+      mangle: =
+      {
+        txt = "&"
+        hint = "Specify chunk direction"
+      }
+      frame: =
+      {
+        txt = "&"
+        hint = "Set frame on all debris"
+      }
+      skin: =
+      {
+        txt = "&"
+        hint = "Set skin on all debris"
+        typ = "C"
+        items = "Wizbrick brown"$0D"Plaster brown"$0D"Runic grey"$0D"Rusty met"
+         "al"$0D"Gloom red"$0D"Swampy green"$0D"Elder blue"$0D"Hottt"
+        values = "0"$0D"1"$0D"2"$0D"3"$0D"4"$0D"5"$0D"6"$0D"7"
+      }
+      alpha: =
+      {
+        txt = "&"
+        hint = "Set alpha on all debris"
+      }
+      model: =
+      {
+        txt = "&"
+        hint = "Choose a model for debris"
+      }
+      model2: =
+      {
+        txt = "&"
+        hint = "Choose a second model for debris"
+      }
+      model3: =
+      {
+        txt = "&"
+        hint = "Choose a third model for debris"
+      }
+      noise: =
+      {
+        txt = "&"
+        hint = "Play a sound when triggered"
+      }
+    }
+    target_debris:form =
+    {
+      t_target_debris = "!"
+    }
+    t_target_fade:incl =
+    {
+      t_Appearflags = "!"
+      t_Targetname = "!"
+      t_Target = "!"
+      t_AltTarget = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "One Way"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Reverse alpha/alpha2"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Blend By Distance"
+      }
+      delay: =
+      {
+        txt = "&"
+        hint = "Pause before starting blend"
+      }
+      alpha: =
+      {
+        txt = "&"
+        hint = "Start alpha"
+      }
+      alpha2: =
+      {
+        txt = "&"
+        hint = "End alpha"
+      }
+      speed: =
+      {
+        txt = "&"
+        hint = "Time to blend (-1 for instant)"
+      }
+      speed2: =
+      {
+        txt = "&"
+        hint = "Time to blend back, if different (-1 for instant)"
+      }
+      distance: =
+      {
+        txt = "&"
+        hint = "Max distance for 'alpha'"
+      }
+      lip: =
+      {
+        txt = "&"
+        hint = "Min distance for 'alpha2'"
+      }
+      angle: =
+      {
+        txt = "&"
+        hint = "Constrain distance to this axis"
+      }
+      noise: =
+      {
+        txt = "&"
+        hint = "Sound to play on begin fade"
+      }
+      noise2: =
+      {
+        txt = "&"
+        hint = "Sound to play on end fade"
+      }
+      noise3: =
+      {
+        txt = "&"
+        hint = "Sound to play on begin reverse fade"
+      }
+      noise4: =
+      {
+        txt = "&"
+        hint = "Sound to play on end reverse fade"
+      }
+    }
+    target_fade:form =
+    {
+      t_target_fade = "!"
+    }
+    t_monster_ogre:incl =
+    {
+      bbox = '-32 -32 -24 32 32 64'
+      t_Monster = "!"
+    }
+    monster_ogre:form =
+    {
+      t_monster_ogre = "!"
+    }
+    t_monster_demon1:incl =
+    {
+      bbox = '-32 -32 -24 32 32 64'
+      t_Monster = "!"
+    }
+    monster_demon1:form =
+    {
+      t_monster_demon1 = "!"
+    }
+    t_monster_shambler:incl =
+    {
+      bbox = '-32 -32 -24 32 32 64'
+      t_Monster = "!"
+    }
+    monster_shambler:form =
+    {
+      t_monster_shambler = "!"
+    }
+    t_monster_knight:incl =
+    {
+      bbox = '-16 -16 -24 16 16 40'
+      t_Monster = "!"
+    }
+    monster_knight:form =
+    {
+      t_monster_knight = "!"
+    }
+    t_monster_army:incl =
+    {
+      bbox = '-16 -16 -24 16 16 40'
+      t_Monster = "!"
+    }
+    monster_army:form =
+    {
+      t_monster_army = "!"
+    }
+    t_monster_wizard:incl =
+    {
+      bbox = '-16 -16 -24 16 16 40'
+      t_Monster = "!"
+    }
+    monster_wizard:form =
+    {
+      t_monster_wizard = "!"
+    }
+    t_monster_dog:incl =
+    {
+      bbox = '-32 -32 -24 32 32 40'
+      t_Monster = "!"
+    }
+    monster_dog:form =
+    {
+      t_monster_dog = "!"
+    }
+    t_monster_zombie:incl =
+    {
+      bbox = '-16 -16 -24 16 16 32'
+      t_Monster = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Crucified"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X2"
+        cap = "Ambush"
+      }
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X4"
+        cap = "Spawn Prone"
+      }
+    }
+    monster_zombie:form =
+    {
+      t_monster_zombie = "!"
+    }
+    t_monster_boss:incl =
+    {
+      bbox = '-128 -128 -24 128 128 256'
+      t_Angle = "!"
+      t_Appearflags = "!"
+      t_Target = "!"
+      t_Targetname = "!"
+      t_Deathtype = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Shootable"
+      }
+      health: =
+      {
+        txt = "&"
+        hint = "Hit points, if shootable"
+      }
+    }
+    monster_boss:form =
+    {
+      t_monster_boss = "!"
+    }
+    t_event_lightning:incl =
+    {
+      t_Appearflags = "!"
+      t_Target = "!"
+      t_Targetname = "!"
+    }
+    event_lightning:form =
+    {
+      t_event_lightning = "!"
+    }
+    t_monster_tarbaby:incl =
+    {
+      bbox = '-16 -16 -24 16 16 24'
+      t_Monster = "!"
+    }
+    monster_tarbaby:form =
+    {
+      t_monster_tarbaby = "!"
+    }
+    t_monster_hell_knight:incl =
+    {
+      bbox = '-16 -16 -24 16 16 40'
+      t_Monster = "!"
+    }
+    monster_hell_knight:form =
+    {
+      t_monster_hell_knight = "!"
+    }
+    t_monster_fish:incl =
+    {
+      bbox = '-16 -16 -16 16 16 16'
+      t_Monster = "!"
+    }
+    monster_fish:form =
+    {
+      t_monster_fish = "!"
+    }
+    t_monster_shalrath:incl =
+    {
+      bbox = '-32 -32 -24 32 32 64'
+      t_Monster = "!"
+    }
+    monster_shalrath:form =
+    {
+      t_monster_shalrath = "!"
+    }
+    t_monster_enforcer:incl =
+    {
+      bbox = '-16 -16 -24 16 16 40'
+      t_Monster = "!"
+    }
+    monster_enforcer:form =
+    {
+      t_monster_enforcer = "!"
+    }
+    t_monster_oldone:incl =
+    {
+      bbox = '-128 -128 -24 128 128 256'
+      t_Appearflags = "!"
+      t_Target = "!"
+      t_Targetname = "!"
+      t_Angle = "!"
+      spawnflags: =
+      {
+        txt = "&"
+        hint = ""
+        typ = "X1"
+        cap = "Don't end level"
+      }
+      strength: =
+      {
+        txt = "&"
+        hint = "Health, in hits"
+      }
+      map: =
+      {
+        txt = "&"
+        hint = "Map to exit to"
+      }
+      message: =
+      {
+        txt = "&"
+        hint = "Intermission text"
+      }
+    }
+    monster_oldone:form =
+    {
+      t_monster_oldone = "!"
+    }
+  }
+}
