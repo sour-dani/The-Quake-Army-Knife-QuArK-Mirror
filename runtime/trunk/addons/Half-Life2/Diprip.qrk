@@ -1,6 +1,7 @@
 QQRKSRC1
 
 {
+  QuArKProtected = "1"
   Description = "D.I.P.R.I.P. Data Add-on"
 
   Diprip directory infos.qctx =
