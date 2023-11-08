@@ -17,8 +17,8 @@ RequestExecutionLevel admin
 !define PRODUCT_NAME "QuArK dependencies"
 !define PRODUCT_NAME_FULL "Quake Army Knife dependencies"
 !define PRODUCT_COPYRIGHT "Copyright (c) 2023"
-!define PRODUCT_VERSION_NUMBER "1.0.0.1"
-!define PRODUCT_VERSION_STRING "1.0.0.1"
+!define PRODUCT_VERSION_NUMBER "1.0.0.2"
+!define PRODUCT_VERSION_STRING "1.0.0.2"
 !define PRODUCT_WEB_SITE "https://quark.sourceforge.io/"
 !define PRODUCT_PUBLISHER "QuArK Development Team"
 
@@ -91,6 +91,32 @@ LangString TEXT_SecWinNT4SP3_DESC ${LANG_RUSSIAN} "Service Pack 3 for Microsoft 
 LangString TEXT_SecWinNT4SP3_DESC ${LANG_POLISH} "Service Pack 3 for Microsoft Windows NT 4."
 LangString TEXT_SecWinNT4SP3_DESC ${LANG_UKRAINIAN} "Service Pack 3 for Microsoft Windows NT 4."
 LangString TEXT_SecWinNT4SP3_DESC ${LANG_ARABIC} "Service Pack 3 for Microsoft Windows NT 4."
+
+LangString TEXT_SecWinNT4SP6_TITLE ${LANG_ENGLISH} "Windows NT4 SP6"
+LangString TEXT_SecWinNT4SP6_TITLE ${LANG_FRENCH} "Windows NT4 SP6"
+LangString TEXT_SecWinNT4SP6_TITLE ${LANG_GERMAN} "Windows NT4 SP6"
+LangString TEXT_SecWinNT4SP6_TITLE ${LANG_TRADCHINESE} "Windows NT4 SP6"
+LangString TEXT_SecWinNT4SP6_TITLE ${LANG_DUTCH} "Windows NT4 SP6"
+LangString TEXT_SecWinNT4SP6_TITLE ${LANG_NORWEGIAN} "Windows NT4 SP6"
+LangString TEXT_SecWinNT4SP6_TITLE ${LANG_FINNISH} "Windows NT4 SP6"
+;LangString TEXT_SecWinNT4SP6_TITLE ${LANG_GREEK} "Windows NT4 SP6"
+LangString TEXT_SecWinNT4SP6_TITLE ${LANG_RUSSIAN} "Windows NT4 SP6"
+LangString TEXT_SecWinNT4SP6_TITLE ${LANG_POLISH} "Windows NT4 SP6"
+LangString TEXT_SecWinNT4SP6_TITLE ${LANG_UKRAINIAN} "Windows NT4 SP6"
+LangString TEXT_SecWinNT4SP6_TITLE ${LANG_ARABIC} "Windows NT4 SP6"
+
+LangString TEXT_SecWinNT4SP6_DESC ${LANG_ENGLISH} "Service Pack 6 for Microsoft Windows NT 4."
+LangString TEXT_SecWinNT4SP6_DESC ${LANG_FRENCH} "Service Pack 6 for Microsoft Windows NT 4."
+LangString TEXT_SecWinNT4SP6_DESC ${LANG_GERMAN} "Service Pack 6 for Microsoft Windows NT 4."
+LangString TEXT_SecWinNT4SP6_DESC ${LANG_TRADCHINESE} "Service Pack 6 for Microsoft Windows NT 4."
+LangString TEXT_SecWinNT4SP6_DESC ${LANG_DUTCH} "Service Pack 6 voor Microsoft Windows NT 4."
+LangString TEXT_SecWinNT4SP6_DESC ${LANG_NORWEGIAN} "Service Pack 6 for Microsoft Windows NT 4."
+LangString TEXT_SecWinNT4SP6_DESC ${LANG_FINNISH} "Service Pack 6 for Microsoft Windows NT 4."
+;LangString TEXT_SecWinNT4SP6_DESC ${LANG_GREEK} "Service Pack 6 for Microsoft Windows NT 4."
+LangString TEXT_SecWinNT4SP6_DESC ${LANG_RUSSIAN} "Service Pack 6 for Microsoft Windows NT 4."
+LangString TEXT_SecWinNT4SP6_DESC ${LANG_POLISH} "Service Pack 6 for Microsoft Windows NT 4."
+LangString TEXT_SecWinNT4SP6_DESC ${LANG_UKRAINIAN} "Service Pack 6 for Microsoft Windows NT 4."
+LangString TEXT_SecWinNT4SP6_DESC ${LANG_ARABIC} "Service Pack 6 for Microsoft Windows NT 4."
 
 LangString TEXT_SecWinInstaller2_TITLE ${LANG_ENGLISH} "Windows Installer 2"
 LangString TEXT_SecWinInstaller2_TITLE ${LANG_FRENCH} "Windows Installer 2"
@@ -274,6 +300,32 @@ LangString TEXT_SecDirectX9_DESC ${LANG_POLISH} "DirectX 9.0."
 LangString TEXT_SecDirectX9_DESC ${LANG_UKRAINIAN} "DirectX 9.0."
 LangString TEXT_SecDirectX9_DESC ${LANG_ARABIC} "DirectX 9.0."
 
+LangString TEXT_SecOpenGL_TITLE ${LANG_ENGLISH} "OpenGL 1.1"
+LangString TEXT_SecOpenGL_TITLE ${LANG_FRENCH} "OpenGL 1.1"
+LangString TEXT_SecOpenGL_TITLE ${LANG_GERMAN} "OpenGL 1.1"
+LangString TEXT_SecOpenGL_TITLE ${LANG_TRADCHINESE} "OpenGL 1.1"
+LangString TEXT_SecOpenGL_TITLE ${LANG_DUTCH} "OpenGL 1.1"
+LangString TEXT_SecOpenGL_TITLE ${LANG_NORWEGIAN} "OpenGL 1.1"
+LangString TEXT_SecOpenGL_TITLE ${LANG_FINNISH} "OpenGL 1.1"
+;LangString TEXT_SecOpenGL_TITLE ${LANG_GREEK} "OpenGL 1.1"
+LangString TEXT_SecOpenGL_TITLE ${LANG_RUSSIAN} "OpenGL 1.1"
+LangString TEXT_SecOpenGL_TITLE ${LANG_POLISH} "OpenGL 1.1"
+LangString TEXT_SecOpenGL_TITLE ${LANG_UKRAINIAN} "OpenGL 1.1"
+LangString TEXT_SecOpenGL_TITLE ${LANG_ARABIC} "OpenGL 1.1"
+
+LangString TEXT_SecOpenGL_DESC ${LANG_ENGLISH} "OpenGL 1.1."
+LangString TEXT_SecOpenGL_DESC ${LANG_FRENCH} "OpenGL 1.1."
+LangString TEXT_SecOpenGL_DESC ${LANG_GERMAN} "OpenGL 1.1."
+LangString TEXT_SecOpenGL_DESC ${LANG_TRADCHINESE} "OpenGL 1.1."
+LangString TEXT_SecOpenGL_DESC ${LANG_DUTCH} "OpenGL 1.1."
+LangString TEXT_SecOpenGL_DESC ${LANG_NORWEGIAN} "OpenGL 1.1."
+LangString TEXT_SecOpenGL_DESC ${LANG_FINNISH} "OpenGL 1.1."
+;LangString TEXT_SecOpenGL_DESC ${LANG_GREEK} "OpenGL 1.1."
+LangString TEXT_SecOpenGL_DESC ${LANG_RUSSIAN} "OpenGL 1.1."
+LangString TEXT_SecOpenGL_DESC ${LANG_POLISH} "OpenGL 1.1."
+LangString TEXT_SecOpenGL_DESC ${LANG_UKRAINIAN} "OpenGL 1.1."
+LangString TEXT_SecOpenGL_DESC ${LANG_ARABIC} "OpenGL 1.1."
+
 ; Installer executable settings
 VIProductVersion "${PRODUCT_VERSION_NUMBER}"
 
@@ -382,25 +434,60 @@ SectionEnd
 
 
 
+; Windows NT SP6 installer ------
+
+Function _isInstalledWinNT4SP6
+  ${IfNot} ${IsWinNT4}
+  ${OrIf} ${AtLeastServicePack} 6
+    Push 1
+    Return
+  ${EndIf}
+  Push 0
+FunctionEnd
+
+Section /o "$(TEXT_SecWinNT4SP6_TITLE)" SecWinNT4SP6
+  SetOutPath $TEMP
+  File "${DEPENDENCYDIR}\WinNT4\sp6ai386.exe"
+  ExecWait "$TEMP\sp6ai386.exe"
+  Delete "$TEMP\sp6ai386.exe"
+SectionEnd
+
+
+
 ; Windows Installer ------
 
-; The VC++ Runtime SP1 2005 installer lowered the requirements to Windows Installer 2.0.
 ; https://docs.microsoft.com/en-us/windows/win32/msi/released-versions-of-windows-installer
+; https://learn.microsoft.com/en-us/windows/win32/msi/instmsi-exe
+
+; Windows Installer 1.x needs SP3 on Windows NT4.
+; Windows Installer 2.0 needs SP6 on Windows NT4.
 
 Function _isInstalledWinInstaller2
-  ;FIXME: Implement!
-  Push 0
+  ; Inspired by: https://learn.microsoft.com/en-us/windows/win32/msi/determining-the-windows-installer-version
+
+  GetDllVersion "$SYSDIR\msi.dll" $R0 $R1
+  IntOp $R1 $R0 / 0x00010000
+  IntCmp $R1 2 0 +2 0
+  Push 1
   Return
+  Push 0
 FunctionEnd
 
 Section /o "$(TEXT_SecWinInstaller2_TITLE)" SecWinInstaller2
   ${If} ${IsWin95}
   ${OrIf} ${IsWin98}
   ${OrIf} ${IsWinME}
-  ${OrIf} ${IsWinNT4}
+    SetOutPath $TEMP
+    File "${DEPENDENCYDIR}\WindowsInstaller\2.0.2600.2\InstMsiA.exe"
+    ExecWait "$TEMP\InstMsiA.exe /q"
+    Delete "$TEMP\InstMsiA.exe"
+    ; FIXME: Check return code: ERROR_SUCCESS_REBOOT_REQUIRED (or ERROR_SUCCESS)
+    ; Reboot
+  ${EndIf}
+  ${If} ${IsWinNT4}
   ${OrIf} ${IsWin2000}
     SetOutPath $TEMP
-    File "${DEPENDENCYDIR}\WindowsInstaller20\InstMsiA.exe"
+    File "${DEPENDENCYDIR}\WindowsInstaller\2.0.2600.2\InstMsiW.exe"
     ExecWait "$TEMP\InstMsiA.exe /q"
     Delete "$TEMP\InstMsiA.exe"
     ; FIXME: Check return code: ERROR_SUCCESS_REBOOT_REQUIRED (or ERROR_SUCCESS)
@@ -459,6 +546,7 @@ SectionEnd
 
 ; See: https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
 
+; The VC++ Runtime SP1 2005 installer lowered the requirements to Windows Installer 2.0.
 ; Note that (at least) the VC2010 installer needs Internet Explorer 3.02 to be installed.
 
 !include "VisualCRuntimeGUIDs.nsh"
@@ -578,10 +666,46 @@ Section /o "$(TEXT_SecDirectX9_TITLE)" SecDirectX9
 AlreadyInstalled:
 SectionEnd
 
+
+
+; OpenGL installer ------
+
+; KB154877
+; ftp://ftp.microsoft.com/Softlib/MSLFILES/Opengl95.exe
+
+Function _isInstalledOpenGL
+  ;Needed for OpenGL on Windows 95 before OSR2.
+  ${IfNot} ${IsWin95}
+    Push 1
+    Return
+  ${EndIf}
+  ${WinVerGetMinor} $0
+  ${If} $0 > 1
+    Push 1
+    Return
+  ${EndIf}
+
+  ;FIXME: Is there a way to check if it's already installed?
+  Push 0
+;  Return
+;AlreadyInstalled:
+;  Push 1
+FunctionEnd
+
+Section /o "$(TEXT_SecOpenGL_TITLE)" SecOpenGL
+  SetOutPath $TEMP
+  File "${DEPENDENCYDIR}\OpenGL\Opengl95.exe"
+  ExecWait "$TEMP\Opengl95.exe"
+  Delete "$TEMP\Opengl95.exe"
+SectionEnd
+
+
+
 ; --------------------
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SecWinNT4SP3} "$(TEXT_SecWinNT4SP3_DESC)"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecWinNT4SP6} "$(TEXT_SecWinNT4SP6_DESC)"
   !insertmacro MUI_DESCRIPTION_TEXT ${SecWinInstaller2} "$(TEXT_SecWinInstaller2_DESC)"
   !insertmacro MUI_DESCRIPTION_TEXT ${SecIE4SP2} "$(TEXT_SecIE4SP2_DESC)"
   !insertmacro MUI_DESCRIPTION_TEXT ${SecVC2005Redist} "$(TEXT_SecVC2005Redist_DESC)"
@@ -589,6 +713,7 @@ SectionEnd
   !insertmacro MUI_DESCRIPTION_TEXT ${SecVC2010Redist} "$(TEXT_SecVC2010Redist_DESC)"
   ;!insertmacro MUI_DESCRIPTION_TEXT ${SecVC2013Redist} "$(TEXT_SecVC2013Redist_DESC)"
   !insertmacro MUI_DESCRIPTION_TEXT ${SecDirectX9} "$(TEXT_SecDirectX9_DESC)"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecOpenGL} "$(TEXT_SecOpenGL_DESC)"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 Function .onInit
@@ -623,6 +748,14 @@ Function .onInit
       SectionGetFlags ${SecWinInstaller2} $0
       IntOp $0 $0 | ${SF_SELECTED}
       SectionSetFlags ${SecWinInstaller2} $0
+
+      Call _isInstalledWinNT4SP6
+      Pop $0
+      ${If} $0 == 0
+        SectionGetFlags ${SecWinNT4SP6} $0
+        IntOp $0 $0 | ${SF_SELECTED}
+        SectionSetFlags ${SecWinNT4SP6} $0
+      ${EndIf}
     ${EndIf}
   ${EndIf}
 
@@ -639,6 +772,14 @@ Function .onInit
 ;      SectionGetFlags ${SecWinInstaller2} $0
 ;      IntOp $0 $0 | ${SF_SELECTED}
 ;      SectionSetFlags ${SecWinInstaller2} $0
+;
+;      Call _isInstalledWinNT4SP6
+;      Pop $0
+;      ${If} $0 == 0
+;        SectionGetFlags ${SecWinNT4SP6} $0
+;        IntOp $0 $0 | ${SF_SELECTED}
+;        SectionSetFlags ${SecWinNT4SP6} $0
+;      ${EndIf}
 ;    ${EndIf}
 ;  {$EndIf}
 
@@ -681,4 +822,15 @@ Function .onInit
     IntOp $0 $0 | ${SF_SELECTED}
     SectionSetFlags ${SecDirectX9} $0
   ${EndIf}
+FunctionEnd
+
+Function .onSelChange
+  ;If Windows NT4 SP6 is selected, deselect Windows NT4 SP3
+  SectionGetFlags ${SecWinNT4SP6} $0
+  IntOp $0 $0 & ${SF_SELECTED}
+  IntCmp $0 0 done
+  SectionGetFlags ${SecWinNT4SP3} $0
+  IntOp $0 $0 & ${SECTION_OFF}
+  SectionSetFlags ${SecWinNT4SP3} $0
+done:
 FunctionEnd
