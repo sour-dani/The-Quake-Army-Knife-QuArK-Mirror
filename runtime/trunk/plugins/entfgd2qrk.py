@@ -910,14 +910,13 @@ def makeqrk(root, filename, gamename, nomessage=0):
         # Figure out, if the token_is type is expected or not
         expectedtypes = []
         newstate = None
-        defaultstate=None
         typestates = statediagram[state]
         for type, nextstate, func in typestates:
             if (type == token_is):
                 # We found the correct token type, now remember what new state we're going into
                 newstate = nextstate
                 break
-            expectedtypes = expectedtypes + [type]
+            expectedtypes.append(type)
         if newstate is None:
             #squawk("Parse error: Got type" + toktypes[token_is] + "but expected type(s);" + [toktypes[i] for i in expectedtypes])
             #squawk("Last classname was = " + str(currentclassname))
