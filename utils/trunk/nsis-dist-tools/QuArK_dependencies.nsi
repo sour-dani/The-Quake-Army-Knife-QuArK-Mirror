@@ -822,6 +822,14 @@ Function .onInit
     IntOp $0 $0 | ${SF_SELECTED}
     SectionSetFlags ${SecDirectX9} $0
   ${EndIf}
+
+  Call _isInstalledOpenGL
+  Pop $0
+  ${If} $0 == 0
+    SectionGetFlags ${SecOpenGL} $0
+    IntOp $0 $0 | ${SF_SELECTED}
+    SectionSetFlags ${SecOpenGL} $0
+  ${EndIf}
 FunctionEnd
 
 Function .onSelChange
