@@ -387,6 +387,12 @@ SectionEnd
 ; The VC++ Runtime SP1 2005 installer lowered the requirements to Windows Installer 2.0.
 ; https://docs.microsoft.com/en-us/windows/win32/msi/released-versions-of-windows-installer
 
+Function _isInstalledWinInstaller2
+  ;FIXME: Implement!
+  Push 0
+  Return
+FunctionEnd
+
 Section /o "$(TEXT_SecWinInstaller2_TITLE)" SecWinInstaller2
   ${If} ${IsWin95}
   ${OrIf} ${IsWin98}
@@ -572,7 +578,7 @@ Section /o "$(TEXT_SecDirectX9_TITLE)" SecDirectX9
 AlreadyInstalled:
 SectionEnd
 
-
+; --------------------
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SecWinNT4SP3} "$(TEXT_SecWinNT4SP3_DESC)"
@@ -611,9 +617,13 @@ Function .onInit
     IntOp $0 $0 | ${SF_SELECTED}
     SectionSetFlags ${SecVC2005Redist} $0
 
-    SectionGetFlags ${SecWinInstaller2} $0
-    IntOp $0 $0 | ${SF_SELECTED}
-    SectionSetFlags ${SecWinInstaller2} $0
+    Call _isInstalledWinInstaller2
+    Pop $0
+    ${If} $0 == 0
+      SectionGetFlags ${SecWinInstaller2} $0
+      IntOp $0 $0 | ${SF_SELECTED}
+      SectionSetFlags ${SecWinInstaller2} $0
+    ${EndIf}
   ${EndIf}
 
 ;  Call _isInstalledVC2008
@@ -623,9 +633,13 @@ Function .onInit
 ;    IntOp $0 $0 | ${SF_SELECTED}
 ;    SectionSetFlags ${SecVC2008Redist} $0
 ;
-;    SectionGetFlags ${SecWinInstaller2} $0
-;    IntOp $0 $0 | ${SF_SELECTED}
-;    SectionSetFlags ${SecWinInstaller2} $0
+;    Call _isInstalledWinInstaller2
+;    Pop $0
+;    ${If} $0 == 0
+;      SectionGetFlags ${SecWinInstaller2} $0
+;      IntOp $0 $0 | ${SF_SELECTED}
+;      SectionSetFlags ${SecWinInstaller2} $0
+;    ${EndIf}
 ;  {$EndIf}
 
   Call _isInstalledVC2010
@@ -635,9 +649,13 @@ Function .onInit
     IntOp $0 $0 | ${SF_SELECTED}
     SectionSetFlags ${SecVC2010Redist} $0
 
-    SectionGetFlags ${SecWinInstaller2} $0
-    IntOp $0 $0 | ${SF_SELECTED}
-    SectionSetFlags ${SecWinInstaller2} $0
+    Call _isInstalledWinInstaller2
+    Pop $0
+    ${If} $0 == 0
+      SectionGetFlags ${SecWinInstaller2} $0
+      IntOp $0 $0 | ${SF_SELECTED}
+      SectionSetFlags ${SecWinInstaller2} $0
+    ${EndIf}
   ${EndIf}
 
 ;  Call _isInstalledVC2013
@@ -647,9 +665,13 @@ Function .onInit
 ;    IntOp $0 $0 | ${SF_SELECTED}
 ;    SectionSetFlags ${SecVC2013Redist} $0
 ;
-;    SectionGetFlags ${SecWinInstaller2} $0
-;    IntOp $0 $0 | ${SF_SELECTED}
-;    SectionSetFlags ${SecWinInstaller2} $0
+;    Call _isInstalledWinInstaller2
+;    Pop $0
+;    ${If} $0 == 0
+;      SectionGetFlags ${SecWinInstaller2} $0
+;      IntOp $0 $0 | ${SF_SELECTED}
+;      SectionSetFlags ${SecWinInstaller2} $0
+;    ${EndIf}
 ;  ${EndIf}
 
   Call _isInstalledDirectX9
