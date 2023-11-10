@@ -784,8 +784,7 @@ begin
   end;
 end;
 
-{$WARNINGS OFF}
-// MakeObjectInstance and FreeObjectInstance have been depreciated as of D6
+// {AR} MakeObjectInstance and FreeObjectInstance have been depreciated as of D6
 // They will be dropped in later versions.  We will need to correct this...
 function InstallNewWindowProc (const AID: Integer; const AForm: TForm;
   const NewProc: TWndMethod; const NewHook: TWindowHook): Pointer;
@@ -855,8 +854,6 @@ begin
         end;
       end;
 end;
-{$WARNINGS ON}
-
 
 function GetMDIParent (const Form: TForm): TForm;
 { Returns the parent of the specified MDI child form. But, if Form isn't a
@@ -1538,19 +1535,8 @@ begin
 end;
 
 procedure TDock97.WMSize (var Message: TWMSize);
-{var
-  I: Integer;
-  C: TControl;}
 begin
   inherited;
-{AR
-  for I:=0 to ControlCount-1 do
-   begin
-    C:=Controls[I];
-    if (C.Left+C.Width = Width) and (C.Left > 0) then
-     C.Left:=Width-C.Width;
-   end;
- AR}
   if Assigned(FOnResize) then
     FOnResize (Self);
 end;
@@ -2520,6 +2506,7 @@ begin
           PreviousSep := nil;  PrevMinPosPixels := 0;
           for G := 0 to GInfo.Count-1 do begin
             GI := PGroupInfo(GInfo[G]);
+
             if NewDockType <> dtLeftRight then
               GroupPosSize := GI^.GroupWidth
             else
@@ -3385,21 +3372,12 @@ var
   Accept: Boolean;
   DT: TDockType;
   R: TRect;
- {SaveShowHint: Boolean;}
+  SaveShowHint: Boolean;
   Msg: TMsg;
   NewDockedSize: PDockedSize;
   I: Integer;
 begin
   Accept := False;
-
-  { Hints must be disabled while dragging or it can mess up ScreenDC.
-    Previous value is of Application.ShowHint is restored when done moving }
-{AR}{ !! setting Application.ShowHint to False sometimes make the
- application crash when it closes !! Absolutely no idea why... Anyway it
- seems that hints cannot pop up while the messages are processed by the
- loop in this procedure. }
- {SaveShowHint := Application.ShowHint;
-  Application.ShowHint := False;}
 
   NPoint := Point(InitX, InitY);
   if DockedTo = nil then begin
@@ -3465,6 +3443,10 @@ begin
     ScreenDC := GetDCEx(GetDesktopWindow, 0,
       DCX_LOCKWINDOWUPDATE or DCX_CACHE or DCX_WINDOW);
     try
+      { Hints must be disabled while dragging or it can mess up ScreenDC.
+        Previous value is of Application.ShowHint is restored when done moving }
+      SaveShowHint := Application.ShowHint;
+      Application.ShowHint := False;
       try
         SetCapture (Handle);
 
@@ -3516,6 +3498,8 @@ begin
           released }
         if GetCapture = Handle then
           ReleaseCapture;
+
+        Application.ShowHint := SaveShowHint;
       end;
     finally
       { Hide dragging outline and release the DC }
@@ -3538,7 +3522,6 @@ begin
     end;
     NewDockedSizes.Free;
   end;
-{AR}{finally Application.ShowHint := SaveShowHint; end;}
 end;
 
 function CompareNewSizes (const Item1, Item2, ExtraData: Pointer): Integer; far;
@@ -3549,326 +3532,6 @@ begin
   else
     Result := TSmallPoint(LongInt(Item2)).Y - TSmallPoint(LongInt(Item1)).Y;
 end;
-
-(*procedure TToolbar97.BeginSizing (HitTestValue: Integer);
-var
-  NewSizes: TList; { List of valid new sizes. Items are casted into TSmallPoints }
-
-  procedure BuildNewSizes (const YOrdering: Boolean);
-  { Adds items to the NewSizes list. The list must be empty when this is called }
-    function AddNCAreaToSize (const P: TPoint): TPoint;
-    var
-      R: TRect;
-    begin
-      with R do begin
-        Top := 0;  Left := 0;
-        BottomRight := P;
-      end;
-      AddNCAreaToRect (R);
-      OffsetRect (R, -R.Left, -R.Top);
-      Result := R.BottomRight;
-    end;
-  var
-    DT: TDockType;
-    Max, X, LastY, SkipTo: Integer;
-    S, S2: TPoint;
-  begin
-    DT := GetDockTypeOf(DockedTo);
-    ArrangeControls (False, False, DT, nil, 0, @S);
-    S2 := AddNCAreaToSize(S);
-    NewSizes.Add (Pointer(PointToSmallPoint(S2)));
-    LastY := S.Y;
-    Max := S.X;
-    SkipTo := High(SkipTo);
-    for X := Max-1 downto LeftMargin[True, dtNotDocked]+FBarWidth+RightMargin[dtNotDocked] do begin
-      if X > SkipTo then Continue;
-      ArrangeControls (False, False, DT, nil, X, @S);
-      if X = S.X then begin
-        if S.Y = LastY then
-          NewSizes.Delete (NewSizes.Count-1);
-        S2 := AddNCAreaToSize(S);
-        if NewSizes.IndexOf(Pointer(PointToSmallPoint(S2))) = -1 then
-          NewSizes.Add (Pointer(PointToSmallPoint(S2)));
-        LastY := S.Y;
-      end
-      else
-        SkipTo := S.X;
-    end;
-    ListSortEx (NewSizes, CompareNewSizes, Pointer(Longint(YOrdering)));
-  end;
-
-var
-  DragRect, OrigDragRect: TRect;
-  CurRightX: Integer;
-  ScreenDC: HDC;
-  DisableSensCheck, OpSide: Boolean;
-  SizeSens: Integer;
-
-  procedure MouseMoved;
-  var
-    Pos: TPoint;
-    NCXDiff: Integer;
-    NewOpSide: Boolean;
-    OldDragRect: TRect;
-    Reverse: Boolean;
-    I: Integer;
-    P: TSmallPoint;
-  begin
-    GetCursorPos (Pos);
-    NCXDiff := ClientToScreen(Point(0, 0)).X - Left;
-    Dec (Pos.X, Left);  Dec (Pos.Y, Top);
-    if HitTestValue in [HTLEFT, HTTOPLEFT, HTBOTTOMLEFT] then
-      Pos.X := Width-Pos.X;
-    if HitTestValue in [HTTOP, HTTOPLEFT, HTTOPRIGHT] then
-      Pos.Y := Height-Pos.Y;
-
-    { Adjust Pos to make up for the "sizing sensitivity", as seen in Office 97 }
-    if HitTestValue in [HTLEFT, HTRIGHT] then
-      NewOpSide := Pos.X < Width
-    else
-      NewOpSide := Pos.Y < Height;
-    if (not DisableSensCheck) or (OpSide <> NewOpSide) then begin
-      DisableSensCheck := False;
-      OpSide := NewOpSide;
-      if HitTestValue in [HTLEFT, HTRIGHT] then begin
-        if (Pos.X >= Width-SizeSens) and (Pos.X < Width+SizeSens) then
-          Pos.X := Width;
-      end
-      else begin
-        if (Pos.Y >= Height-SizeSens) and (Pos.Y < Height+SizeSens) then
-          Pos.Y := Height;
-      end;
-    end;
-
-    OldDragRect := DragRect;
-
-{AR}if NewSizes=Nil then begin
-      Inc(Pos.X, GetBorderSize div 2);
-      Inc(Pos.Y, GetBorderSize div 2);
-      if Pos.X<32 then Pos.X:=32;
-      if Pos.Y<48 then Pos.Y:=48;
-      case HitTestValue of
-        HTLEFT, HTTOPLEFT, HTBOTTOMLEFT:
-          DragRect.Left  :=DragRect.Right -Pos.X;
-        HTRIGHT, HTTOPRIGHT, HTBOTTOMRIGHT:
-          DragRect.Right :=DragRect.Left  +Pos.X;
-      end;
-      case HitTestValue of
-        HTTOP, HTTOPLEFT, HTTOPRIGHT:
-          DragRect.Top   :=DragRect.Bottom-Pos.Y;
-        HTBOTTOM, HTBOTTOMLEFT, HTBOTTOMRIGHT:
-          DragRect.Bottom:=DragRect.Top   +Pos.Y;
-      end;
-      CurRightX:=DragRect.Right-DragRect.Left;
-{AR}end
-    else begin
-      if HitTestValue in [HTLEFT, HTRIGHT] then
-        Reverse := Pos.X > Width
-      else
-        Reverse := Pos.Y > Height;
-      if not Reverse then
-        I := NewSizes.Count-1
-      else
-        I := 0;
-      while True do begin
-        if (not Reverse and (I < 0)) or
-           (Reverse and (I >= NewSizes.Count)) then
-          Break;
-        Pointer(P) := NewSizes[I];
-        if HitTestValue in [HTLEFT, HTRIGHT] then begin
-          if (not Reverse and ((I = NewSizes.Count-1) or (Pos.X >= P.X))) or
-             (Reverse and ((I = 0) or (Pos.X < P.X))) then begin
-            CurRightX := P.X - NCXDiff;
-            if HitTestValue = HTRIGHT then
-              DragRect.Right := DragRect.Left + P.X
-            else
-              DragRect.Left := DragRect.Right - P.X;
-            DragRect.Bottom := DragRect.Top + P.Y;
-            DisableSensCheck := not EqualRect(DragRect, OrigDragRect);
-          end;
-        end
-        else begin
-          if (not Reverse and ((I = NewSizes.Count-1) or (Pos.Y >= P.Y))) or
-             (Reverse and ((I = 0) or (Pos.Y < P.Y))) then begin
-            CurRightX := P.X - NCXDiff;
-            if HitTestValue = HTBOTTOM then
-              DragRect.Bottom := DragRect.Top + P.Y
-            else
-              DragRect.Top := DragRect.Bottom - P.Y;
-            DragRect.Right := DragRect.Left + P.X;
-            DisableSensCheck := not EqualRect(DragRect, OrigDragRect);
-          end;
-        end;
-        if not Reverse then
-          Dec (I)
-        else
-          Inc (I);
-      end;
-    end;
-
-    { Update the dragging outline, only if changed }
-    if not EqualRect(DragRect, OldDragRect) then
-      DrawDraggingOutline (ScreenDC, @DragRect, @OldDragRect, False, False);
-  end;
-const
-  MaxSizeSens = 12;
-var
-  Accept: Boolean;
-  I, NewSize: Integer;
-  S, N: TSmallPoint;
-  SaveShowHint: Boolean;
-  Msg: TMsg;
-begin
-  Accept := False;
-  CurRightX := FFloatingRightX;
-  DisableSensCheck := False;
-  OpSide := False;
-
-{AR}if FFreeSizing and (ControlCount=1) then
-      NewSizes := Nil
-  else
-    NewSizes := TList.Create;
-  try
-    { Initialize }
-{AR}if NewSizes <> Nil then
-    begin
-{AR}  case HitTestValue of
-        HTTOPRIGHT: HitTestValue:=HTTOP;
-        HTTOPLEFT, HTBOTTOMLEFT: HitTestValue:=HTLEFT;
-        HTBOTTOMRIGHT: HitTestValue:=HTBOTTOM;
-{AR}  end;
-      BuildNewSizes (HitTestValue in [HTTOP, HTBOTTOM]);
-      SizeSens := MaxSizeSens;
-      { Adjust sensitivity if it's too high }
-      for I := 0 to NewSizes.Count-1 do begin
-        Pointer(S) := NewSizes[I];
-        if (S.X = Width) and (S.Y = Height) then begin
-          if I > 0 then begin
-            Pointer(N) := NewSizes[I-1];
-            if HitTestValue in [HTLEFT, HTRIGHT] then
-              NewSize := N.X - S.X - 1
-            else
-              NewSize := N.Y - S.Y - 1;
-            if NewSize < SizeSens then SizeSens := NewSize;
-          end;
-          if I < NewSizes.Count-1 then begin
-            Pointer(N) := NewSizes[I+1];
-            if HitTestValue in [HTLEFT, HTRIGHT] then
-              NewSize := S.X - N.X - 1
-            else
-              NewSize := S.Y - N.Y - 1;
-            if NewSize < SizeSens then SizeSens := NewSize;
-          end;
-          Break;
-        end;
-      end;
-      if SizeSens < 0 then SizeSens := 0;
-    end
-    else
-{AR}  SizeSens := 0;
-    DragRect := GetVirtualBoundsRect;
-    OrigDragRect := DragRect;
-
-    { Before locking, make sure all pending paint messages are processed }
-    ProcessPaintMessages;
-
-    { This uses LockWindowUpdate to suppress all window updating so the
-      dragging outlines doesn't sometimes get garbled. (This is safe, and in
-      fact, is the main purpose of the LockWindowUpdate function)
-      IMPORTANT! While debugging you might want to enable the 'TB97DisableLock'
-      conditional define (see top of the source code). }
-    {$IFNDEF TB97DisableLock}
-    LockWindowUpdate (GetDesktopWindow);
-    {$ENDIF}
-    { Get a DC of the entire screen. Works around the window update lock
-      by specifying DCX_LOCKWINDOWUPDATE. }
-    ScreenDC := GetDCEx(GetDesktopWindow, 0,
-      DCX_LOCKWINDOWUPDATE or DCX_CACHE or DCX_WINDOW);
-    try
-      { Hints must be disabled while dragging or it can mess up ScreenDC.
-        Previous value is of Application.ShowHint is restored when done moving }
-      SaveShowHint := Application.ShowHint;
-      Application.ShowHint := False;
-      try
-        SetCapture (Handle);
-
-        { Initialize }
-        DrawDraggingOutline (ScreenDC, @DragRect, nil, False, False);
-
-        { Stay in message loop until capture is lost. Capture is removed either
-          by this procedure manually doing it, or by an outside influence (like
-          a message box or menu popping up) }
-        while GetCapture = Handle do begin
-          case Integer(GetMessage(Msg, 0, 0, 0)) of
-            -1: Break; { if GetMessage failed }
-            0: begin
-                 { Repost WM_QUIT messages }
-                 PostQuitMessage (Msg.WParam);
-                 Break;
-               end;
-          end;
-
-          case Msg.Message of
-            WM_KEYDOWN, WM_KEYUP:
-              { Ignore all keystrokes while sizing }
-              ;
-            WM_MOUSEMOVE:
-              MouseMoved;
-            WM_LBUTTONDOWN, WM_LBUTTONDBLCLK:
-              { Make sure it doesn't begin another loop }
-              Break;
-            WM_LBUTTONUP: begin
-                Accept := True;
-                Break;
-              end;
-            WM_RBUTTONDOWN..WM_MBUTTONDBLCLK:
-              { Ignore all other mouse up/down messages }
-              ;
-          else
-            TranslateMessage (Msg);
-            DispatchMessage (Msg);
-          end;
-        end;
-      finally
-        { Since it sometimes breaks out of the loop without capture being
-          released }
-        if GetCapture = Handle then
-          ReleaseCapture;
-
-        Application.ShowHint := SaveShowHint;
-      end;
-    finally
-      { Hide dragging outline and release the DC }
-      DrawDraggingOutline (ScreenDC, nil, @DragRect, False, False);
-      ReleaseDC (GetDesktopWindow, ScreenDC);
-
-      { Release window update lock }
-      {$IFNDEF TB97DisableLock}
-      LockWindowUpdate (0);
-      {$ENDIF}
-    end;
-  finally
-    NewSizes.Free;
-  end;
-
-  if Accept then begin
-    FFloatingRightX := CurRightX;
-    FFloatingRect := DragRect;
-{AR}if FFreeSizing and (ControlCount=1) then begin
-      RemoveNCAreaFromRect(DragRect);
-      Inc(DragRect.Left  ,  LeftMargin[False, dtNotDocked]);
-      Inc(DragRect.Top   ,   TopMargin[dtNotDocked]);
-      Dec(DragRect.Right , RightMargin[dtNotDocked]);
-      Dec(DragRect.Bottom,BottomMargin[dtNotDocked]);
-      Controls[0].SetBounds(0,0, DragRect.Right-DragRect.Left, DragRect.Bottom-DragRect.Top);
-{AR}end;
-    SetVirtualBoundsRect (FFloatingRect);
-    AutoArrangeControls;
-
-    { Make sure it doesn't go completely off the screen }
-    MoveOnScreen (True);
-  end;
-end;*)
 
 procedure TToolbar97.BeginSizing (const HitTestValue: Integer);
 var
@@ -4016,7 +3679,7 @@ var
   Accept: Boolean;
   I, NewSize: Integer;
   S, N: TSmallPoint;
- {SaveShowHint: Boolean;}
+  SaveShowHint: Boolean;
   Msg: TMsg;
 begin
   Accept := False;
@@ -4074,8 +3737,8 @@ begin
     try
       { Hints must be disabled while dragging or it can mess up ScreenDC.
         Previous value is of Application.ShowHint is restored when done moving }
-{AR} {SaveShowHint := Application.ShowHint;
-      Application.ShowHint := False;         See comments in BeginMoving    }
+      SaveShowHint := Application.ShowHint;
+      Application.ShowHint := False;
       try
         SetCapture (Handle);
 
@@ -4122,7 +3785,7 @@ begin
         if GetCapture = Handle then
           ReleaseCapture;
 
-       {Application.ShowHint := SaveShowHint;}
+        Application.ShowHint := SaveShowHint;
       end;
     finally
       { Hide dragging outline and release the DC }
@@ -4187,49 +3850,6 @@ begin
 
   BeginMoving (X, Y);
 end;
-
-(*procedure TToolbar97.WMNCHitTest (var Message: TWMNCHitTest);
-var
-  P: TPoint;
-
-{AR}procedure CheckCorner(X,Y: Integer; R: Integer);
-    const
-      CornerMargin = 10;
-    begin
-      if (Abs(P.X-X)<CornerMargin)
-      and (Abs(P.Y-Y)<CornerMargin) then
-        Message.Result:=R;
-{AR}end;
-
-begin
-  inherited;
-  if DockedTo <> nil then Exit;
-
-  with Message do begin
-    P := SmallPointToPoint(Pos);
-    Dec (P.X, Left);  Dec (P.Y, Top);
-    case Result of
-      HTNOWHERE: begin
-          if PtInRect(GetCaptionRect(Self, True, False), P) then begin
-            Result := HTCLIENT;
-            if FCloseButton and PtInRect(GetCloseButtonRect(Self, True), P) then
-              Result := HTCLOSE;
-          end
-          else begin
-            if (P.Y >= 0) and (P.Y <= GetBorderSize) then Result := HTTOP else
-            if (P.Y < Height) and (P.Y >= Height-GetBorderSize-1) then Result := HTBOTTOM else
-            if (P.X >= 0) and (P.X <= GetBorderSize) then Result := HTLEFT else
-            if (P.X < Width) and (P.X >= Width-GetBorderSize-1) then Result := HTRIGHT else
-{AR}          Exit;
-{AR}        CheckCorner(0,0,              HTTOPLEFT);
-{AR}        CheckCorner(Width-1,0,        HTTOPRIGHT);
-{AR}        CheckCorner(0,Height-1,       HTBOTTOMLEFT);
-{AR}        CheckCorner(Width-1,Height-1, HTBOTTOMRIGHT);
-          end;
-        end;
-    end;
-  end;
-end;*)
 
 procedure TToolbar97.WMNCHitTest (var Message: TWMNCHitTest);
 var
