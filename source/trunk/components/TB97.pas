@@ -955,11 +955,9 @@ begin
     QuickSortEx (0, List.Count-1);
 end;
 
-function RedrawThisWindow(Handle: HWnd; lParam: LongInt) : Bool;
-stdcall;
+function RedrawThisWindow(Handle: HWnd; lParam: LPARAM) : BOOL; stdcall;
 begin
- RedrawWindow(Handle, Nil, 0, RDW_UPDATENOW or RDW_ALLCHILDREN);
- Result:=True;
+ Result:=RedrawWindow(Handle, Nil, 0, RDW_UPDATENOW or RDW_ALLCHILDREN);
 end;
 
 procedure ProcessPaintMessages;
