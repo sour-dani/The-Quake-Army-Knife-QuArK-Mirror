@@ -465,11 +465,15 @@ SectionEnd
 Function _isInstalledWinInstaller2
   ; Inspired by: https://learn.microsoft.com/en-us/windows/win32/msi/determining-the-windows-installer-version
 
+  ClearErrors
   GetDllVersion "$SYSDIR\msi.dll" $R0 $R1
+  IfErrors NotInstalled
   IntOp $R1 $R0 / 0x00010000
-  IntCmp $R1 2 0 +2 0
+  IntCmp $R1 2 0 NeedsUpdate 0
   Push 1
   Return
+NotInstalled:
+NeedsUpdate:
   Push 0
 FunctionEnd
 
