@@ -539,7 +539,7 @@ FunctionEnd
 Section /o "$(TEXT_SecIE4SP2_TITLE)" SecIE4SP2
   SetOutPath $TEMP
   File "${DEPENDENCYDIR}\Microsoft Internet Explorer 4.01 SP2\*.*"
-  ExecWait "$TEMP\IE4SETUP.EXE /Q /T:$\"$TEMP\IE4Setup$\"" ;FIXME: Untested if this actually installs too, or only extracts!
+  ExecWait "$TEMP\IE4SETUP.EXE /Q /T:$\"$TEMP\IE4Setup$\""
   Delete "$TEMP\*.*"
   RMDir /r $TEMP\IE4Setup
 SectionEnd
@@ -689,17 +689,22 @@ Function _isInstalledOpenGL
     Return
   ${EndIf}
 
-  ;FIXME: Is there a way to check if it's already installed?
+  ClearErrors
+  GetDllVersion "$SYSDIR\Opengl32.dll" $R0 $R1
+  IfErrors NotInstalled
+  IntOp $R1 $R0 / 0x00010000
+  IntCmp $R1 4 0 NeedsUpdate 0
+  Push 1
+  Return
+NotInstalled:
+NeedsUpdate:
   Push 0
-;  Return
-;AlreadyInstalled:
-;  Push 1
 FunctionEnd
 
 Section /o "$(TEXT_SecOpenGL_TITLE)" SecOpenGL
   SetOutPath $TEMP
   File "${DEPENDENCYDIR}\OpenGL\Opengl95.exe"
-  ExecWait "$TEMP\Opengl95.exe"
+  ExecWait "$TEMP\Opengl95.exe $SYSDIR *.dll"
   Delete "$TEMP\Opengl95.exe"
 SectionEnd
 
