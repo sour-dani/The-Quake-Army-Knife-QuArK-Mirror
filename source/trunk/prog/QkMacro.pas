@@ -243,7 +243,7 @@ begin
   for I:=0 to Q.Specifics.Count-1 do
    begin
     S:=Q.Specifics.Names[I];
-    if EndsStr(S, '[]') then   { process macro }
+    if EndsStr('[]', S) then   { process macro }
      Q.Specifics.Strings[LeftStr(S, Length(S)-2)]:=Process1(Q, Source, Q.Specifics.StringsFromIndex[I]);
    end;
   for I:=0 to Q.SubElements.Count-1 do
