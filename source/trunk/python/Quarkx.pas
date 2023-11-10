@@ -78,7 +78,7 @@ procedure QuarkXWorkaroundNameChange(const OldName, NewName: String);
 implementation
 
 uses Classes, Dialogs, Graphics, CommCtrl, ExtCtrls, Controls,
-     QkForm, PyToolbars, PyImages, PyPanels, TB97, QkObjects, QConsts,
+     QkForm, PyToolbars, PyImages, PyPanels, QkObjects, QConsts,
      PyObjects, QkFileObjects, {PyFiles,} PyExplorer, Travail, Running,
      Qk1, PyFormCfg, QkQuakeCtx, PyFloating, PyFullscreen, PyMapView, qmath, Setup,
      PyMath, PyCanvas, PyUndo, qquaternions, qmatrices, QkMapObjects, QkTextures,
@@ -697,7 +697,7 @@ function xScreenRect(self, args: PyObject) : PyObject; cdecl;
 begin
  Result:=Nil;
  try
-  with GetDesktopArea do
+  with Screen.WorkAreaRect do
    Result:=Py_BuildValueX('iiii', [Left, Top, Right, Bottom]);
  except
   Py_XDECREF(Result);

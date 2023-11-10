@@ -596,7 +596,7 @@ begin
              if not IsRectEmpty(nRect) then
               QkToolbar.FloatingRightX:=nRect.Right-nRect.Left
              else
-              QkToolbar.FloatingRightX:=GetDesktopArea().Right-GetDesktopArea().Left;
+              QkToolbar.FloatingRightX:=Screen.WorkAreaWidth;
             end;
            Result:=0;
            Exit;

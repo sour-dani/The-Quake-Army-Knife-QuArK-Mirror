@@ -570,8 +570,6 @@ procedure CustomSaveToolbarPositions (const Form: TForm;
   const WriteIntProc: TPositionWriteIntProc;
   const WriteStringProc: TPositionWriteStringProc; const ExtraData: Pointer);
 
-{AR}function GetDesktopArea: TRect;
-
 procedure Register;
 
 implementation

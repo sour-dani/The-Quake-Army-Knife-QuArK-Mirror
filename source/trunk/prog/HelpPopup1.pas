@@ -55,7 +55,7 @@ procedure HelpPopup(const HelpText: String; const InfoBaseLink: String = ''); {A
 
 implementation
 
-uses Quarkx, TB97;
+uses Quarkx;
 
 {$R *.DFM}
 
@@ -93,7 +93,7 @@ begin
   begin
     Dec(P.X, F.Width div 2);
     Dec(P.Y, GetSystemMetrics(sm_CySizeFrame)+1);
-    R:=GetDesktopArea;
+    R:=Screen.WorkAreaRect;
     if P.X + F.Width > R.Right then
     begin
       P.X:=R.Right - F.Width;

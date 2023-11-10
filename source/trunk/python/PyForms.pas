@@ -260,7 +260,7 @@ begin
       Result:=PyNoResult;
       Exit;
      end;
-    R:=GetDesktopArea;
+    R:=Screen.WorkAreaRect;
     Tb:=TQkToolbar.CustomCreate(Form, Bounds((R.Left+R.Right) div 2-16, (R.Left+R.Right) div 2-16, 32, 32));
     Tb.Caption:=PyStrPas(nCaption);
     Tb.DockedTo:=Form.topdock;
