@@ -233,7 +233,7 @@ type
     FBarHeight, FBarWidth, FDockedTotalBarHeight, FDockedTotalBarWidth, FDockPos, FDockRow: Integer;
     FDefaultDock: TDock97;
     FOnRecreating, FOnRecreated, FOnDockChanging, FOnDockChanged, FOnClose: TNotifyEvent;
-    FCanDockLeftRight, FCloseButton: Boolean;
+    FCanDockLeftRight, FCanDockTopBottom, FCloseButton: Boolean;
     FFloatingRect: TRect;
     FFloatingRightX: Integer;
 
