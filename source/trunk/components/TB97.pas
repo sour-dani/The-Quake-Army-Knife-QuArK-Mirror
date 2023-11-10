@@ -256,8 +256,6 @@ type
     VirtualLeft: Integer;     { The Left value the toolbar should be restored to when moving from off the screen }
     CloseButtonDown: Boolean; { True if Close button is currently depressed }
 
-(*{AR}FFreeSizing: Boolean;*)
-
     OldFormWindowProc, OldChildFormWindowProc: Pointer; { The previous form window procedures }
 
     { Property access methods }
@@ -331,7 +329,6 @@ type
     { Published declarations }
     property CanDockLeftRight: Boolean read FCanDockLeftRight write FCanDockLeftRight default True;
 {AR}property CanDockTopBottom: Boolean read FCanDockTopBottom write FCanDockTopBottom default True;
-(*{AR}property FreeSizing: Boolean read FFreeSizing write FFreeSizing default False;*)
     property Caption;
     property Color default clBtnFace;
     property CloseButton: Boolean read FCloseButton write SetCloseButton default True;
