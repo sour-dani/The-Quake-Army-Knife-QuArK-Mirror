@@ -227,16 +227,13 @@ type
 
   { TToolbar97 }
 
-//{AR}TDockChangingEvent = procedure (Sender: TObject; nDock: TDock97) of object;
   TToolbar97 = class(TCustomControl)
   private
     { Property variables }
     FBarHeight, FBarWidth, FDockedTotalBarHeight, FDockedTotalBarWidth, FDockPos, FDockRow: Integer;
     FDefaultDock: TDock97;
-    FOnRecreating, FOnRecreated: TNotifyEvent;
-{AR}FOnDockChanging: {TDockChangingEvent}TNotifyEvent;
-    FOnDockChanged, FOnClose: TNotifyEvent;
-    FCanDockLeftRight, FCanDockTopBottom, FCloseButton: Boolean;
+    FOnRecreating, FOnRecreated, FOnDockChanging, FOnDockChanged, FOnClose: TNotifyEvent;
+    FCanDockLeftRight, FCloseButton: Boolean;
     FFloatingRect: TRect;
     FFloatingRightX: Integer;
 
@@ -326,7 +323,7 @@ type
     property OrderIndex[Control: TControl]: Integer read GetOrderIndex write SetOrderIndex;
     constructor Create (AOwner: TComponent); override;
 {AR}constructor CustomCreate(AOwner: TComponent; const nBounds: TRect);
-{AR}property FloatingRightX: Integer read FFloatingRightX write FFloatingRightX; 
+{AR}property FloatingRightX: Integer read FFloatingRightX write FFloatingRightX;
     destructor Destroy; override;
     procedure SetSlaveControl (const ATopBottom, ALeftRight: TControl);
     procedure SetBounds (ALeft, ATop, AWidth, AHeight: Integer); override;
@@ -351,7 +348,7 @@ type
     property OnRecreated: TNotifyEvent read FOnRecreated write FOnRecreated;
     property OnRecreating: TNotifyEvent read FOnRecreating write FOnRecreating;
     property OnDockChanged: TNotifyEvent read FOnDockChanged write FOnDockChanged;
-{AR}property OnDockChanging: TNotifyEvent{TDockChangingEvent} read FOnDockChanging write FOnDockChanging;
+    property OnDockChanging: TNotifyEvent read FOnDockChanging write FOnDockChanging;
   end;
 
   { TToolbarSep97 }
@@ -4061,7 +4058,7 @@ begin
   OldDockedTo := DockedTo;
 
   if Assigned(FOnDockChanging) and (Value <> OldDockedTo) then
-    FOnDockChanging (Self{, Value});
+    FOnDockChanging (Self);
 
   if Assigned(Value) then
     Inc (Value.DisableArrangeToolbars);
