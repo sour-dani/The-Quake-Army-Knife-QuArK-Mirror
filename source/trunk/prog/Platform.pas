@@ -26,6 +26,7 @@ type
   TSoundType = (SOUND_DEFAULT, SOUND_INFO, SOUND_QUESTION, SOUND_WARNING, SOUND_ERROR);
 
 function PlaySound(const SoundType: TSoundType): Boolean;
+function SaveRecentFiles: Boolean;
 function SaveWindowPositions: Boolean;
 
 implementation
@@ -51,6 +52,18 @@ begin
   else raise InternalE('Unknown SoundType');
   end;
   Result:=Windows.MessageBeep(uType);
+  {$ENDIF}
+end;
+
+function SaveRecentFiles: Boolean;
+begin
+  {$IFDEF LINUX}
+  Result:=True;
+  {$ELSE}
+  if DelayFunc_SHRestricted then
+    Result:=(SHRestricted(REST_CLEARRECENTDOCSONEXIT) = 0)
+  else
+    Result:=True;
   {$ENDIF}
 end;
 

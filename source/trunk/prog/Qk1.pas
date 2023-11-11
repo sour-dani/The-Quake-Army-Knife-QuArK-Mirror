@@ -1627,11 +1627,15 @@ begin
   end;
 
  if LoadingComplete then //If Python isn't loaded, some strings would become corrupted.
-  try
-   SaveSetupNow;
-  except
-   on E: Exception do
-    MessageBox(0, PChar(FmtLoadStr1(5658, [GetExceptionMessage(E)])), PChar(LoadStr1(5657)), MB_OK or MB_ICONHAND or MB_TASKMODAL);
+  begin
+   if not SaveRecentFiles then
+    g_SetupSet[ssGeneral].Specifics.Strings['RecentFiles']:='';
+   try
+    SaveSetupNow;
+   except
+    on E: Exception do
+     MessageBox(0, PChar(FmtLoadStr1(5658, [GetExceptionMessage(E)])), PChar(LoadStr1(5657)), MB_OK or MB_ICONHAND or MB_TASKMODAL);
+   end;
   end;
  ClearGameBuffers(False);
  ClearTimers;
