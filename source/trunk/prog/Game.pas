@@ -176,7 +176,7 @@ begin
  GameFiles:=Nil;
 end;
 
-procedure InternalSizeDown;
+procedure SizeDownGameFiles;
 var
  MaxFiles, MemLeft: Integer;
  I: Integer;
@@ -196,6 +196,7 @@ begin
  if GameFiles.Count>MaxFiles then
   begin
    ReleaseGameFiles;
+   ClearGBList;
    Exit;
   end;
 
@@ -206,6 +207,7 @@ begin
    if MemLeft<=0 then
     begin
      ReleaseGameFiles;
+     ClearGBList;
      Exit;
     end;
   end;
@@ -224,7 +226,8 @@ begin
      Q.Free;
      GameFiles.Delete(I);
     end
-  end;*)
+  end;
+ ClearGBList;*)
 end;
 
 procedure ClearGBList;
@@ -250,13 +253,6 @@ begin
    FreeGBList.Free;
    FreeGBList:=Nil;
   end;
-end;
-
-procedure SizeDownGameFiles;
-begin
- InternalSizeDown;
-
- ClearGBList;
 end;
 
  {------------------------}
