@@ -253,11 +253,9 @@ end;
 
 procedure SizeDownGameFiles;
 begin
- {SizeDownTextureList(}InternalSizeDown{)};
+ InternalSizeDown;
 
  ClearGBList;
-
- SizeDownPython;
 end;
 
  {------------------------}

@@ -741,7 +741,8 @@ begin
  if Done then
   begin
    SizeDownGameFiles; //FIXME: Move into IdleJob? How to make sure it's the last one to run?
-  {SaveSetupNow;}
+   SizeDownPython;
+  {SaveSetupNow;} //FIXME: Make a configurable option: AutosaveSetup! But only when modified...!
   end;
 {$IFDEF MemTester}
  if Screen.ActiveForm<>Nil then
