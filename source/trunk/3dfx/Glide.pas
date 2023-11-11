@@ -656,10 +656,10 @@ const
 const
  GLIDE_STATE_PAD_SIZE = 312 + GLIDE3_EXTRA_STATE;
 
-type
+(*type
  GrState = record
    pad: array[0..GLIDE_STATE_PAD_SIZE-1] of Byte;
- end;
+ end;*)
 
 {$IFDEF GLIDE3}
 const
