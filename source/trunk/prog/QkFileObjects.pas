@@ -2046,6 +2046,7 @@ end;
 procedure RestoreAutoSaved(const Ext: String);
 const
  TagAtom = '~QuArK-tag-auto-save-%x';
+ TempFilename = 'auto-save-*%s';
 var
  S, S1: String;
  DosError, I: Integer;
@@ -2058,11 +2059,11 @@ begin
  SetLength(S, MAX_PATH+2);
  GetTempPath(MAX_PATH+1, PChar(S));
  SetLength(S, StrLen(PChar(S)));
- DosError:=FindFirst(ConcatPaths([S, Format('auto-save-*%s', [Ext])]), faAnyFile, Rec);
+ DosError:=FindFirst(ConcatPaths([S, Format(TempFilename, [Ext])]), faAnyFile, Rec);
  try
   while DosError=0 do
    begin
-    S1:=Copy(Rec.Name, 11, MaxInt);
+    S1:=Copy(Rec.Name, Length(TempFilename) - Length('%s'), MaxInt);
     I:=Pos('-', S1);
     if I>0 then
      begin
@@ -2324,6 +2325,8 @@ const
    (ml_name: 'openinnewwindow'; ml_meth: qOpeninWindow; ml_flags: METH_VARARGS));
 
 function QFileObject.PyGetAttr(attr: PyChar) : PyObject;
+const
+ TempFilenameFormat = 'auto-save-%x-%p%s';
 var
  I: Integer;
  S: String;
@@ -2347,7 +2350,7 @@ begin
          SetLength(S, MAX_PATH+2);
          GetTempPath(MAX_PATH+1, PChar(S));
          SetLength(S, StrLen(PChar(S)));
-         S:=ConcatPaths([S, Format('auto-save-%x-%p%s', [GetCurrentProcessId, Pointer(Self), TypeInfo])]);
+         S:=ConcatPaths([S, Format(TempFilenameFormat, [GetCurrentProcessId, Pointer(Self), TypeInfo])]);
          Result:=PyString_FromString(ToPyChar(S));
          Exit;
         end;
