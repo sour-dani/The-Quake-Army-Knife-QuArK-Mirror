@@ -518,7 +518,7 @@ begin
        Q.Specifics.Strings[Spec]:='1'
       else
        Q.Specifics.Strings[Spec]:='';
-      UpdateSetup(scNormal);
+      SetupChanged(scNormal);
       Exit;
      end;
   typRadioButton:
@@ -530,7 +530,7 @@ begin
       for I:=0 to ClearList.Count-1 do
        Q.Specifics.Strings[ClearList[I]]:='';
       finally ClearList.Free; end;
-      UpdateSetup(scNormal);
+      SetupChanged(scNormal);
       Exit;
      end;
   typMessage:

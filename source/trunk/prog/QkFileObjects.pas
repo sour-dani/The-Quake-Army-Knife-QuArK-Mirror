@@ -2011,7 +2011,7 @@ begin   { adds the file to the list of recently opened files }
   while L.Count>MaxRecentFiles do
    L.Delete(MaxRecentFiles);
   g_SetupSet[ssGeneral].Specifics.Strings['RecentFiles']:=StringListConcatWithSeparator(L, $0D);
-  UpdateSetup(scMinimal);
+  SetupChanged(scMinimal);
  finally
   L.Free;
  end;
@@ -2036,7 +2036,7 @@ begin   { resizes the list of recently opened files to the correct number of fil
   if Resized then
   begin
     g_SetupSet[ssGeneral].Specifics.Strings['RecentFiles']:=StringListConcatWithSeparator(L, $0D);
-    UpdateSetup(scMinimal);
+    SetupChanged(scMinimal);
   end;
  finally
   L.Free;

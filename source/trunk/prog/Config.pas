@@ -387,7 +387,7 @@ begin
        g_SetupSet[T].AddRef(+1);
       end;
     {InternalOnly:=True;}
-     UpdateSetup(scConfigDlg);
+     SetupChanged(scConfigDlg);
     end;
    CancelOff;
   {DisplayCurrentObject;}

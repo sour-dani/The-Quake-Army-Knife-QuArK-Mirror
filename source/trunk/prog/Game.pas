@@ -1803,7 +1803,7 @@ begin
   end;
 
   if ResultButton=mrOk then
-    UpdateSetup(scAddOns);
+    SetupChanged(scAddOns);
 end;
 
 procedure TGameCfgDlg.FormCreate(Sender: TObject);

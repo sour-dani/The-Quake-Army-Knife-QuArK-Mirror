@@ -131,7 +131,6 @@ procedure SetupChanged(Level: Integer);
 function SetupSubSet(Root: TSetupSet; const SubSet: String) : QObject;
 function SetupSubSetEx(Root: TSetupSet; const SubSet: String; Create: Boolean) : QObject;
 function SetupGameSet : QObject;
-procedure UpdateSetup(Level: Integer);
 procedure SaveSetupNow;
 procedure ResetSetting(const ParentNameChain : TStringList);
 function MakeAddOnsList : QFileObject;  { includes the file loaded in g_Form1 }
@@ -178,7 +177,6 @@ const
 var
  LoadedSetupFileName, LoadedDefaultsFileName: String;
  AddOns: QFileObject = Nil;
-{SetupModified: Boolean;}
 
  {------------------------}
 
@@ -680,12 +678,6 @@ begin
  end;
 end;
 
-procedure UpdateSetup;
-begin
- SetupChanged(Level);
-{SetupModified:=True;}
-end;
-
 procedure SaveSetupNow;
 begin
  SaveSetup(rf_AsText);   { save as text }
@@ -972,7 +964,6 @@ begin
     Log(LOG_INFO, LoadStr1(5839), [nMode]);
     ClearGameBuffers(True);
     g_SetupSet[ssGames].Specifics.Strings['GameCfg']:=nMode;
-   {SetupModified:=True;}
     SetupChanged(scGame);
    end;
 end;

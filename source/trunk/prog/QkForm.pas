@@ -1017,7 +1017,7 @@ begin
  TbInfo.Setup:=Result;
  TbInfo.SubTb:=SubTb;
  CustomSaveToolbarPositions(Self, tbWriteInt, tbWriteString, @TbInfo);
-{UpdateSetup(scMinimal);}
+{SetupChanged(scMinimal);}
 end;
 
 (*procedure TQkForm.HideToolbars;
