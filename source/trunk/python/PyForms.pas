@@ -1008,7 +1008,7 @@ begin
           S:=PyStrPas(P);
           if (Length(S)<=1) or (S[1]<>'|') then Exit;
           S2:=Copy(S,2,Maxint);
-          UrlPos:=AnsiPos('|',S2);
+          UrlPos:=Pos('|',S2);
           if UrlPos<>0 then
             HelpPopup(Copy(S2, 1, UrlPos-1), Copy(S2,UrlPos+1,MaxInt))
           else
