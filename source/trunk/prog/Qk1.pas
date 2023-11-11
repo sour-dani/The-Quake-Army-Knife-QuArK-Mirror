@@ -1725,6 +1725,8 @@ begin
  TTextureManager.FreeNonVisibleTextures;
  FreeNonVisibleForms(Nil);
  ReleaseGameFiles;
+ ClearGBList;
+ SizeDownPython;
 end;
 
 var

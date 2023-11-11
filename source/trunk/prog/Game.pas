@@ -97,6 +97,7 @@ procedure ClearGameBuffers(CanCancel: Boolean);
 procedure ClearGameBuffer1;
 procedure SizeDownGameFiles;
 procedure ReleaseGameFiles;
+procedure ClearGBList;
 procedure ListSourceDirs(Dirs: TStrings);
 function NeedGameFile(const FileName, PakFile: String) : QFileObject;
 function NeedGameFileBase(const BaseDir, FileName, PakFile: String) : QFileObject;
@@ -177,8 +178,8 @@ end;
 
 procedure InternalSizeDown;
 var
- MemLeft: Integer;
- I, Reste: Integer;
+ MaxFiles, MemLeft: Integer;
+ I: Integer;
 {FreeSize: Integer;
  Remove: Boolean;
  Q: QObject;}
@@ -188,17 +189,17 @@ begin
   Exit;
 
  Setup:=SetupSubSet(ssGeneral, 'Memory');
- Reste:=Round(Setup.GetFloatSpec('GameFiles', 15));
-(*if Reste<0 then Reste:=0;
- for I:=GameFiles.Count-Reste-1 downto 0 do
+ MaxFiles:=Round(Setup.GetFloatSpec('GameFiles', 15));
+(*if MaxFiles<0 then MaxFiles:=0;
+ for I:=GameFiles.Count-MaxFiles-1 downto 0 do
   GameFiles.Delete(I);*)
- if GameFiles.Count>Reste then
+ if GameFiles.Count>MaxFiles then
   begin
    ReleaseGameFiles;
    Exit;
   end;
 
- MemLeft:=Round(Setup.GetFloatSpec('GameBufferSize', 8)) * (1024*1024);
+ MemLeft:=Round(Setup.GetFloatSpec('GameBufferSize', 8) *1024*1024);
  for I:=GameFiles.Count-1 downto 0 do
   begin
    Dec(MemLeft, GameFiles[I].GetObjectSize(Nil, False));
