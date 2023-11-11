@@ -365,6 +365,17 @@ function LastPos(const SubStr: String; const S: String): Integer;
 //This function doesn't exist at all in Delphi:
 function CheckWin32VersionWithServicePack(AMajor: Integer; AMinor: Integer = 0; AServicePackMajor: Integer = 0; AServicePackMinor: Integer = 0): Boolean; //Note: We use the wrong datatype to be consistent with CheckWin32Version.
 
+//This function doesn't exist at all in Delphi:
+{$IFDEF UNICODE}
+function WideLowerCaseFileName(const S: string): string;
+
+//This function doesn't exist at all in Delphi:
+function WideCompareFileName(const S1, S2: string): Integer;
+{$ENDIF}
+
+//This function doesn't exist at all in Delphi:
+function CompareFileName(const S1, S2: string): Integer;
+
 implementation
 
 function CopyCursor(pcur: HCursor): HCursor;
@@ -622,6 +633,48 @@ begin
             ((Win32MajorVersion = AMajor) and (Win32MinorVersion >= AMinor)) or
             ((Win32MajorVersion = AMajor) and (Win32MinorVersion = AMinor) and (Win32ServicePackMajor >= AServicePackMajor)) or
             ((Win32MajorVersion = AMajor) and (Win32MinorVersion = AMinor) and (Win32ServicePackMajor = AServicePackMajor) and (Win32ServicePackMinor >= AServicePackMinor));
+end;
+
+{$IFDEF UNICODE}
+function WideLowerCaseFileName(const S: string): string;
+var
+  I,L: Integer;
+begin
+  if SysLocale.FarEast then
+  begin
+    L := Length(S);
+    SetLength(Result, L);
+    I := 1;
+    while I <= L do
+    begin
+      Result[I] := S[I];
+      if S[I] in LeadBytes then
+      begin
+        Inc(I);
+        Result[I] := S[I];
+      end
+      else
+        if Result[I] in ['A'..'Z'] then Inc(Byte(Result[I]), 32);
+      Inc(I);
+    end;
+  end
+  else
+    Result := WideLowerCase(S);
+end;
+
+function WideCompareFileName(const S1, S2: string): Integer;
+begin
+  Result := WideCompareStr(WideLowerCaseFileName(S1), WideLowerCaseFileName(S2));
+end;
+{$ENDIF}
+
+function CompareFileName(const S1, S2: string): Integer;
+begin
+  {$IFDEF UNICODE}
+  Result:=WideCompareFileName(S1, S2);
+  {$ELSE}
+  Result:=AnsiCompareFileName(S1, S2);
+  {$ENDIF}
 end;
 
 initialization

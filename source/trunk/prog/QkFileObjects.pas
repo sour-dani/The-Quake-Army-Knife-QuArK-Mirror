@@ -370,7 +370,7 @@ end;
 
 function ByFileName(Item1, Item2: Pointer) : Integer;
 begin
- Result:=CompareText(QFileObject(Item1).Filename, QFileObject(Item2).Filename);
+ Result:=CompareFileName(QFileObject(Item1).Filename, QFileObject(Item2).Filename);
 end;
 
 function SortedFindName(Q: TQList; const nName: String) : QObject;
@@ -402,7 +402,7 @@ begin
   begin
    Test:=(Min+Max) div 2;
    Result:=QFileObject(Q[Test]);
-   Diff:=CompareText(nFileName, Result.Filename);
+   Diff:=CompareFileName(nFileName, Result.Filename);
    if Diff=0 then
     Exit;  { found it }
    if Diff<0 then
@@ -1019,7 +1019,7 @@ var
  ReadBytes1, ReadBytes2: LongInt;
 begin
  //Shortcut: If the filenames are identical, the file content is obviously too.
- if Filename1 = Filename2 then
+ if CompareFileName(Filename1, Filename2) = 0 then
   begin
    Result:=True;
    Exit;
