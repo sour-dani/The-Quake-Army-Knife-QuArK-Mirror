@@ -34,8 +34,6 @@ interface
 
 uses Classes;
 
-{$I DelphiVer.inc}
-
 resourcestring
   SListItemNotFoundError = 'Item not found (%s)';
 
@@ -52,6 +50,8 @@ const
 type
   PSpecificsItemList = ^TSpecificsItemList;
   TSpecificsItemList = array[0..MaxSpecificsListSize-1] of TSpecificsItem;
+
+  TTryGetResult = (tgrSuccess, tgrNotFound, tgrWrongType);
 
   TSpecificsList = class(TPersistent)
   private
@@ -100,10 +100,10 @@ type
     procedure InsertFloat(Index: Integer; const Name: string; const F: Single);
     procedure InsertInteger(Index: Integer; const Name: string; const I: Integer);
     procedure InsertString(Index: Integer; const Name: string; const S: string);
-    function TryGetBytesDef(const Name: string; var B: string; const Default: string = {$IFDEF Delphi2005orNewerCompiler}Default(string){$ELSE}''{$ENDIF}): Boolean; //FIXME: No clue when this was added!
-    function TryGetFloatsDef(const Name: string; var F: Single; const Default: Single = {$IFDEF Delphi2005orNewerCompiler}Default(Single){$ELSE}0.0{$ENDIF}): Boolean; //FIXME: No clue when this was added!
-    function TryGetIntegersDef(const Name: string; var I: Integer; const Default: Integer = {$IFDEF Delphi2005orNewerCompiler}Default(Integer){$ELSE}0{$ENDIF}): Boolean; //FIXME: No clue when this was added!
-    function TryGetStringsDef(const Name: string; var S: string; const Default: string = {$IFDEF Delphi2005orNewerCompiler}Default(string){$ELSE}''{$ENDIF}): Boolean; //FIXME: No clue when this was added!
+    function TryGetBytes(const Name: string; var B: string): TTryGetResult;
+    function TryGetFloats(const Name: string; var F: Single): TTryGetResult;
+    function TryGetIntegers(const Name: string; var I: Integer): TTryGetResult;
+    function TryGetStrings(const Name: string; var S: string): TTryGetResult;
     property Bytes[const Name: string]: string read GetBytes write SetBytes;
     property BytesFromIndex[Index: Integer]: string read GetBytesFromIndex write SetBytesFromIndex;
     property Count: Integer read FCount;
@@ -507,76 +507,96 @@ begin
   FList^[Index].Value := S;
 end;
 
-function TSpecificsList.TryGetBytesDef(const Name: string; var B: string; const Default: string): Boolean;
+function TSpecificsList.TryGetBytes(const Name: string; var B: string): TTryGetResult;
 var
   Index: Integer;
 begin
   Index := IndexOfName(Name);
   if (Index < 0) then
   begin
-    Result := False;
-    B := Default;
-    //FIXME: Also add to list???
-  end
-  else
-  begin
-    Result := True;
+    Result := tgrNotFound;
+    Exit;
+  end;
+
+  try
     B := FList^[Index].Value;
+  except
+   on EConvertError do
+    begin
+     Result := tgrWrongType;
+     Exit;
+    end;
   end;
+  Result := tgrSuccess;
 end;
 
-function TSpecificsList.TryGetFloatsDef(const Name: string; var F: Single; const Default: Single): Boolean;
+function TSpecificsList.TryGetFloats(const Name: string; var F: Single): TTryGetResult;
 var
   Index: Integer;
 begin
   Index := IndexOfName(Name);
   if (Index < 0) then
   begin
-    Result := False;
-    F := Default;
-    //FIXME: Also add to list???
-  end
-  else
-  begin
-    Result := True;
+    Result := tgrNotFound;
+    Exit;
+  end;
+
+  try
     F := StrToFloat(FList^[Index].Value);
+  except
+   on EConvertError do
+    begin
+     Result := tgrWrongType;
+     Exit;
+    end;
   end;
+  Result := tgrSuccess;
 end;
 
-function TSpecificsList.TryGetIntegersDef(const Name: string; var I: Integer; const Default: Integer): Boolean;
+function TSpecificsList.TryGetIntegers(const Name: string; var I: Integer): TTryGetResult;
 var
   Index: Integer;
 begin
   Index := IndexOfName(Name);
   if (Index < 0) then
   begin
-    Result := False;
-    I := Default;
-    //FIXME: Also add to list???
-  end
-  else
-  begin
-    Result := True;
+    Result := tgrNotFound;
+    Exit;
+  end;
+
+  try
     I := StrToInt(FList^[Index].Value);
+  except
+   on EConvertError do
+    begin
+     Result := tgrWrongType;
+     Exit;
+    end;
   end;
+  Result := tgrSuccess;
 end;
 
-function TSpecificsList.TryGetStringsDef(const Name: string; var S: string; const Default: string): Boolean;
+function TSpecificsList.TryGetStrings(const Name: string; var S: string): TTryGetResult;
 var
   Index: Integer;
 begin
   Index := IndexOfName(Name);
   if (Index < 0) then
   begin
-    Result := False;
-    S := Default;
-    //FIXME: Also add to list???
-  end
-  else
-  begin
-    Result := True;
-    S := FList^[Index].Value;
+    Result := tgrNotFound;
+    Exit;
   end;
+
+  try
+    S := FList^[Index].Value;
+  except
+   on EConvertError do
+    begin
+     Result := tgrWrongType;
+     Exit;
+    end;
+  end;
+  Result := tgrSuccess;
 end;
 
  {------------------------}

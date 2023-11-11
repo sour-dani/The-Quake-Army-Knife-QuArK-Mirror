@@ -171,8 +171,8 @@ implementation
 uses StrUtils, Types, Math, qdraw, qhelper, qmath, QkUnknown, Undo, TbPalette,
      Toolbar1, ToolBox1, Setup, QuarkX, QkExceptions, QkFileObjects, QkInclude,
      QkMacro, QkImages, Python, PyMacros, PyToolbars, PyForms, QkPixelSet,
-     QkObjectClassList, ApplPaths, BrowseForFolder, FileExists2, Console,
-     SystemDetails, Platform, Logging, ExtraFunctionality;
+     QkObjectClassList, QkSpecifics, ApplPaths, BrowseForFolder, FileExists2,
+     Console, SystemDetails, Platform, Logging, ExtraFunctionality;
 
 const
  Differs = 5391;
@@ -1690,6 +1690,7 @@ var
  sSteps, sTickFreq: String;
  iSteps, iTickFreq: Integer;
  DropDownCount: Integer;
+ SpecResult: TTryGetResult;
  Metrics: TTextMetric;
 begin
  if Form=Nil then Exit;
@@ -1928,14 +1929,9 @@ begin
                   csEverywhere: Icone:=0;  { normally found }
                  end;
                  ComboBox:=TEnterComboBox.Create(Self);
-                 try
-                   DropDownCount:=Integers['Rows'];
-                 except
-                   on EStringListError do
-                     DropDownCount:=0;
-                   on EConvertError do
-                     DropDownCount:=0;
-                 end;
+                 SpecResult:=TryGetIntegers('Rows', DropDownCount);
+                 if SpecResult<>tgrSuccess then
+                  DropDownCount:=0;
                  if DropDownCount > 1 then
                    ComboBox.DropDownCount:=DropDownCount;
                  if (Length(S) > 1) and (S[2]='L') then
@@ -2276,12 +2272,9 @@ begin
 {Decker 2002-12-29}
            'M': begin { Memo / Multiline-text-displaybox }
                  Icone := 0;
-                 try
-                   TextRows := Integers['Rows'];
-                 except
-                   on EConvertError do
-                     TextRows := 3;
-                 end;
+                 SpecResult := TryGetIntegers('Rows', TextRows);
+                 if SpecResult<>tgrSuccess then
+                  TextRows := 3;
                  if TextRows < 1 then
                    TextRows := 1
                  else if TextRows > MemoMaxRows then

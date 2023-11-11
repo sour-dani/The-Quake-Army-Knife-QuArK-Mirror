@@ -62,7 +62,7 @@ implementation
 
 uses StrUtils, Controls, Forms, Console, FormCfg, Platform, Python, Setup, QkExplorer,
   QkFileObjects, QkForm, QkFormCfg, QkInclude, QkObjectClassList, qmath, Qk3D, Quarkx,
-  ToolBox1, QkExceptions, ExtraFunctionality;
+  QkSpecifics, ToolBox1, QkExceptions, ExtraFunctionality;
 
  {------------------------}
 
@@ -496,6 +496,7 @@ var
  Gr: QExplorerGroup;
  ClearList{, L, L1}: TStringList;
  I: Integer;
+ SpecResult: TTryGetResult;
 begin
  Acces;
  case GetTyp of
@@ -557,12 +558,9 @@ begin
     end;
   typMacro:
     begin
-     try
-      I:=Specifics.Integers['count'];
-     except
-      on EConvertError do
-       I:=1;
-     end;
+     SpecResult:=Specifics.TryGetIntegers('count', I);
+     if SpecResult<>tgrSuccess then
+      I:=1;
      while I>0 do
       begin
        ExecuteObjectMacros(Sender, Self);
