@@ -26,10 +26,11 @@ type
   TSoundType = (SOUND_DEFAULT, SOUND_INFO, SOUND_QUESTION, SOUND_WARNING, SOUND_ERROR);
 
 function PlaySound(const SoundType: TSoundType): Boolean;
+function SaveWindowPositions: Boolean;
 
 implementation
 
-uses {$IFDEF LINUX}SysUtils{$ELSE}Windows{$ENDIF}, QkExceptions;
+uses {$IFDEF LINUX}SysUtils{$ELSE}Windows{$ENDIF}, QkExceptions, ExtraFunctionality;
 
 function PlaySound(const SoundType: TSoundType): Boolean;
 {$IFNDEF LINUX}
@@ -50,6 +51,18 @@ begin
   else raise InternalE('Unknown SoundType');
   end;
   Result:=Windows.MessageBeep(uType);
+  {$ENDIF}
+end;
+
+function SaveWindowPositions: Boolean;
+begin
+  {$IFDEF LINUX}
+  Result:=True;
+  {$ELSE}
+  if DelayFunc_SHRestricted then
+    Result:=(SHRestricted(REST_NOSAVESET) = 0)
+  else
+    Result:=True;
   {$ENDIF}
 end;
 

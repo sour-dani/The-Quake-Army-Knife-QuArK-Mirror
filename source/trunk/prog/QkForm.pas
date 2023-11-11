@@ -153,8 +153,8 @@ type
     function GetTbExtra(const Config, Specific: String) : String;
     procedure RemoveSubTbs;
    {procedure SavePosition(const Tag: String);}
-    function SavePositionTb(const Config: String; SubTb: Boolean; SepWidth: TControl) : QObject;
-    function SavePositionTo(const Tag: String; Dest: QObject) : Boolean;
+    procedure SavePositionTb(const Config: String; SubTb: Boolean; SepWidth: TControl);
+    procedure SavePositionTo(const Tag: String; Dest: QObject);
     procedure UpdateMarsCap;
     function MacroCommand(Cmd: Integer) : Boolean; dynamic;
     procedure SetFormIcon(Index: Integer);
@@ -976,13 +976,14 @@ begin
  finally AddOns.AddRef(-1); end;
 end;
 
-function TQkForm.SavePositionTo(const Tag: String; Dest: QObject) : Boolean;
+procedure TQkForm.SavePositionTo(const Tag: String; Dest: QObject);
 var
  XMax, YMax: TDouble;
  R: TRect;
  V: array[0..3] of Single;
 begin
- Result:=False;
+ if not SaveWindowPositions then
+  Exit;
  Dest.Acces;
  case WindowState of
   wsMaximized: begin
@@ -1000,21 +1001,23 @@ begin
              Dest.Specifics.Delete(Tag);
              Dest.SetFloatsSpec(Tag, V);
             end;
- else Exit;
+// else ;
  end;
- Result:=True;
 end;
 
-function TQkForm.SavePositionTb(const Config: String; SubTb: Boolean; SepWidth: TControl) : QObject;
+procedure TQkForm.SavePositionTb(const Config: String; SubTb: Boolean; SepWidth: TControl);
 var
+ Setup: QObject;
  TbInfo: TTbInfo;
 begin
- Result:=SetupSubSetEx(ssToolbars, Config, True);
+ if not SaveWindowPositions then
+  Exit;
+ Setup:=SetupSubSetEx(ssToolbars, Config, True);
  if not SubTb then
-  SavePositionTo('Pos', Result);
+  SavePositionTo('Pos', Setup);
  if (SepWidth<>Nil) and (SepWidth.Align=alLeft) then
-  Result.SetFloatSpec('SepWidth', SepWidth.Width);
- TbInfo.Setup:=Result;
+  Setup.SetFloatSpec('SepWidth', SepWidth.Width);
+ TbInfo.Setup:=Setup;
  TbInfo.SubTb:=SubTb;
  CustomSaveToolbarPositions(Self, tbWriteInt, tbWriteString, @TbInfo);
 {SetupChanged(scMinimal);}
