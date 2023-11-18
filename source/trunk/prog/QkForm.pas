@@ -192,7 +192,8 @@ implementation
 uses QkFileObjects, qmath, Setup, Qk1, Toolbar1, ToolBox1,
      TbUndoMenu, Undo, ObjProp, Config, Game, Dialogs, Logging,
      QkMacro, FormCfg, Running, Output1, PyImages, Quarkx, QConsts,
-     QkExplorer, PyToolbars, PyControls, QkFormCfg, Platform, ExtraFunctionality;
+     QkExplorer, PyToolbars, PyControls, QkFormCfg, FileAssociations,
+     Platform, ExtraFunctionality;
 
 const
  ActiveFontColor    = clWhite;

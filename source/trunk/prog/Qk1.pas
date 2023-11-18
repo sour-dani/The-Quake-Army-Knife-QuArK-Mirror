@@ -237,7 +237,7 @@ implementation
 uses {$IFDEF MemTester}MemTester, {$ENDIF}ShellApi, Undo, QkQuakeC, Setup, Config,
   ToolBox1, Game, QkOwnExplorer, ObjProp, qdraw, qmath, QkInclude,
   Running, Output1, QkTreeView, PyProcess, Console, Python, Quarkx, About,
-  PyMapView, PyForms, Qk3D, EdSceneObject, QkObjectClassList, ApplPaths,
+  PyMapView, PyForms, Qk3D, EdSceneObject, QkObjectClassList, ApplPaths, FileAssociations,
   QkExceptions, QkQuakeCtx, AutoUpdater, QConsts, Toolbar1,
   Splash, Logging, SystemDetails, Platform;
 
@@ -257,6 +257,7 @@ var
 const
   MaxRecentFilesUpperLimit = 20;
 
+{$I DelphiVer.inc}
 {$R *.DFM}
 {$R ICONES\ICONES.RES}
 
