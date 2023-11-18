@@ -53,5 +53,5 @@ end;
  {------------------------}
 
 initialization
-  RegisterQObject(QKPF, 's');
+  RegisterQObject(QKPF, 't');
 end.

@@ -687,7 +687,7 @@ begin
 end;
 
 initialization
-  RegisterQObject(D3Pak, 's');
+  RegisterQObject(D3Pak, 't');
   RegisterQObject(D3Material, 'a');
   RegisterQObject(D3MaterialStage, 'a');
   RegisterQObject(D3MaterialFile, 'p');

@@ -955,7 +955,7 @@ end;
  {------------------------}
 
 initialization
-  RegisterQObject(Q3Pak, 's');
+  RegisterQObject(Q3Pak, 't');
   RegisterQObject(Q_CFile, 's');
   RegisterQObject(Q_HFile, 's');
   RegisterQObject(QShader, 'a');

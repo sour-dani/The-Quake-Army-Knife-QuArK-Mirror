@@ -1492,6 +1492,6 @@ begin
 end;
 
 initialization
-  RegisterQObject(QMdlFile, 'u');
+  RegisterQObject(QMdlFile, 'v');
 end.
 

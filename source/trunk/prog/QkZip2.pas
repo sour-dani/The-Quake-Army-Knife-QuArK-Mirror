@@ -863,6 +863,6 @@ const
 }
 
 initialization
-  RegisterQObject(QZipPak, 't');
+  RegisterQObject(QZipPak, 's');
   RegisterQObject(QZipFolder, 'a');
 end.

@@ -731,5 +731,5 @@ end;
  {------------------------}
 
 initialization
-  RegisterQObject(QMd2File, 'u');
+  RegisterQObject(QMd2File, 'v');
 end.

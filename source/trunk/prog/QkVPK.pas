@@ -319,8 +319,7 @@ end;
 
 initialization
 begin
-  {tbd is the code ok to be used ?  }
-  RegisterQObject(QVPK, 's');
+  RegisterQObject(QVPK, 't');
   RegisterQObject(QVPKFolder, 'a');
 end;
 

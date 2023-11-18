@@ -236,7 +236,7 @@ end;
  {------------------------}
 
 initialization
-  RegisterQObject(QCoD2Pak, 's');
+  RegisterQObject(QCoD2Pak, 't');
   RegisterQObject(QCoD2Bsp, 's');
   RegisterQObject(QCoD2Material, 'p');
 end.

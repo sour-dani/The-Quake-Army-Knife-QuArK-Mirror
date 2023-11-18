@@ -472,7 +472,7 @@ end;
 
 initialization
 begin
-  RegisterQObject(QVMTFile, 'v');
+  RegisterQObject(QVMTFile, 'p');
 end;
 
 finalization

@@ -312,5 +312,5 @@ end;
 
 initialization
   RegisterQObject(QM8, 'k');
-  RegisterQObject(QHr2Model, 'u');
+  RegisterQObject(QHr2Model, 'v');
 end.
