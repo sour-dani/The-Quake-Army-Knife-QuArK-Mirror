@@ -537,6 +537,6 @@ end;
 
  {-------------------}
 
-(*initialization
-  RegisterQObject(TPolyedreEx, 'a');*)
+initialization
+//  RegisterQObject(TPolyedreEx, 'a');
 end.

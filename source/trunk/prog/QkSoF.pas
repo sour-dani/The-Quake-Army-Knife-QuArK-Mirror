@@ -286,7 +286,7 @@ begin
  Result:='M32';
 end;
 
-class function QM32.Typeinfo: String;
+class function QM32.TypeInfo: String;
 begin
   Result:='.m32';
 end;

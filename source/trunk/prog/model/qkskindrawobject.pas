@@ -63,7 +63,7 @@ begin
   end;
 end;
 
-class function QSkinDrawObject.Typeinfo:string;
+class function QSkinDrawObject.TypeInfo: string;
 begin
   result:=':sdo';
 end;

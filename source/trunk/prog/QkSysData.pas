@@ -44,9 +44,9 @@ begin
     Result:=false;
 end;
 
-class function QSysData.Typeinfo: String;
+class function QSysData.TypeInfo: String;
 begin
-  result:=':sd';
+  Result:=':sd';
 end;
 
 class function QSysData.ShowInListSel : Boolean;

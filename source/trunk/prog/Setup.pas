@@ -690,7 +690,7 @@ var
  T: TSetupSet;
 begin
  if ParentNameChain.Count < 1 then
-  raise InternalE('ParentNameChain is empty!');
+  raise InternalE('ParentNameChain is empty');
  Q:=nil;
  for T:=Low(T) to High(T) do
   if SameText(ParentNameChain[ParentNameChain.Count-1], SetupSetName[T]) then
@@ -699,7 +699,7 @@ begin
     break;
    end;
  if Q = nil then
-  raise InternalE('Could not find root of ParentNameChain!');
+  raise InternalE('Could not find root of ParentNameChain');
  for I:=ParentNameChain.Count-2 downto 0 do
   begin
    Q:=Q.FindSubObject(ParentNameChain[I], QObject, nil);

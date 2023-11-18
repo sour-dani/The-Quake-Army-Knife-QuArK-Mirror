@@ -103,7 +103,7 @@ uses qhelper, QuarkX, QkExceptions, QkModelRoot, Setup, Travail, QkObjectClassLi
 
 class function QMdlFile.TypeInfo;
 begin
-  Result := '.mdl';
+  Result:='.mdl';
 end;
 
 class procedure QMdlFile.FileObjectClassInfo(var Info: TFileObjectClassInfo);
