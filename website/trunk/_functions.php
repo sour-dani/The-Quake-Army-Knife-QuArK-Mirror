@@ -144,9 +144,9 @@ function pageFixLinkDirection($text) {
   $replacer = "src=\"".$picsroot."\\2";
   $text = eregi_replace("(src=\")([^h][^t][^t][^p])", $replacer, $text);
 
-  # Replace all local '.shtml' references to '.php3'
+  # Replace all local '.shtml' references to '.php'
   $searcher = "(href=\"[a-zA-Z0-9_/\\]*)\.shtml";
-  $replacer = $keepinframe . "\\1.php3";
+  $replacer = $keepinframe . "\\1.php";
   $text = eregi_replace($searcher, $replacer, $text);
 
   return $text;
@@ -475,11 +475,11 @@ function pageDisplay($title, $pageFunction) {
   echo "<tr><td width=4>&nbsp;</td><td width=$sidebarwidth valign=top>";
 
   initSidePanel();
-  include("_navbar.php3");
+  include("_navbar.php");
 
   $powerphp3text = "<center><a href=\"http://www.php.net\"><img src=\"pics/smlbanners/php3.gif\" width=88 height=31 border=0></a></center>";
   pageSidePanel("", "This page is...", $powerphp3text);
-  include("_servertime.php3");
+  include("_servertime.php");
 
   echo "</td><td width=8>&nbsp;</td>";
   echo "\n<td width=100% valign=top>";
@@ -493,9 +493,9 @@ function pageDisplay($title, $pageFunction) {
 
   initSidePanel();
   if ($title=="News" || $title=="InstaPolls") {
-    include("_instapoll.php3");
+    include("_instapoll.php");
   }
-  include("_useful.php3");
+  include("_useful.php");
 
   echo "</td><td width=8>&nbsp;</td></tr>";
   echo "<tr><td colspan=7 height=8>";

@@ -1,6 +1,6 @@
 #!/usr/bin/php
 <?php
-include("_functions.php3");
+include("_functions.php");
 
 function pageLocalDisplay() {
   pageName("InstaPolls");

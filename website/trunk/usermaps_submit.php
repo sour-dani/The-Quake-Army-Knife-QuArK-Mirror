@@ -1,9 +1,9 @@
 #!/usr/bin/php
 <?php
-include("_functions.php3");
+include("_functions.php");
 
 $submitform = "
-<form method=\"POST\" action=\"usermaps_submit.php3\">
+<form method=\"POST\" action=\"usermaps_submit.php\">
   <table border=0 cellpadding=0 cellspacing=1 align=center>
     <tr><td class=\"text1\">Map&nbsp;name:</td><td><input name=\"map_name\" size=50></td></tr>
     <tr><td class=\"text1\">Download&nbsp;URL:</td><td><input name=\"map_download\" size=50 value=\"ftp://\"></td></tr>

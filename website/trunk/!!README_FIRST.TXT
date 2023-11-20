@@ -4,14 +4,14 @@ All these files must be in UNIX format. Meaning that a newline only consists
 of the single "0x0A" character, and not the DOS format of two characters
 "0x0D 0x0A".
 
-This is because the .PHP3 files, once uploaded to dynamic.gamespy.com/~quark,
+This is because the .PHP files, once uploaded to dynamic.gamespy.com/~quark,
 will result in parsing-errors if they are in DOS format, since the web-server
 'dynamic.gamespy.com' is a UNIX box.
 
 
 What is this?
 -------------
-These are the .PHP3 and .HTML files which builds the website of QuArK.
+These are the .PHP and .HTML files which builds the website of QuArK.
 
 Note that this CVS-Repository module "website", should NOT contain any
 image-files (.GIF, .PNG, .JPG, etc.), mainly because of their binary nature
@@ -32,7 +32,7 @@ CVS modules; 'source', 'runtime', 'infobase', 'qrksoftg' and 'utils'.
 Be aware of possible CVS conflicts, when doing CVS updates. You need to fix
 these conflicts yourself, before continuing modifying the files!
 
-Modify the .PHP3 or .HTML files as needed, and if possible test them on your
+Modify the .PHP or .HTML files as needed, and if possible test them on your
 own personal web-server which should be configured to run PHP server-site
 scripts (find out more about PHP at the site http://www.php.net)
 

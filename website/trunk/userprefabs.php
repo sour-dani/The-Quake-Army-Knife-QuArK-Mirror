@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
-include("_functions.php3");
-include("_userprefabs-database.php3");
+include("_functions.php");
+include("_userprefabs-database.php");
 
 function pageLocalDisplay() {
   global $prefabs_imageroot;

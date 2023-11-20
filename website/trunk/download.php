@@ -1,15 +1,15 @@
 #!/usr/bin/php
 <?php
-include("_functions.php3");
-include("_download_functions.php3");
-include("_download-database.php3"); # Contains '$Applications' and '$Games'
+include("_functions.php");
+include("_download_functions.php");
+include("_download-database.php"); # Contains '$Applications' and '$Games'
 
 
 function pageLocalDisplay()
 {
   pageName("Download");
 
-  global $Applications, $Games; # See '_download-database.php3'
+  global $Applications, $Games; # See '_download-database.php'
 
 
 ## -- OnlineHelp --

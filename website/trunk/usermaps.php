@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
-include("_functions.php3");
-include("_usermaps-database.php3");
+include("_functions.php");
+include("_usermaps-database.php");
 
 $checkboxon = array("on" => "checked "
                    ,"1"  => "checked ");

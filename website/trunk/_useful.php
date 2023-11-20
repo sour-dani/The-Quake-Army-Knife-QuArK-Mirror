@@ -161,7 +161,7 @@ switch (time()&3)
     $noticetxt = "
     Questions and<br>
     problems must be<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;send to the <a href=\"forums.php3\">forums</a>!&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;send to the <a href=\"forums.php\">forums</a>!&nbsp;&nbsp;&nbsp;&nbsp;
     ";
     break;
   case 1:
