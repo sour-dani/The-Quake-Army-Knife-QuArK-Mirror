@@ -1,0 +1,10 @@
+<author>DanielPharos</author>
+<headline>Nightly build with Steam fixes</headline>
+
+<p>Hi Steam-users,<br>
+<br>
+With every big update to Steam, QuArK seems to break. I've been working on getting everything fixed again, and I've compiled a nightly build <a href="http://quark.sourceforge.net/forums/index.php?topic=420.msg2408#msg2408">here</a>, that fixes everything that was broken over time and also supports 'orangebox' games. Give it a try, and please provide feedback!</p>
+
+
+<p>Happy Steaming,<br>
+DanielPharos</p>

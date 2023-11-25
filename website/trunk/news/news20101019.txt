@@ -1,0 +1,14 @@
+<author>DanielPharos</author>
+<headline>Not dead yet...</headline>
+
+<p>Hi everyone,<br>
+<br>
+First of all, we're not dead yet. In fact, we're approaching a new release!</p>
+
+<p>Also, I've noticed Valve being kinda quiet about mod-support for their new Source 2009 engine. Until the Source SDK gets updated for that, I can't make QuArK officially support it. Valve claims Source 2007 (orangebox) mods should work, but I'm not sure how compatible it really is...</p>
+
+<p>So there, a news update. <pic smiley_happy></p>
+
+
+<p>Happy waiting,<br>
+DanielPharos</p>

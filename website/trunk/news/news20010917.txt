@@ -1,0 +1,13 @@
+<author>Decker</author>
+<headline>User made prefab</headline>
+<p>A prefab made by "&lt;uSm&gt;Dune" have been added to the <a href="userprefabs.php#Q2">User Prefabs</a> page.</p>
+
+<ul>
+  <li>Quake-2
+    <ul>
+      <li>Alien Ship</li>
+    </ul>
+  </li>
+</ul>
+
+<p>BTW: I've tried to spam-protect all e-mail addresses on this site, so be aware when you click on a <i>mailto:</i> link, that there might be some stuff to remove from the e-mail address. It should be obvious what to remove.</p>

@@ -1,0 +1,28 @@
+<author>Decker</author>
+<headline>Pak editor</headline>
+<a href="http://www.gamedesign.net">Rust</a> mentioned some days ago, that a new Pak-editor have been developed. Its called Pakscape, and you can find it at
+<a href="http://www.captured.com/assault">http://www.captured.com/assault</a> or directly from <a href="http://www.fileplanet.com">FilePlanet</a> with this link
+<a href="http://dl.fileplanet.com/dl/dl.asp?captured/assault/util/pakscape/pakscape-007.zip">captured/assault/util/pakscape/pakscape-007.zip</a>.<br>
+
+<headline>Zoner's Half-Life Tools v1.6</headline>
+A new version of the tools for Half-Life map-building made by Zoner. Here's whats new:
+<ul>
+<li>Up to 252,140 lightmaps (patches) can be used if compiled with -bounce 0. 65535 patches is still the limit if you need radiosity lighting (-bounce 1 or higher)
+<li>Increased MAX_MAP_BRUSHES from 4096 to 8192.
+<li>Increased MAX_MAP_PLANES from 32767 to 65535, and changed some data structures from short to unsigned short. Half-life seems to tolerate it.
+<li>Increased MAX_TRI_POINTS from 3072 to 4096. This made the tringulation_t structure jump from 35 to 70Mb, hopefully this won't cause anyone too much trouble (as it isnt allocated until after the vismatrix is freed).
+<li>Added buffer overflow errorchecking in CompressVis and DecompressVis.
+<li>Fixed unusally large -bounce's being allowed (or negative bounces).
+<li>Fixed swaptransfer messages from printing their descriptions multiple times.
+<li>Fixed 'outside world' messages from printing their descriptions multiple times.
+<li>Added total number of swaptransfer errors at end of run, for trivia.
+<li>Added autoconf package for unix systems to make compiling easier and more standardized.
+<li>Switched to GNU make system for all platforms including windows, to take advantage of a unified make system, as well as multithreaded aware compiling on Windows.
+</ul>
+Get the <a target="_blank" href="http://www.winace.com">WinAce</a> file of Zoner's Half-Life Tools: <a href="http://dl.fileplanet.com/dl/dl.asp?quark/zhlt16.ace">zhlt16.ace</a> (216KB), or
+the <a target="_blank" href="http://www.winzip.com">WinZip</a> one (255KB) which can be found on the <a target="_blank" href="http://halflife.gamedesign.net">Half-Life ERC</a> site.<br>
+
+<headline>User-made maps</headline>
+<ul>
+<li>'Slaughter' by Pascal Mariany
+</ul>

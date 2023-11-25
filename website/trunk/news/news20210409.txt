@@ -1,0 +1,12 @@
+<author>DanielPharos</author>
+<headline>Twitch may crawl these pages</headline>
+
+<p>For those of you streaming on Twitch, please be aware that posts you make on our forums may be used against you: <a href="https://blog.twitch.tv/en/2021/04/07/our-plan-for-addressing-severe-off-service-misconduct/">Twitch's plan for addressing severe off-service misconduct</a></p>
+
+<p>Note that some of the behavior mentioned isn't allowed on our forums either.</p>
+
+<p>Our webmaster isn't planning on volunteering such information; they will only reply to a formal, legal request. Do note though that since we're currently hosted by SourceForge, it's more likely that they get contacted instead, and we have no control over what they decide to do regarding such requests. So please stay polite to stay safe!</p>
+
+
+<p>Happy twitching,<br>
+DanielPharos</p>

@@ -1,0 +1,22 @@
+<author>Gryphon</author>
+<headline>User Map Updates!</headline>
+<ul>
+<li><i>Ritter</i></li>
+<li><i>Temple of Frags</i></li>
+<li><i>The Cooling Chamber</i></li>
+<li><i>Bros Of the Gun Domain</i></li>
+</ul>
+<p><a href="usermaps.php">Check 'em out!</a>
+
+<author>Hey, Gryphon... what are you doing?</author>
+<!--<img src="http://www.powersurge.com/drawing/images/about_figma.gif" align="right">-->
+I'm still here, helping with what I can. So much to do, so little time, same old same
+old. So all you youngin's out there take note! That's what you get for
+being ambitious... NO TIME for everything, and the PAIN that goes with
+it! ...Um... anyways...<br>
+<br>
+My Other Website &quot;The DrawingBoard&quot; is going well. It's starting to take off...
+just a lot more work to do... but it's all very FUN! Anyway, do me a
+favor and check it out. Let me know what you think.<br>
+<b><a href="http://www.powersurge.com/drawing" target="_blank">The DrawingBoard http://www.powersurge.com/drawing</a></b><br>
+<p><i>Later, Gators !</i>

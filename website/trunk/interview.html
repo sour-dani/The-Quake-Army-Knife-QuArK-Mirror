@@ -1,0 +1,152 @@
+<span style="font-size: x-large;">Interview with Armin Rigo, Author of QuakeMap</span>
+
+<p>date: Feb. 12th 1997<br>
+time: 6:00 am PST<br>
+place: Undernet #quakemap<br>
+present: Derrick McKay (Cynchako), Armin Rigo (Armin)</p>
+
+<hr class="bigbreak">
+
+<style>
+.nick
+{
+	color: #FF80FF;
+}
+.question
+{
+	color: #C0C0C0;
+}
+.answer
+{
+	color: #000000;
+}
+</style>
+
+<p>
+<span class="nick">[Cynchako]</span> <span class="question">Ok, well, Armin thanks for taking the time to join us, I'll try to make this interview painless :-)</span><br>
+<span class="nick">[Cynchako]</span> <span class="question">Maybe we can start with some background on you. Where you live, what you do, hobbies, that kind of thing.</span><br>
+<span class="nick">[Armin]</span> I live in Switzerland, where I'm a student in Mathematics.<br>
+<span class="nick">[Armin]</span> My main hobby is, guess, Computing.<br>
+<span class="nick">[Armin]</span> Other hobbies : as I live in a ski station, I like skiing.</p>
+
+<p>
+<span class="nick">[Cynchako]</span> <span class="question">Where do you go to school?</span><br>
+<span class="nick">[Armin]</span> I go to school in Lausanne, capital of the french-speaking part of Switzerland.</p>
+
+<p>
+<span class="nick">[Cynchako]</span> <span class="question">How did you get interested in the "editing" part of Quake?</span><br>
+<span class="nick">[Armin]</span> I got interested in Quake because of its great 3D capabilities, and mainly because I like "hacking".<br>
+<span class="nick">[Armin]</span> Quake is great in this area. That's why, after some hacks, I made an all-purpose (incl.map) Quake editor.</p>
+
+<p>
+<span class="nick">[Cynchako]</span><span class="question"> What programs / hacks have you written for Quake?</span><br>
+<span class="nick">[Armin]</span> Not a lot. I wrote DEACC and REACC, a decompiler and a recompiler for Progs.dat.<br>
+<span class="nick">[Armin]</span> This was a deep hack into Progs.dat. I made this before id released their QCC (at least before I knew they did).<br>
+<span class="nick">[Armin]</span> And then I made QuakeMap. Since version 2, I integrated parts of DEACC / REACC into QuakeMap.</p>
+
+<p>
+<span class="nick">[Cynchako]</span> <span class="question">You released these not long after Quake came out didn't you?</span><br>
+<span class="nick">[Armin]</span> Yes, I released DEACC and REACC quickly.</p>
+
+<p>
+<span class="nick">[Cynchako]</span><span class="question"> What inspired you to make an "all-purpose" editor, instead of just a "map" editor?</span><br>
+<span class="nick">[Armin]</span> QuakeMap 1.0 and 1.1 were just a map editor. But I quickly realized an "all-purpose" editor would be very useful. With Quake, there are a lot of things you can edit - maps, QuakeC, models, sounds, and so on. And all these can be interrelated. This gave me the idea of integrating it all.</p>
+
+<p>
+<span class="nick">[Cynchako]</span> <span class="question">Well, it's certainly turning out to be all purpose. Let's talk about the editor part of QuakeMap for a minute. Why did you not go with the "texture wad" route that the other editor authors did?</span><br>
+<span class="nick">[Armin]</span> Why would I ? All the textures are found in Quake, so let's take them from there (but it also allows you to use textures from several of the standard .wad's). Wad's are only useful for QBSP to build a map. QuakeMap creates a temporary one when needed, and everybody's happy.</p>
+
+<p>
+<span class="nick">[Cynchako]</span> <span class="question">It only makes sense to use what's already there. Good choice. I've been using QuakeMap for quite a while now, and one thing that really stands out from the other editors is that there is only *2* views for editing. Why did you design it this way?</span><br>
+<span class="nick">[Armin]</span> Because I like clean interfaces.<br>
+<span class="nick">[Armin]</span> Two views are enough, thanks to the compass, and not everybody has a 23'' screen !</p>
+
+<p>
+<span class="nick">[Cynchako]</span><span class="question"> Well, nobody can say that it's cluttered :-) You say "clean interfaces". There are lots of "bells and whistles" in the other editors, you mean  they aren't needed in QuakeMap?</span><br>
+<span class="nick">[Armin]</span> No. There are enough buttons on the screen. You get everything you need from popup-up context menus. No need for buttons for that.<br>
+<span class="nick">[Armin]</span> Not to mean there aren't people that would like more buttons and visual stuff like that eating up precious screen space ;-)  I don't.</p>
+
+<p>
+<span class="nick">[Cynchako]</span><span class="question"> There's lots of questions I could ask about the editor itself, but I think that the best part of QuakeMap is the "Explorer". How did you come up with the idea of having a "Manager" type interface for QuakeMap?</span><br>
+<span class="nick">[Armin]</span> The "Explorer" is the intergration required for Quake. I could also put every "entry" in a separate file, but I don't like when there are a lot of small files around. The "Explorer" is just to allow the integration of several files all in one window.</p>
+
+<p>
+<span class="nick">[Cynchako]</span><span class="question"> Just what *can* you edit with QuakeMap? I know you can do maps, but what else?</span><br>
+<span class="nick">[Armin]</span> - Descriptions (like the Doom Authoring Template)<br>
+<span class="nick">[Armin]</span> - Brush and Entities libraries<br>
+<span class="nick">[Armin]</span> - QuakeC code patches<br>
+<span class="nick">[Armin]</span> - New Textures<br>
+<span class="nick">[Armin]</span> - Files (imported into the Explorer) like sound files<br>
+<span class="nick">[Armin]</span> - File links (to use several .qme files together)<br>
+<span class="nick">[Armin]</span> - compiled .bsp files. You can even add QuakeMap-like entities in already compiled .bsp's. By QuakeMap-like I mean e.g. new monsters.</p>
+
+<p>
+<span class="nick">[Cynchako]</span> <span class="question">So I can take somebody's level (BSP), and say, change the weapons, lighting, etc?</span><br>
+<span class="nick">[Armin]</span> Yes. You can't change the level structure, but you can change everything else.<br>
+<span class="nick">[Armin]</span> - Models !   (soon !)</p>
+
+<p>
+<span class="nick">[Cynchako]</span> <span class="question">Hey! Models? Is this going to be something that you can use to build your own monsters and stuff?</span><br>
+<span class="nick">[Armin]</span> Yes. QuakeMap 3.0 (more like a beta) allows this !</p>
+
+<p>
+<span class="nick">[Cynchako]</span> <span class="question">That's great! I guess that's pretty well everything that can be modified! Backing up a minute, I want to ask about the QuakeC stuff. What makes QuakeMap's QuakeC editor different than say, QCC?</span><br>
+<span class="nick">[Armin]</span> It has a "patch compiler".</p>
+
+<p>
+<span class="nick">[Cynchako]</span> <span class="question">What is a "patch compiler"?</span><br>
+<span class="nick">[Armin]</span> This means that QuakeMap QuakeC code has only the changes from the original code.</p>
+
+<p>
+<span class="nick">[Cynchako]</span> <span class="question">So, this means that you can *add* to the original code, without having to replace it from scratch?</span><br>
+<span class="nick">[Armin]</span> This way, you can mix several patches from different sources, with no problem at all.</p>
+
+<p>
+<span class="nick">[Cynchako]</span> <span class="question">So, if I wanted to, say, take two different things, like grappling hook, and a new weapon, I could put *both* into one file?</span><br>
+<span class="nick">[Armin]</span> Yes, you could. No problem. Just create a new .qme file with two file links.<br>
+<span class="nick">[Armin]</span> By the way, I'll soon be putting substantial upgrades in this. Something that generalizes the actual "bind" commands that allow users to choose their keys. Something that would allow, say, a QuakeWorld server to automatically send clients specific key bindings.</p>
+
+<p>
+<span class="nick">[Cynchako]</span> <span class="question">I want to touch on the "QME" file format for a minute. Precisely, the "DOS runtimes". Where did this idea come from?</span><br>
+<span class="nick">[Armin]</span> The idea of the DOS RunTimes is that not everybody has Win95 and QuakeMap. But everybody can run .qme files with the DOS RunTime.</p>
+
+<p>
+<span class="nick">[Cynchako]</span> <span class="question">What's the advantage of the QME format for distribution of maps/etc?</span><br>
+<span class="nick">[Armin]</span> Why won't you just create a .pak file with all the stuff ? Because a .pak file is less flexible. Really a lot. If you distribute a .qme and the DOS Run-Time, you let users do more than they can do with a .pak - like mix several ones, for example.</p>
+
+<p>
+<span class="nick">[Cynchako]</span> <span class="question">What is the main advantage to distributing levels in QME format rather than BSP format?</span><br>
+<span class="nick">[Armin]</span> .bsp's are good for distribution. But the advantage of distributing .bsp files *in* .qme files is that the textures are removed for size and for legal considerations.<br>
+<span class="nick">[Armin]</span> But textures are put back when you want to play Quake, don't worry.</p>
+
+<p>
+<span class="nick">[Cynchako]</span> <span class="question">That would make the files a lot smaller then too, wouldn't it?</span><br>
+<span class="nick">[Armin]</span> Yes. Note that you can put TRUE .bsp files *in* .qme files. This avoids re-QBSP-ing. Of course, you can also distribute QuakeMap maps.</p>
+
+<p>
+<span class="nick">[Cynchako]</span> <span class="question">So, an "imported" BSP file put into a QME file leaves all the QBSP/light/Vis stuff intact, but removes the textures? What about custom textures used in the map that someone on the other end doesn't have?</span><br>
+<span class="nick">[Armin]</span> Right. There are no "standard" textures in "imported" .bsp's but custom textures are detected and "imported", too, in a separate "New Textures" entry in the .qme file.<br>
+<span class="nick">[Armin]</span> Read : no problem.</p>
+
+<p>
+<span class="nick">[Cynchako]</span> <span class="question">Can the user on the other end then use those textures in his own maps?</span><br>
+<span class="nick">[Armin]</span> No problem.</p>
+
+<p>
+<span class="nick">[Cynchako]</span> <span class="question">Can the QME file with the imported BSP also import other things into the same file? Like a progs.dat file and MDL files etc. too? (Like a with a "conversion" type level)</span><br>
+<span class="nick">[Armin]</span> Of course ! You can make "Total Conversions" within a single .qme file !</p>
+
+<p>
+<span class="nick">[Cynchako]</span> <span class="question">So, instead of putting everything into a PAK file, you could put something like CTF into a *single* QME file? Are there any limitations to this?</span><br>
+<span class="nick">[Armin]</span> No limitations - you can always put imported files in .qme's, as you do in .pak's. QuakeMap doesn't produce .pak files because it can produce .qme files, which are a lot more flexible.</p>
+
+<p>
+<span class="nick">[Cynchako]</span><span class="question"> Well, there's a lot more questions I could ask, but I'll just ask one more. Besides model editing in QuakeMap 3.0, what's in the future for QuakeMap?</span><br>
+<span class="nick">[Armin]</span> Everything and more. Much more.<br>
+<span class="nick">[Armin]</span> I hope I will continue to improve QuakeMap. Its story is not ended. It has even interested a big hardware manufacturer...</p>
+
+<p>
+<span class="nick">[Cynchako]</span> <span class="question">Well, I'm curious about that, but I *did* say that was the last question, I guess that's probably why you dropped that now :-)</span></p>
+
+<p>
+<span class="nick">[Cynchako]</span><span class="question"> Anyway, thanks for the interview Armin, we'll have to do this again !!</span></p>

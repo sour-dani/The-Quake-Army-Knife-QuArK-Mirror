@@ -1,0 +1,7 @@
+<author>Armin</author>
+<ul>
+<li><a href="http://asp.planetquake.com/dl/dl.asp?quark/qktec53.zip">Technical information</a> for QuArK 5.3 released.
+<li><a href="http://asp.planetquake.com/dl/dl.asp?quark/quark53b.zip">Patch for QuArK 5.3</a>. Only required for Sin editing.
+For Half-Life, it fixes a few bugs but it is not required. I know that Half-Life .map files sometimes won't open
+(because they use texture names with strange characters); this will be fixed in QuArK 5.4 only, not in this patch, sorry.
+</ul>

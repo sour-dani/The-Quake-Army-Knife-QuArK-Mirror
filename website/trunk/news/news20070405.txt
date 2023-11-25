@@ -1,0 +1,78 @@
+<author>cdunde</author>
+<headline><a href="http://sourceforge.net/project/showfiles.php?group_id=1181"><b>QuArK 6.5.0 Beta 2.0 has just been released ! ! !</b></a></headline>
+
+<table width="100%" border=0 cellspacing=0>
+<tr><td align=center valign=top>
+
+<p>.</p>
+
+<p><b>MAP EDITOR</b></p>
+
+<p><b>SPEED</b></p>
+
+<p><b>DEPENDABILITY</b></p>
+
+<p><b>STABILITY</b></p>
+
+<p><b>OpenGL LIGHTING</b></p>
+
+<p><b>SOFTWARE MODE</b></p>
+
+<p><b>GLIDE MODE</b></p>
+</td>
+
+<td align=center valign=top>
+<a href="http://quark.sourceforge.net/showvideo.php?VideoID=1">
+<img align=middle src="http://quark.sourceforge.net/pics/videos/OpenGllighting.png" alt="OpenGL Lighting">
+</a>
+</td>
+
+<td align=center valign=top>
+
+<p>.</p>
+
+<p><b>MODEL EDITOR</b></p>
+
+<p><b>SPEED</b></p>
+
+<p><b>DEPENDABILITY</b></p>
+
+<p><b>STABILITY</b></p>
+
+<p><b>SKINNING</b></p>
+
+<p><b>MULTI COLOR FILL</b></p>
+
+<p><b>INDEPENDANT VIEWS</b></p>
+</td></tr>
+</table>
+
+<p>After months of intense work, coding, searching, problem solving and testing the all new and improved QuArK 6.5.0 Beta 2.0 is making its début ! ! !</p>
+
+<p>Many .. many .. many .. many fixes have been done.<br>
+And a number of new features have been added as well.<br>
+<b>With major improvements and additions  ! ! !</b><br>
+Some of which are:</p>
+
+<UL>
+<LI><b><u>Map Editor</u></b>
+<LI>Fixed the Software & Glide lock-up and smearing problems ! <b>YES !</b> They are <b>GONE !</b>
+<LI>The addition of OpenGL lighting and transparency.
+<LI>Fixed a whole load of memory leaks.
+<LI>Changed Half-Life2 files to work with QuArK Beta using vmt files instead of vtf files.
+<LI><b><u>Model Editor</u></b>
+<LI>Improved quality of Model Editor's 3D Texture mode while dragging at increased drawing speed.
+<LI>Completed the initial setup of the Model Editors Multi-fillmesh and color selection function.
+<LI>Fixed the Skin-view to draw model mesh correctly.
+<LI>Proper selection and display of skin textures for all model configurations.
+</UL>
+<p><b>WoW !</b> and that's only a small portion of the list ! 8-o</p>
+
+<p>So for the <b>FULL EXPERIENCE</b> click on the OpenGL video above<br>
+then on this link to go get your new copy of <a href="http://sourceforge.net/project/showfiles.php?group_id=1181"><b>QuArK 6.5.0 Beta 2.0</b></a> ....<b>NOW !!!</b></p>
+
+<p>Remember <b>Keep your QuArK knife sharp!</b></p>
+
+<p>cdunde</p>
+
+<p>For more information and added support, go to the <a href="http://quark.sourceforge.net/forums/">QuArK Resource Center</a> and <a href="http://quark.sourceforge.net/communication.php#forums">the forums page</a> of this site.</p>

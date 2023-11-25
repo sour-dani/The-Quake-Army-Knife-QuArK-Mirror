@@ -1,0 +1,27 @@
+<author>Gryphon</author>
+      <ul>
+        <font 
+size=2 face="verdana,arial" 
+		color="0000a0"> <!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:--> 
+        <p><strong>So, who loves you?</strong><br>
+        <li>Hi! Just wanted to drop the line that... well... I've changed everything!<br>
+          If you haven't noticed, I've finally implemented the new redesign for 
+          the site. I took the day off from work to relax... but who am I kidding? 
+          I love web work! Anyway... I decided to toss out all the special Javascript 
+          tricks I was going to use, and development went a lot faster.<br>
+          <br>
+        </font> 
+        <li><font size=2 face="verdana,arial" color="0000a0"><b>
+	Major Revisions</b><br>
+          I've FINALLY gotten around to updating the <b><a href="games/quake.shtm">GAME 
+          sections</a></b>... still not much there, but I'm working on it. At 
+          least NOW there's a foundation.</font> <br>
+          <br>
+        
+        <li><font size=2 face="verdana,arial" color="0000a0"><b> New Additions</b><br>
+          The <a href="quarkfaq.shtm"><b>QuArK FAQ</b></a> section is now "really" 
+          in. It's very long, and still incomplete, so take a look, and send your 
+          complaints! Lots of other new sections like &quot;IRC&quot;, &quot;Plug-ins&quot;, 
+          etc are new, but still under construction.</font> 
+          <p><font size="2" face="Geneva, Arial, Helvetica, sans-serif" color="#000066"><b><i><font size="4">Later!</font></i></b></font></p>
+      </ul>

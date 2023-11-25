@@ -1,0 +1,4 @@
+<author>Decker</author>
+<headline>Day of Defeat beta 3.0 entities</headline>
+<p>By request of <a href="mailto:sniffiter***NO*SPAM*PLEASE***@home.se">Richard</a>, I've updated DataHL.QRK with the known <a href="http://www.dayofdefeatmod.com">Day of Defeat</a> beta 3.0 entities.<br>
+<strike>You can download the newest DataHL.QRK from here: DataHL_20020713.zip.</strike></p>

@@ -1,0 +1,18 @@
+<author>cdunde</author>
+<headline>Welcome jfvg</headline>
+
+<p>With the start of a new year, we expect many exciting things to happen for QuArK. One of which is the addition of our newest team member <b>jfvg</b>, better known as Jean Francois.</p>
+
+<p>Already he has given us something to be excited for and proud of, a nice change for Half-Life 2 so that your custom textures can be viewed in the QuArK Texture Browser!</p>
+
+<p>A user of QuArK since 1999, Jean has extensive experience with Half-Life 1, making his own mod with models, textures, maps, and coding along with other maps for Jedi-Knight.</p>
+
+<p>With this latest change to the Delphi source code, that has been added for the next release, we wish to <b>welcome Jean aboard</b> the QuArK Team and wish him all the best and future success.</p>
+
+<p>Remember <b>Keep your QuArK knife sharp!</b></p>
+
+<p>cdunde</p>
+
+<p>For more information and added support, go to the <a href="http://quark.ironfoot.co.uk/">QuArK Resource Center</a> and <a href="http://quark.sourceforge.net/communication.php#forums">the forums page</a> of this site.</p>
+
+<p>And remember to visit <a href="http://quark.sourceforge.net/cgi-bin/moin.cgi">our sister site!</a>.</p>

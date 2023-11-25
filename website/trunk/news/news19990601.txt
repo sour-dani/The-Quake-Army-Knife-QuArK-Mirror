@@ -1,0 +1,4 @@
+<author>Decker</author>
+The <a href="download.php">download page</a> have been updated with a few files,
+that I unfortunatly forgot when I designed the new layout. Mainly the game data files
+that is needed to be able to put stuff, like monsters and doors, into the levels.

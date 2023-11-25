@@ -1,0 +1,5 @@
+<author>tiglari</author>
+<headline>Snapshot and Patch</headline>
+<p>With links at the <a href="http://quark.sourceforge.net/latest">latest</a> page.</p>
+
+<p>New features include a finder for patches with bad texture scales, and a gadget to shift a group or other object containing a vertex so that the vertex lands on-grid.</p>

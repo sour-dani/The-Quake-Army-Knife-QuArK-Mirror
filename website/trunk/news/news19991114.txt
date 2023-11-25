@@ -1,0 +1,14 @@
+<author>Decker</author>
+<headline>Half-Life data add-on updated</headline>
+The <a href="http://home1.inet.tele.dk/decker/DataHL.zip">newest Half-Life data add-on .QRK</a> have been updated with <a target="_blank" href="http://www.counter-strike.net">Counter-Strike</a> beta4.0 textures:<br>
+- [CS] Updated texture-links for Counter-Strike beta4<br>
+- [HL] Added a Gib-models list to the monster_furniture entity<br>
+<div class="sml">(If you have a new/updated data add-on you want announced here, please mail the <a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com?body=-- NOTICE: HTML e-mails will be bounced, so send only in plain-text! /Decker --">webmaster</a>.)</div>
+
+<headline>QuArK-made maps</headline>
+A Half-Life Counter-Strike defuse, a Quake-2 deathmatch and a Half-Life Team Fortress Classic map, have been added to the list of <a href="usermaps.php">User maps</a>:
+<ul>
+	<li>'SatComm' by S. Bryan 'Plaguebearer' Loyd
+	<li>'Unearthed' by 'F-10'
+	<li>'119snip' by James Woolley
+</ul>

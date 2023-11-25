@@ -1,0 +1,20 @@
+<author>DanielPharos</author>
+<headline>QuArK Shareware registration</headline>
+
+<p>Did you know that QuArK started out life as "QuakeMap", which was shareware? Well, actually, nowadays we'd call it nagware: it wasn't crippled in any way, but it displayed an image in the main window (not even a popup!) to indicate that you hadn't registered. As the author, Armin Rigo, stated: "I will never take QuakeMap to a commercial level" and "the Shareware version will always be full-featured". So it was more of a donation-system than a copy-protection. For just $20 you would receive your registration code, and know you helped the project out.</p>
+
+<p>Not only that, the registration was lifetime. As the QuArK 5 registration information states: "A single registration is valid for all current and future versions of QuArK."</p>
+
+<p>However, around version 5 the license changed and QuArK became open source. From that point onwards, registration didn't make much sense anymore, as anybody could technically compile the source code themselves, and the shareware mentions were removed from QuArK.<br>
+However... the code wasn't. Not entirely. Turns out that even the latest QuArK 6 releases still have the registration code active! It doesn't do much when you enter a valid code: it just shows a nice "thank you"-message, and that's it.</p>
+
+<p>And recently I managed to figure out how to generate registration codes! I tested them on QuArK 4.x, 5.x, and 6.x, and they work perfectly! So over the next couple of days, I'll be contacting the donators that I'm aware of that donated $20 or more in the past 10-ish years, and I'll be offering them their registration codes.</p>
+
+<p>Why? Well, let me be very clear about one thing: I'm NOT re-introducing registration; this is just a silly little gimmick to show appreciation. <pic smiley_happy><br>
+I haven't decided yet what the "requirements" are to "earn" a registration code, but it won't be a donation requirement. On top of that, I will add some visible feedback back into the program to indicate that it is a registered version. I'm not going to change anything else.</p>
+
+<p>And of course, the codes will also work for ancient QuArK shareware versions, if you're still using those.</p>
+
+
+<p>Happy registrering,<br>
+DanielPharos</p>

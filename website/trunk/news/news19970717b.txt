@@ -1,0 +1,4 @@
+<author>Derrick McKay</author>
+<headline></headline>
+- <A HREF="download.html">QuArK 3.61</A> released. See <A HREF="armin/index.shtm">Armin's Page</A> for details<BR>
+- QuArK DOS Run-Time (QKDOSRT) source code released (only for programmers)<BR>

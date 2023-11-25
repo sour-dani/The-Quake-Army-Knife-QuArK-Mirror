@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>QuArK and Windows 11</headline>
+
+<p>I just installed the latest QuArK nightly in a VM with the latest Windows 11 insider build. I didn't test many features, but QuArK started up just fine, and loading the map and model editors was no problem at all. It seems that QuArK will survive into another decade, at least!<pic smiley_happy></p>
+
+
+<p>Happy QuArKing,<br>
+DanielPharos</p>

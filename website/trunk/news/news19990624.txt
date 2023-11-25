@@ -1,0 +1,18 @@
+<author>Decker</author>
+<headline>QuArK Python coding tutorial</headline>
+Tiglari send me a link to his updated <a href="http://www.hereticii.com/tiglari/editor/qptutes/qptutes.htm">QuArK Python coding tutorial</a>.
+Check it out, if you want to learn something about coding plug-ins for QuArK.<br>
+
+<headline>Updated buildpacks: Sin and Half-Life</headline>
+Tiglari also send me a link to the Sin buildpack, find it on the <a href="download.php#buildpacks">download page</a>.
+Zoner have also updated his Half-Life tools to v1.1, this time it has support for QuArK's floating-point values, but
+unfortunatly <img src="pics/SmileySad.gif" align=absmiddle width=15 height=15> not perfect texture-alignment as Tim's TXQCSG has.<br>
+
+<headline>What's .ACE ?</headline>
+I have repacked the zhlt11.zip to zhlt11.ace using the <a target="_blank" href="http://www.winace.com">WinAce archiver</a>. It compresses
+much better than <a target="_blank" href="http://www.winzip.com">WinZip</a> so prepare to see more archives of this type in the future.
+Using WinAce archiver on zhlt11, it reduced it by 93KB. It might not be much for you T1 owners, but if you only got a 56K-modem and pay per
+minute your online like I do, it does count!<br>
+
+<headline>QuArK 5.10 BETA released</headline>
+Head over to <a href="armin/index.shtm">Armin's news-page</a> to get it.

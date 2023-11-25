@@ -1,0 +1,5 @@
+<author>Decker</author>
+<headline>Second snapshot of QuArK 6.4 alpha 1</headline>
+<p>Peter have made a second snapshot of <a href="http://quark.sourceforge.net/download/quark-win32-20030819.zip">QuArK 6.4 alpha 1</a> <span class=sml>(dated 2003-08-19)</span>, and the <a href="http://quark.sourceforge.net/download/quark-help-20030819.zip">infobase</a> <span class=sml>(dated 2003-08-19)</span>.</p>
+
+<p>For more information and support, go to the <a href="http://quark.sourceforge.net/forums.php">forums</a>.</p>

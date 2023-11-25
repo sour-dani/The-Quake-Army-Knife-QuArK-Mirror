@@ -1,0 +1,65 @@
+<author>cdunde</author>
+<headline>On Donner, On Blitzen .... On <b>BETA</b> ! ? ! ? ! ?</headline>
+
+<p>HO_HO_HO! (as the BIG man says) Merry Christmas ! ! !<br>
+That's right folks, <a href="http://sourceforge.net/project/showfiles.php?group_id=1181"><b>QuArK 6.5.0 Beta 1</b></a> has just been released!</p>
+
+<p>Along with the joining of our newest member <b>DanielPharos</b> (or "Dancing Dan" as I call him), which we also wish to welcome to the QuArK Team!</p>
+
+<p>Daniel is the one who has made the <b>Beta</b> possible by concentrating all of his efforts over the last month to <b>FULLY</b> implement <b>OpenGL</b> into the QuArK Map and Model Editors. And what a GREAT job he has done with it ! ! !</p>
+
+<p>No more lockups or smearing of ANY of the 3D and 2D Textured views ! ! !</p>
+
+<p>So when you get your new release go directly to the <b>Configuration... > General > 3D view</b> and select <b>OpenGL</b> !<br>
+Then buckle up and get ready for the <b>Ride of your life!</b></p>
+
+<p>Thank you Dan for that early Christmas present ! ;-)</p>
+
+<p>Unfortunately, Dan is going to have to take a short break from QuArK until the beginning of the new year. 8-(<br>
+<b>But</b>, he'll be back and with plans to add <b>DirectX 9</b> support and work on the Software renderer as well! 8-)<br>
+OH! Did I mention that he also has <b>3DFX Glide</b> working too ?!<br>
+<b>WOW!</b> What a trooper!</p>
+
+<p>So, what else is new with this release?<br>
+How about <b>MAJOR</b> improvements to the QuArK Model Editor ! 8-o</p>
+
+<p>Yup! Model Skins are now displayed on the <b>Skin-view</b> page as well as vertex movement to re-locate the skin!<br>
+It's not perfect... but it's a start.<br>
+Even models without ANY skin will now load in anticipation of future development for the creation of custom models from scratch !<br>
+<b>Bones</b> are also now displayed without crashing the editor when selected, but they do not align with the model...<b>YET</b>.<br>
+But that too is in the works! ;-)</p>
+
+<p>Lets see... What else ! ... Well !<br>
+Many .. many .. many .. many fixes have been done.<br>
+Some of which are:</p>
+<UL>
+<LI>Started a new Model Editor Infobase section and their direct function links from the Model Editor.
+<LI>Added a new sub-menu to the Model Editors "Options" menu, with various methods of rotation in 3D views to choose from.
+<LI>Added higher texture-size support (only works in OpenGL).
+<LI>Changed Grid Scale displayed numbers to RED for better viewing in Textured 2D mode.
+<LI>Up graded QuArK to use Python 2.4.4 for added future support development and expansion.
+<LI>Fixed error and to display texture of bezier texture selection list change.
+<LI>Fixed extruder 2D view to Unrestricted other items when view is closed.
+<LI>Made a fix to stop filling multiple dropdown list with erroneous data, for example like a misc_model entity.
+</UL>
+<p><b>Shoo !</b> and that's not even half the list ! 8-o</p>
+
+<p><b>SO HOOKUP YOUR RAINDEER AND SAIL OFF IN YOUR SLED !</b><br>
+And go get your new copy of <a href="http://sourceforge.net/project/showfiles.php?group_id=1181"><b>QuArK 6.5.0 Beta 1</b></a> ....<b>NOW !!!</b></p>
+
+<p>Remember <b>Keep your QuArK knife sharp!</b></p>
+
+<p>cdunde</p>
+
+<p><b>NOTICE:</b> We had a slight hiccup in the release.<br>
+So if you downloaded it prior to Dec. 4th please re-download the copy.<br>
+Your previous Setup.qrk file for Beta 1 should work for this copy as well.<br>
+So you can just copy that over to the new set or install to that same folder.<br>
+Sorry for any inconvenience.</p>
+
+<p><b>ALSO:</b> There is an issue with Half-Life 2 and Beta 1.<br>
+It will <b>NOT</b> work in Beta 1 at this time and constantly shuts QuArK down.<br>
+This is <b>ONLY</b> for Half-Life 2 support and we are currently working on that problem.<br>
+So for the time being please use <b>QuArK 6.5.0 alpha 8</b> for your Half-Life 2 mapping.</p>
+
+<p>For more information and added support, go to the <a href="http://quark.sourceforge.net/forums/">QuArK Resource Center</a> and <a href="http://quark.sourceforge.net/communication.php#forums">the forums page</a> of this site.</p>

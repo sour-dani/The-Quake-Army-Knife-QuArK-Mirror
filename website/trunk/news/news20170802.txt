@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Half Life 1 non-Steam now officially abandonware</headline>
+
+<p>Valve Support just got back to me. They are considering releasing a patch for non-Steam editions of Half-Life 1, but for the foreseeable future, don't count on it. This means that Half-Life 1 (non-Steam) is officially abandonware, as I suspected. Note that Valve Support did <b>not</b> tell me not to when I mentioned the only way to get the patch on (for example) a Windows 98 machine is to 'pirate' it. Do with that information what you will.</p>
+
+
+<p>Happy Half Living,<br>
+DanielPharos</p>

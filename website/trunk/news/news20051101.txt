@@ -1,0 +1,46 @@
+<author>cdunde</author>
+<headline>QuArK 6.5.0 alpha 3 with Touch-up Tool & 3D Options released !</headline>
+
+<p><u><b>NOTICE:</b></u><br>
+Because a couple of errors had been caught right after this release was made, we ask that anyone who down loaded the src, win32.exe or win32.zip prior to Nov. 13, midnight GMT to please download them once again to get the corrected set of files.</p>
+
+<p>We apologize for any inconvenience but we would rather that you have the best that we can give you now rather than have to work with these problems until the next release.</p>
+
+<p><b>TWO</b> new powerful features added to this release for Terrain Generator,<br><a href="http://quark.sourceforge.net/infobase/intro.terraingenerator.selection.html#touchup"><b>Touch-up Tool</b></a> and the <a href="http://quark.sourceforge.net/infobase/intro.terraingenerator.selection.html#options3d"><b>3D Options Dialog Box</b></a> that will just <b>FLABERGAS</b> you ! ! !</p>
+
+<p>Not just a few changes in this release, Oh No! There are absolutely <b>GOBS</b> and <b>GOBS</b> for <a href="http://sourceforge.net/project/showfiles.php?group_id=1181"><b>QuArK</b></a> this time! More than you could possibly imagine! So many you will be actually <b>HOPPING</b> off your stool as you use it ! ! !</p>
+
+<p>With increased function speed, reliability and functionality you will truly feel Christmas has come early this year!</p>
+
+<p>Want to work on detail areas of your Terrain? No Problem! Want to paint texture to the side of cliffs or rock cross overs? No Problem! Want to drag just one individual face to make a <b>Narley</b> looking hill side? Nooo Problem!!! Just use the new <a href="http://quark.sourceforge.net/infobase/intro.terraingenerator.selection.html#touchup"><b>Terrain Generator Touch-up Tool</b></a> !</p>
+
+<p>And how about those 3D views everybody? Not sure which one you're looking at? All new expanded titles will help you along there. Wish you could easily set them <b>Individually</b> just the way you like them? Maybe one with red grid lines to guide you, one with just your selector handles and one <b>clean as a whistle</b> to see your work as you move along? Just use the new <a href="http://quark.sourceforge.net/infobase/intro.terraingenerator.selection.html#options3d"><b>Terrain Generator 3D Options Dialog Box</b></a> !</p>
+
+<p><b>YES</b> of course! <b>Both</b> of these new features can select terrain to move and shape without having to click buttons back and forth. Complete 2D selection and movement is ready to use with all the abilities of the "Basic Selector".</p>
+
+<p>Some of the other improvements and additions to this most recent release are:</p>
+
+<UL>
+<LI>Reset all toolbar buttons to clear selections to avoid confusion.
+<LI>Removed light entity dependency for all games transparency to work.
+<LI>Made one setting in QuArK's Config OpenGL section for all games using transparency.
+<LI>Fix QuArK's first startup form buttons location and screen placement.
+<LI>Resized About page and startup Logo.
+<LI>Fixed minor config problem for RTCW.
+<LI>Top directory text file updates.
+<LI>DataQ3.qrk file - Removed hard coded textures and redirected for actual texture files.
+<LI>Expanded Infobase documentation fully covering added new features with editor links.
+</UL>
+
+<p>So don't walk<b>...ZOOOOM...</b>to get your latest copy of <a href="http://sourceforge.net/projects/quark/files/QuArK/QuArK%206.5.0%20Alpha%203/"><b>QuArK 6.5.0 alpha 3 <br>with the new Terrain Generator <b>Touch-up Tool & 3D Options Dialog Box</b> !!! </b></a></p>
+
+<p>And for those of you that have been <b>s-s-s-shaking in their boots</b> to get off that <b>OLD</b> dilapidated 6.3 stable version? <b>NO FEAR!</b> QuArK 6.5.0 alpha 3 is just as stable (if not more so) and a <b>whole</b> lot more fun and easier to use!</p>
+
+
+<p>Remember <b>Keep your QuArK knife sharp!</b></p>
+
+<p>cdunde</p>
+
+<p>For more information and added support, go to the <a href="http://quark.ironfoot.co.uk/">QuArK Resource Center</a> and <a href="http://quark.sourceforge.net/forums.php">the forums page</a> of this site.</p>
+
+<p>And remember to visit <a href="http://quark.sourceforge.net/cgi-bin/moin.cgi">our sister site!</a></p>

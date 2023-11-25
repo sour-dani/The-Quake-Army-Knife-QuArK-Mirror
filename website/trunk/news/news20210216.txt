@@ -1,0 +1,12 @@
+<author>DanielPharos</author>
+<headline>Half-Life: Restored</headline>
+
+<p>*blows dust off* Is this still working? <pic smiley_happy></p>
+
+<p>I missed the news, but a few months ago Half-Life: Restored became available on Steam! It adds back some dropped features from Half-Life. You can find more information about it here: <a href="https://www.moddb.com/mods/restore-life">Half-Life: Restored on ModDB</a></p>
+
+<p>So if you're feeling nostalgic for the good ol' days, but want a slightly richer experience, now's your chance!</p>
+
+
+<p>Happy restoring,<br>
+DanielPharos</p>

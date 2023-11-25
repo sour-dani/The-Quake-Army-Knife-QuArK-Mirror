@@ -1,0 +1,20 @@
+<author>Decker</author>
+<headline>KingPin support update...</headline>
+Alexander, who is working hard making QuArK support KingPin, wrote an update in the <a href="forums.php">QuArK forum</a>:
+<blockquote>
+Hi folks,<br>
+<br>
+in the DataKP.qrk were missing a lot of properties of kingpin
+entities due to a bug in my perl script.<br>
+<br>
+This is fixed, and a new datafiles.zip is available on the
+QuArK Kingpin Support pages:<br>
+<br>
+<a href="http://pages.vossnet.de/mac/kp/">http://pages.vossnet.de/mac/kp/</a><br>
+<a href="http://members.tripod.com/quakestation/kingpin/">http://members.tripod.com/quakestation/kingpin/</a><br>
+<br>
+Thanks to Jean-Francois for reporting.<br>
+<br>
+greetings<br>
+&nbsp;Alexander
+</blockquote>

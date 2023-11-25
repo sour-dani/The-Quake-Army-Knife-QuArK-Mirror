@@ -1,525 +1,485 @@
 <?php
+require_once('_main_paths.php');
+require_once('_image_functions.php');
+require_once('_settings_functions.php');
+require_once('_settings-database.php');
+require_once('_theme_functions.php');
+require_once('_theme-database.php');
 
-$local = file_exists("local.txt");
-
-if ($local)
-  $picsroot = "http://192.168.1.31/";
-else
-  $picsroot = "http://dynamic.gamespy.com/~quark/";
-
-$keepinframe = ""; # " target=\"bodyframe\" ";
-$sidebarwidth = 150;
-
-$iconimgs = array("news"      => "<img border=0 witdh=16 height=16 src=\"".$picsroot."pics/icons/news.gif\" align=absmiddle>"
-                 ,"community" => "<img border=0 witdh=16 height=16 src=\"".$picsroot."pics/icons/community.gif\" align=absmiddle>"
-                 ,"download"  => "<img border=0 witdh=16 height=16 src=\"".$picsroot."pics/icons/download.gif\" align=absmiddle>"
-                 ,"beta"      => "<img border=0 witdh=16 height=16 src=\"".$picsroot."pics/icons/beta.gif\" align=absmiddle>"
-                 ,"documents" => "<img border=0 witdh=16 height=16 src=\"".$picsroot."pics/icons/documents.gif\" align=absmiddle>"
-                 ,"features"  => "<img border=0 witdh=16 height=16 src=\"".$picsroot."pics/icons/features.gif\" align=absmiddle>"
-
-                 ,"downright" => "<img border=0 width=12 height=16 src=\"".$picsroot."pics/icons/downright.gif\">"
-                 ,"down"      => "<img border=0 width=12 height=16 src=\"".$picsroot."pics/icons/down.gif\">"
-                 ,"right"     => "<img border=0 width=12 height=16 src=\"".$picsroot."pics/icons/right.gif\">"
-                 ,"none"      => "<img border=0 width=12 height=16 src=\"".$picsroot."pics/icons/none.gif\">"
-
-                 ,"smiley_happy"  => "<img border=0 witdh=15 height=15 src=\"".$picsroot."pics/icons/smiley_happy.gif\" align=absmiddle>"
-                 ,"smiley_medium" => "<img border=0 witdh=15 height=15 src=\"".$picsroot."pics/icons/smiley_medium.gif\" align=absmiddle>"
-                 ,"smiley_sad"    => "<img border=0 witdh=15 height=15 src=\"".$picsroot."pics/icons/smiley_sad.gif\" align=absmiddle>"
-
-                 ,"background"    => $picsroot."pics/back.gif"
-                 ,"quarklogo"     => $picsroot."pics/quark_logo2.gif"
-                 ,"black"         => $picsroot."pics/black.gif"
-            );
-$countsidepanels = 0;
-
-function initSidePanel() {
-  global $countsidepanels;
-  $countsidepanels = 0;
+function DisplayEncodedEmail($address, $subject=NULL, $body=NULL)
+{
+	$email = $address;
+	$argument = false;
+	if (!is_null($subject))
+	{
+		if (!$argument)
+		{
+			$email .= '?';
+			$argument = true;
+		}
+		else
+			$email .= '&';
+		$email .= 'subject=' . $subject;
+	}
+	if (!is_null($body))
+	{
+		if (!$argument)
+		{
+			$email .= '?';
+			$argument = true;
+		}
+		else
+			$email .= '&';
+		$email .= 'body=' . $body;
+	}
+	return "\"javascript:mail_decode('" . str_rot13($email) . "');\"";
 }
 
-function pageBegin($title="") {
-  global $iconimgs;
-  global $local;
-  global $NOAD;
+function DisplayDateTime($rawdatetime)
+{
+	global $Settings;
+	global $SiteDateFormat, $SiteTimeFormat;
 
-#  echo "<!--INSERTADTHISPAGE -->\n";
+	$datetimeformat = $Settings[$SiteDateFormat]->GetCurrentValue() . ' - ' . $Settings[$SiteTimeFormat]->GetCurrentValue();
 
-  echo "<html>";
-  if ($title != "")
-    $title = " - " . $title;
-  echo "<head><title>The Official QuArK website" . $title . "</title>";
-
-  echo "\n<STYLE TYPE=\"text/css\">";
-  echo "\nFORM { margin:0% 0% 0% 0%; }";
-  echo "\nINPUT { font-family:MS Sans Serif; font-size:8pt; }";
-  echo "\nSELECT { font-family:MS Sans Serif; font-size:8pt; }";
-  echo "\n.sml { font-size:6pt; }";
-  echo "\n.xsml { font-size:3pt; }";
-  echo "\n.large { font-size:14pt; }";
-  echo "\n.n  { font-family:MS Sans Serif; font-size:10pt; }";
-  echo "\nTD.fn  { font-family:MS Sans Serif; font-size:10pt; background:#AAAAAA; }";
-  echo "\nTD.f   { font-family:MS Sans Serif; font-size:10pt; background:#CCCCCC; }";
-  echo "\nTD.fh  { font-family:MS Sans Serif; font-size:10pt; background:#EEEEEE; }";
-  echo "\nTD.fhh { font-family:MS Sans Serif; font-size:10pt; background:#333366; color:FFFFFF; }";
-  echo "\nTD.font8 { font-family:MS Sans Serif; font-size:8pt; }";
-  echo "\nTR.edge1 { background:#000000; }";
-  echo "\nTR.back1 { background:#DDDDDD; }";
-  echo "\nTD.text1 { font-family:MS Sans Serif; font-size:10pt; color:#000000; }";
-  echo "\nTR.edge2 { background:#114411; }";
-  echo "\nTR.head2 { background:#2222AA; }";
-  echo "\nTD.text2 { color:#FFFFFF; }";
-  echo "\nTR.edge3 { background:#000000; }";
-  echo "\nTR.head3 { background:#000077; }";
-  echo "\nTD.text3 { font-family:MS Sans Serif; font-size:10pt; color:#FFFFFF; }";
-  echo "\n</STYLE>";
-
-  # -- Javascript to decode ROT13 mailto:-addresses. A way to reduce spam (hopefully) --
-  # -- Use like this in HTML: <a href="javascript:mail_decode('<a ROT13 mail-address>');">write me</a>
-  echo "<script language='javascript'>function mail_decode(codedmailadr){decodedmailadr='to'+':';for(i=0;i<codedmailadr.length;i++){chr=codedmailadr.substr(i,1);idx='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.indexOf(chr);if(idx>-1){chr='nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM'.substr(idx,1);}decodedmailadr=decodedmailadr+chr;}window.open('mail'+decodedmailadr,'email_protection_decoder','resizable=1,width=100,height=100');}</script>";
-
-  echo "</head>";
-
-  echo "\n<body link=#990000 vlink=#550000 leftmargin=\"0\" topmargin=\"0\" marginwidth=\"0\" marginheight=\"0\" background=\"" . $iconimgs["background"] . "\">";
-  echo "<base target=\"_top\">";
-
-  # -- begin: visible page header. QuArK "logo"-image and required PlanetQuake AdBanner code --
-  echo "<table border=0 cellspacing=0 cellpadding=0 width=100%>";
-  echo "<tr height=65><td width=320>";
-  echo "<a href=\"http://www.planetquake.com/quark\" title=\"The official QuArK web-site: www.planetquake.com/quark\">";
-  echo "<img src=\"" . $iconimgs["quarklogo"] . "\" border=0 width=320 height=65>";
-  echo "</a>";
-  echo "</td><td width=100% align=right valign=middle>";
-
-  if (!$local && !$NOAD)
-    include("planetquake_adbanner_code.html");
-
-  echo "</td><td width=8>&nbsp;</td></tr>";
-  echo "</table>";
-
-  echo "<img src=\"" . $iconimgs["black"] . "\" height=2 width=100%><br>";
-  # -- end: visible page header --
+	//FIXME: Switch to strftime for localized version?
+	if (is_null($rawdatetime))
+	{
+		$bodytext = date($datetimeformat);
+	}
+	else
+	{
+		$bodytext = date($datetimeformat, $rawdatetime);
+	}
+	return $bodytext;
 }
 
-function pageEnd() {
-  global $iconimgs;
+function DisplayDate($rawdate)
+{
+	global $Settings;
+	global $SiteDateFormat;
 
-  # -- visible page footer --
-  echo "<img src=\"" . $iconimgs["black"] . "\" height=2 width=100%><br>";
-
-  echo "</body>";
-  echo "</html>";
+	//FIXME: Switch to strftime for localized version?
+	if (is_null($rawdate))
+	{
+		$bodytext = date($Settings[$SiteDateFormat]->GetCurrentValue());
+	}
+	else
+	{
+		$bodytext = date($Settings[$SiteDateFormat]->GetCurrentValue(), $rawdate);
+	}
+	return $bodytext;
 }
 
-function pageName($name) {
-  $pagenametra = " bgcolor=#114411";
-  $pagenametrb = " bgcolor=#2222AA";
-  $pagenamefontb = "<font face=\"Arial Black, Arial\" size=+3 color=#FFFFFF>";
-  $pagenamefonte = "</font>";
+function DisplayTime($rawtime)
+{
+	global $Settings;
+	global $SiteDateFormat;
 
-  echo "\n<table border=0 align=center cellspacing=0 cellpadding=2 width=100%>";
-  echo "<tr" . $pagenametra . "><td width=100%>";
-  echo "<table border=0 cellspacing=0 cellpadding=0 width=100% align=center>";
-  echo "<tr" . $pagenametrb . "><td>";
-  echo $pagenamefontb;
-
-  $name = str_replace(" ", "&nbsp;", $name);
-
-  echo "&nbsp;" . $name . "...&nbsp;";
-
-  echo $pagenamefonte;
-  echo "<td></tr>";
-  echo "</table>";
-  echo "</td></tr>";
-  echo "</table>";
+	if (is_null($rawtime))
+	{
+		$bodytext = date($Settings[$SiteDateFormat]->GetCurrentValue());
+	}
+	else
+	{
+		$bodytext = date($Settings[$SiteDateFormat]->GetCurrentValue(), $rawtime);
+	}
+	return $bodytext;
 }
 
-function pageFixLinkDirection($text) {
-  global $picsroot, $keepinframe;
-
-  # Replace all relative references in 'href="help/' to absolute
-  $replacer = "href=\"http://www.planetquake.com/quark/\\2";
-  $text = eregi_replace("(href=\")(help/)", $replacer, $text);
-
-  # Replace all relative references in 'src=' to absolute
-  $replacer = "src=\"".$picsroot."\\2";
-  $text = eregi_replace("(src=\")([^h][^t][^t][^p])", $replacer, $text);
-
-  # Replace all local '.shtml' references to '.php'
-  $searcher = "(href=\"[a-zA-Z0-9_/\\]*)\.shtml";
-  $replacer = $keepinframe . "\\1.php";
-  $text = eregi_replace($searcher, $replacer, $text);
-
-  return $text;
+function DisplayTimeAgo($date)
+{
+	$daysago = intval((time() - $date) / 86400);
+	if ($daysago > 30)
+	{
+		$weeksago = intval($daysago / 7);
+		$daysago = $daysago - (7 * $weeksago);
+	} else {
+		$weeksago = 0;
+	}
+	if ($daysago > 1)
+		if ($weeksago > 1)
+			$timeago = $weeksago . ' weeks and ' . $daysago . ' days ago';
+		elseif ($weeksago === 1)
+			$timeago = $weeksago . ' week and ' . $daysago . ' days ago';
+		else
+			$timeago = $daysago . ' days ago';
+	elseif ($daysago === 1)
+		if ($weeksago > 1)
+			$timeago = $weeksago . ' weeks and ' . $daysago . ' day ago';
+		elseif ($weekago === 1)
+			$timeago = $weeksago . ' week and ' . $daysago . ' day ago';
+		else
+			$timeago = $daysago . ' day ago';
+	elseif ($daysago === 0)
+		if ($weeksago > 1)
+			$timeago = $weeksago . ' weeks ago';
+		elseif ($weekago === 1)
+			$timeago = $weeksago . ' week ago';
+		else
+			$timeago = 'today';
+	else
+		$timeago = 'future';
+	return $timeago;
 }
 
-function pagePanel($icon, $headline1, $headline2, $bodytext) {
-  global $iconimgs, $picsroot;
-  $headtr = " bgcolor=#000077";
-  $headfontb = "<font face=\"MS Sans Serif\" size=2 color=#FFFFFF><b>";
-  $headfonte = "</b></font>";
-  $bodytr = " bgcolor=#DDDDDD";
-  $bodyfontb = "<font face=\"MS Sans Serif\" size=2 color=#000000>";
-  $bodyfonte = "</font>";
+function DisplayByteSize($numberofbytes)
+{
+	global $Settings;
+	global $SiteNumberSeparators, $SiteByteFormat;
 
-  if ($icon != "")
-    echo "<br>";
-  echo "\n<table border=0 align=center cellspacing=0 cellpadding=0 width=100%>";
-  echo "<tr><td bgcolor=#000000 width=100%>";
-  echo "<table border=0 cellspacing=0 cellpadding=1 width=100%>";
+	$NumberSeparators = $Settings[$SiteNumberSeparators]->GetCurrentValue();
 
-  if ($headline2 != "")
-    echo "<tr" . $headtr . "><td width=70%>";
-  else
-    echo "<tr" . $headtr . "><td width=100%>";
-  echo $headfontb;
-
-  if ($icon != "")
-    echo "&nbsp;", $iconimgs[$icon];
-  echo "&nbsp;", $headline1;
-
-  if ($headline2 != "") {
-    echo $headfonte;
-    echo "</td><td width=30% align=right>";
-    echo $headfontb;
-
-    echo $headline2 . "&nbsp;";
-  }
-
-  echo $headfonte;
-  echo "</td></tr>";
-
-  echo "<tr bgcolor=#000000>";
-  if ($headline2 != "")
-    echo "<td colspan=2>";
-  else
-    echo "<td>";
-  echo "<table border=0 cellpadding=4 cellspacing=0 width=100%>";
-  echo "<tr" . $bodytr . "><td width=4>&nbsp;</td><td width=100%>";
-  echo $bodyfontb;
-
-  $bodytext = pageFixLinkDirection($bodytext);
-
-  echo $bodytext;
-
-  echo $bodyfonte;
-  echo "</td><td width=4>&nbsp;</td></tr></table>";
-
-  echo "</td></tr></table>";
-  echo "</td></tr></table>";
+	switch ($Settings[$SiteByteFormat]->GetCurrentValue())
+	{
+	case 0:
+		if ($numberofbytes >= 1000)
+		{
+			$numberofbytes = floatval($numberofbytes) / 1024.0;
+			if ($numberofbytes >= 1000.0)
+			{
+				$numberofbytes /= 1024.0;
+				if ($numberofbytes >= 1000.0)
+				{
+					$numberofbytes /= 1024.0;
+					if ($numberofbytes >= 1000.0)
+					{
+						$numberofbytes /= 1024.0;
+						$unit = 'TB';
+					}
+					else
+					{
+						$unit = 'GB';
+					}
+				}
+				else
+				{
+					$unit = 'MB';
+				}
+			}
+			else
+			{
+				$unit = 'KB';
+			}
+			$bodytext = number_format($numberofbytes, 1, $NumberSeparators[0], $NumberSeparators[1]) . ' ' . $unit;
+		}
+		else
+		{
+			$unit = 'B';
+			$bodytext = number_format($numberofbytes, 0, $NumberSeparators[0], $NumberSeparators[1]) . ' ' . $unit;
+		}
+		break;
+	case 1:
+		$bodytext = number_format($numberofbytes, 0, $NumberSeparators[0], $NumberSeparators[1]) . ' B';
+		break;
+	case 2:
+		$bodytext = number_format(floatval($numberofbytes)/1024.0, 1, $NumberSeparators[0], $NumberSeparators[1]) . ' KB';
+		break;
+	case 3:
+		$bodytext = number_format(floatval($numberofbytes)/1024.0/1024.0, 1, $NumberSeparators[0], $NumberSeparators[1]) . ' MB';
+		break;
+	case 4:
+		$bodytext = number_format(floatval($numberofbytes)/1024.0/1024.0/1024.0, 1, $NumberSeparators[0], $NumberSeparators[1]) . ' GB';
+		break;
+	case 5:
+		$bodytext = number_format(floatval($numberofbytes)/1024.0/1024.0/1024.0/1024.0, 1, $NumberSeparators[0], $NumberSeparators[1]) . ' TB';
+		break;
+	default:
+		trigger_error('ByteFormat value out of range!', E_USER_NOTICE);
+		$bodytext = number_format($numberofbytes, 0, $NumberSeparators[0], $NumberSeparators[1]) . ' B';
+	}
+	return $bodytext;
 }
 
-function pageRawFile($filename) {
-  global $iconimgs, $picsroot;
+function RefreshCookies()
+{
+	global $Themes;
+	global $CurrentTheme;
+	$Themes[$CurrentTheme]->SaveSettings();
 
-  $thefile = file($filename);
-  $bodytext = "";
-  while (list($key, $line) = each($thefile)) {
-    $bodytext .= $line;
-  }
+	require_once('_panels-database.php');
+	global $Panels;
+	foreach ($Panels as /*$PanelName =>*/ $Panel)
+	{
+		$Panel->SaveSetting();
+	}
 
-  $bodytext = pageFixLinkDirection($bodytext);
-
-  echo $bodytext;
+	global $Settings;
+	foreach ($Settings as /*$SettingName =>*/ $Setting)
+	{
+		$Setting->SaveSetting();
+	}
 }
 
-function pagePanelFile($icon, $headline1, $headline2, $filename) {
-  $thefile = file($filename);
-  $bodytext = "";
-  while (list($key, $line) = each($thefile)) {
-    $bodytext .= $line;
-  }
-  #$bodytext = pageFixLinkDirection($bodytext);
+function pageBegin($title='')
+{
+	global $mainroot;
+	global $Themes;
+	global $CurrentTheme;
 
-  pagePanel($icon, $headline1, $headline2, $bodytext);
+	require_once('_language_functions.php');
+
+	echo '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">'."\n";
+	echo '<html lang="'.GetLanguageObj()->Tag.'">';
+	if ($title !== '')
+		$title = ' - ' . $title;
+	echo '<head><title>The Official QuArK website' . $title . '</title>'."\n";
+	echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">'."\n";
+	echo "<meta name=\"description\" content=\"QuArK is a powerful editor for video games based on or similar to id Software's series of Quake games. Currently it supports 41 distinct games, 5 generic game engines, and a countless number of expansions packs, addons, and mods. It integrates a map editor, model editor, archive editors, texture management, and much more.\">\n";
+	echo '<meta name="keywords" content="QuArK, Quake Army Knife, map editor, model editor, Quake, Half-Life, Source engine, Torque game engine">'."\n";
+	echo '<meta name="author" content="QuArK Development Team">'."\n";
+	echo '<meta name="copyright" content="&copy; 1999 QuArK Development Team">'."\n";
+	#echo '<meta http-equiv="X-UA-Compatible" content="IE=edge">'."\n";
+	echo '<link rel="shortcut icon" href="'.$mainroot.'favicon.ico" type="image/x-icon">'."\n";
+
+	echo '<link rel="stylesheet" href="'.$mainroot.'themes/basestyle.css" type="text/css">'."\n";
+	echo '<link rel="stylesheet" href="'.$mainroot.$Themes[$CurrentTheme]->CSSFilename.'" type="text/css">'."\n";
+
+	#Snow 2021
+	#echo '<script type="text/javascript" src="confetti.browser.js"></script>'."\n";
+
+	# -- Javascript to decode ROT13 mailto:-addresses. A way to reduce spam (hopefully) --
+	# -- Use like this in HTML: <a href="javascript:mail_decode('<a ROT13 mail-address>');">write me</a>
+	echo "<script type=\"text/javascript\">function mail_decode(codedmailadr){decodedmailadr='to'+':';for(i=0;i<codedmailadr.length;i++){chr=codedmailadr.substr(i,1);idx='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.indexOf(chr);if(idx>-1){chr='nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM'.substr(idx,1);}decodedmailadr=decodedmailadr+chr;}window.open('mail'+decodedmailadr,'email_protection_decoder','resizable=1,width=100,height=100');}</script>";
+
+	#FIXME: We're not using frames anyway...
+	#echo '<base url="'.$mainroot.'" target="_top">'."\n";
+	echo '</head>'."\n";
+	echo '<body>'."\n";
+
+	# -- begin: visible page header. QuArK "logo"-image and required PlanetQuake AdBanner code --
+	echo '<div class="header">'."\n";
+	echo '<div class="headerlogo">';
+	echo '<a href="'.$mainroot.'" title="The official QuArK website">'.DisplayImage('quarklogo').'</a>'."\n";
+	echo '</div>';
+	#echo '<div class="headerads">';
+	###include('planetquake_adbanner_code.html');
+	##include('cdunde_ad.html');
+	#echo '<a href="/25years/">Quake and QuArK are 25 years old!</a>';
+	#echo '</div>';
+	echo '<div style="clear: both;"></div>';
+	echo '</div>'."\n";
+	# -- end: visible page header --
 }
 
-function pageSidePanel($icon, $headline1, $bodytext) {
-  global $iconimgs;
-  global $countsidepanels;
+function pageEnd()
+{
+	#Snow 2021
+	/*echo '<script type="text/javascript">
+var skew = 1;
 
-  $headtr = " bgcolor=#003355";
-  $headfontb = "<font face=\"MS Sans Serif\" size=1 color=#FFFFFF><b>";
-  $headfonte = "</b></font>";
-  $bodytr = " bgcolor=#BBBBBB";
-  $bodyfontb = "<font face=\"MS Sans Serif\" size=1 color=#000000>";
-  $bodyfonte = "</font>";
-
-  if ($countsidepanels > 0)
-    echo "<font size=-3><br></font>";
-  $countsidepanels++;
-
-  echo "\n<table border=0 align=center width=130 cellspacing=0 cellpadding=0>";
-  echo "<tr><td bgcolor=#000000 width=100%>";
-  echo "<table border=0 cellspacing=0 cellpadding=1 width=100%>";
-
-  if ($headline1 != "") {
-    echo "<tr" . $headtr . "><td width=100%>";
-    echo $headfontb;
-
-    if ($icon != "")
-      echo "&nbsp;" . $iconimgs[$icon];
-
-    echo "&nbsp;" . $headline1;
-
-    echo $headfonte;
-    echo "</td></tr>";
-  }
-
-  echo "<tr bgcolor=#000000><td>";
-  echo "<table border=0 cellpadding=4 cellspacing=0 width=100%>";
-  echo "<tr" . $bodytr ."><td width=120 n_owrap>";
-  echo $bodyfontb;
-
-  $bodytext = pageFixLinkDirection($bodytext);
-
-  echo $bodytext;
-
-  echo $bodyfonte;
-  echo "</td></tr></table>";
-
-  echo "</td></tr></table>";
-  echo "</td></tr></table>";
+function randomInRange(min, max) {
+  return Math.random() * (max - min) + min;
 }
 
-function stringNavbar($navbararray) {
-  global $iconimgs, $keepinframe;
+(function frame() {
+  var ticks = 200;
+  skew = Math.max(0.8, skew - 0.001);
 
-  $indent_arraycol = 0;
-  $title_arraycol  = 1;
-  $icon_arraycol   = 2;
-  $url_arraycol    = 3;
+  confetti({
+    particleCount: 1,
+    startVelocity: 0,
+    ticks: ticks,
+    origin: {
+      x: Math.random(),
+      // since particles fall down, skew start toward the top
+      y: (Math.random() * skew) - 0.2
+    },
+    colors: [\'#ffffff\'],
+    shapes: [\'circle\'],
+    gravity: randomInRange(0.4, 0.6),
+    scalar: randomInRange(0.4, 0.8),
+    drift: randomInRange(-0.4, 0.4)
+  });
 
-  $navbarlines = count($navbararray);
-  $navbarindenticons = array("none","none","none","none","none","none","none","none","none");
+  requestAnimationFrame(frame);
+}());
+</script>'."\n";*/
 
-  # Find the maximum indent level
-  $maxidentlevels = 0;
-  for ($navbarline=0; $navbarline < $navbarlines; $navbarline++) {
-    if ($navbararray[$navbarline][$indent_arraycol] >= $maxidentlevels)
-      $maxidentlevels = $navbararray[$navbarline][$indent_arraycol] + 1;
-  }
+	# WEBRING HTML
+	#FIXME: Technically, from Derrick McKay's qmap website...
+	/*echo '<table border="7" cellspacing="7">'."\n";
+	echo '<tr>'."\n";
+	echo '<td align="middle">'."\n";
+	echo '<a href="http://orbit.simplenet.com/brush/ring/" target="_blank">'."\n";
+	echo '<img width="160" height="160" src="http://orbit.simplenet.com/brush/ring/images/qewr.jpg" align="left" alt="The Quake Editing Web Ring" border="0"></a>'."\n";
+	echo '</td>'."\n";
+	echo '<td align="middle">'."\n";
+	echo '<center>'."\n";
+	echo '<p>This'."\n";
+	echo '<a href="http://orbit.simplenet.com/brush/ring/" target="_blank">Quake Editing Ring</a> site is owned by'."\n";
+	echo '<a href="mailto:dmckay@yknet.yk.ca">Derrick McKay</a>.'."\n";
+	echo '</p><p>'."\n";
+	echo '[ <a href="http://www.webring.org/cgi-bin/webring?ring=quakeedit&amp;id=17&amp;prev">Prev</a>'."\n";
+	echo '| <a href="http://www.webring.org/cgi-bin/webring?ring=quakeedit&amp;id=17&amp;skip">Skip It</a>'."\n";
+	echo '| <a href="http://www.webring.org/cgi-bin/webring?ring=quakeedit&amp;id=17&amp;next5">Next 5</a>'."\n";
+	echo '| <a href="http://www.webring.org/cgi-bin/webring?ring=quakeedit&amp;id=17&amp;random">Random</a>'."\n";
+	echo '| <a href="http://www.webring.org/cgi-bin/webring?ring=quakeedit&amp;id=17&amp;next">Next</a> ]'."\n";
+	echo '</p>'."\n";
+	echo '<p>Want to join the ring?  Get the <a href="http://orbit.simplenet.com/brush/ring/" target="_blank">info</a>.</p>'."\n";
+	echo '</center>'."\n";
+	echo '</td>'."\n";
+	echo '</tr>'."\n";
+	echo '</table>'."\n";*/
 
-  $navbartext = "<table border=0 cellpadding=0 cellspacing=0 width=100%>";
-  for ($navbarline=0; $navbarline < $navbarlines; $navbarline++) {
-    $navbartext .= "<tr>";
-
-    if ($navbararray[$navbarline][$indent_arraycol] > 0) {
-      # Figure out which indent-icons to use
-      for ($indent=0; $indent < $navbararray[$navbarline][$indent_arraycol] - 1; $indent++) {
-        $navbartext .= "<td>" . $iconimgs[$navbarindenticons[$indent]]  . "</td>";
-      }
-
-      $indenticon = "right";
-      $nextindenticon = "none";
-      $tmpline = $navbarline + 1;
-      while ($tmpline < $navbarlines) {
-        if ($navbararray[$tmpline][$indent_arraycol] == $navbararray[$navbarline][$indent_arraycol]) {
-          $indenticon = "downright";
-          $nextindenticon = "down";
-          break;
-        }
-        if ($navbararray[$tmpline][$indent_arraycol] < $navbararray[$navbarline][$indent_arraycol])
-          break;
-        $tmpline++;
-      }
-      $navbartext .= "<td>" . $iconimgs[$indenticon]  . "</td>";
-
-      $navbarindenticons[$navbararray[$navbarline][$indent_arraycol] - 1] = $nextindenticon;
-    }
-
-    $colspan = $maxidentlevels - $navbararray[$navbarline][$indent_arraycol];
-    $navbartext .= "<td colspan=" . $colspan . ">";
-
-    $prefix = "<font face=\"MS Sans Serif\" size=1>";
-    $postfix = "</font>";
-
-    if ($navbararray[$navbarline][$icon_arraycol] != "")
-      $prefix = $prefix . "&nbsp;" . $iconimgs[$navbararray[$navbarline][$icon_arraycol]] . "&nbsp;";
-    if ($navbararray[$navbarline][$url_arraycol] != "") {
-      $prefix = $prefix . "<a " . $keepinframe . "href=\"" . $navbararray[$navbarline][$url_arraycol] . "\">";
-      $postfix = "</a>" . $postfix;
-    }
-    if ($navbararray[$navbarline][$indent_arraycol] < 2) {
-      $prefix = $prefix . "<b>";
-      $postfix = "</b>" . $postfix;
-    }
-    $navbartext .= $prefix . $navbararray[$navbarline][$title_arraycol] . $postfix;
-
-    $navbartext .= "</td></tr>";
-  }
-  $navbartext .= "</table>";
-  return $navbartext;
+	# -- visible page footer --
+	echo '</body>'."\n";
+	echo '</html>'."\n";
 }
 
-function displayNews($fromdate=0, $todate=0) {
-  if ($fromdate == 0) {
-    $year = date("Y");
-    $month = date("m");
-    $day = date("d");
-    $todate = 0;
-  } else {
-    $year = date("Y", $fromdate);
-    $month = date("m", $fromdate);
-    $day = date("d", $fromdate);
-    if ($todate > $fromdate)
-      $todate = mktime(0,0,0, $month, $day - 1, $year);
-    elseif ($todate == 0)
-      $todate = mktime(0,0,0, $month - 1, $day, $year);
-  }
-  $backdays = 0;
-  $countarticles = 0;
-  $headlinecount = 0;
-
-  $date = mktime(0,0,0, $month, $day, $year);
-  while ($backdays < 365 && (($todate == 0 && ($countarticles < 7 || $backdays < 32)) || ($todate > 0 && $date > $todate))) {
-    $date = mktime(0,0,0, $month, $day - $backdays, $year);
-    $datenewsfile = "news/news" . date("Ymd", $date) . ".txt";
-
-    $backdays++;
-
-    # Read the news from files like "news/newsYYYYMMDD.txt"
-    if (file_exists($datenewsfile)) {
-      $countarticles++;
-      $thefile = file($datenewsfile);
-
-      # Do some formatting, to present the news
-      $newsdate = date("Y.m.d", $date);
-
-# [Decker 2001.03.26] Seems there's a problem calculating the correct number-of-days-ago today??!
-      $newsago = "";
-#     $daysago = (int)((mktime(0,0,0,date("m"),date("d"),date("Y")) - $date) / 86400);
-#     $newsago = "<font face=\"ms sans serif\" size=-2 color=#AAAAAA>(";
-#     if ($daysago > 365)
-#     {
-#       $yearsago = (int)($daysago / 365);
-#       if ($yearsago != 1)
-#         $newsago .= $yearsago . "&nbsp;years&nbsp;ago";
-#       else
-#         $newsago .= $yearsago . "&nbsp;year&nbsp;ago";
-#     }
-#     elseif ($daysago > 60)
-#       $newsago .= (int)($daysago / 30.5) . "&nbsp;months&nbsp;ago";
-#     elseif ($daysago > 1)
-#       $newsago .= $daysago . "&nbsp;days&nbsp;ago";
-#     elseif ($daysago > 0)
-#       $newsago .= $daysago . "&nbsp;day&nbsp;ago";
-#     elseif ($daysago == 0)
-#       $newsago .= "today";
-#     else
-#       $newsago .= "timewarp";
-#     $newsago .= ")</font>";
-
-      # Figure out, if there is a "<author>xxxx</author>" in the first line.
-      list($key, $author) = each($thefile);
-      $lowauthor = strtolower($author);
-      $start = strpos($lowauthor, "<author>");
-      $stop = strpos($lowauthor, "</author>");
-      if ($start || $stop)
-        $newsauthor = substr($author, $start + 8, $stop - $start + 8);
-      else {
-        # No author?
-        $newsauthor = "(Unknown author)";
-        reset($thefile);
-      }
-
-      $headtxt = $newsdate . "&nbsp;&nbsp;&nbsp;" . $newsago;
-      $bodytxt = "";
-      $headlinecount = 0;
-      while (list($key, $line) = each($thefile)) {
-        $lowline = strtolower($line);
-        $start = strpos($lowline, "<headline>");
-        $stop = strpos($lowline, "</headline>");
-        if ($start || $stop) {
-          $headline = substr($line, $start + 10, $stop - $start + 10);
-          if ($headlinecount > 0)
-            $bodytxt .= "<br>";
-          $bodytxt .= "<b>" . $headline . "</b><br>";
-          $headlinecount++;
-        } else {
-# these two lines makes PHP3 crash?!?
-#          $line = str_replace("<blockquote>", "<center><table width=90% border=1 cellspacing=0 cellpadding=4><tr><td bgcolor=#CCCCCC><font face=\"MS Sans Serif\" size=2>", $line);
-#          $line = str_replace("</blockquote>", "</font></td></tr></table></center>", $line);
-
-          $line = eregi_replace("<blockquote>", "<center><table width=90% border=1 cellspacing=0 cellpadding=4><tr><td bgcolor=#CCCCCC><font face=\"MS Sans Serif\" size=2>", $line);
-          $line = eregi_replace("</blockquote>", "</font></td></tr></table></center>", $line);
-
-          $bodytxt .= $line;
-        }
-      }
-
-      pagePanel("news", $headtxt, $newsauthor, $bodytxt);
-    }
-  }
+function pageName($name)
+{
+	echo '<div class="pagepanel">';
+	echo '<div class="pagenamepanel">' . $name . '...</div>';
+	echo '</div>'."\n";
 }
 
-function getFilesArray($directory, $eregfilemask="*") {
-  $filelist = array();
-  $handle = opendir($directory);
-  while ($file = readdir($handle)) {
-      if (ereg($eregfilemask, $file))
-        $filelist[] = $file;
-  }
-  closedir($handle);
+function pagePanel($icon, $headline1, $headline2, $bodytext)
+{
+	echo '<div class="pagepanel">';
 
-  sort($filelist);
-  return $filelist;
+	if ((!is_null($icon)) or (!empty($headline1)) or (!empty($headline2)))
+	{
+		echo '<div class="pagepanelhead">';
+
+		echo '<table cellpadding=0 cellspacing=0 width="100%"><tr valign=middle>';
+		if (!is_null($icon))
+		{
+			echo '<td style="width: 16px;" class="panelheader">' . DisplayImage($icon) . '</td>';
+		}
+		if (!empty($headline1))
+		{
+			echo '<td align=left class="panelheader">' . $headline1 . '</td>';
+		}
+		if (!empty($headline2))
+		{
+			echo '<td align=right class="panelheader">' . $headline2 . '</td>';
+		}
+		echo '</tr></table>';
+
+		echo '</div>';
+	}
+
+	echo '<div class="pagepanelbody">' . $bodytext . '</div>';
+
+	echo '</div>'."\n";
 }
 
-function pageDisplay($title, $pageFunction) {
-  global $sidebarwidth;
+function pageRawFile($filename)
+{
+	$thefile = file($filename);
+	$bodytext = '';
+	while (list($key, $line) = each($thefile))
+	{
+		$bodytext .= $line;
+	}
 
-  pageBegin($title);
-
-  echo "\n<table border=0 cellspacing=0 cellpadding=0 align=center>";
-  echo "<tr><td colspan=7 height=8><td></tr>";
-  echo "<tr><td width=4>&nbsp;</td><td width=$sidebarwidth valign=top>";
-
-  initSidePanel();
-  include("_navbar.php");
-
-  $powerphp3text = "<center><a href=\"http://www.php.net\"><img src=\"pics/smlbanners/php3.gif\" width=88 height=31 border=0></a></center>";
-  pageSidePanel("", "This page is...", $powerphp3text);
-  include("_servertime.php");
-
-  echo "</td><td width=8>&nbsp;</td>";
-  echo "\n<td width=100% valign=top>";
-
-
-  $pageFunction();
-
-
-  echo "</td><td width=8>&nbsp;</td>";
-  echo "\n<td width=$sidebarwidth valign=top>";
-
-  initSidePanel();
-  if ($title=="News" || $title=="InstaPolls") {
-    include("_instapoll.php");
-  }
-  include("_useful.php");
-
-  echo "</td><td width=8>&nbsp;</td></tr>";
-  echo "<tr><td colspan=7 height=8>";
-  #include("footer.html");
-  echo "</td></tr></table>";
-
-  pageEnd();
+	echo $bodytext;
 }
 
-function mapCreateText($mapName, $mapDownload, $mapScreenshot, $mapWebsite, $mapEmail, $mapAuthor, $mapFilesize, $mapType, $mapGame, $mapDescription, $mapComment) {
-  $text = "";
-  $text .= $mapName . "<br>";
-  $text .= $mapDownload . "<br>";
-  $text .= $mapScreenshot . "<br>";
-  $text .= $mapWebsite . "<br>";
-  $text .= $mapEmail . "<br>";
-  $text .= $mapAuthor . "<br>";
-  $text .= $mapFilesize . "<br>";
-  $text .= $mapType . "<br>";
-  $text .= $mapGame . "<br>";
-  $text .= nl2br($mapDescription) . "<br>";
-  $text .= nl2br($mapComment) . "<br>";
+function pagePanelFile($icon, $headline1, $headline2, $filename)
+{
+	$thefile = file($filename);
+	$bodytext = '';
+	while (list($key, $line) = each($thefile))
+	{
+		$bodytext .= $line;
+	}
 
-  return $text;
+	pagePanel($icon, $headline1, $headline2, $bodytext);
+}
+
+function pageSidePanel($icon, $headline1, $bodytext)
+{
+	echo '<div class="sidepanel">';
+	if ((!empty($icon)) or (!empty($headline1)))
+	{
+		echo '<div class="sidepanelhead">';
+
+		if (!empty($icon))
+			echo DisplayImage($icon);
+
+		if (!empty($headline1))
+		{
+			if (!empty($icon))
+				echo '&nbsp;';
+			echo $headline1;
+		}
+
+		echo '</div>';
+	}
+
+	echo '<div class="sidepanelbody">' . $bodytext . '</div>';
+
+	echo '</div>'."\n";
+}
+
+function pageDisplay($title, $pageFunction)
+{
+	require_once('_panels_functions.php');
+	require_once('_panels-database.php');
+	global $Panels;
+
+	global $DonatePanel, $ThemePanel, $DownloadPanel, $PoweredByPanel, $TimePanel, $ValidHTMLPanel, $NoticePanel, $InstaPollPanel, $ForumStatsPanel, $UsefulPanel, $InterestPanel;
+
+	//We can't do this earlier, or it will overwrite the new settings set in layout.php
+	RefreshCookies();
+
+	//---This is the point where we finalize the headers of the response by starting the response body.
+
+	pageBegin($title);
+
+	echo '<div class="pagebody">';
+
+	echo '<div class="leftcolumn">';
+	if (isPanelVisible($DownloadPanel)) {
+		include($Panels[$DownloadPanel]->IncludeFile);
+	}
+	include('_navbar.php');
+	if (isPanelVisible($DonatePanel)) {
+		include($Panels[$DonatePanel]->IncludeFile);
+	}
+	if (isPanelVisible($ThemePanel)) {
+		include($Panels[$ThemePanel]->IncludeFile);
+	}
+	if (isPanelVisible($PoweredByPanel)) {
+		include($Panels[$PoweredByPanel]->IncludeFile);
+	}
+	if (isPanelVisible($TimePanel)) {
+		include($Panels[$TimePanel]->IncludeFile);
+	}
+	if (isPanelVisible($ValidHTMLPanel)) {
+		include($Panels[$ValidHTMLPanel]->IncludeFile);
+	}
+	echo '</div>'."\n";
+
+	echo '<div class="centercolumn">';
+	$pageFunction(); #This outputs through echo
+	echo '</div>'."\n";
+
+	echo '<div class="rightcolumn">';
+	if (isPanelVisible($NoticePanel)) {
+		include($Panels[$NoticePanel]->IncludeFile);
+	}
+	if (isPanelVisible($InstaPollPanel)) {
+		include($Panels[$InstaPollPanel]->IncludeFile);
+	}
+	include('_forumpanel.php');
+	//include('_pathogenpanel.php'); #No longer available in App Store
+	if (isPanelVisible($ForumStatsPanel)) {
+		include($Panels[$ForumStatsPanel]->IncludeFile);
+	}
+	if (isPanelVisible($UsefulPanel)) {
+		include($Panels[$UsefulPanel]->IncludeFile);
+	}
+	if (isPanelVisible($InterestPanel)) {
+		include($Panels[$InterestPanel]->IncludeFile);
+	}
+	echo '</div>';
+
+	echo '</div>'."\n";
+
+	pageEnd();
 }
 
 ?>

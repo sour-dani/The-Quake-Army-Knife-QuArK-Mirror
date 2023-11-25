@@ -1,0 +1,46 @@
+<author>DanielPharos</author>
+<headline>Time to <b>reach for the stars</b>: <a href="http://sourceforge.net/project/showfiles.php?group_id=1181">QuArK 6.6.0 Beta 2</a> has been released!</headline>
+
+<p>You've had to wait a long time, but finally it's here and it was well worth the wait!</p>
+
+<p><b>QuArK 6.6.0 Beta 2</b> has been released!</p>
+
+<p>With many many many changes and fixes, including some very interesting features in the Model Editor! Don't forget to check those out! Just to name one: a complete <b>boning system</b>!</p>
+
+<p>Also, there now is a single option which allows you to change the Source game used. Just change that option and <b>Kablam!</b>: your compiler-settings are now configured to map for Counterstrike-Source! Or Half-Life 2: Deathmatch! Or any other Source game QuArK supports!</p>
+
+<p><b>Both Editors:</b></p>
+<ul>
+<li>A one-click game-change configuration option for Source games!
+<li>Several fixes to image loading and saving (mainly PCX and VTF).
+<li>Console.log functionality: log everything from the console into a file!
+<li>Lot of minor changes and fixes to renderers, especially OpenGL.
+<li>Fixed a long-standing bug: The AutoSave-setting was not being applied.
+</ul>
+
+<p><b>Map Editor:</b></p>
+<ul>
+<li>Added partial support for loading Call of Duty 2 maps.
+<li>Complete update of the WarsowEntities by X7, good job and thanks.
+<li>Added new functions and handles for Half-Life 2 and other games.
+<li>Small fixes and tweaks all over the place ... too many to list!
+</ul>
+
+<p><b>Model Editor:</b></p>
+<ul>
+<li>Setup new QuArK Model Editor Python model import export system, with a lwo, md2 and md5 importer, and a lwo and md2 exporter.
+<li>Setup of Specifics\Arg page for model types data and settings.
+<li>Importer/exporter logging capabilities.
+<li>Infobase updated: lots of more functions are now documented properly.
+<li>Added a boning system!
+<li>Shaders used by models can be displayed and edited.
+<li>Lots of minor fixes and changes. New icons, extra options, new functions ... too much to list!
+</ul>
+
+<p>See NEWS.txt for more details about changes and fixes. Also, see DONATORS.txt for people that made this release possible. Thank you all!</p>
+
+<p>So... stop wasting your time and <b>get your copy</b> of <a href="http://sourceforge.net/project/showfiles.php?group_id=1181">QuArK 6.6.0 Beta 2</a> <b>now</b>!</p>
+
+
+<p>Happy editing,<br>
+DanielPharos</p>

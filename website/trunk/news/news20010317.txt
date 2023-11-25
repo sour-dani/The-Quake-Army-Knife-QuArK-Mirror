@@ -1,0 +1,18 @@
+<author>Decker</author>
+<headline>Quake-3:Arena accessories for QuArK</headline>
+<p><a href="mailto:***PLEASE@NO*SPAM***R.P.Hulsbergen@Student.TUDelft.NL">Rolf Hulsbergen</a> mailed me, telling that he created two QuArK addons for Quake-3:Arena:</p>
+
+<ul>
+<li>Quake-3 map model prefabs.
+<li>Quake-3:Arena sample DM maps from Q3Radiant, converted to QuArK, with proper tree-view grouping and more.
+</ul>
+
+<p>Find them and more, on the <a href="download_addons.php#quake3">QuArK Addons</a> page.</p>
+
+<headline>New User Maps</headline>
+<p>Two Quake-3:Arena deathmatch maps have been added to the <a href="usermaps.php?Q3A=1&M_DM=1">User Maps</a> page.</p>
+
+<ul>
+<li>'BkQ3Dm1 (Frags in Stock)' by Blood killer
+<li>'BkQ3Dm2 (Mansion - The beggining of the Frags)' by Blood killer
+</ul>

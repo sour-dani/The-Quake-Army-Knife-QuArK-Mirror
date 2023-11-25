@@ -1,133 +1,172 @@
-#!/usr/bin/php
 <?php
-include("_functions.php");
-include("_userprefabs-database.php");
+require_once('_base_code.php');
+require_once('_language_functions.php');
+require_once('_userprefabs-database.php');
+require_once('_game-database.php');
+require_once('_people-database.php');
 
-function pageLocalDisplay() {
-  global $prefabs_imageroot;
-  global $prefabs_fileroot;
-  global $prefabs_headers;
-  global $prefabs_database;
+# Load language file
+LoadLanguageFile('userprefabs.php');
 
-  global $added_arraycol;
-  global $updated_arraycol;
-  global $image_arraycol;
-  global $file_arraycol;
-  global $author_arraycol;
-  global $email_arraycol;
+global $prefabs_imageroot;
 
-  pageName("User Prefabs");
-  pagePanelFile("community", "Notice!", "", "userprefabs.html");
+$itemsPerRow = 3; //FIXME: Make configurable!
 
-  $panel = "";
+function pageLocalDisplay()
+{
+	pageName('User Prefabs');
 
-  $games = count($prefabs_database);
+	global $itemsPerRow;
 
-  # Quick links...
-  {
-    $panel .= "<table border=0 cellpadding=2 cellspacing=1 width=95% align=center>";
-    $panel .= "<tr><td class=\"f\" valign=top width=20%>Quick links to page-sections:</td>";
+	global $webmastermail;
+	global $Games;
 
-    $g = 0;
-    $gsplit = ($games / 2);
-    while ($g < $games)
-    {
-      $panel .= "<td class=\"f\" valign=top width=40%>";
+	global $prefabs_imageroot;
+	global $prefabs_database;
 
-      while ($g < $gsplit)
-      {
-        $game     = $prefabs_database[$g][0];
-        $files    = count($prefabs_database[$g]) - 1;
-        $gamename = $prefabs_headers[$game][1];
+	global $personsdatabase;
 
-        $panel .= "<a href=\"#".$game."\">".$gamename."</a> <span class=\"sml\">(".$files." files)</span><br>";
+	global $added_arraycol;
+	global $updated_arraycol;
+	global $image_arraycol;
+	global $file_arraycol;
+	global $author_arraycol;
 
-        $g++;
-      }
+	$Table2Rows = array('table2rowA', 'table2rowB');
 
-      $panel .= "</td>";
+	#$PrefabsNotice = '<p><u>THE</u> place to submit user created prefabs, would be <a rel="nofollow noopener" target="_blank" href="http://prefabs.gamedesign.net/">prefabs.gamedesign.net</a>.</p>';
+	#pagePanel('community', 'Notice!', '', $PrefabsNotice);
 
-      $gsplit += ($games / 2);
-    }
+	$bodytext = '';
 
-    $panel .= "</tr></table><br>";
-  }
+	$CurrentRow = 0;
 
-  for ($g = 0; $g < $games; $g++)
-  {
-    $game     = $prefabs_database[$g][0];
+	# Quick link table
+	$bodytext .= '<table cellpadding=2 cellspacing=0 width="100%">';
+	$bodytext .= '<tr><td class="text1, table2head" colspan='.$itemsPerRow.' align=right><b>User prefabs list</b></td></tr>';
+	for ($Game = 0; $Game < count($Games); $Game++)
+	{
+		$CurrentGame = &$Games[$Game];
+		if (!array_key_exists($CurrentGame->GameID, $prefabs_database))
+		{
+			# Nothing to display...
+			continue;
+		}
+		$bodytext .= '<tr>';
+		$bodytext .= '<td class="text1, '.$Table2Rows[$CurrentRow & 1].'" align=center>'.DisplayGameIcon($Game, '#'.$CurrentGame->GameID).'</td>';
+		$bodytext .= '<td class="text1, '.$Table2Rows[$CurrentRow & 1].'">';
+		$bodytext .= '<a href="#'.$CurrentGame->GameID.'">'.$CurrentGame->GameTitle.'</a>';
+		$bodytext .= '</td>';
+		$bodytext .= '<td class="text1, '.$Table2Rows[$CurrentRow & 1].'" align=left>';
+		if (is_array($prefabs_database[$CurrentGame->GameID]))
+		{
+			if (count($prefabs_database[$CurrentGame->GameID]) === 1)
+			{
+				$bodytext .= '1 file';
+			}
+			else
+			{
+				$bodytext .= count($prefabs_database[$CurrentGame->GameID]) . ' files';
+			}
+		}
+		else
+		{
+			$bodytext .= 'No files';
+		}
+		$bodytext .= '</td>';
+		$bodytext .= '</tr>'; $CurrentRow++;
+		$bodytext .= "\n";
+	}
+	$bodytext .= '</table>';
 
-    $folder   = $prefabs_headers[$game][0];
-    $gamename = $prefabs_headers[$game][1];
-    $gameicon = $prefabs_headers[$game][2];
+	$bodytext .= '<hr class="smallbreak">';
 
-    $panel .= "\n<a name=\"".$game."\"></a>";
-    $panel .= "<table border=0 cellpadding=2 cellspacing=1 width=95% align=center>";
-    $panel .= "<tr><td class=\"fhh\" width=100% colspan=3>";
-    $panel .= "&nbsp;<b>".$gamename."</b>";
-    $panel .= "</td></tr>";
+	for ($Game = 0; $Game < count($Games); $Game++)
+	{
+		$CurrentGame = &$Games[$Game];
+		if (!array_key_exists($CurrentGame->GameID, $prefabs_database))
+		{
+			# Nothing to display...
+			continue;
+		}
 
-    $panel .= "<tr><td class=\"fh\" width=100% colspan=3>";
+		$bodytext .= '<a name="'.$CurrentGame->GameID.'"></a>';
 
-    $panel .= "<table border=0 cellpadding=6><tr><td class=\"fh\">";
-    $panel .= "<img border=0 src=\"".$gameicon."\" width=32 height=32 align=absmiddle>";
-    $panel .= "</td><td class=\"fh\">";
-    $panel .= "Click <a href=\"mailto:***PLEASE@NO*SPAM***decker_dk%40hotmail.com?subject=QuArK User Prefab ".$gamename."\">here to submit</a> a user prefab. <span class=\"sml\">(E-mail, including image in 160x120 pixels, max 100KB zipped.)</span>";
-    $panel .= "</td></tr></table>";
+		$bodytext .= '<table cellpadding=2 cellspacing=1 width="95%" align="center" style="table-layout: fixed;">';
+		$bodytext .= '<tr><td class="tablehead" colspan='.$itemsPerRow.'>';
+		$bodytext .= '<b>'.$CurrentGame->GameTitle.'</b>';
+		$bodytext .= '</td></tr>';
 
-    $panel .= "</td></tr>";
+		$bodytext .= '<tr><td class="tablesubhead" colspan='.$itemsPerRow.'>';
 
-    $column = 0;
-    $prefabs = count($prefabs_database[$g]);
-    for ($p = 1; $p < $prefabs; $p++)
-    {
-      if ($column % 3 == 0)
-      {
-        $panel .= "<tr>";
-      }
-      $column++;
+		$bodytext .= '<table cellpadding=6><tr><td class="tablesubhead">';
+		$bodytext .= DisplayGameIcon($Game, null, '32', '32');
+		$bodytext .= '</td><td class="tablesubhead">';
+		$bodytext .= 'Click <a href='.DisplayEncodedEmail($webmastermail, 'QuArK User Prefab '.$CurrentGame->Acronym).'>here to submit</a> a user prefab. <span class="sml">(E-mail, including image of 160x120 pixels, max 200KB zipped.)</span>';
+		$bodytext .= '</td></tr></table>';
 
-      $prefab = $prefabs_database[$g][$p];
+		$bodytext .= '</td></tr>';
 
-      if ($p == $prefabs)
-      {
-      }
-      else
-      {
-        $panel .= "<td class=\"f\" width=33% valign=top>";
-        $panel .= "<a href=\"".$prefabs_fileroot.$folder.$prefab[$file_arraycol]."\">";
-        $panel .= "<img border=0 src=\"".$prefabs_imageroot.$folder.$prefab[$image_arraycol]."\" width=160 height=120 alt=\"".$prefab[$file_arraycol]."\">";
-        $panel .= "</a>";
-        $panel .= "<br>By: <a href=\"mailto:***PLEASE@NO*SPAM***".$prefab[$email_arraycol]."\">".$prefab[$author_arraycol]."</a>";
-        if ($prefab[$updated_arraycol] != "")
-        {
-          $panel .= "<br>Updated: ".$prefab[$updated_arraycol];
-        }
-        $panel .= "<br>Added: ".$prefab[$added_arraycol];
-        $panel .= "<br>Download: <a href=\"".$prefabs_fileroot.$folder.$prefab[$file_arraycol]."\">".$prefab[$file_arraycol]."</a>";
-        $panel .= "</td>";
-      }
+		$column = 0;
+		for ($Prefab = 0; $Prefab < count($prefabs_database[$CurrentGame->GameID]); $Prefab++)
+		{
+			$CurrentPrefab = &$prefabs_database[$CurrentGame->GameID][$Prefab];
+			if ($column % $itemsPerRow === 0)
+			{
+				$bodytext .= '<tr>';
+			}
+			$column++;
 
-      if ($column % 3 == 0)
-      {
-        $panel .= "</tr>";
-      }
-    }
-    if ($column > 0 && ($column % 3 != 0))
-    {
-      while ($column % 3 != 0)
-      {
-        $panel .= "<td class=\"f\" width=33% valign=top>&nbsp;</td>";
-        $column++;
-      }
-      $panel .= "</tr>";
-    }
+			$bodytext .= '<td class="tablecell" valign=top align=center>';
+			$bodytext .= '<a rel="noopener" target="_blank" href="'.$CurrentPrefab[$file_arraycol].'">';
+			$bodytext .= '<img src="'.$prefabs_imageroot.$CurrentPrefab[$image_arraycol].'" width=160 height=120 alt="'.$CurrentPrefab[$file_arraycol].'">';
+			$bodytext .= '</a>';
 
-    $panel .= "</table><br>";
-  }
+			if ($CurrentPrefab[$author_arraycol] !== -1)
+			{
+				$CurrentPerson = &$personsdatabase[$CurrentPrefab[$author_arraycol]];
+				if (($CurrentPerson->AllowEmail) and ($CurrentPerson->Email !== ''))
+				{
+					$bodytext .= '<br>By: <a href='.DisplayEncodedEmail($CurrentPerson->Email).'>'.$CurrentPerson->getDisplayName().'</a>';
+				}
+				else
+				{
+					$bodytext .= '<br>By: '.$CurrentPerson->getDisplayName();
+				}
+			}
+			else
+			{
+				$bodytext .= '<br>By: *UNKNOWN*';
+			}
+			if ($CurrentPrefab[$updated_arraycol] !== 0)
+			{
+				$bodytext .= '<br>Updated: '.DisplayDate($CurrentPrefab[$updated_arraycol]);
+			}
+			$bodytext .= '<br>Added: '.DisplayDate($CurrentPrefab[$added_arraycol]);
+			$bodytext .= '<br>Download: <a rel="noopener" target="_blank" href="'.$CurrentPrefab[$file_arraycol].'">Click here</a>';
+			$bodytext .= '</td>';
 
-  pagePanel("community", "User Prefabs", "", $panel);
+			if ($column % $itemsPerRow === 0)
+			{
+				$bodytext .= '</tr>';
+			}
+		}
+		if ($column > 0 && ($column % $itemsPerRow !== 0))
+		{
+			while ($column % $itemsPerRow !== 0)
+			{
+				$bodytext .= '<td class="tablecell" valign=top>&nbsp;</td>';
+				$column++;
+			}
+			$bodytext .= '</tr>';
+		}
+
+		$bodytext .= '</table><br>';
+	}
+
+	pagePanel('community', 'User Prefabs', '', $bodytext);
 }
 
-pageDisplay("User Prefabs", 'pageLocalDisplay');
+pageDisplay('User Prefabs', 'pageLocalDisplay');
+
 ?>

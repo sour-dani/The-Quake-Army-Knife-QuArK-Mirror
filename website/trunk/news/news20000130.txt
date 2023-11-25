@@ -1,0 +1,23 @@
+<author>Decker</author>
+<headline>InstaPoll time...</headline>
+So lets see whats the favorite toolbar-setting, you QuArK people uses. Oh my, it looks like the <i>stationary toolbars</i> won big time,
+with 91%. <i>Floating toolbars</i> weirdly enough took third place with 4%, and then there are 5% low-IQ users out there who didn't
+understand the simple question - or don't use toolbars at all (damn, I knew I missed a fourth option <img src="pics/SmileyMedium.gif" align=absmiddle width=15 height=15>)<br>
+<br>
+This new InstaPoll; "What is your age", were suggested by El Beefo.<br>
+
+<headline>Progress report on Quake-3:Arena support.</headline>
+Armin and crew have now implemented; reading of .JPG files, reading and unpacking of .ZIP/.PK3 files,
+reading of Q3A .MAP files with bezier/patchDef's in them, drawing beziers in the map-editor - though not editable yet.<br>
+
+<headline>Ad-banners, ad-banners and more ad-banners...</headline>
+A lot of new ad-banners have been produced. Take a look at the <a href="adbanners.php">ad-banners page</a>.<br>
+I've noticed, that some of you makes the "Q6A" to "QuArK6" animation like this:<br>
+<blockquote>
+Q6A<br>
+Qu6A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>Why the "Qu6<u>A</u>"?</span><br>
+QuA6<br>
+QuAr6<br>
+QuArK6<br>
+</blockquote>
+Why don't you write "Qu6" instead of "Qu6A"?

@@ -1,0 +1,10 @@
+<author>Gryphon</author>
+<UL>
+
+<!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-->
+	<BLOCKQUOTE><P>
+<LI>Sorry I couldn't get the tutorials up his weekend, but as said before, we ran into some techinical difficulties that weened my time. Anyway, I'll hopefully get something up tonight.  It's looking very good, and it's been fun to write.  Since it's taking such a light and comprehensive approach to explaining things, it's taking longer than I would've hoped too... but trust me, it's hopefully worth the wait.
+<P>The first tutorial is basically "Getting Started" with mapping in QuArK.  It covers QuArK 4.07 and QuArK 5.0. approaches, and I'm trying to make it as friendly as possible. I'm almost tempted to go "here, see how much I did?", but it'll probably go over better if the tutorial wasn't serialized! :)
+</BLOCKQUOTE>
+
+	</UL>

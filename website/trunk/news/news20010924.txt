@@ -1,0 +1,7 @@
+<author>Decker</author>
+<headline>User made map</headline>
+<p>A Quake-3:Arena deathmatch map have been added to the <a href="usermaps.php?Q3A=1&M_ZZX=1&T_DM=1">User Maps</a> page.</p>
+
+<ul>
+<li>Savage Palace - by 'The Taurus'</li>
+<ul>

@@ -1,0 +1,3 @@
+<author>Armin</author>
+Half-Life fans, get Decker's latest <a href="http://home1.inet.tele.dk/decker/DataHL.zip">DataHL.qrk</a> and
+Tim Smith's QuArK-enabled <a href="http://asp.planetquake.com/dl/dl.asp?quark/hlqbsp10.zip">TXQCSG and QBSP2</a>.

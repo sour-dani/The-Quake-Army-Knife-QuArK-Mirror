@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Closed beta for new Quake game</headline>
+
+<p>Don't forget to sign up for the closed beta of the latest Quake game: Quake Champions! So, get your butt moving and <a target="_blank" href="https://quake.bethesda.net/en/signup">click here</a>!</p>
+
+
+<p>Happy Quaking,<br>
+DanielPharos</p>

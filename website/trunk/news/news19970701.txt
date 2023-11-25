@@ -1,0 +1,56 @@
+<author>Derrick McKay</author>
+<headline>QuArK 3.5 released - New Addons - Various</headline>
+<P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- QuArK 3.5 released -</B></FONT><P>
+Today Armin released version 3.5. It's available from the <A HREF="download.html">Download Page</A>. Here's what's new:<P>
+
+<FONT SIZE=2 COLOR="#C0C0C0" FACE="ARIAL,MS SANS SERIF">
+In this version the main new is that I extended the help<BR>
+file to cover QuArK Explorer as well. You'll find a lot<BR>
+of information about how to create brush libraries, for<BR>
+example. It is not complete yet : there is still no help<BR>
+about the various buttons and text boxes in the Explorer<BR>
+itself.<P>
+
+The creation of .pak files I introduced recently is now<BR>
+an option. There can be too many problems with it. By<BR>
+default, QuArK writes files in a parallel directory<BR>
+structure as it did previously. See the help about the<BR>
+menu command "Output directories..."<P>
+
+Changed the way QuArK displays zoomed maps. Now you can<BR>
+zoom deeper - at least with Windows NT, because Windows 95<BR>
+still doesn't like drawing operations with coordinates<BR>
+greater than 16383 :-(<P>
+
+The 3D OpenGL view flashes a lot on NT and not on Windows<BR>
+95. I still doesn't quite understand why, but I managed<BR>
+to reduce the NT flashing.<P>
+
+The Texture Browser should no more crash when it has to<BR>
+work with strange texture names (like empty ones) or with<BR>
+textures it cannot find from Quake's files.<P>
+
+The vertical position of the side view is now restored if<BR>
+you switch the 3D view mode on and off in this part of the<BR>
+screen.<P>
+
+The "Top" button in the New Items window now works like it<BR>
+does in the Movement Tool Palette.<P>
+
+The "Zoom" button don't force the compass view angle to<BR>
+zero - now it can compute the bounding box for any compass<BR>
+angle.<P>
+</FONT>
+</UL><P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- New Addons -</B></FONT><P>
+Draco has sent me 3 more addons. 2 are conversions from others, and one is brand new. It's a shootable turret that tracks you as it's shooting. Tired of the run-of-the-mill shooters, Draco designed this turret to track you as you go, and you have the choice of nails, lasers, or rockets to be flung at you :-). you can also destroy this turret. It should make for some interesting levels... Check the <A HREF="addon.html">Addon QME Files</A> Page for the download.
+</UL><P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- Various -</B></FONT><P>
+Work is slowly progressing on my "showcase" level. I've started tweaking the rooms pictured below, and have started on a third (of 6) rooms. I had a few problems with Ken Alverson's new QBSP (notably, the fact that it <I>does</I> halt when it encounters a stupid POP error... Woofer fixed that long ago... why doesn't Ken?). I sent an e-mail to Ken about it, but haven't heard back. Presumably he knows about it, as all of the other editors will produce POP brushes occasionally. I can only assume that he intended it to halt on this (pointless) error. Anyway, I've gotten at least one e-mail about the "inconsistent" textures, and like I said before... it's intentional. Each room will be different, and they will mostly be teleport in/out without adjoining halls (with a couple of exceptions). I'm trying to incorporate GLQuake options into it without screwing it up for normal Quakers, so it could delay it a little. This is my most ambitious level to date, as this one will be released :-). All of the others I've done were for me and my buds to play locally ('net Quake is impossible from the Yukon... unless you like viewing matches sideways that is).<BR>
+ <A HREF="mailto:acra@maptel.es">Prado Delgado</A> sent me a <A HREF="http://www.cdrom.com/pub/idgames2/planetquake/quark/fplayersk.zip">female players skin</A> (16k BMP). It's pretty much a basic skin, but "femailized". (kinda cute in an Amazonian-rip-your-liver-out-if-you-look-at-me-wrong way :-))<BR>
+I've got a couple more sites to add, but my time is kinda limited right now... later today or tomorrow maybe..
+</UL><P><BR>

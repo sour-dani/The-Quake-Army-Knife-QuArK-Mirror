@@ -1,0 +1,10 @@
+<author>DanielPharos</author>
+<headline>Recent downtime</headline>
+
+<p>We're back online! Yes, for about a week the website was unreachable. This was due to an (as far as I can tell) unannounced datacenter migration by SourceForge, that took much, much longer than they initially expected. Sorry for the inconvenience.</p>
+
+<p>Right now, there's still a bunch of errors and warnings showing on the website, because the SourceForge crew has slightly misconfigured the webserver. I've already opened a support ticket with them; the issue should be resolved soon.</p>
+
+
+<p>Happy Quaking,<br>
+DanielPharos</p>

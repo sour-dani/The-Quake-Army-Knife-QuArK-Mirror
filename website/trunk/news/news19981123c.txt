@@ -1,0 +1,16 @@
+<author>Gryphon</author>
+<UL><FONT 
+SIZE=2 FACE="verdana,arial" 
+		COLOR="0000a0">
+<!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-->
+<P><STRONG>What'd ya finish?</STRONG><BR>
+<LI>Well, this weekend, I finished writing some more of the QuArK FAQ, finished a new QuArK banner, and... well, that's about it (the banner is shown right above).  The banner sucked up most of my day Saturday, and Sunday... well... Sunday went to walking in the park and ice skating with a lovely lass (--about that time of year!) ;)  
+
+<P>The other stuff won't take much to at least DENT, so I'll be working on it all this week, and updating as I finish.  The QuArK FAQ has nearly 100 questions in it!  It's kind of daunting... but I think I've got it under control!
+<P><STRONG>So, what else is new?</STRONG><BR>
+<LI>I wanted to also announce that Patrick Steele is working on a nice supplement to QuArK to make add-ons much easier and automatic to create.  Since QuArK 5 has made it's file formats so excessible, and it's structure so easy to hook into, more plug-ins and accesories will probably be rolling along as time goes on.  Patrick's program is called QUADE, and folks can check on it's progress here:
+<BR><A HREF="http://members.home.net/pjsteele/quade/" target="_blank">http://members.home.net/pjsteele/quade/</A>
+<BR>The screen shot looks very promising!
+<P>Later!
+
+</font></ul>

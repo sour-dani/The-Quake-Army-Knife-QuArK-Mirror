@@ -1,0 +1,7 @@
+<author>Decker</author>
+<headline>eGroups is now YahooGroups</headline>
+<p>Just as things were going well, some big fat fish came and merged with "our" fish.</p>
+
+<p>This means, that if you're an eGroup member and using the web-based forum, you have to create an <i>Yahoo ID!</i>&nbsp;, before you're allowed into the usual Messages and Files sections of the QuArK forums.</p>
+
+<p>You have to visit the <a href="http://groups.yahoo.com/convwiz">eGroups to YahooGroups Conversion Page</a>, to register an <i>Yahoo ID!</i>.</p>

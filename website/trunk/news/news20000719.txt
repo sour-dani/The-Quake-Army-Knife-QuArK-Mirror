@@ -1,0 +1,72 @@
+<author>Decker</author>
+<headline>New snapshot...</headline>
+<blockquote>
+Hi !<br>
+<br>
+A new CVS snapshot compile is available for download at sourceforge.<br>
+<a href="http://sourceforge.net/project/filelist.php?group_id=1181">http://sourceforge.net/project/filelist.php?group_id=1181</a><br>
+<br>
+Name:   6.002pre11<br>
+File:   quarksnapshot20000718.ace<br>
+Length: 1.617.061 bytes<br>
+<br>
+This snapshot contains some fixes to Q3 and SoF support<br>
+<br>
+INSTALLATION:<br>
+<ol>
+<li>Make sure, that you have at least the mini-Python package
+   installed. Get it at the <a href="download.php">download page</a>.<br>
+   The full Python install does it also (<a href="http://www.python.org">www.python.org</a>)
+<li>Unpack the <a href="help/glossary/index.html#.ACE">.ACE</a> archive with e.g. xaceplus from <a href="http://www.winace.com">www.winace.com</a>
+   A directory will be created.
+<li>Start QuArK by clicking quark.exe
+<li>Don't forget to <a href="help/configuration/index.html">configure</a> the Game directories and tools.<br>
+   If you don't have the map compiler tools for the game you are
+   making maps for, please refer to the <a href="download.php">download page</a>.
+<li>Please, when reporting bugs, state for which game the report
+   is. Often it is <a href="forums.php">game specific</a>.
+</ol>
+Unpacking the snapshot over an older release may work at the first
+glance, but may lead to subtile errors that are hard to find.<br>
+I do not recommend it.<br>
+<br>
+CHANGES:<br>
+<ul>
+<li>General:
+  <ul>
+    <li>some internal code cleanup occured
+  </ul>
+<li>Quake3:
+  <ul>
+    <li>fixed: patch thicken bug
+    <li>fixed: attempt to improve shader handling
+    <li>fixed: added some missing models (when using the entity
+              misc_model mainly the mapobjects category was
+              incomplete)
+    <li>added: bezier patch-thinning commands, also the edit commands
+              now appear on the patch RMB menu
+    <li>added: arenafilemaker macro (this allows by placing a pseudo
+              entity somewhere in the map to create a .arena script
+              automatically. The .arena file lets the map appear in
+              the q3 map selection dialog
+    <li>added: library of archs (q3archlib.qrk in addons directory)
+  </ul>
+<li>SoF:
+  <ul>
+    <li>fixed: remove extract textures stage when running sof and softools
+              (which could cause sof to hang in some cases)
+    <li>fixed: some enumerated attributes like skin and style in
+              the entities have now a better selection menu
+  </ul>
+</ul>
+greetings<br>
+&nbsp;Alexander
+</blockquote>
+
+<headline>User made maps...</headline>
+A few new levels (two Quake-2 and one Quake-3) have been added to the <a href="usermaps.php">User made maps</a> page.
+<ul>
+<li>'a DM level for 1on1' by C4
+<li>'a CTF level for 3v3/4v4' by C4
+<li>'Arena of Dreams' by Daniel "Sandman" Alm
+</ul>

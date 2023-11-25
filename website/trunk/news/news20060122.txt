@@ -1,0 +1,35 @@
+<author>cdunde</author>
+<headline>QuArK 6.5.0 alpha 4 Corrected_Fixed_HL-2_addons.zip !</headline>
+
+<p><b>WOW!</b><br>Things are hot and heavy this month !<br>
+<b>Another tack-on</b> zip file for the recently released QuArK 6.5.0 alpha 4 has just been released for some <b>VERY MAJOR</b> bug fixes with Half-Life2 and Counter Strike ! ! !</p>
+
+<p>This <a href="http://sourceforge.net/projects/quark/files/QuArK/QuArK%206.5.0%20Alpha%204/Corrected_Fixed_HL-2_addons.zip/download"><b>Corrected_Fixed_HL-2_addons.zip</b></a> file takes care of a ton of problems that QuArK was having!</p>
+
+<p>To read all the details about what caused the problems and all of the things that this tack-on does, you can <a href="http://quark.ironfoot.co.uk/forums/index.php/topic,349.0.html">go to this posting</a> on the QuArK Forums site.</p>
+
+<p>This and the previous tack-on zip file are intended for the recent QuArK 6.5.0 alpha 4 release <b>ONLY !</b><br>
+With a clean install of the release 1st, then the Hollow Tools zip 2nd and this fix last, in that order.</p>
+
+<p>I hope this has not been too confusing, it shouldn't be, but I did not want our users to have to wait until the next release for these important updates.<br>
+<b>Enjoy ! ! !</b></p>
+
+<p>Here are the improvements and additions of this most recent tack-on zip file:</p>
+
+<UL>
+<LI>You can now see the textures in the Texture Browser for both Half-Life 2 and Counter Strike.
+<LI>You can run QuArK and Steam together without receiving errors and one or the other not working properly.
+<LI>You can do a complete map build in QuArK without problems if Steam is running at the time.
+<LI>The prefabs-hl2.qrk file has also been fixed and re-instated with its items.
+</UL>
+
+<p>So don't walk<b> ...TELEPORT YOURSELF ... AGAIN ... and AGAIN ...</b> to get your latest copy of the ...<br>
+<center><a href="http://sourceforge.net/projects/quark/files/QuArK/QuArK%206.5.0%20Alpha%204/Corrected_Fixed_HL-2_addons.zip/download"><b>QuArK 6.5.0 alpha 4 <br>Corrected_Fixed_HL-2_addons.zip !!! </b></a></center></p>
+
+<p>Remember <b>Keep your QuArK knife sharp!</b></p>
+
+<p>cdunde</p>
+
+<p>For more information and added support, go to the <a href="http://quark.ironfoot.co.uk/forums/">QuArK Resource Center</a> and <a href="http://quark.sourceforge.net/communication.php#forums">the forums page</a> of this site.</p>
+
+<p>And remember to visit <a href="http://quark.sourceforge.net/cgi-bin/moin.cgi">our sister site!</a></p>

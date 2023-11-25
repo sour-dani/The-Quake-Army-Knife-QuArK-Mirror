@@ -1,0 +1,15 @@
+<author>Decker</author>
+<headline>Please be patient!! QuArK will support Q3A at some time</headline>
+So Quake-3:Arena is out, big deal. So Q3Radiant is out, whats the fuss?<br>
+There's been many people, who've asked when Q3A support in QuArK is finished. Well, as some of you might <b>not</b> know, it
+does takes a long time to implement support for a new game, because every game has its differences; let it be models, map-structure,
+texture-formats, you name it. All I can say is, that Armin and crew are working at it, trying to decode whats available of information
+about the Q3A <a href="help/glossary/index.html#.MAP">.MAP</a>-format and texture/shader stuff, so <u>please be patient</u>. Come back once
+a week, to see if there are anything new.<br>
+
+<headline>QuArK-made maps</headline>
+Quake-2 deathmatch maps at the <a href="usermaps.php">user maps</a> page:
+<ul>
+<li>'Intricate Hell' by 'BlaqueKidd'
+<li>'Claustofibicus Quadratus' by 'El Loco'
+</ul>

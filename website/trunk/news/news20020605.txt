@@ -1,0 +1,22 @@
+<author>Decker</author>
+<headline>Custom build v1.6 of "Zoner's Half-Life Tools v2.5.3"</headline>
+<p>As seen on <a href="http://www.valve-erc.com">Valve-ERC</a>, there is released a <i>Custom build v1.6</i> of "Zoner's Half-Life Tools v2.5.3".</p>
+
+<p>Please note that this is <u><b>not</b></u> an official release from Zoner himself, hence the title "Custom build", but a, lets say, feature-filled spin-of branch of ZHLT253, that is maintained by Anthony Moore.</p>
+
+<p>Here's a list of the custom features (copied from the file instructions.html found in zhlt253-custombuild16.zip):</p>
+<ul>
+<li>The null texture</li>
+<li>Automatic wad detection</li>
+<li>Clipnode economy mode</li>
+<li>Sky diffuse colour</li>
+<li>Texture wad configuration file</li>
+<li>Info_compile_parameters map entity</li>
+<li>Info_texlights map entity</li>
+<li>Max vis distance</li>
+</ul>
+
+<p>If you are new to Half-Life mapping, you still have to download the original <a href="http://dl.fileplanet.com/dl/dl.asp?quark/buildtools/halflife/zhlt253.zip">zhlt253.zip</a> as it contains basic documentation and help-references.</p>
+
+<p>Download: <a href="http://dl.fileplanet.com/dl/dl.asp?quark/buildtools/halflife/zhlt253-custombuild16.zip">zhlt253-custombuild16.zip</a> <span class="sml">(140KB, also the .ZIP-file have been renamed for clarity, was originaly named "zhlt253-16.zip")</span><br>
+And the source-code: <a href="http://dl.fileplanet.com/dl/dl.asp?quark/buildtools/halflife/zhlt253-custombuild16-src.zip">zhlt253-custombuild16-src.zip</a></p>

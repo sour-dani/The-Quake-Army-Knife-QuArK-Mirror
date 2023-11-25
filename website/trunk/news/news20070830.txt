@@ -1,0 +1,19 @@
+<author>DanielPharos</author>
+<headline><a href="http://sourceforge.net/project/showfiles.php?group_id=1181"><b>QuArK SAS v1.0 released!</b></a></headline>
+
+<p>Since I, DanielPharos, have been part for the QuArK team about one year now, I thought I'd surprise you all with a nice new utility!</p>
+
+<p>Most of you know by now QuArK is having some trouble with Half-Life 2. Just look at the news-post of 20 December 2006. I've been investigating this problem, and I found out that the old way of accessing Steam was... wrong. I've now written a free utility which the next release of QuArK will use to access these files!</p>
+
+<p>It's called <b>QuArK Steam Access System</b>, or QuArKSAS for short or QSAS for short-short.</p>
+
+<p>This is a separate utility, also open-source and free, downloadable from the <a href="http://sourceforge.net/project/showfiles.php?group_id=1181">same downloadpage</a> as QuArK.</p>
+
+<p>It's command-line driven and can extract any number of files from Steam-games. A readme-file is included in the download.</p>
+
+
+<p>DanielPharos</p>
+
+<p>Note: QuArK-users: just wait for the next release. It's coming REAL soon, and QuArKSAS will be integrated into it.</p>
+
+<p>For more information and added support, go to the <a href="http://quark.sourceforge.net/forums/">QuArK Resource Center</a> and <a href="http://quark.sourceforge.net/communication.php#forums">the forums page</a> of this site.</p>

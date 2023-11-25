@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>EF2 gamepak has gone missing!</headline>
+
+<p>I've just been contacted that the EF2 gamepak's link is broken. Worse, the actual file has gone missing, and I don't have a local copy! So... does anybody have a copy of <b>QuArK_EF2_files.zip</b> they can send to me, so I can restore it?</p>
+
+
+<p>Happy mapping,<br>
+DanielPharos</p>

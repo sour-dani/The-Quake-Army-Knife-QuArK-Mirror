@@ -1,0 +1,6 @@
+<author>Armin Rigo</author>
+<UL>
+
+<LI> Logs and Screenshots posted from the IRC meeting with Armin. They are on a &quot;special&quot; page apporpriately called the &quot;<A HREF="ircchat.html">IRC chat with Armin</A>&quot; page.
+
+	</UL>

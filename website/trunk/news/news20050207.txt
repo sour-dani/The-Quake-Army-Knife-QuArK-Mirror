@@ -1,0 +1,21 @@
+<author>cdunde</author>
+<headline>Quake 1 and Windows</headline>
+<p>Recently I made a posting to the <a href="http://games.groups.yahoo.com/group/quark/">Yahoo-quark forum</a> about not being able to run the classic Quake 1 game under Windows XP (Home Edition), that it would just hang up loading with a console error. Soon afterwards I received a reply from an individual named <b>aguir_re</b> who responded with this explanation.</p>
+
+<p>"I think it's the bug in all older Quake engines that the QuArK produced quake.rc file isn't properly terminated with a CRLF, messing up the last commands a bit.</p>
+
+<p>You could try one of the GLQuake/WinQuake versions found <a href="http://user.tninet.se/~xir870k">here</a>. They both have that bug (and many others) fixed."</p>
+
+<p>I am pleased to report that indeed that did take care of the problem! So for those that have experienced the same frustration and wish to run and create maps for Quake 1, I recommend trying <b>aguir_re's</b> solution by using the above link or the one posted in the <b>Useful Links...</b> column under Quake 1 as <a href="http://user.tninet.se/~xir870k/">Bengt Jardrup's page</a>.</p>
+
+<p>Besides fixing the problem, I think there is a couple of other things to be taken from this:</p>
+<UL>
+<LI>The forums <b>do</b> work quite well!
+<LI>And <b>helping one another</b> is really what the mapping and gaming world is all about!
+</UL>
+
+<p>So <b>Thank You</b> aguir_re and to the many others who choose to get involved!</p>
+
+<p>For more information and support, go to the <a href="http://quark.sourceforge.net/forums.php">forums</a>.</p>
+
+<p>And remember to visit <a href="http://quark.sourceforge.net/cgi-bin/moin.cgi">our sister site!</a></p>

@@ -1,0 +1,3 @@
+<author>Derrick McKay</author>
+<headline></headline>
+<UL><LI> <A HREF="ftp://ftp.cdrom.com/pub/idgames2/planetquake/quark/qbspar04.zip">QBSP_AR version 0.4</A> released. Main change : no more low hard-coded size limits, and reduced memory requirements ! See <A HREF="ftp://ftp.cdrom.com/pub/idgames2/planetquake/quark/qbspar04.txt">text description</A>.</UL>

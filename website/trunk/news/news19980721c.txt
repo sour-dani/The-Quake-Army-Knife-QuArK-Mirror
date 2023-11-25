@@ -1,0 +1,32 @@
+<author>Gryphon</author>
+<UL><FONT SIZE=2 FACE="verdana,arial" 
+		COLOR="0000a0">
+<!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-->
+<STRONG>Restored</STRONG><BR>
+<LI>Well, that was certainly quick (though not happening would've been better). I got a nice reply back from Simplenet, my hosting service.  No sooner did I see that the site was working, did the following e-mail brighten my doorstep:</LI><CENTER>
+<P><TABLE CELLPADDING=5 CELLSPACING=0 BORDER=1 BGCOLOR=WHITE WIDTH="300"><TR><TD>
+<SMALL><SMALL><I>Dear SimpleNet Customer:</I><BR>
+<BR>
+The web server your account is on experienced a problem which in some cases
+gave an error message that the site was not found, or the web site would
+fail to connect. This problem has been resolved at the server level and you
+should be able to reach your site normally.<BR>
+<BR>
+If you continue to experience this problem please contact us.<BR>
+<BR>
+Thank you,<BR>
+<I>Simple|Net Staff</I></SMALL></SMALL>
+</TD></TR></TABLE></CENTER><p></P><BR>
+So, needless to say, the messageboard is back up.  I'm only left thinking,
+"What do you MEAN <B>IF</B>I continue to experience this"? But... I shouldn't pick. :)<BR><BR>
+<STRONG>QuArK Ring Maps Site</STRONG><BR>
+<LI>The <a href="http://members.tripod.com/~qrm/" target="_parent">QuArK Ring-Map</a> is up! Join in the fun!<BR>
+This site is a chain-map style site for users of the QuArK map editor only, with a slight difference. Instead of ONE map being passed around from mapper to mapper, each mapper works on his own copy of the map. Once a certain time period has passed, the maps are re-circulated, hence the ring-map concept.<BR><BR>
+This could be a great way for new users to get their map kicked, inspected, and edited by more experienced users, and experienced users, well... they can get new ideas in their jaded noggins! :)
+<BR><BR>
+<STRONG>Etc...</STRONG><BR>
+<LI>Lastly, I fixed the "Download" page so that it goes to a list of mirror sites for most of the files.  I also fixed the "Add-on" page the same way.  CDROM.com changed a few things around, so this should eliminate the confusion. Everything is now the way it should have been.<BR><BR>
+<LI>And lastly... um, again... I've also changed the "Download QuArK NOW!" button to go to QuArK 4.07.  I will change this BACK to directly downloading qUaRk... oops, QuArK 5 when it has all the features of 4.07 completely in place.  I'll be updating the Download page to promote 4.07 soon too.  QuArK 5 should get enough exposure from the front page, and Armin's pages to be well seen.  I just don't want new QuArK users being confused about what a full version of QuArK can currently do.<BR><BR>
+<LI>And, finally (as opposed to "lastly"... which didn't seem to work last time), I've FINALLY added a new map to the User Levels area. Thanks, Marty, and sorry for the delay!  Keep 'em comin'! :) (Read User Levels page for submission instructions). I also have some links to new levels, but I have to work at figuring how to put that into the Download page.
+
+</font></ul>

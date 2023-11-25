@@ -1,0 +1,45 @@
+<author>cdunde</author>
+<headline>QuArK 6.5.0 alpha 8 with RTCW & RTCW-ET Enhanced support released.</headline>
+
+<p>New games pop-up all the time.<br>
+But the old standbys deserve their fair share too !</p>
+
+<p>And that's where the concentration has been made for this release.<br>
+<b>Return to Castle Wolfenstein</b>, <b>Enemy Territory</b> and even <b>Torque</b> received special attention this go around.<br>
+Starting with configuration sections of their own in the <a href="http://quark.sourceforge.net/infobase/intro.configuration.games.html">Infobase</a>
+that include <b>direct download links</b> for tools and newly created QuArK Game Support Packs.<br>
+(no pop-up adds in your way and waiting in line around here!)</p>
+
+<p>Even a backup source with the new <a href="http://quark.sourceforge.net/forums/">QuArK Forums Files Page ! ! !</a></p>
+
+<p><b>"It's the Game Paks that take all the time ! ! !"</b> said one of our developers...(me).<br>
+But they're well worth the effort !</p>
+
+<p>Allowing the viewing of all available textures in QuArK's Texture Browser,<br>
+all game models viewable in the 3D editor Texture views,<br>
+detailed entity settings with the use of pre-defined dropdown list,<br>
+model selection and variations list,<br>
+file selection capabilities for models and sounds,<br>
+as well as 'color pickers' for all lighting functions.<br>
+Even a few 'script\shader\material' corrections.</p>
+
+<p>Some of the other improvements to this most recent release are:</p>
+<UL>
+<LI>Improved code for Doom 3 and Quake 4 for using the map name being edited without manually changing it.
+<LI>Added new "No fill" and "Outline color selection" poly functions to the RMB menu "Background image..." with direct full use Infobase link.
+<LI>Started direct linked Infobase docs for RMB menus, their items and full documentation on use.
+<LI>Fixed Extruder Shape Builder 2D view editor that was broke.
+<LI>Added light color pickers to entities for Doom 3 and Quake 4 and cleanup of the DataD3.qrk file.
+<LI>Fixed Access Violation errors when rebuilding and moving in 3D views.
+<LI>Added 0 division testing to stop console errors when "wrapping" textures.
+</UL>
+
+
+<p><b>SO WHAT-DA-YA DINK'N AROUND HERE FOR ?</b><br>
+<b>JET</b> on out there and get your new copy of <a href="http://sourceforge.net/project/showfiles.php?group_id=1181"><b>QuArK 6.5.0 alpha 8 and Game Support Paks</b></a> ....<b>NOW !!!</b></p>
+
+<p>Remember <b>Keep your QuArK knife sharp!</b></p>
+
+<p>cdunde</p>
+
+<p>For more information and added support, go to the <a href="http://quark.sourceforge.net/forums/">QuArK Resource Center</a> and <a href="http://quark.sourceforge.net/communication.php#forums">the forums page</a> of this site.</p>

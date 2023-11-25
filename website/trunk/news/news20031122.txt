@@ -1,0 +1,17 @@
+<author>cdunde</author>
+<headline>Full snapshot of QuArK 6.4.0 alpha 2</headline>
+<p>Peter has made a new full snapshot of <a href="http://quark.sourceforge.net/download/quark-win32-20031122.zip">QuArK 6.4.0 alpha 2</a> <span class=sml>(dated 2003-11-22)</span>.</p>
+
+<p>The items and features covered by this snapshot are:</p>
+<UL>
+<LI>Error fixed that caused all Toolbox menus not to work and problems with importing textures
+<LI>Bundled Python 2.2.3 - no extra downloads
+<LI>New 'Look and Zoom in 3D views' feature
+<LI>Full Infobase documentation included
+</UL>
+
+<p>The latest up dated Infobase can be downloaded <a href="http://quark.sourceforge.net/download/quark-help-20031122.zip">here</a> <span class=sml>(dated 2003-11-22)</span>. (included in above release)</p>
+
+<p>Download full source code with Python 2.2.3 from <a href="http://quark.sourceforge.net/download/quark-src-20031122.zip">here</a> <span class=sml>(dated 2003-11-22)</span>.</p>
+
+<p>For more information and support, go to the <a href="http://quark.sourceforge.net/forums.php">forums</a>.</p>

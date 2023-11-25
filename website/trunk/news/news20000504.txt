@@ -1,0 +1,10 @@
+<author>Decker</author>
+<headline>Suggested Plug-ins...</headline>
+Kell.hound send me a mail requesting a plug-in for QuArK, which would make textures that emit light in the FPS-game, also emit light
+in QuArK's OpenGL views. So if anyone is up for it, take a look at the <a href="suggestedplugins.php">Suggested Plug-ins</a> page.<br>
+
+<headline>User-made maps</headline>
+Someone's been fast. The first Quake-3:Arena map added to the <a href="usermaps.php">user maps</a> page.
+<ul>
+<li>'C.H. Arena' by Demetris Leptos (aka RoGeR)
+</ul>

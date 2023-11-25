@@ -1,0 +1,52 @@
+<author>Decker</author>
+<headline>Soldier of Fortune support...</headline>
+Alex and Andy have begun preliminary support for Soldier of Fortune in QuArK.
+Check the <a href="http://www.egroups.com/group/quark-python">QuArK-Python forum/mailing-list</a> to see what they're doing,
+and post a message if you can help with anything.<br>
+
+<headline>Problem using <i>Game Context</i> and Half-Life Mods...</headline>
+It has been brought to my attention, that using QuArK's 'Game Context' in Half-Life mode, causes problems with Half-Life modifications, when QuArK is used to start Half-Life. <img src="pics/SmileySad.gif" align=absmiddle width=15 height=15>
+This is due to a <i>feature</i> that allow QuArK to create/copy files, that is needed by Half-Life to run. Basically its these two files that causes the problem:<br>
+&nbsp;&nbsp;&nbsp;HALF-LIFE/&lt;moddir&gt;/LIBLIST.GAM<br>
+&nbsp;&nbsp;&nbsp;HALF-LIFE/&lt;moddir&gt;/CL_DLLS/CLIENT.DLL<br>
+They get overwritten when QuArK runs Half-Life, thereby destroying the modification's custom files.<br>
+There is a quick fix for this, but that will render the HALF-LIFE/tmpQuArK/ directory useless, unless you remember <u>not</u> to delete the HALF-LIFE/tmpQuArK/LIBLIST.GAM file!<br>
+The fix is to manually go into the following three QuArK text-files, and delete the lines shown.
+But take care! I suggest you take a <u>backup of these files</u>, just in case, so you can restore them if anything goes wrong.<br>
+If you have <u>absolutely no clue</u> of what I'm talking about, then don't do anything - other than wait for the QuArK 6.00 beta-2 release.
+<pre>
+<i><u>DataHL.QRK</i></u>
+  CreateFiles: =
+  {
+    liblist.gam = {
+      Data =
+        "game "$22"tmpQuArK"$220D0A
+        "gamedll "$22"..\valve\dlls\hl.dll"$220D0A
+        ".\valve\dlls\hl.dll"$0D0A
+    }
+  }
+
+<i><u>Defaults.QRK</i></u>
+  ExtractFiles = "cl_dlls/*.*"
+
+<i><u>Setup.QRK</i></u>
+  ExtractFiles = "cl_dlls/*.*"
+</pre>
+
+<headline>From Decker's inbox...</headline>
+I got a mail from a QuArK user...
+<blockquote>
+Hi,<br>
+<br>
+I am the lead mapper for the mod D-Day:Normandy for Quake2.  I just wanted
+to let you guys know that I have used QuArK for all of my maps.  Screenshots
+of the maps are available at: <a href="http://www.planetquake.com/dday/piclevel.htm">http://www.planetquake.com/dday/piclevel.htm</a><br>
+<br>
+The maps can be downloaded with the mod on the main page:
+<a href="http://www.planetquake.com/dday">http://www.planetquake.com/dday</a><br>
+<br>
+Lookin forward to using QuArK6 for my future mod work.  Keep up the good
+work =)<br>
+<br>
+Castrator
+</blockquote>

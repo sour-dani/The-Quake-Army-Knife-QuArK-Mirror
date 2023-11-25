@@ -1,0 +1,15 @@
+<author>Decker</author>
+<headline>New Half-Life data .QRK</headline>
+The <a href="http://home1.inet.tele.dk/decker/DataHL.zip">newest Half-Life data add-on .QRK</a> have been updated with <a target="_blank" href="http://www.counter-strike.net">Counter-Strike</a> beta4.0 entities:<br>
+- [CS] Added info_bomb_target entity (Thanks to Jared)<br>
+- [CS] Added special infodecals for Defusion as mentioned on Counter-Strike's website<br>
+<div class="sml">(If you have a new/updated data add-on you want announced here, please mail the <a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com?body=-- NOTICE: HTML e-mails will be bounced, so send only in plain-text! /Decker --">webmaster</a>.)</div>
+
+<headline>Shared faces tutorial</headline>
+QuickDeath made a rough tutorial, on how to <a href="help/maptutorial/Face_Sharing/Face_Sharing.html">create and use shared faces</a> in QuArK.
+So if you want to make use of one of QuArKs more advanced and unique features, you better <a href="help/maptutorial/Face_Sharing/Face_Sharing.html">check it out</a>.<br>
+Also, if you haven't seen it yet, check out the <a href="help/maptutorial/index.html">map tutorial, your first room</a>. Things are added now and then.<br>
+
+<headline>InstaPolls</headline>
+Looks like the instapolls are going well - sort of. One has a higher vote-count than the other. This makes it a little bit
+difficult to compare. Oh well....

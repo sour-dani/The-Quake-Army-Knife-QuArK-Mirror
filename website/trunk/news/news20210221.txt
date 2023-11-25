@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>New version of The Dark Mod released</headline>
+
+<p>A couple of days ago, version 2.09 of The Dark Mod was released! It brings performance improvements, better visuals, and much more. You can read about it <a href="https://www.thedarkmod.com/posts/the-dark-mod-2-09-has-been-released/">here</a>, and download it from there as well.</p>
+
+
+<p>Happy darkening,<br>
+DanielPharos</p>

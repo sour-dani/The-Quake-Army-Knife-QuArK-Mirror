@@ -1,0 +1,11 @@
+<author>Armin</author>
+<p>QuArK 5.8 contains various small bugs. Most of them could have been fixed if a few people seriously tested the beta I released a week before QuArK 5.8, but it seems that this beta didn't have much success... Too bad. Now I must release a <strong>patch</strong>.</p>
+
+<p>Extract <a href="http://www.planetquake.com/quark/armin/quark58p.zip">this archive</a> in the "quarkpy" subdirectory of QuArK. It will replace a few of the ".py" files.</p>
+
+<p><ol><li>rectangle dragging with the mouse to select polyhedron: crashed
+<li>Half-Life maps running: crashed
+<li>minor stuff (invalid texture names in Half-Life maps were not signaled)
+<li>Did you notice that in QuArK 5.8 you can drag out the tabs of the Tree/Specs/Poly/Face/3D panel ? This lets you make floating windows that stay open. The captions of these windows were a bit strange, this patch fixes that too.</ol></p>
+
+<p><strong>Source code</strong> of QuArK 5.8 (with these fixes) released. See <a href="armin/">my News page.</a></p>

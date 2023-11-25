@@ -1,0 +1,7 @@
+<author>Decker</author>
+<headline>QuArK-made maps</headline>
+Two <a target="_blank" href="http://www.planetquake.com/rxn/gloom/">GLOOM</a> <a href="usermaps.php">user maps</a> have been added:
+<ul>
+	<li>'Infested Caverns Special Edition' by 'Devil Warrior'
+	<li>'Devil's Inferno' by 'Devil Warrior'
+</ul>

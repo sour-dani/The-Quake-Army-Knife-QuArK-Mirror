@@ -1,0 +1,16 @@
+<author>Decker</author>
+<headline>New Weapons Factory data add-on .QRK</headline>
+TheBee sends word out, that there have been an update to the <a href="http://www.getstung.com/files/WFq2.qrk">WFQ2.QRK</a> data add-on file. Here's a little list of the additions:
+<ul>
+	<li>WF 5.0b new entities
+	<li>Updates to existing entity keys
+	<li>And more.....
+</ul>
+You can find it at <a href="http://www.getstung.com/files/WFq2.qrk">http://www.getstung.com/files/WFq2.qrk</a> (Remember to hold down SHIFT before clicking on the link, to tell your web-browser to <u>download</u> the file, and not just view it.)
+<div class="sml">(If you have a new/updated data add-on you want announced here, please mail the <a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com?body=-- NOTICE: HTML e-mails will be bounced, so send only in plain-text! /Decker --">webmaster</a>.)</div>
+
+<headline>QuArK-made maps</headline>
+<a href="usermaps.php">User maps</a> is extended with:
+<ul>
+	<li>'Death is not The End' by Erik 'The Taurus' Thuresson
+</ul>

@@ -1,0 +1,10 @@
+<author>DanielPharos</author>
+<headline>Zero-days and other security bugs</headline>
+
+<p>Be aware that Valve is really, really slow in fixing security bugs in their games. <a href="https://neodyme.io/blog/csgo_from_zero_to_0day/">Here's the story</a> of some people that reported vulnerabilities that would allow hacking your computer when you connect to a malicious server. It took Valve over one year (!) to fix them, and Valve is still refusing to talk about them. Who knows how many known vulnerabilities there are out there for Valve games?</p>
+
+<p>And that goes for <a href="https://news.ycombinator.com/item?id=36279986">games that are no longer being updated</a> too. Please use updated third-party engines whenever possible!</p>
+
+
+<p>Safe gaming,<br>
+DanielPharos</p>

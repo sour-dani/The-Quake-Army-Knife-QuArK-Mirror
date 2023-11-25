@@ -1,0 +1,22 @@
+<author>Derrick McKay</author>
+<headline>New User levels - New Addon - Quake Palette - various</headline>
+<P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- User levels -</B></FONT><P>
+<A HREF="mailto:ramses@icity.intcity.com">Dolomite</A> has posted a bunch of CTF levels on cdrom.com. I have put the links to them on the <A HREF="user.html">User levels</A> Page
+</UL><P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- New Addon -</B></FONT><P>
+Speaking of CTF, <A HREF="mailto:usnet1sm@sprynet.com">Thomas Zieba</A> has put all of the CTF4 entities and textures into a QME file for QuArK users. The file is <A HREF="http://www.cdrom.com/pub/idgames2/planetquake/quark/ctflbs4.zip">CTF Level Builders Stuff</A> (265k). I have also added this to the <A HREF="addon.html">Addon QME's</A> Page.
+</UL><P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- Quake Palette -</B></FONT><P>
+Our old buddy <A HREF="mailto:watersjh@interx.com">Joe Waters</A> has put together a Paintshop Pro palette file (PAL) of the Quake palette without the fullbright textures. This will come in handy for those of you wanting to make your own textures, but are having troubles with the fullbrights. <A HREF="http://www.cdrom.com/pub/idgames2/planetquake/quark/qpaln.zip">Here it is</A> (1k). You can also get  it from his <A HREF="http://web.interx.com/watersjh/qfiles.html">files page</A>.
+</UL><P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- Various -</B></FONT><P>
+Well, I finally got my shit together and completed installing NT4. I'm impressed with the stability, but not impressed with the speed. Maybe I'm doing something wrong, but it seems to take forever to do some things (but I can do a <I>lot</I> more at once). I've only had it truly working for a couple of days, so it'll take some time to tweak it I guess. Sorry for the lack of updates here, but I've been busy :-).<BR>
+I haven't had a chance to work on my "showcase" level much (duh) but I'm planning on getting to it ASAP.  BTW, speaking of  "getting to it" I think I screwed up and lost a few e-mails making the transition. If this update didn't cover an e-mail that you sent me about something, please <A HREF="mailto:dmckay@yknet.yk.ca">send it to me again</A>. Sorry, but it's been a <I>hell</I> of a week.<P>
+I haven't heard from Armin for a few days. You know what that means.... he's doin' something to QuArK again :-) (I wonder what it will be this time...)<P>
+I've had a lot of requests for a "tutorial" for QuArK, and my reply is "I hear ya"... According to the last release of QuArK, Armin is planning on including this in a future update to QuArK, but the new context sensitive help is a big hit, and a big help too. I'll keep you posted...
+</UL><P><BR>

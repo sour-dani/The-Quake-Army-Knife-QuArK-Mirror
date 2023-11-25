@@ -1,0 +1,13 @@
+<author>Gryphon</author>
+<UL>
+
+<!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-->
+	<BLOCKQUOTE><P>
+<LI>Hello!  New WebMaster Dudley "Gryphon" Bryan here!  I've finally finished much of the new site design.  A little delay, but its coming along well.<BR>
+New areas like the Quake, Quake2, and Hexen specific workshops will come in as they are finished.  Much of this is more an effort
+in organization than anything else.  Anyway, enjoy... and Hi!</P>
+<P>
+<LI>As it works out, Armin will be updating the news on the front page, but this news section will be used for other news and possibly archiving old news so the main page doesn't get bogged down.</P>
+</BLOCKQUOTE>
+
+	</UL>

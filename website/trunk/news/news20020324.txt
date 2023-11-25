@@ -1,0 +1,6 @@
+<author>Decker</author>
+<headline>User made map</headline>
+<p>It's been a while since the last <a href="usermaps.php">user map-submission</a>. However here's one for you Half-Life deathmatchers, made by Baal-Peor. Check it out on the <a href="http://quark.sourceforge.net/usermaps.php?HL=1&M_ZZX=1&T_DM=1">User Maps</a> page.</p>
+<ul>
+<li>Baal-Peor's Two Towers - Baal-Peor [of TeamTNT Fame]</li>
+</ul>

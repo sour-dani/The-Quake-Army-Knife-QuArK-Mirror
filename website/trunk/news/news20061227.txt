@@ -1,0 +1,37 @@
+<author>cdunde</author>
+<headline><a href="download_gamepaks.php"><b>NEW QuArK Game Paks... section</b></a> has just been opened!</headline>
+
+<p>For those of you that already downloaded the new <a href="http://sourceforge.net/project/showfiles.php?group_id=1181"><b>QuArK6.5.0_Beta_1_H-L2_Fix</b></a> for <b>Half-Life 2</b> below, you'll want to go to our <a href="download_gamepaks.php"><b>NEW QuArK Game Paks... section</b></a> and get <b>BOTH</b> game support zips for <b>Half-Life 2 and Counter Strike</b> that will complete the process of <b>FULL</b> support.</p>
+
+<p>These files will fill in all those missing textures that you now see in the new Beta1 release Texture Browser <b>AND</b> add many more that were missing in the past !</p>
+
+<p>These game support packages have been available for downloading but only through the QuArK Infobase Docs and some of you might have missed them because of that.<br>
+So we have started this new section on the QuArK Official site as a direct download source where you can pick and choose the ones you want.</p>
+
+<p>At the moment we are providing paks for:</p>
+<UL>
+<LI><b>Quake 4</b>
+<LI><b>Return to Castle Wolfenstein</b>
+<LI><b>Wolfenstein - Enemy Territory</b>
+<LI><b>Star Trek:Voyager-Elite Force</b>
+<LI><b>Torque Basic Textures</b>
+<LI>and the complete <b>q3map2 build tool</b> for Q3 base games in the <b>TOOLS</b> section.
+</UL>
+<p>You will also notice a new link in the <b>Site Navigation...</b> menu to your far left under the <b>QuArK</b> section for <b>Game Paks</b>. That will take you to that new page and the game support package <b>DIRECT</b> downloads.</p>
+
+<p>Some packages supply added Texture support and Model Viewing support, while others are broken down as individual downloads for your choice. We are also adding general <b>TOOL</b> files for your added mapping pleasure.</p>
+
+<p><b>SO....? WHAT-R-YA-WAITING FOR ! ! !</b><br>
+All this and before New Years TOO ! (or all us developers get <b>Tea</b> in our glasses 8-| )</p>
+
+<p>We hope you enjoy the <a href="download_gamepaks.php"><b>NEW QuArK Game Paks... section !</b></a></p>
+
+<p><b>And there's MORE to come from QuArK ! ! !</b></p>
+
+<p><b>H A P P Y...H O L I D A Y S...E V E R Y B O D Y.... !</b></p>
+
+<p>Remember <b>Keep your QuArK knife sharp!</b></p>
+
+<p>cdunde</p>
+
+<p>For more information and added support, go to the <a href="http://quark.sourceforge.net/forums/">QuArK Resource Center</a> and <a href="http://quark.sourceforge.net/communication.php#forums">the forums page</a> of this site.</p>

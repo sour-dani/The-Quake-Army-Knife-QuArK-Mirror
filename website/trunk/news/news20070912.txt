@@ -1,0 +1,9 @@
+<author>DanielPharos</author>
+<headline><b><a href="http://quark.sourceforge.net/forums/?topic=970.0">New poll on forum</a></b></headline>
+
+<p>There's a new poll on the forum! What version of QuArK works best for you? Tell us!</p>
+
+<p>So go over <a href="http://quark.sourceforge.net/forums/?topic=970.0">there</a>, and <b>vote !</b></p>
+
+
+<p>DanielPharos</p>

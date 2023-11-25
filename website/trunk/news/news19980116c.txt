@@ -1,0 +1,8 @@
+<author>Armin Rigo</author>
+<UL>
+
+<LI> <A HREF="ftp://ftp.cdrom.com/pub/idgames2/planetquake/quark/q2textrs.zip">Quake 2 textures</A> have been sorted in nice groups by Decker (thanks, Decker !). A few textures may be missing, watch a future update.
+
+<LI> Once more... here is <A HREF="quarkfaq.html">how to get started with Quake 2</A> with QuArK.
+
+	</UL>

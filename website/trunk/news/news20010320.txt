@@ -1,0 +1,3 @@
+<author>Decker</author>
+<headline>Download working again</headline>
+<p>Our <a href="download.php">QuArK files</a> is now again available via <a href="http://www.FilePlanet.com">www.FilePlanet.com</a>.</p>

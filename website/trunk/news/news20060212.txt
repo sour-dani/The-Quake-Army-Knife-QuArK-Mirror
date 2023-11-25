@@ -1,0 +1,34 @@
+<author>cdunde</author>
+<headline>QuArK 6.5.0 alpha 5 released.</headline>
+
+<p>All of the Objectmodes_hollow_tools.zip and Corrected_Fixed_HL-2_addons.zip items have been included.</p>
+
+<p>Improvements and additions to this most recent release are:</p>
+
+<UL>
+<LI>Added three new Quick Object Makers, Double-cone, Dome and Fan along with full Infobase documentation.
+<LI>Changed Sphere hollow to extrude to substancialy increase speed and cleaned up code to also try and help with redline drawing speed.
+<LI>Fixed rulers distance displayed amount from drifting away from marker on screen view x-axis when the scale size is changed.
+<LI>Fixed smearing of 2D views when rulers are turned off.
+<LI>Changes by Nazar to the scale, zoom and map sizes that QuArK can handle to allow the creation of much larger maps for the more recent games.
+<LI>Various updates by Nazar to the Defaults.qrk, DataJA.qrk and DataJK2.qrk files for corrections of entities, their settings and proper path defaults.
+<LI>Various fixes with Philippe C. to have QuArK more compatible to run on Linux using Wine and eliminating errors while keeping functions operational.
+<LI>Fixed error message occurring sometimes when switching game modes.
+<LI>Expanded on textures that can be viewed in Texture Browser for Half-Life2 and Counter Strike and added textures to textures-hl2.qrk file.
+<LI>Fixed setup and textured viewing in Texture Browser for Half-Life2.
+<LI>Reinstated prefabs-hl2.qrk previous version so they would work again.
+<LI>Added new 'Hollowing' functions to the Quick Objects Maker dialog boxes.<br>
+     - Allows the automatic hollowing and interior wall removal of all objects.<br>
+     - Updated Infobase on these new functions and full documentation of their use.<br>
+     - Added new safe guards and alert messages for excessive faces and processing times.
+</UL>
+
+<p>This release can be downloaded from the <a href="http://sourceforge.net/project/showfiles.php?group_id=1181">Sourceforge QuArK release site</a>.</p>
+
+<p>Remember <b>Keep your QuArK knife sharp!</b></p>
+
+<p>cdunde</p>
+
+<p>For more information and added support, go to the <a href="http://quark.ironfoot.co.uk/forums/">QuArK Resource Center</a> and <a href="http://quark.sourceforge.net/communication.php#forums">the forums page</a> of this site.</p>
+
+<p>And remember to visit <a href="http://quark.sourceforge.net/cgi-bin/moin.cgi">our sister site!</a></p>

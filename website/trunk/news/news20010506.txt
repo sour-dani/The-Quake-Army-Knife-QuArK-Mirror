@@ -1,0 +1,11 @@
+<author>Decker</author>
+<headline>User Prefabs</headline>
+<p>A Quake-3:Arena prefab have been added to the <a href="userprefabs.php#Q3A">user prefabs</a> page:</p>
+
+<ul>
+  <li>Quake-3:Arena
+    <ul>
+      <li>Q3 Arches Library
+    </ul>
+  </li>
+</ul>

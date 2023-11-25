@@ -1,0 +1,40 @@
+<author>Decker</author>
+<headline>From Decker's inbox...</headline>
+Tiglari has something for all you who want to code in <a rhef="http://www.python.org">Python</a>:
+<blockquote>
+Something that might be worth sticking up on the site somewhere is that
+SAMS has produced as `teach yourself Python' book that looks to me like
+it might be useable for some one with no prior programming experience;
+there are some comparisons between Python & C(++), but they don't
+seem to be necessary for understanding the text.<br>
+<br>
+Significant, since the standard `Programming Python' book presumes a
+fair degree of sophistication.<br>
+<br>
+<i>SAMS</i> is one of those computer book publishers that produces vast
+numbers of series.  Teach Yourself X in Y Days being one of the
+series, for various X and Y<br>
+<br>
+&nbsp;tiglari
+</blockquote>
+And here's a great textures and environment-skies site, which have been on the right <i>Links</i>-column for some time; <a href="http://halflife.lowlife.com/wadfather/">the Wadfather</a>:
+<blockquote>
+Calling all map makers!  Are you tired of building your forts in the
+heat of the Arizonan desert?  Are you ready to take the battle against
+the Strogg to different worlds?<br>
+<br>
+Imagine setting your next masterpiece in the heart of an exploding
+star....  In the chilling depths at the bottom of the ocean....  In the
+wasteland of a post-apocalyptic metropolis....  In the steaming darkness
+of a tropical swamp....  By the glistening rocky shores of a lost
+lagoon....<br>
+<br>
+The Wadfather can help!  We now have more than TWO HUNDRED fantastic
+environment maps to use for the skies in your levels.  Every one of them<br>
+<br>
+is in the public domain, and ready for use in Halflife, Quake2 or SiN.
+Head over to <a href="http://halflife.lowlife.com/wadfather/">http://halflife.lowlife.com/wadfather/</a> and check them out
+today!<br>
+<br>
+[WTF?]Mr-Gibs<br>
+</blockquote>

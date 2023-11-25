@@ -1,0 +1,24 @@
+<author>Decker</author>
+<headline>Snapshot of QuArK 6.00 Beta</headline>
+If you have been reading the <a href="http://www.egroups.com/group/quark">QuArK forum/mailing-list</a> more frequently than I,
+you would know that Alex have made some snapshot-compilations of QuArK 6.00 Beta, which contains better bezier handling and incipient Soldier of Fortune support.<br>
+So what is a <i>snapshot</i> anyway? Alex explains:
+<blockquote>
+[...] snapshots of the current <u>developement</u> version of QuArK can be downloaded at SourceForge.<br>
+<br>
+The files are named &nbsp;<code>quarksnapshot_&lt;datestamp&gt;.ace</code>&nbsp; and
+contain a compile of QuArK sources at that date.<br>
+<br>
+<a href="http://sourceforge.net/project/filelist.php?group_id=1181">http://sourceforge.net/project/filelist.php?group_id=1181</a><br>
+<br>
+Be aware that these are <u>snapshots</u>.
+That is not even an alpha release. The only thing that is sure for a snapshot, is that it could be successfully compiled.<br>
+</blockquote>
+Notice that these snapshot-archives are in <a href="http://www.winace.com">WinACE</a> format, not .zip!<br>
+
+<headline>User-made maps</headline>
+Two more user created maps are available on the <a href="usermaps.php">user maps page</a>.
+<ul>
+<li>'Arena15L' by Thomas Hansen aka BBR
+<li>'Q1BASA2' by Dzodzo]SP[
+</ul>

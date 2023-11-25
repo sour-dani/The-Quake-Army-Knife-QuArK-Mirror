@@ -1,0 +1,31 @@
+<author>cdunde</author>
+<headline>QuArK 6.4.1 alpha 3 just released</headline>
+<p>An updated release of QuArK has just hit the stands! <b>Cybox</b> posted the download to our <a href="http://quark.sourceforge.net/cgi-bin/moin.cgi/QuarkVersions/6%2e4%2e1alpha3?action=show&redirect=LatestRelease">sourceforge sister site</a> along with the most recent Infobase and source code.</p>
+
+<p>Some of the improvements and additions to this most recent snapshot are:</p>
+<UL>
+<LI>The <b>Bot Way Pointer</b> is now updated and operational.
+<LI>Corrected selectors to include <b>Shape Builders</b>.
+<LI>Textured 3d view object erasing during drags fixed.
+</UL>
+
+<p><b>HL2 Content update and Source specific:</b></p>
+<UL>
+<LI>Updated material files for HL2 / CS-Source.
+<LI>Improved / updated HL2 build menu (several new commands).
+<LI>Added saving textures as vtf.
+<LI>The vtf format variant selection added to HL2 configuration.
+<LI>Export used textures to materials folder added.
+<LI>User menu configuration with export textures feature.
+<LI>Added pulldown menu for door messages.
+<LI>Added mdl paths for info_player entities.
+<LI>AND MORE!
+</UL>
+
+<p>So don't walk...<b>RUN</b> to get your copy of <b>QuArK 6.4.1 alpha 3 !</b></p>
+
+<p>cdunde</p>
+
+<p>For more information and support, go to <a href="http://quark.sourceforge.net/forums.php">our forums page</a>.</p>
+
+<p>And remember to visit <a href="http://quark.sourceforge.net/cgi-bin/moin.cgi">our sister site!</a></p>

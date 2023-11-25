@@ -1,0 +1,32 @@
+<author>Decker</author>
+<headline>Forums netiquette</headline>
+Please follow the suggested <a href="forums.php">abbreviations of games</a>, and put them in your subject-line, when writing to the QuArK forums.
+This will make it easier for the reader, to get a better clue about your problem, when a paticular game can be linked to it.<br>
+Another good idea, would be to read your own description of your problem twice, to see if others will understand it, and you haven't missed anything
+that may be obivous to you, but not to the reader.<br>
+
+<headline>Another response!</headline>
+This had me baffled. In my request to find out, how voted <u>other</u> in the poll; <i>"What major type of maps do you create, using QuArK?"</i>,
+I got a response from Jaimi, who uses QuArK to make maps for a (role-playing?) game-engine called "6DX". Check out his e-mail:
+<blockquote>
+Hi Decker,<br>
+<br>
+Some of us Quark users are making maps for "6DX". [...] That might count for a few votes of your missing 6%.<br>
+<br>
+"6DX" is a game engine that you can drop into a Delphi or Visual Basic program, to give it a 3D
+engine similar to Quake-2 (but better in some ways). Our website is here <a target="_blank" href="http://www.eldermage.com">http://www.eldermage.com</a>.<br>
+<br>
+Jaimi
+</blockquote>
+<b>Decker ashamed <img src="pics/SmileySad.gif" align=absmiddle width=15 height=15></b><br>
+When I wrote the <a href="features.php">Features of QuArK 5.x</a>, I thought about other map-editors who, back then when QuArK was called QuakeMap,
+also had a tree-view, but I couldn't think of any, so I wrote that QuArK was the first Quake map-editor to introduce the tree-view. <i><b>How wrong I was!</b></i><br>
+Matthew Tagliaferri informed me, that his editor <a target="_blank" href="http://www.3dmatrix.com">qED</a> have had this feature
+since its very first version (whenever that was). So not to spice up the tension, I rewrote the tree-view statement. Matthew also wrote in his e-mail:
+<blockquote>
+[...]<br>
+I think the treeview is a natural way of representing any complex set of objects which can be grouped arbitrarily. (I am more
+surprised that all level editing programs have not adopted this interface as of yet).<br>
+[...]
+</blockquote>
+How true! <img src="pics/SmileyHappy.gif" align=absmiddle width=15 height=15>

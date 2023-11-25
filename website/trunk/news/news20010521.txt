@@ -1,0 +1,7 @@
+<author>Decker</author>
+<headline>A New User Map</headline>
+<p>A Half-Life deathmatch map have been added to the <a href="usermaps.php?HL=1&M_DM=1">User Maps</a> page.</p>
+
+<ul>
+<li>"Baal-Peor's Water & Power" by Baal-Peor
+</ul>

@@ -1,0 +1,41 @@
+<author>cdunde</author>
+<headline>QuArK 6.5.0 alpha 2 with Paint Brush released !</headline>
+
+<p>Yet another new and powerful feature added to this release with the Terrain Generator <a href="http://quark.sourceforge.net/infobase/intro.terraingenerator.texture.html#paintbrush"><b>Texture Applicator & Dialog Box</b></a> that will  <b>ABSOLUTLY</B> dazzle you ! ! !</p>
+
+<p>With added improvements, corrections and performance modifications, this marks the beginning of a push to make <b>QuArK</b> faster and more stable with quite a lot of work being done on the way it operates internally and in particular, the way that plugins interface with the core code.</p>
+
+<p>Even though only a few changes in this release will be immediately visible to the user, <b>QuArK</b> continues to expand to allow <b>YOU</b> the end user to apply your talents with grater control through the use of innovative tools such as the <a href="http://quark.sourceforge.net/infobase/intro.terraingenerator.texture.html#paintbrush"><b>Texture Applicator</b></a>.</p>
+
+<p>More than your typical <b>Paint Brush</b> function, it gives you the ability to choose textures directly from QuArK's Texture Browser or clone from any face within the entire map as well as stretch, angle and resize the selected texture with its own <b>Live Edit Dialog Box</b>, on the fly!</p>
+
+<p>And, like <a href="http://quark.sourceforge.net/infobase/intro.terraingenerator.html"><b>Terrain Generator</b></a>, comes with its own completely illustrated Infobase section on its use and function abilities as well as linked F1 Hotkey InfoBase assistance directly from within the editor.</p>
+
+<p>With a dual color optional guide system it instantly marks out the terrain poly faces for both up and down moveable faces for texture application, as well as out lines those actually receiving the new texture with a third color identifier.</p>
+
+<p>Want to be able to select terrain to move and shape without having to click buttons back and forth...<b>No Need To!</b> Complete 2D selection and movement is ready to use with all the abilities of the "Basic Selector".</p>
+
+<p>Some of the other improvements and additions to this most recent release are:</p>
+
+<UL>
+<LI>Fixed light entity dependency for OpenGL transparency to work feature.
+<LI>Fixed OpenGL gray out and errors for odd size textures and loss of transparency for older game modes.
+<LI>Fixed slowdown/lockup problem on startup and in the editor.
+<LI>New tagging API in `quarkpy.tagging' module.
+<LI>Added a new Advanced vertex dragging plugin.
+<LI>Added "Tab" HotKey to rebuild 3D view for Model Editor.
+<LI>Top directory text file updates.
+<LI>Fixed error caused by "Tag Tool Palette" for games without Texture Flags forms.
+<LI>Added basic Textures Flags form to Half-Life to fix console error.
+</UL>
+
+<p>So don't walk<b>...SPRINT...</b>to get your latest copy of  <a href="http://sourceforge.net/projects/quark/files/QuArK/QuArK%206.5.0%20Alpha%202/"><b>QuArK 6.5.0 alpha 2 <br>with the new Terrain Generator <b>Texture Applicator & Dialog Box</b> !!! </b></a></p>
+
+
+<p>Remember <b>Keep your QuArK knife sharp!</b></p>
+
+<p>cdunde</p>
+
+<p>For more information and added support, go to the <a href="http://quark.ironfoot.co.uk/">QuArK Resource Center</a> and <a href="http://quark.sourceforge.net/forums.php">the forums page</a> of this site.</p>
+
+<p>And remember to visit <a href="http://quark.sourceforge.net/cgi-bin/moin.cgi">our sister site!</a></p>

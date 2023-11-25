@@ -1,0 +1,5 @@
+<author>Armin</author>
+<LI><a href="http://asp.planetquake.com/dl/dl.asp?quark/q2prefab2.zip">Quake 2 prefabs</a>, second release. Collected by Louis "Louisius1" Woratschek.
+<LI>This prefabs pack is very big, and it takes some time to load in QuArK... But actually it is a BUG of QuArK, which should only load the objects as you look at them. It is fixed for 5.0.c3, where it opens and closes instantly !
+<LI>On the way : a version of the Hexen II entities with all players and monsters Models set up.
+</UL>

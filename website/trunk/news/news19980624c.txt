@@ -1,0 +1,12 @@
+<author>Gryphon</author>
+<UL>
+
+<!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-->
+	<BLOCKQUOTE><P>
+<LI>Aw!  Armin, you shouldn't have!  It's my birthday today, and I'll have to say, my best gift of the morning is getting to play with Beta 6 of QuArK 5.0!  You can now view BSP's... but BETTER!  You can see it in the 3D view just like it was a map.  QuArK 5 also lets you see a text version of the entity list before you even open it up (very useful).
+<P>Better TC support, and more!  Pretty cool. I'll sit and smile in satisfaction 'til the next version... yeah, right... I'll be on the edge of my seat just like everyone else! :)
+<P>Muzza has been working on some tutorials, and I'll be posting it to the website soon.  I'm also working on some tutorials, but they won't be ready for prime time until this weekend.
+<P>Later!
+</BLOCKQUOTE>
+
+	</UL>

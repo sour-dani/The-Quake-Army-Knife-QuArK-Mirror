@@ -1,0 +1,7 @@
+<author>Decker</author>
+<headline>WorldCraft to QuArK tutorial</headline>
+During my off-hour at work, I read through some message-threads a the <a target="_blank" href="http://www.planethalflife.com/si">Science and Industry</a>
+messageboard. I noticed a particular thread, which among the usual chit-chat-spam-spam-spam-and-spam messages, also contained
+a discussion about WorldCraft vs. QuArK, and how a user wanted to try out QuArK, but was <i>colored the WorldCraft way</i>, so he didn't quite
+knew how to use QuArK. Another messageboard writer, named Muffinator then made this
+<a href="http://scind.8m.com/Edit/wc2quark.html">WorldCraft to QuArK tutorial</a>. Check it out, all you ex-WorldCraft users.

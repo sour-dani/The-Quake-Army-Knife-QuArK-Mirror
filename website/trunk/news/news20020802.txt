@@ -1,0 +1,12 @@
+<author>Decker</author>
+<headline>Experimental "Bot Waypoint Editor"</headline>
+<p><i>"A kick in the a** is needed at times."</i><br>
+I was hanging out in the #QuArK irc-channel on QuakeNET.org, when Fredrick kindly asked why I hadn't uploaded the "Bot Waypointer plugin" I was coding on and Fredrick tested some <span class="sml">(many?)</span> months ago. Well plainly put, I forgot.</p>
+
+<p>Anyway, this is an <b>experimental</b> "Bot Waypoint Editor" plugin currently only supporting <a href="http://www.planethalflife.com/botman">HPBBot</a> (Half-Life) and LTK/ACEBot (Quake-2) waypoint files, and primarly for QuArK <b>6.3</b>. It may for for QuArK 6.2c, but I haven't tested it.<br>
+If you want support for other bots (like PODBot), <b><u>please</u></b> contact the bot-coder, and inform him of this QuArK plugin and give him your reasons for having this "Bot Waypoint Editor" support his bot. If he concur, then make him contact me, as I need insight in his bot's waypoint-file-structure, and that means looking at some of his code.</p>
+
+<p>Once you've downloaded the .ZIP file, unzip its contents, <b>with</b> directories, into your QuArK directory. Then <b>read</b> the BotWaypointer_ReadMe.txt which can be found in the directory you unzipped to.</p>
+
+<p>Download the experimental Bot Waypointer: <a href="http://www.fileplanet.com/dl/dl.asp?/planetquake/quark/experimental/botwaypointer_20020802.zip">BotWaypointer_20020802.zip</a>.<br>
+Some documentation can be found in the infobase: "<a href="http://quark.sourceforge.net/infobase/maped.plugins.botwaypointer.html">Bot Waypoint Editor</a>".</p>

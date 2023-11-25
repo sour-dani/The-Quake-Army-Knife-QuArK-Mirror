@@ -1,0 +1,12 @@
+<author>DanielPharos</author>
+<headline>Website moving</headline>
+
+<p>Because of the imminent IGN shutdown, we're already moving things over to SourceForge. Here's a link to the new website: <a href="http://quark.sourceforge.net/">http://quark.sourceforge.net/</a>. It seems SourceForge has faster webservers. <pic smiley_happy></p>
+
+<p>This process probably will break a lot of links, but it's (currently) still a work in process, and we'll be fixing any broken links we find. So please stand by...</p>
+
+<p>Since the main page is now on SourceForge, we'll be posting a redirect on the planetquake.gamespy.com site soon. The forums will remain there for a while, but eventually they will be put in so-called 'maintenance' mode and also moved to the new website. The redirect-pages will remain to the very end, but will disappear after the end of August, so keep in mind to update your bookmarks before then!</p>
+
+
+<p>Happy browsing,<br>
+DanielPharos</p>

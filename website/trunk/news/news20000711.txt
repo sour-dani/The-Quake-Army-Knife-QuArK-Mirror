@@ -1,0 +1,6 @@
+<author>Decker</author>
+<headline>The QuArK site goes PHP3...</headline>
+I've been experimenting with <a href="http://www.php.net">PHP3</a> coding the past months,
+and now I'm ready to present the official QuArK website using PHP3-scripts.<br>
+Please <a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com">let me know</a> if you find anything that don't work as expected,
+or just suggestions to improve this website.

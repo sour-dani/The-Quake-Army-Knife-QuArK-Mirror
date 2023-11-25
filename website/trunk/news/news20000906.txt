@@ -1,0 +1,36 @@
+<author>Decker</author>
+<headline>InstaPoll summary</headline>
+
+<table cellspacing=2 cellpadding=0 border=0 width=100%>
+<tr><td width=50% class="text1" valign=top>
+Well, well.<br>
+Half-Life really shows the way. How can that be? Even after two year. Is it because the game-play is just what the people want? And the somewhat low-spec resources needed to run Half-Life?<br>
+Quake-2 on second, still going strong.<br>
+Quake-3:Arena on a third place, making its way up and possibly pass Quake-2.<br>
+Oddly enough, good old Quake-1 is on a fourth place, letting the newer games; Kingpin, SoF, Heretic 2, Sin and Hexen 2 crumble in dust.<br>
+</td><td width=50% class="text1" valign=top>
+  <table cellspacing=0 cellpadding=2 border=0 align=center width=100%>
+  <tr><td class="f" >Half-Life            </td><td class="f"  align=right>39.7%</td></tr>
+  <tr><td class="fn">Quake 2              </td><td class="fn" align=right>20.4%</td></tr>
+  <tr><td class="f" >Quake 3 Arena        </td><td class="f"  align=right>17.6%</td></tr>
+  <tr><td class="fn">Quake 1              </td><td class="fn" align=right>10.8%</td></tr>
+  <tr><td class="f" >Kingpin              </td><td class="f"  align=right> 4.2%</td></tr>
+  <tr><td class="fn">Soldier of Fortune   </td><td class="fn" align=right> 2.7%</td></tr>
+  <tr><td class="f" >CrystalSpace         </td><td class="f"  align=right> 1.9%</td></tr>
+  <tr><td class="fn">Heretic 2            </td><td class="fn" align=right> 1.3%</td></tr>
+  <tr><td class="f" >Sin                  </td><td class="f"  align=right> 0.8%</td></tr>
+  <tr><td class="fn">Hexen 2              </td><td class="fn" align=right> 0.8%</td></tr>
+  </table>
+</td></tr>
+</table>
+What is it with these new games, that just isn't addressing the map-making people? Is it the lag of tutorials or players, the game's <i>atmosphere</i>&nbsp;just isn't right, the little higher-spec resources needed?<br>
+
+<headline>DataHL.QRK with Counter-Strike beta 7 vehicle support</headline>
+A couple of QuArK users have asked me, when the Counter-Strike beta 7 entities would be available.
+Well, only with the help from Fredrik "Stedden" Stedenfeldt, who actually did 99.99% of the editing, it is hereby released:<br>
+<br>
+<center>
+<a href="http://dl.fileplanet.com/dl/dl.asp?quark/DataHL.zip">DataHL.zip</a> - Containing CS beta-7 entities and texture-links.
+</center>
+<br>
+I don't want to download 70MB (!) just to get one single .FGD file to convert, so thats why it have taken so long.

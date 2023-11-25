@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>25 years - Part 2</headline>
+
+<p>I've managed to extract a compilation timestamp from either QuakeMap 1.0 or 1.1 (I can't tell which one it is). It's "1996-08-15 13:48:18", so my guess of "late August" wasn't too far off. That means that within two months of Quake's release, QuArK (under the name QuakeMap) was already out and about!</p>
+
+
+<p>Happy QuArKing,<br>
+DanielPharos</p>

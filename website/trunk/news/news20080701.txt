@@ -1,0 +1,68 @@
+<author>DanielPharos</author>
+<headline>Quake2 - Group Mapping Project: Map released!</headline>
+
+<p>The <b>Quake2 - Group Mapping Project</b> that <b>Mikemc</b> started Aug 2006 has been finished and released by <b>X7</b>! It was made using several smaller 'blocks' made by several different people!</p>
+
+<p>Download from here:  Filesize: 13.81MB<br>
+<a href="http://www.savefile.com/files/1638736">http://www.savefile.com/files/1638736</a></p>
+
+<p>See Screen shots here:<br>
+<a href="http://www.xfire.com/screenshots/x7a/">http://www.xfire.com/screenshots/x7a/</a></p>
+
+<p>Some screenshots are also posted <a href="http://quark.sourceforge.net/forums/index.php?topic=60.msg407#msg407">here on the forum</a>.</p>
+
+<p>Participants by map:</p>
+
+<table border=0 width="100%">
+<tr valign=top>
+
+<td width="10%"></td>
+
+<td width="20%">
+qmmt1.bsp<br>
+<ul style="margin-top: 0px; margin-bottom: 0px;"><li>Entrance-Paril
+<li>Hall 4-way-Mikemc
+<li>Palace
+<li>JapaDas
+<li>Gore
+<li>Gothic
+</ul>
+</td>
+
+<td width="10%"></td>
+
+<td width="20%">
+qmmt2.bsp<br>
+<ul style="margin-top: 0px; margin-bottom: 0px;"><li>Steeveeo
+<li>Mugford
+<li>Mek
+<li>Mikemc-2
+<li>Maric
+<li>Wixen1
+<li>Cryo
+<li>X7
+</ul>
+</td>
+
+<td width="10%"></td>
+
+<td width="20%">
+qmmt3.bsp<br>
+<ul style="margin-top: 0px; margin-bottom: 0px;"><li>Kold
+<li>Omnificient
+<li>TMG
+<li>Mikemc-1
+<li>Paril
+</ul>
+</td>
+
+<td width="10%"></td>
+
+</tr>
+</table>
+
+<p>A big congratulations to Mikemc and X7, for making and releasing this special map!</p>
+
+
+<p>Happy playing,<br>
+DanielPharos</p>

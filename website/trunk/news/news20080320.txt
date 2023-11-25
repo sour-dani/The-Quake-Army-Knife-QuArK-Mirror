@@ -1,0 +1,14 @@
+<author>DanielPharos</author>
+<headline><b>Forum down</b></headline>
+
+<p>We know that the forum is down, and has been down for about a week now. The website/server owner (PuG) told us he had to reboot the server, and that the forum database is OK (i.e. no lost posts or files). However, he hasn't been able to get it up and running yet. So hang in there!</p>
+
+
+<p>We apologize for any inconvenience this is causing,<br>
+DanielPharos</p>
+
+<p><b>Update:</b> It seems the forum is back online, and is working perfectly! PuG had to switch to phpBB, but all the data should have been transfered correctly. See <a href="http://www.dark-forge.com/forums/viewtopic.php?f=12&t=1114">here</a> for more info.</p>
+
+<p><b>Update 2:</b> And it's down again. This time, the server is unreachable... So while we wait till everything is fixed, I'm assigning you all homework: devise some scheme so we can't be affected by <a target=_blank href="http://en.wikipedia.org/wiki/Murphy's_law">Murphy's law</a> anymore! <img src="pics/SmileyHappy.gif" width=15 height=15></p>
+
+<p><b>Update 3:</b> And we're back again. There's no data loss, so all your questions should still be there. Now let's hope it stays this way!</p>

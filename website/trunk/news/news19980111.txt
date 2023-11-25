@@ -1,0 +1,5 @@
+<author>Derrick McKay</author>
+<headline></headline>
+<UL>
+<LI> <A HREF="armin/index.shtm">Armin's Page</A> updated - about a standard for Quake 2 mods, once more
+</UL>

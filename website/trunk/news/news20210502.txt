@@ -1,0 +1,62 @@
+<author>DanielPharos</author>
+<headline>New beta version released!</headline>
+
+<p>It's been a while, but since the last beta version that was released there's been a couple of fixes and whatnot... <pic smiley_happy></p>
+
+<p><b>Game support:</b></p>
+<ul>
+<li>Added HL1 Ricochet addon.</li>
+<li>Added Urban Terror 4 addon.</li>
+<li>Added support for loading and saving of new KMQuake2 surface color data.</li>
+<li>Read and write support for the id-specific for solids and faces in .vmf files.</li>
+<li>Added experimental Genesis3D .bsp file loading and saving support.</li>
+<li>Call of Duty 1 support is now extended. Not only were some bad bugs fixed, the textures were sorted and United Offensive support was added!</li>
+<li>Preliminary Call of Duty 2 support! Even though curves and meshes can't be imported or exported right now, everything else should be working.</li>
+<li>Added support for new Steam game file layout (using the 'common' directory).</li>
+<li>Added brushDef2 and brushDef3 saving support.</li>
+<li>Added StL importing (both ASCII and binary formats).</li>
+</ul>
+
+<p><b>New features:</b></p>
+<ul>
+<li>Made the Open and Save dialogs resizable (only supported on Windows 98, Windows 2000, and higher).</li>
+<li>Added mouse scroll wheel and scroll lock support in various places.</li>
+<li>Implemented double buffering for the wireframe renderer, which results in a very large performance improvement on modern operating systems.</li>
+<li>Added trilinear texture filtering to Glide renderer.</li>
+<li>Brought back the fullscreen view window. (Experimental)</li>
+<li>Added a toolbar that allows you to select the renderer to use for new viewport windows. (Work in progress)</li>
+</ul>
+
+<p><b>Improvements:</b></p>
+<ul>
+<li>Cache texture sizes during map loading and saving for a big speed improvement with various map file types.</li>
+<li>Unwrap texture coordinates on .map export. This allows .bsp compilers to merge texinfo structures, to avoid hitting the "too many surfaces" limit too soon.</li>
+<li>Added a GDI workaround to the renderers, which fixes viewport drawing on more modern Windows machines! In other words, no more need to disable desktop compositioning in Windows Vista and 7, and QuArK's viewports now work fine in Windows 8, 8.1, and 10.</li>
+<li>Re-added the setting for the software renderer to limit the maximum resolution at which it renders.</li>
+<li>Set a more sensible minimum render distance. This should reduce Z-buffer fighting in OpenGL and Direct3D.</li>
+<li>Vast improvements to the OpenGL lighting quality and performance.</li>
+<li>Added workaround for OpenGL implementations that cause floating point exceptions to be raised during rendering.</li>
+<li>Improved the software renderer to use 16-bit floating point depth buffering.</li>
+<li>...and small and big performance improvements all over the place.</li>
+</ul>
+
+<p><b>Notable bug fixes:</b></p>
+<ul>
+<li>Fix for the long-standing bug where float-specifics were not working in Wine, and on non-Latin-alphabet Windows (for example, Chinese Windows).</li>
+<li>Fixed a long-standing bug with character output (backslashes) in the console. Note: this changes the font used.</li>
+<li>Several bug fixes and workarounds dealing with problems during QuArK's enumeration of video hardware.</li>
+<li>Many fixes to Python object handling to fix a lot of memory leaks, and fix a handful of strange crashes.</li>
+<li>Fixed the bad PAK file output, which was broken since 6.6.0 Beta 2.</li>
+<li>Fixes to brushDef2 and brushDef3 loading support.</li>
+<li>Various fixes for .m32 texture saving.</li>
+<li>Fixed a bug corrupting MOHAA patchDef2 and patchDef3 saving.</li>
+<li>Fixed handling File Association paths with spaces.</li>
+<li>Fixed OpenGL texture loading issues, most commonly with odd-sized textures.</li>
+<li>...and many other bug fixes!</li>
+</ul>
+
+<p>Download this much improved beta release from <a href="https://sourceforge.net/projects/quark/files/QuArK/QuArK%206.6.0%20Beta%207/" target=_blank>SourceForge download page</a> as soon as you can!</p>
+
+
+<p>Happy QuArKing,<br>
+DanielPharos</p>

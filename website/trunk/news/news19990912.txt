@@ -1,0 +1,22 @@
+<author>Decker</author>
+<headline>2nd Kingpin ALPHA TEST</headline>
+For those of you, who don't read the <a href="forums.php">QuArK forum</a>, Alexander has released
+a second Alpha-test update:
+<blockquote>
+I've put a new executeable on the web<br>
+<br>
+  <a href="http://pages.vossnet.de/mac/kp/quark-alphaKP-511.zip">quark-alphaKP-511.zip</a><br>
+<br>
+Now it displays the textures in color, not in grayscale.
+Note, that very few textures are shown distorted - I
+am still investigating that. Probably I will need
+a better .TGA format documentation than I have ;)<br>
+<br>
+greetings<br>
+&nbsp;&nbsp;Alexander - <a target="_blank" href="http://members.tripod.com/quakestation/kingpin">Webpage</a><br>
+</blockquote>
+
+<headline>QuArK-made Maps</headline>
+<ul>
+	<li>'The Mine Facility' by Erik 'The Taurus' Thuresson
+</ul>

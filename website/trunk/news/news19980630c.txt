@@ -1,0 +1,10 @@
+<author>Gryphon</author>
+<UL>
+
+<!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-->
+	<BLOCKQUOTE><P>
+<LI>Looks as if everything is all fixed for the downloads.  QuArK b7 is available, and all the mirrors are back and working. Next time... well.. I hope there IS no "next time", but next time, I'm just going to let it run its course and not work to patch things. That was a waste of time.</LI>
+<LI>Also, it seems my tutorials probably going to take me all week at this point. I should learn never to announce things no matter my good intentions. Things never happen when you want them. If any one wants a preview of the tutorial, check it out <a href="tutorials/gryphon1.shtm">here</a>. I'd like feedback as I work on it. I won't update it though... this is just a small sample from this weekend.</LI>
+</BLOCKQUOTE>
+
+	</UL>

@@ -1,0 +1,5 @@
+<author>Derrick McKay</author>
+<headline></headline>
+<UL>
+<LI> <A HREF="news.html">News Page</A> updated
+</UL>

@@ -1,0 +1,10 @@
+<author>Gryphon</author>
+<UL>
+
+<!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-->
+	<BLOCKQUOTE><P>
+<LI>There appears to be a slight error in one of the files in the latest QuArK 5 b6 archive.  It causes QuArK to not compile maps from the menu.  Here's a temporary fix to this problem until the archive is updated. <a href="http://www.planetquake.com/quark/files/q5b6fix.zip">QuArK5b6fix</a>.
+<LI>Hey...!  I just thought of something else... both QuArK and I turned 2-6 yesterday!  "B" is the "2nd" letter of the alphabet... get it?  Ok, ok... It's silly, I thought it was interesting... :)
+</BLOCKQUOTE>
+
+	</UL>

@@ -1,0 +1,10 @@
+<author>DanielPharos</author>
+<headline>Small Wine-patch for QuArK 6.6.0 Beta 2</headline>
+
+<p>For those of you who are trying to run QuArK on Wine, and are running into trouble trying to start the map editor (an error message like "AttributeError: 'module' object has no attribute 'mapsearch'" will be displayed), a patch for it is <a href="http://quark.sourceforge.net/download.php#patches">here</a>.</p>
+
+<p>Note that these are all the instances of this bug I could find so far: there probably are more. If you still encounter a similar error when trying to start QuArK on Wine after applying the patch, please contact me through the forums and I'll fix it ASAP.</p>
+
+
+<p>Happy mapping,<br>
+DanielPharos</p>

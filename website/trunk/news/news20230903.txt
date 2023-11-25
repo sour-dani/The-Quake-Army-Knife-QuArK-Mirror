@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Dark Messiah: SDK underway</headline>
+
+<p>Ubisoft has agreed to let a group of fans continue their development of an SDK for the Dark Messiah of Might and Magic game! Hopefully, this means that proper modding support is possible in the future. You can read more about it <a href="https://www.moddb.com/mods/dark-messiah-co-op/news/a-call-to-dark-messiah-arms">here</a>.</p>
+
+
+<p>Happy Messiahing,<br>
+DanielPharos</p>

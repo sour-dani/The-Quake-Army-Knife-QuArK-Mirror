@@ -1,0 +1,15 @@
+<author>Armin</author>
+Well, it happened again... The two QuArK 5.7 distributions don't work. The installer will just fail. I just uploaded a fixed version, so be sure you get the NEW version ! Warning, if you read this today or tomorrow (1st march) some mirrors may still have the old version. In case of doubt, download from the PlanetQuake server, the 1st one in the list. (see URLs below)<br>
+<br>
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/quark57.exe"><strong>QuArK 5.7</strong></a> released ! (1.19 Mb)
+Also available <a href="http://asp.planetquake.com/dl/dl.asp?quark/quark57m.exe">without the game supports</a> (869 Kb); this second version requires the game supports you are interested in to be downloaded separately :
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/dataq1_57.zip">Quake 1</a>,
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/datah2_57.zip">Hexen II</a>,
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/dataq2_57.zip">Quake 2</a>,
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/datahr2_57.zip">Heretic II</a>,
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/datahl_57.zip">Half-Life</a>,
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/datasin_57.zip">Sin</a>.
+<br>
+<strong>OpenGL hardware</strong> owners : the OpenGL viewer of QuArK is now known to work well, much better than in previous versions ! With Silicon Graphics' OpenGL for Windows, it is even almost smooth with no OpenGL hardware at all. (With Micro$oft's OpenGL, it takes 2 seconds to draw a stamp-sized scene, and it often crashes ! One more cactus to MS.)
+<br>
+I also updated my <a href="armin/adv-quake2.html">Quake 2 entities</a> page with an advice from Robert van der Schoot about <strong>func_areaportal</strong>.

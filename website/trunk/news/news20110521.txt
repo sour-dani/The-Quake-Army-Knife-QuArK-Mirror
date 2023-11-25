@@ -1,0 +1,63 @@
+<author>DanielPharos</author>
+<headline>Attention: <a href="http://sourceforge.net/project/showfiles.php?group_id=1181">QuArK 6.6.0 Beta 4</a> is <b>ready for action!</b></headline>
+
+<p>We still had some unfinished business, so here's for your enjoyment:</p>
+
+<p>The grand, sparkly new <b>QuArK 6.6.0 Beta 4</b>!</p>
+
+<p>It comes with the usual batch of fixes, tweaks and improvements, but that's not all! Here's a short list of all the new goodies:</p>
+
+<p><b>Both Editors:</b></p>
+<ul>
+<li>Setup full game support for <b>American McGee's - Alice</b> along with version conversion tool for the BSP file.
+<li>Added NCF file loading support (for example: Alien Swarm).
+<li>Added VPK file loading support (for example: Left 4 Dead).
+<li>Adjusted for newest Steam release (QuArKSAS 1.02).
+<li>Fixed various Steam-related issues.
+<li>Update to GCF file loading. This should fix most "cannot find GCF file" type problems.
+<li>Added entity extraction from game map .bsp files for .qrk file creation of Conversion Tool system.
+</ul>
+
+<p><b>Map Editor:</b></p>
+<ul>
+<li>Added experimental RMF file loading support; poly's only, no UV's or textures.
+</ul>
+
+<p><b>Model Editor:</b></p>
+<ul>
+<li>Added model importers for Alice, EF2 and FAKK2 .skb, .ska and .tan models (static and animated) with bone and skin support.
+<li>Added model importer for Half-Life 1 .mdl models.
+<li>Added model importer for Half-Life 2 with mesh and animation support with bones, attachments and bbox movements.
+<li>Added model importer for Heretic II and .m8 as supported texture file type.
+<li>Added model importer for Kingpin MDX model format loading with animation and skin support (no bounding boxes though).
+<li>Added model importer for MoHAA .skd and .skc models (static and animated) with bone and skin support.
+<li>Added model importer for Quake1 .mdl, importing including textures and animations.
+<li>Added model exporters for Alice, EF2 and FAKK2 .skb mesh and .ska animated models with bone and skin support.
+<li>Added model exporters for Alice, EF2 and FAKK2 .tan models (static and animated), tags not supported at this time.
+<li>Added model exporter for Quake1 .mdl models.
+<li>Added model exporter for Quake3 .md3 model format exporting with tags, textures and shader files.
+<li>Big changes to Granny2 model importer: big speed and functionality improvements.
+<li>Updates and improvements to both the md5 importer and exporter including animation support.
+<li>Added a cameraview system, with search and hotkey functionality (like in the Map Editor).
+<li>Added new face cutting tool, for selected faces, like in the map editor with option to allow vertex separation.
+<li>Updating of Used Textures in the Model Editor Texture Browser for all imported skin textures and allow bones and Skeleton folder to be placed in Userdata panel for reuse with other models.
+<li>Added bounding boxes (hit boxes) and bone controls support used by for example Half-Life 1 and 2.
+<li>Major change of Skin-view Linear Handle selection and dragging system, massively improving drawing time.
+<li>Setup 'Auto Scaling' function for the Skin-view that resets the skin handles and Component's UV's to fit the currently selected and viewable skin texture of that Component.
+<li>Allow importing of model from main explorer File menu.
+<li>Massive improvement in material texture handling and animations.
+<li>Added Eye camera handle when in True 3D mode for easier navigation.
+<li>Allow obtaining textures dynamically in the Texture Browser.
+<li>Support to import model skin textures using addon .qrk file links.
+<li>Added new function to rescale Skin-view handles to current skin texture size.
+<li>Added option to only draw drag bones to speed up drag drawing if a lot of bones exist.
+<li>Massive performance improvement for bone corner handle dragging.
+</ul>
+
+<p>See DONATORS.txt for people that made this release possible. Thank you all!</p>
+
+<p>So... What, you want an even longer changelog? Well, check out the details in the NEWS.txt file in the Official Super-duper brand new release of <b><a href="http://sourceforge.net/project/showfiles.php?group_id=1181">QuArK 6.6.0 Beta 4</a>!</b></p>
+
+
+<p>Happy editing,<br>
+DanielPharos</p>

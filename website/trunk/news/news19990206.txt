@@ -1,0 +1,11 @@
+<author>Armin</author>
+I plan to release QuArK 5.6 soon, with mainly bug fixes. QuArK 5.5 happens to have a few bugs... One of them is that it will not run (not even install) without OpenGL drivers, although I tried to let everything but the OpenGL view work without the drivers (which seems logical :-)<br>
+<br>
+<strong>Voodoo2</strong> owners, an advice from Mr. PharCyde :<br>
+<i>&lt;&lt;You can't have triple color buffering selected in the options menu
+for the Voodoo2 card. If people turn it on Quark freaks, as soon as I turn it off
+and restarted Quark it was fine. I just keep everything default (as far as
+Triple Color Buffering,etc.) Then when I want to play games I just turn
+them on again.
+<br>
+hope this helps some.....&gt;&gt;</i>

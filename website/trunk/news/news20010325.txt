@@ -1,0 +1,10 @@
+<author>Decker</author>
+<headline>User Prefabs</headline>
+<p>A Half-Life prefab have been added to the <a href="userprefabs.php">user prefabs</a> page:</p>
+
+<ul>
+<li>Half-Life
+  <ul>
+  <li>Ellis-Lamppost
+  </ul>
+</ul>

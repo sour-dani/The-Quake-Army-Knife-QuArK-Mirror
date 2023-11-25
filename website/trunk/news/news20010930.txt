@@ -1,0 +1,4 @@
+<author>Decker</author>
+<headline>'Natural Selection' QuArK Add-on</headline>
+<p>I have converted the <a href="http://www.natural-selection.org/">Natural Selection</a> Technology Release's <tt>NS.FGD</tt> to QuArK format.<br>
+You can download it here: <a href="http://dl.fileplanet.com/dl/dl.asp?quark/addons/half-life/nstrHL_20010930.zip">nstrHL_20010930.zip</a> or from the <a href="download_addons.php#HL">QuArK Addons</a> page.</p>

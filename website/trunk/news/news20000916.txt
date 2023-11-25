@@ -1,0 +1,6 @@
+<author>Decker</author>
+<headline>User maps</headline>
+<p>A new user made map is available on the <a href="usermaps.php?HL=1&M_TFC=1&T_ZZX=1">User maps</a> page:</p>
+<ul>
+<li>'a TFC map' by Gaidin
+</ul>

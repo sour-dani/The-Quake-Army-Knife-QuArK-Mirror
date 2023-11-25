@@ -1,0 +1,3 @@
+<author>Derrick McKay</author>
+<headline></headline>
+- Bug fixes in QuArK : <A HREF="ftp://ftp.cdrom.com/pub/idgames2/planetquake/quark/quark321.zip">version 3.21</A> released</P>

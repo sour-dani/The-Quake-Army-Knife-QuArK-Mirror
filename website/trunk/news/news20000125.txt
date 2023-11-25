@@ -1,0 +1,6 @@
+<author>Decker</author>
+<headline>Ad banners...</headline>
+I was a little bored today, so I decided to try to make an ad-banner, using my idea that I send out in the <a href="forums.php">QuArK-forum</a>
+a month or so ago.<br>
+Take a look at the, <a href="adbanners.php">now four contestants</a>, of which only one will appear on PlanetQuake's many hosted sites.<br>
+If you think you can do better, and follow the restrictions (mainly the maximum 14KB in filesize), then please <a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com?body=-- NOTICE: HTML e-mails will be bounced, so send only in plain-text! /Decker --">e-mail me</a> your contribution.

@@ -1,0 +1,8 @@
+<author>Decker</author>
+<headline>User-made maps</headline>
+Two Counter-Strike (Half-Life) and a Quake-2 deathmatch maps have been added to the <a href="usermaps.php">user maps</a> page.
+<ul>
+<li>'Let´s rock and rail' by Vanx
+<li>'de_canyon' by HypnoTech
+<li>'de_office' by HypnoTech
+</ul>

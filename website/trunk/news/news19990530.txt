@@ -1,0 +1,19 @@
+<author>Decker</author>
+Hi, Decker here. I'm the new webmaster of the official QuArK homepage. Gryphon couldn't find enough spare time in his
+calender to support this site, so he asked me if I would be interested in taking over. I was interested, so here I am - like it or not. <img src="pics/SmileyHappy.gif" align=absmiddle width=15 height=15><br>
+<span class="sml">(You could say it was Gryphon's unintended birthday present to me the day he suggested it.)</span><br>
+<br>
+As some of you might have noticed, the site-design have been changed. The left side column contains all links to subpages,
+that is available on this site. The right column will contain links that is usefull for map-designers who seek information about
+a paticular game. As you can see, there isn't many links at the moment, so if you have some that would be usefull for others, let
+<a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com?body=-- NOTICE: HTML e-mails will be bounced, so send only in plain-text! /Decker --">me</a> know<br>
+<br>
+I am also a JavaScript freak, so some of the pages contain it, even though you might not notice it.
+It is used, so I can maintain the site better, until the XML/XSL standards and browsers are written in solid rock!<br>
+<br>
+However; if you find anything that does <i>not feel right</i> or <i>looks wrong</i>,
+then please <a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com?body=-- NOTICE: HTML e-mails will be bounced, so send only in plain-text! /Decker --">mail me</a> so I can set it <u>right.</u><br>
+<span class="sml">Though I've spend many days and hours on the new design, so you better have a good reason <img src="pics/SmileyHappy.gif" align=absmiddle width=15 height=15>
+(Yes Gryphon, its still the green background. I've been so busy at work lately that I haven't yet had time to experiment
+with the colors, but wanted to publish this new design now. I'll look into it when I get some time off from work.)
+</span>

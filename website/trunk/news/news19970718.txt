@@ -1,0 +1,31 @@
+<author>Derrick McKay</author>
+<headline>- QuArK Bugfix release -</headline>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- QuArK Bugfix release -</B></FONT><P>
+Armin wrote and told me about a bug in 3.61 that was introduced when putting in the new logo. It is a fairly minor bug that made the windows in the QuArK Explorer unable to function. However, since Armin couldn't do it himself because of having no 'net access, he sent me the info on how to fix it, and I patched the "quark.exe".  If you downloaded the original "quark361.zip" download <A HREF="http://www.cdrom.com/pub/idgames2/planetquake/quark/qk361exe.zip">this</A> zipfile with the patched exe file. Just replace the one in your QuArK directory with this new one. If you have not downloaded version 3.61 yet, I have replaced the full package with <A HREF="http://www.cdrom.com/pub/idgames2/planetquake/quark/qrk361p.zip">qrk361p.zip</A> which contains the full package with the fixed exe file. (If you get a "file not found" error when trying to download these, just wait an hour or so. The FTP site is only mirrored once every hour. I <I>have</I> uploaded them, and they will be there, I promise :-))<P>
+ I never thought I'd see the day when *I* wrote *Armin*, and told him that a bug was fixed in QuArK !!
+</UL>
+
+<headline>QuArK 3.61 - new logo etc - IRC - News from Armin - various</headline>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- QuArK 3.61 -</B></FONT><P>
+Well, this update is late, but QuArK 3.61 has been released. &lt Surprise!! &gt As Armin says, there's only a couple of minor changes in this version. See the item below for what I think is the <B>best</B> one. :-) I talked to Armin about releasing "upgrade" versions as well as "full" versions, and he told me to go ahead and make up a new "upgrade" zipfile for those of you who want to go to 3.61 from 3.6 without downloading the whole package. I'll do this ASAP (probably tomorrow).
+</UL><P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- New Logo etc. -</B></FONT><P>
+Well, QuArK now has an official logo :-) After Armin saw the new logo, he integrated it into QuArK as part of the opening splash screen. I'm really happy that I finally got my name into the program itself finally :-). I've been wondering for months how to *really* get involved with QuArK, as my programming skills are... well... "non-existent" would be the most accurate way to put it. I have also put up the new "QuArK now" button, so feel free to latch onto it. For those of you with websites that have QuArK related stuff, I am going to shrink the "official" logo, and put something appropriate on it for display on your sites (if you want it). It will also be "bandwidth friendly" so it won't suck up all your server space either. Give me a couple of days to get my act together, and I'll stick up a download link on the main page "when it's done" :-) (hehe.. had to throw that Id line in there someplace).
+</UL><P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- IRC -</B></FONT><P>
+I got an e-mail from <A HREF="mailto:usnet1sm@sprynet.com">Thomas Zieba</A> who told me that he has registered a QuArK channel on DALnet. He also wants everyone to know that he's trying to gather people for a QuArK related chat tonight (Friday). I'm going to try to drop by myself (but it won't be until about 10:30pm PDT or so).<BR>
+Here's the scoop: IRC server - <B>irc.dal.net</B>, port - <B>7000</B>, channel - <B>#QuArK</B>.<BR>
+There's no set time, so just chat amongst yourselves :-) It would be nice to have a permanent place for QuArK users to go if they need help, or if they just want to BS.. Seeya there...
+</UL><P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- News from Armin -</B></FONT><P>
+I got an e-mail from Armin Thursday, not long after he released 3.61, and the gist of it is that he's now finished school for the semester (just took his last test today) so his 'net access is going to be downright crappy til he goes back this fall. That means that QuArK updates for the next 3-4 months are going to range from "very rare" to "not at all". He also has some commitments to honor, so he "may" not get *any* time to work on QuArK for the rest of the summer. He is still thinking about QuArK, and you know Armin... he'll probably lock himself away when he gets back home and have a monster update for us in Oct/Nov. :-)
+</UL><P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- various -</B></FONT><P>
+No progress on the "showcase level" again... (I know.. I know..) Also, I forgot to tell you that when Draco sent me his "alphabet" addon a couple days a go, he mentioned that he's working on a "pushable entities" addon. You'll be able to have blocks that you can push around in your levels... How cool is that ?? :-) He also told me that he's considering turning the "custents" package into a QME file... Now *that* would be cool !!<BR>
+Not much else, so drop by #QuArK on DALnet tonight, and lets shoot the shi... uhhh... breeze :-)
+</UL><P><BR>

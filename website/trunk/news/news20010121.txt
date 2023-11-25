@@ -1,0 +1,3 @@
+<author>Decker</author>
+<headline>QuArK setup tutorial for Wizard Wars</headline>
+<p>For those who want to get into mapping for the <a href="http://www.planethalflife.com/wizardwars/">Wizard Wars</a> modification (Half-Life), here is a good tutorial: <a href="http://www.planethalflife.com/wizardwars/specials/qrktut.html">http://www.planethalflife.com/wizardwars/specials/qrktut.html</a>.</p>

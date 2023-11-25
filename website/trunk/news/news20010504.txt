@@ -1,0 +1,23 @@
+<author>tiglari</author>
+<headline>QuArK 6.2c</headline>
+<p>Yet another release for QuArK 6.2.  This one fixes:</p>
+
+<ul>
+ <li>From QuArK 6.2b
+  <ul>
+   <li>missing textures added to thick brush arches
+   <li>Wrap tex to tagged now works with parallel faces, and its HotKey works
+   <li>wrong default texture for STVEF fixed
+   <li>STVEF maps now readable without reversion to Q3A mode
+  </ul>
+ <li>From original QuArK 6.2 (self extractor)
+  <ul>
+   <li>some unnecessary files removed
+   <li>copying.txt (GNU GPL) added
+   <li>navigate/reorganize tree added to bezier RMB
+   <li>false & misleading hint about 'subdivide' specific for arches etc. corrected
+  </ul>
+</ul>
+
+<p>Unfortunately, no small patches to update earlier versions to this.<br>
+Get it from the QuArK <a href="download.php#quark">download-page</a>.</p>

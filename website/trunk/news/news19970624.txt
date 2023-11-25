@@ -1,0 +1,17 @@
+<author>Derrick McKay</author>
+<headline>slow week - contests - sites</headline>
+<P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- Slow Week -</B></FONT><P>
+It's been a slow week for QuArK. Armin hasn't added anything to QuArK <I>for a whole week</I> !! :-) Seriously though, there hasn't been much to add, a few things trickling in, but nothing really "priority". I have been getting a few e-mails about various stuff, and below you'll find some interesting tidbits. Myself, I'm getting ready to switch to NT4, which should be here tomorrow, so don't be surprised if there's not a lot of new stuff here for a few days. Anybody that's got some "handy" tips for dual booting Win95 and NT4 <A HREF="mailto:dmckay@yknet.yk.ca">give me a shout</A> so I can make the switch as painless (and fast) as possible.
+</UL><P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- Map Contests -</B></FONT><P>
+A couple of map contests are going on right now, so you may want to check into them. I got an e-mail from <A HREF="mailto:rowell@proaxis.com">Matt Rowell</A> (aka: Dymite) of the <A HREF="http://www.gagames.com/quake/" TARGET="_top">Gamer's Alliance Quake Page</A>. Their contest is for <U>single player</U> maps only, and you have to register to enter, so drop by and sign up. There will be prizes, but they haven't been announced yet.<BR>
+<DD>This 2nd contest I found while reading PQ's own news page. <A HREF="mailto:tmaster@accessone.com">TaskMaster</A> of the <A HREF="http://www.quakemania.com/mpq/" TARGET="_top">MultiPlayer Quake Page</A> over at QuakeMania is holding the "Random Acts of Senseless Violence" map contest. The winner will get a <B>RealVision Flash 3D</B> card ! (Voodoo!). This contest is for DM levels, and you must contact him and have a mapname assigned, and the mapname that you must link to also. (The levels will be compiled into a PAK file for QW play after the contest is finished). Come on all you QuArK users, show these guys how to build good maps !!!
+</UL><P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- Sites -</B></FONT><P>
+I have learned from <A HREF="mailto:cardshark@thegrid.net">Steve Anderson</A> (aka: GreenHornet), that the <A HREF="http://www.thegrid.net/cardshark/index.htm" TARGET="_top">Crappy Quake Page</A> has moved. This site is for QuakeMap/QuArK made levels. Maps here include GreenHornet's, Fubar's, and ThunderMug's so far. (Thundermug has a new one called "Aventine" that is pretty cool). Check them out, and give GreenHornet a link to your QuArK levels too.<BR>
+<DD>This newest site to PQ isn't QuArK specific, (in fact, the only place it's listed is in the links) but it's a good place to find out some general stuff for beginning your Quake editing. <A HREF="http://www.planetquake.com/quakeplace/" TARGET="_top">The Quake Place</A> has good info on the various things you can do to Quake, and will give you some background info on the different formats and requirements for editing these resources. Of course, QuArK makes doing some of this stuff much easier than the way it's presented here, but the background info is very helpful.
+</UL><P><BR>

@@ -1,0 +1,3 @@
+<author>tiglari</author>
+<headline>Patch for Release Candidate 1 for QuArK 6.3</headline>
+<p>For avid bug-hunters, a <a href="http://www.fileplanet.com/dl/dl.asp?/planetquake/quark/patches/quark_v6.3_rc1_patch1.zip">patch</a> for the Release Candidate, supplying some more Hotkeys, and eliminating various debug statements that were writing thing to the console.</p>

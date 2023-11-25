@@ -1,0 +1,20 @@
+<author>DanielPharos</author>
+<headline>Video game security</headline>
+
+<p>Some game companies are notoriously bad at fixing cheating in their online games, but there's another level of shenanigans that you need to be aware of: security exploits. Sometimes, sending specific traffic or data to a game over the network will result in so-called code execution, where the sender can run arbitrary commands on the victim's computer. Definitely not something you want!</p>
+
+<p>Enter: <a href="https://cve.report/CVE-2021-30481">CVE-2021-30481</a> (<a href="https://twitter.com/the_secret_club/status/1380868759129296900">Exploit demonstration</a>)</p>
+
+<p>This exploit was apparently found 2 years ago, and reported to Valve through a platform called HackerOne, where you can earn money for reporting security exploits. However, Valve has yet to fix it, and the conditions on HackerOne forbid the reporter from publishing details until the exploit is fixed. In other words, Valve has knowingly and willingly been installing and maintaining dangerous security exploits in millions of people's computers!</p>
+
+<p>And that's not the only security bug Valve has been silent about. Here's two others:<br>
+<a href="https://twitter.com/the_secret_club/status/1381201949647904768">Team Fortress 2 exploit</a><br>
+<a href="https://twitter.com/the_secret_club/status/1380966170522750979">CS:GOexploit</a></p>
+
+<p>And this is a known issue with Valve: <a href="https://blog.jakegealer.me/valve-a/">they often just don't respond</a>.</p>
+
+<p>So be careful out there, even when playing your favorite video games!</p>
+
+
+<p>Safe gaming,<br>
+DanielPharos</p>

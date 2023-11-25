@@ -1,0 +1,29 @@
+<author>Decker</author>
+<headline>Zoners Half-Life Tools v2.2.1</headline>
+Snips from the changelog:
+<ul>
+<li>Fixed a cute little bug involving light_environments and entities blocking light.
+<li>Removed -watervis, will add light through water without hacking vis to do it at some point in the future.
+<li>Dramatically reduced memory usage of transfers data.
+<li>Brush based entities can affect lighting by adding a key/value of <b>zhlt_lightflags</b>
+    <ul>
+       <li>0 is default
+       <li>1 is 'embedded fix'
+       <li>2 is opaque (BLOCKS LIGHT!)
+       <li>3 is both
+    </ul>
+    For opaque brushes, it will be frequently necessary to place point lights inside the brush so that faces obscured by the brushes are properly lit (for example the trim adjacent to a func_door).
+<li>Fixed light streaking across edges of surfaces.
+<li>Fixed bleed correction code pulling in lightmap pixels unnecessarily far distances in rare cases, when a simple and short nudge into the world                  would do the trick.
+<li>Completely fixed phong shading (smoothing) using bad data in some cases.
+<li>Allow command line options after the map name in the command line
+</ul>
+Get the <a target="_blank" href="http://www.winace.com">WinAce</a> file of Zoner's Half-Life Tools: <a href="http://dl.fileplanet.com/dl/dl.asp?quark/zhlt221.ace">zhlt221.ace</a> (220KB), or
+the <a target="_blank" href="http://www.winzip.com">WinZip</a> one (275KB) which can be found at the <a target="_blank" href="http://halflife.gamedesign.net">Half-Life ERC</a> site.<br>
+
+<headline>User-made maps</headline>
+A Half-Life/Counter-Strike map have been added to the <a href="usermaps.php">user maps page</a>.
+<ul>
+<li>'de_Mayhem' by HypnoTech
+</ul>
+

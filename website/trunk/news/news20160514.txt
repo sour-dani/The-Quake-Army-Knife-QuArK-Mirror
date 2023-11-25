@@ -1,0 +1,11 @@
+<author>DanielPharos</author>
+<headline>New brushDef3 saving support, and fix for patchDef2 and patchDef3 subdivision saving</headline>
+
+<p>For those of you working on Doom 3, Prey, or Quake 4 maps, there's a nice sparkly new feature available in the latest nightly... brushDef3 saving support! Now, QuArK was already able to load them, and the games themselves were smart enough (just as QuArK is) to be able to load older brushDef formats, but some editors out there only support brushDef3 .map files for these games. So, in the spirit of improving interoperability with those overly strict editors, QuArK will now automatically output .map files in the brushDef3 for these games!</p>
+
+<p>Additionally, an annoying bug was fixed where the subdivisions settings for patchDef2's and patchDef3's were getting reset to 1 when exporting.</p>
+
+<p>Download this fancy new nightly build <a href="http://quark.sourceforge.net/downloads/release_zips/quark-win32-6.6.0Beta7Nightly14May2016.exe">here</a>, or read more about this new support in <a href="http://quark.sourceforge.net/forums/index.php?topic=1003">this forum thread</a>.</p>
+
+<p>Happy mapping,<br>
+DanielPharos</p>

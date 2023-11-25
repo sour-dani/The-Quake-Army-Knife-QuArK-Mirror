@@ -1,0 +1,37 @@
+<author>Gryphon</author>
+      <ul>
+        <font 
+size=2 face="verdana,arial" 
+		color="0000a0"> <!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:--> 
+        <p><strong>Remote Mapping</strong><br>
+        </font> 
+        <li><font 
+size=2 face="verdana,arial" 
+		color="0000a0">Okay, my mad-on is over, and things are going well. 
+          Hey, I just heard something really really cool. For those folks that 
+          don't have machines capable of compiling maps themselves, someone's 
+          just created something very nice-- Enter: <b>MAPZ</b> - This is a new 
+          server setup that allows folks to send their map in, have it compiled, 
+          and have the compiled map mailed back to them! Anyway, for details, 
+          check it out here:<br>
+          <a href="http://www.nofadz.com/mapz/" target="_new">http://www.nofadz.com/mapz/ 
+          </a></font><font 
+size=2 face="verdana,arial" 
+		color="0000a0"><br>
+          <br>
+          This system is currently in Public Beta and at the current time only 
+          has one server set aside to test with. It is a Duel Pentium 233 w/128megs 
+          with 100 meg swap file. Knock yourselves out!<br>
+          <br>
+          <strong><a href="http://gunman.valveworld.com/" target="_new">GunMan 
+          TC</a></strong><br>
+          </font>
+        <li><font 
+size=2 face="verdana,arial" 
+		color="0000a0"> For a nice <a href="http://gunman.valveworld.com/news/q2-hl_model_tutorial.zip">tutorial</a> 
+          on converting your Quake2 models to Half-life, check these guys out! 
+          I also noticed in their <a href="http://gunman.valveworld.com/news/q2-hl_model_tutorial.zip">tutorial</a> 
+          that they use QuArK to do .qc editing.<br>
+          </font> 
+          <p><font face="Geneva, Arial, Helvetica, sans-serif" size="3"><i><b><font color="#000066">Cya!</font></b></i></font></p>
+      </ul>

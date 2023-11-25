@@ -1,0 +1,19 @@
+<author>tiglari</author>
+<headline>New QuArK 6.3 Snapshot</headline>
+<p>A new snapshot of QuArK 6.3.</p>
+
+<p>New features include:</p>
+
+<blockquote>
+<ul>
+<LI>bsp viewing and node exploration for all Q-engine games except Sin
+<LI>HL-Blue Shift pak opening
+<LI>cycling texture subtitution for standard duplicators
+<LI>dialog for browsing multiple selections
+<LI>improvements to 3point plane
+<LI>improvements to 6DX, Crystal Space support
+</UL>
+<a href="http://quark.sourceforge.net/latest/snapshot_readme/readme.txt">readme.txt</a> file for details.
+</blockquote>
+
+<p>Get it <a href="http://dl.fileplanet.com/dl/dl.asp?quark/Snapshots/Quark63_snap080601.zip">here</a>, or from the QuArK <a href="download.php#quark">download-page</a>.</p>

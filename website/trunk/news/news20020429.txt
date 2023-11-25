@@ -1,0 +1,5 @@
+<author>tiglari</author>
+<headline>New Snapshot</headline>
+<p>Linked to at the <a href="http://quark.sourceforge.net/latest">latest</a> page.  The main new feature is improved RTCW and STVEF support, and the new treatment of texture-positioning and scaling which is supposed to help with the annoying problem of vertexes drifting slightly and irretrievably off the grid.</p>
+
+<p>It is hoped that this will be the <b>last</b> snapshot before a release candidate for QuArK 6.3 final, which will also have at least basic Mohaa support (patch for that coming soon), and perhaps even JKII (no promises, but cautious hope).  So please test it.</p>

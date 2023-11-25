@@ -1,0 +1,26 @@
+<author>cdunde</author>
+<headline>New QuArK Game Compiler!</headline>
+<p>One initiative individual, known as <b>Skinhat</b>, has made up an install that combines Quark, Lazarus, GLScene, and OpenBSP.</p>
+
+<p>The purpose of the install is to allow people to quickly and easily develop a 3D game using Quark.</p>
+
+<UL>
+<LI>The compiler, used to build the game, is <a href="http://www.lazarus.freepascal.org/">Lazarus</a> which is an Open Source compiler with a Delphi like IDE.
+<LI>GLScene is a powerful 3D library and can load and display Quake like maps.
+<LI>The install is centered around a working Lazarus demonstration application that allows a person to walk through the streets of a town built with Quark.
+<LI>So it is easy to get something up and running straight away.
+</UL>
+
+<p>For more information refer to <a href="http://www.skinhat.com/3dpack">www.skinhat.com/3dpack</a></p>
+
+<p>Everything in the install is Open Source and can be used commercially.</p>
+
+<p>Note that the install uses Quark 6.4. He says that the next install he makes will be upgraded to the latest version of QuArK.</p>
+
+<p><b>Keep your QuArK knife sharp!</b></p>
+
+<p>cdunde</p>
+
+<p>For more information and added support, go to the <a href="http://quark.ironfoot.co.uk/">QuArK Resource Center</a> and <a href="http://quark.sourceforge.net/forums.php">the forums page</a> of this site.</p>
+
+<p>And remember to visit our sister site - <a href="http://quark.sourceforge.net/">QuArK Wiki</a> where <b><u>you can add</u></b> your knowledge as well!</p>

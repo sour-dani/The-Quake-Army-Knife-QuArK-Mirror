@@ -1,0 +1,6 @@
+<author>Armin Rigo</author>
+<UL>
+
+<LI> <A HREF="ftp://ftp.cdrom.com/pub/idgames2/planetquake/quark/quark5a1.zip">QuArK 5</A> version 5.0.a1 released ! See comments in file <A HREF="ftp://ftp.cdrom.com/pub/idgames2/planetquake/quark/quark5a1.txt">README.TXT</A>.
+
+	</UL>

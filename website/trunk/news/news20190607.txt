@@ -1,0 +1,14 @@
+<author>DanielPharos</author>
+<headline>New nightly build released!</headline>
+
+<p>Over the years, many small (and large) memory leaks in QuArK were fixed, but there's one area that's been especially bad: the reference counting of the Python objects. Simply put: make a mistake, and either some memory leaks permanently, or at some arbitrary time later, Python (and thus QuArK) will crash, hard. Time to do something about that!</p>
+
+<p>This nightly release contains many fixes to Python object handling in order to reduce reference counting errors. Due to the massive amount of changes made to the code, there may be some functionality that now crashes; please let us know on the forums, so we can fix those.</p>
+
+<p>Download this new nightly release from <a href="https://sourceforge.net/projects/quark/files/QuArK/QuArK%206.6.0%20Beta%207/" target=_blank>SourceForge download page</a> now!</p>
+
+<p>Note: this is a nightly release, so there may be breaking bugs. If you encounter one, please let us know on the forums.</p>
+
+
+<p>Happy mapping,<br>
+DanielPharos</p>

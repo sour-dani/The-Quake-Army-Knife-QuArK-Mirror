@@ -1,0 +1,14 @@
+<author>Gryphon</author>
+<UL>
+
+<!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-->
+	<BLOCKQUOTE><P>
+<LI>I want to reiterate to folks that downloading QuArK 5 beta is basically a "preview" of where QuArK is going, and IS NOT yet a full upgrade to Quake Army Knife.  Many people are thinking the beta is the NEW version of QuArK, and fully represents the program.  This is not so.  The most recent FULL version of QuArK is 4.07.  If you are interested in learning QuArK, please use THIS version.</P>
+<P>
+<LI>Arg! Here I am trying to finish some tutorials, and suddenly I find out the QuArK directory has vanished from CD-Rom.com.  Anyway, be sure to visit the Mirror sites if you're looking for the latest versions of QuArK, or accompanying files.  I'll try to update a few download links (to avoid confusion), but I'm not going to change everything around, just to have it all restored tomorrow... or whenever. Beta 7 IS NOT currently available at this time due to problems with CD-Rom.com. I've also taken the liberty to backup the entire Quark directory on CD-Rom.com locally so that if any problems arise, it can easily be restored in good time.
+
+<P><STRONG>QuArK CD-Rom.com Mirror Sites:
+:::News Update CDROM.COM FIXED Now, all links should work again:::
+</BLOCKQUOTE>
+
+	</UL>

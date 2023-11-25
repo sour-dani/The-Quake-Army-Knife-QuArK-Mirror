@@ -1,0 +1,4 @@
+<author>Armin</author>
+Updated <a href="http://asp.planetquake.com/dl/dl.asp?quark/buildq2-38.zip">Build Pack for Quake 2</a>.
+Contains <a href="http://www.planetquake.com/arghrad">ArghRad</a> version 1.50 and Tim Smith's TimVis,
+which does not rely on Quake being installed in a directory called exactly "quake2" (which can be problematic to compile Heretic II maps !)

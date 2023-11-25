@@ -1,0 +1,14 @@
+<author>Gryphon</author>
+<UL>
+
+<!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-->
+	<BLOCKQUOTE><P>
+<LI>Hi, just wanted to update and report that the site is coming along fine.<BR>
+If anyone has any suggestions or contributions for this site, please let me know
+by e-mailing me <a href="mailto:gryphon@planetquake.com">here</a>.</P>
+<P>
+<LI>You might notice the "header" links at the top of the page keep changing and moving
+around from time to time (along with the link list on the right).  That's because I'm still trying to find a comfortable "fit" for things.  I keep realizing I've left a section out, or not given enough access to another area.  Derrick did a LOT of great work putting this site together, and the last thing I want to do is overlook an area he started.  So, "Add-Ons" has recently made it's way back into the link lists. Oops.</P>
+</BLOCKQUOTE>
+
+	</UL>

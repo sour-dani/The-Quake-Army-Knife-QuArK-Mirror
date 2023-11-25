@@ -1,0 +1,12 @@
+<author>Decker</author>
+<headline>Suggested plug-ins page updated...</headline>
+I've updated the <a href="suggestedplugins.php">suggested plug-ins</a> page.
+One addition called '<a href="suggestedplugins.php#suggest12">Arches</a>' suggested by GregD,
+and one update of the '<a href="suggestedplugins.php#suggest7">Merge brushes</a>' suggestion, which were already implemented in QuArK 5.11beta (or QTA)
+which I wasn't aware of.<br>
+The latter is a bit tricky to work with, as tiglari writes in the <a href="http://www.egroups.com/group/quark">QuArK-forum</a>:
+<blockquote>
+It's a bit complicated because its <span class="sml">[the menuitem]</span> only
+supposed to be enabled if the merged poly has the same shape as the 2
+original brushes <span class="sml">[those to be merged]</span>.
+</blockquote>

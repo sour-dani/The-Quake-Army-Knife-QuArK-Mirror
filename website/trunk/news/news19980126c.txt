@@ -1,0 +1,6 @@
+<author>Armin Rigo</author>
+<UL>
+
+<LI> <A HREF="news.html">News Page</A> updated
+
+	</UL>

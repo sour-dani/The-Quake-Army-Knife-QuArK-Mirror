@@ -1,0 +1,10 @@
+<author>DanielPharos</author>
+<headline>Xonotic support still broken</headline>
+
+<p>Today I was reminded that we have no Xonotic support, but have in the past made an attempt to add it. However, that attempt failed, because the Xonotic developers are breaking the rules as to where textures should be placed, and QuArK doesn't support such shenanigans. Recently, a new version of Xonotic was released (version 0.8.1), so I checked it out: unfortunately, it's still broken.</p>
+
+<p>So still no Xonotic support. <pic smiley_sad></p>
+
+
+<p>Otherwise happy QuArK-ing,<br>
+DanielPharos</p>

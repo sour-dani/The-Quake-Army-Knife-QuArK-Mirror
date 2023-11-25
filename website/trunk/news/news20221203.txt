@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>VScript-support added to TF2</headline>
+
+<p>Valve has released <a href="https://www.teamfortress.com/post.php?id=166703" target="_blank">an update for Team Fortress 2</a> that adds VScript support! VScript is a <a href="http://www.squirrel-lang.org/" target="_blank">Squirrel script</a> implementation. Turns out that this scripting language is already used in several other Source engine games, so I added support for QuArK to recognize these files properly.</p>
+
+
+<p>Happy scripting,<br>
+DanielPharos</p>

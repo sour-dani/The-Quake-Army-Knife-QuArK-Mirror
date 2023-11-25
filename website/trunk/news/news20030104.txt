@@ -1,0 +1,5 @@
+<author>tiglari</author>
+<headline>The updates keep coming</headline>
+<p>Track them on the <a href="http://quark.sourceforge.net/latest">latest</a> page.</p>
+
+<p>I'm still really hoping that 6.3 final is almost ready!</p>

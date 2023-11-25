@@ -1,0 +1,10 @@
+<author>Armin</author>
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/quark56.exe"><strong>QuArK 5.6</strong></a> released ! (1.09 Mb)
+Also available <a href="http://asp.planetquake.com/dl/dl.asp?quark/quark56m.exe">without the game supports</a> (863 Kb); this second version requires the game supports you are interested in to be downloaded separately :
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/dataq1_55.zip">Quake 1</a>,
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/datah2_56.zip"><strong>Hexen II</strong></a>,
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/dataq2_55.zip">Quake 2</a>,
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/datahr2_56.zip"><strong>Heretic II</strong></a>,
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/datahl_55.zip">Half-Life</a>. Only Hexen II and Heretic II have been updated between QuArK 5.5 and 5.6; you don't have to re-download the other ones. Updated <strong>Sin</strong> support planned soon.
+<br>
+Read the included <code>What's New</code> file. You should download 5.6 even if you are not interested in the new features (but who isn't ? ;-) because of the bug fixes.

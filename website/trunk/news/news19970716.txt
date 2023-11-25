@@ -1,0 +1,17 @@
+<author>Derrick McKay</author>
+<headline>QuArK 3.6 - addons - various</headline>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- QuArK 3.6 -</B></FONT><P>
+As you all know by now, Armin released QuArK 3.6. If you haven't done so, go ahead and <A HREF="download.html">download it</A> and then read what's new in it on <A HREF="armin/index.shtm">Armin's Page</A> (instead of me re-writing it here). Also, note that the DOS runtime for version 3.X is available now. It is also on the <A HREF="download.html">Download Page</A>.
+</UL><P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- New Addons -</B></FONT><P>
+A couple of new Addons this week. I have put together 6 textures for your levels that you can use to identify them as "QuArK made".  There is an example map in the QME file, so you can see how they look, and one of them utililzes the new "knife" logo in a "stamp" on a new 64x64 texture. You're all welcome (even encouraged!) to use them in your levels to show everyone which editor you prefer. They definitely look best alone (as opposed to filling a whole wall with them :-)).<BR>
+The second one is another one from <A HREF="mailto:Draco9131@aol.com">Draco</A>. This one isn't a new monster, but it is a brush collection of the entire alphabet. Now you can <I>really</I> identify yourself !! Both of these are available on the<A HREF="addon.html"> Addon QME's Page</A>.
+</UL><P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- Various -</B></FONT><P>
+You may have noticed the <A HREF="quarklogo.gif">brand new logo</A> on the main page. It's about time for a <I>real</I>  logo for QuArK, and I've been thinking about this for quite a while. Armin likes it, and says it will be included in the next release as the "official" logo !! Accordingly, there is also a new <A HREF="quarknow.jpg">QuArK Now</A> button, and I have submitted a banner ad to PlanetQuake that utilizes the new logo. (Forgive my attempt at the animated GIF in the banner ad, I just started learning how to use GIF Construction Set... I'll definitely improve in the future though...) <BR>
+BTW, I have also put Joe Water's "no fullbrights" PSP palette on the download page (along with the old one that included the fullbrights).<BR>
+Haven't had anytime to work on my "showcase" level lately, but I did try out some new compiling tools. I downloaded Ken Alverson's new QBSP (which is much improved now that he got rid of that annoying POP error and changed it to a warning). I also tried out "Arghlite" by Tim Wright. It is a "light.exe" program that includes some new enhancements. The best features are that  you can specify the "fade distance" of your lights (from the command line), and the <B>best</B> thing is that simply by adding a "light" specific to worldspawn, you can now specify the minimum light setting for your level. This works excellent from QuArK. For instance setting <B>light 20</B> in worldspawn gives a faint light throughout your level.<BR>
+I have replaced the "build.zip" file on the <A HREF="download.html">Download Page</A> with a zip file containing Ken Alverson's QBSP, Tim Wright's Arghlite, and RVIS. I have been having no problems with these versions, and they work well from Win95. (Included in the zip file is the original documentation for each program).
+</UL><P><BR>

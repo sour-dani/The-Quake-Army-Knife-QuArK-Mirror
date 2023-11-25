@@ -1,0 +1,14 @@
+<author>Gryphon</author>
+<headline>Just the FAQs?</headline>
+The FAQ page has been updated. That nagging Voodoo 2 trouble has apparently been figured
+out. Also, the FAQ page has been re-designed to hopefully make it easier
+to print. If this isn't the case... well, like usual, <b><a href="mailto:***PLEASE@NO*SPAM***gryphon@planetquake.com">LET ME KNOW</a></b>!<br>
+
+<headline>User Map Updates!</headline>
+<ul>
+<li><i>Q1Monas</i></li>
+<li><i>Arena</i></li>
+<li><i>The Burning Zone</i></li>
+</ul>
+<p><a href="usermaps.php">Check 'em out!</a><br>
+<p><i>Quake Army Knife Forever, dudes!</i>

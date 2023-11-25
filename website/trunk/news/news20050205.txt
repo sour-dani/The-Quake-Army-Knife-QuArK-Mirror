@@ -1,0 +1,27 @@
+<author>cdunde</author>
+<headline>Full snapshot of QuArK 6.4.0</headline>
+<p>A new full snapshot of QuArK 6.4.0 <span class=sml>(dated 2005-01-29)</span> has just been posted and can be downloaded from <a href="http://quark.sourceforge.net/">this  quark.sourceforge.net  page link</a>.</p>
+
+<p>The updated Defaults.qrk file Revision 1.244 did not make this snapshot. However, you can download it from <a href="http://cvs.sourceforge.net/viewcvs.py/quark/runtime/addons/Defaults.qrk?rev=1.244&view=log/viewcvs.py/*checkout*/quark/runtime/addons/Defaults.qrk?rev=1.244">here</a> and put it in the "addons" folder <b><u>after</u></b> you have installed the above snapshot.</p>
+
+<p>This will allow you to select light colors with the new "Color Picker" for the Torque game engine and have it show the light color and area of coverage in all of the <b>QuArK Editor</b> views for proper light placement in your maps.</p>
+
+<p>Besides the items and features covered by our news posting of 2004.12.27 below, this snapshot also includes:</p>
+<UL>
+<LI>Updated and extended support for Doom 3 and Half-Life 2!!!
+      through a lot of time and hard work by <b>Rowdy</b> and <b>Alexander</b> respectfully. A <b>BIG</b> Thank You to the both of them from all of us!!!
+<LI>Some of the HL2 Related Enhancements are:
+      loading of .vmf (hammer map files) is available,
+      QuArK Loads HL2 models and renders yellow transparent boxes,
+      fixed bogus mdlopacity specific reading,
+      among many others. Read the <b>NEWS.txt</b> file that comes with this new snapshot.
+<LI>Full Infobase documentation included
+</UL>
+
+<p>The latest up dated Infobase can be downloaded <a href="http://quark.sourceforge.net/download/quark-help-20050129.zip">here</a> <span class=sml>(dated 2005-01-29)</span>. (included in above release)</p>
+
+<p>Download full source code with Python 2.2.3 from <a href="http://quark.sourceforge.net/download/quark-src-20050129.zip">here</a> <span class=sml>(dated 2004-05-21)</span>.</p>
+
+<p>For more information and support, go to the <a href="http://quark.sourceforge.net/forums.php">forums</a>.</p>
+
+<p>And remember to visit <a href="http://quark.sourceforge.net/cgi-bin/moin.cgi">our sister site!</a></p>

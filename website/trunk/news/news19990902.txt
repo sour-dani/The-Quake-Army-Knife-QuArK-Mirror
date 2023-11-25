@@ -1,0 +1,12 @@
+<author>Decker</author>
+<headline>Zoner's Half-Life Tools v1.31 bug-fix</headline>
+Well well, it looks like Zoner found something bad in v1.3:
+<blockquote>
+Oops, found a bug :)<br>
+<br>
+HLCSG in 1.3 will always delete your .bsp file even if you want to
+do -onlyents updates. I also fixed a minor documentation bug in the setup
+docs, and added the startup banner to the usage screens for consistentcy.
+</blockquote>
+You can get the new version here <a href="http://asp.planetquake.com/dl/dl.asp?quark/zhlt131.ace">zhlt131.ace</a> (189KB), or
+if you rather want a .ZIP (which is a larger download), you can find it at the <a target="_blank" href="http://halflife.gamedesign.net">Half-Life ERC</a> site.

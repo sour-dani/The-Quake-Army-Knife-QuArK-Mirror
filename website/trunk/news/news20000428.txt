@@ -1,0 +1,11 @@
+<author>Decker</author>
+<headline>InstaPoll...</headline>
+Well, as promised, I hereby open the instapoll for which ad-banner should be used to advertise Q3A support in QuArK 6.00 when the non-beta gets released.<br>
+You can see all ad-banners on <a href="adbanners.php">this page</a>, and vote there as well.<br>
+Now please don't abuse the voting too much, else a second instapoll, with the 5 most voted for, will be held. There <u>will</u> be held a second instapoll, <u>if</u> new contributions are submitted during this instapoll period!<br>
+
+<headline>User-made maps</headline>
+A Heretic-2 single player map-pack have been added to the <a href="usermaps.php">user maps</a> page.
+<ul>
+<li>'The Three Fates: Clothos, Lachesis and Atropos' by Ahumado aka 'The Black Vaccarro'
+</ul>

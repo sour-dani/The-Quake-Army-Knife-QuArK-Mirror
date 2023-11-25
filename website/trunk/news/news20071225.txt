@@ -1,0 +1,58 @@
+<author>cdunde</author>
+<headline>(the BIG man's back with) <b>QuArK 6.5.0 BETA 4</b> ! ? ! ? ! ?</headline>
+
+<p>HO_HO_HO! Merry Christmas ! ! ! (He shouts once again...and with MORE enthusiasm than ever !)<br>
+That's right folks, <a href="http://sourceforge.net/project/showfiles.php?group_id=1181"><b>QuArK 6.5.0 Beta 4</b></a> has just been released!</p>
+
+<p>With his mighty elves <b>DanielPharos</b> (aka "Dancing Dan") and <b>cdunde</b> hard at work, they bring titles of joy and <b>MANY...MANY</b> new features and functions to <b>QuArK</b>!<br>
+The <b>BIG</b> concentration has been on the <b>QuArK Model Editor</b> for this release...<br>
+but that's not to say that the <b>QuArK Map Editor</b> has been neglected....OH NO! ! ! Not by any means ! 8-)</p>
+
+<p>So, what else is new with this release?<br>
+Welllllll.....lets break it down by <b>BOTH</b> QuArK Editor's for you ! 8-o</p>
+
+<p>For the <b>Model Editor</b> :
+Many .. many .. many .. <b>many</b> new functions and capabilities have been added.<br>
+Some of which are:</p>
+<UL>
+<LI>A FULL BLOWN <b>Animation</b> system view independent with pause, FPS, reselection of frames in any order and animation while zooming or rotating! 
+<LI>Complete selection methods for Vertex and Faces, using single items and\or rectangle multiple item selection in the editor AND the Skin-view page!
+<LI>Full <b>Linear Handle</b> movement for both selected Vertexes and Faces independently with one quick click of a button to switch from one to the other WITHOUT loosing any selections!
+<LI>Multiple Animation Frame vertex and face movement for selected frames that adjust for the animation movement in EACH frame! Including selected <b>Face and Edge Extrusion</b> functions.
+<LI>A complete <b>Quick Object Maker</b> toolbar and <b>2D Rulers</b> just like the QuArK Map Editor has!
+<LI>A complete new set of functions to create new model components with the capability to copy or pass selected faces from one component to another, as well as delete selected faces!
+<LI>The <b>Skin-view</b> page can now take a <b>Snap Shot</b> from the editor's 3D view for reskinning from any angle in the view AND for selected faces as well!....What you see is what you get!
+<LI>Passing and synchronization of vertex and faces between the Skin-view and the editor's view in real time!
+<LI>AND much....much....more....including being able to <b>SAVE .md3</b> models now! You can even convert an .md3 to an .mdl or .md2 and visa-versa! ! !
+</UL>
+<p><b>Shoo !</b> and that's not even half the list ! 8-o See the <b>NEWS.txt</b> file that comes with QuArK for ALL of the goodies ! And the Infobase for FULL documentation and links ! 8-)</p>
+
+<p>Now the <b>Map Editor</b> :</p>
+<UL>
+<LI>A complete NEW system for QuArK Map Editing....<b>Templates !</b> A contribution from our Friends in Russia - <b>Nazar, vodkins and The Shine game engine Team</b> ! Thank you guys...what a gift ! ! !
+<LI>Eight NEW Bezier Prefabed shapes to use for ALL of the games that can use Beziers, consisting of: Shpere, Hemisphere, Cone, Half of Torus, Dome, Cylinder, Cylinder triangular and Disk ! From our same friends !
+<LI>Fixed the duplicators to export correctly again and the map portals from not drawing.
+<LI>Updated the miter edge function with some added InfoBase documentation about it.
+<LI>Changed to keep Texture Position dialog open and update dynamically.
+<LI>Any supported picture can now be used for a view's background. Also added two new options to manipulate the way the picture appears.
+<LI>Fixed both editors from not drawing gridscale and ruler when grid is inactive.
+<LI>The name of a pakfile containing a texture can now be specified per texture. Which will allow you to mix HL2 and CSS textures in a single map!
+<LI>Added option to stop texturename checks.
+</UL>
+<p><b>QuArK</b>...with <b>41</b> fixes, new functions and MAJOR features in all ! ! !</p>
+
+<p><b>SO HOOKUP YOUR RAINDEER AND ZOOooooM OFF IN YOUR SLED !</b><br>
+And go get your new copy of <a href="http://sourceforge.net/project/showfiles.php?group_id=1181"><b>QuArK 6.5.0 Beta 4</b></a> ....<b>NOW !!!</b></p>
+
+<p>Remember <b>Keep your QuArK knife sharp!</b></p>
+
+<p>cdunde</p>
+
+<p><b><u>Notice:</u></b><br>
+Wouldn't you know it... the Grinch that stole Christmas must have gotten into Santa's bag ! 8-|</p>
+
+<p>If you are one of the first that downloaded the new release and are getting an error when you try to open the Texture Browser, click on <a href="http://quark.sourceforge.net/forums/?topic=1038.0">this link</a> to download the <b>Mapbtns.zip</b> file, put the file in your quarkpy folder over writing the old one and that should fix it for you...<br>
+Sorry about that. We fixed the release that is up there now. ;-)<br>
+(<b>Bad Grinch... Bad!</b>)</p>
+
+<p>For more information and added support, go to the <a href="http://quark.sourceforge.net/forums/">QuArK Resource Center</a> and <a href="http://quark.sourceforge.net/communication.php#forums">the forums page</a> of this site.</p>

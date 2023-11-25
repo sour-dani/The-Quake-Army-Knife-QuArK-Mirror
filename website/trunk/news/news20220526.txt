@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>#SaveTF2</headline>
+
+<p>There's a "Twitter protest" happening right now to hopefully get Valve to address the malicious bot problems plaguing Team Fortress 2. If this is something you want to see fixed too, show your support!</p>
+
+
+<p>Happy TF2-ing,<br>
+DanielPharos</p>

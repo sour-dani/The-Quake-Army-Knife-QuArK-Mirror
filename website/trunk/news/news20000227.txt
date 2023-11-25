@@ -1,0 +1,29 @@
+<author>Decker</author>
+<headline>QuArK-6 progress report...</headline>
+Well... Lets see;<br>
+<ul>
+<li>Beziers can be added to the map and moulded, but the texture-alignment/scaling interface is still missing.
+<li>Exporting a .MAP-file works, and Q3A's build-tool Q3MAP.EXE gladly processes it, <b>if</b> you remembered to copy the nessary .TGA / .JPG / .SHADER files into the correct directories in \tmpQuArK.
+<li>There is no reading of .SHADER files as of yet, so only regular .TGA / .JPG files can be used as textures.
+<li>... and a lot of other minor bugs, thats needed to be found and squashed.
+</ul>
+If you're the lucky person who got <a target="_blank" href="http://www.wincvs.org">WinCVS</a> and a copy of Delphi (version 2, 3, 4 or 5) and know how to use them, you can compile your own version of QuArK yourself.
+Just head over to <a href="http://www.sourceforge.net/">www.sourceforge.net</a>, read what they are/do, and then search for "quark", and keep reading until you figure out how to download the source.<br>
+
+<headline>Ad-banners...</headline>
+A few new <a href="adbanners.php">ad-banners</a> have been added. And I must say, they're become better looking.
+Its going to be tough to decide which one will be the one to advertise for QuArK-6.<br>
+I'm speculating about an InstaPoll, but worries about the lack of security in the InstaPoll-code.
+It only checks if an IP-address already have voted or not, so its possible for someone to vote multiple times, by changing his/hers IP-address.<br>
+So I'm also thinking about an e-mail voting thingy, where the vote-contributors will have to supply their e-mail address and a vote-password-id.
+When the voting-period is up, all contributers will get their e-mail addresses and vote-password-id, put on a list of the ad-banner they voted for, so everyone can see who voted for what.<br>
+I'm not so sure what to go for. Do <u>you</u> have any ideas?<br>
+
+<headline>User made maps...</headline>
+More deathmatch maps created with QuArK, <a href="usermaps.php">coming your way...</a>
+<ul>
+<li>'GLCDM1Q2' by 'GLC-1520'
+<li>'GLCDM2Q2' by 'GLC-1520'
+<li>'GLCDM2HL' by 'GLC-1520'
+<li>'Imminent Demise - Your 2nd Command' by  Eckard 'Vanx' Gehm
+</ul>

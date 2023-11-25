@@ -1,0 +1,3 @@
+<author>Decker</author>
+<headline>InstaPoll...</headline>
+<p>Andy suggested this instapoll, which have been <a href="instapolls.php">shown before</a>, but with fewer choices.</p>

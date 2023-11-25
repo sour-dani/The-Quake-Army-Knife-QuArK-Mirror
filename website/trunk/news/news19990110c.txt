@@ -1,0 +1,42 @@
+<author>Gryphon</author>
+      <ul>
+        <font 
+size=2 face="verdana,arial" 
+		color="0000a0"> <!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:--> 
+        <p><strong>Family Matters</strong><br>
+        </font><li><font 
+size=2 face="verdana,arial" 
+		color="0000a0">Well, well, well. Ain't life just peachy. If I were a opening a fortune 
+          cookie earlier this week, it would have read: <i>&quot;Expect important 
+          private family matters to set back your immediate personal goals.&quot;</i> 
+          <br>
+          <br>
+          In a nutshell, that's what I have to report. <i>No</i> new messageboard 
+          yet, the weather sucks, and I can only see storm clouds on the horizon... 
+          but not to worry, I haven't lost my naturally sunny disposition... I 
+          just need to send it on vacation for a bit.<br>
+          <br>
+          Lots of great progress on development though... it seems very possible 
+          to save all our old messages from eGroups when we make the switch. I 
+          just need to finish this script that processes e-mail into message items.<br>
+          <br>
+          Sorry to those that wrote me who I haven't written back to yet. And 
+          to those that want to help with a section of the website, PLEASE don't 
+          ask me to explain the basics to you so you can write the section you 
+          want to help with. That DOESN'T MAKE SENSE! Nothing personal, and sorry 
+          if that sounds mean. <br>
+          <br>
+          So here's my request... if someone wants to help with an area of the 
+          site, <a href="mailto:gryphon@planetquake.com">E-MAIL me</a> what you'd 
+          like to work on (give me a url), and I'll send you the page. I'll tell 
+          you what I was looking to do with it, and you can branch out anyway 
+          you'd like. We reconvene, and after sorting out any rough spots, it 
+          goes up, and you get credit splattered all over it. I wish I had unlimited 
+          time, but I know better, so anyone who knows a significant (enough to 
+          be &quot;dangerous&quot;) amount about QuArK, and a specific section 
+          they'd like to contribute to, <b><a href="mailto:gryphon@planetquake.com">let 
+          me know</a></b>.<br>
+        
+        </font> 
+        <p><font face="Geneva, Arial, Helvetica, sans-serif" size="3"><i><b><font color="#000066">Ciao!</font></b></i></font></p>
+      </ul>

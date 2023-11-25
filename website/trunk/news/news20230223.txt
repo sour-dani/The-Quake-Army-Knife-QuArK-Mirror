@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Valve bans 40k cheaters</headline>
+
+<p>Through the clever use of a "honeypot", Valve has managed to identify around 40.000 cheaters in Dota 2, and has <a href="https://www.dota2.com/newsentry/3677788723152833273" target="_blank">banned them</a>! Good riddance.</p>
+
+
+<p>Happy Valving,<br>
+DanielPharos</p>

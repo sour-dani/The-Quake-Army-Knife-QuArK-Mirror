@@ -1,0 +1,10 @@
+<author>Decker</author>
+<headline>User made prefab</headline>
+<p>A Quake-2 prefab made by "Data Killer" is now available from the <a href="http://quark.sourceforge.net/userprefabs.php#Q2">User Prefabs</a> page.</p>
+<ul>
+  <li>Quake-2
+    <ul>
+      <li>Door1</li>
+    </ul>
+  </li>
+</ul>

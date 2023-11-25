@@ -1,0 +1,13 @@
+<author>tiglari</author>
+<headline>Release Candidate 1 for QuArK 6.3 (final)</headline>
+<p>You can get it <a href="http://www.fileplanet.com/dl/dl.asp?/planetquake/quark/Releases/quark_v6.3_rc1.zip"> here</a>.  Some hilites include:</p>
+
+<UL>
+<LI>Support for RTCW, Mohaa and JKII as well as most of the Quake Engine Classics
+<LI>Annoying 'vertex slightly off grid' problems fixed
+<LI>'Smoothing' (bilinear filtering) now available in OGL views
+<LI>Lots of new finders for various kinds of errors
+<LI>Much too much else to fit in a news item, so here's a link to the <a href="http://quark.sourceforge.net/latest/snapshot_readme/readme_6.3.txt">readme</a>
+</UL>
+
+<p>If this survives for a week without bug reports, it will become QuArK 6.3 final, then on to 6.4 ...</p>

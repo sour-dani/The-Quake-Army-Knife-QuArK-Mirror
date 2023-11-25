@@ -1,0 +1,10 @@
+<author>Armin</author>
+<p><a href="http://asp.planetquake.com/dl/dl.asp?quark/qk52-gray-icons.zip">Another icon color scheme</a> by Paniq.</p>
+
+<p>Normally, all icons in QuArK are brownish when they are not selected : with this images, they will look more grayish.
+If you don't like much the brown tones of QuArK, get this package and select either the black-on-white or the white-on-black
+color schemes in the Configuration dialog box.</p>
+
+<p>To use this package, unzip it into the directory "images" under your QuArK directory, replacing some of the existing files.
+Note : there are long file names within this .zip archive, so if you use the old <code>PKUNZIP</code>,
+you will need to rename the files after you extracted them. There is no problem if you use WinZip or any Windows-based zip tool.</p>

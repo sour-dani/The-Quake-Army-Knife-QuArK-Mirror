@@ -1,0 +1,10 @@
+<author>Decker</author>
+<headline>Zoner's Half-Life Tools v1.41</headline>
+Ooops. A few bugs were found in v1.4, so here is v1.41:
+<ul>
+	<li>Fixed hlrad not using lights.rad from the directory hlrad.exe lives in.
+	<li>Fixed maps occasionally coming out pitch black in HLRAD 1.4
+	<li>Made a cosmetic change to dislay the bounce # during the bounce phase of hlrad runs
+</ul>
+Get the <a target="_blank" href="http://www.winace.com">WinAce</a> file <a href="http://asp.planetquake.com/dl/dl.asp?quark/zhlt141.ace">zhlt141.ace</a> (233KB) here, or
+the <a target="_blank" href="http://www.winzip.com">WinZip</a> one (which is 332KB) can be found at the <a target="_blank" href="http://halflife.gamedesign.net">Half-Life ERC</a> site.

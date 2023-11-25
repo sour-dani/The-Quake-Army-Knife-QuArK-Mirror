@@ -1,0 +1,17 @@
+<author>Decker</author>
+<headline>Zoners Half-Life Tools v2.5.3</headline>
+<p>A new version of Zoner's Half-Life Tools is released. These are the changes:</p>
+
+<ul>
+<li>NETVIS
+        <ul>
+        <li>Fixed clients not exiting on unexpected disconnects from the server in some cases. (Primarily affected Linux)
+        </ul>
+<li>HLRAD
+        <ul>
+        <li>Added -nopaque switch which causes any entities with the opaque zhlt_lightflag bit set to be ignored for the compile.
+        <li>Added missing -dscale help to the command line help in hlrad.
+        </ul>
+</ul>
+
+<p>Get <a href="http://dl.fileplanet.com/dl/dl.asp?quark/buildtools/halflife/zhlt253.exe">zhlt253.exe</a> (653KB) or <a href="http://dl.fileplanet.com/dl/dl.asp?quark/buildtools/halflife/zhlt253.zip">zhlt253.zip</a> (531KB) from the QuArK <a href="download.php#buildpacks">download-page</a>.</p>

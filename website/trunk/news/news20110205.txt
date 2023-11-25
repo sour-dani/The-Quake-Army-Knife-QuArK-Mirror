@@ -1,0 +1,10 @@
+<author>DanielPharos</author>
+<headline>SourceForge; man down!</headline>
+
+<p>SourceForge was recently hacked, and has turned off several functions in response, to stop the attack and to check the integrity. Now, our website and forums are still working okay, and they just turned on the website access (see, I can post this news!), but the CVS is still offline, and so is the source code ViewVC thingy. All we can do is wait...</p>
+
+<p>For more information about the attack: see <a href="http://sourceforge.net/blog/sourceforge-attack-full-report/">this blog post</a>.</p>
+
+
+<p>Waiting,<br>
+DanielPharos</p>

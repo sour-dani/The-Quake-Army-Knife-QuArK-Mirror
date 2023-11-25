@@ -1,0 +1,4 @@
+<author>Armin</author>
+<LI><a href="http://asp.planetquake.com/dl/dl.asp?quark/quark5c5.exe">QuArK 5.0.c5</a> released ! Although I can bet there will be stuff not working all around the program, now I know that it will be only small details. So... the next release might not be 5.0.c6, but... <strong>the</strong> final QuArK 5 !
+<LI>New in this version : new icons designed by "paniq"; always more commands implemented; and most of all Python code commented ! Now, writing code plug-ins should be easier.
+</UL>

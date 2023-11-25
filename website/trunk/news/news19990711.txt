@@ -1,0 +1,22 @@
+<author>Decker</author>
+<headline>Zoner's Half-Life Tools updated</headline>
+Texture alignment in v1.1 of Zoner's Half-Life Tools, did not work correctly with QuArK.
+This has been fixed in <a href="http://asp.planetquake.com/dl/dl.asp?quark/zhlt11a.ace">zhlt11a.ace</a> by Zoner and Tim Smith. Thanks guys! <img src="pics/SmileyHappy.gif" align=absmiddle width=15 height=15>
+The <a href="download.php">download page</a> have been updated with a link to the new version.<br>
+
+<headline>InstaPoll</headline>
+Wow! If you ask the right questions, you sure get a lot of attention. <b>50%</b> of you would like to see Quake 3 Arena support in
+a future version of QuArK, even though you all know, that Armin will work hard on Q3A support, when it becomes legal to do so.
+<b>25%</b> would like to see Team Fortress 2 support, which is actually a lot more than I anticipated, due to the previous instapoll,
+where only 10% makes TF style maps <img src="pics/SmileyMedium.gif" align=absmiddle width=15 height=15>. I do hope you guys are up for it, making TF2 maps, because it isn't going to be just some easy
+(and boring) deathmatch maps the players want. <b>13%</b> would like to see Kingpin support. Well, what are you waiting for? Since
+Kingpin is based upon the Quake-2 engine, it shouldn't be so hard to figure out. Those of you, who got the required knowledge and skills,
+and a copy of the game, should help Armin by giving him the required specs of the files, their structure, placement etc., and you should
+start collecting everything known of the entities in the game, so a data add-on can be made. Next up is Star Trek Voyager: Elite Force
+with <b>5%</b>. I don't know much about this game, except its Star Trek with a Quake 3 warp-engine.. ehhh... graphics-engine!
+The much hyped Daikatana only got <b>2%</b>? I haven't seen the demo myself, but is the game that bad? Or just another Quake-2 clone?
+<b>1%</b> would like to see Soldier of Fortune support in a future version of QuArK. Well, the game sure looks like a feast of art (and gore!),
+lets see what the gameplay brings.<br>
+<br>
+<i>8 people voted for other games!?</i>  Hey you guys! <a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com?body=-- NOTICE: HTML e-mails will be bounced, so send only in plain-text! /Decker --">Please let us know</a> what other games out there in the world, which uses the
+Quake-series graphics-engines, that you would like to see supported by QuArK.<br>

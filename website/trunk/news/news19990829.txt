@@ -1,0 +1,5 @@
+<author>Decker</author>
+<headline>Zoner's Half-Life Tools v1.3 released</headline>
+Sean 'Zoner' Cavanaugh have released the newest version of his modified Half-Life build-tools;
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/zhlt13.ace">zhlt13.ace</a> (189KB). I've repacked the archive
+with <a target="_blank" href="http://www.winace.com">WinAce</a> which reduces the size with 95KB from its original zip-archive.

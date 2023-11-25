@@ -1,0 +1,47 @@
+<author>DanielPharos</author>
+<headline>New nightly build released!</headline>
+
+<p>Oh boy, what's this? Another nightly, why, yes it is! A very annoying bug in several popular OpenGL implementations was giving QuArK trouble. Well, no more! QuArK can now workaround these issues; houray!</p>
+
+<p>Here is the changelog compared to QuArK 6.6.0 Beta 6:</p>
+
+<p><b>New features:</b></p>
+<ul>
+<li>Cache texture sizes during map loading and saving for a big speed improvement with certain games.</li>
+<li>Call of Duty 1 support is now extended. Not only were some bad bugs fixed, the textures were sorted and United Offensive support was added!</li>
+<li>Preliminary Call of Duty 2 support! Even though curves and meshes can't be imported or exported right now, everything else should be working.</li>
+<li>Added support for new Steam game file layout (using the 'common' directory).</li>
+<li>Added brushDef2 and brushDef3 saving support.</li>
+<li>Added a GDI workaround to the renderers, which fixes viewport drawing on more modern Windows machines! In other words, no more need to disable desktop compositioning in Windows Vista and 7, and QuArK's viewports now work fine in Windows 8, 8.1, and 10.</li>
+<li>Added trilinear texture filtering to Glide renderer.</li>
+<li>Set a more sensible minimum render distance. This should reduce Z-buffer fighting in OpenGL and Direct3D.</li>
+<li>Added workaround for OpenGL implementations that cause floating point exceptions to be raised during rendering.</li>
+<li>Brought back the fullscreen view window! (Experimental)</li>
+<li>Added a toolbar that allows you to select the renderer to use for new viewport windows. (Work in progress.)</li>
+<li>Unwrap texture coordinates on .map export. This allows .bsp compilers to merge texinfo structures, to avoid hitting the "too many surfaces" limit too soon.</li>
+<li>Added StL importing (both ASCII and binary formats).</li>
+<li>Added mouse scroll wheel support in various places.</li>
+<li>...and small and big performance improvements all over the place.</li>
+</ul>
+
+<p><b>Bug fixes:</b></p>
+<ul>
+<li>Fix for the long-standing bug where float-specifics were not working in Wine, and on non-Latin-alphabet Windows (for example, Chinese Windows).</li>
+<li>Fixed a long-standing bug with character output (backslashes) in the console. Note: this changes the font used.</li>
+<li>Several bug fixes and workarounds dealing with problems during QuArK's enumeration of video hardware.</li>
+<li>Fixed the bad PAK file output, which was broken since 6.6.0 Beta 2.</li>
+<li>Fixes to brushDef2 and brushDef3 loading support.</li>
+<li>Many fixes for .m32 texture saving. It will now produce something that at least has a chance of working...</li>
+<li>Fixed a bug corrupting MOHAA patchDef2 and patchDef3 saving.</li>
+<li>Fixed handling File Association paths with spaces.</li>
+<li>Fixed OpenGL texture loading issues, most commonly with odd-sized textures.</li>
+<li>...and many other bug fixes.</li>
+</ul>
+
+<p>Download this fancy new nightly release from <a href="https://sourceforge.net/projects/quark/files/QuArK/QuArK%206.6.0%20Beta%207/" target=_blank>SourceForge download page</a> now!</p>
+
+<p>Note: this is a nightly release, so there may be breaking bugs. If you encounter one, please let us know on the forums.</p>
+
+
+<p>Happy mapping,<br>
+DanielPharos</p>

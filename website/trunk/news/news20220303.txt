@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>One Humanity</headline>
+
+<p>John Romero has released a new map, called "One Humanity"! Even though it's for DOOM II, it's important enough to feature here, because he made it to support the humanitarian efforts of the Red Cross and the UN Central Emergency Response Fund in Ukraine. You can get it at <a target="_blank" href="https://romero.com/shop/p/onehumanity">https://romero.com/shop/p/onehumanity</a>, and support this cause for just €5.00.</p>
+
+
+<p>Thank you,<br>
+DanielPharos</p>

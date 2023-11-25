@@ -1,0 +1,7 @@
+<author>Derrick McKay</author>
+<headline>"Exploding Wall" update.</headline>
+<P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- "Exploding Wall" Addon -</B></FONT><P>
+<A HREF="mailto:alper@uhavax.hartford.edu">AnArcHISt</A> has released an update to his re-written exploding wall Addon for QuArK. You can now choose from a "small" and "large" explosion. He says that if you're up close and shoot the wall with a shotgun, it still bleeds, so is planning on fixing that in the next version. (Get the update "explode11.zip" - 19k from the <A HREF="addon.html">Addon QME Files Page</A>.
+</UL><P><BR>

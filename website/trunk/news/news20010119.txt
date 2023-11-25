@@ -1,0 +1,37 @@
+<author>Decker</author>
+<headline>QuArK v6.1c patch/update</headline>
+<p>Andy and tiglari fixed some small problems in v6.1c, and have collected them in an easy installable 'cumulative update' file. Here is what the readme.txt says:</p>
+
+<blockquote>
+This patch is supposed to be a 'cumulative update' to QuArK 6.1, comprising stable improvements to QuArK (e.g., you should only need to upload the most recent version)<br>
+<br>
+Various more speculative facilities may well be available as separate patches.<br>
+
+<ul>
+<li>16_01_01 (Andy PersonX Vincent):
+  <ul>
+  <li>Fixed 'TypeError: len() of unsized object' caused by 11_01_01
+  </ul>
+
+<li>14_01_01 (tiglari):
+  <ul>
+  <li>'picking' facility added to bezier patches (if some points are picked, doing stuff to one does it to all).
+  <li>tech note:  mapbezier.py, mapbtns.py, b2utils.py, dlgclasses.py are synched with the dev branch of this date
+  </ul>
+
+<li>12_01_01 (tiglari):
+  <ul>
+  <li>updated patch manipulations
+  <li>most facilities documented in Tuturials/curvetutes.ZIP in <a href="http://www.egroups.com/files/quark">www.egroups.com/files/quark</a>
+  </ul>
+
+<li>11_01_01 (Andy PersonX Vincent):
+  <ul>
+  <li>AAS including in .pk3's fixed
+  </ul>
+</ul>
+</blockquote>
+
+<p>You install it, by unzipping <u>with directories</u> to your QuArK v6.1c directory, and answer yes to overwrite existing files.</p>
+
+<p>The 'cumulative update' file can be found here: <a href="http://dl.fileplanet.com/dl/dl.asp?quark/patches/quark61c_patch_16_01_01.zip">quark61c_patch_16_01_01.zip</a></p>

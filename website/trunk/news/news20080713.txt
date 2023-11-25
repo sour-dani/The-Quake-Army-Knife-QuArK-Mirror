@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Donators: Thank you!</headline>
+
+<p>Anybody looking at the donation page will notice that some donations have come in! cdunde and I would like to thank all the donators: <b>Thank you all!</b> To honor all those who have donated, we're going to add a file to QuArK called DONATORS.txt: it'll contain a list of all the donators. So again, thank you all. We'll keep up the good work on our end! <pic smiley_happy></p>
+
+
+<p>Happy playing,<br>
+DanielPharos</p>

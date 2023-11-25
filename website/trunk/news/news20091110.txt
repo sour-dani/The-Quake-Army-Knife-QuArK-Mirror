@@ -1,0 +1,10 @@
+<author>DanielPharos</author>
+<headline>Looking for developers</headline>
+
+<p>Hi all,<br>
+<br>
+As you are probably aware, QuArK is a big project. Lots of code, files, addons, etc. And such a large project needs a lot of developers (mostly programmers, but also people to make addons). Currently, there's just me (DanielPharos) and cdunde, and since I've recently started a PhD, I find I have less and less time available to work on QuArK. Since we obviously don't want QuArK to die, we need more people to develop it. So, we're looking for additional developers! If you are pretty good at programming in Python or Delphi, and are interested in joining the QuArK project (or know somebody who is), please contact us through the forums or email the webmaster!</p>
+
+
+<p>Happy programming,<br>
+DanielPharos</p>

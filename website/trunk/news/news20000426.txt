@@ -1,0 +1,12 @@
+<author>Decker</author>
+<headline>QuArK 6.00 Beta-1 released !!!</headline>
+Its a little hasty from my side of, since I just noticed it in the QuArK-News forum, where Armin posted the news.<br>
+I've uploaded the <a href="beta.php">Beta-1 page</a>, which contains information on how and what...
+Go there and read what the page says, while you download.<br>
+
+<headline>User-made maps</headline>
+The <a href="usermaps.php">user maps</a> page, have been updated with some new Quake-2 deathmatch maps:
+<ul>
+<li>'Efil Dungeon' by Demetris 'RoGeR' Leptos
+<li>'The Storageyard' by Simon 'Rabid_Si' Cooper
+</ul>

@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Recreation of QuakeWorld's Team Fortress mod</headline>
+
+<p>Did you like the original Team Fortress more than what Team Fortress 2 has become under Valve's management? Good news, because there's a project out there called Quake Team Fortress Remastered, with the goal of recreating and improving the original Team Fortress mod! You can find it here: <a target="_blank" href="https://www.fortressone.org/">FortressOne</a>.</p>
+
+
+<p>Happy fortressing,<br>
+DanielPharos</p>

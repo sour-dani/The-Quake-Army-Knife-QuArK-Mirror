@@ -1,0 +1,3 @@
+<author>Armin</author>
+<LI><a href="http://asp.planetquake.com/dl/dl.asp?quark/qktec5c2.zip">Tech info package for QuArK 5.0.c2</a> updated. Information about polyhedrons and faces was missing. (I always forget something ;-)
+</UL>

@@ -1,0 +1,23 @@
+<author>Decker</author>
+<headline>Zoners Half-Life Tools v2.4.1</headline>
+<p>Some small changes by Zoner:</p>
+
+<blockquote>
+<ul>
+<li>ALL TOOLS
+<ul>
+<li>                 Statically linking C and C++ runtime libraries, to remove the requirement of msvcp60.dll needing to be present and installed correctly on
+                 machines.
+</ul>
+<li>HLRAD
+<ul>
+<li>                 Fix the automatic loading of 'mapname.rad' files failing to load in all possible cases.
+</ul>
+<li>NETVIS
+<ul>
+<li>                 Workaround for 'Socket Error 16' on Linux when running netvis servers in quick succession on the same port.
+</ul>
+</ul>
+</blockquote>
+
+<p>Get <a href="http://dl.fileplanet.com/dl/dl.asp?quark/zhlt241.ace">zhlt241.ace</a> from the QuArK <a href="download.php">download-page</a>, or the .ZIP version which can be found on <a href="http://halflife.gamedesign.net">halflife.gamedesign.net</a>.</p>

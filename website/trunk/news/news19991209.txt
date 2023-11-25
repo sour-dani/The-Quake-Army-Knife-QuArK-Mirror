@@ -1,0 +1,18 @@
+<author>Decker</author>
+<headline>Zoner's Half-Life Tools v1.5</headline>
+A new version of the tools for Half-Life map-building made by Zoner. Only the HLRAD program seems to have been modified:
+<ul>
+<li>Fixed BSP warning accidentally removed and replaced with a vague generic message. 'NULL Pointer' caused by a CLIP textured brush based entity now correctly logs an error.
+<li>More documentation fixes.
+<li>Cleaned up source code directory layout.
+<li>Fixed Unix source package not having README and INSTALL text files.
+</ul>
+Get the <a target="_blank" href="http://www.winace.com">WinAce</a> file <a href="http://dl.fileplanet.com/dl/dl.asp?quark/zhlt15.ace">zhlt15.ace</a> (231KB) here, or
+the <a target="_blank" href="http://www.winzip.com">WinZip</a> one (which is 330KB) can <span class="sml">(soon)</span> be found on the <a target="_blank" href="http://halflife.gamedesign.net">Half-Life ERC</a> site.<br>
+
+<headline>QuArK-made maps</headline>
+Some Quake-2 deathmatch maps can now be found at the <a href="usermaps.php">User maps</a> page:
+<ul>
+	<li>'Anther Equ' by Demetris 'RoGeR' Leptos
+	<li>'Training Arena' by Luke 'Hamster' Mcgaffin
+</ul>

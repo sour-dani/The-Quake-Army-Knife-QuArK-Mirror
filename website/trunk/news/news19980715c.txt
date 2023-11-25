@@ -1,0 +1,9 @@
+<author>Gryphon</author>
+<UL>
+<!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-->
+<LI><STRONG>QuArK in the News (translated)!</STRONG><BR>
+A fellow QuArK user from the Netherlands has passed on a translation of the QuArK section of the review presented below.  Big thanks to Pascal Willemsen!<BR>
+Through the magic of HTML, I've inserted the pictures back, and represented it. Enjoy!<BR><BR><CENTER><a href="reviews/review1.shtm"><img src="reviews/dutch3a.gif" width=200 height=149 border=0 alt="PC Zone - QuArK Review (HTML version)"><BR><BR><B>Click Picture for<BR>HTML version of review</B></CENTER></LI>
+</BLOCKQUOTE>
+
+	</UL>

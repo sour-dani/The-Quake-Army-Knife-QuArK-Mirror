@@ -1,0 +1,10 @@
+<author>DanielPharos</author>
+<headline>Call of Hallucinations</headline>
+
+<p>Call of Duty is adding a new kind of anti-cheat technology: hallucinations. The basic idea is that suspected cheaters are presented with a "fake" enemy player only they can see, so they don't bother legitimate players as much. Or, they are put in hidden places, and if the player responds to them, they must be cheating (aimbot, wallhack, etc.). You can read more about it <a href="https://www.callofduty.com/blog/2023/06/call-of-duty-ricochet-anti-cheat-season-04-update">here</a>.</p>
+
+<p>Pretty cool tech. And remember: now you can always claim you were playing badly because you were distracted by the hallucinations!<pic smiley_happy></p>
+
+
+<p>Safe gaming,<br>
+DanielPharos</p>

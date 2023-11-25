@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Beware the combination of Counter-Strike 2 and AMD Anti-LAG</headline>
+
+<p>There's a problem with the latest AMD videocard drivers. They introduce Counter-strike 2 support for the Anti-LAG feature, but it <a href="https://twitter.com/CounterStrike/status/1712875606776729832">triggers Valve's VAC</a>, resulting in you being banned. So turn Anti-LAG off, for now!</p>
+
+
+<p>Happy Striking,<br>
+DanielPharos</p>

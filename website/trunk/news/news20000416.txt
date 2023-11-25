@@ -1,0 +1,11 @@
+<author>Decker</author>
+<headline>Zoner's Half-Life Tools v1.6.2</headline>
+Yet some changes have been made to the excellent Half-Life map compile tools by Zoner:<br>
+<ul>
+<li>Found one last unnaturally large object created on the stack, it is now allocated from the heap. Unix compiles of ZHLT work better with 'sane' ulimits.
+<li>Set MAX_MAP_PLANES back to 32767, it seems half-life did some really weird things when running a map, by having it be higher.
+<li>Increased MAX_MAP_TEXINFO from the original limit 8192 to its maximum 32767.
+<li>Added better error handling logic in the core threading functions for the Win32 platform.
+</ul>
+Get the <a target="_blank" href="http://www.winace.com">WinAce</a> file of Zoner's Half-Life Tools: <a href="http://dl.fileplanet.com/dl/dl.asp?quark/zhlt162.ace">zhlt162.ace</a> (218KB), or
+the <a target="_blank" href="http://www.winzip.com">WinZip</a> one (259KB) which can soon be found on the <a target="_blank" href="http://halflife.gamedesign.net">Half-Life ERC</a> site.<br>

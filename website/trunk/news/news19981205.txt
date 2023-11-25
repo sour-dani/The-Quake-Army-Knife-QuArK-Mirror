@@ -1,0 +1,5 @@
+<author>Armin</author>
+<p>A <a href="http://asp.planetquake.com/dl/dl.asp?quark/qk52b.ZIP">special release</a> of QuArK is available for people
+who want to help with Half-Life or Sin support. This release "52b" supports Sin and Half-Life textures and .wad files, respectively.
+Only get this if you already have version 5.2 and if you want to help with Half-Life or Sin !
+The executable and the support files are all in "debug" mode.</p>

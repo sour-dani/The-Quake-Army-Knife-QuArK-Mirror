@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Quake II - 25 year anniversary</headline>
+
+<p>This is your reminder that you are obligated to go and play some Quake II, seeing as it's its 25 year anniversary! Happy <span style="text-decoration: line-through;">birth</span>releaseday, Quake II!</p>
+
+
+<p>Safe Quaking,<br>
+DanielPharos</p>

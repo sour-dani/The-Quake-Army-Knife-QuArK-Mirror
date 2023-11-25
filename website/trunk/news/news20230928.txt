@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Counter-Strike 2 released!</headline>
+
+<p>Counter-strike 2 has just been released! It's a free, big update to Counter-Strike: Global Offensive, so have fun!</p>
+
+
+<p>Happy Striking,<br>
+DanielPharos</p>

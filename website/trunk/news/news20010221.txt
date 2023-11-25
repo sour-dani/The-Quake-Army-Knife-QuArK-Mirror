@@ -1,0 +1,10 @@
+<author>Decker</author>
+<headline>User maps</headline>
+<p>Three Half-Life deathmatch maps have been added to the <a href="usermaps.php?HL=1&M_DM=1">User Maps</a> page.<br>
+However, Thomas didn't care to supply any more detail, like filesizes and a short description for the maps, so what they are <span class="sml">(other than deathmatch)</span>, your guess is as good as mine.</p>
+
+<ul>
+<li>'Deserted Complex Version 1.74' by Mark and Thomas
+<li>'Railectric version 1.42' by Mark and Thomas
+<li>'Firing Frenzy version 1.14' by Mark and Thomas
+</ul>

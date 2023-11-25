@@ -1,0 +1,40 @@
+<author>cdunde</author>
+<headline>QuArK site back up and running ! ! !</headline>
+<p>Due to an acquisition of Gamespy by IGN and a system transition of QuArK's site provider, access to this sites files was disabled until now.</p>
+
+<p>This is why there have not been any News releases or QuArK program updates at this location.</p>
+
+<p>We sincerely apologize for this disruption. However, because of this unforeseen situation, it has brought about the creation of a sister site for QuArK. This site was originated by Peter Brett, one of the co-developers of QuArK, and can be reached through <a href="http://quark.sourceforge.net/cgi-bin/moin.cgi">this link.</a></p>
+
+<p>This is a <b><u>new</u></b> type of site that allows <b><u>YOU</u></b>, the user to post game mapping information relating to the use of QuArK!!!</p>
+
+<p>So be sure to go there and bookmark it for more exciting features and development of QuArK!</p>
+
+<p>This original site location will also continue to exist. But we felt, as a precaution for the future, that it was in the best interest of our users to spawn a second location as well.</p>
+
+<p>Currently a new snapshot is being worked on feverishly and will soon be released.</p>
+
+<p>Just a few of the items and features covered by this snapshot will be:</p>
+<UL>
+<LI>Support for Half-Life 2, its entities, textures, as well as its
+      models. Although this is only the first pass in adapting QuArK
+      to make and edit Half-Life 2 maps, we are all very excited about
+      this new game addition.
+<LI>Support for Doom 3. Not to be out done by Half-Life 2, the addition
+      of Doom 3 is also well on its way. It too will have extended
+      support for its entities and textures as well. Even though this is
+      a very large game we have strived in every way to preserve the
+      ability to take advantage of its highly detailed entity settings.
+<LI>We are also keeping up with feature improvements of our existing
+      games by adding Color_Pick and visible light settings for Torque.
+<LI>In addition there has been added support for JA (Jedi Academy)
+      with full lists of all textures, shaders and all singleplayer entities as well as
+      a partial list of multiplayer entities.
+<LI>As well as added support for Q3 based mods CoD (Call of Duty),
+      ET (Enemy Terror) and UT (Urban Terror - 2 data unit files).
+<LI>MOHAA has also been updated with the addition of weapon entities to its Data file.
+</UL>
+
+<p>For more information and support, go to the <a href="http://quark.sourceforge.net/forums.php">forums</a>.</p>
+
+<p>And remember to visit <a href="http://quark.sourceforge.net/cgi-bin/moin.cgi">our sister site!</a></p>

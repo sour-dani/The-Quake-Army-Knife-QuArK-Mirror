@@ -1,0 +1,6 @@
+<author>Armin Rigo</author>
+<UL>
+
+<LI>Avery Andrews makes nice add-ons for QuArK 5, especially support for the Hexen II MP. See <A HREF="http://hypatia.stanford.edu/~andrews/hex2/index.htm">his page</A>.
+
+	</UL>

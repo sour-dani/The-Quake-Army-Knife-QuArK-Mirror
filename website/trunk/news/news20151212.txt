@@ -1,0 +1,12 @@
+<author>DanielPharos</author>
+<headline>Another QuArK 6.6.0 Beta 7 nightly released!</headline>
+
+<p>Another nightly version of QuArK has just been released! Compared to the 6 December nightly, it contains a workaround for an AMD driver bug, and it uses the latest version of NSIS which will work properly on hard disks with more than 4 TB of free space.</p>
+
+<p>Link: <a href="http://quark.sourceforge.net/downloads/release_zips/quark-win32-6.6.0Beta7Nightly12Dec2015.exe">http://quark.sourceforge.net/downloads/release_zips/quark-win32-6.6.0Beta1Nightly12Dec2015.exe</a></p>
+
+<p>Please post in the forums if you are experiencing problems with this nightly!</p>
+
+
+<p>Happy QuArK-ing,<br>
+DanielPharos</p>

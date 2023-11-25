@@ -1,0 +1,10 @@
+<author>Derrick McKay</author>
+<headline></headline>
+<UL>
+<LI>
+<FONT FACE="verdana,arial"><FONT COLOR="#0000A0"><FONT SIZE=-1><A HREF="ftp://ftp.cdrom.com/pub/idgames2/planetquake/quark/qbspar02.zip">QBSP_AR
+version 0.2</A> released ! Use it for all your Quake maps. Recommended
+and optimized for QuArK. Read the <A HREF="ftp://ftp.cdrom.com/pub/idgames2/planetquake/quark/qbspar02.txt">description</A>.
+You can also download the <A HREF="ftp://ftp.cdrom.com/pub/idgames2/planetquake/quark/buildq.zip">full
+package</A> that includes Arghlite and RVis.&nbsp;</FONT></FONT></FONT></LI>
+</UL>

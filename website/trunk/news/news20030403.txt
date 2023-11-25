@@ -1,0 +1,3 @@
+<author>tiglari</author>
+<headline></headline>
+<p>A new <a href="http://www.fileplanet.com/dl/dl.asp?/planetquake/quark/patches/QuArK_v630_update3b.ZIP">fixed</a> update patch 3 for QuArK 6.3.0, the original had a nasty bug in the form of a crash when the selection menu was activated with one item selected (point out originally in the code by cdunde, then in the update by quantum_red).</p>

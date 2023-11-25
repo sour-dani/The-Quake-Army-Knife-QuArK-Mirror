@@ -1,0 +1,18 @@
+<author>Decker</author>
+<headline>Kingpin support?</headline>
+Whats this? <a target="_blank" href="http://www.planetquake.com/tread">Tread</a> got Kingpin support, and QuArK don't!?
+How can that be? Well, because we need someone who will be willing to create and maintain a Kingpin data add-on, and figure out what build programs
+are required to create Kingpin maps. The filestructure also has to be known: Is it using .PAK files? In what file-format are the textures?
+Can some Quake-2 QuArK Delphi/Python-code be reused, since Kingpin is based on Quake-2? Etc.<br>
+So if you got the Kingpin game, and knows how to do all the above, please mail <a href="mailto:***PLEASE@NO*SPAM***arigo@planetquake.com?subject=Kingpin volunteer">Armin</a>.<br>
+
+<headline>New Half-Life tools from Zoner</headline>
+<a href="mailto:***PLEASE@NO*SPAM***sean@dimensionalrift.com">Zoner</a> have done it again. Enhanced the <a href="http://asp.planetquake.com/dl/dl.asp?quark/zhlt12.ace">Half-Life build tools</a> with new features (and some bugs fixed). Here's a list with some of the most interesting changes/additions:
+<ul>
+<li>Added a command line switch -texdata to all the tools. The default is 4MB. If you wish to use more than 4MB, add "-texinfo n" to the command line for all four tools; HLCSG, HLBSP, HLVIS, HLRAD; where n is a number in kilobytes. i.e. -texdata 8192 would set texture data to 8MB.
+<li>Added support for HINT brushes. There is an excellent <a target="_blank" href="http://users.net66.com/~gdewan/hintdesc.html">tutorial</a> of how to use them on the net by Geoffrey DeWan.
+<li>Extended entity text data from 128KB to 512KB. Half-Life seemed ok with this on my test map, but remember it makes the game use more memory.
+<li>Texture names in the MAP files are converted to UPPERCASE at compile time. Some non-Worldcraft editors occasionaly emit lowercase texturenames in the .MAP files which is bad.
+<li>Added a command line switch "-maxnodesize n" to HLBSP. The default value is 1024. A smaller value causes bsp to generate many more portals (making the bsp tree much more complex) which can sometimes help VIS do a better job on its own without HINT brushes. Larger values of course, do the opposite. Larger values with well placed HINT brushes can keep the bsp tree simple yet highly efficient.
+<li>Removed -draw option and dependency on tools for OpenGL to HLBSP and HLCSG.
+</ul>

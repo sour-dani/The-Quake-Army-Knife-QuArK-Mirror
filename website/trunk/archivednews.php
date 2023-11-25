@@ -1,72 +1,105 @@
-#!/usr/bin/php
 <?php
-include("_functions.php");
+require_once('_base_code.php');
+require_once('_language_functions.php');
+require_once('_news_functions.php');
+require_once('_news-database.php');
 
-function pageLocalDisplay() {
-  global $newsperiod;
+# Load language file
+LoadLanguageFile('archivednews.php');
 
-  if ($newsperiod) {
-    $newsyear = (int)substr($newsperiod, 0, 4);
-    $newsmonth = (int)substr($newsperiod, 4, 2);
-  } else {
-    $newsperiod = mktime(0,0,0,date("m") - 1,1,date("Y"));
-    $newsyear = (int)date("Y", $newsperiod);
-    $newsmonth = (int)date("m", $newsperiod);
-  }
+function pageLocalDisplay()
+{
+	global $OldestNewsYear, $OldestNewsMonth;
 
-  if ($newsyear && $newsmonth)
-  {
-    $month = date("F", mktime(0,0,0,$newsmonth,1,$newsyear));
-    pageName("Archived News of " . $month . " " . $newsyear);
-  }
-  else
-    pageName("Archived News");
+	$newsperiod = isset($_GET['newsperiod']) ? $_GET['newsperiod'] : NULL;
 
-  #
-  # The "<font...><p> </p></font>" is for Netscape to _minimize_ the size of a Form's Input buttons!
-  #
+	$newsyear = 0; //Using this to detect whether the news-period is found and is correct.
+	if ((!is_null($newsperiod)) && (strlen($newsperiod) === 6))
+	{
+		$newsyear = intval(substr($newsperiod, 0, 4));
+		$newsmonth = intval(substr($newsperiod, 4, 2));
+		if (($newsyear < $OldestNewsYear) || ($newsmonth < 1) || ($newsmonth > 12) || ($newsyear === $OldestNewsYear && $newsmonth < $OldestNewsMonth))
+		{
+			$newsyear = 0;
+		}
+		else
+		{
+			$newsperiod = mktime(0,0,0,date('m'),1,date('Y'));
+			if (($newsyear > intval(date('Y', $newsperiod))) || ($newsyear === intval(date('Y', $newsperiod)) && $newsmonth > intval(date('m', $newsperiod))))
+			{
+				$newsyear = 0;
+			}
+		}
+	}
+	if ($newsyear === 0)
+	{
+		$newsperiod = mktime(0,0,0,date('m'),1,date('Y'));
+		$newsyear = intval(date('Y', $newsperiod));
+		$newsmonth = intval(date('m', $newsperiod));
+	}
 
-  $filterpanel = "<form><font size=2><p>Select year and month of archived news: <select name=\"newsperiod\">";
+	if ($newsyear && $newsmonth)
+	{
+		$month = date('F', mktime(0,0,0,$newsmonth,1,$newsyear));
+		pageName('Archived News of ' . $month . ' ' . $newsyear);
+	} else
+		pageName('Archived News');
 
-  $year = date("Y");
-  $month = date("m");
-  do {
-    $month--;
-    $somedate = mktime(0,0,0,$month,1,$year);
-    if (date("Y", $somedate) == $newsyear && date("m", $somedate) == $newsmonth)
-      $selected = "selected ";
-    else
-      $selected = "";
-    $filterpanel .= "<option " . $selected . "value=\"" . date("Ym", $somedate) . "\">" . date("Y F", $somedate);
-  } while ($somedate > mktime(0,0,0,1,1,1999));
+	$filterpanel = '<form action="archivednews.php" method="get">Select year and month of archived news: <select name="newsperiod">';
 
-  $filterpanel .= "</select>&nbsp;&nbsp;<input type=\"submit\" value=\"Show me\"></p></font></form>";
+	$LastDate = mktime(0,0,0,$OldestNewsMonth,1,$OldestNewsYear);
+	$CurTime = time();
+	$year = intval(date('Y', $CurTime));
+	$month = intval(date('m', $CurTime));
+	do
+	{
+		$somedate = mktime(0,0,0,$month,1,$year);
+		if (intval(date('Y', $somedate)) === $newsyear && intval(date('m', $somedate)) === $newsmonth)
+			$selected = ' selected';
+		else
+			$selected = '';
+		$NRArticles = countArchiveNews(mktime(0,0,0, $month+1, 0, $year), $somedate);
+		$filterpanel .= '<option' . $selected . ' value="' . date('Ym', $somedate) . '">' . date('Y F', $somedate) . ' (' . $NRArticles . ')';
+		$month--;
+		if ($month === 0)
+		{
+			$month = 12;
+			$year--;
+		}
+	}
+	while ($somedate > $LastDate); #Note: Not including 'equal' case, because somedate is still pointing to the current iteration.
 
-  $prevbutton = "";
-  if (($newsyear > 1999) || ($newsyear == 1999 && $newsmonth > 1)) {
-    $somedate = mktime(0,0,0,$newsmonth - 1,1,$newsyear);
-    $prevbutton = "<form><font size=2><p><input type=\"hidden\" name=\"newsperiod\" value=\"" . date("Ym", $somedate) . "\"><input type=\"submit\" value=\"&lt;--- Prev month\"></p></font></form>";
-  }
-  $nextbutton = "";
-  if (($newsyear < date("Y")) || ($newsyear == date("Y") && $newsmonth < date("m")-1)) {
-    $somedate = mktime(0,0,0,$newsmonth + 1,1,$newsyear);
-    $nextbutton = "<form><font size=2><p><input type=\"hidden\" name=\"newsperiod\" value=\"" . date("Ym", $somedate) . "\"><input type=\"submit\" value=\"Next month ---&gt;\"></p></font></form>";
-  }
-  $bottombuttons = "<table align=center border=0 cellspacing=0 cellpadding=0><tr><td>".$prevbutton."</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>".$nextbutton."</td></tr></table>";
+	$filterpanel .= '</select>&nbsp;&nbsp;<input type="submit" value="Show me"></form>';
 
-  if (1) {
-    $topbuttons = "<table align=center border=0 cellspacing=0 cellpadding=0><tr><td>".$prevbutton."</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>".$filterpanel."</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>".$nextbutton."</td></tr></table>";
-  } else {
-    $topbuttons = $filterpanel;
-  }
+	if (($newsyear > $OldestNewsYear) || ($newsyear === $OldestNewsYear && $newsmonth > $OldestNewsMonth))
+	{
+		$somedate = mktime(0,0,0,$newsmonth - 1,1,$newsyear);
+		$prevbutton = '<form action="archivednews.php" method="get"><input type="hidden" name="newsperiod" value="' . date('Ym', $somedate) . '"><input type="submit" value="&lt;--- Prev month"></form>';
+	} else
+		$prevbutton = '';
+	if (($newsyear < intval(date('Y'))) || ($newsyear === intval(date('Y')) && $newsmonth < intval(date('m'))))
+	{
+		$somedate = mktime(0,0,0,$newsmonth + 1,1,$newsyear);
+		$nextbutton = '<form action="archivednews.php" method="get"><input type="hidden" name="newsperiod" value="' . date('Ym', $somedate) . '"><input type="submit" value="Next month ---&gt;"></form>';
+	} else
+		$nextbutton = '';
+	$bottombuttons = '<table align=center cellspacing=0 cellpadding=0><tr><td>'.$prevbutton.'</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>'.$nextbutton.'</td></tr></table>';
 
-  pagePanel(" ", "Select...", "", $topbuttons);
+	#if (true) {
+		$topbuttons = '<table cellspacing=8 cellpadding=0 width="100%"><tr><td align=left>'.$prevbutton.'</td><td align=center>'.$filterpanel.'</td><td align=right>'.$nextbutton.'</td></tr></table>';
+	#} else {
+	#  $topbuttons = $filterpanel;
+	#}
 
-  if ($newsyear && $newsmonth) {
-    displayNews(mktime(0,0,0, $newsmonth+1, 0, $newsyear), mktime(0,0,0, $newsmonth, 1, $newsyear));
-    pageSidePanel("", "", $bottombuttons);
-  }
+	pagePanel(NULL, 'Select...', '', $topbuttons);
+
+	if ($newsyear && $newsmonth)
+	{
+		if (displayArchiveNews(mktime(0,0,0, $newsmonth+1, 0, $newsyear), mktime(0,0,0, $newsmonth, 1, $newsyear)) > 0)
+			pagePanel(NULL, '', '', $bottombuttons);
+	}
 }
 
-pageDisplay("Archived News", 'pageLocalDisplay');
+pageDisplay('Archived News', 'pageLocalDisplay');
+
 ?>

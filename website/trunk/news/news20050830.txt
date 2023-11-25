@@ -1,0 +1,26 @@
+<author>cdunde</author>
+<headline>Enhanced build tool pack for Quake II just released!</headline>
+<p>Recently one of our developers , <b>Mr. Peter Brett</b>, was able to return and once again add to QuArK with his talents. He brings with him a new project release he as been working on for an enhanced build tool pack for <b>Quake II</b>.</p>
+
+<p>Based on a merge between <a href="http://home.insightbb.com/~gryndehl/q2compile/quake2.html">Geoffrey DeWan's tools</a> and Armin's QBSP3 pak (distributed from the <a href="download_tools.php">QuArK download page</a> on this site), Peter's set:</p>
+
+<UL>
+<LI>Correction of "origin" brush texture displacement ! So now you can have a func_rotating, and it will look exactly the same in  the game as it does in the editor !!!
+<LI>Incorporates GDW's enhancements and adds improved HINT support to assist working with terrain generator tools.
+<LI>Support for QuArK's Enhanced Texture Positioning MAP files which have highly accurate texture positioning and orientation capabilities.
+<LI>And with the recent successful compile on Linux, that too will be added soon !
+</UL>
+
+<p>For a complete description, and very nice screen shots, of this new tool pack take a look at his <a href="http://peter-b.co.uk/blog/">Blog</a> web page and for a direct down load of these tools go to <a href="http://peter-b.co.uk/software.html">Peter's Download Page</a>.</p>
+
+<p>Peter personally recommends using his <a href="http://peter-b.co.uk/software.html">QBSP3</a> + <a href="download_tools.php">TIMVIS distributed from QuArK's Download Page</a> + <a href="http://forums.gamedesign.net/viewtopic.php?t=49129">ArghRad 3.00 beta</a> as the build chain for Quake II.</p>
+
+<p>We also recommend that you <a href="http://peter-b.co.uk/software.html">try these new tools</a> and <a href="http://peter-b.co.uk/blog/">give Peter some feed back</a> as to their use and testing. This, of course, is the best way for <b>YOU</b> to help with the development of <b>QuArK</b>.</p>
+
+<p><b>Keep your QuArK knife sharp!</b><br>
+
+cdunde</p>
+
+<p>For more information and added support, go to the <a href="http://quark.ironfoot.co.uk/">QuArK Resource Center</a> and <a href="http://quark.sourceforge.net/forums.php">the forums page</a> of this site.</p>
+
+<p>And remember to visit our sister site - <a href="http://quark.sourceforge.net/">QuArK Wiki</a> where <b><u>you can add</u></b> your knowledge as well!</p>

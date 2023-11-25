@@ -1,0 +1,9 @@
+<author>Decker</author>
+<headline>User made map</headline>
+<p>Yet a Quake-3:Arena deathmatch map have been added to the <a href="usermaps.php?Q3A=1&M_ZZX=1&T_DM=1">User Maps</a> page.</p>
+
+<ul>
+<li>Power Unleashed - by Demetris Leptos (aka RoGeRidoo)</li>
+</ul>
+
+<span class="sml">BTW: Sorry for the slow updates... Playing <a href="http://www.planetdeusex.com">Deus Ex</a> alot lately - damn good game...</span>

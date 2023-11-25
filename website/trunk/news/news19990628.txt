@@ -1,0 +1,16 @@
+<author>Decker</author>
+<headline>Plug-in developers needed</headline>
+Do you know Delphi and/or Python? Do you want to help making QuArK even better? <a href="suggestedplugins.php">Click</a>.<br>
+
+<headline>QuArK-made Maps</headline>
+Yet a new map added to the list of <a href="usermaps.php">user maps</a>:<br>
+<ul>
+	<li>'Factor X' by Jacques Krige (RAHZAR)
+</ul>
+
+<headline>Armin working hard on QuArK v5.10</headline>
+He is squishing bug after bug. Hopefully they are not as dangerous as those scarab-beetles from the movie 'The Mummy' I saw last night -
+brrrrr <img src="pics/SmileySad.gif" align=absmiddle width=15 height=15> they are surely hungry little fellows.<br>
+<br>
+<span class="sml"><b>Pssst!</b> If anyone knows of some new games, which uses the Quake graphics-engines, that currently are under development, please let
+<a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com?body=-- NOTICE: HTML e-mails will be bounced, so send only in plain-text! /Decker --">me</a> know - I need it for the next InstaPoll.</span>

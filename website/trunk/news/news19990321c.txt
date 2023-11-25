@@ -1,0 +1,35 @@
+<author>Gryphon</author>
+      <ul>
+        <font 
+size=2 face="verdana,arial" 
+		color="0000a0"> <!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:--></font><font 
+size=2 face="verdana,arial" 
+		color="0000a0"><strong>Just the FAQs?</strong><br>
+        </font> 
+        <li><font size=2 face="verdana,arial" color="0000a0"> The FAQ page has 
+          been updated. That nagging Voodoo 2 trouble has apparently been figured 
+          out. Also, the FAQ page has been re-designed to hopefully make it easier 
+          to print. If this isn't the case... well, like usual, <b><a href="mailto:gryphon@planetquake.com">LET 
+          ME KNOW</a></b>!</font> 
+      </ul>
+      <ul>
+        <font 
+size=2 face="verdana,arial" 
+		color="0000a0"><strong>User Map Updates! </strong><br>
+        </font> 
+        <li><font size=2 face="verdana,arial" color="0000a0"> Maps:</font> 
+          <ul>
+            <li><i><font face="Verdana, Arial, Helvetica, sans-serif" size="2">Q1Monas</font></i></li>
+            <li><i><font face="Verdana, Arial, Helvetica, sans-serif" size="2">Arena</font></i></li>
+            <li><i><font face="Verdana, Arial, Helvetica, sans-serif" size="2">The 
+              Burning Zone</font></i></li>
+          </ul>
+      </ul>
+      <p><font face="Verdana, Arial, Helvetica, sans-serif" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check 
+        'em out!<br>
+        </font> </p>
+      <blockquote> 
+        <p><font face="Geneva, Arial, Helvetica, sans-serif" size="3"><i><b><font color="#000066">Quake 
+          Army Knife Forever, dudes!<br>
+          </font></b></i></font></p>
+      </blockquote>

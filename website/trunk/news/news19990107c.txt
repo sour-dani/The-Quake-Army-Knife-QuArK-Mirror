@@ -1,0 +1,76 @@
+<author>Gryphon</author>
+      <ul>
+        <font 
+size=2 face="verdana,arial" 
+		color="0000a0"> <!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:--> 
+        <p><strong>eGroups is HISTORY</strong><br>
+        <li>Okay, in all the time I've been running this site, I haven't gotten 
+          as affirmative a response to any decision I was thinking about making. 
+          I'd mentioned on the boards that I was thinking about nuking eGroups 
+          as THE forum on the site, and many folks have responded with a resounding 
+          &quot;PLEASE DO!&quot; --Consider it <i>done</i>. Almost everything 
+          is coming into place on this front. I want to make sure the transition 
+          is as seemless as possible. An update should be in the offing after 
+          next weekend.<br>
+          <br>
+          <strong>The Forum that ROSE from the dead...</strong><br>
+        <li>In other news, the long BROKEN <a href="http://www.planetquake.com/quark/forumold.htm"><b>old 
+          forum archive</b></a> on the forums has now been fixed (took me all 
+          of two minutes to locate the scripting errors). My service provider 
+          had updated their script interpreter, and it broke some <i>illegal</i> 
+          (yet previously acceptable) code in the former QuArK messageboard. This 
+          has now been corrected (what...? I been busy... sorry!). <br>
+          Definitely revisit the <a href="http://www.planetquake.com/quark/forumold.htm"><b>old 
+          forum</b></a>! It as some nice gems in it. Still slow as a <a href="http://www.pets.com/images/dogincar.jpg"><b>dog</b></a>... 
+          but I'm sure I can fix that too... when I feel like taking a break from 
+          working on the eGroups forum replacement script. To get an idea of what 
+          I'm shooting for with the look and FEEL of the new forum, check our 
+          the <a href="http://www.planetquake.com/quark/forumold.htm" target="_new"><b>old 
+          forum</b></a> (I like those icons), and then check out <a href="http://forums.planetquake.com" target="_new"><b>planetquake</b></a> 
+          and <a href="http://forums.planethalflife.com" target="_new"><b>planethalflife</b></a>'s 
+          forums (nice format), then... check out <b><a href="http://www.openroad.ca/volkswebbin/wall/technical/index.mv" target="_new">an 
+          example</a></b> of forum I'm basing this on with SEARCH, SORTING, PAGING 
+          and MULTI-FORUM support. Our's will be a mix... and hopefully with mailing 
+          list features. The thing that bothers me most is that all the old messages 
+          will be still on eGroups with no easy way of transfering them (but I'm 
+          an optimist, so it's not a closed book yet). <br>
+          <font size="2" face="verdana,arial" color="0000a0"> 
+          <br>
+          <strong>Fab PreFABs</strong><br>
+          </font>
+        </font>
+        <li><font size="2" face="verdana,arial" color="0000a0">Cool announcement 
+          by Decker that he's starting a QuArK PreFab libary:<br>
+          </font>  
+      </ul><div align="center">
+        <table width="70%" border="0" cellpadding="10" cellspacing="0" bgcolor="#FFFFCC">
+          <tr> 
+            <td> 
+              <p><font face="Geneva, Arial, Helvetica, sans-serif" size="2" color="#000000"><b>Decker 
+                -<a href="mailto:decker@post1.tele.dk"> e-mail</a> / <a href="http://home1.inet.tele.dk/decker/" target="_new">website</a></b><br>
+                I've started a little prefab-library for <a href="games/halflife.shtm">Half-Life</a>, 
+                but need contributions from others, so it will be a really extensive 
+                prefab-library. All credits will be given to the right people, 
+                if they want it. The current prefab-HL.qrk add-on can be found 
+                here: <a href="http://home1.inet.tele.dk/decker/prefabHL.zip"><b>http://home1.inet.tele.dk/decker/prefabHL.zip</b></a> 
+                (<b>15K</b>) and it currently (only) </font></p>
+              <p><font face="Geneva, Arial, Helvetica, sans-serif" size="2" color="#000000"><b><i>Contains</i></b>: 
+                </font></p>
+              <ul>
+                <li><font face="Geneva, Arial, Helvetica, sans-serif" size="2" color="#000000">Crates 
+                  in different sizes and textures <br>
+                  <i> These were easy to make!</i> :-) </font></li>
+                <li><font face="Geneva, Arial, Helvetica, sans-serif" size="2" color="#000000">A 
+                  militray truck (a little different from the ones in the game) 
+                  - </font></li>
+                <li><font face="Geneva, Arial, Helvetica, sans-serif" size="2" color="#000000">A 
+                  civil truck/car (closely looks like the ones in the game) </font></li>
+              </ul>
+              <p align="center"><font face="Geneva, Arial, Helvetica, sans-serif" size="2" color="#000000">There's 
+                a little <b><a href="http://home1.inet.tele.dk/decker/hlprefabs.jpg">screenshot</a></b> 
+                in my 'QuArK-files' page on my <a href="http://home1.inet.tele.dk/decker/"><b>homepage</b></a>, 
+                so you can see for yourself.</font></p>
+            </td>
+          </tr>
+        </table>
+      <p>&nbsp;</p></div>

@@ -1,0 +1,65 @@
+<author>cdunde</author>
+<headline>Ready for Warp Drive ! ? <a href="http://sourceforge.net/project/showfiles.php?group_id=1181"><b>QuArK 6.6.0 BETA 1</b></a> has just been <b>REINSTATED</b> !</headline>
+
+<p>(This was necessary for numinous needed corrections involving the lighting described below)<br>
+(Any downloads prior to May 14th should be re-downloaded, thank you for your patience)</p>
+
+<p>A small <b>Boo-boo</b> was made, so also <a href="http://quark.cvs.sourceforge.net/viewvc/*checkout*/quark/runtime/quarkpy/mapentities.py?view=log">download Revision 1.57</a> and replace the quarkpy\mapentities.py file after installation is completed.</p>
+
+<p>The problem was found and pointed out by <b>X7[Q2C]</b> and <b>Who Gives A Dam</b> <a href="http://quark.sourceforge.net/forums/index.php?topic=15.0">in this topic on the forums...</a> thanks guys, good find.</p>
+
+<p>("Well it's about time !") ...Yeah...we'll give you that. So as an <b>Added Feature</b>... how about a New and Improved <a href="http://quark.sourceforge.net/forums/"><b>QuArK Official Forums</b></a> to tantalize your taste buds!<br>
+(But more on that in a moment...)</p>
+
+<p>With decisive internal source changes and improvements by <b>Dancing Dan</b> (aka "DanielPharos") QuArK is bigger and better than ever.<br>
+And cdunde (aka my self) has been sharing the load by adding <b>Five New Games</b>....yes you read that right!<br>
+The <b>BIG</b> concentration has been on the <b>QuArK Map Editor</b> for this release....<br>
+but that's not to say that the <b>QuArK Model Editor</b> has been neglected....OH NO! ! ! Not by any means ! 8-)<br>
+(yes I'm coping this... can't always be original)</p>
+
+<p>So, what's new with this release?<br>
+Welllllll.....lets break it down by <b>BOTH</b> QuArK Editors for you ! 8-o</p>
+
+<p>For the <b>Map Editor</b> :
+Many .. many .. many .. <b>many</b> new functions and capabilities have been added.<br>
+Some of which are:</p>
+<UL>
+<LI>Added a new highly detailed <a href="http://quark.sourceforge.net/infobase/adv.conversion.html"><b>QuArK Conversion Tools</b></a> system, for making game support QuArK .qrk files, with expandable capabilities.
+<LI>Some nice fixes by <b>Adam Quest</b> (aka "Who Gives A Dam") to the 'Worldcraft .fgd file' converter, (Thank you Sir !).
+<LI>Cleaned up, fixed if needed and brought into sync all QuArK addons.
+<LI>DanielPharos fix to stop bezier-view from causing errors.
+<LI>Added full game support for Team Fortress 2. Entities by Japa, textures by Nax. (Thanks a TON Guys !)
+<LI>Added full game support for Heavy Metal - <b>FAKK2</b>, <b>PREY</b>, <b>NEXUIZ</b> and <b>Warsow</b> (with .md3 model support), with major support improvements for <b>EF2</b>.
+<LI>Added FTX file loading and saving support (Heavy Metal: F.A.K.K. 2 textures).
+<LI>Big changes to OpenGL: should fix the OpenGL hangups.
+<LI>Setup displaying of 'Used Textures' in current map being edited in the Texture Browser.
+<LI>Setup of a full bezier library with over 30 prefab beziers to work with for games that can use beziers.
+<LI>AND much....much....more....! ! !
+</UL>
+<p><b>OOoo-WHEee !</b> and that's just part of the list ! 8-o See the <b>NEWS.txt</b> file that comes with QuArK for ALL of the goodies ! And the Infobase for FULL documentation and links ! 8-)</p>
+
+<p>Now the <b>Model Editor</b> :</p>
+<UL>
+<LI>Setup new <a href="http://quark.sourceforge.net/infobase/intro.modeleditor.toolpalettes.paintmodes.html"><b>Paint modes toolbar and complete painting functions</b></a> to allow the painting of skin textures in any Model Editor textured and Skin-view.
+<LI>The Skin-view now properly updates to reflect changes made to skin textures.
+<LI>Added two new sections for <a href="http://quark.sourceforge.net/infobase/src.quarkx.html#quarkxlogpurpose"><b>Logging functions</b></a> and <a href="http://quark.sourceforge.net/infobase/src.quarkx.html#quarkxtexturefunctions"><b>Texture functions</b></a> for added QuArK development.
+<LI>Made toolbars interactive with one another to turn off buttons when needed, avoiding errors and crashes.
+<LI>Added <b>newframe</b> to New files... toolbox, "Model" type, for a new model to be made from.
+<LI>Added Used Skin Textures for displaying in the Texture Browser.
+<LI>Changed Quake 2 "TextureFormat" to save .md2 model skin textures as .pcx proper format.
+<LI>Setup function to reset Skin-view.
+<LI>Stopped "doautozoom" in Skin-view, causing unexpected view jumps.
+</UL>
+<p><b>QuArK</b>...with <b>32</b> fixes, new functions and MAJOR features in all ! ! !</p>
+
+<p><b>SO BEAM YOURSELF UP CAPTAIN !</b><br>
+And go get your new copy of <a href="http://sourceforge.net/project/showfiles.php?group_id=1181"><b>QuArK 6.6.0 Beta 1</b></a> ....<b>NOW !!!</b></p>
+
+
+<p><b><---</b> And <b>don't forget</b> to visit and <b>register</b> at the <a href="http://quark.sourceforge.net/forums/"><b>NEW QuArK Official Forums !!!</b></a></p>
+
+<p>Remember <b>Keep your QuArK knife sharp!</b></p>
+
+<p>cdunde</p>
+
+<p>For more information and added support, go to the <a href="http://quark.sourceforge.net/forums/">QuArK Official Forums</a> and <a href="http://quark.sourceforge.net/communication.php#forums">the forums page</a> of this site.</p>

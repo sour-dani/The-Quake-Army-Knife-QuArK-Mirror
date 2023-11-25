@@ -1,0 +1,44 @@
+<author>Decker</author>
+<headline>Kingpin ALPHA TEST support!</headline>
+A message from Alexander, who is working on Kingpin support for QuArK:<br>
+<blockquote>
+Hi folks,<br>
+<br>
+Tonight I have put everything that you will need to make KingPin
+maps with Quark on a web page. You will need the Quark 5.11 beta
+distribution, and two archives:<br>
+<br>
+&nbsp;&nbsp;&nbsp;<a href="http://pages.vossnet.de/mac/kp/datafiles.zip">datafiles.zip</a><br>
+&nbsp;&nbsp;&nbsp;<a href="http://pages.vossnet.de/mac/kp/quark-alphaKP-511.zip">quark-alphaKP-511.zip</a><br>
+<br>
+Those archives contain the files that need to be replaced/added after
+you installed the <a href="http://asp.planetquake.com/dl/dl.asp?quark/beta/quark-511-beta.zip">Quark5.11 beta</a>.<br>
+<br>
+Note, that this is an <b>ALPHA TEST</b>.<br>
+<ul>
+<li>The entities are complete, but the descriptions and the forms need some more work.
+<li>The textures are currently shown in grayscale, but that'll be fixed soon.
+<li>Very few textures are shown distorted - this is a bug :)
+<li>Models are currently not supported.
+</ul>
+Any additional support (this means YOU ;-) is welcome!<br>
+<br>
+On the web page are also all files you need to generate the KingPin
+support files - you are invited to contribute to this project.<br>
+<br>
+&nbsp;&nbsp;<a href="http://members.tripod.com/quakestation/kingpin">http://members.tripod.com/quakestation/kingpin</a><br>
+<br>
+I have also created unified diffs that can be applied to the quark
+source to get the modifications necessary for kingpin support into the code.
+(This is for you Delphi coders.)<br>
+<br>
+greetings<br>
+&nbsp;&nbsp;Alexander
+</blockquote>
+
+<headline>QuArK-made Maps</headline>
+More Quake-2 maps now on the <a href="usermaps.php">user maps</a> page:
+<ul>
+<li>'Cross Fire 2.0' by Marcus Westrup
+<li>'Quake Mountain' by Ryan 'BlaqueKidd' Thomas
+</ul>

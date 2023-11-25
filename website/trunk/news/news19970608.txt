@@ -1,0 +1,12 @@
+<author>Derrick McKay</author>
+<headline>cdrom.com troubles - Catching Up</headline>
+<P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- Cdrom.com Troubles -</B></FONT><P>
+I've gotten a few e-mails over the last few days regarding people having trouble accessing the server "ftp.cdrom.com". So, since some of you can't access the readme to get the list of mirror sites, I've put the README in a <A HREF="cdromreadme.txt">text file right here</A>. Please note the mirrors, and also note that you can access cdrom.com not only through "ftp://ftp.cdrom.com", but also through "http://www.cdrom.com" which is usually much faster. I will make a link to the local copy of the cdrom.com "README" on the main page of this site for future reference also. 
+</UL><P><BR>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- Catching Up -</B></FONT><P>
+I've been sent a few links by people that want their QuakeMap/QuArK built levels put up here. Let me please remind you that if you want them listed here, <I>please</I> remember to send me the actual URL of the files, not just a note saying "xx.zip is in newstuff at cdrom.com". I will need the URL of the "permanent" directory (ie: after it's moved out of incoming, and "newstuff", and put in it's permanent home). Also, please note that since PlanetQuake now has it's files on cdrom.com, you don't need to send me the levels themselves. I'll just be linking to the copies that are on cdrom.com anyway. I know I'm behind, but I've been kinda swamped lately. Hopefully, before the end of the week, I'll get a couple of hours to clean everything up.<BR>
+Ohh.. whoever sent me the e-mail today about putting QuArK/QuakeMap levels on their page, please send me another mail with the URL. I hit the friggin delete key while reading, and the only thing I saw was ftp...&ltsomething&gt.. (you may want to check that URL too, 'cause it didn't look quite right). I'll make a link to it ASAP once you mail me again.
+</UL><P><BR>

@@ -1,0 +1,11 @@
+<author>cdunde</author>
+<headline>Doom 3 Compiler</headline>
+<p>Thanks to Matheus Degiovani, who e-mailed me a few days ago, we now have a map compiling tool for <b>Doom 3</b>. This Open-source improved BSP compiler was created by <b>Osman Turan</b> and his team. This program package will allow you to compile Quake3 Brush Primitives, Classic Quake and Doom3 map files. You can download it from Turan's page either from <a href="http://www.osmanturan.com/">this link</a> or from the <b>Build/Compile-tools</b> section for <b>Doom 3</b> on our <b>Downloads</b> page of this site.</p>
+
+<p>There are also a number of other useful items on <a href="http://www.osmanturan.com/">Turan's page</a> that you should take a look at.</p>
+
+<p>Once again, we give our thanks to <b>Matheus Degiovani, Osman Turan and his team</b> for sharing their efforts and hard work with us all. <b>Good going folks !!!</b></p>
+
+<p>For more information and support, go to the <a href="http://quark.sourceforge.net/forums.php">forums</a>.</p>
+
+<p>And remember to visit <a href="http://quark.sourceforge.net/cgi-bin/moin.cgi">our sister site!</a></p>

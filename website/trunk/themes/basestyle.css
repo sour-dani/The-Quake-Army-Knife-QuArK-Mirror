@@ -1,0 +1,66 @@
+FIELDSET
+{
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
+}
+A:hover IMG
+{
+	background-color: inherit;
+}
+A:hover IMG.icon
+{
+	background-color: inherit;
+}
+A.personlink
+{
+	text-decoration: inherit;
+	color: inherit;
+}
+A.personlink:link
+{
+	color: inherit;
+}
+A.personlink:visited
+{
+	color: inherit;
+}
+A.personlink:active
+{
+	color: inherit;
+}
+A.personlink:hover
+{
+	color: inherit;
+}
+DIV.centered
+{
+	text-align: center;
+}
+UL.nowhitespace
+{
+	margin: 0px;
+	padding: 0px;
+}
+UL.nowhitespace LI
+{
+	list-style-position: inside;
+}
+INPUT[type=checkbox]
+{
+	margin-left: 0px;
+}
+.mouseover
+{
+	display: inline-block;
+/*	position: relative;*/ /*This also changed the "containing block" of the popup, giving panel-bodies weird scrollbars!*/
+}
+.mouseover .popup
+{
+	position: absolute;
+	visibility: hidden;
+	z-index: 1;
+}
+.mouseover:hover .popup
+{
+	visibility: visible;
+}

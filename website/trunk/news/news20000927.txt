@@ -1,0 +1,16 @@
+<author>Decker</author>
+<headline>From Decker's Inbox...</headline>
+
+It is not always positive e-mail, a web-master receive:<br>
+<br>
+<blockquote>
+From: "Lindsey A Spear" &lt;<a href="mailto:***PLEASE@NO*SPAM***LSpear@Datasync.com">LSpear</a>&gt;<br>
+Date: Mon, 25 Sep 2000 18:09:11 -0500<br>
+<br>
+quake is a peice of shit all i want to fuck to do is edit the start lvl in quake 1 when i try to the stupid thing says cannot edit bsp faces, shit what can it do???? I just want to stretch a few walls around make the lvl look bigger and it cant fucking do that!!! all kinds of other usless crap though
+<br>
+</blockquote>
+<br>
+Well, what can I say... <b>QuArK can not edit the <u>geometry</u> in .BSP files !!</b> - Only <a href="http://quark.sourceforge.net/infobase/maptutorial/index.html#usingentities">point-entities</a> can be modified, but not always with good results. And not all .BSP files can be read by QuArK, as different games have their own unique structure within their .BSP files.<br>
+<br>
+BTW: Commas and periods does wonders in a text! You might consider that, next time you write something Lindsey.

@@ -1,0 +1,30 @@
+<author>Decker</author>
+<headline>Armin needs more hours a day than just 24</headline>
+Today, 8 Nov 1999, I got an e-mail from Armin. He writes:
+<blockquote>
+[...]<br>
+I've received several times the question: "where is the source code of
+QuArK?". Looks like it's too much hidden on the web site. Is it
+mentioned on the download page? Can you maybe make a direct link from
+the link list at left, that would read "<a href="armin/index.shtm#Documentation">the source</a>" and point directly
+inside my page at the corresponding section?<br>
+<br>
+Apart from this, my current programming state is: I might have found an
+accessible Win95 machine but the #1 problem is the time, which I already
+have almost no more for QuArK. (BTW my math researches are already nicely
+progressing!)<br>
+<br>
+Thanks!<br>
+Armin
+</blockquote>
+So, I've added a <a href="armin/index.shtm#Documentation">Source Code</a> link, for all of you who wants to get hold of the
+Delphi source of QuArK.<br>
+Too bad about the time though <img src="pics/SmileySad.gif" align=absmiddle width=15 height=15>. I wonder if anyone would be able
+to <u>help</u>, besides Alexander who does the <a href="http://members.tripod.com/quakestation/kingpin">Kingpin support</a>, in the development of QuArK?
+The first thing might be to <i>unify the language</i> in the source-files, so we non-Swiss can
+read and understand it too <img src="pics/SmileyHappy.gif" align=absmiddle width=15 height=15>.
+Second, there should be a source-version-library, where developers would be able to get the newest source from, and upload to. Maybe this
+could be done using the <a href="http://www.egroups.com/list/quark-python">QuArK-Python forum</a> and its <a href="http://www.egroups.com/docvault/quark-python">vault</a> in a controlled manner?
+Third... There is no third. There is no third! <span class="sml">(Sigh! Been seeing too many Machintos commercials.)</span><br>
+So what will it be? Join the <a href="http://www.egroups.com/list/quark-python">QuArK-Python forum</a> if you know your Delphi-programming,
+and want to help making QuArK better.

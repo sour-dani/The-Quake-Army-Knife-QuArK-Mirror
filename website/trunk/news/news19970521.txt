@@ -1,0 +1,11 @@
+<author>Derrick McKay</author>
+<headline>New Addon - Armin's Page</headline>
+<P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- New Addon QME -</B></FONT><P>
+I've just finished my first sound Addon QME file. It's nothing super-special, it's just 4 new ambient sounds that I made while trying out CoolEdit. They did turn out rather well considering that I didn't know what the hell I was doing when I started. Now that I'm a little more comfortable with it, I think I'll be looking at making some more varied sound effects in the future. This addon contains 4 ambient sounds called "weird machine" sounds (original name huh?) They should add some spice to your levels, especially in a "high-tech" level setting. Instructions for use are in the "description" in the QME file. (Basically, just "link" and then "extract and compile"...that's all there is to it). <B>dmwmach.zip</B> (44k) is on the <A HREF="addon.html">QME Addon Files</A> Page.
+</UL><P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- Armin's Page -</B></FONT><P>
+As of today, Armin has direct access to the QuArK site, so you can probably expect "Armin's Page" to be up with something on it in the near future. I'm not entirely sure what he plans for it, but you can bet it will be of interest to all you QuArK users. Briefly talked about was "tips n' tricks", discussions on upcoming features, and brainstorming. I'm gonna have to wait just like the rest of you to see what materializes there, so stay tuned... (I am).
+</UL><P><BR>

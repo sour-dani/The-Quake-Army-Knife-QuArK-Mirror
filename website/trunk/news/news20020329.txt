@@ -1,0 +1,6 @@
+<author>Decker</author>
+<headline>Yet a tutorial... for QuArK even...</headline>
+<p>Saw on <a href="http://www.bluesnews.com">Blue's News</a> and later on <a href="http://www.planetquake.com">PlanetQuake</a> 2 days ago, that part 2 of the QuArK tutorial <span class="sml">(mentioned in newsitem 2002.02.19)</span> have been put up on the <a href="http://www.rizenet.com">Rizenet website</a>.</p>
+
+<p>Tutorial part 1: <a href="http://www.rizenet.com/games/quark/quark1/page1.php">http://www.rizenet.com/games/quark/quark1/page1.php</a><br>
+Tutorial Part 2: <a href="http://www.rizenet.com/games/quark/quark2/page1.php">http://www.rizenet.com/games/quark/quark2/page1.php</a></p>

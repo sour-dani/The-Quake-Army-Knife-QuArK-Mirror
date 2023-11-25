@@ -1,0 +1,7 @@
+<author>DanielPharos</author>
+<headline>Website problems</headline>
+
+<p>SourceForge has been really bad lately, and especially the forum is down a lot, giving 500 Internal server errors. As this is SourceForge (our hoster) failing with their servers, there's not much I can do, so just try again later.<pic smiley_sad></p>
+
+<p>Happy mapping,<br>
+DanielPharos</p>

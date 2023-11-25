@@ -1,0 +1,11 @@
+<author>Decker</author>
+<headline>News from Armin about the soon to be released QuArK 5.10</headline>
+QuArK 5.10 is becoming ready but it won't have killer new features apart for its much improved SiN
+support, thanks to Tiglari. Other changes are small features or bug fixes:<br>
+<ul>
+<li>24-bit TGA files fully supported.
+<li>Precision errors while working on vertices.
+<li>Idem with linear duplicators.
+<li>Dragging handles display coordinates in the small "hint" panel bottom left.
+<li>Tim Smith's prism maker updated by Decker.
+</ul>

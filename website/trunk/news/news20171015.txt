@@ -1,0 +1,13 @@
+<author>DanielPharos</author>
+<headline>Preliminary Call of Duty 2 support in upcoming nightly build</headline>
+
+<p>A thread on the forum recently made me remember I had once started working on adding Call of Duty 2 support to QuArK. I've managed to put in some time, and I will be releasing a nightly build with preliminary CoD2 support soon! Big parts of CoD2 .map files will not load (curves and meshes), but I'm already working on that. This upcoming nightly might also not support texture coordinates fully yet.<br>
+Hey, it's a nightly of a beta release, so cut me some slack, okay?</p>
+
+<p>And from what I know, Call of Duty 4 and 5 are mostly compatible with CoD2, so...<pic smiley_happy></p>
+
+<p>Note that there are many more fixes and improvements in the nightly than just that, so don't hesitate to give it a whirl when it's released, and let me know if you encounter trouble!</p>
+
+
+<p>Happy Call of Dutying,<br>
+DanielPharos</p>

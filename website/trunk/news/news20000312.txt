@@ -1,0 +1,42 @@
+<author>Decker</author>
+<headline>From Decker's email inbox...</headline>
+<br>
+<u>TERRAIN GENERATOR tool.</u><br>
+<blockquote>
+Hello!<br>
+<br>
+I think our job will be interesting for you and may be you will put some link information at
+your site.<br>
+We have created a program for leveldesigners, that allow them create soft reliefs and save it
+in .map format. It called "Terrain Generator".<br>
+I make website and now host it at my provider at
+<a href="http://www.com2com.ru/~estudio">www.com2com.ru/~estudio</a><br>
+Program can be downloaded there. Also there are some related tutorials (with QUARK
+usage :) and my own review of gothic architecture...<br>
+It is not a final version of program and soon we made some improvements such as
+optimization and other...<br>
+<br>
+WBRGRDS, /\rch-\/ile & Samael.
+</blockquote>
+
+<u>Quake 3 Map Design Page link</u><br>
+<blockquote>
+The site is a bunch of guys that are working together
+making maps... Like ALOT of guys... Right now the
+total guys on the team is 21 we have 3 rankings
+newbie, intermidiate, and veterans. The site is over
+at <a href="http://www.teamdisillusioned.com/">www.teamdisillusioned.com</a><br>
+[...]<br>
+Hey we're just a bunch O' guys looking
+for some publicity in the community.. well I hope you
+decide for it if so let me know and I'll talk to our
+web admins about the links situation stuff.. Peace...<br>
+<br>
+Drahk Leveticus
+</blockquote>
+
+<headline>User-made maps</headline>
+<ul>
+<li>'W.A.L' by Mikael 'unknown seven' Svensson
+<li>'HallsOfOtto' by Jim 'MegaBlaff' Bergvall
+</ul>

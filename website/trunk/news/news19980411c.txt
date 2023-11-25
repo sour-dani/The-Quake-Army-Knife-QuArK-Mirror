@@ -1,0 +1,6 @@
+<author>Armin Rigo</author>
+<UL>
+
+<LI>QuArK 5.0.a3 on the way... See the updated <A HREF="armin/index.shtm">Armin's pages</A>.
+
+	</UL>

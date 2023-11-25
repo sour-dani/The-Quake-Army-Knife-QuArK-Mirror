@@ -1,0 +1,12 @@
+<author>DanielPharos</author>
+<headline><b>Website fixes</b></headline>
+
+<p>A few weeks ago, I noticed that the archived news function was broken. According to cdunde, this has been so since like 2003. So I decided to find out why. I did discover the problem, and now it's fixed!</p>
+
+<p>The same goes for the usermap-search. I just noticed it never returning any results, so I went in, and fixed that too. Since that has probably never been updated since it broke, it's likely most of the links don't work anymore. Please report these links if you find them, so we can remove them.</p>
+
+<p>I also updated the email-address to the webmaster all over the website. So if you sent mail that bounced back, try sending it again!</p>
+
+
+<p>Happy mapping!<br>
+DanielPharos</p>

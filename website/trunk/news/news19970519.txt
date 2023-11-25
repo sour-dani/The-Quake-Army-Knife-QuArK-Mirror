@@ -1,0 +1,12 @@
+<author>Derrick McKay</author>
+<headline>-AnArcHISt's "Exploding Wall" Addon v1.2 - ICQ</headline>
+<P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- Exploding Wall Addon v1.2 -</B></FONT><P>
+<A HREF="mailto:alper@uhavax.hartford.edu">AnArcHISt</A> has released version 1.2 of his "Exploding Wall" QME Addon. New in this version is the ability to assign a trigger to it using target->targetname. This gives you the ability to make landmines etc. for your maps. Pretty cool feature. I mentioned that there was a "small" and a "large" explosion in this Addon, but I should tell you that the "small" explosion is perfect for small items such as cups, bottles, and other small items. It's more of a "smash" than an explosion, and should lead to some cool new items in your levels. I have updated this Addon to the new version on the <A HREF="addon.html">QME Addon Page</A>.
+</UL><P>
+
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- ICQ and You -</B></FONT><P>
+The newest craze to hit Quake Players is ICQ and it's ability to specify Quake as an "external" program. It's also a good way to keep in touch with others, and even to pass URL's, and files to others. The only downside is that the Mirabilis servers are getting choked with the influx of users, and is constantly dropping and re-connecting during the "peak" times. BTW, my ICQ number is 804530. Feel free to add me to your contact list.
+</UL><P><BR>

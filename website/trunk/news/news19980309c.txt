@@ -1,0 +1,6 @@
+<author>Armin Rigo</author>
+<UL>
+
+<LI><A HREF="armin/quark5.html">The lastest info on QuArK 5 (reported bugs, news from users, etc.) will always be available on this page</A>. Please check it out for the latest files and before sending in bug reports. <LI> <A HREF="http://www.btinternet.com/~akuma/files/dataq2qrk.zip">Quake 2 textures for QuArK 5.0.a1</A> have been sorted out by <A HREF="http://www.btinternet.com/~akuma/">Akuma</A>. Thanks for being so fast ! All other QuArK fans, don't do it again yourself ;-)  (the content of this file will of course be included with the next version of QuArK)
+
+	</UL>

@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>QuArK video tutorial</headline>
+
+<p>I recently added links to a quite extensive video tutorial made by "Fryziu DeMol" to our <a href="http://quark.sourceforge.net/videos.php?T1=1">video page</a>. If you're new(-ish) to QuArK, you might want to check that out! Just go to our <a href="http://quark.sourceforge.net/videos.php?T1=1">video page</a> and look for the first entry into the series, called: "Game Level Design Tutorial for Beginners - 01".</p>
+
+
+<p>Happy tutorialing,<br>
+DanielPharos</p>

@@ -1,0 +1,9 @@
+<author>Decker</author>
+<headline>Newest Half-Life DataHL.QRK</headline>
+There's been a request for an updated DataHL.QRK - QuArK entity data add-on for Half-Life.<br>
+<br>
+Even though it is close for a final release of QuArK v6.1 (with the bugs and annoynesses that may still have been overlooked in it),
+I guess it won't do too much damage to supply the newest version of the DataHL.QRK, which hopefully still will work in QuArK v5.1x (I have <u>not</u> tested it).<br>
+<br>
+Get the file from here:
+<a href="http://dl.fileplanet.com/dl/dl.asp?quark/beta_addons/DataHL.zip">./beta_addons/DataHL.zip</a><br>

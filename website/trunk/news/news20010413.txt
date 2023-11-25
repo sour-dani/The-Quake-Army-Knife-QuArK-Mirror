@@ -1,0 +1,14 @@
+<author>Decker</author>
+<headline>IRC / Chat</headline>
+<p>Two QuArK related IRC channels have been created. One on <i>irc.enterthegame.com</i>, and one on <i>irc.gamesnet.net</i>.<br>
+Please see the <a href="forums.php">IRC / Chat page</a> for a little more information.</p>
+
+<headline>User Prefabs</headline>
+<p>A Quake-2 prefab have been added to the <a href="userprefabs.php">user prefabs</a> page:</p>
+
+<ul>
+<li>Quake-2
+  <ul>
+  <li>Drop Tube
+  </ul>
+</ul>

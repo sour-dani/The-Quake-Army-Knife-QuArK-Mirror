@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Quake bot archive</headline>
+
+<p>There used to be a lot of different bots out there for Quake, but sadly, most of those downloads and websites are gone. But fear no more, because there's an archive now! So if you are looking for bots for Quake, or if you still have one laying around that the archive is missing, please visit the <a href="https://github.com/Jason2Brownlee/QuakeBotArchive">QuakeBotArchive on GitHub</a>!</p>
+
+
+<p>Happy Quake-ing,<br>
+DanielPharos</p>

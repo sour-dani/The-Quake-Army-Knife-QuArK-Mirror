@@ -1,0 +1,18 @@
+<author>Decker</author>
+<headline>InstaPoll time</headline>
+Okay, lets face it. What have you people voted on the poll <i>"When making a hole in a wall for a door, what method do you use?"</i>
+Hmmm? Almost half of you, <b>46%</b>, uses the <span class="sml">(very dangerous)</span> <i>carving</i> method - guess you're in the
+demolition business <img src="pics/SmileyHappy.gif" align=absmiddle width=15 height=15>. A quarter of you, <b>24%</b>, has an education
+as bricklayer since you do it by the <i>brick-by-brick</i> method. <b>10%</b> is in both demolition and bricklaying.
+There are not many academic educated <img src="pics/SmileyMedium.gif" align=absmiddle width=15 height=15> - only <b>4.6%</b> <i>diggers</i> plus <b>4.6%</b> <i>negative brushes</i>, which gives a total of 9.2%
+uses the unique powerfull features of QuArK.
+Some <b>3.6%</b> have taken a higher degree in virtual bricklaying, using <i>brick-by-brick</i> <u>and</u> <i>digger/negative</i> methods
+<span class="sml">(incl. me)</span> to make their creations. At second last, <b>3.4%</b> got an A+ in virtual demolition with the <i>carving</i>
+<u>and</u> <i>digger/negative</i> methods. The last <b>3.4%</b> people, choose between all of the methods, depending on how good their paper-design is.<br>
+<br>
+The new instapoll was actually suggested a long time ago, by Jeff 'Mächtyn' Gosnell.<br>
+
+<headline>QuArK-made Maps</headline>
+<ul>
+	<li>'Big Kitchen' by Mike 'Sandman' Reeves
+</ul>

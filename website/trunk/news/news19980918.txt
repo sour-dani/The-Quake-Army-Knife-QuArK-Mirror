@@ -1,0 +1,5 @@
+<author>Armin</author>
+<LI><a href="http://asp.planetquake.com/dl/dl.asp?quark/quark5c3.zip">QuArK 5.0.c3</a> released ! Already a lot of features in this release, but now it really has a great potential.
+<LI>If you like a bit programming, I encourage you to have a serious look at the Python code. You can now do whatever you want with QuArK ! You will notice that all menus of QuArK 4.07 are back, but they still have only a few commands each. Adding new commands (new features, new search methods, etc) should be easy now. You will need the <a href="http://asp.planetquake.com/dl/dl.asp?quark/qktec5c3.zip">Tech Info package</a> with the documentation.
+<LI>I know there are still a lot of small features missing, but don't write me to ask them - DO THEM ! I have opened a <a href="http://www.egroups.com/list/quark-python/">mailing list for Python</a> discussion. Submit feature ideas there.
+</UL>

@@ -1,0 +1,6 @@
+<author>Armin Rigo</author>
+<UL>
+
+<LI> QuArK 5 version 5.0.a1 (<strong>a</strong> for alpha... not even a beta...) is coming out SOON ! Here are a few comments. Don't throw QuArK 4.07 to the trash yet. This new version is very limited. You can do a lot of stuff but the map editor isn't complete yet. I release it for you who want to try the other new features, e.g. convert textures from Quake 1 to Quake 2 and back, edit the palette of .pcx files, or copy-and-paste textures between .bsp, .wad, .wal, .qme, .bmp, and .pcx files ! Map editing won't be forgotten, just wait for the next version !
+
+	</UL>

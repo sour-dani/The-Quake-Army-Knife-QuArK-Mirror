@@ -1,0 +1,2 @@
+<author>Armin</author>
+Check out <a href="http://home1.inet.tele.dk/decker/" target="_top">Decker's Home page</a> for the latest Half-Life datas for QuArK.

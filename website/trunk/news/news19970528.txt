@@ -1,0 +1,16 @@
+<author>Derrick McKay</author>
+<headline>Armin Updates - new "User Created" levels - "Showcase" level</headline>
+<P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- Armin Updates -</B></FONT><P>
+Armin has really been putting in some hours on his pages. If you haven't visited them today, you should ! He's added some answers to some FAQ's, and some insight into what's coming in the next version(s) of QuArK. It's really looking organized and concise too. I like his "News" section layout too... it reminds me of something, but I can't think of what...
+</UL><P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- "User Created" levels -</B></FONT><P>
+I got sent an e-mail from <A HREF="mailto:SwBthumper@aol.com">Steve Wilson</A> (aka: Thundermug), with an announcement that he's released 7 of his deathmatch levels (made with QuakeMap 2.8) and uploaded them to Walnut Creek (cdrom.com). I've added links to the whole bunch on the <A HREF="user.html">User Levels</A> Page. They are all fairly small, but fun levels that he put together for those of us who still like deathmatching over the modem (ie: not 'net). I think you'll like them. I especially recommend the "Outland" levels. The whole bunch is under 1.7 megs zipped in total (most are around 200k), so get them all. (The "Port" level kept crashing with Winquake, and wouldn't run at all with GLQuake, so you may have problems with it... but it looks fun too).
+</UL><P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- "Showcase" Level -</B></FONT><P>
+I meant to mention the other day that I am working on a "showcase" level. Well, I'm still working on it at any rate. I started out to do a kick-ass single player level with lots of the new monsters, but due to the level of "free" time I have, I think I'll just make it deathmatch, and instead apply some of the neat "effect" Addons to make it a really unique deathmatch level. Since I have a Righteous 3D, I'll also compile it with the HIPQBSP, which will add support for translucent water. It won't be extremely huge, so it should run fairly well with regular Quake too.<BR>
+ I just wish there was some way to compile Reapers into it, 'cause playing DM over the net here from the Yukon I may as well have a bright orange flashing fullbright skin and a sign that says "<B>Shoot the sitting duck right here... he can't move anyway!!</B>" (we're talking over 800ms pings on average.. min650 / max~16000 !!). Oh well... I guess I'll have to figure something out... more info as the level progresses...
+</UL><P><BR>

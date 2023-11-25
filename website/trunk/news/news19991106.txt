@@ -1,0 +1,18 @@
+<author>Decker</author>
+<headline>Spam, spam, spam, egg, bacon, spam and spam.</headline>
+<i>"What? No sausage?"</i><br>
+Sigh! Those of you, who attended yesterdays IRC session of <i><a href="http://www.counter-strike.net">Counter-Strike</a> Beta-4 release party</i>,
+saw what spam really was. There were so many people, who changed their IRC nicknames to small messages, just because they didn't understand
+that the channel they were in <span class="sml">(#counterstrike at irc.gamesnet.net)</span>, was only ment for Cliffe and Gooseman to answer questions - not for
+everyone to write to. In those 20 minutes I were able to stay connected to the IRC-server, it were more or less chaos - so much careless spam
+were echoed to the channel, by persons who either wanted to get attention, or were just plain stupid. If it was some of you, please grow up. <img src="pics/SmileyMedium.gif" align=absmiddle width=15 height=15><br>
+Now, I haven't got my hands on CS-b4 yet - I do hope its only a <u>small update</u> I have to download, because I already got CS-b3.1, so those
+of you, who wants to get started mapping with the new textures, just have to wait a little while. But if you can't wait, you have the possibility
+of letting QuArK know of the new textures, by following the steps in the <a href="help/maptutorial/Texture_Links/Texture_Links.html">Texture links tutorial</a>.
+Remember; <a href="help/maptutorial/index.html#gamerelatedentitiesandarguments"><b>THINK</b>, <b>EXPERIMENT</b> and <b>LEARN</b></a>.<br>
+
+<headline>QuArK-made maps</headline>
+Check the <a href="usermaps.php">user maps</a> page for more:
+<ul>
+	<li>'The Palace' by Luke 'Hamster' Mcgaffin
+</ul>

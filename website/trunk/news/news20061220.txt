@@ -1,0 +1,29 @@
+<author>cdunde</author>
+<headline><a href="http://sourceforge.net/project/showfiles.php?group_id=1181"><b>QuArK6.5.0_Beta_1_H-L2_Fix</b></a> has just been released!</headline>
+
+<p>OK! For those of you that wanted to <B>JUMP ON</b> the new Beta release and take its <b>GREAT</b> OpenGL for a ride but couldn't because you really want it for <b>Half-Life 2</b>....</p>
+
+<p><b>WELL....YOUR WAIT IS OVER ! ! !</b><br>
+And before Christmas TOO ! (or all us developers get <b>Coal</b> in our stockings 8-| )</p>
+
+<p>A VERY nice feature of this method is that you DO NOT need to have Steam running while using QuArK!</p>
+
+<p>Only if you wish to build your map and see it in Half-Life 2 or Counter Strike.<br>
+AND by simply building your map with the "GO!" or "QuickGo!" command...it will start Steam FOR YOU!<br>
+How's that for service !?</p>
+
+<p>Also, you DO NOT need to start Steam before starting QuArK, you can do either at any time and in any order that you wish!</p>
+
+<p>All the textures will be available for your use just the same.</p>
+
+<p>We hope you enjoy <a href="http://sourceforge.net/project/showfiles.php?group_id=1181">this fix and QuArK 6.5.0 Beta 1.</a></p>
+
+<p><b> And there's MORE to come from QuArK ! ! !</b></p>
+
+<p><b>H A P P Y...H O L I D A Y S...E V E R Y B O D Y....HO - HO - HO !</b></p>
+
+<p>Remember <b>Keep your QuArK knife sharp!</b></p>
+
+<p>cdunde</p>
+
+<p>For more information and added support, go to the <a href="http://quark.sourceforge.net/forums/">QuArK Resource Center</a> and <a href="http://quark.sourceforge.net/communication.php#forums">the forums page</a> of this site.</p>

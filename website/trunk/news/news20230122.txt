@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Quake 1 binary logic</headline>
+
+<p>Now, I know John Carmack is considered pretty good at programming, but somehow I don't think even could have imagined this at the time! It's a <a href="https://github.com/matthewearl/q1logic/" target="_blank">calculator in Quake</a>! As in: entities inside the game are performing the calculations, not the code of the engine!</p>
+
+
+<p>Happy Quaking,<br>
+DanielPharos</p>

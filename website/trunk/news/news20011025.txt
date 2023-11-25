@@ -1,0 +1,3 @@
+<author>tiglari</author>
+<headline>More modified Q1 tools</headline>
+<p>By Bengt Jardrup.  You'll find them on his [very] spartan homepage at <a href="http://user.tninet.se/~xir870k/">http://user.tninet.se/~xir870k/</a>.</p>

@@ -1,0 +1,6 @@
+<author>Armin Rigo</author>
+<UL>
+
+<LI><A HREF="http://asp.planetquake.com/dl/dl.asp?quark/quark5a2.zip">QuArK 5.0.a2</A> released ! It includes all the Q1 and Q2 entities and texture lists described below, so you only have to download a single file. For more information about QuArK 5.0.a2, see comments in file <A HREF="ftp://ftp.cdrom.com/pub/idgames2/planetquake/quark/quark5a2.txt">QuArK5a2.txt</A>.
+
+	</UL>

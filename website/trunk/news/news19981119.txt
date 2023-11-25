@@ -1,0 +1,10 @@
+<author>Armin</author>
+<strong><a href="http://asp.planetquake.com/dl/dl.asp?quark/quark51b.zip">QuArK 5.1b</a> released.</strong> Several major bugs fixed. Sorry, this release is only a .zip file; I will give it a full installer as soon as possible.
+<UL>
+<li>Could not open the texture flags dialog box (Quake2)
+<li>While dragging and dropping objects, they could sometimes be dropped a few pixels besides the position they had just before you released the mouse (sorry Tim, I finally found out you were right about this)
+<li>Dragging out of the limits of the view makes the view scroll, but this didn't work on some views in some directions (to be precise, if the map view relied on another view for its scroll bar : the other view's scroll bar was not updated)
+<li>BSP files : choosing File/Save don't work. You have to close the bsp editor first before you can save the .bsp file.
+<li>The "zoom" button did not work well, particularly in four-views layouts.
+<li>Saving the configuration file (setup.qrk) may fail; if so, the error message is now correctly reported to you. One of the possible problems is that the temporary directory is invalid on your machine, or if you don't have the permissions to write in it (NT).
+</UL>

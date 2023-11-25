@@ -1,0 +1,16 @@
+<author>DanielPharos</author>
+<headline>Moving the website</headline>
+
+<p>I've been delaying it for a long time, but I think it's finally time to move the website. Right now, we're hosted on sourceforge.net, and that's running on a legacy PHP version, and only with HTTP (i.e. no encrypted communication). For quite some time now, SourceForge has the option for a modern PHP with HTTPS support, but it would mean the website will be hosted on a different URL, namely https://quark.sourceforge.io/. I've been putting this off, because I don't know how much this will affect the findability of the website; in the past when our Gamespy-host shut down, it broke all links to the website.</p>
+
+<p>Additionally, our forum software is old, and doesn't support these new PHP versions, so we will have to migrate the forum to something newer. A big downside to that is that the awesome theme we use isn't available for newer versions of the forum software, so we either have to pick a different default theme, or port the theme over (which is a lot of work).</p>
+
+<p>I do have been testing the website a bit on the new SourceForge platform, and the main website works just fine (after some minor corrections), so that will survive the move just fine.</p>
+
+<p>But there's also advantages to moving. I already mentioned the encryption; this is very relevant, as browsers are going to complain more and more about unencrypted websites. But perhaps most importantly: the new platform is <b>a lot</b> faster.</p>
+
+<p>Please let me know <a href="http://quark.sourceforge.net/forums/index.php?board=38.0">on our forums</a> if you have any questions or helpful input on this move. Especially concerning our forum theming, since it's your forum too. <pic smiley_happy></p>
+
+
+<p>Happy browsing,<br>
+DanielPharos</p>

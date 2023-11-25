@@ -1,0 +1,10 @@
+<author>DanielPharos</author>
+<headline>Some news</headline>
+
+<p>First of all, we should all thank Quentin! Thanks to his support, we're going to try to build Call of Duty 4 support into QuArK! The related forum topic is <a href="http://quark.sourceforge.net/forums/index.php?topic=117">here</a>.</p>
+
+<p>Secondly, I've been messing with the website. I've updated the HTML code to be more up-to-date and standards compliant, and also changed the underlying PHP code. This should make the website a bit faster to load and display. Also, I've built a nice (and completely non-useful) feature to hide several of the panels. The page from which to configure this will be online soon. (Edit: It is live now. Look for '<a href="http://quark.sourceforge.net/layout.php">Layout</a>' in the navbar to the left.)</p>
+
+
+<p>Happy mapping,<br>
+DanielPharos</p>

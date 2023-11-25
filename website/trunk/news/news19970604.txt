@@ -1,0 +1,15 @@
+<author>Derrick McKay</author>
+<headline>PlanetQuake Mirrored on Walnut Creek - New User Levels - "Showcase" level</headline>
+<P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- PlanetQuake mirror on Walnut Creek -</B></FONT><P>
+Walnut Creek Cdrom, better known as "cdrom.com" has struck a deal with PlanetQuake (or the other way around) to mirror the downloadable files from PlanetQuake on the Walnut Creek sites. What this means for QuArK users, is that from now on, all the file links to QuArK, Addons, etc. will point to cdrom.com. In order for you, the user to take real advantage of this, check out the <A HREF="ftp://ftp.cdrom.com/pub/idgames2/README">README</A> file at cdrom.com for the location of the nearest mirror site to you. The files will reside in the " <B>/pub/idgames2/planetquake/quark/</B> " directory, and they will be available at all of cdrom.com's mirror sites. So, from now on, you can check out this directory for the newest QuArK related files on a site that is fast(er) for you no matter <I>where</I> you live !!
+</UL><P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- "User Created" levels -</B></FONT><P>
+I have added a few more "User Created" level links on the ummm... User Created Levels page. They are from the brother of the last guy that sent me levels, and like them, are "optimized" for modem players. That doesn't mean you can't play them any other way, but they are very fast and relatively small. (Check out the "Volstrom" level.. it's well done).
+</UL><P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- My "Showcase" level -</B></FONT><P>
+Well, I'm still woking on it. In fact., I'm so determined that it "not suck" that I discarded the first attempt completely. I have started on a 6 room DM level to replace it, and it's slowly shaping up. I've decided that I'm going to do it room by room, and try and make the "theme" for each room slightly different. Kinda like a "Terror in the FantasyLand Hotel" (if you don't know what the FantasyLand Hotel is... never mind, it's not important... unless you live in Edmonton that is...) I've been liberally "linking" various QuArK Addons to it, and it should be quite cool when finished. As always, the only hold up is <I>time</I>... I don't have much :-). I'll keep you up-to-date on the progress, and even open it up for suggestions if I get stuck. I was wondering if I should incorporate the Hip entities into it, but decided that I'd go for a "pure" Quake addon so that anyone could use it. More later...
+</UL><P><BR>

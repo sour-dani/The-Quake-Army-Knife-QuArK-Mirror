@@ -1,0 +1,6 @@
+<author>Decker</author>
+<headline>QuArK-made Maps</headline>
+Added a new map, to the list of <a href="usermaps.php">user maps</a>:<br>
+<ul>
+	<li>'UnKnown Fortress' by Jon (DieHard)
+</ul>

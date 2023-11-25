@@ -1,0 +1,20 @@
+<author>Gryphon</author>
+      <ul>
+        <font 
+size=2 face="verdana,arial" 
+		color="0000a0"> <!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:--> 
+        <p><strong>'Twas the Night Before Christmas</strong><br>
+          <img src="images/xmas49.gif" width="83" height="126" align="right"> 
+        <li>--And here I am still working on the site like some kind of <i>HTML 
+          <font size="3">editing <b>junkie</b></font></i>... I can't <b>stop!</b> 
+          It's like I'm remembering how fun this is! Anyway, I've added all plethora 
+          of new info to the new &quot;<b><a href="resources.shtm">Resources</a></b>&quot; 
+          page in the <a href="support_menu.htm" target="navmenu"><b>SUPPORT</b></a> 
+          area. Basically a lot of it comes from my old QuArK site, but it's been 
+          updated, and retooled. It now lists gaggles of links for Editing Resources, 
+          useful News sites, and other editors (but... why bother...!). I've also 
+          added more <b><a href="usersites.shtm">User WebSites</a></b> to the 
+          lists, so give the a looksee and tell 'em Gryphon sent ya!
+        <li>Oh, yeah... and there's Santa again, in case you miss him tomorrow!
+        </font> 
+      </ul>

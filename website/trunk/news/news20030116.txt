@@ -1,0 +1,18 @@
+<author>tiglari</author>
+<headline></headline>
+<p>QuArK 6.3.0 (final) is finally released, you can pick it up from <a href="http://www.fileplanet.com/dl/dl.asp?/planetquake/quark/releases/quark_v6.3.0.EXE">fileplanet</a>, or see the <a href="http://quark.sourceforge.net/latest">latest</a> page for other options, including an update patch from the 6.3e provisional release.</p>
+
+<p>Some of the main improvements over 6.3 are:</p>
+<UL>
+<LI>The problems with keeping vertexes on grid finally sorted out, and map formats for major editors (Valve 220 for Hammer, Brush Primitives for GtkRadiant) now written correctly.
+<LI>Mitering option for the wall maker turns this duplicator into a serious tool for defining the volumes (rooms, corridors, outdoor areas etc.) of your map, in an UnrealEd-like style.
+<LI>Power of many duplicators greatly enhanced with 'incrementing specifics' and flexible linear mappings: make a row of lamps, each with its own switch.
+<LI>Now works well on dual monitors.
+<LI>Numerous bugs, memory and resource leaks fixed.
+<LI>New searches for microbrushes and other map problems.
+<LI>Customizable hotkeys
+<LI>BSP viewing for several more games
+<LI>Most Q3-engine games now supported, at least to some extent. (Q3A, STVEF, SoF2, RTCW, JK2 fully, Mohaa partially.  Also Torque, 6DX and Crystal Space.)
+</UL>
+
+<p>There are also already some update plugins on the <a href="http://quark.sourceforge.net/latest">latest</a> page, with more on the way.</p>

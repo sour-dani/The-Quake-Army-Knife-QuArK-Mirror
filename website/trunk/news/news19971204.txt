@@ -1,0 +1,5 @@
+<author>Derrick McKay</author>
+<headline></headline>
+<UL>
+<LI> <A HREF="armin/index.shtm">Armin's Page</A> Updated (Author's Area) and contains news on what's planned for QuArK.
+</UL>

@@ -1,0 +1,407 @@
+BODY
+{
+	margin: 0px 0px 0px 0px;
+	background-attachment: fixed;
+	background-color: #000000;
+	background-image: url("/pics/themes/valve/Half-Life-2-Logo.jpg");
+	background-repeat: repeat;
+	background-position: center center;
+	min-width: 404px;
+	font-family: "MS Sans Serif", "Verdana", Sans-serif;
+}
+FORM
+{
+	margin: 0px 0px 0px 0px;
+}
+FIELDSET
+{
+	border-color: #FF6505;
+	border-width: 1px;
+}
+INPUT
+{
+	font-size: 8pt;
+}
+SELECT
+{
+	font-size: 8pt;
+	background-color: #FF6505;
+	color: #FFFFFF;
+}
+TABLE
+{
+	border-color: #FFFFFF;
+	border-style: none;
+	border-width: 2px;
+}
+TD
+{
+	border-color: #FFFFFF;
+}
+IMG
+{
+	border: 0px;
+}
+IMG.icon
+{
+	vertical-align: middle;
+}
+IMG.smiley
+{
+	vertical-align: bottom;
+}
+A:link
+{
+	color: #FFFFFF;
+}
+A:visited
+{
+	color: #FFFFFF;
+}
+A:active
+{
+	color: #FFFFFF;
+}
+A:hover
+{
+	background-color: #FF6505;
+	color: #000000;
+}
+A:hover IMG
+{
+	background-color: inherit;
+}
+A:hover IMG.icon
+{
+	background-color: inherit;
+}
+H1
+{
+	font-size: 18pt;
+	margin: 0px;
+}
+HR
+{
+	background-color: #CC9933;
+	color: #FF0000;
+	border: 0px;
+	width: 100%;
+}
+HR.smallbreak
+{
+	height: 1px;
+	margin-top: 1.5em;
+	margin-bottom: 1.5em;
+}
+HR.bigbreak
+{
+	height: 2px;
+	margin-top: 1.5em;
+	margin-bottom: 1.5em;
+}
+.xsml
+{
+	font-size: 6pt;
+}
+.sml
+{
+	font-size: 8pt;
+}
+.large
+{
+	font-size: 14pt;
+}
+.xlarge
+{
+	font-size: 18pt;
+}
+.newsago
+{
+	font-size: 8pt;
+	color: #9F7F7F;
+}
+.newsheadline
+{
+	font-family: "Arial", Sans-serif;
+	font-size: 12pt;
+	color: #FFFF00;
+	margin-top: 0px;
+}
+.mouseover .popup
+{
+	left: inherit;
+	top: inherit;
+	max-width: 40vw;
+	border-width: 1px;
+	border-color: #CC9933;
+	border-style: dashed;
+	background-color: #FF6505;
+	padding: 8px;
+	color: #FFFFFF;
+	text-align: left;
+}
+SPAN.replacementgamename
+{
+	color: #7F7F7F;
+}
+SPAN.validationerror
+{
+	color: #FF0000;
+}
+DIV.newsquote
+{
+	background-color: #FF6505;
+	border-color: #CC9933;
+	border-width: 1px;
+	border-style: solid;
+	font-size: 10pt;
+	margin-left: 5%;
+	margin-right: 5%;
+	padding: 4px;
+	text-align: center;
+}
+TD.fn
+{
+	font-size: 10pt;
+	background: #AAAAAA;
+}
+TD.tablehead
+{
+	font-size: 10pt;
+	background: #660000;
+	color: #FFFFFF;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+TD.tablesubhead
+{
+	font-size: 10pt;
+	background: #993300;
+}
+TD.tablecell
+{
+	font-size: 10pt;
+	background: #330000;
+}
+TD.table2head
+{
+	background: #330000;
+}
+TD.table2rowA
+{
+	background: #660000;
+}
+TD.table2rowB
+{
+	background: #993300;
+}
+TD.instapoll
+{
+	font-size: 8pt;
+}
+TD.text1
+{
+	font-size: 10pt;
+}
+TD.filterhead
+{
+	background-color: #CCCCCC;
+	color: #000000;
+}
+TD.filterbody
+{
+	background-color: transparent;
+}
+TD.panelheader
+{
+	padding-left: 4px;
+	padding-right: 4px;
+}
+TD.downloadtabletitle
+{
+	background-color: #993300;
+	color: #000000;
+}
+TD.downloadtablehead
+{
+	background-color: #660000;
+}
+TD.downloadtableempty
+{
+	background-color: #330000;
+}
+TD.downloadtabledata
+{
+	background-color: transparent;
+}
+DIV.header
+{
+	width: 100%;
+	margin-top: 16px;
+	margin-bottom: 32px;
+}
+DIV.headerlogo
+{
+	vertical-align: middle;
+	float: left;
+	height: 65px;
+	width: 320px;
+	font-size: x-large;
+}
+DIV.headerads
+{
+	float: right;
+	height: 65px;
+	text-align: right;
+}
+DIV.pagebody
+{
+	position: relative;
+	width: 100%;
+}
+DIV.leftcolumn
+{
+	position: absolute;
+	left: 8px;
+	width: 180px;
+	top: 0px;
+}
+DIV.rightcolumn
+{
+	position: absolute;
+	right: 8px;
+	width: 180px;
+	top: 0px;
+}
+DIV.centercolumn
+{
+	margin-left: 202px;
+	margin-right: 202px;
+	top: 0px;
+}
+DIV.pagenamepanel
+{
+	background-color: #FF6505;
+	color: #000000;
+	font-family: "Arial", Sans-serif;
+	font-size: 24pt;
+	font-weight: bold;
+	padding: 16px 4px 16px 4px;
+}
+DIV.sidepanel
+{
+	border-color: #FF6505;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 4px;
+	margin-bottom: 16px;
+}
+DIV.sidepanelhead
+{
+	background-image: url("/pics/themes/valve/OrangePattern.gif");
+	background-repeat: repeat;
+	background-position: center top;
+	color: #000000;
+	font-family: "Arial", Sans-serif;
+	font-size: 8pt;
+	font-weight: bold;
+	padding: 4px 8px 4px 8px;
+	overflow: auto;
+}
+DIV.sidepanelbody
+{
+	background-color: #FF6505;
+	color: #FFFFFF;
+	font-size: 8pt;
+	padding: 8px;
+	overflow: auto;
+}
+DIV.sidepanelbody > :first-child
+{
+	margin-top: 0 !important;
+}
+DIV.sidepanelbody > :last-child
+{
+	margin-bottom: 0 !important;
+}
+DIV.pagepanel
+{
+	border-color: #FF6505;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 6px;
+	margin-bottom: 32px;
+}
+DIV.pagepanelhead
+{
+	background-image: url("/pics/themes/valve/OrangePattern.gif");
+	background-repeat: repeat;
+	background-position: center top;
+	color: #000000;
+	font-family: "Arial", Sans-serif;
+	font-size: 12pt;
+	font-weight: bold;
+	padding: 4px;
+	overflow: auto;
+}
+DIV.pagepanelbody
+{
+	background-color: #FF6505;
+	color: #FFFFFF;
+	font-size: 10pt;
+	padding: 16px;
+	overflow: auto;
+}
+DIV.pagepanelbody > :first-child
+{
+	margin-top: 0 !important;
+
+}
+DIV.pagepanelbody > :last-child
+{
+	margin-bottom: 0 !important;
+}
+DIV.themeselector
+{
+	border-color: #FF9900;
+	border-style: solid;
+	border-width: 1px;
+	margin: 4px;
+	padding: 16px;
+	text-align: center;
+	width: 75%;
+}
+DIV.panelselector
+{
+	border-color: #FF9900;
+	border-style: solid;
+	border-width: 1px;
+	margin: 4px;
+	padding-left: 16px;
+	padding-right: 16px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	text-align: center;
+	width: 33%;
+}
+DIV.valueselector
+{
+	border-color: #FF9900;
+	border-style: solid;
+	border-width: 1px;
+	margin: 4px;
+	padding: 16px;
+	text-align: center;
+	width: 50%;
+}
+DIV.paneltestimonial
+{
+	border-color: #FF9900;
+	border-style: solid;
+	border-width: 1px;
+	background-color: #FF6505;
+	margin: 4px;
+	padding: 16px;
+	text-align: center;
+	width: 90%;
+}

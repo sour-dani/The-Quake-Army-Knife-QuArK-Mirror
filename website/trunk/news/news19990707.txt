@@ -1,0 +1,45 @@
+9<author>Decker</author>
+<headline>QuArK 5.10 released!</headline>
+<br>
+Get it here: <a href="http://www.fileplanet.com/dl/dl.asp?quark/quark510.exe">quark510.exe</a>, on <a href="armin/index.shtm">Armin's news page</a> or the <a href="download.php">download page</a>.<br>
+<br>
+Here's whats new since 5.9:
+<ul>
+<li>Keyboard movement in 3D windows (e.g. OpenGL's) works even if the mouse is
+ not over the map view, as long as the window has the focus (i.e. a blue
+ caption). Now you can also use the Tab key to move the focus between the
+ map views in the main window.
+<li>Found and fixed the bug that was causing "floating point errors" in some
+ maps in the OpenGL view when lights are turned on. There was also a
+ performance bug that slowed things down.
+<li>OpenGL view now displays colored lights!
+<li>Dragging when mouse position makes no sense can go past the screen edges :
+ now the mouse comes back at the center of the map view instead of being
+ sent at the center of the screen. Option: the mouse can be hidden or not.
+<li>"WARNING: Degenerate QuArK-style texture" is detected by QuArK, not just
+ by TXQBSP, which makes it easier to find the problematic brushes.
+<li>The Esc key doesn't close floating 3D windows any more, so that it can be
+ used to unselect objects. Please tell me if you preffered it the old way.
+<li>Hidden groups are now by default hidden on textured 3D views as well.
+<li>Minor fix in Quake 2 entities: key_power_cube was missing spawnflags. If
+ you find other small errors like this one please tell me!
+<li>8-bit TGA support (for Sin models)
+<li>Quake 1 Threeware Catch The Flag support
+<li>AUTO-SAVE of maps every xth minutes (configurable)
+<li>Vertex dragging: coordinate rounding errors
+<li>Maps with dummy polyhedrons appearing in the .bsp : fixed ?
+<li>Handle dragging: draghint
+<li>mapmakeprism.py updated by Decker
+<li>"Enter" key in trees and listviews
+<li>TGA supports (including compressed images)
+<li>Texture game conversion fixes
+<li>Dragging when mouse position makes no sense can go past the screen edges
+<li>Linear Duplicators: matrix precision enhanced
+<li>Save dialog: default file name and extension fixed
+</ul>
+
+<headline>QuArK-made Maps</headline>
+A single new map have been added to the <a href="usermaps.php">user maps</a> page:
+<ul>
+	<li>'Fun With Death' by Mike Piotrowski
+</ul>

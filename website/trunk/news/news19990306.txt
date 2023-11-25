@@ -1,0 +1,2 @@
+<author>Armin</author>
+I finally manage to upgrade QuArK to Delphi 4. Here is a <a href="http://asp.planetquake.com/dl/dl.asp?quark/source/full-57bis.zip">complete package</a> with compile instructions if you are interested in the source code.

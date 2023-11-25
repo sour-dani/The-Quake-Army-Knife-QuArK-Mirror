@@ -1,0 +1,6 @@
+<author>Armin Rigo</author>
+<UL>
+
+<LI> <A HREF="ftp://ftp.cdrom.com/pub/idgames2/planetquake/quark/qbsp3wal.zip">QBSP3WAL</A> is a modified version of QBSP for Quake 2 that can read Quake 1 textures. It's a temporary fix made by a QuArK user that lets you use custom textures with Quake 2. The next release of QuArK will be able to produce custom Quake 2 .wal files with all enhancements that you don't get with this trick : long names (up to 32 instead of 16 characters), texture-specific flags, etc
+
+	</UL>

@@ -1,0 +1,23 @@
+<author>Decker</author>
+<headline>From the inbox</headline>
+<p>I've received the following e-mail from <a href="mailto:***PLEASE@NO*SPAM***Dr_Romulus@rizenet.com">"Dr_Romulus"</a>. Unfortunatly I hadn't had the time to put it up before now, so the Friday part seems a bit off.</p>
+
+<p>Anyway, here's what he writes:</p>
+
+<blockquote>
+Greeting everyone!<br>
+<br>
+Just a quick piece of news to give you all.  I'd really appreciate it if it could make it onto your news page.<br>
+<br>
+It's finally Friday and just in time for the weekend the guys at <a href="http://www.rizenet.com/">www.rizenet.com</a> have posted up a new tutorial to keep you busy.  The resident 3D Guru, makit3d, has put together the first in a series of tutorials on using the Quark map builder to generate your own custom maps for games such as Half-Life, Soldier of Fortune or Quake 3, just to name a few.  In this portion he discuses where you obtain the program, setup and the beginnings of creating your first room.<br>
+<br>
+Head on over and check it out!<br>
+<br>
+URL: <a href="http://www.rizenet.com/games/quark/page1.php">http://www.rizenet.com/games/quark/page1.php</a><br>
+<br>
+Gregory "Dr_Romulus" Diel<br>
+webmaster & lead reviewer<br>
+<a href="http://www.rizenet.com/">www.rizenet.com</a>
+</blockquote>
+
+<p>By the way: Don't know how many times we have to say this: <b>QuArK is not Quark</b>. Notice the capitalization of the letters Q, A and K. <b>QuArK</b> is "<b>Qu</b>ake <b>Ar</b>my <b>K</b>nife", where as <b>Quark</b> may be "Quark Express" (desktop publishing) or "Quark" (a game, a cartoon character, the stuff that flows around in outer space.)</p>

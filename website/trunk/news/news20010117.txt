@@ -1,0 +1,7 @@
+<author>Decker</author>
+<headline>Game-modification Addons</headline>
+<p>As a new experiment, I have created a page on this site, which contains the known <a href="download_addons.php">game-modification addons</a> for QuArK.</p>
+
+<p>It contains download-links for user-created addons, and links directly into our project <u>development</u> source-code at our <a href="http://sourceforge.net/project/?group_id=1181">SourceForge CVS-library</a>.</p>
+
+<p>Be aware that this <b>is</b> experimental, and only a little service for all our QuArK users, so they may get the newest entity addons, more quickly.</p>

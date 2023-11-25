@@ -1,0 +1,3 @@
+<author>Decker</author>
+<headline>6DX game-engine changed to a new web-site</headline>
+<p>The 6DX game-engine, which as far as I've been told is used for Role Playing style games (RPGs) in a 3D universe - <span class="sml">(though I don't think it is limited to just that)</span>, have changed their website from www.eldermage.com to this new one; <a href="http://www.aztica.com/">www.aztica.com</a>.</p>

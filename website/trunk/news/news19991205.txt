@@ -1,0 +1,54 @@
+<author>Decker</author>
+<headline>Searching developers...</headline>
+For those of you, who don't follow the <a href="http://www.egroups.com/list/quark-python">QuArK-Python forum</a> <span class="sml">(You should <a href="mailto:quark-python-subscribe@egroups.com">subscribe</a> to it instead)</span>,
+but have some knowledge with Delphi, Python, <a href="help/glossary/index.html#.QRK">.QRK</a>-files, Quake-3:Arena entities and stuff in
+that genre, and want to help developing QuArK, please read what Armin writes:
+<blockquote>
+Hello everybody,<br>
+<br>
+Whoever is interested in helping with Q3A support, please signal yourself
+<a href="http://www.egroups.com/list/quark-python">here</a>!<br>
+<br>
+We plan to do the following:
+<ul>
+<li>Test and release the source code of a new beta with as main changes
+support for images as textures (this means 24-bit textures in the 3DFX and
+OpenGL viewers too).
+
+<li>Set up a <a href="http://www.cyclic.com">CVS</a> server (Control Version System) so that everyone can
+download the latest updates and submit its own changes.
+
+<li>I will write the very basic implementation of Bezier patches and then
+write some documentation about them; I want to help every interested
+person in writing Python code that works with Bezier patches (lots of
+Python plug-ins would be very useful besides the basic stuff, like
+aligning textures on Bezier patches, splitting them up, smoothing angles,
+etc, etc...) For this I count on Tiglari but other people may catch up
+too.
+
+<li>Basic support for <a href="help/glossary/index.html#.PK3">.PK3</a> archive should be easy to do (they are
+uncompressed <a href="help/glossary/index.html#.ZIP">.ZIP</a> files AFAIK.)
+
+<li>Q3A <a href="help/glossary/index.html#.MAP">.MAP</a> file format: should not be too difficult if there are just
+Bezier patches to add to the format; I'm hoping someone for this.
+
+<li>Texture support: if Q3A uses plain <a href="help/glossary/index.html#.TGA">.TGA</a> files, support should be
+included in my changes (the ones I described above). But there are
+probably tricks for texture flags (a separated file? An extension to the
+.TGA format?) Someone should write the support for this.
+
+<li>And, as always, I need someone to list and sort the Q3A textures and
+someone to list, sort and comment Q3A entity types -- this probably cannot
+be done before the actual release of the game.
+</ul>
+Anyone interested in any part --- either mentionned here or something else
+I forgot --- please signal yourself <a href="http://www.egroups.com/list/quark-python">here</a>!<br>
+<br>
+Armin
+</blockquote>
+
+<headline>OP4 textures now in Half-Life data add-on</headline>
+The <a href="http://home1.inet.tele.dk/decker/DataHL.zip">newest Half-Life data add-on .QRK</a> have been updated with Opposing Force texture-links.<br>
+The only thing that is missing now, is all the new model-sequence names. E.q. IDLE1, IDLE2, WALK, BARNEYFALL, PEPSIPUSH, etc. If you have seen
+any place, where they have made a list of those, please <a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com?subject=OP4 sequence names">let me know</a>.<br>
+<div class="sml">(If you have a new/updated data add-on you want announced here, please mail the <a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com?body=-- NOTICE: HTML e-mails will be bounced, so send only in plain-text! /Decker --">webmaster</a>.)</div>

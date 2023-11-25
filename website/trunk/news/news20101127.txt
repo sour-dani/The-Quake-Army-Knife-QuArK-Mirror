@@ -1,0 +1,10 @@
+<author>DanielPharos</author>
+<headline>Community mob</headline>
+
+<p>Due to pressure from the community, we've decided to re-start the QuArK project, but heading in a different direction. As of today, work has officially started on QuArK 7 (codename: "Project Phoenix"), which is going to be a total rewrite, resulting in an even better QuArK!</p>
+
+<p>Don't believe me? See: <a href="http://quark.sourceforge.net/quark7.php">this page</a>!</p>
+
+
+<p>Welcome back,<br>
+DanielPharos</p>

@@ -1,0 +1,26 @@
+<author>cdunde</author>
+<headline>Full snapshot of QuArK 6.4.0 alpha 3</headline>
+<p>I have made a new full snapshot of <a href="http://quark.sourceforge.net/downloads/release_zips/quark-win32-20040521.zip">QuArK 6.4.0 alpha 3</a> <span class=sml>(dated 2004-05-21)</span>.</p>
+
+<p>The items and features covered by this snapshot are:</p>
+<UL>
+<LI>Support for Sylphis as a game engine also
+      write support for PNG images, added parser for new map files,
+      added support for loading map files made for the latest Quake3
+      and Doom3 engine based games. Also a small fix for handling MD3
+      models(especially for RTCW).
+<LI>Corrected handling of comments for shaders to
+      fix problem of them not showing up in the Texture Browser.
+<LI>New HotKey (Tab) and Options menu function,
+      Rebuild 3D views (actually all views) in case of a lockup.
+      This clears up all textured views, may need multiple attempts.
+<LI>New HotKey (Alt+A) for Options menu function,
+      Axis XYZ letter indicator in view windows.
+<LI>Full Infobase documentation included
+</UL>
+
+<p>The latest up dated Infobase can be downloaded <a href="http://quark.sourceforge.net/release_zips/quark-help-20040521.zip">here</a> <span class=sml>(dated 2004-05-21)</span>. (included in above release)</p>
+
+<p>Download full source code with Python 2.2.3 from <a href="http://quark.sourceforge.net/release_zips/quark-src-20040521.zip">here</a> <span class=sml>(dated 2004-05-21)</span>.</p>
+
+<p>For more information and support, go to the <a href="http://quark.sourceforge.net/forums.php">forums</a>.</p>

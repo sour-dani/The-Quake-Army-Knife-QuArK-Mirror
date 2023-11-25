@@ -1,0 +1,6 @@
+<author>Armin Rigo</author>
+<UL>
+
+<LI> <A HREF="ftp://ftp.cdrom.com/pub/idgames2/planetquake/quark/q2textr2.zip">Quake 2 texture list</A> updated - thanks Decker ! Also fixes a few bugs when QuArK compiles maps and runs Quake 2.
+
+	</UL>

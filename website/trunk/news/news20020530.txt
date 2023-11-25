@@ -1,0 +1,10 @@
+<author>Decker</author>
+<headline>User made prefab</headline>
+<p>A nice Half-Life tank prefab made by <a href="http://www.agoff.net/tiger">Ed Agoff</a> is now available from the <a href="http://quark.sourceforge.net/userprefabs.php#HL">User Prefabs</a> page.</p>
+<ul>
+  <li>Half-Life
+    <ul>
+      <li>Tiger</li>
+    </ul>
+  </li>
+</ul>

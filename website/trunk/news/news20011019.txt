@@ -1,0 +1,10 @@
+<author>tiglari</author>
+<headline>New txqbsp7 for Quake 1</headline>
+<p>By Bengt Jardrup.  Smaller .exe, fixes various problems, as specified in the readme.txt file.</p>
+
+<UL>
+<LI><a href="http://www.fileplanet.com/dl/dl.asp?quark/txqbsp7_bj.zip">Just the exe</a>
+<LI><a href="http://www.fileplanet.com/dl/dl.asp?quark/source/txqbspbjp.zip">Source also</a>
+</UL>
+
+<p>I haven't had time to check it out, so Q1 people should look it over.</p>

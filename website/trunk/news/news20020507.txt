@@ -1,0 +1,3 @@
+<author>tiglari</author>
+<headline>Patch 3 to New Snapshot</headline>
+<p>Linked to at the <a href="http://quark.sourceforge.net/latest">latest</a> page.  Assorted bugfixes, and Mohaa maps are now written with texture flags etc.</p>

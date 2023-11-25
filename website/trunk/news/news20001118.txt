@@ -1,0 +1,51 @@
+<author>Decker</author>
+<headline>Something for the Spanish QuArK-users...</headline>
+R_Rozas send me this e-mail, in which he promotes his <a href="http://www.area66.com/quakeinspain">Spanish
+QuArK Quake-3:Arena map-making tutorial</a>:
+<br><br>
+<blockquote>
+Greetings Quark Webmaster.<br>
+<br>
+the first thing, I apologize for my spelling. I am Spanish and my
+English is not very good.<br><br>
+I am Working in a page, on coding and maping for Quake 3 in Spanish,
+and to create maps I use Quark 6.<br>
+The page includes a complete tutorial in Spanish for Quark6 with the
+following sections:<br>
+<ul>
+<li>Introduction
+<li>That need?
+<li>Installation Quark 6
+<li>My first map?
+<li>Description of the editor Quark 6
+<li>Description of Commands
+<li>A complete map.
+<li>Extructure of files and compilation .bsp.aas
+<li>Application of textures
+<li>To create a door
+<li>To create objects that move.
+</ul>
+I have thought that serious good for Quark 6, to have a tutorial in
+Spanish and that it could be useful since a lot of Hispanic people
+could manage Quark6.
+My page can see it in:  <a href="http://www.area66.com/quakeinspain">www.area66.com/quakeinspain</a> and If he is
+interested you can make reference of her in your page.<br>
+<br>
+I want to Be appreciated that you have made this editor since with the
+I made the map of Quake 2 with which I won the first competition on
+maps that it was made in Spain.<br>
+<br>
+For I finish I Want to be that I have already created several maps of
+Q3 with Quark6, and I have not found any bug, but I don't find the form
+of creating environments for maps without roofs and floors, giving me
+the the error of  " Hole in map."<br>
+<br>
+Thanked by your interest Quake in Spain R_Rozas
+</blockquote>
+<br>
+It's nice to hear, that someone won a map-designing price, using QuArK as the tool.<br>
+But remember; it is not the <u>tool</u> that win prices. It is the person with the idea that, by using <u>a</u> tool and possibly many
+different tools, gain prices, glory and respect for his or her creations. Map-making is an artform... like painting.
+<br><br>
+Also, the development of QuArK have lately become more a team-effort, which started with one man's visions and creativity,
+so I hereby forward your appreciation to the development-team and all the helpful QuArK-users.

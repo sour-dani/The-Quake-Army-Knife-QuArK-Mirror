@@ -1,0 +1,10 @@
+<author>DanielPharos</author>
+<headline>Moving the website - part 2</headline>
+
+<p>I've been working on the website migration, and I managed to successfully migrate a local copy of the forum to the latest version! I've still got to check nothing got lost, but it's looking good. I expect to trigger the migration in a couple of weeks.</p>
+
+<p>And about the forum theme, how about <a href="https://custom.simplemachines.org/index.php?theme=2919">this one</a>?<pic smiley_happy></p>
+
+
+<p>Happy browsing,<br>
+DanielPharos</p>

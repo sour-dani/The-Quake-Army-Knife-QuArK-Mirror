@@ -1,0 +1,11 @@
+<author>DanielPharos</author>
+<headline>Nice Quake map compiler</headline>
+
+<p>I couldn't not mention this toolset I just stumbled upon: <a target="_blank" href="http://www.voidspark.net/projects/bjptools_xt/">Jury-Rigged BJP Tools</a>. As its description says, they are a modified version of Bengt Jardrup's Quake BSP Compiler suite, with added support for Detail-Brushes, Hint-Brushes, the BSP2 format, among other things.</p>
+
+<p>Now, if you continue reading that website, you'll learn about some not-so-nice elements in our community. So here's what I want you to do: compile your Quake maps with these tools, and if you encounter trouble, give the tool's author feedback so he/she can fix the bugs. And if they work, send him/her a nice message. Seriously, with a community that's thinning as it is, we should all be getting along, instead of in-fighting like jealous children. (Belated Christmas spirit <pic smiley_medium>)</p>
+
+<p>Except of course when it comes to your choice of editor; then there is only one: QuArK! <pic smiley_happy></p>
+
+<p>Happy compiling,<br>
+DanielPharos</p>

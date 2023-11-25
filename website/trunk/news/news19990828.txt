@@ -1,0 +1,50 @@
+<author>Decker</author>
+<headline>Tiglari speaks about 3Dfx</headline>
+For those of you, who hasn't joined the <a href="forums.php">QuArK-forums</a>, and has problems with the new
+Voodoo drivers, here is something that might interest you <span class="sml">(<a href="http://www.egroups.com/group2476.html?">original message</a>)</span>:
+<blockquote>
+[Tiglari]<br>
+Someone on the hereticii.com msgboard has just reported that they got
+the 3dfx view working with their Voodoo-2 <span class="sml">[incorrectly mentioned as Banshee]</span> by setting the screen size to
+640x480, instead of its default, which is 560x420.  So it would be
+really excellent if everyone with other problematic Voodoo setups tried
+that out and reported what happens (I'll be doing Voodoo1).  The lower
+default resolution is suppoosed to increase rendering speed and so is
+there for a reason, but if we know that it's causing the problem that
+will make it easier to find the right fix.<br>
+<br>
+Actually I don't at this point understand why this works, because for
+Voodoo-1 the black death occurs without any input from this config option as
+far as I can tell, but there could be several different problems
+appearing with different cards (the SetIntelPrecision trick that worked
+for me didn't work for decker, iirc).
+</blockquote>
+To change the 3Dfx screensize, you go into <a target="_blank" href="http://www.planetquake.comhelp/configuration/index.html#general3dview">QuArK's configuration-options, general, 3D-view</a>.<br>
+A Banshee user, who tried the suggestion, reports:
+<blockquote>
+[James Woolley]<br>
+I own a banshee and tried the 640x480 trick.. the only thing I got was
+instead of the black screen I got actual rendered stuff.. except it was
+frozen as soon at it came up.  So I got it to actualy show sumething but it
+still froze
+</blockquote>
+And there's more about a possible solution of the 3Dfx/Voodoo problem.<br>
+&nbsp;<img src="pics/icons/alert.gif" align=absmiddle width=15 height=15>&nbsp;Before you headlessly go download and install the mentioned file, please notice that he says; <b>experimental</b>,
+<b>quark5V.exe</b> and <b>rename glide2x.dll</b>!
+<blockquote>
+[Tiglari]<br>
+I've put an experimental quark exe for the Voodoo problem at:<br>
+<br>
+&nbsp;<a href="http://hereticii.com/tiglari/editor/quark5v.zip">http://hereticii.com/tiglari/editor/quark5v.zip</a><br>
+<br>
+Its .exe is quark5v.exe, I think it might have a problem with drawing
+skins, but anyway if people with Voodoo cards could test it out it
+might be useful, if you're using old glide2x.dll files as a fix,
+remember to rename them to something different.
+</blockquote>
+
+<headline>QuArK-made Maps</headline>
+Quake-2 deathmatch maps just keeps coming in.
+<ul>
+	<li>'Ancient Temple' by Ryan Thomas
+</ul>

@@ -1,0 +1,13 @@
+<author>Gryphon</author>
+<UL>
+
+<!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-->
+	<BLOCKQUOTE><P>
+<LI>Beta 8 of QuArK 5 is out and kickin'. Apparently many bugs have been worked out, and the infrequent file corruption bug should be completely stomped by next release. 'Til then Armin suggests saving as a Full-Text .qrk (which makes sense) or a .qkm to avoid this problem.</LI>
+<!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-->
+<LI>To the people who have sent me maps to post, sorry they're not up yet.  I'll try to get them up tomorrow. I'll work on finishing my tutorial this weekend as well. I've been working on trying to complete my first FINISHED map lately, and it's a doozy.  I'm trying to pack it with literally every bizarre thing I can think of, including and upside down room, a wall with a couch in front of it that spins around to reveal a secret passage, a giant boot that kicks you across the screen to reach your destination, a ferris wheel (thanks to Nick!) complete with striped tent in the background... but it's in the middle of a rocky canyon, so outcroppings abound!<BR>Anyway... I'm looking forward to finishing.  Compile time's a pain in d' butt and my full-time job is salaried, so that means it easily deeps into my freetime when I need to make deadlines.  Oh, well.</LI>
+<!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-->
+<LI>I got locked out of my car on Friday to top off the end to a horribly annoying week, but I can only say one thing after riding my bike around for a day... God Bless triple A!  Good excuse to ride my bike a couple hundred miles though! :::Wheez!:::</LI>
+</BLOCKQUOTE>
+
+	</UL>

@@ -1,0 +1,3 @@
+<author>tiglari</author>
+<headline></headline>
+<p>2 more plugins for QuArK 6.3.0, in the Update Patches for QuArK 6.3 section of the <a href="http://quark.sourceforge.net/latest">latest</a> page.</p>

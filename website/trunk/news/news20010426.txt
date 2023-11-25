@@ -1,0 +1,21 @@
+<author>Decker</author>
+<headline>Zoners Half-Life Tools v2.5.2</headline>
+<p>A new version of Zoner's Half-Life Tools is released. These are the changes:</p>
+
+<ul>
+<li>HLCSG
+        <ul>
+        <li>Fixed condition where the mixed face contents checks were not checking the last face in a brush correctly.
+        </ul>
+<li>HLBSP
+        <ul>
+        <li>Increased MAX_WVERTS for tjunction remover, as it was sometimes running out of room to do its work.
+        </ul>
+<li>HLRAD
+        <ul>
+        <li>Changed default smoothing threnshold for phong shading from 45 to 50
+        <li>Fixed overrides of the values light emitting textures with multiple rad files not working properly.
+        </ul>
+</ul>
+
+<p>Get <a href="http://dl.fileplanet.com/dl/dl.asp?quark/buildtools/halflife/zhlt252.exe">zhlt252.exe</a> (653KB) or <a href="http://dl.fileplanet.com/dl/dl.asp?quark/buildtools/halflife/zhlt252.zip">zhlt252.zip</a> (530KB) from the QuArK <a href="download.php">download-page</a>.</p>

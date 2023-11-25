@@ -1,0 +1,8 @@
+<author>tiglari</author>
+<headline></headline>
+<p>Finally, a <a href="http://dl.fileplanet.com/dl/dl.asp?quark/snapshots/quark64_snap2003mar29.zip">snapshot</a> of QuArK 6.4.  This is an alpha, meaning plenty of more new features es will be added.  It includes the features in the 6.3.0 update series, plus additional goodies such as:</p>
+<UL>
+<LI>Transparency in OGL window.
+<LI>Dockable toolbar with tag side and wrapping buttons on it.
+<LI>Many help popups now have buttons linking to pages in the infobase, for easy access to information about QuArK features.  Do use this, unzip the <a href="http://dl.fileplanet.com/dl/dl.asp?quark/Releases/help_package/quark_help_20030329.zip">latest version of the infobase</a> (1.6M) into a subfolder of your QuArK folder named `help'
+</UL>

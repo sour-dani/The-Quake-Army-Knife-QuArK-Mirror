@@ -1,0 +1,14 @@
+<author>DanielPharos</author>
+<headline>Or are we?</headline>
+
+<p>Dear all,<br>
+<br>
+I've come bringing sad news. QuArK is now officially dead. <pic smiley_sad> cdunde and I have decided to pull the plug, because it just wasn't worth it anymore. The two of us have struggled for years now, trying to add new features to QuArK and bring it more up-to-date, but finally, we've had enough.</p>
+
+<p>I'll be doing some minor cleaning up, and do a last release. And I'll probably remain active on the forum as well for some time, but that's about it.</p>
+
+<p>A big 'thank you' goes out to those that supported us during this time, and we hope you've enjoyed the ride, and continue to use QuArK in the future.</p>
+
+
+<p>Goodbye and farewell,<br>
+DanielPharos</p>

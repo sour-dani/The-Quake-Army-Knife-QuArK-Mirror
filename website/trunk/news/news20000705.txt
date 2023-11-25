@@ -1,0 +1,56 @@
+<author>Decker</author>
+<headline>New snapshot...</headline>
+<blockquote>
+Hi !<br>
+<br>
+A new CVS snapshot compile is available for download at sourceforge.<br>
+<a href="http://sourceforge.net/project/filelist.php?group_id=1181">http://sourceforge.net/project/filelist.php?group_id=1181</a><br>
+<br>
+Name:   6.002pre10<br>
+File:   quarksnapshot_20000704.ace<br>
+Length: 1.608.405 bytes<br>
+<br>
+This snapshot contains some fixes to Q3 and SoF support<br>
+<br>
+INSTALLATION:<br>
+<ol>
+<li>Make sure, that you have at least the mini-Python package
+   installed. Get it at the <a href="download.php">download page</a>.<br>
+   The full Python install does it also (<a href="http://www.python.org">www.python.org</a>)
+<li>Unpack the <a href="http://quark.sourceforge.net/infobase/glossary/index.html#.ACE">.ACE</a> archive with e.g. xaceplus from <a href="http://www.winace.com/">www.winace.com</a>
+   A directory will be created.
+<li>Start QuArK by clicking quark.exe
+<li>Don't forget to <a href="http://quark.sourceforge.net/infobase/configuration/index.html">configure</a> the Game directories and tools.
+   (You can also copy your old Setup.qrk to the new snapshot
+    directory)
+<li>Please, when reporting bugs, state for which game the report
+   is. Often it is <a href="forums.php">game specific</a>.
+</ol>
+Unpacking the snapshot over an older release may work at the first
+glance, but may lead to subtile errors that are hard to find.<br>
+I do not recommend it.<br>
+<br>
+CHANGES:<br>
+<ul>
+<li>General:
+  <ul>
+    <li>added: snapshot version is displayed at splash screen and elseeverywhere
+    <li>fixed: removed unnecessary dialogs when extract textures
+  </ul>
+<li>Quake3:
+  <ul>
+    <li>fixed: thick bevel bug
+    <li>fixed: models beeing not compiled in the bsp
+      (i had to activate the stupidbuildtoolkludge flag also for q3. its
+        for tools that have to run in the game directory to work properly)
+    <li>added: detail content flag reinstated
+  </ul>
+<li>SoF:
+  <ul>
+    <li>fixed: hang when extract textures (go menu entry)
+    <li>fixed: missing skynames in wordspawn form
+  </ul>
+</ul>
+greetings<br>
+&nbsp;Alexander
+</blockquote>

@@ -1,0 +1,23 @@
+<author>Decker</author>
+<headline>Zoner's Half-Life Tools v2.0.6</headline>
+From the changelog:
+<ul>
+<li>Fixed an extremely subtle bug which would occasionaly crash vis when it was trying to compress the vis data before exiting.
+<li>Added CLIP brushes to be allowable in entities. As long as there is at least one normal brush included in the entity, CLIP's may be included too.
+<li>Fixed a crash which would occur occasionaly when an ORIGIN brush is placed in the world (ironically enough, the function printing the error message was causing it).
+<li>Enabled some long-disabled code, the -incremental switch for hlrad, so that turnaround time for light tweaking can be reduced.
+</ul>
+Get the <a target="_blank" href="http://www.winace.com">WinAce</a> file of Zoner's Half-Life Tools: <a href="http://dl.fileplanet.com/dl/dl.asp?quark/zhlt206.ace">zhlt206.ace</a> (316KB), or
+the <a target="_blank" href="http://www.winzip.com">WinZip</a> one (371KB) which can be found at the <a target="_blank" href="http://halflife.gamedesign.net">Half-Life ERC</a> site.<br>
+
+<headline>User-made maps</headline>
+A bunch of <a href="usermaps.php">user maps</a> have been submitted. And there's something for everyone; Quake-1, Hexen-II, Quake-2, Half-Life and Quake-3:Arena.
+<ul>
+<li>'XenDM' by Rolf Hulsbergen
+<li>'QualterGeist' by Demetris Leptos (aka RoGeR)
+<li>'The Leech Pits' by Jeromy (Manna) Visser
+<li>'The Lost BSP #22-The Strogg Wars 2056' by Jeromy (Manna) Visser
+<li>'Hexen 2 PoP SP Map' by Jan Pear (Ahumado)
+<li>'The Pit Of Pain' by Johannes Uessem (aka Solido)
+<li>'The LAVA PIT (lavapit.bsp)' by Dustin Burtis (Chozo4 or White Wolf)
+</ul>

@@ -1,0 +1,12 @@
+<author>DanielPharos</author>
+<headline>QuArK 6.6.0 Beta 7 nightly released!</headline>
+
+<p>A nightly version of QuArK has just been released! It contains an experimental workaround for the problems people are having getting the OpenGL renderer to work on Windows 8 and 10.</p>
+
+<p>Link: <a href="http://quark.sourceforge.net/downloads/release_zips/quark-win32-6.6.0Beta7Nightly6Dec2015.exe">http://quark.sourceforge.net/downloads/release_zips/quark-win32-6.6.0Beta7Nightly6Dec2015.exe</a></p>
+
+<p>Please test it (if you want), and report any problems with the experimental workaround in this forum thread: <a href="http://quark.sourceforge.net/forums/index.php?topic=1080">http://quark.sourceforge.net/forums/index.php?topic=1080</a></p>
+
+
+<p>Happy QuArK-ing,<br>
+DanielPharos</p>

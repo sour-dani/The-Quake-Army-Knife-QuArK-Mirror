@@ -1,0 +1,19 @@
+<author>tiglari</author>
+<headline>New QuArK 6.3 Snapshot (Updated)</headline>
+<p>A new snapshot of QuArK 6.3.</p>
+
+<p>New features include:</p>
+
+<blockquote>
+<ul>
+<li>texture search, path duplicatar and extruder bugfixes
+<li>argreplacer duplicator
+<li>improved Crystal Space support
+<li>initial 6DX support
+</ul>
+See <a href="http://quark.sourceforge.net/latest/snapshot_readme/readme.txt">readme.txt</a> file for details.
+</blockquote>
+
+<p>Get it <a href="http://dl.fileplanet.com/dl/dl.asp?quark/Snapshots/Quark63_snap070901.zip">here</a> (Quark63_snap070901.zip), or from the QuArK <a href="download.php#quark">download-page</a>.</p>
+
+<p>Truly adventurous folk might want to try out the new experimental .exe on the <a href="http://quark.sourceforge.net/latest/index.html#experimental">latest</a> page (attempt to suppress 'drifting' of vertexes when dragged).</p>

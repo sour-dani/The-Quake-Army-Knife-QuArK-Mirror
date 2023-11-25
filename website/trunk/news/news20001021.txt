@@ -1,0 +1,50 @@
+<author>Decker</author>
+<headline>User Prefabs</headline>
+A new experimental section is now open on the QuArK-website; <a href="userprefabs.php">User Prefabs</a>.<br>
+Currently there ain't many prefabs or prefab-packs, so if you got some, please submit them.<br>
+Also I need icon-images (32x32 pixels) for some of the supported game, which you can see on the page.
+If you got such an icon (from the game's .EXE) please <a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com">send it to me</a>.<br>
+<br>
+Another <u>good</u> prefabs-site can be found at <a href="http://prefabs.gamedesign.net">http://prefabs.gamedesign.net</a>.
+I suggest you take a look at their database also, even if its a bit slow loading at times.<br>
+
+<headline>Zoner's Half-Life Tools v2.4</headline>
+Snips from the revision history:<br>
+<br>
+<blockquote>
+<ul>
+
+<li>HLCSG
+<ul>
+<li>Fixed a rare crash with -onlyents updates</li>
+<li>Added the ability to define custom sized bounding boxes for the collision hulls through a command line switch called -hullfile. The format is simply three lines containing three numbers of dimensions of the box in x y z format. The default settings are included in a file called DEFAULT.HULL in the ZHLT distribution. This option is only primarily of interest to mod authors and their mapping team.</li>
+</ul>
+</li>
+
+<li>HLVIS
+<ul>
+<li>Merged in -full vis patch from Antony Suter. This increases the quality of the vis calculations at the expense of a minor speed hit. Anyone who has worked with Quake1 editing should remember this option.</li>
+<li>Optimized hlvis and improved its performance by around 20-30%</li>
+</ul>
+</li>
+
+<li>NETVIS
+<ul>
+<li>Netvis clients inhert the -full setting the server uses</li>
+<li>Netvis clients now automatically download .BSP and .PRT data from the server</li>
+<li>Netvis clients now download the data calculated during BasePortalVis from the server</li>
+<li>Improved efficiency of netvis clients to nearly optimal levels</li>
+</ul>
+</li>
+
+<li>HLRAD
+<ul>
+<li>Malformed face normal errors now output world coordinates of the error</li>
+<li>The number of texture lights inside .RAD files is now unlimited</li>
+</ul>
+</li>
+
+</ul>
+</blockquote>
+<br>
+ZHLT v2.4 is available <a href="http://dl.fileplanet.com/dl/dl.asp?quark/zhlt24.zip">here</a>, or from the <a href="download.php#buildpacks">download page</a>.

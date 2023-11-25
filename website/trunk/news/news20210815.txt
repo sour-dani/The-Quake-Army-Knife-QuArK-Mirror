@@ -1,0 +1,42 @@
+<author>DanielPharos</author>
+<headline>25 years celebration!</headline>
+
+<p>Well, we've done it. QuArK is now officially 25 years old! You can <a href="http://quark.sourceforge.net/25years/">enjoy the festivities here</a>!</p>
+
+<p>And not is it just 25 years old, it's still alive and kicking! Heck, just now I fixed an annoying bug somebody encountered and reported, so let's celebrate with a new nightly release!</p>
+
+<p><b>Game support:</b></p>
+<ul>
+<li>Added Cry of Fear support.</li>
+<li>Added Half-life 1: Source support.</li>
+</ul>
+
+<p><b>New features:</b></p>
+<ul>
+<li>Made the "browse for folder" window resizable and added the "Create new folder" button (only supported on Windows ME, Windows 2000, and higher).</li>
+</ul>
+
+<p><b>Improvements:</b></p>
+<ul>
+<li>Improved Steam folder handling to allow a per-game Steam Library location.</li>
+<li>Improvements to .rmf file loading: specifics are now also being loaded.</li>
+<li>Cache texture sizes during the saving of .vmf files, and handle 'hidden' items inside entities in .vmf files. Also, actually hide them.</li>
+</ul>
+
+<p><b>Notable bug fixes:</b></p>
+<ul>
+<li>Made the classname specific editable again in the Map Editor; this was blocked in 6.6.0 Beta 3.</li>
+<li>Fixed a bug where path duplicators would be missing pieces when one section was almost an extension of the previous one, but not quite.</li>
+</ul>
+
+<p>You can get this latest nightly build from our <a href="https://sourceforge.net/projects/quark/files/QuArK/QuArK%206.6.0%20Beta%208/quark-win32-6.6.0Beta8Nightly14Aug2021.exe/download">SourceForge download page</a>.</p>
+
+<hr style="height: 2px;">
+
+<p>Did you know you can still download various old QuArK versions? Just go to our <a href="download.php">download page</a>, enable the <u>include superseded versions</u> option, and download QuakeMap 2.8. (I strongly advise you to only run this on Windows 9x, because it was not made for newer operating systems.) And to appreciate the progress made in those 25 years, compare this absolutely ancient version with this new nightly. You may spot a couple of similarities, but perhaps also some differences. What a long way we've come. <pic smiley_happy></p>
+
+<p>Cheers, QuArK!</p>
+
+
+<p>Happy party-ing,<br>
+DanielPharos</p>

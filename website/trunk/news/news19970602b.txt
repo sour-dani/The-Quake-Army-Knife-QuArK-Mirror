@@ -1,0 +1,4 @@
+<author>Derrick McKay</author>
+<headline></headline>
+- QuArK 3.2 released ! (see the <A HREF="download.html">Download Page</A>)<BR>
+- Armin's News Page : information about QuArK 3.2<BR>

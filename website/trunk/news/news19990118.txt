@@ -1,0 +1,3 @@
+<author>Armin</author>
+<li>I wrote a new set of documentation pages : the <a href="armin/advanced.html">Advanced Features Pages</a>.
+<li>Heretic II fans, get <a href="http://www.hereticii.com/tiglari/cdrom/datahr2.zip">the latest DataHr2.qrk</a> from Tiglari's site. It includes most models to display in 3D viewers !

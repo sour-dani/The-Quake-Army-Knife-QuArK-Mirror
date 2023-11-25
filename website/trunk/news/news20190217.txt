@@ -1,0 +1,12 @@
+<author>DanielPharos</author>
+<headline>New nightly build released!</headline>
+
+<p>A user on the forums pointed out trouble getting textures to work in Hexen II. Turns out a change made to QuArK a couple of years ago triggered an ancient bug. I've told the bug to get lost.<pic smiley_happy></p>
+
+<p>Download this new nightly release from <a href="https://sourceforge.net/projects/quark/files/QuArK/QuArK%206.6.0%20Beta%207/" target=_blank>SourceForge download page</a> now!</p>
+
+<p>Note: this is a nightly release, so there may be breaking bugs. If you encounter one, please let us know on the forums.</p>
+
+
+<p>Happy mapping,<br>
+DanielPharos</p>

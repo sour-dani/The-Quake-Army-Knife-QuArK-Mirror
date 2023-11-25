@@ -1,0 +1,19 @@
+<author>cdunde</author>
+<headline>QuArK 6.5.0 alpha 7 with Quake 4 support .exe Installer fixed.</headline>
+
+<p><b>Oh-oh!</b> Apparently with the added Quake 4 support, the file that creates the .exe Installer did not get updated and the new folder and its files were excluded.</p>
+
+<p>A new installer has now been uploaded.<br>
+If you downloaded the installer prior to today and wish to map for Quake 4 please re-download and re-install it. You should be able to just install it over the files that you now have for this version. Or you can download the .zip version of it instead, and extract the Quake 4 folder and its files to your current alpha 7 folder. The .zip file was NOT effected.</p>
+
+<p>If you decide to uninstall your previous copy of alpha 7 prior to using the fixed installer, please remember to move any files you wish to save from this folder or they will also be deleted. Your current Setup.qrk will still work and will remain intact if you just re-install into the same folder.</p>
+
+<p>I deeply apologize for any inconvenience! ;-)</p>
+
+<p><a href="http://sourceforge.net/project/showfiles.php?group_id=1181"><b>QuArK 6.5.0 alpha 7 with Quake 4 support, fixed .exe Installer</b></a>.</p>
+
+<p>Remember <b>Keep your QuArK knife sharp!</b></p>
+
+<p>cdunde</p>
+
+<p>For more information and added support, go to the <a href="http://quark.sourceforge.net/forums/">QuArK Resource Center</a> and <a href="http://quark.sourceforge.net/communication.php#forums">the forums page</a> of this site.</p>

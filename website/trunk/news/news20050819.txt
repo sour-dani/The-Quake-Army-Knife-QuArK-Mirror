@@ -1,0 +1,42 @@
+<author>cdunde</author>
+<headline>QuArK 6.5.0 alpha 1 with Terrain Generator released !</headline>
+<p>With a new Logo look, stepped up version plat toe, improved installer and the addition of its own <a href="http://quark.sourceforge.net/infobase/intro.terraingenerator.html"><b>Terrain Generator</b></a> QuArK practically <b>LEEPS</B> out of the box at you! ! !</p>
+
+<p>Besides more improvements, corrections and added support for Half-Life 2, QuArK now sports an entirely <b>NEW</b> addition to its repertoire of tools and features that has been long over due. The <b>QuArK Terrain Generator !</b></p>
+
+<p>This also brings with it, a whole new section to the <a href="http://quark.sourceforge.net/infobase/intro.terraingenerator.html">QuArK InfoBase documentation</a> covering every aspect of this <b>powerful</b> new extension for QuArK. Giving detailed instructions on its use, vivid screen shots to help you along the way and linked <b>F1</b> Hotkey InfoBase assistance, you will soon get acquainted with its features and abilities like an old friend!</p>
+
+<p><b>These Include:</b></p>
+<UL>
+<LI>New <a href="http://quark.sourceforge.net/infobase/intro.terraingenerator.selection.html">Terrain Modes Toolbar</a> linked to the Infobase and documentation detail.
+<LI>Contains three terrain Shape Builder patterns for making surfaces.
+<LI>Converter for other imported terrains such as GenSurf and Nem's Tools.
+<LI>Face Converters for top, bottom or (a new feature unknown to other terrain editors) <b>both faces for shape movement together.</b>
+<LI>Adjacent Faces Selector tool for selecting other faces touching a single one.
+<LI>Selector Dialog Input for variations of terrain movement and shaping
+<LI>Basic Selector allows selections through all normal polys and entities.
+<LI>With more feature additions and improvements to come! ! !
+</UL>
+
+<p>Some of the other improvements and additions to this most recent release are:</p>
+<UL>
+<LI>Added new link to the <a href="http://quark.ironfoot.co.uk/">QuArK Resource Center</a> on <b>QuArK's Help</b> menu for easy access!
+<LI>Quake 2 and Half-Life 1 updated waypoint data types.
+<LI>Added Infobase link and info for use of saving camera possessions.
+<LI>Major updates and changes to the Heretic_II DataHr2.qrk file.
+<LI>Updated Genesis3D and Hexen_II data.qrk files with added corrections.
+<LI>Major updates and changes to the Quake_1 DataQ1.qrk file.
+<LI>HL2 / Source engine content update.
+<LI>Ability to display HL2 Materials.
+<LI>Added HL2-Prefabs (custom addon).
+<LI>Sounds support via ambient_generic and improved HL2 NPC_entities.
+<LI>As well as many other Half-Life 2 support items. To many to mention here!
+</UL>
+
+<p>So don't walk<b>...FLY...</b>to get your latest copy of <a href="http://quark.sourceforge.net/latest/"><b>QuArK 6.5.0 alpha 1 <br>with Terrain Generator !!! </b></a> And <b>Keep your QuArK knife sharp!</b></p>
+
+<p>cdunde</p>
+
+<p>For more information and added support, go to the <a href="http://quark.ironfoot.co.uk/">QuArK Resource Center</a> and <a href="http://quark.sourceforge.net/forums.php">the forums page</a> of this site.</p>
+
+<p>And remember to visit <a href="http://quark.sourceforge.net/cgi-bin/moin.cgi">our sister site!</a></p>

@@ -1,0 +1,15 @@
+<author>cdunde</author>
+<headline>Added QuArK Resource Forums!</headline>
+<p>Just recently a <b>New</b> QuArK Resource has been set up by <b>James McLellan</b> in order to further broaden the coverage and scope that our QuArK users have to look to for help and participation.</p>
+
+<p>We wish to welcome James's site and thank him for his efforts and dedication to QuArK. To assist in his viewers growth we highly recommend that you visit his forums and give it your utmost support. Great job James, keep it up!</p>
+
+<p>You can reach these forums either through <a href="http://quark.ironfoot.co.uk/index.php">this link</a> or from the <a href="http://quark.sourceforge.net/forums.php">forums page</a> on our site.</p>
+
+<p><b>Good luck Mate!</b> And keep your <b>QuArK knife sharp!</b></p>
+
+<p>cdunde</p>
+
+<p>For more information and support, go to <a href="http://quark.sourceforge.net/forums.php">our forums page</a>.</p>
+
+<p>And remember to visit <a href="http://quark.sourceforge.net/cgi-bin/moin.cgi">our sister site!</a></p>

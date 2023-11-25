@@ -1,0 +1,18 @@
+<author>Decker</author>
+<headline>Response on previous InstaPolls = None</headline>
+Hmmm? Not many reads the (old) news once a instapoll is over. I've only got one (1) responce on the
+<i>"Which one of the following games, that presumedly uses the Quake-series graphics-engine, would you like to see supported by QuArK?"</i> poll,
+where I asked why 8 people voted for 'other game they like to see supported by QuArK'. However in that one responce I got, he thought I knew what other
+games there were. I don't. <img src="pics/SmileySad.gif" align=absmiddle width=15 height=15><br>
+I never got any mails regarding what TC/PC/MOD those 6% were making maps for, in the <i>"What major type of maps do you create, using QuArK?"</i> poll.
+I would say, that making maps for a TC/PC/MOD, there surely have got to be new entities, and new entities should be put into a data add-on for QuArK,
+so other users could benefit from it.<br>
+
+<headline>Features and Screenshots</headline>
+If you haven't noticed it by now, I've added a new page to the site. The QuArK 5 <a href="features.php">features</a> and <a href="features.php#screenshots">screenshots</a>.
+Please tell me if something is missing from the feature-list, or I forgot to take a screenshot of something great in QuArK.<br>
+
+<headline>Half-Life data add-on updated</headline>
+The Half-Life data add-on for QuArK 5.x have been updated with entities for the <a target="_blank" href="http://www.planethalflife.com/si">Science & Industry</a> team modification.
+Get the newest data add-on DataHL.QRK here <a href="http://home1.inet.tele.dk/decker/DataHL.zip">http://home1.inet.tele.dk/decker/DataHL.zip</a>.
+<div class="sml">(If you have a new/updated data add-on you want announced here, please mail the <a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com?body=-- NOTICE: HTML e-mails will be bounced, so send only in plain-text! /Decker --">webmaster</a>.)</div>

@@ -1,0 +1,9 @@
+<author>Decker</author>
+<headline>Snapshot of QuArK 6.4 alpha 1</headline>
+<p>Peter have made a snapshot of <a href="http://quark.sourceforge.net/download/quark-win32-20030725.zip">QuArK 6.4 alpha 1</a>, and the <a href="http://quark.sourceforge.net/download/quark-help-20030725.zip">infobase</a> too.</p>
+
+<p><strike><img src="pics/icons/alert.gif" width=15 height=15 valign=absmiddle>&nbsp;Please note that this QuArK 6.4 uses <a href="http://www.python.org">Python 2.2.2</a> and will not run with the old Mini-Python 1.5.x package.</strike></p>
+
+<p><div class=sml>Update 2003-08-05:</div> Peter has informed me, that the QuArK 6.4 alpha 1 snapshot already contains a Python interpreter. All necessary are included in the package, so no extra downloads are required.</p>
+
+<p>For more information and support, go to the <a href="http://quark.sourceforge.net/forums.php">forums</a>.</p>

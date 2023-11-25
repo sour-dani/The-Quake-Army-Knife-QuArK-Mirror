@@ -1,0 +1,12 @@
+<author>tiglari</author>
+<headline>New QuArK 6.3 Snapshot</headline>
+<p>A new (perhaps unstable) snapshot of QuArK 6.3.  New features include</p>
+
+<ul>
+<li>'New Copy One' duplicator for making scattered copies of things, perhaps scaled, rotated etc.
+<li>Reworking of linear duplicator, with linear mappings working around user-specifiable group centers, and the mappings specified in terms of intuitive scale, rotate and shear properties
+<li>More accurate writing of brushes in brush primitive & Valve mapversion220 formats.
+<li>Various bugfixes from earlier snapshots
+</ul>
+
+<p>Get it <a href="http://dl.fileplanet.com/dl/dl.asp?quark/Snapshots/Quark63_snap052101.zip">here</a>, or from the QuArK <a href="download.php#quark">download-page</a>.</p>

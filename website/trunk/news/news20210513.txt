@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Interesting mod for Half-Life: Source</headline>
+
+<p>Ever since its release, Half-Life: Source hasn't received the most positive of attention. In fact, its failure to use the full potential of the Source engine is the very reason Black Mesa: Source exists! But I just stumbled across this mod pack: <a href="https://www.moddb.com/mods/half-life-source-remastered">Half-Life: Source Remastered</a>. It's a collection of mods and fixes that turn Half-Life: Source more into what it should have been. Try it out!</p>
+
+
+<p>Happy Half-living,<br>
+DanielPharos</p>

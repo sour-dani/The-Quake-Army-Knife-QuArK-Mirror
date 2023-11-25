@@ -1,0 +1,10 @@
+<author>Decker</author>
+<headline>Where's everybody?</headline>
+<p>No, we are not <i>dead</i>, just in a "dry period" with not so many interesting news. However the QuArK <a href="forums.php">forums</a> are always full of activity <span class="sml">(though a little irregular at times.)</span></p>
+
+<headline>DataHL.QRK now with BuzzyBots entities</headline>
+<p>I've updated the Half-Life data add-on with <a href="http://www.buzzybots.dk">BuzzyBots</a> entities. Grap it here; <a href="http://dl.fileplanet.com/dl/dl.asp?quark/addons/half-life/DataHL_20010805.zip">DataHL_20010805.zip</a>.</p>
+
+<p>As usual, if you find any problems or missing entities in the DataHL.QRK, please <a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com">tell me</a>. Also if there's any new Half-Life modifications or upgrades that contains new entities, or modifications thats cancelled so entities should be removed, please <a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com">let me know</a>.</p>
+
+<p>Check out other known <a href="download_addons.php">QuArK Addons</a>.</p>

@@ -1,0 +1,47 @@
+<author>Gryphon</author>
+      <ul>
+        <font 
+size=2 face="verdana,arial" 
+		color="0000a0"> <!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:--> 
+        <p><strong>I'm still alive...</strong><br>
+        </font>
+<li><font size=2 face="verdana,arial" color="0000a0">
+Hi, folks.  So in case many haven't seem the update I posted
+to E-Groups, the status of the "E-Groups is History" statement is "E-groups
+is here to stay."<br>
+The change-around happened when I ran into some family problems, and decided
+that among my other responsibilities and aspirations, fiddling with this stuff
+with (and I'll be honest) NO REAL REMUNERATION... isn't in my best interest.<br><br>
+In a nutshell... I do this site for fun, for free, and because I love QuArK and
+appreciate Armin's efforts.  It's NOT a JOB, it's a hobby.  That said... I managed
+to set up a new "Quick Questions and Answers forum"... ANY posts made to that are
+automatically sent to eGroups.  This means ANYone can open it up, post a question,
+and look on THAT forum, OR on eGroups for an answer.  This is convenient for people
+who want to post and don't want to register with e-Groups.  Having the question
+sent to eGroups is GREAT because a lot of QuArK folks like having a forum that is
+linked to a mailing list.  So people can get and reply to all questions just through
+their e-mail (great for the question ASKER too!)
+          <br>
+        </font> 
+        <font 
+size=2 face="verdana,arial" 
+		color="0000a0"> <!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:--> 
+        <p><strong>Thanks, Decker!</strong><br>
+        </font>
+<li><font size=2 face="verdana,arial" color="0000a0">
+I just have to say, BIG THANKS to Decker for keeping up with 
+Half-life support (and of course to Armin as always!)
+Decker also passed me some very cool updates for the Half-life 
+page of the site.  I've only recently posted them to the site,
+even though he sent them a while back (sorry, Decker!)<br><br>
+Also of strong importance is an issue Decker brought up about 
+navigating this website
+.  He said he didn't even know there were
+different sections under the "News" categorey.  Does any one else
+find the NEW way I've set this site up HARD to navigate.  If so,
+feel free to suggest ways to overcome it if you think of any.
+
+          <br>
+        </font> 
+        <p><font face="Geneva, Arial, Helvetica, sans-serif" size="3"><i><b><font color="#000066">Take care everyone!</font></b></i></font></p>
+      </ul>

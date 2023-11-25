@@ -1,0 +1,29 @@
+<author>DanielPharos</author>
+<headline>Look at that! <a href="http://sourceforge.net/project/showfiles.php?group_id=1181">QuArK 6.6.0 Beta 6</a>!</headline>
+
+<p>What's this? Another release? Didn't see that one coming, did you? <pic smiley_happy></p>
+
+<p>We've decided to do a release to get some final bugfixes in there, and to integrate the patches from Beta 5 into one neat little package filled with <b>pure awesomeness</b>! Don't believe me? Here's the proof, in the form of a changelog:</p>
+
+<p><b>Map Editor:</b></p>
+<ul>
+<li>Fixed <b>HL1</b> BSP MipTex saving.
+<li>Fixed <b>SOF1</b> tools: they don't work with the proper slashes.
+<li>Moved some map options around to make them more findable, and to make them work again.
+</ul>
+
+<p><b>Model Editor:</b></p>
+<ul>
+<li>Experimental (and quite incomplete) <b>HL2</b> model exporter support.
+<li>Added <b>Quake 1</b> and <b>Hexen II</b> Specific items for Model Root in the Model Editor.
+</ul>
+
+<p>See DONATORS.txt for people that made this release possible. Thank you all!</p>
+
+<p>One final note: we tried adding <b>Xonotic</b> support, but they completely messed up the directory and file hierarchy to the point of insanity. So until those guys get their act together, QuArK won't be able to provide proper support for it. Sorry. <pic smiley_sad></p>
+
+<p>Enjoy, everyone! Have a great summer mapping and modelling all things Quake, with the best tool out there: <b><a href="http://sourceforge.net/project/showfiles.php?group_id=1181">QuArK 6.6.0 Beta 6</a>!</b></p>
+
+
+<p>Happy QuArK-ing,<br>
+DanielPharos</p>

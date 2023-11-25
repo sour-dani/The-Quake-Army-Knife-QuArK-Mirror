@@ -1,0 +1,10 @@
+<author>DanielPharos</author>
+<headline>Shiny new webserver</headline>
+
+<p>I've finally managed to find the time to migrate from the old SourceForge hosting to the new SourceForge hosting. As you can notice, the website is much faster now! Also, it's served over HTTPS, and the forum got a much needed upgrade too. And I've also released a new nightly build to update the URL in QuArK itself too.</p>
+
+<p>Please let me know if something broke in the process!</p>
+
+
+<p>Happy surfing,<br>
+DanielPharos</p>

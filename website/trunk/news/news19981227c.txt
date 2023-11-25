@@ -1,0 +1,35 @@
+<author>Gryphon</author>
+      <ul>
+        <font 
+size=2 face="verdana,arial" 
+		color="0000a0"> <!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:--> 
+        <p><strong>'Twas two Days After Christmas</strong><br>
+        <li>Hola! Just thought I'd drop a note and comment that I'd finally gotten 
+          around to adding a javascript function to the new top navigational bar. 
+          Clicking it will now change both lower frames, giving you a default 
+          subcategorey for the section you choose... um... but if that sounds 
+          confusing, just click and see what I mean... previously on the menu 
+          frame changed... now BOTH do. --Rather easy bit of script, but I'm happy 
+          to have figured it out anyway. 
+        <li>I'd updated the <a href="games/quake.shtm" Onclick="framechange('games_menu.htm','navmenu')"><b>GAMES</b></a> 
+          section with some more resources and tools for 
+        <a href="games/quake.shtm" onClick="framechange('games_menu.htm','navmenu')"><b>Quake</b></a> 
+        and <a href="games/quake2.shtm" onClick="framechange('games_menu.htm','navmenu')"><b>Quake2</b></a> 
+        editing. If anyone has any suggestions for tools or sites to list under 
+        the games (sites that specifically HELP with editing that game), let me 
+        know (my tag line by the way)! 
+        <li>The download section is also now 
+        <a href="download.shtm" onClick="framechange('support_menu.htm','navmenu')"><b>REVAMPED</b></a>, 
+        and is actually... GASP... CURRENT with the newest happenings. I'm still 
+        figuring out where best to put things, so bear with the changes. 
+        <li>Last but not least... I just bought Half-Life... BRRRRrrrrr! That's 
+          gotta be the SCARIEST game I've ever played in my life. Every corner, 
+          every shadow sends shivers up my spine... and just when I let my guard 
+          down... the darkness comes to horrifying life. DEFINITELY the coolest 
+          game I've ever played. I was telling a friend of mines how I kept seeing 
+          scientists get mauled, and sucked into the ceiling by long slender tongues, 
+          or having their corpses picked off of by wandering zombies... uh... 
+          I gotta go play it again! (Hope QuArK support for Half-Life finishes 
+          soon!) 
+        </font> 
+      </ul>

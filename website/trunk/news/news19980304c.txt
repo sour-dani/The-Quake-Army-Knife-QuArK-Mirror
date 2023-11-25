@@ -1,0 +1,8 @@
+<author>Armin Rigo</author>
+<UL>
+
+<LI> What's happenning with QuArK ? No more update since months ! Well, the last month I've been working hard on QuArK 5. I will tell you soon a little more than I did in the IRC, because it's getting ready for the first beta release. I hope I will release at least a limited pre-version not later than around the 14th, and maybe as soon as this week-end. Be aware that it will be a limited version only ! You will be able to do a lot of more things than with QuArK 4.07, and easier, but there are a lot of old features that I still have to port from QuArK 4.07 to 5.</P>
+
+<LI>Something else: If you have troubles building maps with QBSP (and everyone has ;-) check <A HREF="http://www.planetquake.com/quakelab/problems.htm">this page</A> on QuakeLab. Thanks Sean McCrindle.
+
+	</UL>

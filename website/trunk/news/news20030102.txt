@@ -1,0 +1,7 @@
+<author>tiglari</author>
+<headline>QuArK 6.3e provisional release and update</headline>
+<p>Pick up the basic release <a href="http://www.fileplanet.com/dl/dl.asp?/planetquake/quark/releases/quark_v6.3e.EXE">here</a>, and an update patch <a href="http://groups.yahoo.com/group/quark/files/PATCHES/QuArK_v63e_update2.ZIP">here</a>.</p>
+
+<p>And the issues addressed are presented <a href="http://quark.sourceforge.net/latest/snapshot_readme/readme.txt">here</a>.</p>
+
+<p>I'm really hoping that 6.3 final is almost ready!</p>

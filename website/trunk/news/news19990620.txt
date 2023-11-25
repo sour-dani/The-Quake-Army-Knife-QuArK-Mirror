@@ -1,0 +1,13 @@
+<author>Decker</author>
+<headline>InstaPoll closed</headline>
+Well, well. Its interesting to see what you people uses QuArK for. Around 45% answered 'Quake 2'.
+Personaly I would have guessed about 1/3 of you users, but it seems that Quake 2 still is the prefered
+platform <span class="sml">(or are you waiting for Q3A?)</span>. 28% or so, voted 'Half-Life' as the game they
+were using QuArK for. Pretty close to my own prediction (which also were 1/3.) However, I am amazed to see that
+approximately 19% put their vote on 'Quake 1'. Is this old game still played so much? Guess it is then. <img src="pics/SmileyHappy.gif" align=absmiddle width=15 height=15>
+Which brings us to the last three games. Heretic 2 leads with roughly 4%, then Sin with nearly 3% and finally
+Hexen 2 with somewhat 2%. Keep doing your brilliant work with QuArK, you guys and girls! <span class="sml">(Hopefully
+you didn't cheat on this InstaPoll by voting multiple times.)</span><br>
+
+<headline>New InstaPoll</headline>
+One goes down, another one must come up. This time its about what type of maps you make, using QuArK of cause.

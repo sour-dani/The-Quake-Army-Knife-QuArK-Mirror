@@ -1,0 +1,10 @@
+<author>Decker</author>
+<headline>User Prefabs</headline>
+<p>A Quake-2 prefab have been added to the <a href="userprefabs.php">user prefabs</a> page:</p>
+
+<ul>
+<li>Quake-2
+  <ul>
+  <li>pre-spindeath
+  </ul>
+</ul>

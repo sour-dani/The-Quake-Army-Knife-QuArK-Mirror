@@ -1,0 +1,36 @@
+<author>DanielPharos</author>
+<headline>Last stop: <a href="http://sourceforge.net/project/showfiles.php?group_id=1181">QuArK 6.6.0 Beta 5</a>!</headline>
+
+<p>Tying up the loose ends for QuArK 6, here's the last release in the pipeline! Yes, we're all sad that development has ceased, but without any developers, what else is there to do?</p>
+
+<p>So, <b>cherish</b> these next changes:</p>
+
+<p><b>Both Editors:</b></p>
+<ul>
+<li>Added Entities and Textures add-ons for Quake 3 <b>Smokin' Guns</b> stand alone game.
+<li>Added mission pak support for Quake2 <b>Knightmare</b>.
+<li>Added mission pak support for Quake2 <b>Zaero</b>.
+<li>Added <b>DOOM .wad</b> file reading support, per user request. Note: Saving will output a Quake wad!
+<li>Fixed long-standing pointer corruption bug when loading poly faces. This allows the usage of a more advanced memory manager (FastMM), and this thus improves QuArK's performance!
+</ul>
+
+<p><b>Model Editor:</b></p>
+<ul>
+<li>Improved bone support to handle game-specific bonetypes.
+<li>Setup component bbox vertex assignment support.
+<li>Updated Model Editor texture paint functions to do gray-scale and blue-scale for texture mapping and greatly improved airbrush function quality for fade in effect.
+<li>Added bone and bounding boxes support to Keyframe Linear Interpolation function.
+<li>Added export support for <b>Half-Life 1</b> static and animation models with bones .mdl file types.
+<li>Added export support for <b>MoHAA</b> static and animation models .skd and .skc file types.
+<li>Added export support for <b>Kingpin</b> static and animation models .mdx file type.
+<li>Added export support for <b>Heretic II</b> static and animation models .fm file type.
+<li>Added support for BBoxes and updated the Kingpin importer to process its BBoxes.
+</ul>
+
+<p>See DONATORS.txt for people that made this release possible. Thank you all!</p>
+
+<p>Well, I guess that's it for now... So don't forget to grab that last, latest, awesomest, most sparkly release of QuArK ever: <b><a href="http://sourceforge.net/project/showfiles.php?group_id=1181">QuArK 6.6.0 Beta 5</a>!</b></p>
+
+
+<p>Happy editing,<br>
+DanielPharos</p>

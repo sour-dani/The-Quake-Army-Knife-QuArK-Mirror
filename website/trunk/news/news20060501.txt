@@ -1,0 +1,41 @@
+<author>cdunde</author>
+<headline>QuArK 6.5.0 alpha 7 with Quake 4 support released.</headline>
+
+<p><b>OK!</b> Things have been quite around here for just <b> TOO DARN LONG</B> !</p>
+
+<p>So it's time we kick it up a notch.<br>
+<b>Quake 4</b> is another, narling, scratching, chase around, shoot'em up, <b>Rowdy</b> game that we just had to add !!!<br>
+And to make it easer for everybody, we even give it (and <a href="http://quark.sourceforge.net/infobase/intro.configuration.games.specificgames.doom3.html"><b>Doom 3</b></a>) its own <a href="http://quark.sourceforge.net/infobase/intro.configuration.games.specificgames.quake4.html">Setup page</a> in the <a href="http://quark.sourceforge.net/infobase/">Infobase</a> docs.</p>
+
+<p><b>"What else have they done for this release?"</b> you ask ! .... All-righty .... let's see here!</p>
+
+<p>Some of the other improvements to this most recent release are:</p>
+<UL>
+<LI>Improved support for Doom 3 Material Texture viewing, direct QuArK map build and in game running.
+<LI>Fixed the RMB Mark function for tree view restructuring with marked objects. Bug found by jal<br>Thanks for your input jal ! ;-)
+<LI>Fixed RMB handle error from occurring in texture movement view.
+<LI>Reinstated bounding box for H-L2 info_player_start and added prefabs-hl2.qrk to Defaults.qrk Addons list.
+<LI>Added light color pickers to entities for Doom 3 and Quake 4 and cleanup of the DataD3.qrk file.
+<LI> And a <b>Very gallant</b> effort by <b>NerdIII</b> to try and fix the Texture Memory problem.<br>
+But that has had to be postponed temporarily for further development and testing.<br>
+Stay with it NerdIII- we all know you can do it! ;-)
+</UL>
+
+<p><b>Something, personally, I would like to ask all our users:</b><br>
+Because it would imposable for us to play and learn all about every game, how their entities work together,<br>
+the handling of their materials, shaders, textures, their scripts and how they need to be introduced into QuArK.</p>
+
+<p><b>Please!</b><br>
+Make every effort to inform us about how the use of entities are executed and additional items that should be added to QuArK in general. Recommend ways they should be implemented and presented.<br>
+Weather that be by a Text editor, Dialog box, the Texture Browser or any other method that you think is best.</p>
+
+<p>Remember. <b>QuArK is YOUR editing tool !</b> So the more you help <b>US</b>, the more we can help <b>YOU !</b></p>
+
+<p><b>SO WHAT-DA-YA HANGING AROUND HERE FOR ?</b><br>
+<b>Rocket</b> on out there and get your new copy of <a href="http://sourceforge.net/project/showfiles.php?group_id=1181"><b>QuArK 6.5.0 alpha 7 with Quake 4 support</b></a> ....<b>NOW !!!</b></p>
+
+<p>Remember <b>Keep your QuArK knife sharp!</b></p>
+
+<p>cdunde</p>
+
+<p>For more information and added support, go to the <a href="http://quark.sourceforge.net/forums/">QuArK Resource Center</a> and <a href="http://quark.sourceforge.net/communication.php#forums">the forums page</a> of this site.</p>

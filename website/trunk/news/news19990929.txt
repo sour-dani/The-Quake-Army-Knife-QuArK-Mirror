@@ -1,0 +1,38 @@
+<author>Decker</author>
+<headline>Armin on the move</headline>
+Due to real life<sup>tm</sup>, Armin is moving to another country to continue his studies. I got this e-mail from him, send 1999.09.28:
+<blockquote>
+I am now readying myself to leave home... I'm leaving
+tomorrow (wednesday). I won't release anything until then, but I hope I
+will be able to finish my work on QuArK 5.11 and release it in a reasonable
+amount of time... I am currently busy reorganizing a major part of the
+texture and image object structure; this is needed by the most recent games
+like KingPin and Quake 3 which use standard image files as textures. In the
+previous versions of QuArK, textures and images where completely separated.
+I guess all these changes will call for a second beta version...<br>
+<br>
+A bientôt,<br>
+<br>
+Armin.
+</blockquote>
+BTW: If you haven't noticed it yet, there is a new page in the online-documentation; <a href="help/basicknowledge.html">Basic Knowledge</a>.
+You should read it, even if you have been a long time user of QuArK.<br>
+
+<headline>Comment on the InstaPoll</headline>
+As I wrote in the last update, I would comment on the latest instapoll. So lets see. Some total of <b>139</b> people have been using
+QuArK ranging from 6 months and up to more than 2 years - guess some of you can still remember when it was called QuakeMAP <img src="pics/SmileyHappy.gif" align=absmiddle width=15 height=15>.
+Why then, do I only count about 10-20 active users in the <a href="forums.php">QuArK-forums</a>?
+Anyway..., if I calculate correctly, <b>52</b> people have been using QuArK for less than 6 months but more than a week. Hope you have
+created some wonderfull (and bad experimental) maps, and got the hang of how QuArK works.
+I'm amazed that some <b>15</b> people have tried out QuArK within the last week(s) - thats quite many IMHO.
+And then we have the curious ones; <b>33</b> people - well go on then, try out QuArK, it won't bite (properly just be
+a little bit difficult to configure, if you are used to have a detailed configuration document along with the program.)<br>
+
+<headline>New InstaPoll?</headline>
+I'm currently out of ideas for new instapolls, so if you have one/some which would be interesting; <a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com?body=-- NOTICE: HTML e-mails will be bounced, so send only in plain-text! /Decker --">mail me</a> your ideas.<br>
+
+<headline>A QuArK-made KingPin map!</headline>
+You can find a link to it, at the <a href="usermaps.php">user maps</a> page.
+<ul>
+	<li>'In the House of Pain' by 'Shredder[THC]'
+</ul>

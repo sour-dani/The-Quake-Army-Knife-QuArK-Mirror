@@ -1,0 +1,27 @@
+<author>Decker</author>
+<headline>InstaPoll time!</headline>
+Time for a new instapoll. This one is suggested by 'sgalbrai'.<br>
+I dare comment on the previous instapoll <img src="pics/SmileyMedium.gif" align=absmiddle width=15 height=15>, because it was quite clear from the beginning what the outcome would be.
+But take a look at the results yourself, and try thinking about what can be done to help those 19 unfortunate people who thinks that
+every map-editor that currently exist, is just one big confusing mess.<br>
+
+<headline>Response!</headline>
+I got a response <img src="pics/SmileyHappy.gif" align=absmiddle width=15 height=15> wow! Here is a snippet from the e-mail:
+<blockquote>
+Greetings Decker.<br>
+<br>
+The PC/TC/MOD I make maps for is Q2Gloom. I know of a dozen others that use Quark for Gloom as well.
+<!--As of yet I have not published one of them though, I've been somewhat dissuaded from completing them by the fickle players reception of other 3rd party offerings. Soon enough though, it's starting to feel as if it's time to put one out.<br>-->
+<br>[...]<br>
+The Gloom entities are fairly simple, all that is really required is the addition of a func_null and renameing it, with the occasional angle tag. There is a revision coming out soon though which promises a host of useful entities, and if it's warranted I'll make an entpack and send it to the Quark Homepage at large. As it is, there's only 8 or so new mapper placeable ents, and their use is fairly simple.<br>
+<br>
+IceNine
+</blockquote>
+In case you were wondering what Gloom is, I searched <a target="_blank" href="http://www.planetquake.com">PlanetQuake</a> and found it at this address: <a target="_blank" href="http://www.planetquake.com/rxn/gloom/">http://www.planetquake.com/rxn/gloom</a>.
+Now go look at this <i>humans vs. spiders</i> teambased modification.<br>
+<br>
+I also got sort of a response from 'sgalbrai' via the <a href="forums.php">QuArK-forum</a>, where he wrote that the reason I didn't get (m)any
+responses, could be the fact that <i>"people may be too busy, shy, or illiterate to reply [...]"</i>. That made me think. Busy I can understand, but
+how many seconds does it take to write and send a one-liner e-mail telling what <i>other</i> it was they voted for. Illiterate? Heck, I'm a bit illiterate
+when it comes to the english language (gramma errors and such), but it surely does not stop me from writing to persons I don't know.<br>
+Oh, he also wrote that QuArK support for the <a target="_blank" href="http://crystal.linuxgames.com/">Crystal Space</a> graphics-engine would be neat.

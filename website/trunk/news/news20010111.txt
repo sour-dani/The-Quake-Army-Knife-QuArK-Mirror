@@ -1,0 +1,17 @@
+<author>Decker</author>
+<headline>QuArK v6.1 finally released</headline>
+<p>You can get it here: <a href="http://dl.fileplanet.com/dl/dl.asp?quark/QuArK_v6.1c.zip">QuArK_v6.1c.zip</a> (1.8MB).</p>
+
+<p>The install instructions are as usual:</p>
+
+<ul>
+<li>If you haven't installed Python yet, do that using either the small <a href="http://dl.fileplanet.com/dl/dl.asp?quark/minipy15b.exe">minipy15b.exe</a> or get everything from <a href="http://www.python.org">www.python.org</a>.
+<li>Unzip QuArK_v6.1c.zip into a <b>new</b> and <b>empty</b> directory. <b>Do not</b> use your existing QuArK directory, since this may conflict with the new version.
+<li>Start QuArK 6.1 and configure the build-tools etc.
+</ul>
+
+<p>If... ehh... &quot;When&quot; you encounter problems, please use the <a href="http://www.egroups.com/group/quark">QuArK forum/mailing-list</a> at eGroups.</p>
+
+<p>Whats new in v6.1? Uhm, can't remember actually. So many tiny things, that I've lost track months ago. If you've followed the QuArK-forum/mailing-list, then you'll properly know.</p>
+
+<p>Now the development-team will devote their spare time, to make QuArK v6.2.</p>

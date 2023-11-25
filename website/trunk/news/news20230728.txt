@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Call of Duty: Computer worm</headline>
+
+<p>Well, something like this was bound to happen. Apparently, someone figured out how to <a href="https://techcrunch.com/2023/07/27/hackers-are-infecting-call-of-duty-players-with-a-self-spreading-malware/">spread malware through a video game</a>, in this case Call of Duty: Modern Warfare 2. Originally released in 2009, I doubt there'll be a security patch published for it, but let's hope I'm wrong and the publisher does.</p>
+
+
+<p>Safe gaming,<br>
+DanielPharos</p>

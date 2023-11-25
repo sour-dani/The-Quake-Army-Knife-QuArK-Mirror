@@ -1,0 +1,5 @@
+<author>Decker</author>
+<headline>Updated - Day of Defeat beta 3.0 entities</headline>
+<p>There was a problem with yesterdays DataHL.QRK file. It contained some properties, which only QuArK 6.3 has support for.<br>
+I've fixed that, so this updated DataHL.QRK now works with QuArK 6.2 also:<br>
+<a href="http://www.fileplanet.com/dl/dl.asp?/planetquake/quark/addons/half-life/datahl_20020714.zip">DataHL_20020714.zip</a>.</p>

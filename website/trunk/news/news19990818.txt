@@ -1,0 +1,6 @@
+<author>Decker</author>
+<headline>QuArK-made Maps</headline>
+A single new map have been added to the <a href="usermaps.php">user maps</a> page:
+<ul>
+	<li>'Vargas' Rest Place' by Demetris Leptos
+</ul>

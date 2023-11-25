@@ -1,0 +1,12 @@
+<author>Derrick McKay</author>
+<headline>QuArK 3.4 soon - New "User Levels"</headline>
+<P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- QuArK 3.4 soon -</B></FONT><P>
+I received an e-mail from Armin today with news of what one of the additions to QuArK 3.4 will be. Included will be "Context Sensitive" help. Moving the mouse over a button etc. and pressing F1 will bring up a help item for that subject. The only part of QuArK that this is available for so far is the Map editor so far.<BR>
+When Armin says "release soon" I expect it in a couple of days, so it may be available as early as tomorrow or Tuesday. (No, I don't know exactly when... I'll be watching this site for the news myself :-)) 
+</UL><P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- New "User Created Levels" -</B></FONT><P>
+Quite a few people have been sending me URL's for levels that they've built with QuakeMap/QuArK. I've updated and added them to the site. There's some links to levels, and links to pages themselves. All in all, there's getting to be quite a selection of levels out there that were made with QuArK... the more the better !! Speaking of "User created"... I haven't had any time to work on my "showcase" level lately, but I have some nifty ideas for when I get around to it. The way the summer is going, I'm going to be squeaking by with things for awhile until it slows down.
+</UL><P><BR>

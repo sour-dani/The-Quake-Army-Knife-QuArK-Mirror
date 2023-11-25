@@ -1,0 +1,18 @@
+<author>Derrick McKay</author>
+<headline>site problems? - "showcase" screenshots</headline>
+<P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- Site Problems? -</B></FONT><P>
+I've had a few e-mails saying "your link doesn't work", but nobody has mentioned which one. I have e-mailed these people back asking which one, but nobody seems to want to share it with me. If you are having problems with any of the links on this site, please let me know (and tell me _which_ link it is...) Thanks :-)
+</UL><P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- A couple of screenshots -</B></FONT><P>
+I had a while to work on my "showcase" level last night. I've been taking my time (primarily because of the "not suck" factor I discussed earlier) and have got a couple of the rooms "fleshed out". These are not complete yet, but it's already looking like it just may "not suck" :-) Anyway, here's a couple of "alpha alpha" screenshots of the first two rooms.<P><BR>
+<CENTER>
+<TABLE WIDTH= 640 BORDER=0 CELLSPACING=1 CELLPADDING=0>
+<TR><TD ALIGN=left VALIGN=top><IMG SRC="files/quake01.jpg" ALT="19k" WIDTH=310 HEIGHT=232 HSPACE=0 VSPACE=0 BORDER=0></TD>
+<TD ALIGN=right VALIGN=top><IMG SRC="files/quake02.jpg" ALT="19k" WIDTH=310 HEIGHT=233 HSPACE=0 VSPACE=0 BORDER=0></TD></TR>
+</TABLE>
+</CENTER><P><BR>
+The screenshots were taken with GLQuake, and I noticed that they seem brighter than in WinQuake. I'll have to fiddle around with the lighting some more so it doesn't wreck the "atmosphere". BTW, I just started using Ken Alverson's new "WQBSP". (Regardless of the name, it will work for other editors too). I got it from <A HREF="http://www.bluesnews.com/" TARGET="_top">Blues News</A>, but you could probably pick it up off the PQ's own <A HREF="http://www.planetquake.com/worldcraft/">The Forge</A>. It supports transparent water, HIP's entities, and seems much less buggy than the others I've been using. It also supports multiple texture wads, but we all know that if you use a "certain editor" that that feature is totally unnecessary :-). It's *slightly* slower than Woofer's (Tom Grangent's (sp?)) build of QBSP, but it doesn't give me the bogus "point off plane" and "no entities in blah blah" errors that Woofer's was. All in all, I'd recommend it.
+</UL><P><BR>

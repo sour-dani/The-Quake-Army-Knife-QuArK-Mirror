@@ -1,0 +1,53 @@
+<author>Decker</author>
+<headline>Word from Armin</headline>
+I received this from Armin yesterday (1999.11.29):<br>
+<blockquote>
+[...]<br>
+I'm back here and almost finished the integration of textures and images
+in QuArK. I will test this a little bit and then release a new beta
+version.<br>
+<br>
+This was a lot of work for me, but the user will not notice it a lot. For
+existing games it means that you can use any texture or image format for
+your custom textures -- e.g. .BMP files don't have to be converted before
+QuArK lets you use it in your maps, the conversion is done automatically
+when you compile the map. Apart from this it means that QuArK now supports
+games whose textures are in a plain image format, e.g. Kingpin & Quake 3.<br>
+<br>
+A bientot,<br>
+Armin.
+</blockquote>
+
+<headline>And another word from Armin</headline>
+<blockquote>
+<i><u>On Tue, 30 Nov 1999 tiglari wrote:</u><br>
+Last week there was a burst of enthusiasm for people doing the
+Q3A support, I've started trying to figure out what to do about the
+zip files, are you still going to do the basic quadratic bezier stuff?
+I think getting some general community involvement in Q3A
+support might be the do-or-die moment for getting quark really
+launched as an Open Source project.</i><br>
+<br>
+Yes, you are perfectly right. I plan to do the basic bezier stuff but not
+much more myself; I think I should concentrate on documentation now. I am
+going to read the quark-python forum regularily and answer my late e-mails
+as soon as possible. People that want to involve in Q3 support, spread the
+word and go to <a href="http://www.egroups.com/list/quark-python/">QuArK-Python</a>!<br>
+<br>
+About zip files, it should not be a real problem since "python15.dll"
+already has support for this compression format built in.<br>
+<br>
+Armin
+</blockquote>
+
+<headline>QuArK-QuakeContext-Fix and QuArK v5.10 problem!</headline>
+Those of you who have downloaded the QuArK-QuakeContext-Fix, which is a little fix to include
+Half-Life and Sin in the Quake-Context, so you could start the game through QuArK, without manually
+copying the .BSP file from &lt;game&gt;\tmpQuArK\MAPS to &lt;game&gt;\&lt;modification&gt;\MAPS, should know that
+QuArK-QuakeContext-Fix is for QuArK v5.11beta and <u>not</u> v5.10 <img src="pics/SmileySad.gif" align=absmiddle width=15 height=15>. I've made a fix to the problem; <a href="http://dl.fileplanet.com/dl/dl.asp?quark/QuArK510-QuakeContext-Fix.zip">QuArK510-QuakeContext-Fix.zip</a>
+but get it only if you use QuArK v5.10 (<b><u>not</u></b> QuArK511QTA or QuArK511beta!)<br>
+Thanks to David Melax, in the <a href="forums.php">QuArK-forum</a>.<br>
+
+<headline>Yet a problem; Half-Life data add-on (DataHL.QRK)</headline>
+It seems I were too fast in making the QuArK entity support for Opposing Forces. Gerald Hawryluk found out that I've forgot the
+'origin' specific for all point-entities (and maybe also some brush-entities, but I can't test that yet). A new <a href="http://home1.inet.tele.dk/decker/DataHL.zip">newest Half-Life data add-on</a> is now available for download.

@@ -1,0 +1,12 @@
+<author>Decker</author>
+<headline>DataHL.QRK updated</headline>
+<p>I've updated the Half-Life data addon with entities for the following modifications/games:</p>
+
+<ul>
+<li>Blue Shift - <span class="sml">(See <a href="http://www.valve-erc.com">www.valve-erc.com</a> for more entity information)</span>
+<li>Deathmatch Classic - <span class="sml">(See <a href="http://www.valve-erc.com">www.valve-erc.com</a> for more entity information)</span>
+<li>Half-Life Rally - <span class="sml">(See <a href="http://www.hlrally.net">www.hlrally.net</a> for .WAD file and additional information)</span>
+</ul>
+
+<p>You can get the <a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/~checkout~/quark/runtime/addons/Half-Life/DataHL.qrk">DataHL.QRK</a> directly from our SourceForge CVS-library (Just remember to mouse right-click and choose "Save Target As...").<br>
+See also our <a href="download_addons.php">QuArK addons page</a>.</p>

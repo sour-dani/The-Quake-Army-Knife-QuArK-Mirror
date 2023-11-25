@@ -1,0 +1,5 @@
+<author>tiglari</author>
+<headline>QuArK 6.3c provisional release</headline>
+<p>Can be picked up from <a href="http://sourceforge.net/project/showfiles.php?group_id=1181&release_id=95167">here</a>.  Note that there are two files, the basic release, and a patch adding partial support for Mohaa and SoF2, for people who are interested in editing those games.</p>
+
+<p>What I'm most concerned about is the possibility that there might be corruption of texture positioning information when projects started with older versions of QuArK (pre-late March 2002) are worked on with this version.  I've heard some reports that suggest that this is happening, but haven't been able to replicate the effects, nor received any sample maps where it happens.  It's <strong> really important </strong> that this issue be settled before a final release of QuArK 6.3 is proclaimed.</p>

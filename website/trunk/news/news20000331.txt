@@ -1,0 +1,9 @@
+<author>Decker</author>
+<headline>Zoner's Half-Life Tools v1.6.1</headline>
+There were a bug in v1.6, so here is v1.6.1:
+<ul>
+<li>HLRAD: Fixed -bounce once and for all (fat fingered a constant just before shipping 1.6)
+<li>DOCS: Replaced clipnode.rmf sample map with clipnode.map so it can load in any editor.
+</ul>
+Get the <a target="_blank" href="http://www.winace.com">WinAce</a> file of Zoner's Half-Life Tools: <a href="http://dl.fileplanet.com/dl/dl.asp?quark/zhlt161.ace">zhlt161.ace</a> (216KB), or
+the <a target="_blank" href="http://www.winzip.com">WinZip</a> one (255KB) which can (soon) be found on the <a target="_blank" href="http://halflife.gamedesign.net">Half-Life ERC</a> site.<br>

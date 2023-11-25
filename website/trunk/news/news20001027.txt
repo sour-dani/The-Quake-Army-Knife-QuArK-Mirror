@@ -1,0 +1,21 @@
+<author>Decker</author>
+<headline>New User Prefabs</headline>
+7 new prefabs(packs) have been added to the <a href="userprefabs.php">user prefabs page</a>.
+<ul>
+<li>Quake 1
+  <ul>
+  <li>Balloon
+  <li>Chandelier
+  <li>SpikeMe
+  <li>Amazing
+  </ul>
+<li>Quake 2
+  <ul>
+  <li>Rollers
+  <li>Barracks
+  </ul>
+<li>Half-Life
+  <ul>
+  <li>Prefabs-HL
+  </ul>
+</ul>

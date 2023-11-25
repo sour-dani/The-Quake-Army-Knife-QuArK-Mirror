@@ -1,0 +1,66 @@
+<author>Decker</author>
+<headline>New snapshot</headline>
+<br>
+<blockquote>
+Hi !<br>
+<br>
+
+A new CVS snapshot compile is available for download at sourceforge.
+<a href="http://sourceforge.net/project/?group_id=1181">http://sourceforge.net/project/?group_id=1181</a><br>
+
+<pre><font size=+1>Name:   snapshot 2000-09-25
+File:   quarksnapshot_20000925.ace
+Length: 1.758.917 bytes
+</font></pre>
+
+This is the current developement snapshot.<br>
+<br>
+
+<!-- -->
+<b>Changes:</b>
+<ul>
+<li>added: convex' generalization of texture format aliasing
+<li>added: StarTrek Voyager Elite Force support
+          (entities, shaders, textures)
+<li>fixed: tiglaris .map loading and bezier texture missing fix
+<li>fixed: tiglaris SOF texture flag fix
+<li>added: Texture Write Format setup entry processing
+          (needed because texture aliasing)
+<li>changed: wad error message
+<li>fixed: tiglaris texture name fix (wrong backslash in Q3A data file)
+</ul>
+
+<!-- -->
+<b>Installation:</b>
+<ol>
+<li>Make sure, that you have at least the mini python package
+   installed. Get it at the <a href="download.php">download page</a>.
+   The full python install does it also (<a href="http://www.python.org">www.python.org</a>).
+<li>Unpack the <a href="http://quark.sourceforge.net/infobase/glossary/index.html#.ACE">.ACE</a> archive with e.g. xaceplus from <a href="http://www.winace.com">www.winace.com</a>.
+   A directory will be created.
+<li>Start QuArK by clicking quark.exe.
+<li>Don't forget to <a href="http://quark.sourceforge.net/infobase/configuration/index.html">configure</a> the Game directories and tools.
+   If you don't have the map compiler tools for the game you are
+   making maps for, please refer to the <a href="download.php">download page</a>.
+<li>When making maps for Q3, check if you have the mapmedia.pk3
+   file (from QERadiant) in your baseq3 directory. Otherwise
+   some shader textures and models are missing.
+<li>Please, when <a href="forums.php">reporting bugs</a>, state for which game the report
+   is. Often it is game specific.
+</ol>
+
+<!-- -->
+<b>Warning:</b><br><br>
+Unpacking the snapshot over an older release may work at the first glance, but may lead to subtile errors that are hard to find.
+I do not recommend it.<br>
+<br>
+greetings<br>
+&nbsp;Alex
+</blockquote>
+
+<headline>User maps</headline>
+Two Quake-3:Arena user made maps are available on the <a href="usermaps.php?Q3A=1&M_ZZX=1&T_ZZX=1">User maps</a> page:
+<ul>
+<li>'Fargin Bastage's Two Castles CTF' by Wayne Peeples
+<li>'Fargin Bastage's Castle at RockHenge' by Wayne Peeples
+</ul>

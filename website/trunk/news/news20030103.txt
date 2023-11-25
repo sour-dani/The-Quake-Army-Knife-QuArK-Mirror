@@ -1,0 +1,7 @@
+<author>tiglari</author>
+<headline>Third update for QuArK 6.3e provisional release</headline>
+<p>Pick it up <a href="http://groups.yahoo.com/group/quark/files/PATCHES/QuArK_v63e_update3.ZIP">here</a>.</p>
+
+<p>And the issues addressed are presented <a href="http://quark.sourceforge.net/latest/snapshot_readme/readme.txt">here</a>.</p>
+
+<p>I'm still really hoping that 6.3 final is almost ready!</p>

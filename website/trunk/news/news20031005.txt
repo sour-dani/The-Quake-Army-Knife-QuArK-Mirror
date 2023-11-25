@@ -1,0 +1,19 @@
+<author>cdunde</author>
+<headline>Full release of QuArK 6.4.0 alpha 1</headline>
+<p>Peter has made a full release through the SourceForge Release System of <a href="http://sourceforge.net/project/showfiles.php?group_id=1181&release_id=188980">QuArK 6.4.0 alpha 1</a> <span class=sml>(dated 2003-10-04)</span>.</p>
+
+<p>Some of the items and features covered by this release are:</p>
+<UL>
+<LI>Path issues of the 2003-08-19 snapshot
+<LI>Bundled Python 2.2.3 - no extra downloads
+<LI>New executable installer
+<LI>Full Infobase documentation included
+<LI>Support for RTCW: The WildWest
+<LI>Updated model handling
+<LI>New addons menu
+<LI>New Selection toolbar
+<LI>Updated Tagside toolbar
+<LI>and many other bugfixes and feature updates
+</UL>
+
+<p>For more information and support, go to the <a href="http://quark.sourceforge.net/forums.php">forums</a>.</p>

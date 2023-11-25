@@ -1,0 +1,21 @@
+<author>Decker</author>
+<headline>From the mailbox...</headline>
+I got a mail from Sebastian van den Brink (aka 'Howling'), regarding the ERR site; "<a href="http://www.planethalflife.com/err">Editing Resource Resource</a>".
+Basically its a site with links to other resources about Half-Life editing - much like <a href="http://www.karljones.com/halflife/almanac.htm">Handy Vandal's Half-Life Almanac</a>.
+<blockquote>
+Heya.<br>
+My name's Howling from the Editing Resource Resource at Planet Half-Life.
+Can you add me to the links menu? I think the ERR's a big enough resource
+about editing to be added to yer list. The URL:<br>
+<a href="http://www.planethalflife.com/err">http://www.planethalflife.com/err</a><br>
+Thnx.<br>
+<br>
+Greetz,<br>
+Howling
+</blockquote>
+
+<headline>User-made maps</headline>
+A KingPin deathmatch pack by BadMonk have been added to the <a href="usermaps.php">user maps</a> page.
+<ul>
+<li>BadMonk's DM Pack by BadMonk
+</ul>

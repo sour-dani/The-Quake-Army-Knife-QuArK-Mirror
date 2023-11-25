@@ -1,0 +1,10 @@
+<author>Decker</author>
+<headline>User made prefab</headline>
+<p>A Half-Life prefab-room made by David van der Tuyn is now available from the <a href="http://quark.sourceforge.net/userprefabs.php#HL">User Prefabs</a> page.</p>
+<ul>
+  <li>Half-Life
+    <ul>
+      <li>Pilot</li>
+    </ul>
+  </li>
+</ul>

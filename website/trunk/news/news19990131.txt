@@ -1,0 +1,28 @@
+<author>Armin</author>
+<a href="armin/advanced.html">Advanced features</a> pages updated (look for the <I><b>(updated)</b></I> and <I><b>(new)</b></I> tags)<br>
+The source code of QuArK is now available, under the GNU <a href="copying.txt">General Public Licence</a>. See the <a href="armin/index.shtm">Armin's Pages</a>.<br>
+A fix release will soon be available to fix a few bugs in the current Python code, particularly in plug-ins. Note that there is a new plug-in included in 5.5, Tim Smith's Prism Builder.<br>
+<br>
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/quark55.exe">QuArK 5.5</a> released ! (1.10 Mb)
+Also available <a href="http://asp.planetquake.com/dl/dl.asp?quark/quark55m.exe">without the game supports</a> (864 Kb); this second version requires the game supports you are interested in to be downloaded separately :
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/dataq1_55.zip">Quake 1</a>,
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/datah2_55.zip">Hexen II</a>,
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/dataq2_55.zip">Quake 2</a>,
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/datahr2_55.zip">Heretic II</a>,
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/datasin_55.zip">Sin</a>,
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/datahl_55.zip">Half-Life</a>.
+<p>
+The main news is the new status : QuArK is now "free software". Beware ! This
+does NOT mean freeware ! Please read at least the first few lines of
+<a href="doc/register.html">this document</a> for more information about it.
+Other news (see "whatsnew.txt" for details) :
+<ul>
+<li>OpenGL acceleration
+<li>Support for Half-Life .bsp's
+<li>Fixed .bsp saving
+<li>Default Sin textures
+<li>Map editor QuickKeys
+<li>New map with better texture position
+<li>Fixed registry read-only access
+<li>other minor bug and memory hole fixes
+</ul>

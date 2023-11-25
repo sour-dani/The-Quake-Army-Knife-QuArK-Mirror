@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline><b>Fixed executable</b> for QuArK 6.5.0 BETA 4</headline>
+
+<p>Anybody that has trouble exporting HL2/CSS maps or opening RTCW maps with QuArK 6.5.0 Beta 4 should try the fixed executable I've posted on the website: <a href="download.php">here</a>.</p>
+
+
+<p>Hope that solves it,<br>
+DanielPharos</p>

@@ -1,0 +1,7 @@
+<author>Derrick McKay</author>
+<headline>QuArK 3.2 Released</headline>
+<P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- QuArK 3.2 released -</B></FONT><P>
+Armin uploaded QuArK 3.2 this morning. Instead of me running down all the features he's added and enhanced, flip over to Armin's News Page to see for yourself. I've updated all the links on the Download Page, and also let the people know that are "mirroring" QuArK, so fairly soon, those sites should have it too. As soon as I hear from them, I'll update those links too.
+</UL><P><BR>

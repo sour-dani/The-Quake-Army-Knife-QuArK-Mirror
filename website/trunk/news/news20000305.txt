@@ -1,0 +1,38 @@
+<author>Decker</author>
+<headline>Need for a tiny 88x31 ad-button?</headline>
+I got this e-mail from Carsten:
+<blockquote>
+Hi Decker,<br>
+<br>
+okay, animated banners for PQ are good, but while you're at it: remember
+that many people out
+there who do a free ad for QuArK prefer the good ol' trusty aprox 88x31
+buttons. I myself still
+rely on an ancient blue quarknow.gif which is somewhat too blue for my taste
+but still the only
+one I found so far.<br>
+<br>
+So, while the graphx-gurus are all warmed up, ask them for an additional
+button if you please.<br>
+<br>
+Still waiting for QuArK 6.0 ...<br>
+<br>
+Carsten Witte
+</blockquote>
+<img align=right src="pics/adbuttons/quarknow.gif" width=88 height=31 border=0>
+The ancient blue quarknow.gif, he's refering to, must be this one. And frankly, yes its kinda old.
+So if anyone think they can do better (some of the <a href="adbanners.php">ad-banner</a> contributors maybe? The same style would be great <img src="pics/SmileyHappy.gif" align=absmiddle width=15 height=15>),
+mail your 88x31 ad-button to <a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com?body=-- NOTICE: HTML e-mails will be bounced, so send only in plain-text! /Decker --">me</a>.<br>
+
+<headline>QuArK made user maps</headline>
+6 Half-Life maps and 2 Quake-1 maps have been added to the <a href="usermaps.php">user maps page</a>.
+<ul>
+<li>'Naamloos' by Erik '[KKC]KwakkaSaki' Nijland
+<li>'Q1 ArenA' by Erik '[KKC]KwakkaSaki' Nijland
+<li>'Deathmatch Zone' by Erik '[KKC]KwakkaSaki' Nijland
+<li>'Hondelul' by Erik '[KKC]KwakkaSaki' Nijland
+<li>'Hondelul X-Tra Large' by Erik '[KKC]KwakkaSaki' Nijland
+<li>'Camp Land' by Erik '[KKC]KwakkaSaki' Nijland
+<li>'Combat Frag Simulator 1.0' by Erik '[KKC]KwakkaSaki' Nijland
+<li>'Hurt Me Plenty' by Erik '[KKC]KwakkaSaki' Nijland
+</ul>

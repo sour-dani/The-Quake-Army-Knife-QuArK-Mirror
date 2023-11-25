@@ -1,0 +1,26 @@
+<author>Derrick McKay</author>
+<headline> Bug in QuArK 3.1 - GLQuark.dll source Code released - New Addon</headline>
+<P>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- QuArK 3.1 bug -</B></FONT><P>
+Armin has informed me that there is a bug in QuArK 3.1. Using "Duplicators" while the 3D view is active may cause QuArK to "seriously" crash. Armin has told me that this has been fixed (the problem was in the quark.exe file itself, not the glquark.dll) and will be included in the next release of QuArK.
+</UL><BR>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- "GLQuark.dll" Source Released -</B></FONT><P>
+If you have used the new QuArK 3.1, you will notice that there is a menu option to "Select 3D viewer" in the "3D-Editor" menu. This is because Armin has designed it to allow and encourage other 3D libraries besides OpenGL (such as DirectX). To this end, he has released the source code for the "glquark.dll". This should allow others to actually build other 3D "modules" to render the 3D view. This is what Armin sent me:<BR>
+<UL>
+<FONT SIZE=2 COLOR="#C0C0C0" FACE="ARIAL,MS SANS SERIF">
+Here is a file that interest a few people. It is the source<BR>
+code for the OpenGL module, with a few comments. Someone already <BR>
+made another non-OpenGL 3D viewer, and want this to know how to <BR>
+interface it with QuArK. Other people are asking me how I <BR>
+aligned the textures so good, so I let them have a look at how I <BR>
+did it in this same source code. I hope people will write <BR>
+alternative 3D viewers. You can announce I look forward for <BR>
+anybody willing to translate my source to Direct3D.<P>
+</FONT></UL>
+You can get the source right here ( <A HREF="files/glquark.zip">glquark.zip - 10k</A> ). I will also put it on the <A HREF="download.html">Download Page.</A></UL>
+<UL>
+<DD><FONT SIZE=3 COLOR="#0080FF"><B>- New Addon -</B></FONT><P>
+This Addon was sent to me by <A HREF="mailto:alper@uhavax.hartford.edu">AnArcHISt</A>. It's a re-write of the "Exploding Wall" patch that Armin released quite some time ago for QuakeMap. It replaces the "body parts" that are the result of the explosion with a more realistic texture. According to the author, you can also assign different textures to the "rubble" that comes from the wall when it explodes. This addon is a beta, and he plans to make more refinements for the actual release. You can get it from the <A HREF="addon.html">Addon QME Files Page</A> ( explode10b.zip) - 18k) .
+</UL><P><BR>

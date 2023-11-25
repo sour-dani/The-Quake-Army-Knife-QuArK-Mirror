@@ -1,0 +1,10 @@
+<author>DanielPharos</author>
+<headline>Still alive; new website theme!</headline>
+
+<p>In the category of 'funny, but useless things', here's one: a new theme for the website! Go to the layout-page, and switch to the brand new theme! (It kinda requires an up-to-date browser though.)</p>
+
+<p>Yes, I know, I have better things to do. <pic smiley_happy></p>
+
+
+<p>Happy browsing,<br>
+DanielPharos</p>

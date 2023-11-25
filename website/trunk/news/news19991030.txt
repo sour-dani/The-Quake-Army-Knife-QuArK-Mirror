@@ -1,0 +1,13 @@
+<author>Decker</author>
+<headline>QuArK-made maps</headline>
+A bunch of new <a href="usermaps.php">user maps</a>:
+<ul>
+	<li>'Evil Playground' by 'The Taurus'
+	<li>'The Mind of a Killer' by 'Battle[BITCH]'
+	<li>'20,000 Leagues' by 'Battle[BITCH]'
+	<li>'[BITCH]SkyArena' by 'Battle[BITCH]'
+	<li>'[BITCH]Bayou' by 'Battle[BITCH]'
+	<li>'SunTzu's Club House' by 'Battle[BITCH]'
+	<li>'Training arena' by 'Hamster'
+	<li>'Enthalpy' by Charles 'Infiltrator' Prevost
+</ul>

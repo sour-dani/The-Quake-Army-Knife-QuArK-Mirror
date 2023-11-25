@@ -1,0 +1,12 @@
+<author>Decker</author>
+<headline>Half-Life data add-on updated with Opposing Forces entities</headline>
+The <a href="http://home1.inet.tele.dk/decker/DataHL.zip">newest Half-Life data add-on .QRK</a> have been updated with Opposing Forces entities.
+Texture-links ain't there - I haven't bought the CD yet, but if you can't wait for it, please take a look at the <a href="help/maptutorial/Texture_Links/Texture_Links.html">texture links tutorial</a> on
+how to create it yourself.<br>
+<div class="sml">(If you have a new/updated data add-on you want announced here, please mail the <a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com?body=-- NOTICE: HTML e-mails will be bounced, so send only in plain-text! /Decker --">webmaster</a>.)</div>
+
+<headline>QuArK-made maps</headline>
+A Quake-2 deathmatch map is at the <a href="usermaps.php">User maps</a> page:
+<ul>
+	<li>el2dm7 "Adrenalized Insanaty!" by El loco
+</ul>

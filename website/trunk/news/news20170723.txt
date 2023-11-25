@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>New patch for Half Life 1!</headline>
+
+<p>As you can read <a href="http://steamcommunity.com/games/70/announcements/detail/1439314053820431619" target="_blank">here</a>, Valve released a new patch for Half Life 1! It fixes some annoying bugs, including various crashes. Unfortunately, Valve seems to have forgotten to actually release the patch though: there's no download link anywhere. I've just opened a support ticket with them about this.</p>
+
+
+<p>Happy Half Living,<br>
+DanielPharos</p>

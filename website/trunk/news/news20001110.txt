@@ -1,0 +1,22 @@
+<author>Decker</author>
+<headline>Zoners Half-Life Tools v2.4.2</headline>
+<p>Some even smaller changes by Zoner:</p>
+
+<blockquote>
+<ul>
+<li>HLCSG
+        <ul>
+        <li>Fixed math precision problem from changeover to C++ in 2.4 which would cause some maps to have degenerate BSP trees (missing faces,
+                 random solid areas etc).
+        </ul>
+<li>HLBSP
+        <ul>
+        <li>Fixed math precision problem from changeover to C++ which caused spurious leaks in a very small number of maps.
+        </ul>
+</ul>
+</blockquote>
+
+<p><b>Notice!</b> Downloading a <a href="http://quark.sourceforge.net/infobase/glossary/index.html#.ACE">.ACE</a> file with Netscape might cause problems.<br>
+Please use a download manager like GetRight or GO!Zilla, or use a different browser (Opera, InternetExplorer).</p>
+
+<p>Get <a href="http://dl.fileplanet.com/dl/dl.asp?quark/zhlt242.ace">zhlt242.ace</a> from the QuArK <a href="download.php">download-page</a>, or the .ZIP version which can be found on <a href="http://halflife.gamedesign.net/">halflife.gamedesign.net</a>.</p>

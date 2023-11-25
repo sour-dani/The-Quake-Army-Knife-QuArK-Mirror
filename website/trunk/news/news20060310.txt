@@ -1,0 +1,25 @@
+<author>cdunde</author>
+<headline>QuArK 6.5.0 alpha 6 released.</headline>
+
+<p>Improvements and additions to this most recent release are:</p>
+
+<UL>
+<LI>Enlarged model Tick Marks for easer viewing and added item to Options menu to make one more size bigger.
+<LI>Added view axis icons to Model editor Options menu with HotKey.
+<LI>Setup model frame outlining and options for solid and color selection in Model Editors Configuration section.
+
+<LI>Up dated the Defaults.qrk file and added a new section to the Infobase for the configuration of the Torque game engine.
+<LI>Fixed viewing of player models and other updates for Quake2 CTF addon.
+<LI>Fixed Torus Hollow-No bulkheads function missed with new additions.
+<LI>Added Quake2 .md2 model file saving functions back to Model Editor.
+</UL>
+
+<p>This release can be downloaded from the <a href="http://sourceforge.net/project/showfiles.php?group_id=1181">Sourceforge QuArK release site</a>.</p>
+
+<p>Remember <b>Keep your QuArK knife sharp!</b></p>
+
+<p>cdunde</p>
+
+<p>For more information and added support, go to the <a href="http://quark.ironfoot.co.uk/forums/">QuArK Resource Center</a> and <a href="http://quark.sourceforge.net/communication.php#forums">the forums page</a> of this site.</p>
+
+<p>And remember to visit <a href="http://quark.sourceforge.net/cgi-bin/moin.cgi">our sister site!</a></p>

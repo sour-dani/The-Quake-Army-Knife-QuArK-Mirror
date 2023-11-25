@@ -1,0 +1,34 @@
+<author>Decker</author>
+<headline>QuArK 5.11 Beta</headline>
+Me and my forgetfulness <img src="pics/SmileySad.gif" align=absmiddle width=15 height=15>. Armin released
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/beta/quark-511-beta.zip">QuArK 5.11 beta</a> a couple of days ago,
+and even though I noticed it in the forums, I totally forgot to mention it here on the news, until Armin <i>kicked my butt</i> !!<br>
+Okay, so whats new in this beta:
+<div class="sml">
+<ul>
+<li>New tagging plug-ins from Tiglari; see the documentation in help\mapmadsel.htm and help\maptagside.htm.
+<li>One more fix to colored lights in the OpenGL view, about Invalid floating point operations.
+<li>Trying to fix the problems with recent 3DFX drivers. Please test this and report success or failure!
+<li>Fixed info_intermission entity for Quake 1, and fixed 3D angles (top in QuArK was down in Quake and vice-versa)
+<li>Hexen II entity list: an old one seems to have been included with QuArK 5.10. The one from QuArK 5.7 seems to be much better. I made a mix of the two.
+<li>Problems with 3D angles fixed. Angles looking "up" would look "down" in Quake and vice-versa in previous versions; in QuArK 5.10, it was fixed but it made "up" in the map views look "down" in the 3D views... Fixed.
+<li>Spaces now allowed inside a Specific. The sunlight extension of ARGHRAD seems to use a space in one of the Specifics to put into worldspawn.
+<li>Batch clipboard type conversions: the "Copy as" and "Paste special" menu commands are now available even if several objects are selected. This lets you for example convert any number of textures from one game to another in a single operation.
+<li>New option: don't write floating-point coordinates in .map files (for compatibility with some editors that just reject such "high-precision" .map files...)
+<li>Fixed a bug that occurred while inserting diggers.
+<li>Grayed out or hidden groups now have a grayed image instead of a red cross on them. The red cross now only means "ignored to build maps".
+<li>Fixed the background color of toolbars for people whose Windows color scheme is not the standard "gray" one.
+<li>Fixes and improvements in the entities for Quake 1, Hexen II, Half-Life. DataHL.qrk should now work with any version of Half-Life (&lt;=1.0.0.8 or &gt;=1.0.0.9). Please report problems.
+<li>Fixed some problems with duplicators and diggers displayed in the 3D views. I also noticed that the blue shade that duplicator images get in the 3D view doesn't work when "Negative polys dig on 3D views" is checked. I tried to fix it but it's horribly complex. For the moment let's pretend that it's a 'feature': when you check "Negative polys dig on 3D views" then it means you want something as close as possible to what you get in Quake, while if you don't check this, you want something easier to work with, hence the blue shade.
+</ul>
+</div>
+
+<headline>QuArK-made Maps</headline>
+Some Quake-2 deathmatch and CTF maps on the <a href="usermaps.php">user maps</a> page:
+<ul>
+<li>'Cylindrical Death' by Erik 'The Taurus' Thuresson
+<li>'The Fortress' by Erik 'The Taurus' Thuresson
+<li>'Battlecruiser' by Erik 'The Taurus' Thuresson
+<li>'A Bridge To Near' by Erik 'The Taurus' Thuresson
+<li>'The Cistern II' by Erik 'The Taurus' Thuresson
+</ul>

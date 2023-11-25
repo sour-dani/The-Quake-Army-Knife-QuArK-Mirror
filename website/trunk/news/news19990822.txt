@@ -1,0 +1,16 @@
+<author>Decker</author>
+<headline>InstaPoll time!</headline>
+Okay, three weeks must be enough for that instapoll. The new instapoll was suggested by Aleksei from the <a href="forums.php">QuArK forum</a>,
+due to a wild discussion, about whether or not to use the <i>fancy tools</i> in QuArK 5.x. It may be a little late for it, but let us see
+what you QuArK-users put your vote on.<br>
+Now lets take a look at the previous instapoll <i>"Which one of the <a href="suggestedplugins.php">suggested plug-ins</a> are you most anticipated to see implemented in QuArK?"</i>.
+I must say, you people really want to make 3D-models, with a free program eh!? <img src="pics/SmileyHappy.gif" align=absmiddle width=15 height=15>
+<b>39%</b> voted for 'Finishing the QuArK model-editor'. At a distant second place, is 'Entity prefab/editor' with <b>14%</b>. Third place
+goes to 'Merge brushes' with <b>9%</b>.<br>
+So, if anyone wants to help Armin and his followers, develop these plug-ins, please send us an e-mail.<br>
+
+<headline>QuArK-made Maps</headline>
+Yet a Quake-2 deathmatch map have been added to the <a href="usermaps.php">user maps</a> page:
+<ul>
+	<li>'Killahdm2' by Märt Metsanurm
+</ul>

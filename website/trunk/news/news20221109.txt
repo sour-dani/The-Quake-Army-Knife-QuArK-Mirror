@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Mick Gordon and id Software</headline>
+
+<p>I usually try to stay away from the more drama-related news, but if even half of this is true, people deserve to know: <a target="_blank" href="https://medium.com/@mickgordon/my-full-statement-regarding-doom-eternal-5f98266b27ce">Mick Gordon's full statement regarding DOOM Eternal</a>. It's a long read, but one that teaches us a lot about the current state of id Software's professionalism.</p>
+
+
+<p>Happy Dooming,<br>
+DanielPharos</p>

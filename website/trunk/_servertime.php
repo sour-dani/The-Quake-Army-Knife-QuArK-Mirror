@@ -1,7 +1,9 @@
 <?php
+require_once('_functions.php');
+require_once('_language_functions.php');
 
-$webservertime = "<center>" . date("Y.m.d - H:i:s") . "</center>";
+$webservertime = '<div class="centered">' . DisplayDateTime(NULL) . '</div>';
 
-pageSidePanel("", "Web-Server Time...", $webservertime);
+pageSidePanel('', GetLanguageString('WebserverTime'), $webservertime);
 
 ?>

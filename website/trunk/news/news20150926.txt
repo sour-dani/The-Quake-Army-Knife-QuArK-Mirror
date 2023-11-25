@@ -1,0 +1,10 @@
+<author>DanielPharos</author>
+<headline>Windows Vista and higher</headline>
+
+<p>I'm planning on getting QuArK working more smoothly on Windows Vista and higher. This includes some workarounds for internals issues with the OpenGL renderer, and some work to hopefully get QuArK working properly with the UAC.</p>
+
+<p>I can't give an ETA yet, because I have no idea how involved this is all going to get. However, if you know of other things that are broken on Windows Vista and higher, please let me know through the forums so I can add them to the fix-list.</p>
+
+
+<p>Happy QuArK-ing,<br>
+DanielPharos</p>

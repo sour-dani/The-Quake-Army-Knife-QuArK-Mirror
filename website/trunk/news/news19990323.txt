@@ -1,0 +1,9 @@
+<author>Armin</author>
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/quark58.exe"><strong>QuArK 5.8</strong></a> released ! (1.33 Mb)
+Also available <a href="http://asp.planetquake.com/dl/dl.asp?quark/quark58m.exe">without the game supports</a> (1.04 Mb); this second version requires the game supports you are interested in to be downloaded separately, unless you already downloaded them for version 5.7 (they didn't change between 5.7 and 5.8) :
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/dataq1_57.zip">Quake 1</a>,
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/datah2_57.zip">Hexen II</a>,
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/dataq2_57.zip">Quake 2</a>,
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/datahr2_57.zip">Heretic II</a>,
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/datahl_57.zip">Half-Life</a>,
+<a href="http://asp.planetquake.com/dl/dl.asp?quark/datasin_57.zip">Sin</a>.

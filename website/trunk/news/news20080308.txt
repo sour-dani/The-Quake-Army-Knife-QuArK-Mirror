@@ -1,0 +1,19 @@
+<author>cdunde</author>
+<headline>Finally, a <b>donation!</b></headline>
+
+<p>After 8 years, thousands of free downloads and improvements someone FINALLY stepped up to the plate and made a donation......8-)<br>
+The amount wasn't the important thing.....it was the thoughtfulness and support of it that counts. (The bucks don't hurt either though) 8-9</p>
+
+<p>We would like to Whole Heartily Thank zy_fireblade for his recent Donation to the QuArK project and we will put it to good use to help US help YOU! ;-)</p>
+
+<p>Currently a build up to purchase 2 copies of PREY, target of $30.00, is underway. <a href="donate.php">See here</a></p>
+
+<p>We would like to setup a posing section on the Official QuArK Site Donation page+ a listing of all of YOU that DO donate to the project for its support and continuation. Your online user name would be added to this list but NOT the amount donated.</p>
+
+<p>Skipping a few paid downloads for those $300.00 iPods to throw a few bucks our way could prove to be a lot more enjoyable in the long run. ;-)</p>
+
+<p>Remember <b>Keep your QuArK knife sharp!</b><br>
+
+cdunde</p>
+
+<p>For more information and added support, go to the <a href="http://quark.sourceforge.net/forums/">QuArK Official Forums</a> and <a href="http://quark.sourceforge.net/communication.php#forums">the forums page</a> of this site.</p>

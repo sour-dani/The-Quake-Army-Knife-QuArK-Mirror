@@ -1,0 +1,59 @@
+<author>Decker</author>
+<headline>New snapshot available...</headline>
+I've been working very late the past few days, much work to do at the office <img src="pics/SmileySad.gif" align=absmiddle width=15 height=15>.
+Anyway, Alex have made a new snapshot of QuArK 6.00 beta. Here's the info:
+<blockquote>
+It seems that in netscape somehow 0A (hex) gets expanded to 0D0A (hex)
+at the download. So if the archive has a file length that is
+longer then I wrote, that is a download problem. Use the
+IE instead or any other browser.<br>
+</blockquote>
+I'm not quite sure what Alex is talking about here, other than when someone tries to view text-files in Netscape,
+and then does a "Save as..." all LineFeed-characters (0A in hex) gets converted to CarriageReturn+LineFeed (0D0A in hex) and thus
+mangles the text-file.<br>
+So when you want to download something, remember always to hold down SHIFT and then click on the file link.<br>
+<span class="sml">(Which I also noticed that Daniel O'Connor states, in his more technical explanation in the <a href="http://www.egroups.com/messages/quark">QuArK forum</a> - Thanks for the CC Daniel.)</span><br>
+<br>
+Alex continues:
+<blockquote>
+A new CVS snapshot compile is available for download at sourceforge.<br>
+<a href="http://sourceforge.net/project/filelist.php?group_id=1181">http://sourceforge.net/project/filelist.php?group_id=1181</a><br>
+<pre>
+Name:       6.002pre7
+Filename:   quarksnapshot_20000606.ace
+Filelength: 1.594.116 bytes
+</pre>
+
+It is supposed to work with the mini python package and contains
+roughly the following changes<br>
+<br>
+beziers:
+<ul>
+<li>distortion reduction (elimination) for `rolled up' columns
+<li>fixed arch duplicator maploading problem, hopefully
+<li>texture choice item for b2 menu
+</ul>
+game quake3:
+<ul>
+<li>added: support of the bspc tool (menu entry)
+</ul>
+game kingpin:
+<ul>
+<li>added: origin and trigger poly includes
+<li>changed: generate trigger poly for brush entities and origin/default bush pair for rot ents
+<li>changed: improved enum property form for models (useful for the many prop entitities)
+<li>changed: pack texture list
+</ul>
+game sof:
+<ul>
+<li>fixed: can  now compile maps for SoF
+<li>fixed: wrong default texture for SoF
+<li>added: origin and trigger poly includes
+<li>changed: generate trigger poly for brush entities and origin/default bush pair for rot ents
+</ul>
+
+greetings<br>
+ Alex<br>
+</blockquote>
+If I'm not mistaken, by the time I get to upload this news, he has properly already made yet a new snapshot - he's fast, yes he is <img src="pics/SmileyHappy.gif" align=absmiddle width=15 height=15> -
+so keep an eye on the page: <a href="http://sourceforge.net/project/filelist.php?group_id=1181">http://sourceforge.net/project/filelist.php?group_id=1181</a>

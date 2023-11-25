@@ -1,0 +1,48 @@
+<author>DanielPharos</author>
+<headline>Warning: <a href="http://sourceforge.net/project/showfiles.php?group_id=1181">QuArK 6.6.0 Beta 3</a> is <b>HOT</b> off the press!</headline>
+
+<p>No, you haven't been forgotten, because here it is:</p>
+
+<p><b>QuArK 6.6.0 Beta 3</b> has been spotted in the wild!</p>
+
+<p>Yep, and as usual, many fixes, improvements and new features all over the place! Especially in the Model Editor: you've just gotta try it out!</p>
+
+<p>With good changes all over the place, it's difficult to list everything that has changed. So here are the major highlights:</p>
+
+<p><b>Both Editors:</b></p>
+<ul>
+<li>Added a horizontal scrollbar in the treeview.
+<li>You can now "uninstall" gamemodes: just delete the addons-directory of that game.
+<li>Added IWI loading; this is the texture format used by Call of Duty 2 and higher.
+<li>Fix a major slowdown in the progressbar drawing routine.
+</ul>
+
+<p><b>Map Editor:</b></p>
+<ul>
+<li>Some games want textures with Alpha in a different format; this fixes a saving-texture problem in Quake 3 mode.
+<li>Grayed out beziers can now not be selected in views anymore.
+<li>Fix some problems with the FAKK2 and EF2 compilers producing bad BSP filenames.
+<li>And various improvements here and there!
+</ul>
+
+<p><b>Model Editor:</b></p>
+<ul>
+<li>Completely revamped vertex Linear draglines system, increasing its reaction and drawing time to twenty times faster(!).
+<li>Added full Vertex U,V Coloring support to the bones Specifics page.
+<li>Added asi model format importing plugin.
+<li>ASE model exporter can now export .cm collision model files.
+<li>Added a .md3 model importer, with tag support.
+<li>Added a .md5mesh and .md5anim model exporter, with bone support.
+<li>Support started for granny .gr2 model importing with bones.
+<li>Added complete section in the InfoBase Docs about tags with F1 links, the new Bones, Vertex Color and Weights.
+<li>Added support for animation interpolation - (computation of added movement to emulate game action).
+<li>And lots and lots more! Just try it out, and you'll see!
+</ul>
+
+<p>See NEWS.txt for more details about changes and fixes. Also, see DONATORS.txt for people that made this release possible. Thank you all!</p>
+
+<p>What are you still doing here? <b>Get your copy</b> of <a href="http://sourceforge.net/project/showfiles.php?group_id=1181">QuArK 6.6.0 Beta 3</a> <b>now</b>!</p>
+
+
+<p>Happy editing,<br>
+DanielPharos</p>

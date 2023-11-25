@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>EF2 gamepak has been found!</headline>
+
+<p>Two-and-a-half years ago I reported that the EF2 gamepak file had gone missing. Well, no longer! I managed to locate it in some old backups I still have, so the gamepak is now once again available for download!<pic smiley_happy></p>
+
+
+<p>Happy mapping,<br>
+DanielPharos</p>

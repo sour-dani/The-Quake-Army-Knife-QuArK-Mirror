@@ -1,0 +1,87 @@
+<author>Decker</author>
+<headline>New snapshot...</headline>
+Once again, Alex have compiled a snapshot of QuArK 6.00 beta. Here is his words:
+<blockquote>
+Hi,<br>
+<br>
+here's some good news ;)<br>
+<br>
+The Q3 Bezier support seems to have reached a advanced state.
+You have powerful macros at hand to create nice rounded forms.
+Just make a cube and try some of the macros from the right
+button menu "curves" !<br>
+<br>
+SoF support is complete, I think. The bug, that textures were not shown, is fixed.<br>
+<br>
+Please test the new features extensively. <br>
+<br>
+A new CVS snapshot compile is available for download at <a href="http://www.sourceforge.net">SourceForge</a>:<br>
+<a href="http://sourceforge.net/project/filelist.php?group_id=1181">http://sourceforge.net/project/filelist.php?group_id=1181</a><br>
+<br>
+Name:   6.002pre9<br>
+File:   quarksnapshot_20000625.ace<br>
+Length: 1.604.644 bytes<br>
+<br>
+INSTALLATION:<br>
+<ol>
+<li>Make sure, that you have at least the mini-Python package
+   installed. Get it at <a href="download.php">download page</a>.
+   The full Python install does it also (<a href="http://www.python.org">www.python.org</a>)
+<li>Unpack the <a href="help/glossary/index.html#.ACE">.ACE</a> archive with e.g. xaceplus from <a href="http://www.winace.com">www.winace.com</a>
+   A directory will be created.
+<li>Start QuArK by clicking quark.exe
+<li>Don't forget to configure the Game directories and tools.
+   (You can also copy your old Setup.qrk to the new snapshot
+    directory)
+<li>Please, when reporting bugs, state for which game the report
+   is. Often it is <a href="forums.php">game specific</a>.
+</ol>
+Unpacking the snapshot over an older release may work, but I
+don't recommend it.<br>
+<br>
+CHANGES:<br>
+<ul>
+<li>Quake3:
+  <ul>
+  <li>added macro cones / bulges / columns<br>
+   This is a very useful macro !
+   Basically you can make a column from a cube-like brush.
+   By parameters you can enable end-plates, conicality and
+   bulges to the columns.  So you can make a round porthole
+   by putting an inverse column with end-plates
+  (non-open) into an appropriate aperture in a map, and make the
+   circumference wall curve inware by setting the bulge attribute to
+   say .5 .8 (bulge is half way, radius reduced by 80%)
+  <li>added `faceonly' specific for arches & bevels.
+  <li>added stretchtex flag for arch/cap and bevel
+  <li>support of perspective-driven curve creation
+  <li>preliminary solution for adjust w. min. distortion for shaders
+  <li>fixed non working arch/cap macro (bug was in curves.zip files at
+egroups)
+  <li>fixes to texture alignment on arches
+  <li>texture coord entry dialog fixes, drag hint shows texture coords
+   when texture is dragged
+  <li>fixed antidistortion crash when sum=0.  still wrong but doesn't crash
+  <li>arch/cap texture now projected off top or bottom for normal
+   and lower, respectively; stretchtex option added vs. complex
+   alignment.
+  <li>fixed perspective-driven builder problems
+  <li>fixed coordinate handedness screwup in floating map views
+  </ul>
+<li>SoF:
+  <ul>
+  <li>fixed the no textures bug in sofware mode, textured views and face views
+  <li>fixed potential pak file corruption on write .m32 textures
+  <li>optimized memory usage and speed for load of .m32 textures
+  </ul>
+</ul>
+greetings<br>
+&nbsp;Alexander
+</blockquote>
+
+<headline>User-made maps</headline>
+A Quake-2 map have been added to the <a href="usermaps.php">user maps page</a>.
+<ul>
+<li>'Rail Arena' by Simon Cooper
+</ul>
+

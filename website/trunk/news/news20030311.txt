@@ -1,0 +1,42 @@
+<author>Decker</author>
+<headline>Old Quake-1 has never looked that good</headline>
+
+<center>
+<table border=0 width=75%>
+<tr><td align=middle>
+
+<a href="http://quark.sourceforge.net/pics/news20030311/quake1_e1m1.jpg">
+<img width=160 height=120 src="http://quark.sourceforge.net/pics/news20030311/quake1_e1m1_small.png">
+</a><br>
+<font size=-2>
+[ Quake-1 : E1M1.BSP ]
+</font>
+
+</td><td align=middle>
+
+<a href="http://quark.sourceforge.net/pics/news20030311/tenebrae_e1m1.jpg">
+<img width=160 height=120 src="http://quark.sourceforge.net/pics/news20030311/tenebrae_e1m1_small.png">
+</a><br>
+<font size=-2>
+[ Tenebrae : E1M1.BSP ]
+</font>
+
+</td></tr>
+</table>
+</center>
+<br>
+Checkout the Tenebrae engine at <a href="http://tenebrae.sourceforge.net">http://tenebrae.sourceforge.net</a>,
+a custom build of the GPL'ed Quake-1 engine.
+This may be old news for some of you, but I just stumbled upon the site not so long ago.
+I must say that these guys really knows how to expand a (is it 6 years now?) old FPS-engine.
+<br>
+<br>
+<center>
+<a href="http://quark.sourceforge.net/pics/news20030311/tenebrae_bathroom.jpg">
+<img width=160 height=120 src="http://quark.sourceforge.net/pics/news20030311/tenebrae_bathroom_small.png">
+</a><br>
+<font size=-2>
+[ Tenebrae : BATHROOM.BSP ]<br>
+Haven't I seen this somewhere else?
+</font>
+</center>

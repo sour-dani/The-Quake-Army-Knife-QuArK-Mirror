@@ -1,0 +1,28 @@
+<author>Decker</author>
+<headline>Zoner's Half-Life Tools v1.4</headline>
+Here's whats new in version 1.4 of the tools:
+<dl>
+<dt>HLRAD<dd>Added support for the optional keys _fade and _falloff keys in light entities.<br>
+_fade defaults to 1 if not set. Values approaching zero cause light to travel further, values &gt; 1 cause light to not travel as far.<br>
+_falloff defaults to 2 if not set. The only other valid value is 1. 2 uses inverse square falloff, 1 uses plain 'inverse falloff'. Light travels
+REALLY far without dissipating with _falloff 1<br>
+-fade and -falloff added to command line to hlrad. Entities which do no have explicit values set in them will use the global values set by the
+command line. The defaults are the same as above with the entities.<br>
+The tools no longer require lights.rad, and will instead warn if there isn't one.<br>
+<dt>HLCSG<dd>SKY brushes can be clipped automatically if the -skyclip parameter is specified to hlcsg. Caveat: the brush numbers in error messages
+will be WRONG with respect to the .map file when -skyclip is in effect<br>
+<dt>ALL TOOLS<dd>Added -nolog to all tools to generate 'pre 1.3' behavior (no logfile generation of any kind).<br>
+Added -low and -high to all the tools. This changes the process priority from its default (normal) to a higher or lower value. Caveat: on unix
+only root can increase the priority level of processes, so usually only -low is of interest in that environment<br>
+Started adding more explanitory help for error messages. The most fatal/common ones have been done first. The rest will have to wait for
+further versions of ZHLT<br>
+</dl>
+You can get the new version here <a href="http://asp.planetquake.com/dl/dl.asp?quark/zhlt14.ace">zhlt14.ace</a> (233KB), or
+if you rather want a .ZIP (which is a larger download), you can find it at the <a target="_blank" href="http://halflife.gamedesign.net">Half-Life ERC</a> site.<br>
+
+<headline>QuArK-made Maps</headline>
+<ul>
+	<li>'Tech-World' by Demetris 'RoGeR' Leptos
+	<li>'The Axis Arena' by Erik 'The Taurus' Thuresson
+	<li>'The Arena1' by Michael 'Squatta' Fitzpatrick
+</ul>

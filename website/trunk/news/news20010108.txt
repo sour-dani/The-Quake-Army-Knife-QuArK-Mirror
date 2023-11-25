@@ -1,0 +1,5 @@
+<author>Decker</author>
+<headline>Article about &quot;QuArK 5.10 vs WorldCraft 3.3&quot;</headline>
+<p>By pure coincidence, I saw on <a href="http://www.planethalflife.com">www.planethalflife.com</a> that someone have made an article; <a href="http://www.fragpipe.com/~csu/fut-2.html">&quot;QuArK vs WorldCraft&quot;</a>.</p>
+
+<p>It gives a quick view of the pros and cons in these two Half-Life supporting map-editors.</p>

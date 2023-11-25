@@ -1,0 +1,24 @@
+<author>Armin</author>
+<p><a href="http://asp.planetquake.com/dl/dl.asp?quark/quark53.exe">QuArK 5.3 released !</a></p>
+<ul>
+<li><strong>Half-Life support.</strong> Ready and tested. Enjoy !
+<li><strong>Sin support</strong> is included but untested yet. Maybe it works, maybe not.
+<li>A <strong>Model editor</strong> is present but still very basic. Actually, you can't do anything.
+<li>Several "modes" are available for the red rectangle that appears when you drag
+    the mouse over the map. You can have the rectangle select polyhedrons (default),
+    or entities, or turn the rectangle into a solid cube (handy to quickly make a lot
+    of cubes). You can also have a line instead of a rectangle : all polyhedrons touching
+    it will be cut in two parts, and you can also cut whole groups in two -- this is a
+    handy way to create the mysterious "shared faces" in QuArK. This means that you can
+    later move the plane where you've cut the group without having to move all the faces
+    of all the polyhedrons that were cut in two !
+<li>Better User Data panel (the place where you drop your prefabs in the map editor).
+    Now you can reach the whole content of the New map items and the Texture browser
+    toolboxes directly. There is also a button "textures currently used in map".
+<li>Group view flags, as in QuArK 4.07 : hidden groups, ignored to build the map, etc. BTW,
+    the menu option "quickplay on selection only" is back.
+<li>Basic map validity check. It will automatically find and show you some of the most
+    common errors : mixed face contents, brush entities with no attached polyhedron, etc.
+<li>Surface flags (for Quake 2) are now also accessible from the menus.
+<li>Well... there are other minor news and bug fixes, unlisted.
+</ul>

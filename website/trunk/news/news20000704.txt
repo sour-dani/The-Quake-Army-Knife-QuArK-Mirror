@@ -1,0 +1,24 @@
+<author>Decker</author>
+<headline>Prefabs site...</headline>
+Yun send me some words, of him starting a new prefabs site. You can check it out at:
+<center><a href="http://www.sdprefabs.homestead.com">www.sdprefabs.homestead.com</a></center><br>
+It's dedicated to quality prefabs; e.q. prefabs that does not contain any errors, and arranged into proper game categories.<br>
+
+<headline>Tutorials...</headline>
+Just a reminder. There are some tutorials in <a href="help/index.html">QuArK's online-documentation</a> for you newbies to checkout:
+<ul>
+  <li>Basic knowledge (before you begin) - <a href="help/basicknowledge.html">view</a>
+  <li>My first room (and other stuff) tutorial - <a href="help/maptutorial/index.html">view</a>
+  <li>Face sharing tutorial - <a href="help/maptutorial/Face_Sharing/Face_Sharing.html">view</a>
+  <li>How to make a cylinder/prism tutorial - <a href="help/maptutorial/Make_Prism/Make_Prism.html">view</a>
+  <li>My own prefab library tutorial - <a href="help/maptutorial/Prefab_Library/Prefab_Library.html">view</a>
+  <li>Custom texture links tutorial - <a href="help/maptutorial/Texture_Links/Texture_Links.html">view</a>
+</ul>
+Also; if <u>you</u> have made a QuArK specific tutorial, that you would like to see included in QuArK's online-documentation or <a href="infobase/index.html">Infobase</a>,
+please send a mail to the <a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com">webmaster</a>.<br>
+
+<headline>User-made maps</headline>
+A Quake-2 map have been added to the <a href="usermaps.php">user maps page</a>.
+<ul>
+<li>Life's too Short' by Jef aka Poopy
+</ul>

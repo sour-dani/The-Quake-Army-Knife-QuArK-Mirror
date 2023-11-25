@@ -1,0 +1,20 @@
+<author>Decker</author>
+<headline>InstaPoll</headline>
+Its time to change to a new instapoll. Well, lets see what type of maps you people make.
+40% are doing deathmatch maps! I must say that that is quite many. Do the gamers still request new
+DM-maps so much? Ok, moving on. 17% of you make single-player maps. Hopefully they are good single-player
+maps that has a little story to tell <img src="pics/SmileyHappy.gif" align=absmiddle width=15 height=15>.
+And now to my favorite map-style; 10% makes Team Fortress maps and alike. These kind of maps are very difficult
+to make, and with the upcoming Team Fortress 2 game, they are going to be even harder, so keep reading those
+tutorials and study the good maps. Next up is Action/Terror style maps with 8%, which is a good alternative to
+regular deathmatch-maps IMHO. Some 6% makes maps for other PC, TC or MOD. Please <a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com?body=-- NOTICE: HTML e-mails will be bounced, so send only in plain-text! /Decker --">tell me</a>
+about those other PC, TC and MOD. Capture the Flag maps; 6%. Some 5% energetic people make multi-level single-player maps.
+<i>Respect</i> you guys! 4% makes teamplay-DM style maps. The last 1% is for cooperative maps, which actually mixes the
+single-level and multi-level single-player style.<br>
+
+<headline>QuArK-made Maps</headline>
+A Half-Life and a Quake-2 map, both deathmatch, have been added to the list of <a href="usermaps.php">user maps</a>:<br>
+<ul>
+	<li>'Mos Eisley' by Eckard Gehm
+	<li>'Dalek11q2 - 1976' by Trond Andersen (Dalek)
+</ul>

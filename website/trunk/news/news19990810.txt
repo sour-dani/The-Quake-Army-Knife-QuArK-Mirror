@@ -1,0 +1,4 @@
+<author>Decker</author>
+<headline>Sin Capture The Flag data add-on</headline>
+Tiglari have made a data add-on with Sin CTF entities. Find it on the download page <a href="download.php#addons">Add-ons</a> section.
+<div class="sml">(If you have a new/updated data add-on you want announced here, please mail the <a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com?body=-- NOTICE: HTML e-mails will be bounced, so send only in plain-text! /Decker --">webmaster</a>.)</div>

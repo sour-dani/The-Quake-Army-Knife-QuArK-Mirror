@@ -1,0 +1,3 @@
+<author>tiglari</author>
+<headline>for would-be QuArK Developers</headline>
+<p>Rowdy has gotten QuArK to compile with Delphi 6 Personal, which is a free <a href="http://www.borland.com/delphi/tryitnow.html">download</a> from <a href="http://www.borland.com/">Borland</a>.</p>

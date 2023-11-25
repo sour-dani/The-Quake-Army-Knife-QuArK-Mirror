@@ -1,0 +1,25 @@
+<author>Gryphon</author>
+<headline>How's it going?</headline>
+Fine. Thanks for asking! As always, busy busy. <br>
+<br>
+Hey, did you know Ford Thunderbirds have a tendency to have the bearings
+in the hinge assemblies fall apart and cause the door to droop down
+and tear apart the striking bolt and render it completely useless? Me
+either. (Sigh). I need to sell this car. On the upside, I just got the
+title in the mail after completing my payments... course with it falling
+apart, maybe that's all part of this Murphy's Law equation...<br>
+
+<headline>User Map Updates!</headline>
+<ul>
+<li><i>Zway's Way</i></li>
+<li><i>Crossfire</i></li>
+<li><i>The Hallowed</i></li>
+<li><i>Global Gloom</i></li>
+</ul>
+<p><a href="usermaps.php">Check 'em out!</a><br></p>
+<p>Great work from Decker with the enhanced manual. If you're having trouble
+understanding QuArK, <a href="http://asp.planetquake.com/dl/dl.asp?quark/quark59h.zip">download
+it today</a>.<br>
+<br>
+Also, if anyone has any questions... be sure to ask them on the <a href="forum.htm">QuArK
+Forums</a>! Benefit from QuArK's community at large!<br></p>

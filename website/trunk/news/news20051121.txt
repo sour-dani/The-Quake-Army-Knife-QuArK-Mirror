@@ -1,0 +1,26 @@
+<author>cdunde</author>
+<headline>QuArK Rulers tool testing</headline>
+
+<p>Back in the middle of August this message about measurement lines for single and grouped polys was posted:<br>
+<a href="http://quark.ironfoot.co.uk/forums/index.php/topic,185.0.html">http://quark.ironfoot.co.uk/forums/index.php/topic,185.0.html</a></p>
+
+<p>Well, I just finished a couple of files for the new QuArK Rulers plugin and I would like people to test them out to see what they think.</p>
+
+<p>These files should only be used with QuArK version 6.4.0 alpha 1 and higher.</p>
+
+<p>quarkpy\mapmenus.py (save your original file before unzipping) and plugins\maptools.py</p>
+
+<p>These will add a menu item to the "Options" main menu entitled "Ruler guide in 2D views" that will bring up a sub-menu with a variety of 2D view and ruler displays that you can chose from. Basically you can select to have the lines and their selected poly distance in all 2D views or just one of the 2D views and any combination of them that you choose. You can also select if you want them to display for the top measurement, side measurement or both. Very much like the menu selection for the 2D view grids. In fact it will be just under that category on the "Options" main menu.</p>
+
+<p>You can download the QuArK Rulers tool.zip file from <a href="http://quark.ironfoot.co.uk/forums/index.php/topic,274.new.html#new">here.</a></p>
+
+<p>Please post your input and feed back to the Forum section at the above download link.</p>
+
+
+<p>Remember <b>Keep your QuArK knife sharp!</b></p>
+
+<p>cdunde</p>
+
+<p>For more information and added support, go to the <a href="http://quark.ironfoot.co.uk/">QuArK Resource Center</a> and <a href="http://quark.sourceforge.net/forums.php">the forums page</a> of this site.</p>
+
+<p>And remember to visit <a href="http://quark.sourceforge.net/cgi-bin/moin.cgi">our sister site!</a></p>

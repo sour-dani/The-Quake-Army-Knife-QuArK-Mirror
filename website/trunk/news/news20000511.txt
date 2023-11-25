@@ -1,0 +1,23 @@
+<author>Decker</author>
+<headline>A patch a day, keeps the bugs away... <span class="sml">(well almost)</span></headline>
+From my inbox:
+<blockquote>
+<i>Subject: new zoners tools.</i><br>
+Ok, due some bug i found in zoners tools
+a new version with corrected quark texture alignment was done.
+<a href="http://www.geocities.com/cs_banana/zhltbug">http://www.geocities.com/cs_banana/zhltbug</a>
+theres a zip file with the new version.<br>
+-BananA
+</blockquote>
+And so Zoner, made v2.0.4 of Zoner's Half-Life Tools:
+<ul>
+<li>Fixes Quark texture alignment which the new code for the Worldcraft 3.3 map format broke.
+<li>Fixes the source code distributions missing a few of the newer files.
+</ul>
+Get the <a target="_blank" href="http://www.winace.com">WinAce</a> file of Zoner's Half-Life Tools: <a href="http://dl.fileplanet.com/dl/dl.asp?quark/zhlt204.ace">zhlt204.ace</a> (316KB), or
+the <a target="_blank" href="http://www.winzip.com">WinZip</a> one (371KB) which (hopefully) can be found on the <a target="_blank" href="http://halflife.gamedesign.net">Half-Life ERC</a> site.<br>
+
+<headline>User-made maps</headline>
+<ul>
+<li>'<a href="usermaps.php">myyard</a>' by [CoH]Solido aka Johannes Uessem
+</ul>

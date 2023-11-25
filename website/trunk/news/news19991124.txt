@@ -1,0 +1,42 @@
+<author>Decker</author>
+<headline>Special build of QuArK by tiglari</headline>
+Here are some words from tiglari, taken of the <a href="forums.php">QuArK-Forum</a>:
+<blockquote>
+I'm planning to release a <i>tiglari's build</i> sometimes in the next 1-3
+weeks, which will include a few things I've been working on. The main
+feature will be an alternate texture positioning dialog that's more
+like what you find in tread or worldcraft, with tilt and shear angles,
+and little arrows to bang on to move things around. It might or might
+not include Alex's kingpin stuff.<br>
+<br>
+[<i>... and half a week passes ...</i>]<br>
+<br>
+I've put up this special version here: <a href="http://www.hereticii.com/tiglari/editor/quark511qta.zip">http://www.hereticii.com/tiglari/editor/quark511qta.zip</a>.<br>
+<br>
+It doesn't fix actual QuArK-511-Beta bugs, and also needs to be installed
+into its own directory (doesn't work when unzipped over Q511beta or
+Q510, haven't managed to figure out why).
+</blockquote>
+<b>Notice</b>: This is not an official QuArK release, but tiglari's own special version! Here's the readme.txt:
+<blockquote>
+<center>Features of Quark511qta</center><br>
+This is a non-beta compilation of the quark511beta source,
+with some additional features by QuickDeath, tiglari &
+Alex Haarer:<br>
+<ul>
+<li>QuickDeath: saving maps to directories specified in a Quake
+Context, not just paks.
+<li>tiglari: new texture-positioning dialog; sliding things along
+and around arbitrary axes.
+<li>Alex Haarer: KingPin support (I've included his data files).
+</ul>
+The actual bugs in q511beta haven't been addressed, the ones I've
+encountered so far don't seem to be show-stoppers (e.g. the
+OpenGL bugs) and I don't know how to fix them anyway.<br>
+<br>
+This doesn't seem to work when extracted over a prior installation,
+I haven't managed to figure out why yet, so unzip it into a fresh
+Quark directory.<br>
+<br>
+&nbsp;tiglari
+</blockquote>

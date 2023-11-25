@@ -1,0 +1,19 @@
+<author>Gryphon</author>
+<UL><FONT 
+SIZE=2 FACE="verdana,arial" 
+		COLOR="0000a0">
+<!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-->
+<P><STRONG>Um... what's going on?</STRONG><BR>
+<LI>Just wanted to note I was still alive and working on the site.  I'm getting a frustratingly SMALL amount of time to do it in, but it's coming along.  You see... I don't like some elements of the site's current design, so I working on FIXING those ALONGSIDE the updates I needed to make.
+<P>I've divided the OFFLINE site into <B><I>new</I></B> parent categories: Main Page, News, Support, Games, Community, and Extentions. The children of these parents are: <BR>
+<B>News</B>- QuArK News,Site News,Credits; <BR>
+<B>Support</B>- Overview,Download,Tutorials,Manual,FAQ; <BR>
+<B>Games</B>- Quake,Quake2,HexenII,HereticII;<BR>
+<B>Community</B>- Forum,Chat,Links,Levels;<BR>
+            <B>Extensions</B>- Add-Ons,Plug-ins. <BR>
+<P>I created a new side menu that looks like the QuArK Explorer, but... two problems... it's TOO long (with all the sub-menu's listed), and Netscape takes TOO long to draw it (though it pops right up in Internet Explorer). So I've gone back to the drawing board. The design-phase sucks.
+<P>
+<LI>In the meantime, I'm trying to answer questions here and there, and wave to folks to let 'em know I'm lurking abouts.  --But, I thought BEST to add a site news entry here.  It's funny, I could just update what's on the site NOW... but my mind tells me I need to do this all together. Hope it's worth the wait.
+<P>
+<LI>If anyone's reading this, and uses the Q&A forum... it's definitely coming down soon. I just keep thinking someone will give me a good reason to take it down in a certain way.  At any rate... I'd say tomorrow.
+</font></ul>

@@ -1,0 +1,10 @@
+<author>DanielPharos</author>
+<headline>Quake just turned 20!</headline>
+
+<p>Twenty years ago, Quake was first unleashed upon the world. Leaving nothing but death and destruction in its wake, we still feels its effects on video gaming today. And of course, without Quake, there would be no QuArK!</p>
+
+<p>For this special occasion, Romero himself has posted some good ol' screenshots. Visit <a target="_blank" href="http://rome.ro/news/2016/6/22/happy-20th-birthday-quake">Romero's page</a>!</p>
+
+
+<p>Happy Quaking,<br>
+DanielPharos</p>

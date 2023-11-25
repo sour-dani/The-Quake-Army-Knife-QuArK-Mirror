@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>IGN shutting down</headline>
+
+<p>You probably know it by now, but IGN is going to shut down free hosting at the end of August this year. Since the QuArK website is hosted by them, this affects us too. Don't worry though: we've already found a good candidate to copy this website over to: our project-website at SourceForge. More info about this all on our forums <a href="http://quark.sourceforge.net/forums/index.php?topic=297">here</a>.</p>
+
+
+<p>Happy browsing,<br>
+DanielPharos</p>

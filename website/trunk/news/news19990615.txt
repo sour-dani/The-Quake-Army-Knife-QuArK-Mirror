@@ -1,0 +1,14 @@
+<author>Decker</author>
+<headline>Half-Life map made with QuArK</headline>
+There is a new map on the <a href="usermaps.php">user maps</a> page. Its the first Half-Life map added,
+and its even a <a href="http://www.teamfortressclass.com">Team Fortress Classic</a> map! The author have send it to
+<a href="http://www.planetfortress.com/radium">Radium-TFC</a>, a Half-Life map-rating site, which is a good place
+to start, looking for the do's and don'ts of map-design.<br>
+
+<headline>Community - Help needed</headline>
+A new page have been added to the QuArK site: <a href="suggestedplugins.php">Suggested Plug-ins</a>. This page
+will contain ideas for new plug-ins, and their need to find some willing to develop them. I do hope that it will
+bring a little order into the multitude of <i>"I whised that it could do this or that"</i> plug-in suggestions from
+the <a href="forums.php">forums</a>.<br>
+If you are a python coder, then you better check out the page, to see if there are any new challenges for you
+<img src="pics/SmileyHappy.gif" align=absmiddle width=15 height=15>.

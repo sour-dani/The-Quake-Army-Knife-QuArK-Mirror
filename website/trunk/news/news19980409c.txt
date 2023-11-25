@@ -1,0 +1,6 @@
+<author>Armin Rigo</author>
+<UL>
+
+<LI>The development of QuArK 5 will go on for the next two weeks... Look for the next beta version. BTW, my (Armin's) ISP has got troubles with his mail server, so if I don't answer an e-mail please send it again :-(
+
+	</UL>

@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Activision on banning spree</headline>
+
+<p>Please be aware that Call of Duty's anti-cheat seems to be <a href="https://blog.mikeswanson.com/post/702753924034297856/activisions-faulty-anti-cheat-software" target="_blank">banning people without reason</a>, leading to accounts being permanently blocked. This also prevents you from playing single player, and there's no refund or support option. So be careful!</p>
+
+
+<p>Safe gaming,<br>
+DanielPharos</p>

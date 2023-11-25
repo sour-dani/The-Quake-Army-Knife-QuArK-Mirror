@@ -1,0 +1,22 @@
+<author>DanielPharos</author>
+<headline>New nightly build released!</headline>
+
+<p>This latest nightly release adds a lot of improvements to .rmf file loading! QuArK now correctly loads:</p>
+
+<ul>
+<li>UV texture coordinates</li>
+<li>surface flags</li>
+<li>map groups</li>
+<li>entities versus brushes</li>
+<li>origin of entities</li>
+</ul>
+
+<p><b>Note:</b> the Specifics of entities are still absent!</p>
+
+<p>Download this new nightly release from <a href="https://sourceforge.net/projects/quark/files/QuArK/QuArK%206.6.0%20Beta%207/" target=_blank>SourceForge download page</a> now!</p>
+
+<p>Note: this is a nightly release, so there may be breaking bugs. If you encounter one, please let us know on the forums.</p>
+
+
+<p>Happy mapping,<br>
+DanielPharos</p>

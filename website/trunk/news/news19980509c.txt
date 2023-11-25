@@ -1,0 +1,6 @@
+<author>Armin Rigo</author>
+<UL>
+
+<LI>Derrick McKay definitely stopped updating this web site. That's why I redirected the main links to my own pages. I'm looking for someone to replace him !
+
+	</UL>

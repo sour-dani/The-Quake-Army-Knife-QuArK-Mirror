@@ -1,0 +1,4 @@
+<author>Decker</author>
+<headline>Map tutorial still in progress</headline>
+I've added a little more to the <a href="help/maptutorial/index.html">map tutorial</a>. Go check it and <a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com?body=-- NOTICE: HTML e-mails will be bounced, so send only in plain-text! /Decker --">tell me</a>
+if I've missed something.

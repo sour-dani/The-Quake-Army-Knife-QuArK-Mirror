@@ -1,0 +1,54 @@
+<author>cdunde</author>
+<headline><b><a href="http://sourceforge.net/project/showfiles.php?group_id=1181">QuArK 6.5.0 Beta 3</a></b> has just been released!</headline>
+
+<p>A bit longer than we had anticipated....but <b>Well Worth The Wait ! ! !</b></p>
+
+<p>Sooooo....what kind of NEW surprises can you expect to find in this one ! ?<br>
+<b>Glad you asked.</b></p>
+
+<p>DanielPharos (or Dancing Dan as we call him) has been concentrating on Half-Life 2 with Steam Access Support and has <b>completely</b> revamped the entire system....actually he replaced it !<br>
+A very special gift from him to all of us to celebrate <b>his 1 year anniversary as a QuArK team member !</b><br>
+<b>Congratulations Dan and Thanks</b> for all the great work and contributions you have made in such a short time.</p>
+
+<p>As you can see below he created the <b>QuArK Steam Access System (QSAS) v1.0</b> to accomplish this feat and in doing so also fixed the <b>texture loading build up crash in QuArK</b> as well !<br>
+That's not great..... <b>that's AWESOME ! ! !</b></p>
+
+<p>In addition, he has changed the Configuration for Half-Life 2 to make it much easier to setup for Half-Life 2 and Counter Strike.</p>
+
+<p>Those tasks alone were extremely taxing and time consuming for Dan, but he was able to do even more for QuArK...<br>
+A few of those other items are:</p>
+<UL>
+<LI> In Half Life 2 mode, QuArK will now save a .vmf file instead of a Quake .map.
+<LI> Now games from the same series can be grouped together in the Games-menu!
+<LI> Added a simple update-notifier that checks the age of the QuArK release.
+<LI> Fixed the infobase-help not opening on several browsers.
+<LI> Added <b>FreeImage</b> as an alternative for <b>DevIL</b> image file handling and setup in the Configuration section.
+<LI> Finalized .dds image format support. Saving is now possible and reliable.
+<LI> Added game support for EF2 (Elite Force 2) with .md3 model and .dds image format support as well (I helped a little).
+<LI> and a number of other things, including helping me with my particular project...the <b>QuArK Model Editor</b>.
+</UL>
+
+<p>And what have I (slacker) been doing while he is working feverously ! ?<br>
+Welllll....as I just mentioned above....concentrating on the <b>QuArK Model Editor</b>.<br>
+and a few things that I (with Dan's help) have done are:</p>
+<UL>
+<LI> Added complete Rectangular Selection and Linear Handle support for both the Editor and Skin-view for vertexes and faces.
+<LI> Integrated all Editor Views Selections with the Skin-view Selection system and visa-versa for vertexes and faces.
+<LI> Revamped with an entire new vertex and triangle creation, picking and removal system.
+<LI> Setup selection retention system (Dan helped) in Model Editor so selected items would not be dropped unexpectedly.
+<LI> Fixed Duplicate current frame function to stop Model Editor views from crashing.
+<LI> Stopped Add Triangle and Delete Triangle from causing errors and added menu links to the Infobase.
+<LI> Setup mesh movement using common drag handles in the Skin-view for skinning model textures.
+<LI> and <b>many...many...many</b> (over 30) other things for what it can do now and in the near future for new model formats.
+</UL>
+
+
+<p>So <b>ZIP</b> on over and get your <b>New....Improved....FANTASITICALIZED</b> (is there such a word?)...copy of...<br>
+<b><a href="http://sourceforge.net/project/showfiles.php?group_id=1181">QuArK 6.5.0 Beta 3</a> ! ! !</b></p>
+
+
+<p>Remember <b>Keep your QuArK knife sharp!</b></p>
+
+<p>cdunde</p>
+
+<p>For more information and added support, go to the <a href="http://quark.sourceforge.net/forums/">QuArK Resource Center</a> and <a href="http://quark.sourceforge.net/communication.php#forums">the forums page</a> of this site.</p>

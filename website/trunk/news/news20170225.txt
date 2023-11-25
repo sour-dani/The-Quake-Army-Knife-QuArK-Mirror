@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>New nightly with improved Steam (VPK) support</headline>
+
+<p>Valve likes to randomly move files around, and this always breaks everything. For example, recently they switched over to a new file format (VPK instead of GCF), and changed where files are stored. Obviously, QuArK needed to be updated for this new game file layout. So, try this new nightly: <a href="http://quark.sourceforge.net/forums/index.php?topic=1112.msg6036">find it here</a>.</p>
+
+
+<p>Happy mapping,<br>
+DanielPharos</p>

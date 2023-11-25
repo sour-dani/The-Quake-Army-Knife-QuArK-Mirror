@@ -1,0 +1,36 @@
+<author>DanielPharos</author>
+<headline>Half Life 1 system requirements have changed</headline>
+
+<p>After a couple of days spend proving to Valve that their own Steam software does NOT run on Windows 98 (seriously!), they've finally admitted it: the system requirements for Half-Life 1 have changed! If you go to the <a href="http://store.steampowered.com/app/70/HalfLife/" target="_blank">Half-Life 1 Steam store page</a>, you'll find this:</p>
+
+<blockquote>
+<p>MINIMUM: 500 mhz processor, 96mb ram, 16mb video card, Windows XP, Mouse, Keyboard, Internet Connection<br>
+RECOMMENDED: 800 mhz processor, 128mb ram, 32mb+ video card, Windows XP, Mouse, Keyboard, Internet Connection</p>
+</blockquote>
+
+<p>Now, what you have to do is this: do <b>not</b> interpret this as the system requirements for Half-Life 1 on Steam. No, interpret this as "you need this to have support". In other words, if you run Half-Life 1 on Windows 98, you don't have the "minimum system requirements for support", so you won't get any support. Which includes patches. Even though it's the same game.</p>
+
+<p>Apparently, with patch after patch, Valve has had to increase the minimum system requirements because... I guess because they don't understand backwards compatibility? I have here a physical copy (not even the original release), and its system requirements are:</p>
+
+<blockquote>
+<p>Minimum Requirements:</p>
+<b>Windows(R) 95/98/2000/ME/NT 4.0</b>
+<ul><li>Pentium(R) 233</li>
+<li>32 MB RAM</li>
+<li>4x CD-ROM</li>
+<li>400 MB HD space</li>
+<li>SVGA, high colour 16-bit display</li>
+<li>Windows compatible sound card</li>
+<li>Mouse, keyboard</li>
+<li>Internet/Multiplayer: 32-bit Internet Service Provider with 28.8 modem or LAN</li></ul>
+</blockquote>
+
+<p>So as you can see, Half-Life now needs a processor more than twice as fast, needs triple the amount of memory, and a 6 year younger operating system. Oh, and internet is non-optional. Heck, this means Half-Life 1 now has higher system requirements than QuArK has!</p>
+
+<p>The suggestion of releasing a standalone installer for this patch so that older releases can also be patched, will be "forwarded to the appropriate department". Don't get your hopes up though: the last time they forwarded comments for me was over 2-and-a-half years ago for a simple bug-fix in Steam, and they <b>still</b> haven't found the time to do that (even after reminding them twice).</p>
+
+<p>My personal recommendation? Treat Half-Life 1 on Windows 2000/ME and lower as abandonware, because that's exactly what it currently is.</p>
+
+
+<p>Happy Half Living,<br>
+DanielPharos</p>

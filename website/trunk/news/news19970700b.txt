@@ -1,0 +1,3 @@
+<author>Derrick McKay</author>
+<headline></headline>
+<FONT COLOR="#FF0000"><B><FONT SIZE=3>*** Bugfix for Quark 3.61 ***</FONT></B><BR> See the <A HREF="news.html">News Page</A> for info, and the <A HREF="download.html">Download Page</A> to get the fix.</FONT><P>

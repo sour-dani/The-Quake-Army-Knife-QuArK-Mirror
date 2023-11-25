@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Looking for QUADE</headline>
+
+<p>I'm looking for contact information for Patrick J. Steele, author of QUADE (QuArK Add-On Editor). Years ago, he wrote a Visual Basic 5 program for generating .QRK files, but eventually it fell behind, and its website went down. It would be a shame for this piece of QuArK history to be lost, so I want to archive it here, on our website. However, none of the download-links I can find still work, and he offered the source code to interested parties, which I don't think was posted anywhere. So, if anybody knows how to contact "pjsteele", or has these files, please let me know!</p>
+
+
+<p>Happy QuArKing,<br>
+DanielPharos</p>

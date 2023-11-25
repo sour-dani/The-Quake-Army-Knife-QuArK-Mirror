@@ -1,0 +1,16 @@
+<author>Gryphon</author>
+<UL>
+<!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-->
+<LI><STRONG>Questions, Answers, FAQs, and fickles.</STRONG><BR>
+<I>Hey!  What's up with the messageboard!??</I>  :(<BR><BR>
+Unforetunately, like is apt to happen every now and then, a little rain must fall.<BR>
+The site providing the forum is down, but should hopefully be back online by tomorrow... if not, you can be sure I'll raise Holy Hell!</LI><BR><BR>
+<LI>As for the good news, I'm almost finished with the standard "Getting Started" tutorial for QuArK.  Most people don't notice that QuArK 4.07 COMES with a handy tutorial and an extensive manual.  I have started the long process of HTML-izing all this information.  I'm expanding it where I can, but for the most part, this is very accurate useful stuff that I think people can learn a lot from. I worked ALL Saturday on my own tutorial before realizing that though different, QuArK's included tutorial is more thorough, and explains everything I've been trying to for the last week. I might make mines available as an oddity though (I was so proud...)! :)</LI><BR><BR>
+<LI>Also! The great guys at Quake Workshop have given me the go ahead on redoing all of their tutorials to be QuArK specific, and expanding them where I think necessary. All these decisions will PACK the tutorial section, and give me time to do more QuArK specific tutorials when I'm done... like REALLY getting the most out of the Duplicator, Hollowmaker, etc.
+</LI><BR><BR>
+<LI>
+Lastly, the QuArK Online FAQ will also go into compilation soon. Most of the answers I already have, but I'm still looking for questions that should be included.  More news on this later. (Whew!)
+</LI><BR>
+</BLOCKQUOTE>
+
+	</UL>

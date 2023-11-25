@@ -1,0 +1,10 @@
+<author>DanielPharos</author>
+<headline>QuArK used in ground-breaking research project!</headline>
+
+<p>We just got informed by Forrest Collman that QuArK was used in a ground-breaking research project! Read all about it right <a href="http://quark.sourceforge.net/forums/index.php?topic=372">here</a>!</p>
+
+<p>I wonder how long it will take for the first mouse to win the world-championship FPS title? <pic smiley_happy></p>
+
+
+<p>Happy micing(?),<br>
+DanielPharos</p>

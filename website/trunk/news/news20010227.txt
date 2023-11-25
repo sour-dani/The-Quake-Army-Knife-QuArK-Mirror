@@ -1,0 +1,14 @@
+<author>Decker</author>
+<headline>Zoner's Half-Life Tools v2.5</headline>
+<p>Just saw that a new version of Zoner's Half-Life Tools were released.</p>
+
+<p>Get <a href="http://dl.fileplanet.com/dl/dl.asp?quark/zhlt25.zip">zhlt25.zip</a> from the QuArK <a href="download.php#buildpacks">download-page</a>.</p>
+
+<headline>InstaPoll</headline>
+<p>Its been a long time, since we last had an instapoll. Now something was brought up in the <a href="forums.php">QuArK-Python forum</a>, that 'Rowdy' suggested would be interesting to use as an survey/instapoll:</p>
+
+<p>If you've noticed, QuArK has colorful gradient window-captions. The choice of colors depend on the type of window. The question is: Do you actually use this information, when switching between the QuArK windows, or do you think it is just a novelty?</p>
+
+<p>BTW: In the <a href="http://quark.sourceforge.net/infobase/configuration/index.html">QuArK-configuration</a>, you have the choice of turning these colorful window-captions on or off. So if you don't see them, you've probably switched then off <span class="sml">(and can then vote for the 4th option <pic smiley_happy>)</span>.</p>
+
+<span class="sml">(I started the instapoll yesterday, but hadn't the time then, to write a news-item about it, until today. Also I made an image, to show what 'colorful gradient window-captions' actually are.)</span>

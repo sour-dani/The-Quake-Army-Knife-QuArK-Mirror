@@ -1,0 +1,25 @@
+<author>Gryphon</author>
+<UL><FONT 
+SIZE=2 FACE="verdana,arial" 
+		COLOR="0000a0">
+<!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-->
+<STRONG>Hey, where'd I go?</STRONG><BR>
+<BR>
+<LI>I've been busy, and I haven't updated the news page about my "wranglings". These wranglings included adding a number of maps to the User Levels area (definitely <a href="userlevels.shtm">CHECK THOSE OUT!</a>), restructuring the forum layout, adding a NUMBER of useful <a href="tutorials/">tutorials</a> for folks (and working on a bunch that haven't made it up yet), and generally being paralyzed by indecision about what needs to be done (Oh, yeah... and working on a completely <a href="http://www.powersurge.com/drawing" target="_new">different site</a> that has absolutely nothing to do with this).  
+<P>At any rate, I thought given the nature of the momentus event, I should say something and let folks know what I'm thinking, and have been working on.<BR>
+QuARK 5.1 NON-BETA is OUT!!!  Whooey!  BIG congratulations and appreciation to Armin (much love to the big guy). A big THANK YOU to Leonard Ritter also, who stepped up to the bat and provided all the brand-spanking NEW artwork for QuArK 5 (--and... sniff... replacing my swanky logo... but anyway!).  Awesome stuff.
+<P>So what's gonna happen on this site?
+<P>Glad you asked! (A crackling of knuckles is heard) I've talked with Tiglari about "fixing" the Hexen II section to be more helpful, and the other sections will be coming along soon as well.  THIS WEEKEND (cross my fingers), I'll be changing a bunch of things over, and fixing things up.  I'll update my weekend list as time goes by, but so far, it includes:
+<OL><LI>Creating an online document of Armin's QuArK-Python  manual.
+<LI>Putting <I>something</I> into the Quake,Quake2, and Hexen2 sections of the site (Hexen II will also be sharing with "Heretic 2").
+<LI>Adding a POST form on the site so people on the web can post to the FindMail messageboard without an e-mail account.
+<LI>Possibly killing the QQQ&A forum... or, funny enough, rebirthing it from the ashes.
+<LI>Putting an incomplete version of the new QuArK FAQ online.
+<LI>Radically updating the download page (Phew! is THAT thing ripe!)
+<LI>Updating the "User Links" section.
+<LI>--And maybe... MAYBE having a social life, but feh!  That's not important right now... QuArK 5.1, baby!</OL>
+
+<P>Also, if anyone tried to download QuArK 5 yesterday, the problem has been fixed.  Blame it on the mysteries of the internet. 0k files? Who'da thunk it?  Try a few links and find one that works.
+
+
+</font></ul>

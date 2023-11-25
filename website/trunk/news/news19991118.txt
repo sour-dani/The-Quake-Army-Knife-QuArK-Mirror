@@ -1,0 +1,22 @@
+<author>Decker</author>
+<headline>Quake-2 Weapons Factory data add-on .QRK updated...</headline>
+Seems I'm late with posting news. Anyway; TheBee send this message in the <a href="forums.php">QuArK-forum</a>:
+<blockquote>
+Version 2.0 has everything in it now...and i mean everything even the 1
+million args/specs for the info_detect and info_goal.<br>
+<br>
+<a href="http://www.getstung.com/files/wfq2.zip">http://www.getstung.com/files/wfq2.zip</a> &lt;----- Download it here<br>
+TheBee<br>
+</blockquote>
+<div class="sml">(If you have a new/updated data add-on you want announced here, please mail the <a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com?body=-- NOTICE: HTML e-mails will be bounced, so send only in plain-text! /Decker --">webmaster</a>.)</div>
+
+<headline>QuArK-made maps</headline>
+A Quake-2 deathmatch map and some <span class="sm">(not checked for quality)</span> Quake-1 misc. maps can now be found at the <a href="usermaps.php">User maps</a> page:
+<ul>
+	<li>'Nifra Giht' by Demetris 'RoGeR' Leptos
+	<li>'Building' by 'Born.2.be.wild'
+	<li>'Fall' by 'Born.2.be.wild'
+	<li>'tfmap' by 'Born.2.be.wild'
+	<li>'tfmap4' by 'Born.2.be.wild'
+	<li>'1st' by 'Born.2.be.wild'
+</ul>

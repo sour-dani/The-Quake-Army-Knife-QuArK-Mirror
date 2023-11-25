@@ -1,0 +1,28 @@
+<author>Decker</author>
+<headline>Instapoll closed yesterday.</headline>
+This time there were an overwhelming amount of votes. Guess it were one of the easier questions <img src="pics/SmileyHappy.gif" align=absmiddle width=15 height=15> that
+you guys and girls could answer. So the main part of QuArK users are age 16-20. Well, its also about that age when you're not interested in girls, so you need to have something else to do.... or?
+I'm amazed to see that 3.3% are past the 40s. I hope you "old" people can show the young ones, how to make quality maps.<br>
+
+<headline>Links of interest</headline>
+Here's a link for you map-makers, which I received in my mail-box:
+<blockquote>
+Yoho decker!<br>
+<br>
+I've got a mapping depot for almost every 3D shooter supported by Quark and
+would like a link on your site. (the official Quark site). It contains
+reviews and stores every map sent in. Please put my link on your site.
+The URL is: <a href="http://www.gamestracker.com/gnb/">www.gamestracker.com/gnb/</a><br>
+<br>
+Thanx,<br>
+Green_MDF
+</blockquote>
+
+<headline>Some new ad-banners...</headline>
+...have been added to the <a href="adbanners.php">ad-banner page</a>.<br>
+
+<headline>User made maps...</headline>
+Its been a while, but here's a new <a href="usermaps.php">user made map</a>.
+<ul>
+<li>BadMonk's Place 3 by BadMonk
+</ul>

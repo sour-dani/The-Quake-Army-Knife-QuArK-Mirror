@@ -1,0 +1,5 @@
+<author>tiglari</author>
+<headline>QuArK 6.3d provisional release and update</headline>
+<p>Pick up the basic release <a href="http://www.fileplanet.com/dl/dl.asp?/planetquake/quark/releases/quark_v6.3d.EXE">here</a>, and an update patch <a href="http://groups.yahoo.com/group/quark/files/PATCHES/">here</a>.</p>
+
+<p>Although this site has been pretty quiet for a while, the <a href="http://groups.yahoo.com/group/quark/messages">yahoo discussion group</a> has been fairly active recently, check it out to see what's going on.</p>

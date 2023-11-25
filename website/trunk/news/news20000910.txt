@@ -1,0 +1,47 @@
+<author>Decker</author>
+<headline>New snapshot...</headline>
+<br>
+<blockquote>
+Hi !<br>
+<br>
+A new CVS snapshot compile is available for download at sourceforge.<br>
+ <a href="http://sourceforge.net/project/?group_id=1181">http://sourceforge.net/project/?group_id=1181</a><br>
+<br>
+Name:   REL6_1-pre-2<br>
+File:   quark_REL6_1-pre-2.ace<br>
+Length: 1.752.338 bytes<br>
+<br>
+This snapshot contains only bugfixes to the snapshot REL6_1-pre-1<br>
+We are on the way to QuArK 6.1 , and this is one step towards it.<br>
+<br>
+Changes:
+<ul>
+<li>fixed:  "GetSubElements" bug
+<li>fixed: write .pk3 (zip) files was broken
+<li>fixed: "snappy dragging"
+</ul>
+INSTALLATION:<br>
+<ol>
+<li>Make sure, that you have at least the mini python package
+   installed. Get it at <a href="download.php">download page</a>
+   The full python install does it also (<a href="http://www.python.org">http://www.python.org</a>)
+<li>Unpack the ace archive with e.g. xaceplus from <a href="http://www.winace.com">www.winace.com</a>
+   A directory will be created.
+<li>Start QuArK by clicking quark.exe
+<li>Don't forget to configure the Game directories and tools.
+   If you don't have the map compiler tools for the game you are
+   making maps for, please refer to
+     <a href="download.php">download page</a>
+<li>When making maps for Q3, check if you have the mapmedia.pk3
+   file (from QERadiant) in your baseq3 directory. Otherwise
+   some shader textures and models are missing.
+<li>Please, when reporting bugs, state for which game the report
+   is. Often it is game specific.
+</ol>
+Unpacking the snapshot over an older release may work at the first
+glance, but may lead to subtile errors that are hard to find.<br>
+I do not recommend it.<br>
+<br>
+greetings<br>
+&nbsp;Alex
+</blockquote>

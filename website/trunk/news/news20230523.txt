@@ -1,0 +1,9 @@
+<author>DanielPharos</author>
+<headline>Valve has some weird username bugs</headline>
+
+<p>A couple of months ago, CS:GO was found to be affected by a bug where having a specific username made you <a href="https://www.reddit.com/r/GlobalOffensive/comments/113e694/having_the_username_unconnected_makes_you_not/" target="_blank">unkickable and unreportable</a>. Recently, another such exploit was found, rendering your Steam account itself <a href="https://www.youtube.com/watch?v=l8mvWiNs30M" target="_blank">quite unusable</a>.<br/>
+I wonder what other weird username bugs can be found in Valve's software...</p>
+
+
+<p>Happy antidisestablishmentarianisming,<br>
+DanielPharos</p>

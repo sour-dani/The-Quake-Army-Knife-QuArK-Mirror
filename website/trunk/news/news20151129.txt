@@ -1,0 +1,10 @@
+<author>DanielPharos</author>
+<headline>Progress on Windows Vista+ support</headline>
+
+<p>Progress update: I don't have much free time as of late, but I managed to get my idea for the OpenGL rendering workaround implemented, and it seems to work! I still need to do some more testing, and there's some other minor features that I want to implement as well, but it looks like the next version of QuArK will be have a working OpenGL renderer on Windows 8 and 10! Also, this removes the need to disable Aero on Windows Vista and 7! <pic smiley_happy></p>
+
+<p>Additionally, I've cleaned up some code dealing with the camera rotation in the 3D window, and I think I got some of the jumping reduced. However, I noticed that some virtualization software messes with the mouse cursor location. For example, VMware ignores any attempt to reposition the mouse cursor. As this is critical to the way the 3D window works, the camera rotation ends up jumping in weird ways when running QuArK inside a VMware virtual machine. I suspect other virtualization software has similar issues. As this is not something that's easily fixed, and because it's the virtualization software breaking basic Win32 API, there's nothing I can do about that.</P>
+
+
+<p>Happy QuArK-ing,<br>
+DanielPharos</p>

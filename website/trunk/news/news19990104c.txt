@@ -1,0 +1,23 @@
+<author>Gryphon</author>
+      <ul>
+        <font 
+size=2 face="verdana,arial" 
+		color="0000a0"> <!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:--> 
+        <p><strong>Updates</strong><br>
+        <li>I moved the <a href="download.shtm"><b>DOWNLOAD</b></a> page link 
+          to the MAIN area of the menu, and the top nav bar... people were having 
+          problems finding it... so Voila! I also added the Half-life build tools 
+          to the <a href="download.shtm"><b>Download page</b></a>... if GameDesign.net 
+          is doing... why shouldn't we, right? I was waiting for Valve to release 
+          the source and stuff before I considered them &quot;freely redistributable&quot;. 
+          --But, the wait's been too long. 
+        <li>Aside from that, I added a quickie <b><a href="tutorials/gryphon/polysub.shtm">old 
+          tutorial</a></b> I wrote for brush subtraction, and I'm looking into 
+          upgrading all the <b><a href="addons.shtm">add-on</a></b> packs to .qrk 
+          files instead of .QME. There's a lot of them there, so it's a bit of 
+          a job. I'll be done soon. 
+        <li>Finally... <b><a href="plugins.shtm">PLUG-INs</a></b>!!! I've updated 
+          the plug-in page to highlight some plug-ins some QuArK folks have made. 
+          Thanks guys, and keep 'em coming! 
+        </font> 
+      </ul>

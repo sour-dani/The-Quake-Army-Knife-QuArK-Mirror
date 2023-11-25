@@ -1,0 +1,34 @@
+<author>Decker</author>
+<headline>The QuArK source-code now hosted at SourceForge</headline>
+The Q3A support is still under development! However, Armin and crew now have a little faster way of merging their code fragments,
+because the QuArK source-code is now put in a <a href="http://www.cyclic.com">CVS</a>-repository at <a href="http://sourceforge.net">SourceForge</a>.
+If you don't know what SourceForge is, you better read their FAQ, but in short its a site that will host open-source projects, and have some tools available
+so the management and control of the project becomes a little bit easier.<br>
+
+<headline>Instapoll time!</headline>
+Its been a long time since we had our last instapoll. So lets start up with one, that has something to do with how you use the graphical-user-interface (GUI) in QuArK.
+I've moved the instapoll to its <a href="instapolls.php">own page</a>, as this one contains illustrations to clarify some of the possible answers.<br>
+
+<headline>Links of interest</headline>
+Well wadda ya know!? Just by moving some text from the bottom of the 'Links' column to the top, people started to send me some mails...<br>
+<br>
+Sebastian van den Brink, send me these links:<br>
+&nbsp;&nbsp;<a href="http://www.halflife.net/t4h">http://www.halflife.net/t4h</a><br>
+&nbsp;&nbsp;<a href="http://www.gamestracker.com">http://www.gamestracker.com</a><br>
+&nbsp;&nbsp;<a href="http://www.gamestracker.com/dahowl">http://www.gamestracker.com/dahowl</a><br>
+&nbsp;&nbsp;<a href="http://www.gamestracker.com/ubox">http://www.gamestracker.com/ubox</a><br>
+<br>
+And here's one from Greg Kuchyt:
+<blockquote>
+Hey Guys,<br>
+&nbsp;&nbsp;I run a Half-Life map editing resource center entitled the Lambda
+Environment Development Center (L.E.D.C.). The site is geared towards
+Worldcraft users, but the tutorials with exception to one are very general
+and would help anyone using a Half-Life map editor. The URL is
+<a href="http://www.fragpipe.com/ledc">www.fragpipe.com/ledc</a> I would be very obliged if you would consider my site
+for your links page, well thank you very much for your time.<br>
+<br>
+Greg Kuchyt<br>
+Lambda Environment Development Center<br>
+<a href="http://www.fragpipe.com/ledc">http://www.fragpipe.com/ledc</a>
+</blockquote>

@@ -1,0 +1,11 @@
+<author>Decker</author>
+<headline>Zoner's Half-Life Tools v2.0.3</headline>
+With the coming new version 3.3 of a rival map-editor (that is for Half-Life only), Zoner have made a new version (and a new, and then yet a new <img src="pics/SmileyMedium.gif" align=absmiddle width=15 height=15>) of his Half-Life Tools to support it and put in some additions too.
+Here's a snip from his changelog:
+<ul>
+<li>A new program 'netvis' has been added to ZHLT. This program is for distributed VIS compilation across multiple computers.
+<li>-skyclip is now obsolete. Clipping of skies, by automatically copying all SKY brushes with a duplicate CLIP brush in the same place, is now automatic and cannot be turned off.
+<li>HLCSG will more actively find brushes of the wrong type in the world or in entities (i.e. CLIP, HINT, etc in entities)
+</ul>
+Get the <a target="_blank" href="http://www.winace.com">WinAce</a> file of Zoner's Half-Life Tools: <a href="http://dl.fileplanet.com/dl/dl.asp?quark/zhlt203.ace">zhlt203.ace</a> (315KB), or
+the <a target="_blank" href="http://www.winzip.com">WinZip</a> one (369KB) which can be found on the <a target="_blank" href="http://halflife.gamedesign.net">Half-Life ERC</a> site.<br>

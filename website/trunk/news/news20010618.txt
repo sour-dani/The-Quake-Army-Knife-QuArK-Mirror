@@ -1,0 +1,14 @@
+<author>tiglari</author>
+<headline>New QuArK 6.3 Snapshot</headline>
+<p>A new (perhaps unstable) snapshot of QuArK 6.3.  New features include:</p>
+
+<blockquote>
+<ul>
+<li>incrementing specifics for duplicators
+<li>texture-search feature
+<li>storable 3D camera positions
+</ul>
+and more, as detailed in the <a href="http://quark.sourceforge.net/latest/snapshot_readme/readme.txt">readme.txt</a> file
+</blockquote>
+
+<p>Get it <a href="http://dl.fileplanet.com/dl/dl.asp?quark/Snapshots/Quark63_snap061801.zip">here</a>, or from the QuArK <a href="download.php#quark">download-page</a>.</p>

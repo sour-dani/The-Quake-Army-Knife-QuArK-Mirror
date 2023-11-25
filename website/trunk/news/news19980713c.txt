@@ -1,0 +1,16 @@
+<author>Gryphon</author>
+<UL>
+<!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-->
+<LI><STRONG>QuArK in the News!</STRONG><BR>
+I learned ironically enough from BSP Headquarters, that a Dutch magazine reviewed all of the current editors, including QuArK.  From what I can tell, it's a very favorable review... but... it's in Dutch. (Sigh).
+At any rate, here it is:<BR>
+<br>
+<center><a href="http://www.bsphq.com/images/dutch1.jpg"><img src="reviews/dutch1a.gif" width=100 height=154 border=0 alt="PC Zone Benelux - page 1"></a>
+<a href="http://www.bsphq.com/images/dutch2.jpg"><img src="reviews/dutch2a.gif" width=100 height=154 border=0 alt="PC Zone Benelux - page 2"></a>
+<a href="http://www.bsphq.com/images/dutch3.jpg"><img src="reviews/dutch3a.gif" width=200 height=149 border=0 alt="PC Zone Benelux - page 3"></center></a><br>
+<center>Scanned images provided by <a href="mailto:lieven.de.cock@lhs.be">Lieven de Cock</a><BR>The Quake Army Knife review is the THIRD page.<BR>These scans are HUGE, so be forewarned!</center><br><br>
+If you're desperate and have time to waste one night, feel free to pick and choose what you'd like to translate using this link to a free <a href="http://dictionaries.travlang.com/DutchEnglish/" target="_new">Dutch -> English dictionary search!</a> (One word at a time though!) <BR><BR>
+From what I can tell, the last paragraph seems to say that although QuArK doesn't have as many of the level editing features as BSP, it is very easy to install, utilize, and understand (something BSP lacks). It ends with a general "try them all and make up your own mind" stance. (Take my translation skills with a grain of salt though!)</LI>
+</BLOCKQUOTE>
+
+	</UL>

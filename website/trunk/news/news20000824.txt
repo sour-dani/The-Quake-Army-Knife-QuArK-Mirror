@@ -1,0 +1,38 @@
+<author>Decker</author>
+<headline>From the inbox...</headline>
+I got an e-mail (containing HTML too! Grrr! <img src="pics/icons/smiley_sad.gif" align=absmiddle width=15 height=15>) from Charles:
+<blockquote>
+Hello decker,<br>
+<br>
+I am a real fan and defender of Quark. However there one one problem which I face - is that developer of new mods usually forget
+to make the necessary files for file to map their mods.
+So I am fairly behind WC 3.3 most of the time - Is there a way to promote Quark to these guys so that Quark users can begain making
+maps for them, as soon as WC 3.3 users?<br>
+Is there a way to read the fdg files meant for WC in Quark?<br>
+If not how.<br>
+Counter-strike has just released a new fdg. And I would just like to know when will Quark release a version of this new
+file - so that I can map the with these new enitites?<br>
+<br>
+Thanks for making Quark<br>
+<br>
+Charles
+</blockquote>
+
+I believe the main reason, that so many mod-developers isn't supplying a QuArK data add-on for their mod, is that the
+mod-mappers isn't asking for it - <u>again</u> and <u>again</u> and <u>again</u>. A second reason could be, that the .QRK format isn't that well
+documented, but the mod-developers are welcome to ask for help in the <a href="forums.php">QuArK forum</a>.<br>
+<br>
+About if its possible to have QuArK read <a href="http://quark.sourceforge.net/infobase/glossary/index.html#.FGD">.FGD</a> files:
+No, it is not possible! The .FGD format is WorldCraft's format, and it is quite different from the <a href="http://quark.sourceforge.net/infobase/glossary/index.html#.QRK">.QRK</a> format that QuArK use.
+Also, the .QRK format have many more features that the .FGD does not have, like; neatly grouped textures, mod-specialization of standard entities, extra data add-on .QRK files, etc.<br>
+<br>
+Now for the: <i>I need the data file with the new entities!</i> - This is just <b>sooo</b> wrong. You do <b><u>not</u></b> need a data file
+containing new and/or updated entity descriptions, to be able to <b><u>use</u></b> them in your maps. It <u>is</u> possible to use entities that
+does not directly exist in the data add-ons for QuArK. An entity is just "<i>an object to interact with in the game</i>" that has
+a <b>classname</b>. If a mod-team creates new entities that isn't available in the .QRK data add-on, the map-designer should read the
+<b>map/entity-documentation</b> that the mod-team hopefully have released. Then its just a matter of creating a similar point- or brush-entity
+and change its <b>classname</b> to match the new entitys classname. Also if the new entity has specifics/args (also known as keys/values),
+you are quite able to alter them as well, after reading <a href="http://quark.sourceforge.net/infobase/mapeditor/index.html#dataformspecificarg">this</a>
+and <a href="http://quark.sourceforge.net/infobase/maptutorial/index.html#settingvaluesinthespecificsargview">this</a>.<br>
+<br>
+Hope this answers some questions...

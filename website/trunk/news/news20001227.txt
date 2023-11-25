@@ -1,0 +1,6 @@
+<author>Decker</author>
+<headline>User maps</headline>
+A new user made map is available on the <a href="usermaps.php?HL=1&M_TFC=1">User maps</a> page:
+<ul>
+<li>'Tatooine' by Vanx
+</ul>

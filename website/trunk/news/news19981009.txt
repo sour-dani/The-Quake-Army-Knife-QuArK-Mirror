@@ -1,0 +1,4 @@
+<author>Armin</author>
+<LI><a href="http://asp.planetquake.com/dl/dl.asp?quark/quark5c4.exe">QuArK 5.0.c4</a> released ! There is no <i>What's New</i> list : you will find immediately that there is lots and lots of new stuff. The best one (for me ;-) is the plug-ins system that lets you write additionnal code easily. Python Hackers, get the new <a href="http://asp.planetquake.com/dl/dl.asp?quark/qktec5c4.zip">Tech Info package</a>.
+<LI><a href="armin/">Armin's Page</a> rewritten with a summary of files, forums and mailing lists available from this site.
+</UL>

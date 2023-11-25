@@ -1,0 +1,8 @@
+<author>Armin</author>
+<LI><a href="http://asp.planetquake.com/dl/dl.asp?quark/quark5c2.zip">QuArK 5.0.c2</a> is released ! Please read the <a href="http://www.planetquake.com/quark/armin/quark5c2.txt">text file</a> before you download it. It's not complete enough to be a full map editor yet. But it's worth the download if you're interested in the future of QuArK.
+<LI>QuArK 5.0.cxx requires Python. If you don't have it, you can grab this small archive : <a href="http://asp.planetquake.com/dl/dl.asp?quark/minipy15.zip">Mini Python pack 1.5.1</a>. It contains everything required by QuArK. See the included file <code>INSTALL.INF</code> for install instructions.
+</UL>
+
+<LI>QuArK 5.0.c2 is soon ready... Now I'm almost sure I'll go on this Python way. I think you won't be disappointed ! It's worth the delay...
+<LI>I updated the tool packs to <a href="http://asp.planetquake.com/dl/dl.asp?quark/buildq1-06.zip">build Quake 1 maps</a> and to <a href="http://asp.planetquake.com/dl/dl.asp?quark/buildq2-36.zip">build Quake 2 maps</a> with the newest versions of ARGHLITE and ARGHRAD, which I recommend - tons of options ! Anti-lights cast darkness, sky cast sun light, dark areas have (colored !) minimum global brightness, and so on.
+</UL>

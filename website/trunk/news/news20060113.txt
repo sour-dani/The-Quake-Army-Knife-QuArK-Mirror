@@ -1,0 +1,55 @@
+<author>cdunde</author>
+<headline>QuArK 6.5.0 alpha 4 with new Quick Object Makers & 2D Rulers Options released !</headline>
+
+<p><b>TWO MORE</b> new powerful features added to this release,<br>
+<a href="http://quark.sourceforge.net/infobase/intro.mapeditor.toolpalettes.objectmodes.html#overview"><b>Quick Object Makers</b></a> and the <a href="http://quark.sourceforge.net/infobase/intro.mapeditor.menu.html#optionsmenu"><b>2D Rulers Options</b></a> that will have you asking<br>
+<b>How Do They Keep Doing These Things ! ! !</b></p>
+
+<p>A few changes? No way Jose' ! There are <b>BUCKET FULLS</b> for <a href="http://sourceforge.net/project/showfiles.php?group_id=1181"><b>QuArK</b></a> to start off the New Year with !<br>
+Will you be <b>HOPPING</b> off your stool as you use this one ? ? ?<br>
+<b>NO !</b> This will <b>KNOCK</b> you <b>RIGHT OFF</b> that <b>sucker ! ! !</b></p>
+
+<p>So <b>"What's the Hoop La?"</b> about all this you might ask yourself !</p>
+
+<p>Want to give your map some real <b>BALLS</b> ? Try these on for size ! Just use the new <a href="http://quark.sourceforge.net/infobase/intro.mapeditor.toolpalettes.objectmodes.html#sphere"><b>Sphere</b></a> maker !<br>
+Want to explore where <b>King Tutt</b> hangs out? Bim-Bam-Boom ! Put it in with the new <a href="http://quark.sourceforge.net/infobase/intro.mapeditor.toolpalettes.objectmodes.html#pyramid_cone"><b>Pyramid\Cone</b></a> maker !<br>
+Want some <b>COLUMS</b> in front of that Shrine? <b>SMACK !</b> There they are with the new <a href="http://quark.sourceforge.net/infobase/intro.mapeditor.toolpalettes.objectmodes.html#cylinder"><b>Cylinder</b></a> maker !<br>
+Want to really get way out there and make a <b>Space Station</b>? Blast Off with the new <a href="http://quark.sourceforge.net/infobase/intro.mapeditor.toolpalettes.objectmodes.html#torus"><b>Torus</b></a> maker !</p>
+
+<p>What's this? You say that's not enough? You want more?<br>
+<b>HECK!</b> We'll even through in some <a href="http://quark.sourceforge.net/infobase/intro.mapeditor.toolpalettes.objectmodes.html#dialogboxes"><b>Distortion Dialog</b></a> boxes you can customize <b>ALL</b> your new shapes with!<br>
+How's That Grab Ya?!</p>
+
+<center><font color="#ff0000">"OK, so how do I know how big this stuff is <b>while</b> I'm making'em ?"</font></center>
+<p><b> Glad you asked !<br>
+</b> Just click on your new <a href="http://quark.sourceforge.net/infobase/intro.mapeditor.menu.html#optionsmenu"><b>QuArK Ruler guides</b></a> in <b>ANY</b> 2D view you want, and watch those puppies go to work ! ! !</p>
+
+<p><a href="http://sourceforge.net/projects/quark/files/QuArK/QuArK%206.5.0%20Alpha%204/"><b>QuArK 6.5.0 alpha 4 !</b></a> Ya Baby <b>!</b> Bring it on <b>!</b> Can Do <b>!</b></p>
+
+<p>Some of the other improvements and additions to this most recent release are:</p>
+
+<UL>
+<LI>Added new Paint Brush cursor for Terrain Generator paint mode.
+<LI>Fixed bad texture scale function.
+<LI>Fixed drag and drop items to console function.
+<LI>Fixed error and added auto selection function to TG Paint Brush when unknown texture found.
+<LI><a href="http://quark.sourceforge.net/infobase/intro.terraingenerator.shaping.html#othervertexmovement">Added F1 help and Infobase documentation for new vertex movement function.</a>
+<LI><a href="http://quark.sourceforge.net/infobase/intro.texturebrowser.tutorials.html#texturelinks">Updated Infobase tutorial on how to create texture links.</a>
+<LI>Fixed so H-L 2 custom textures can be viewed and used. <b>by jfvg - thank you!</b>
+<LI>Many various improvements made to the DataHr2.qrk file. <b>by Dann - thank you!</b>
+<LI><b>Ssshhhoooo !</b> and more !
+</UL>
+
+<p>So don't walk <b>...TELEPORT YOURSELF...</b> and get your latest copy of ...</p>
+<center><a href="http://sourceforge.net/projects/quark/files/QuArK/QuArK%206.5.0%20Alpha%204/"><b>QuArK 6.5.0 alpha 4 <br>with the new QuArK Object Makers & 2D Ruler guides</b> !!! </a></center>
+
+<p>I personally would like to give <b>Special QuArK Recognition</b> and thanks to <b>Petr Sorfa</b> and draw attention to his site <a href="http://www.sorfa.com/plugins/am_pythonscript.html">Animation Master Python Script Plug-in</a> from which the basic code formula came from with the <a href="http://www.sorfa.com/plugins/images/surface_sphere.jpg">Surface Sphere</a> !<br>Quite some amazing <a href="http://www.python.org/">Python</a> stuff there ! <b>Thank you Petr !</b></p>
+
+
+<p>Remember <b>Keep your QuArK knife sharp!</b></p>
+
+<p>cdunde</p>
+
+<p>For more information and added support, go to the <a href="http://quark.ironfoot.co.uk/forums/">QuArK Resource Center</a> and <a href="http://quark.sourceforge.net/communication.php#forums">the forums page</a> of this site.</p>
+
+<p>And remember to visit <a href="http://quark.sourceforge.net/cgi-bin/moin.cgi">our sister site!</a></p>

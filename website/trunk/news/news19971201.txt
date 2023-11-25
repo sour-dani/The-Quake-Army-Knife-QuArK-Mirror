@@ -1,0 +1,6 @@
+<author>Derrick McKay</author>
+<headline></headline>
+<UL>
+<LI> QuArK 4.05 released. More info on the <A HREF="news.html">News Page</A>
+<LI> Updated QuArK 3DFX module. See <A HREF="news.html">News Page</A>
+</UL>

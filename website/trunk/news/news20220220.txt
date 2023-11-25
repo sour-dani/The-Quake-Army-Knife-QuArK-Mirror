@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>FilePlanet malware</headline>
+
+<p>It has come to my attention that FilePlanet (bought by IGN in 2004) is now actively serving malware downloads instead of the real files. I'll be replacing or deactivating all links to FilePlanet on our website.</p>
+
+
+<p>Safe downloading,<br>
+DanielPharos</p>

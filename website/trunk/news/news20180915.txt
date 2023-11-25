@@ -1,0 +1,10 @@
+<author>DanielPharos</author>
+<headline>SiN tools source code missing</headline>
+
+<p>It seems the source code to the SiN tools has been missing for years. <pic smiley_sad> See <a href="http://quark.sourceforge.net/forums/index.php?topic=1166">this forum thread</a> for more information.</p>
+
+<p>If anybody has a copy, it would very much be appreciated!</p>
+
+
+<p>Happy Editing,<br>
+DanielPharos</p>

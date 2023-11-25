@@ -1,0 +1,17 @@
+<author>Armin</author>
+<p><strong><a href="http://asp.planetquake.com/dl/dl.asp?quark/quark52.exe">QuArK 5.2</a> released.</strong> This version is the next "full" release after 5.1 : unlike 5.1b, it comes with an installer, and unlike 5.1, this installer should work better on some systems, because I finally included the code to unzip the file instead of having to call the old Dos program <code>PKUNZJR</code>.</p>
+
+<p>I will soon release new Build Packs with updated utilities -- for Heretic II, get Quake 2's, but QVIS3 and QRAD3 will require you to rename your "Heretic II" directory into "Quake2" :-( . There is also a new <a href="http://asp.planetquake.com/dl/dl.asp?quark/minipy15b.exe">MiniPython pack</a> in case you couldn't install the previous one and didn't want to download the whole Python distribution.</p>
+
+<p>QuArK 5.2 itself includes the following enhancements :
+<UL>
+<li><font color="FF0000">Heretic II support</font>. You can edit maps now, although the entity list is not very complete and should be sorted, as well as the textures. Only the textures from the demo are included.
+<li>A new wizard lets you quickly include <font color="FF0000">all textures</font> from a directory (e.g. the directory containing a TC) and put links to them in the texture browser.
+<li>Added a <font color="FF0000">three-views</font> layout to the map editor.
+<li>UserData.qrk has been split up in one file per game. This means that your previous menu customization or custom objects panel will be lost, sorry (unless you do copy and paste between the old and new files).
+<li>Improved polyhedron building algorithms. I hope valid polyhedrons are now less likely to be considered invalid. It also means that I hope I've fixed a bug that made some polyhedron incorrectly vanish when using the brush subtraction command or a digger.
+<li>When you make <font color="FF0000">invalid polyhedrons</font> or create unused faces, QuArK now asks you if you are sure and lets you immediately undo your action, delete the faces or polyhedrons, or keep them as they are, invalid (this last choice is useful in some cases if you want to work with individual faces).
+<li><font color="FF0000">Group colors</font> are displayed beside the group name.
+<li>Display a <font color="FF0000">bitmap image</font> as background of map views. This lets you scan a plan or use a plan made with another program.
+<li>Other bugs fixes and small improvements.
+</UL></p>

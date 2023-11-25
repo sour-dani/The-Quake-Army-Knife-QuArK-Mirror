@@ -1,0 +1,6 @@
+<author>Decker</author>
+<headline>QuArK-made Maps</headline>
+A new Quake-2 deathmatch map have been added to the <a href="usermaps.php">user maps</a> page:
+<ul>
+	<li>'Jabba's Pallace' by Chris 'Appendix' vd. linden
+</ul>

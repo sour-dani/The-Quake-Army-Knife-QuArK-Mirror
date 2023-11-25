@@ -1,0 +1,11 @@
+<author>cdunde</author>
+<headline>Valve new documentation center</headline>
+<p>I recently received an e-mail from <b>Peter Brett</b>, one of our developers, about a <a href="http://collective.valve-erc.com/index.php?news=1119918809-11568800">new documentation center for Valve</a> and I wanted to pass that along for all you HL lovers out there. ;-)</p>
+
+<p>So checkout the link above and enjoy!</p>
+
+<p>cdunde</p>
+
+<p>For more information and support, go to <a href="http://quark.sourceforge.net/forums.php">our forums page</a>.</p>
+
+<p>And remember to visit <a href="http://quark.sourceforge.net/cgi-bin/moin.cgi">our sister site!</a></p>

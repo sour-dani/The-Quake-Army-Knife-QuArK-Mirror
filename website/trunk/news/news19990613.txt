@@ -1,0 +1,9 @@
+<author>Decker</author>
+The <a href="download.php">download-page</a> have been updated with a few files, mostly interested for Half-Life
+map-designers and tool-coders. <span class="sml">(If just PlanetQuake were more stable, so I could upload them!
+But if you read this, I've eventually got connected to PQ and they should be uploaded by now.)</span><br>
+
+<headline>New Stuff: InstaPoll</headline>
+If you haven't noticed it by now, there is a QuArK InstaPoll in the right-column. Place your vote, so we know what QuArK
+is being used for, and that it is still used by you map-designers. <span class="sml">(And if you can't vote, you should enable
+JavaScript if your browser supports it.)</span>

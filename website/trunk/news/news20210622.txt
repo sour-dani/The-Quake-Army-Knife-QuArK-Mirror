@@ -1,0 +1,13 @@
+<author>DanielPharos</author>
+<headline>25 years!</headline>
+
+<p>Today it's 25 years ago that the first shareware version of Quake was published! Gosh, was it that long ago?</p>
+
+<p>But QuArK was not far behind. I can't track down the exact date, but it was before 20 September. My guess is somewhere in late August.<br>
+That makes us one of the, if not <b>the</b> oldest editor for Quake that's still alive! WOW!</p>
+
+<p>So here's to 25 more years! <pic smiley_happy></p>
+
+
+<p>Happy Quaking,<br>
+DanielPharos</p>

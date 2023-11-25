@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Watch Quake</headline>
+
+<p>For those who are looking for their Quake-fix on the go, the port of Quake to the Apple Watch just received an update! Here's the <a target="_blank" href="https://github.com/MyOwnClone/quake_watch">original port</a> and now there's an <a target="_blank" href="https://github.com/ByteOverlord/Watch_Quake">improved port</a>.</p>
+
+
+<p>Happy Quaking,<br>
+DanielPharos</p>

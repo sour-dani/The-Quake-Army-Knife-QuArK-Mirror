@@ -1,0 +1,21 @@
+<author>Gryphon</author>
+<UL><FONT 
+SIZE=2 FACE="verdana,arial" 
+		COLOR="0000a0">
+<!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-->
+<STRONG>R & R in KY and AL</STRONG><BR>
+<LI>Hi, if anyone is wondering why I haven't or won't be answering much mail or 
+participating on the messageboard over the next couple of weeks, I'm on 
+vacation.<BR>
+Family Reunion in Alabama and visiting my sister in Louisville, Kentucky.  I'll 
+probably peek in and say a few things on the bboard time and again, but there's 
+nothing like my own computer to surf on... so... 'til August 11th, I'll see yas!
+<LI>Almost got the new messageboard features in, but now I'm away from all my 
+tools and HTMLScript development OS of choice, as the "personal" version of the 
+interpreter is PC only, and I'm in Mac-world over my sister's house.  Oh, well.  
+I'd use her PC emulator card, but it's only got 8 megs... and an 8 meg PC with 
+little extra hard drive space is pretty dead in the water unforetunately.  So, 
+gotta go...!
+
+
+</font></ul>

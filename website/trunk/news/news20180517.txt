@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Website trouble</headline>
+
+<p>If you're getting random error message while visiting the website: it seems the webservers of SourceForge are on the fritz again. <pic smiley_sad></p>
+
+
+<p>Happy Quaking,<br>
+DanielPharos</p>

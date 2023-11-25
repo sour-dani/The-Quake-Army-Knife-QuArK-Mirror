@@ -1,0 +1,73 @@
+<author>Decker</author>
+<headline>Word from Armin!</headline>
+It looks like Armin is well settled at his new place, he at least found a internet-connection somewhere
+to be able to answer some of Alexander's questions:<br>
+<blockquote>
+[...]<br>
+Finally I can access my e-mails again. Sorry for the delay...<br>
+<br>
+Decker I'm coping this message to you in case you want some Q3 'appetizer'
+comments to post on the site :-)<br>
+<br>
+<i><u>Armin:</u><br>
+I've already a good experience about curved surface editing, thanks to a
+company for which I've enhanced QuArK -- I've already added curved surface<br>
+<br>
+<u>Alexander Haarer:</u><br>
+Thats interesting - could you tell a bit more about that without releasing big secrets ?</i><br>
+<br>
+Of course, and so can Tiglari. The curved surfaces in Quake3 are quadratic
+Bezier patches, meaning there are defined with 3x3 control points. In
+QuArK you will see these control points and be able to move them; QuArK
+draws the resulting interpolated patch as a wireframe grid on the map
+views. Moving the control points around is theoretically enough to do
+anything related to Bezier patches but in practive we will need a lot more
+features, like cutting a patch in 2-3 parts, smoothing with adjacent
+patches, and much, much more.<br>
+<br>
+Texture on Bezier patches is given by two texture coordinates for each
+control point. This means that each of the 9 control points actually has 5
+coordinates : x-y-z-s-t, where s and t are for the texture. These s-t
+coordinates are interpolated between control points in the same way as the
+spacial x-y-z coordinates. In QuArK, when you select a Bezier patch, you
+will see the 3x3 control points drawn over a textured background in a new
+page at left, after the Tree, Specs, Poly, Face and 3D pages. Moving these
+"s-t" control points will distort the texture in the same way as moving
+the "x-y-z" control points on the map view changes the shape of the Bezier
+patch.<br>
+<br>
+Note that I talked about "interpolation between control points" but the
+Bezier patch actually touches only the 4 corner control points; the other
+ones are rather "attractors" that distort the shape in their direction.<br>
+<br>
+<i><u>Alexander Haarer:</u><br>
+PS: just wanted to remember you to send me the texture code ;)</i><br>
+<br>
+Sure, I will do so, but I think I will have serious troubles continuing
+the development of QuArK for I cannot find any PC here :-(  Anyway I will
+try to make the basic changes and send them to someone (you?) for
+reviewing and compiling...<br>
+<br>
+A bientot,<br>
+Armin.
+</blockquote>
+Well, its good to hear that he's ready for Quake-3:Arena, but unfortunate that he
+hasn't got any PC yet, so QuArK development will be a bit slow, unless Alexander and/or Tiglari
+<span class="sml">(or someone else?)</span> dwells into more QuArK coding <img src="pics/SmileyHappy.gif" align=absmiddle width=15 height=15>.<br>
+
+<headline>Half-Life stuff</headline>
+Those who are seeking tutorials or just more information, about Half-Life map-design, should take a look at <a href="http://www.vlatitude.com/">69th Vlatitude</a>.
+There are some pretty good tutorials, and persons who are able to answer most questions you might have. Another site is <a href="http://www.planetfortress.com/clanbsp">Clan BSP</a>,
+which have other interesting information.<br>
+<br>
+The <a href="http://home1.inet.tele.dk/decker/DataHL.zip">newest Half-Life data add-on .QRK</a> have been updated with:<br>
+[-] Moved all MODs into a Modifications folder<br>
+[HL] Changed trigger_counter to be both an brush-entity and a point-entity<br>
+[CS] Added info_hostage_rescue entity<br>
+[CS] Updated texture-links for Counter-Strike beta3.1<br>
+[WIE] Added War In Europe v0.5 entities and texture-links<br>
+<div class="sml">(If you have a new/updated data add-on you want announced here, please mail the <a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com?body=-- NOTICE: HTML e-mails will be bounced, so send only in plain-text! /Decker --">webmaster</a>.)</div>
+
+<headline>Kingpin and QuArK</headline>
+This I should have done eons ago, but better late than never I guess <img src="pics/SmileyMedium.gif" align=absmiddle width=15 height=15>. Anyway, I've added
+Alexander's website for <a href="http://members.tripod.com/quakestation/kingpin">Kingpin support in QuArK</a> in the <b>links column</b>, which you can find to the right on this page <span class="sml">(and most sub-pages on this site.)</span>

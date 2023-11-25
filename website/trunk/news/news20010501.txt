@@ -1,0 +1,5 @@
+<author>Decker</author>
+<headline>QuArK Information Base updated</headline>
+<p>The <a href="http://quark.sourceforge.net/infobase/">QuArK Information Base</a>, which we fill with useful QuArK-related information, have been updated. <span class="sml">(Yes, I know it says "Updated 29 Apr 2001", but thats the latest change within the InfoBase)</span></p>
+
+<p>If you have something that should be added to the <a href="http://quark.sourceforge.net/infobase/">InfoBase</a>, please write a mail containing the information, to the <a href="forums.php">QuArK-forum</a>, and we'll try to add it to the <a href="http://quark.sourceforge.net/infobase/">InfoBase</a>.</p>

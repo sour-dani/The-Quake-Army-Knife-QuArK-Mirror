@@ -1,0 +1,17 @@
+<author>Decker</author>
+<headline>Preliminary map tutorial</headline>
+<i>"... so I took my work underground, it was the place no one else wanted to go to, I had to do the hard work myself ..."</i>&nbsp;&nbsp;
+Okay okay, maybe not so <img src="pics/SmileyHappy.gif" align=absmiddle width=15 height=15> - I have made a preliminary
+<a href="help/maptutorial/index.html">map tutorial</a> for QuArK. So far, its only the very basic startup stuff that's explained. Please
+<a href="mailto:decker@***PLEASE@NO*SPAM***planetquake.com?body=-- NOTICE: HTML e-mails will be bounced, so send only in plain-text! /Decker --">let me know</a> if you notice something I missed, or is wrong.<br>
+
+<headline>Instapoll?</headline>
+I will comment on the instapoll at a later time. I took it down, because there were no reason to have it up more than a week - if so, one of
+the choices would not be valid anymore, if you know what I mean.
+<br><br>
+
+<headline>New QuArK-made map</headline>
+... can be found on the <a href="usermaps.php">user maps</a> page.
+<ul>
+	<li>'King Of My Castle' by Ad Weterings
+</ul>

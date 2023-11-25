@@ -1,0 +1,72 @@
+<author>Decker</author>
+<headline>New snapshot...</headline>
+<blockquote>
+Hi !<br>
+<br>
+A new CVS snapshot compile is available for download at sourceforge.<br>
+<a href="http://sourceforge.net/project/filelist.php?group_id=1181">http://sourceforge.net/project/filelist.php?group_id=1181</a><br>
+<br>
+Name:   6.002pre13<br>
+File:   quarksnapshot20000728.ace<br>
+Length: 1.620.139 bytes<br>
+<br>
+This snapshot contains fixes and extensions to Q3/Bezier functions,
+and fixes about HL support. It contains the same changes as snapshot
+0725, plus one fix for the bezier bevel/arch macro.<br>
+<br>
+INSTALLATION:<br>
+<ol>
+<li>Make sure, that you have at least the mini python package
+   installed. Get it at <a href="download.php">download page</a>.<br>
+   The full python install does it also (<a href="http://www.python.org">www.python.org</a>)
+<li>Unpack the <a href="help/glossary/index.html#.ACE">.ACE</a> archive with e.g. xaceplus from <a href="http://www.winace.com">www.winace.com</a>
+   A directory will be created.
+<li>Start QuArK by clicking quark.exe
+<li>Don't forget to <a href="help/configuration/index.html">configure</a> the Game directories and tools. <br>
+   If you don't have the map compiler tools for the game you are
+   making maps for, please refer to <a href="download.php">download page</a>.
+<li>When making maps for Q3, check if you have the mapmedia.pk3
+   file (from QERadiant) in your baseq3 directory. Otherwise
+   some shader textures and models are missing.
+<li>Please, when reporting bugs, state for which game the report
+   is. Often it is game <a href="forums.php">game specific</a>.
+</ol>
+Unpacking the snapshot over an older release may work at the first
+glance, but may lead to subtile errors that are hard to find.<br>
+I do not recommend it.<br>
+<br>
+CHANGES:<br>
+<ul>
+<li>General:
+ <ul>
+ <li>added: QuArK can _read_ WorldCraft 3.3 .MAP files (mapversion 220),
+          but the texture-scale/positioning is _not_ used.
+ </ul>
+<li>Quake3:
+ <ul>
+ <li>fixed: thick arch/bevel bugz (this was the reason to make
+          this snapshot that close to the previous one (0725)
+ <li>fixed: right clicking in the background python crash
+ <li>fixed: texture coordinates move row/col checkmark bug (copycp->copyCp)
+ <li>added: "findlabelled" for finding items on menus (for face/texture revamp)
+ <li>added: .lin file processing for bspc leaks
+ <li>reorganization of bezier texture menu:
+  <ul>
+   <li>added a new positioning item, `texture at corners'.
+     Also a sort of `rotation' of control points.
+   <li>Put texture-wrap & projection into a submenu
+     labelled 'texpop', for texture menu cleanup
+   <li>Tag point functions removed, projection of texture
+     from tagged corner bezier point added (to projecttex(editor, o))
+   <li>project texture to tagged plane removed from bezier cp menu
+     (functionality now in project tex. from tagged for faces)
+  </ul>
+ </ul>
+<li>Half-life support:
+ <ul>
+ <li>fixed: Correctly Save HalfLife WAD3s
+ </ul>
+</ul>
+greetings<br>
+&nbsp;Alexander
+</blockquote>

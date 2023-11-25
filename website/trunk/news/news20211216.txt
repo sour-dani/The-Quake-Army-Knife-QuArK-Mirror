@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Paintball 2 support, kinda</headline>
+
+<p>I recently found out that some of the Paintball 2 folks have been using QuArK to make their maps, and they've got some resources available for others to follow in their footsteps! I've added a tutorial video made by one of them to our <a href="http://quark.sourceforge.net/videos.php?T1=1">video page</a>, and I've added their tool download to our <a href="download_tools.php">game tools page</a>. There's a text-file inside that described how to set it up. Could hardly be easier!</p>
+
+
+<p>Happy paintballing,<br>
+DanielPharos</p>

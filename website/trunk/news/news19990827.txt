@@ -1,0 +1,12 @@
+<author>Decker</author>
+<headline>QuArK-made Maps</headline>
+A bunch of Quake-2 deathmatch and Lithium maps have been added. Find them on the <a href="usermaps.php">user maps</a> page:
+<ul>
+	<li>'The Whore House' by Demetris 'RoGeR' Leptos
+	<li>'Graveyard' by Battle[BITCH]
+	<li>'ToyStory' by Battle[BITCH]
+	<li>'Temple of [BITCH]' by Battle[BITCH]
+	<li>'Space Junk' by Battle[BITCH]
+	<li>'TrailerTrash' by Battle[BITCH]
+</ul>
+<div class="sml">(Mental note to myself; its about time to split up the user-maps page, so it will load faster.)</div>

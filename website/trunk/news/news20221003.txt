@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Quake 1, but ray traced</headline>
+
+<p>Because ray tracing is the latest hype, somebody added ray tracing support to the original Quake 1. <a target="_blank" href="https://github.com/sultim-t/vkquake-rt">Try it out</a>!</p>
+
+
+<p>Happy Quaking,<br>
+DanielPharos</p>

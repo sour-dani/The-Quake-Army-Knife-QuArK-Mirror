@@ -1,0 +1,4 @@
+<author>Decker</author>
+<headline>InstaPoll</headline>
+This one, well actually two, is suggested by Dave. I hope I've supplied with most of the map-editors that's available today, else you
+have to choose the <i>Other</i> category - I'm sorry for that <img src="pics/SmileySad.gif" align=absmiddle width=15 height=15>.

@@ -1,0 +1,22 @@
+<author>Decker</author>
+<headline>Zoners Half-Life Tools v2.5.1</headline>
+<p>A new version of Zoner's Half-Life Tools is released. These are the changes:</p>
+
+<ul>
+<li>HLCSG
+        <ul>
+        <li>Fixed a bug in csg which caused solid skies and inexplicable shadows to appear in outdoor areas.
+        <li>Allow SKY texture on any world brush without generating a mixed face contents error. All the faces inside a 'sky area' should be sky to help hlrad out by not having allocate lightmaps for faces inside the sky areas.
+        <li>Leaks in hulls 1-3 will no longer overwrite leakfiles for hull 0.
+        </ul>
+<li>HLBSP
+        <ul>
+        <li>Fixed precision change which broke some outdoorsy maps as well as some QuArK made maps
+        </ul>
+<li>HLRAD
+        <ul>
+        <li>Added a new zhlt_lightflags flag, to light up the concave portion of arches correctly. Entities of arches using the opaque setting to block light would tend to get black fringes at the seams. The ConcaveFix flag was created to handle that situation. Its value is 4, and must be combined with the Opaque flag (2) to work. So use the value 6. The ConcaveFix is not compatible with the EmbeddedFix.
+        </ul>
+</ul>
+
+<p>Get <a href="http://dl.fileplanet.com/dl/dl.asp?quark/zhlt251.zip">zhlt251.zip</a> from the QuArK <a href="download.php">download-page</a>.</p>

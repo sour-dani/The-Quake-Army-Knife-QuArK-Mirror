@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Valve abandones Artifact</headline>
+
+<p>As described on this <a href="https://store.steampowered.com/news/app/583950/view/3047218819080842820">Artifact news post</a>, Valve has abandoned Artifact, a card-game using the Source 2 engine. It's now free to play, so you can still enjoy it, although you shouldn't expect any more patches or updates. This isn't good news for its players, but hopefully this can shift some manpower into Valve's other gaming projects.</p>
+
+
+<p>Happy artifacting,<br>
+DanielPharos</p>

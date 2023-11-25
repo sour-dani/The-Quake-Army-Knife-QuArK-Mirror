@@ -1,0 +1,49 @@
+<author>Decker</author>
+<headline>Zoner's Half-Life Tools version 2.3</headline>
+Snips from the changelog:
+<blockquote>
+HLCSG
+        <ul>
+        <li>Allow more entities, by not counting static light entities against the Half-life engine limits.  Switchable/pulsing lights are still counted, however.
+        <li>Removed obsolete -hullfile and -glview options
+        <li>Correctly not allow brush entities composed of only ORIGIN and CLIP textures which would slip through the error checking in hlcsg and cause hlbsp to crash.
+        </ul>
+HLBSP
+        <ul>
+        <li>Worked around an error in Halflife (BadSurfaceExtents) which could occasionally occur only in software mode on a map.
+        </ul>
+HLVIS
+        <ul>
+        <li>Merged in code from Antony Suter (aka Examiner) which improves vis performance by approximately 40%.
+        </ul>
+HLRAD
+        <ul>
+        <li>Fixed trigger/clip textures consuming RAD resources, primarily memory
+        </ul>
+NETVIS
+        <ul>
+        <li>Temporarily removed netvis from ZHLT until it makes its triumphant return in (probably) ZHLT 2.4 with all new features
+        </ul>
+</blockquote>
+<br>
+Also there are three additional entity specifics (keys) beside the <b>zhlt_lightflags</b>, which I haven't noticed before:
+<blockquote>
+_fade #
+        <ul>
+        <li>Set fade (larger values = shorter lights).  Applies to any light, light_environment, or light_spot entities.
+        </ul>
+_falloff #
+        <ul>
+        <li>Set falloff mode (1 = inv linear, 2 = inv square).  Applies to any light, light_environment, light_spot entities.
+        </ul>
+light_origin
+        <ul>
+        <li>Set optional light placement.  Can be applied to any brush based entity.
+        </ul>
+</blockquote>
+(Hmmm? Seems these specifics have existed for some time, according to the revision history.)<br>
+<br>
+Get Zoner's Half-Life Tools v2.3:
+<a href="http://dl.fileplanet.com/dl/dl.asp?quark/zhlt23.zip">zhlt23.zip</a> (binaries),
+<a href="http://dl.fileplanet.com/dl/dl.asp?quark/zhlt23-src.zip">zhlt23-src.zip</a> (Windows source code),
+<a href="http://dl.fileplanet.com/dl/dl.asp?quark/zhlt23-unix.zip">zhlt23-unix.zip</a> (Unix source code).

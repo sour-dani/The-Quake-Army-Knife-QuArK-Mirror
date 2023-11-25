@@ -1,0 +1,12 @@
+<author>DanielPharos</author>
+<headline>New nightly build released!</headline>
+
+<p>Today is World Animal Day, which is relevant because we've been monkeying around with QuArK lately. A user called <b>gvm</b> decided to helpfully share a list of minor grievances, and we've been hard at work fixing them all! So let's share in this new and improved nightly build of QuArK, which corrects many small errors and crashes happening in the previous nightly!</p>
+
+<p>Download the new nightly release from <a href="https://sourceforge.net/projects/quark/files/QuArK/QuArK%206.6.0%20Beta%207/" target=_blank>SourceForge download page</a> now!</p>
+
+<p>Note: this is a nightly release, so there may be breaking bugs. If you encounter one, please let us know on the forums.</p>
+
+
+<p>Happy mapping,<br>
+DanielPharos</p>

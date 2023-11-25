@@ -1,0 +1,3 @@
+<author>tiglari</author>
+<headline>Patch 1 to New Snapshot</headline>
+<p>Linked to at the <a href="http://quark.sourceforge.net/latest">latest</a> page.  Fixes an embarassing console error on starting the map editor that for some unknown reason only rarely happens to me, and also some basic Mohaa support, although the texture flags aren't yet being written correctly (that will need a new .exe).</p>

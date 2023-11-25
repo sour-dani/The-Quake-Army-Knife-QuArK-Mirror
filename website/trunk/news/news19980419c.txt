@@ -1,0 +1,6 @@
+<author>Armin Rigo</author>
+<UL>
+
+<LI>QuArK 5.0.b1 released ! See <A HREF="armin/index.shtm">Armin's pages</A> or <A HREF="http://asp.planetquake.com/dl/dl.asp?quark/quark5b1.zip">download it directly</A>.
+
+	</UL>

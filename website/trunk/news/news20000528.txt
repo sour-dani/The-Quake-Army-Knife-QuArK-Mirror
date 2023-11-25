@@ -1,0 +1,16 @@
+<author>Decker</author>
+<headline>InstaPoll closed...</headline>
+... counting votes. And the result is; 23.2% for Banyek, 15.2% for Decker (thats not true! <img src="pics/icons/smiley_medium.gif" align=absmiddle width=15 height=15>),
+9.4% for Ruff, 6.9% for both Bogdan and Stedden, 5.4% for Dalek, 3.6% for Tomek, 3.3% for RoosteR and less than 3% for each of the rest.<br>
+This means that I will send Banyek's ad-banner contribution to <a href="http://www.planetquake.com">PlanetQuake</a>'s staff, to be displayed on sites throughout the PlanetQuake/Gamespy community sites.<br>
+You can see the results <a href="instapolls.php">here</a>, along with other archived instapolls.<br>
+
+<headline>Ad-buttons goes Flash</headline>
+Magnus "Psycho" Jonasson send me this ad-button, which is a Flash animation:<br>
+<center><embed width=88 height=31 src="pics/adbuttons/Psycho_quark.swf"></center>
+
+<headline>User-made maps</headline>
+A new user map is available from the <a href="usermaps.php">user maps page</a>.
+<ul>
+<li>'DoWnUpS QuAkE LeVeL' by Mikael Svensson (Downup)
+</ul>

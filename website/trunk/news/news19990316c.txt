@@ -1,0 +1,45 @@
+<author>Gryphon</author>
+      <ul>
+        <font 
+size=2 face="verdana,arial" 
+		color="0000a0"> <!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:--><strong>User 
+        Map Updates! </strong><br>
+        </font> 
+        <li><font size=2 face="verdana,arial" color="0000a0"> Maps:</font> 
+          <ul>
+            <li><i><font face="Verdana, Arial, Helvetica, sans-serif" size="2">Ritter</font></i></li>
+            <li><i><font face="Verdana, Arial, Helvetica, sans-serif" size="2">Temple 
+              of Frags</font></i></li>
+            <li><i><font face="Verdana, Arial, Helvetica, sans-serif" size="2">The 
+              Cooling Chamber</font></i></li>
+            <li><i><font face="Verdana, Arial, Helvetica, sans-serif" size="2">Bros 
+              Of the Gun Domain</font></i></li>
+          </ul>
+      </ul>
+      <p><font face="Verdana, Arial, Helvetica, sans-serif" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check 
+        'em out!<br>
+        </font></p>
+      <ul>
+        <font 
+size=2 face="verdana,arial" 
+		color="0000a0"><strong><img src="http://www.powersurge.com/drawing/images/about_figma.gif" align="right">Hey, 
+        Gryphon... what are you doing?</strong><br>
+        </font> 
+        <li><font size=2 face="verdana,arial" color="0000a0"> I'm still here, 
+          helping with what I can. So much to do, so little time, same old same 
+          old. So all you youngin's out there take note! That's what you get for 
+          being ambitious... NO TIME for everything, and the PAIN that goes with 
+          it! ...Um... anyways...</font>
+        <li><font face="verdana,arial" size="2" color="0000a0">My Other Website 
+          &quot;The DrawingBoard&quot; is going well. It's starting to take off... 
+          just a lot more work to do... but it's all very FUN! Anyway, do me a 
+          favor and check it out. Let me know what you think.</font><br>
+          <font face="Verdana, Arial, Helvetica, sans-serif"><b><font color="#000066"><a href="http://www.powersurge.com/drawing" target="_blank">The 
+          DrawingBoard<br>
+          http://www.powersurge.com/quark</a></font></b></font> <br>
+      </ul>
+      <blockquote>
+        <p><font face="Geneva, Arial, Helvetica, sans-serif" size="3"><i><b><font color="#000066">Later, 
+          Gators !<br>
+          </font></b></i></font></p>
+      </blockquote>

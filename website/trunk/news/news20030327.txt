@@ -1,0 +1,3 @@
+<author>tiglari</author>
+<headline></headline>
+<p>A new <a href="http://www.fileplanet.com/dl/dl.asp?/planetquake/quark/patches/QuArK_v630_update3.ZIP">update patch</a> for QuArK 6.3.0, adding a portal viewer, a brush-from-number finder, and more.  See the the <a href="http://quark.sourceforge.net/latest/update_readme/readme_630update3.txt">readme</a>.</p>

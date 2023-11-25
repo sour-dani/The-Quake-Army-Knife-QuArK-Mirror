@@ -1,0 +1,31 @@
+<author>cdunde</author>
+<headline>QuArK 6.5.0 alpha 4 Object Makers HOLLOW tools !</headline>
+
+<p><b>Opps!</b><br>Unaware that it was going to be so quick to add, a <b>tack-on</b> zip file for the recently released QuArK 6.5.0 alpha 4 for the new <a href="http://quark.sourceforge.net/infobase/intro.mapeditor.toolpalettes.objectmodes.html#dialogboxes"><b>Quick Object Makers <strong>Hollow tools</strong></b></a> has just been added to this release and can be downloaded at our <a href="http://sourceforge.net/project/showfiles.php?group_id=1181">SourceForge download page</a>.</p>
+
+<p>If you have already downloaded the new QuArK 6.5.0 alpha 4 release, simply return to the site above, download the <a href="http://sourceforge.net/projects/quark/files/QuArK/QuArK%206.5.0%20Alpha%204/QuArK6.5.0alpha4_Objectmodes_hollow_tools.zip/download">QuArK6.5.0alpha4_Objectmodes_hollow_tools.zip</a> file and unzip it into your main QuArK folder. It has been preset to over write the existing files and install the new <b>Hollow tools</b>.</p>
+
+<p>If you have not downloaded the new version of QuArK ..... <b>What The Heck Are You Waiting For ?</b><br>
+And be sure to pickup this <b>AWSUM</b> set of tools to go along with it. But install them <b>after</b> you have installed QuArK.</p>
+
+<p><b>Enjoy ! ! !</b></p>
+
+<p>Here are the improvements and additions of this most recent tack-on zip file:</p>
+
+<UL>
+<LI>Allows the automatic hollowing and interior wall removal of all objects.
+<LI>Updated Infobase on these new functions and full documentation of their use.
+<LI>Added new safe guards and alert messages for excessive faces and processing times.
+<LI><b>Ssshhhoooo !</b> and more !
+</UL>
+
+<p>So don't walk <b>...TELEPORT YOURSELF ... AGAIN ...</b> and get your latest copy of ...</p>
+<center><a href="http://sourceforge.net/projects/quark/files/QuArK/QuArK%206.5.0%20Alpha%204/"><b>QuArK 6.5.0 alpha 4 <br>with the new QuArK Object Makers, 2D Ruler guides & Hollow tools</b> !!! </a></center>
+
+<p>Remember <b>Keep your QuArK knife sharp!</b></p>
+
+<p>cdunde</p>
+
+<p>For more information and added support, go to the <a href="http://quark.ironfoot.co.uk/forums/">QuArK Resource Center</a> and <a href="http://quark.sourceforge.net/communication.php#forums">the forums page</a> of this site.</p>
+
+<p>And remember to visit <a href="http://quark.sourceforge.net/cgi-bin/moin.cgi">our sister site!</a></p>

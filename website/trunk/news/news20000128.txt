@@ -1,0 +1,24 @@
+<author>Decker</author>
+<headline>More ad-banners...</headline>
+Hmmm? Someone <u>are</u> actually reading this news-page, without having subscribed to or web-reading the <a href="forums.php">QuArK-forums</a>.
+Shame on you <img src="pics/SmileyHappy.gif" align=absmiddle width=15 height=15>.<br>
+Anyway, <a href="adbanners.php">two more contestants</a> have been added to the ad-banner page. Now I surely would have to have an InstaPoll of which ad-banner, that should be displayed throughout the <a href="http://www.planetquake.com">PlanetQuake</a>, when we've finished the next version (which is still being worked on!)<br>
+
+<headline>HTML do not belong in e-mails!</headline>
+<span class="sml">(Notice: Any e-mails I receive regarding this article will be ignored.)</span><br>
+Some properly don't know it, but I firmly believes that <u>HTML does not belong in e-mails</u>.<br>
+<i>"Whats this guy's problem?"</i> you may say. Well, what do you possibly get from using HTML in your e-mails, that you can't make in plain-text? I would say nothing special. Oh yeah, you can use different fonts, sizes and colors, but isn't that something which takes the reader away from the actual contents of the message?
+Another problem with HTML in e-mails, is that they are up to 50% larger in size than plain-text, because of all the HTML-tags that is needed. Just look at the <i>source code</i> of your HTML e-mails, and you'll see.
+On top of that, some might even post <u>both</u> HTML <u>and</u> plain-text in the same e-mail, which just makes it larger again.<br>
+<i>"So what? 50% isn't that much, now is it!"</i> - Actually it is! <img src="pics/SmileySad.gif" align=absmiddle width=15 height=15> I live in a country, where we still have to Pay-Per-Minute we are online/using the phone.
+It would be something like US' long-distance calls (I presume.) So imagine what would happen, if you had to download 50% more, per e-mail you receive when paying for the time you're online. The main parts of the e-mails don't contain anything that would compensate for the extra time it takes to download, now would it?!!<br>
+<i>"Okay, but I <u>need</u> to make my text in underline/italic/bold, to clarify myself"</i> - Then why do you <u>need</u> to use HTML? What do you think they did, before HTML were invented? They used:
+<blockquote><font face="Courier"><pre>_this text is underlined_
+*This is written with bold fonts*
+/And this line is written with italic-style/
+AND HERE I SHOUT, WHICH YOU HOPEFULLY ALREADY KNOWS!
+</pre></font></blockquote>
+<i>"Ohh, shut up Decker! You're just old fashioned."</i> - Maybe I am, but think about it: How often do you <u>really</u> make use of the HTML capabilities in e-mails you write?
+Another fact is also, that I, and hopefully many many others, are not using the all dominating MS Outlook Express. Its too "<i>Ohhh let me help you with that, you less-knowing user. I'm the program so <u><b>I</b></u> know whats best for you, my user!</i>" I truly hate programs which I can't customize, the way I want them to be, without going into a non-documented registry-database.<br>
+<i>"But you <u>can</u> customize Outlook Express."</i> - Then why haven't <b>you</b> done it yet? Make it only send plain-text e-mails. <img src="pics/SmileyHappy.gif" align=absmiddle width=15 height=15><br>
+<br>Okay, enough of my ranting... Move along... Move along, nothing more to see here...

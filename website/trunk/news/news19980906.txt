@@ -1,0 +1,3 @@
+<author>Armin</author>
+<LI><a href="http://asp.planetquake.com/dl/dl.asp?quark/qktec5c2.zip">Tech info package for QuArK 5.0.c2</a> is released ! There is a whole document that describes everything you need to know to understand and write Python code for QuArK. Everybody interested in adding custom features in QuArK, get this !
+</UL>

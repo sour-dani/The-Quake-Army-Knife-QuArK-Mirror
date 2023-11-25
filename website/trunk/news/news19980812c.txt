@@ -1,0 +1,28 @@
+<author>Gryphon</author>
+<UL><FONT 
+SIZE=2 FACE="verdana,arial" 
+		COLOR="0000a0">
+<!-- INFORMATION -:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-:-->
+<STRONG>Back!Bushy-eyed, wide-tailed,<BR> and ready for action... mostly!</STRONG><BR>
+<BR>
+<LI>Back from Kentucky, and I've finally CHANGED the messageboard!<BR>
+<BR>
+I've switched the links for the forum, and changed everything over to findMail.  The old forum is still active, but I will be making it "Read Only" in a week or so. Much thanks to <a href="mailto:">Daniel Stoltz</a> for creating and running the findMail QuArK message archive.<BR>
+<BR>
+There are only two real problems with the findMail mailing list system. The first (which isn't all that bad), is that everyone who wants to post a message needs to register their e-mail address with findMail.  findMail will not use it for spam of anykind, but they DO want to record you as a user.<BR>
+Once that's set up, you're IN!  You don't have to specifically "subscribe" to the list to post to it.  If you WANT though, you can join the e-mail list and have all posts mailed directly to you!<BR>
+<BR>
+The other downer about findMail is that messages posted on findMail, don't actually APPEAR in the archive immediately, though they get mailed to everyone immediately.  This might actually be a big problem for a messageboard environement... if someone doesn't think their message posted, they might post over and over again... this I know from experience. ;) Also, people only on the web don't get information as quickly as a normal messageboard setup would allow.
+<BR>
+If you look at the side menu for the QuArK homepage, you'll see links for:<BR>
+<BR>
+<a href="http://www.planetquake.com/quark/forum.htm">Forum</a> (links to this findMail system for QuArK)<BR>
+<a href="http://www.planetquake.com/quark/forumold.htm">Old Forum</a> (links to the old messageboard)<BR>
+<a href="http://pluto.beseen.com/boardroom/l/18921/">Test Forum</a> (another messageboard that I am testing)<BR>
+<BR>
+If people find findMail registration too annoying, I can implement the simpler messageboard linked under "Test Forum".  Check it out.  It's much faster than the old forum, allows HTML, and has byDate and byThread sorting.  findMail is MUCH more powerful and handy though, but I'm just concerned about what's easier for people (and will help the most folk).  The <a href="http://pluto.beseen.com/boardroom/l/18921/">Test Forum</a> is lean and quick for someone wanting to pop in and post a message without any fuss or extra pazazz.<BR>
+<BR>
+Any comments or crits welcome. -Hey, maybe I can combine BeSeen and findMail and get the best of both worlds... hmm....<BR>
+
+
+</font></ul>

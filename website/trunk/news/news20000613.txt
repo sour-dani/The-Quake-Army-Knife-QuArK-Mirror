@@ -1,0 +1,48 @@
+<author>Decker</author>
+<headline>Snapshot...</headline>
+Alex have compiled a new snapshot of QuArK 6.00 beta:
+<blockquote>
+This time some very interesting stuff has been added :)<br>
+<br>
+A new CVS snapshot compile is available for download at sourceforge.
+<a href="http://sourceforge.net/project/filelist.php?group_id=1181">http://sourceforge.net/project/filelist.php?group_id=1181</a><br>
+<br>
+Name:   6.002pre8<br>
+File:   quarksnapshot_20000613.ace<br>
+Length: 1.598.964 bytes<br>
+<br>
+It is supposed to work with the mini python package and contains
+roughly the following changes:<br>
+<ul>
+<li>QuArK:
+ 	<ul>
+		<li>fixed: problem with texture-wrapping from parallel faces (WrapTexClick)
+		<li>revised antidistortion for beziers
+	</ul>
+<li>Quake3:
+ 	<ul>
+		<li>beginning .MD3 model support
+		<li>added bevel duplicator and round corner curves submenu items
+		<li>the code now reads most of the image-keywords, and controls that the referenced .TGA/.JPG's exists. This should reflect a more correct look of which shaders work, and which do not, in the texture-browser.
+		<li>use the setup entry "SpecialCustomQuakeMenu" instead of the NEEDQCSG flag to select a form for custom quake menus, and added a Custom Quake menu form for quake 3 with bspc
+		<li>fixed: check now if aas file was built at all
+	</ul>
+<li>SoF:
+ 	<ul>
+		<li>added: texture flag loading and saving for SoF
+		<li>fixed: switching to kingpin game when selecting addons or output dirs in the SoF config dialog
+		<li>added: 'ainame' tag to worldspawn entity
+	</ul>
+</ul>
+
+greetings<br>
+&nbsp;Alexander
+</blockquote>
+
+<headline>User-made maps</headline>
+Three user created maps are now available from the <a href="usermaps.php">user maps page</a>.
+<ul>
+<li>'The right hell' by Mikael Svensson
+<li>'BORG-SHIP' by HypnoTech
+<li>'Mumindalen' by Mikael Svensson
+</ul>

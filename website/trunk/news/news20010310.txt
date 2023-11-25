@@ -1,0 +1,42 @@
+<author>Decker</author>
+<headline>QuArK v6.2 Release Candidate</headline>
+<p>Here is the <a href="http://dl.fileplanet.com/dl/dl.asp?quark/QuArK_v6.2.zip">QuArK v6.2 release candidate</a>. The install instructions are as usual:</p>
+
+<ul>
+<li>If you haven't installed Python yet, do that using either the small <a href="http://dl.fileplanet.com/dl/dl.asp?quark/minipy15b.exe">minipy15b.exe</a> or get the larger Python v1.5 from <a href="http://www.python.org">www.python.org</a>.
+<li>Unzip QuArK_v6.2.zip into a <b>new</b> and <b>empty</b> directory. <b>Do not</b> use your existing QuArK directory, since this may conflict with this release candidate.
+<li>Start QuArK 6.2 and configure the build-tools etc.
+</ul>
+
+<p>List-snips from the README.TXT contained within the .ZIP archive:</p>
+<blockquote>
+     -----  New features from 6.1  -----
+<br>
+<br>- Bezier page
+<br>- Shape builders
+<br>- Path duplicator
+<br>- Radial duplicator
+<br>- Q3A Models
+<br>- Entity Extractor
+<br>- Tag side plugin
+<br>- Q3A texture scale
+<br>- 'Look At' on face menu
+<br>- Navigate Tree
+<br>- Dynamic Texture Folders
+<br>- New Games/Engines Supported
+<br>- Brush Primitives format
+<br>- Microbrush H/K
+<br>- Drag & Drop imprecision bug
+<br>- Model editor
+<br>- Addon organization
+<br>- Circlestrafe Selection Mouse-key combo
+<br>- 'Texture Pinning'
+<br>- Sprite display
+</blockquote>
+
+<headline>User maps</headline>
+<p>A Half-Life Counter-Strike map have been added to the <a href="usermaps.php?HL=1&M_CS=1">User Maps</a> page.</p>
+
+<ul>
+<li>'de_celtic' by Vanx
+</ul>

@@ -1,0 +1,10 @@
+<author>Decker</author>
+<headline>User maps (updated)</headline>
+<p>Some new user made maps are available on the <a href="usermaps.php">User maps</a> page. One for <a href="usermaps.php?HL=1&M_DM=1">Half-Life</a> and three for <a href="usermaps.php?Q2=1&M_DM=1">Quake-2</a>:</p>
+
+<ul>
+<li>'Concrete' by Espi
+<li>'Blindsided' by Jef aka 'Poopy'
+<li>'Toxicity' by Jef aka 'Poopy'
+<li>'Carnage Absolute' by Jef aka 'Poopy'
+</ul>

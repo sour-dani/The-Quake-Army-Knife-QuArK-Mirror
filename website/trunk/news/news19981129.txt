@@ -1,0 +1,2 @@
+<author>Armin</author>
+<p>First release of the <a href="doc/">documentation of QuArK</a> ! Contains a small tutorial, too.</a></p>

@@ -1,0 +1,13 @@
+<author>Decker</author>
+<headline>New terrain generator</headline>
+<p>Saw on <a href="http://www.gamedesign.net">Rust/Gamedesign</a> that there's released a new <a href="http://countermap.counter-strike.net/Nemesis">terrain generator</a>. The useful links <span class="sml">(panel to the right on this site)</span> is now updated to this new one, as the old from <a href="http://www.planetquake.com/estudio">http://www.planetquake.com/estudio</a> seem to be stale.</p>
+
+<headline>User made prefab</headline>
+<p>A prefab made by RoulioZ have been added to the <a href="http://quark.sourceforge.net/userprefabs.php#HL">User Prefabs</a> page.</p>
+<ul>
+  <li>Half-Life
+    <ul>
+      <li>Builder</li>
+    </ul>
+  </li>
+</ul>

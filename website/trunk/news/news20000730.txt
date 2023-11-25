@@ -1,0 +1,3 @@
+<author>Decker</author>
+<headline>InstaPoll time...</headline>
+Luke "Red69" Mcgaffin suggested this instapoll, of who uses groups and who don't, in the tree-view of the QuArK map-editor.
