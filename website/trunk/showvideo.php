@@ -7,20 +7,6 @@ require_once('_settings-database.php');
 # Load language file
 LoadLanguageFile('showvideo.php');
 
-#COPIED FROM _base_code.php:
-//Log the access
-require_once('_AccessLogSend.php');
-require_once(__DIR__.DIRECTORY_SEPARATOR.'_server_vars.php'); #FIXME: This should be a relative path, but it doesn't work, somehow? Bug in PHP, or in SourceForge config?
-global $Request_URI, $Remote_addr, $HTTP_user_agent, $HTTP_referer;
-SendAccessLog(0, $Request_URI, $Remote_addr, $HTTP_user_agent, $_SERVER['REQUEST_TIME_FLOAT'], $HTTP_referer); //FIXME: Check return code!
-
-require_once('gatekeeper/_check_access.php');
-global $no_stats;
-if (!$no_stats)
-{
-	//FIXME: !!!
-}
-
 $VideoID = intval($_GET['VideoID'])-1;
 
 function showVideoPage($VideoNR)
