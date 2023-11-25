@@ -266,7 +266,7 @@ function pageEnd()
 {
 	#Snow 2021
 	/*echo '<script type="text/javascript">
-var skew = 1;
+var skew = 1.0;
 
 function randomInRange(min, max) {
   return Math.random() * (max - min) + min;
