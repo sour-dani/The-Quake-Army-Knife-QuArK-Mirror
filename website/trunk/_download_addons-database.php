@@ -522,6 +522,17 @@ $GamesQRKAddons["URT"  ][] = new cQRKAddon("Urban Terror-unit2"       ,""       
 $GamesQRKAddons["URT"  ][] = new cQRKAddon("Urban Terror-unit3"       ,""                                           ,"" ,"Q3UT3.qrk"        ,"https://sourceforge.net/p/quark/code/HEAD/tree/runtime/trunk/addons/Quake_3/Q3UT3.qrk?format=raw"       ,$OfficialQRKAddon);
 $GamesQRKAddons["URT"  ][] = new cQRKAddon("Urban Terror 4"           ,""                                           ,"" ,"UrT4.qrk"         ,"https://sourceforge.net/p/quark/code/HEAD/tree/runtime/trunk/addons/Quake_3/UrT4.qrk?format=raw"        ,$OfficialQRKAddon);
 
+# Warfork
+$GamesQRKAddons["WAR"] = array();
+$GamesQRKAddons["WAR"][] = new cQRKAddon("Warfork", "", "",
+                                         "DataWarfork.qrk", "https://sourceforge.net/p/quark/code/HEAD/tree/runtime/trunk/addons/Warfork/DataWarfork.qrk?format=raw", $OfficialQRKAddon);
+$GamesQRKAddons["WAR"][] = new cQRKAddon("Warfork", "", "",
+                                         "WarforkEntities.qrk", "https://sourceforge.net/p/quark/code/HEAD/tree/runtime/trunk/addons/Warfork/WarforkEntities.qrk?format=raw", $OfficialQRKAddon);
+$GamesQRKAddons["WAR"][] = new cQRKAddon("Warfork", "", "",
+                                         "WarforkTextures.qrk", "https://sourceforge.net/p/quark/code/HEAD/tree/runtime/trunk/addons/Warfork/WarforkTextures.qrk?format=raw", $OfficialQRKAddon);
+$GamesQRKAddons["WAR"][] = new cQRKAddon("Warfork", "", "",
+                                         "UserData Warfork.qrk", "https://sourceforge.net/p/quark/code/HEAD/tree/runtime/trunk/addons/Warfork/UserData Warfork.qrk?format=raw", $OfficialQRKAddon);
+
 # Warsow
 $GamesQRKAddons["W"    ] = array();
 $GamesQRKAddons["W"    ][] = new cQRKAddon("Warsow"                   ,""                                           ,"" ,"DataWarsow.qrk"   ,"https://sourceforge.net/p/quark/code/HEAD/tree/runtime/trunk/addons/Warsow/DataWarsow.qrk?format=raw"   ,$OfficialQRKAddon);
