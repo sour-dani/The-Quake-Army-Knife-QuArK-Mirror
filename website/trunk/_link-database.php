@@ -236,6 +236,7 @@ $LinksGame[] = new cLinkGroup('Half-Life', 'HL', array(
           ,new cLink('RUN. THINK. SHOOT. LIVE.', 'https://www.runthinkshootlive.com/', 'RUN. THINK. SHOOT. LIVE. lists and reviews single player maps and mods for the Half-Life series of games.')
           ,new cLink('LambdaGeneration', 'http://lambdageneration.com/', 'The Ultimate Half-Life Community')
           ,new cLink('Half-Life Creations', 'http://half-lifecreations.com/', 'Building on 10 years of creativity.')
+          ,new cLink('Lambda1VR', 'https://www.lambda1vr.com/', 'Official Page of the Dr Beef Xash mod capable of Playing Half Life 1 on Oculus Quest')
            ));
 
 $LinksGame[] = new cLinkGroup('Half-Life: Source', 'HLS', array(
