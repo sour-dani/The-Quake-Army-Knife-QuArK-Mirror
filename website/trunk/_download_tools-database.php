@@ -417,7 +417,7 @@ $GamesQRKTools["PREY" ][] = new cQRKTools("PREY_SDK_2006-10-13.zip","ftp://ftp.3
 
 # American McGee's Alice
 $GamesQRKTools["ALICE"] = array();
-$GamesQRKTools["ALICE"][] = new cQRKTools("Wonderland tools","https://sites.google.com/site/yannhennequin/Wonderland_tools.zip?attredirects=0","Bsp2wonderland converts maps created for FAKK into Alice format and Wonderland2map decompile bsp to map.");
+$GamesQRKTools["ALICE"][] = new cQRKTools("Wonderland tools",$downloadroot."build_tools/Wonderland_tools.zip","Bsp2wonderland converts maps created for FAKK into Alice format and Wonderland2map decompile bsp to map."); #https://sites.google.com/site/yannhennequin/Wonderland_tools.zip?attredirects=0
 
 # Anachronox
 $GamesQRKTools["AN"   ] = array();
