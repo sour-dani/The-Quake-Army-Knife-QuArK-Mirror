@@ -917,12 +917,12 @@ $Games[] = new cGame('600b1' ,'KP' ,'Kingpin: Life of Crime' ,'KP' ,'kingpin.gif
                     ,NULL
                     );
 /*$Games[] = new cGame(NULL ,'KPR' ,'Kingpin: Reloaded' ,'KPR' ,NULL
-                    ,NULL ,'https://en.wikipedia.org/wiki/Kingpin:_Reloaded' ,???, FALSE
-                    ,NULL
+                    ,'https://3drealms.com/games/kingpin-reloaded/' ,'https://en.wikipedia.org/wiki/Kingpin:_Reloaded' ,'Unity', FALSE
+                    ,'In a stylized noir art deco gangland that never was, the Kingpin rules above all else with a bloody fist.'
                     ,array('Slipgate Ironworks')
                     ,array('3D Realms')
                     ,NULL
-                    );*/ /*Not enough info yet*/
+                    );*/ /*Incompatible engine*/
 $Games[] = new cGame(NULL ,'KB' ,'Kingsborn' ,'KB' ,NULL
                     ,NULL ,NULL ,'G3D', FALSE
                     ,NULL
