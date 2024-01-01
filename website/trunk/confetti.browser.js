@@ -1,4 +1,4 @@
-// canvas-confetti v1.4.0 built on 2021-03-10T12:32:33.488Z
+// canvas-confetti v1.6.1 built on 2023-09-28T04:21:15.931Z
 !(function (window, module) {
 // source content
 (function main(global, module, isWorker, workerSize) {
@@ -142,7 +142,7 @@
           '      }',
           '    });',
           '  } else if (msg.data.reset) {',
-          '    CONFETTI.reset();',
+          '    CONFETTI && CONFETTI.reset();',
           '  } else if (msg.data.resize) {',
           '    SIZE.width = msg.data.resize.width;',
           '    SIZE.height = msg.data.resize.height;',
@@ -290,16 +290,17 @@
       x: opts.x,
       y: opts.y,
       wobble: Math.random() * 10,
+      wobbleSpeed: Math.min(0.11, Math.random() * 0.1 + 0.05),
       velocity: (opts.startVelocity * 0.5) + (Math.random() * opts.startVelocity),
       angle2D: -radAngle + ((0.5 * radSpread) - (Math.random() * radSpread)),
-      tiltAngle: Math.random() * Math.PI,
+      tiltAngle: (Math.random() * (0.75 - 0.25) + 0.25) * Math.PI,
       color: opts.color,
       shape: opts.shape,
       tick: 0,
       totalTicks: opts.ticks,
       decay: opts.decay,
       drift: opts.drift,
-      random: Math.random() + 5,
+      random: Math.random() + 2,
       tiltSin: 0,
       tiltCos: 0,
       wobbleX: 0,
@@ -313,12 +314,12 @@
   function updateFetti(context, fetti) {
     fetti.x += Math.cos(fetti.angle2D) * fetti.velocity + fetti.drift;
     fetti.y += Math.sin(fetti.angle2D) * fetti.velocity + fetti.gravity;
-    fetti.wobble += 0.1;
+    fetti.wobble += fetti.wobbleSpeed;
     fetti.velocity *= fetti.decay;
     fetti.tiltAngle += 0.1;
     fetti.tiltSin = Math.sin(fetti.tiltAngle);
     fetti.tiltCos = Math.cos(fetti.tiltAngle);
-    fetti.random = Math.random() + 5;
+    fetti.random = Math.random() + 2;
     fetti.wobbleX = fetti.x + ((10 * fetti.scalar) * Math.cos(fetti.wobble));
     fetti.wobbleY = fetti.y + ((10 * fetti.scalar) * Math.sin(fetti.wobble));
 
@@ -336,6 +337,26 @@
       context.ellipse ?
         context.ellipse(fetti.x, fetti.y, Math.abs(x2 - x1) * fetti.ovalScalar, Math.abs(y2 - y1) * fetti.ovalScalar, Math.PI / 10 * fetti.wobble, 0, 2 * Math.PI) :
         ellipse(context, fetti.x, fetti.y, Math.abs(x2 - x1) * fetti.ovalScalar, Math.abs(y2 - y1) * fetti.ovalScalar, Math.PI / 10 * fetti.wobble, 0, 2 * Math.PI);
+    } else if (fetti.shape === 'star') {
+      var rot = Math.PI / 2 * 3;
+      var innerRadius = 4 * fetti.scalar;
+      var outerRadius = 8 * fetti.scalar;
+      var x = fetti.x;
+      var y = fetti.y;
+      var spikes = 5;
+      var step = Math.PI / spikes;
+
+      while (spikes--) {
+        x = fetti.x + Math.cos(rot) * outerRadius;
+        y = fetti.y + Math.sin(rot) * outerRadius;
+        context.lineTo(x, y);
+        rot += step;
+
+        x = fetti.x + Math.cos(rot) * innerRadius;
+        y = fetti.y + Math.sin(rot) * innerRadius;
+        context.lineTo(x, y);
+        rot += step;
+      }
     } else {
       context.moveTo(Math.floor(fetti.x), Math.floor(fetti.y));
       context.lineTo(Math.floor(fetti.wobbleX), Math.floor(y1));
@@ -417,6 +438,7 @@
   function confettiCannon(canvas, globalOpts) {
     var isLibCanvas = !canvas;
     var allowResize = !!prop(globalOpts || {}, 'resize');
+    var hasResizeEventRegistered = false;
     var globalDisableForReducedMotion = prop(globalOpts, 'disableForReducedMotion', Boolean);
     var shouldUseWorker = canUseWorker && !!prop(globalOpts || {}, 'useWorker');
     var worker = shouldUseWorker ? getWorker() : null;
@@ -545,6 +567,7 @@
         animationObj = null;
 
         if (allowResize) {
+          hasResizeEventRegistered = false;
           global.removeEventListener('resize', onResize);
         }
 
@@ -555,7 +578,8 @@
         }
       }
 
-      if (allowResize) {
+      if (allowResize && !hasResizeEventRegistered) {
+        hasResizeEventRegistered = true;
         global.addEventListener('resize', onResize, false);
       }
 
@@ -579,7 +603,21 @@
     return fire;
   }
 
-  module.exports = confettiCannon(null, { useWorker: true, resize: true });
+  // Make default export lazy to defer worker creation until called.
+  var defaultFire;
+  function getDefaultFire() {
+    if (!defaultFire) {
+      defaultFire = confettiCannon(null, { useWorker: true, resize: true });
+    }
+    return defaultFire;
+  }
+
+  module.exports = function() {
+    return getDefaultFire().apply(this, arguments);
+  };
+  module.exports.reset = function() {
+    getDefaultFire().reset();
+  };
   module.exports.create = confettiCannon;
 }((function () {
   if (typeof window !== 'undefined') {
