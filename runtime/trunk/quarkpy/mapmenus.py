@@ -88,7 +88,6 @@ QuickKeys = [GridMinus, GridPlus, ZoomIn, ZoomOut,
 #
 def BuildMenuBar(editor):
     import bspcommands
-    import mapmgr
     import mapcommands
     import mapsearch
     import mapquakemenu
@@ -114,7 +113,7 @@ def BuildMenuBar(editor):
             l1.append(qmenu.sep)
         lcls = editor.layout.__class__
         lclick = editor.layout.layoutmenuclick
-    for l in mapmgr.LayoutsList:
+    for l in editor.manager.LayoutsList:
         m = qmenu.item('%s layout' % l.shortname, editor.setlayoutclick, "switch to layout '%s'" % l.shortname)
         m.state = (l is lcls) and qmenu.radiocheck
         m.layout = l

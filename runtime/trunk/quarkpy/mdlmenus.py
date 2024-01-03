@@ -57,7 +57,6 @@ def runexporter(m):
 # Menu bar builder
 #
 def BuildMenuBar(editor):
-    import mdlmgr
     import mdlcommands
     import mdlsearch
     import mdltoolbars
@@ -114,7 +113,7 @@ def BuildMenuBar(editor):
             l1.append(qmenu.sep)
         lcls = editor.layout.__class__
         lclick = editor.layout.layoutmenuclick
-    for l in mdlmgr.LayoutsList:
+    for l in editor.manager.LayoutsList:
         m = qmenu.item('%s layout' % l.shortname, editor.setlayoutclick)
         m.state = (l is lcls) and qmenu.radiocheck
         m.layout = l
@@ -316,7 +315,6 @@ def MdlBackgroundMenu(editor, view=None, origin=None):
                 mdloptions.AutoFrameRenaming.state = qmenu.checked
 
             if len(sellist) >= 1:
-                import mdlmgr
                 item = sellist[0]
                 if (item.type == ':fg' or item.type == ':mf' or item.type == ':bg' or item.type == ':bone') and (quarkx.setupsubset(SS_MODEL, "Options")["LinearBox"] != "1"):
                     bonepop.state = qmenu.normal
