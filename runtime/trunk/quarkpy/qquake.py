@@ -65,6 +65,7 @@ class GameConsole(BatchConsole):
             cfg = quarkx.newfileobj("quark.cfg")
             cfg["Data"] = cfgfile
             flst.append(("quark.cfg", cfg))
+            del cfg
         else:
             cfgfile = None
         for cf in quarkx.getqctxlist(":", "CreateFiles"):
@@ -141,6 +142,7 @@ class GameConsole(BatchConsole):
                 print err % (os.path.join(".", qname), )
             pak.filename = writeto
             pak.savefile()
+            del pak
         else:
             writeto = quarkx.resolvefilename(quarkx.outputfile(""), qutils.FT_PATH)[0]
             for qname, qobj in self.filelistdata:
