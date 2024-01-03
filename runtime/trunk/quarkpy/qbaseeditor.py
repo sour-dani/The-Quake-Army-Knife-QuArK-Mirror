@@ -68,14 +68,16 @@ class BaseEditor:
         self.OpenRoot()
         if self.layout is None:
             nlayoutname = quarkx.setupsubset(self.MODE, "Layouts")["_layout"]
-            list = self.manager.LayoutsList[:]
-            list.reverse()
-            for layouts in list:
+            layout = None
+            for layouts in self.manager.LayoutsList:
                 if layouts.shortname == nlayoutname:
+                    layout = layouts
                     break
+            if layout is None:
+                raise RuntimeError("Layout not found!")
         else:
-            layouts = self.layout.__class__
-        self.setlayout(form, layouts())
+            layout = self.layout.__class__
+        self.setlayout(form, layout())
 
 
     def drawmap(self, view):
