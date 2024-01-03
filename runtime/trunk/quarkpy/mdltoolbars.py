@@ -814,8 +814,8 @@ class FaceCutter(qhandles.RectangleDragObject):
         NewVertMergeList = []
         NewVertIndex = []
         for i in xrange(vtx_index_start + 1):
-            NewVertMergeList += [i]
-            NewVertIndex += [i]
+            NewVertMergeList.append(i)
+            NewVertIndex.append(i)
         number_of_new_verts = 0
         if not MdlOption("KeepDupeVertexes"):
             ### Section below merges common vertexes.
@@ -841,19 +841,19 @@ class FaceCutter(qhandles.RectangleDragObject):
 
                     if MergeThese:
                         # Merge this vertex (so merge 'i' into 'j').
-                        NewVertMergeList += [NewVertMergeList[(vtx_index_start + 1) + j]] ### Chain merging.
-                        NewVertIndex += [vtx_index_start + number_of_new_verts]
+                        NewVertMergeList.append(NewVertMergeList[(vtx_index_start + 1) + j]) ### Chain merging.
+                        NewVertIndex.append(vtx_index_start + number_of_new_verts)
                         break
                 if not MergeThese:
                     # Keep this vertex.
                     number_of_new_verts = number_of_new_verts + 1
-                    NewVertMergeList += [(vtx_index_start + 1) + i]
-                    NewVertIndex += [vtx_index_start + number_of_new_verts]
+                    NewVertMergeList.append((vtx_index_start + 1) + i)
+                    NewVertIndex.append(vtx_index_start + number_of_new_verts)
         else:
             for i in xrange(len(VTX_DATA_LIST)):
                 # No merging.
-                NewVertMergeList += [(vtx_index_start + 1) + i]
-                NewVertIndex += [(vtx_index_start + 1) + i]
+                NewVertMergeList.append((vtx_index_start + 1) + i)
+                NewVertIndex.append((vtx_index_start + 1) + i)
 
         ### Section below passes final updates to new_tris.
         def UpdateVertex(new_vert):

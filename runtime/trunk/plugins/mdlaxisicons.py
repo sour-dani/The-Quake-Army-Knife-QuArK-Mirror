@@ -23,6 +23,7 @@ from quarkpy.mdlutils import *
 from quarkpy.qeditor import MapColor
 from quarkpy.qhandles import *
 from quarkpy.qutils import *
+import os.path
 
 #
 # <tiglari>
@@ -63,7 +64,7 @@ for menitem, keytag in [(XYZitem, "AxisXYZ")]:
 #  img = quarkx.loadimages(filename + ext, width, transparencypt)
 #
 
-axisicons = LoadPoolObj("axisicons", quarkx.loadimages, "images\\axisicons.bmp", 32,(0,0))
+axisicons = LoadPoolObj("axisicons", quarkx.loadimages, os.path.join("images", "axisicons.bmp"), 32,(0,0))
 
 #
 # This part is a magical incantation.

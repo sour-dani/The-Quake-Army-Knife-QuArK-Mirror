@@ -97,7 +97,6 @@ def print_boxed(text): #Copy/Paste from meshtools, only to remove the beep :)
         print '+-' + '-'*maxlinelen + '-+'
         for line in lines: print '| ' + line.ljust(maxlinelen) + ' |'
         print '+-' + '-'*maxlinelen + '-+'
-    #print '\a\r', # beep when done
 
 
 class ase_obj: # Equivalent to a QuArK component.

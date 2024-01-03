@@ -437,7 +437,7 @@ def edit_newbboxgroup(editor, m=None):
         new_list = []
         for item in list[0].subitems:
             if not item.name.endswith(":p"):
-                new_list += [item]
+                new_list.append(item)
         list = new_list
     else:
         for item in list:
@@ -492,7 +492,7 @@ def edit_newskingroup(editor, m=None):
         new_list = []
         for item in list[0].subitems:
             if not item.name.endswith(":ssg"):
-                new_list += [item]
+                new_list.append(item)
         list = new_list
     else:
         for item in list:
