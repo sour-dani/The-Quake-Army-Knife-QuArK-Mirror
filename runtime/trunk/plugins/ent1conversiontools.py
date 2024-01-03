@@ -1456,8 +1456,7 @@ class TypeOfConversionDlg(quarkpy.qmacro.dialogbox):
         if gamepakfiletype is None:
             quarkx.msgbox("You did not enter a 'Pak file type'.\nPlease do so and try again.", quarkpy.qutils.MT_INFORMATION, quarkpy.qutils.MB_OK)
             return
-        gamepakfiletype = gamepakfiletype.rsplit(".")
-        gamepakfiletype = gamepakfiletype[len(gamepakfiletype)-1]
+        gamepakfiletype = os.path.splitext(gamepakfiletype)[1][1:]
         if gamepakfiletype is not None and not gamepakfiletype.startswith("."):
             gamepakfiletype = "." + gamepakfiletype
         gamename = self.src["GameName"]
@@ -1473,8 +1472,7 @@ class TypeOfConversionDlg(quarkpy.qmacro.dialogbox):
         if (entitiesfolder == gamefileslocation or entitiesfiletype is None or entitiesfolder is None):
             quarkx.msgbox("Entities items incomplete in Step 1.\nPlease correct and try again.", quarkpy.qutils.MT_INFORMATION, quarkpy.qutils.MB_OK)
             return
-        entitiesfiletype = entitiesfiletype.rsplit(".")
-        entitiesfiletype = entitiesfiletype[len(entitiesfiletype)-1]
+        entitiesfiletype = os.path.splitext(entitiesfiletype)[1][1:]
         if entitiesfiletype is not None and not entitiesfiletype.startswith("."):
             entitiesfiletype = "." + entitiesfiletype
         shadersfolder = self.src["ShadersFolder"]
@@ -1482,8 +1480,7 @@ class TypeOfConversionDlg(quarkpy.qmacro.dialogbox):
         if (shadersfolder == gamefileslocation or shadersfiletype is None or shadersfolder is None):
             quarkx.msgbox("Shaders items incomplete in Step 1.\nPlease correct and try again.", quarkpy.qutils.MT_INFORMATION, quarkpy.qutils.MB_OK)
             return
-        shadersfiletype = shadersfiletype.rsplit(".")
-        shadersfiletype = shadersfiletype[len(shadersfiletype)-1]
+        shadersfiletype = os.path.splitext(shadersfiletype)[1][1:]
         if shadersfiletype is not None and not shadersfiletype.startswith("."):
             shadersfiletype = "." + shadersfiletype
         texturesfolder = self.src["TexturesFolder"]
@@ -1501,8 +1498,7 @@ class TypeOfConversionDlg(quarkpy.qmacro.dialogbox):
         if (modelfolder == gamefileslocation or modelfiletype is None or modelfolder is None):
             quarkx.msgbox("Model items incomplete in Step 1.\nPlease correct and try again.", quarkpy.qutils.MT_INFORMATION, quarkpy.qutils.MB_OK)
             return
-        modelfiletype = modelfiletype.rsplit(".")
-        modelfiletype = modelfiletype[len(modelfiletype)-1]
+        modelfiletype = os.path.splitext(modelfiletype)[1][1:]
         if modelfiletype is not None and not modelfiletype.startswith("."):
             modelfiletype = "." + modelfiletype
         soundfolder = self.src["SoundFolder"]
@@ -1541,16 +1537,14 @@ class TypeOfConversionDlg(quarkpy.qmacro.dialogbox):
             quarkx.msgbox("You entered something for Mdl Entity files,\nbut you did not do all three items.\nPlease correct and try again.", quarkpy.qutils.MT_INFORMATION, quarkpy.qutils.MB_OK)
             return
         if mdlentsfiletype is not None:
-            mdlentsfiletype = mdlentsfiletype.rsplit(".")
-            mdlentsfiletype = mdlentsfiletype[len(mdlentsfiletype)-1]
+            mdlentsfiletype = os.path.splitext(mdlentsfiletype)[1][1:]
         if mdlentsfiletype is not None and not mdlentsfiletype.startswith("."):
             mdlentsfiletype = "." + mdlentsfiletype
         if (listfilefolder == gamefileslocation or listfiletype is None or listfilefolder is None) and (makelistfile == "60"):
             quarkx.msgbox("You entered something for List files,\nbut you did not do all three items.\nPlease correct and try again.", quarkpy.qutils.MT_INFORMATION, quarkpy.qutils.MB_OK)
             return
         if listfiletype is not None:
-            listfiletype = listfiletype.rsplit(".")
-            listfiletype = listfiletype[len(listfiletype)-1]
+            listfiletype = os.path.splitext(listfiletype)[1][1:]
         if listfiletype is not None and not listfiletype.startswith("."):
             listfiletype = "." + listfiletype
         if makedatafile != "10" and makeuserdatafile != "20" and makeentitiesfile != "30" and makeshadersfile != "40" and maketexturesfile != "50" and makemdlentsfile != "51" and makelistfile != "60":
