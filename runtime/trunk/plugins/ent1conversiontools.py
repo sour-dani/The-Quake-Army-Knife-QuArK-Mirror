@@ -1387,7 +1387,6 @@ class TypeOfConversionDlg(quarkpy.qmacro.dialogbox):
 
     def __init__(self, form1, root):       # creates the dialogbox
         self.QuArKpath = quarkx.exepath # Gets the path where QuArK is installed, our "Current Work Directory".
-        self.QuArKpath = self.QuArKpath.rstrip('\\')
         src = quarkx.newobj(":")
         src["GameFilesLocation"] = None
         src["GamePakFileType"]   = None
@@ -1560,8 +1559,8 @@ class TypeOfConversionDlg(quarkpy.qmacro.dialogbox):
 
 ### Crates the game folder, does an existing game folder test and make the function calls if ok to do so.
    #     self.close(btn) # This will close the master dialog too soon.
-        if not os.path.exists(self.QuArKpath + '\\' + gamename):
-            os.mkdir(self.QuArKpath + '\\' + gamename)
+        if not os.path.exists(os.path.join(self.QuArKpath, gamename)):
+            os.mkdir(os.path.join(self.QuArKpath, gamename))
             hadfolder = 0
             # Makes the calls to the processing functions.
             if makedatafile == "10":
