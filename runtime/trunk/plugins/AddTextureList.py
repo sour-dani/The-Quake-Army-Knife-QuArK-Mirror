@@ -11,8 +11,8 @@
 import os, os.path
 
 def AddTextures(QuArKpath, gamename, gamefileslocation, texturesfolder, texturesfiletype):
-    WorkDirectory = (QuArKpath + '\\' + gamename)  ### Sets work folder (where .qrk file will be) Path here.
-    GameFolder = gamefileslocation.split('\\')[-1]
+    WorkDirectory = os.path.join(QuArKpath, gamename)  ### Sets work folder (where .qrk file will be) Path here.
+    GameFolder = os.path.split(gamefileslocation)[-1]
 
     TexFileTypeList = texturesfiletype.replace(" ","").replace("*","").split(";")
 
@@ -49,7 +49,7 @@ def AddTextures(QuArKpath, gamename, gamefileslocation, texturesfolder, textures
 
     filenames = []
 
-    o = open(WorkDirectory + "\\" + gamename + "Textures.qrk", "w")
+    o = open(os.path.join(WorkDirectory, gamename + "Textures.qrk"), "w")
 
     ### Writes the new .qrk file header.
     o.write("QQRKSRC1\n")

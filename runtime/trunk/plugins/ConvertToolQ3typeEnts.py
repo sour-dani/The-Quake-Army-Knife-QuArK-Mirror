@@ -16,16 +16,13 @@ def Q3typeEntList(root, QuArKpath, gamename, gamefileslocation,
          WriteModelBrowser, UseModelBrowser, UseDefaultModelHint, ModelHint, WriteSoundBrowser,
          UseSoundBrowser, UseDefaultSoundHint, SoundHint, WriteMusicBrowser, UseMusicBrowser,
          UseDefaultMusicHint, MusicHint, UseColorPicker):
- #   WorkDirectory = "c:\\cdunde_EF2\\"  ### Set Path here to your WorkDirectory.
- #   entitiesfolder = "game"  ### Set the name of the entitiesfolder to be scanned here (where any files & sub-folders are).
- #   entitiesfiletype = ".cpp"  ### Set the entitiesfiletype to scan here.
     OutPutList = (gamename + "Entities")  ### Change the output list name here to what you want.
 
     OutPutList = OutPutList + ".def"
     dirname = entitiesfolder
-    o = open(QuArKpath + '\\' + gamename + '\\' + OutPutList, "w")
+    o = open(os.path.join(QuArKpath, gamename, OutPutList), "w")
     SpcList = OutPutList.replace(".def" , ".spf")
-    specifics = open(QuArKpath + '\\' + gamename + '\\' + SpcList, "w")
+    specifics = open(os.path.join(QuArKpath, gamename, SpcList), "w")
 
     names = os.listdir(dirname)
 
@@ -204,17 +201,15 @@ def Q3typeEntList(root, QuArKpath, gamename, gamefileslocation,
     o.close()
     specifics.close()
 
-    import quarkx
     import entdef2qrk
-    filepath = (QuArKpath + '\\' + gamename + '\\' + OutPutList)
+    filepath = os.path.join(QuArKpath, gamename, OutPutList)
     file = entdef2qrk.makeqrk(root, filepath, filepath, 1)
     if file is None:
-        WorkDirectory = (QuArKpath + '\\' + gamename)
-        WorkDirectory = WorkDirectory.replace("\\", "/")
-        os.remove(WorkDirectory + '/' + gamename + 'Entities' + '.def') # Deletes this temp file.
-        os.remove(WorkDirectory + '/' + gamename + 'Entities' + '.spf') # Deletes this temp file.
+        WorkDirectory = os.path.join(QuArKpath, gamename)
+        os.remove(os.path.join(WorkDirectory, gamename + 'Entities' + '.def')) # Deletes this temp file.
+        os.remove(os.path.join(WorkDirectory, gamename + 'Entities' + '.spf')) # Deletes this temp file.
     else:
-        savepath = (QuArKpath + '\\' + gamename + '\\' + file.name)
+        savepath = os.path.join(QuArKpath, gamename, file.name)
         file.savefile(savepath, 1)
         import AddSpecificsList
         AddSpecificsList.AddSpecifics(QuArKpath, gamename, gamefileslocation, gamepakfiletype,

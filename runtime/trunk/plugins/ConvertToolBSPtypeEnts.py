@@ -23,19 +23,19 @@ def BSPtypeEntList(root, QuArKpath, gamename, gamefileslocation,
  #   entitiesfiletype = ".bsp"    ### Set the entitiesfiletype to scan here.
 
     OutPutList = (gamename + "Entities")  ### Changes the output list name here to what you want.
-    GameFolder = gamefileslocation.split("\\")[-1] # "Base"   ### Sets the game folder name here.
+    GameFolder = os.path.split(gamefileslocation)[-1] # "Base"   ### Sets the game folder name here.
     PakFile = gamepakfiletype.replace(".", "")     # "pk3"    ### Sets the Pak file type (no period) to call here.
     ModelType = modelfiletype.replace(".", "")     # "tik"    ### Sets the model file type (no period) to call here.
     SoundType = soundfiletype.replace(".", "")     # "wav"    ### Sets the sound file type (no period) to call here to play a sound.
     MusicType = musicfiletype.replace(".", "")     # "mus"    ### Sets the model file type (no period) to call here to play music.
-    entitiy_count = 0
+    entity_count = 0
     form_count = 0
 
     OutPutList = OutPutList + ".log"
     dirname = entitiesfolder
-    o = open(QuArKpath + '\\' + gamename + '\\' + OutPutList, "w")
+    o = open(os.path.join(QuArKpath, gamename, OutPutList), "w")
     QRKfile = OutPutList.replace(".log" , ".qrk")
-    q = open(QuArKpath + '\\' + gamename + '\\' + QRKfile, "w")
+    q = open(os.path.join(QuArKpath, gamename, QRKfile), "w")
 
     names = os.listdir(dirname)
     groupnames = {}
@@ -138,7 +138,7 @@ def BSPtypeEntList(root, QuArKpath, gamename, gamefileslocation,
         if name.endswith(entitiesfiletype) or name.find(".") != -1:   ### Checks if this is a file name or a folder name
             pass
         else:
-            foldername = dirname + "\\" + name
+            foldername = os.path.join(dirname, name)
     #        o.write(foldername + "\n")   ### Writes the sub-folder name to our file.
             try:
                 filenames = os.listdir(foldername)
@@ -296,7 +296,7 @@ def BSPtypeEntList(root, QuArKpath, gamename, gamefileslocation,
          #       pass
             group_ent_names = primary_ents[group_name]
             for ent_name in group_ent_names:
-                entitiy_count = entitiy_count + 1 # Used just for console printout for checking all were processed.
+                entity_count = entity_count + 1 # Used just for console printout for checking all were processed.
                 fix_name = ent_name.lower()
                 ent_Specs = classnames[ent_name]['Specs']
                 type = ":e =\n" # Sets our default entity type.
@@ -368,9 +368,9 @@ def BSPtypeEntList(root, QuArKpath, gamename, gamefileslocation,
                         q.write("          ;incl = \"defpoly\"\n")
                 q.write("        }\n")
 
-            q.write("      }\n") ### Closes each entitiy's category sub-folder.
+            q.write("      }\n") ### Closes each entity's category sub-folder.
 
-        q.write("    }\n") ### Closes the entitiy's section in the Toolbox.
+        q.write("    }\n") ### Closes the entity's section in the Toolbox.
         q.write("  }\n") ### Closes the Toolbox Folders section.
 
         ### Writes all the needed "includes" in the Entities form: section here.
@@ -462,7 +462,7 @@ def BSPtypeEntList(root, QuArKpath, gamename, gamefileslocation,
             while spawnflag:
                 if spawnflag % 2:
                     #Odd number; found a flag!
-                    keys += [value]
+                    keys.append(value)
                     spawnflag -= 1
                 spawnflag /= 2
                 value *= 2
@@ -564,13 +564,13 @@ def BSPtypeEntList(root, QuArKpath, gamename, gamefileslocation,
                     q.write("        hint = \"Created from .bsp file.\"$0D\"This item needs to be updated by hand\"$0D\"in this games addons .qrk file.\"\n")
                     q.write("      }\n")
 
-                q.write("    }\n") ### Closes this Entitie's form: here.
+                q.write("    }\n") ### Closes this Entity's form: here.
 
 
         q.write("  }\n") ### Closes the Entities form: section here.
         q.write("}\n") ### Closes the new .qrk file contents here.
-    print "entitiy_count check", entitiy_count
-    print "form_count check", form_count
+#    debug("entity_count check: "+`entity_count`)
+#    debug("form_count check: "+`form_count`)
 
     ### This section closes all open files.
     o.close()

@@ -10,12 +10,11 @@
 import os, os.path
 
 def AddMdlEnts(QuArKpath, gamename, gamefileslocation, modelfiletype, mdlentsfolder, mdlentsfiletype):
-    WorkDirectory = (QuArKpath + '\\' + gamename)  ### Sets work folder (where .qrk file will be) Path here.
-
-    o = open(WorkDirectory + "\\" + gamename + "Weapon-ModelEntities.qrk", "w")
+    WorkDirectory = os.path.join(QuArKpath, gamename)  ### Sets work folder (where .qrk file will be) Path here.
 
     filenames = os.listdir(mdlentsfolder)
-    count = 0
+
+    o = open(os.path.join(WorkDirectory, gamename + "Weapon-ModelEntities.qrk"), "w")
 
     ### Writes the new .qrk file header.
     o.write("QQRKSRC1\n")
@@ -37,6 +36,7 @@ def AddMdlEnts(QuArKpath, gamename, gamefileslocation, modelfiletype, mdlentsfol
     o.write("    ;desc = \"Created from " + gamename + " models/weapons " + mdlentsfiletype +" files.\"\n")
 
     ### Writes all the individual Entities e: sections here.
+    count = 0
     for file in filenames:
         if file.endswith(mdlentsfiletype):
             if count == 0:
@@ -64,9 +64,9 @@ def AddMdlEnts(QuArKpath, gamename, gamefileslocation, modelfiletype, mdlentsfol
                 s = i.readline()
             count = 0
             i.close()
-            o.write("      }\n") ### Closes each entitiy's category sub-folder.
+            o.write("      }\n") ### Closes each entity's category sub-folder.
 
-    o.write("    }\n") ### Closes the entitiy's section in the Toolbox.
+    o.write("    }\n") ### Closes the entity's section in the Toolbox.
     o.write("  }\n") ### Closes the Toolbox Folders section.
 
     ### Writes all the needed "includes" in the Entities form: section here.

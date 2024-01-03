@@ -792,13 +792,13 @@ class BotWaypointer(StandardDuplicator):
             return []
         # Local function to create dummy entity, so the waypoints become visible in the 2D-views
         # without the need to have this duplicator selected.
-        def makeentitiy(obj):
+        def makeentity(obj):
             newobj = quarkx.newobj("info_waypoint:e")
             newobj["origin"] = str(obj.origin)
             newobj.translate(quarkx.vect(0, 0, 0)) # damn - if this isn't here, the entities will not show in the views
             return newobj
         # Create the list of dummy entities
-        botwaypointerpointentities = map(makeentitiy, self.dup.subitems)
+        botwaypointerpointentities = map(makeentity, self.dup.subitems)
         return botwaypointerpointentities
 
     def handles(self, editor, view):

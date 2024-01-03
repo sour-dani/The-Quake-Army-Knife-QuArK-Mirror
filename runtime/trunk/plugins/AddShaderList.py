@@ -18,13 +18,13 @@ from ConvertToolGet_tokens import *
 
 def AddShaders(QuArKpath, gamename, gamefileslocation, shadersfolder, shadersfiletype):
     global skip, text
-    WorkDirectory = (QuArKpath + '\\' + gamename)  ### Sets work folder (where .qrk file will be) Path here.
+    WorkDirectory = os.path.join(QuArKpath, gamename)  ### Sets work folder (where .qrk file will be) Path here.
     ### Sets the shader's file folder name here.
-    filesfoldername = shadersfolder.split('\\')
+    filesfoldername = os.path.split(shadersfolder)
     filesfoldername = filesfoldername[len(filesfoldername)-1]
     whatkind = filesfoldername.capitalize()  ### Sets what they are called here.
     ### Sets the game FOLDER name here (where the games .pak or "shaders" folder is).
-    GameFolder = gamefileslocation.split('\\')[-1]
+    GameFolder = os.path.split(gamefileslocation)[-1]
 
     ### Write the includes list:
     def listincludes(basefolder, foldername, filenames):
@@ -45,7 +45,7 @@ def AddShaders(QuArKpath, gamename, gamefileslocation, shadersfolder, shadersfil
         for name in filenames:
             if not name.endswith(shadersfiletype):
                 continue
-            tokens = getTokens(foldername + "\\" + name, 1)
+            tokens = getTokens(os.path.join(foldername, name), 1)
             iToken = iter(tokens)
             tokenType, tokenValue = iToken.next()
             hastextures = 0
@@ -123,7 +123,7 @@ def AddShaders(QuArKpath, gamename, gamefileslocation, shadersfolder, shadersfil
             templist = {} # Holds the shader data needed for writing later, used by 'tempname'.
             if not name.endswith(shadersfiletype):
                 continue
-            tokens = getTokens(foldername + "\\" + name, 1)
+            tokens = getTokens(os.path.join(foldername, name), 1)
             iToken = iter(tokens)
             tokenType, tokenValue = iToken.next()
             while tokenType != T_EOF:
@@ -178,7 +178,7 @@ def AddShaders(QuArKpath, gamename, gamefileslocation, shadersfolder, shadersfil
 
     filenames = []
 
-    o = open(WorkDirectory + "\\" + gamename + whatkind + ".qrk", "w")
+    o = open(os.path.join(WorkDirectory, gamename + whatkind + ".qrk"), "w")
 
     ### Writes the new .qrk file header.
     o.write("QQRKSRC1\n")

@@ -110,13 +110,15 @@ def getToken(infile, shaders):
 
 def getTokens(inname, shaders=0):
     infile = open(inname, "r")
-    result = []
-    while 1:
-        tokenType, tokenValue = getToken(infile, shaders)
-        result.append((tokenType, tokenValue))
-        if tokenType == T_EOF:
-            break
-    infile.close()
+    try:
+        result = []
+        while 1:
+            tokenType, tokenValue = getToken(infile, shaders)
+            result.append((tokenType, tokenValue))
+            if tokenType == T_EOF:
+                break
+    finally:
+        infile.close()
     return result
 
 if __name__ == "__main__":
@@ -124,6 +126,6 @@ if __name__ == "__main__":
     print "You are not supposed to run this, usage is:"
     print ""
     print ">>> from get_tokens import *"
-    print '>>> tokens = getTokens(gamefileslocation + "\\" + filesfoldername + "\\" + name)'
+    print '>>> tokens = getTokens(os.path.join(gamefileslocation, filesfoldername, name))'
     print ""
     print ">>> See plugins AddsShadersList.py for example of its usage."

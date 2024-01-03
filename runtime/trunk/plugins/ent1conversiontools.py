@@ -569,23 +569,24 @@ def MakeUserDataFile(root, QuArKpath, gamename, gameenginetype, gamefileslocatio
     "Makes a new UserData' gamename'.qrk file"
     "using the UserData file of the gameenginetype."
 
-    newfilesfolderpath = QuArKpath + '\\' + gamename
+    newfilesfolderpath = os.path.join(QuArKpath, gamename)
 
     if gameenginetype == "Half-Life":
-        input = open(QuArKpath + '\\addons\\Half-Life\\UserData Half-Life.qrk', "r")
+        input = open(os.path.join(QuArKpath, 'addons', 'Half-Life', 'UserData Half-Life.qrk'), "r")
     elif gameenginetype == "Half-Life2":
-        input = open(QuArKpath + '\\addons\\Half-Life2\\UserData Half-Life2.qrk', "r")
+        input = open(os.path.join(QuArKpath, 'addons', 'Half-Life2', 'UserData Half-Life2.qrk'), "r")
     elif gameenginetype == "Quake 1":
-        input = open(QuArKpath + '\\addons\\Quake_1\\UserData Quake 1.qrk', "r")
+        input = open(os.path.join(QuArKpath, 'addons', 'Quake_1', 'UserData Quake 1.qrk'), "r")
     elif gameenginetype == "Quake 2":
-        input = open(QuArKpath + '\\addons\\Quake_2\\UserData Quake 2.qrk', "r")
+        input = open(os.path.join(QuArKpath, 'addons', 'Quake_2', 'UserData Quake 2.qrk'), "r")
     elif gameenginetype == "Quake 3":
-        input = open(QuArKpath + '\\addons\\Quake_3\\UserData Quake 3.qrk', "r")
+        input = open(os.path.join(QuArKpath, 'addons', 'Quake_3', 'UserData Quake 3.qrk'), "r")
     elif gameenginetype == "Doom 3":
-        input = open(QuArKpath + '\\addons\\Doom_3\\UserData Doom 3.qrk', "r")
+        input = open(os.path.join(QuArKpath, 'addons', 'Doom_3', 'UserData Doom 3.qrk'), "r")
     else:
-        input = open(QuArKpath + '\\addons\\Quake_3\\UserData Quake 3.qrk', "r")
-    output = open(newfilesfolderpath + '\\' + ('UserData ' + gamename + '.qrk'), "w")
+        print "Unknown game engine type, defaulting to Quake 3"
+        input = open(os.path.join(QuArKpath, 'addons', 'Quake_3', 'UserData Quake 3.qrk'), "r")
+    output = open(os.path.join(newfilesfolderpath, 'UserData ' + gamename + '.qrk'), "w")
 
     while 1:
         line = input.readline()
@@ -619,6 +620,9 @@ def MakeUserDataFile(root, QuArKpath, gamename, gameenginetype, gamefileslocatio
             line = line.replace('Quake 3', gamename)
         elif gameenginetype == "Doom 3":
             line = line.replace('Doom 3', gamename)
+        else:
+            print "Unknown game engine type, defaulting to Quake 3"
+            pass
         output.write(line)
 
     input.close()
@@ -854,22 +858,25 @@ def MakeDataFile(root, QuArKpath, gamename, gameenginetype, gamefileslocation,
     pakfile = gamepakfiletype.replace('.', "")
     pakfile = pakfile.strip()
 
-    newfilesfolderpath = QuArKpath + '\\' + gamename
+    newfilesfolderpath = os.path.join(QuArKpath, gamename)
 
     if gameenginetype == "Half-Life":
-        input = open(QuArKpath + '\\addons\\Half-Life\\DataHL.qrk')
+        input = open(os.path.join(QuArKpath, 'addons', 'Half-Life', 'DataHL.qrk'), "r")
     elif gameenginetype == "Half-Life2":
-        input = open(QuArKpath + '\\addons\\Half-Life2\\DataHL2.qrk')
+        input = open(os.path.join(QuArKpath, 'addons', 'Half-Life2', 'DataHL2.qrk'), "r")
     elif gameenginetype == "Quake 1":
-        input = open(QuArKpath + '\\addons\\Quake_1\\DataQ1.qrk')
+        input = open(os.path.join(QuArKpath, 'addons', 'Quake_1', 'DataQ1.qrk'), "r")
     elif gameenginetype == "Quake 2":
-        input = open(QuArKpath + '\\addons\\Quake_2\\DataQ2.qrk')
+        input = open(os.path.join(QuArKpath, 'addons', 'Quake_2', 'DataQ2.qrk'), "r")
     elif gameenginetype == "Quake 3":
-        input = open(QuArKpath + '\\addons\\Quake_3\\DataQ3.qrk')
+        input = open(os.path.join(QuArKpath, 'addons', 'Quake_3', 'DataQ3.qrk'), "r")
     elif gameenginetype == "Doom 3":
-        input = open(QuArKpath + '\\addons\\Doom_3\\DataD3.qrk')
+        input = open(os.path.join(QuArKpath, 'addons', 'Doom_3', 'DataD3.qrk'), "r")
+    else:
+        print "Unknown game engine type, defaulting to Quake 3"
+        input = open(os.path.join(QuArKpath, 'addons', 'Quake_3', 'DataQ3.qrk'), "r")
 
-    output = open(newfilesfolderpath + '\\' + ('Data' + gamename + '.qrk'), "w")
+    output = open(os.path.join(newfilesfolderpath, 'Data' + gamename + '.qrk'), "w")
 
     while 1:
         line = input.readline()
@@ -904,6 +911,9 @@ def MakeDataFile(root, QuArKpath, gamename, gameenginetype, gamefileslocation,
             line = line.replace('Quake 3', gamename)
         elif gameenginetype == "Doom 3":
             line = line.replace('Doom 3', gamename)
+        else:
+            print "Unknown game engine type, defaulting to Quake 3"
+            pass
 
    ### Changes everything with "shader".
    #     if line.find("shader") != -1:
@@ -1131,7 +1141,7 @@ class TypeOfConversionDlg(quarkpy.qmacro.dialogbox):
                    "or enter this file's type suffix here by hand."$0D
                    "A single file example: tga"$0D
                    "A multiple file example: tga; *.png"$0D
-                   "The ( ; *.png ) can be added at the end of a seleced file as well."
+                   "The ( ; *.png ) can be added at the end of a selected file as well."
             }
 
         ModelFolder: =
@@ -1189,7 +1199,7 @@ class TypeOfConversionDlg(quarkpy.qmacro.dialogbox):
                    "or enter the GAME SOUND file(s) here by hand."$0D
                    "A single file example: wav"$0D
                    "A multiple file example: wav; *.mp3"$0D
-                   "The ( ; *.mp3 ) can be added at the end of a seleced file as well."
+                   "The ( ; *.mp3 ) can be added at the end of a selected file as well."
             }
 
         MusicFolder: =
@@ -1221,7 +1231,7 @@ class TypeOfConversionDlg(quarkpy.qmacro.dialogbox):
                    "or enter the GAME MUSIC file(s) here by hand."$0D
                    "A single file example: mus"$0D
                    "A multiple file example: mus; *.mp3"$0D
-                   "The ( ; *.mp3 ) can be added at the end of a seleced file as well."
+                   "The ( ; *.mp3 ) can be added at the end of a selected file as well."
             }
 
         sep: = { Typ="S" Txt="" }

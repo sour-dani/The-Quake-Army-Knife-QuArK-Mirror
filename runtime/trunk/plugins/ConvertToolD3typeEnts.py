@@ -584,7 +584,7 @@ def D3typeEntList(root, QuArKpath, gamename, gamefileslocation,
         o.write(modelbrowser)
         o.write("\n")
 
-    ### Coded to allow nore then one type of file when written like this "wav; *.mp3" in the dialog input box.
+    ### Coded to allow more than one type of file when written like this "wav; *.mp3" in the dialog input box.
     SoundFileType = soundfiletype
     if SoundFileType.startswith('.'):
         SoundFileType = SoundFileType.strip('.')
@@ -812,7 +812,7 @@ def D3typeEntList(root, QuArKpath, gamename, gamefileslocation,
         o.write('    }\n')
         o.write('\n')
 
-    ### Coded to allow nore then one type of file when written like this "mus; *.mp3" in the dialog input box.
+    ### Coded to allow more than one type of file when written like this "mus; *.mp3" in the dialog input box.
     MusicFileType = musicfiletype
     if MusicFileType.startswith('.'):
         MusicFileType = MusicFileType.strip('.')

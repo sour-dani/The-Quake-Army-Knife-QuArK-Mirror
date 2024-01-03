@@ -10,13 +10,14 @@
 """
 
 import os, os.path
+import quarkx
 
 def AddSpecifics(QuArKpath, gamename, gamefileslocation, gamepakfiletype,
                  modelfiletype, soundfiletype, musicfiletype, WriteCommonSpecifics, UseCommonSpecifics,
                  WriteModelBrowser, UseModelBrowser, UseDefaultModelHint, ModelHint, WriteSoundBrowser,
                  UseSoundBrowser, UseDefaultSoundHint, SoundHint, WriteMusicBrowser, UseMusicBrowser,
                  UseDefaultMusicHint, MusicHint, UseColorPicker):
-    WorkDirectory = (QuArKpath + '\\' + gamename)  ### Sets work folder (where .qrk file will be) Path here.
+    WorkDirectory = os.path.join(QuArKpath, gamename)  ### Sets work folder (where .qrk file will be) Path here.
     Description = (gamename + " Entities")
 
     ### Additional Optional Settings (start):
@@ -46,7 +47,7 @@ def AddSpecifics(QuArKpath, gamename, gamefileslocation, gamepakfiletype,
     #            -    What ever hint method is used for one entity, that same method will be used for all entities.
     GamePakFileType = gamepakfiletype.replace('.', "").strip()
     ModelFileType = modelfiletype.replace('.', "").strip()
-    GameFolderName = gamefileslocation.split('\\')[-1]
+    GameFolderName = os.path.split(gamefileslocation)[-1]
 
     if ModelHint is None:
         ModelHint = ""
@@ -76,7 +77,7 @@ def AddSpecifics(QuArKpath, gamename, gamefileslocation, gamepakfiletype,
     #            - Adding something to "SoundHint" will display that hint, other wise if one exist it will be used instead.
     #            -    If "UseDefaultSoundHint" is set to 1 then that hint will be used.
     #            -    What ever hint method is used for one entity, that same method will be used for all entities.
-    ### Coded to allow nore then one type of file when written like this "wav; *.mp3" in the dialog input box.
+    ### Coded to allow more than one type of file when written like this "wav; *.mp3" in the dialog input box.
     SoundFileType = soundfiletype
     if SoundFileType.startswith('.'):
         SoundFileType = SoundFileType.strip('.')
@@ -113,7 +114,7 @@ def AddSpecifics(QuArKpath, gamename, gamefileslocation, gamepakfiletype,
     #            -    If "UseDefaultMusicHint" is checked then that hint will be used.
     #            -    This hint method and settings only apply to the "worldspawn" entity.
     #            -    But can be copied and pasted to others once the new GameEntities.qrk file is created.
-    ### Coded to allow nore then one type of file when written like this "mus; *.mp3" in the dialog input box.
+    ### Coded to allow more than one type of file when written like this "mus; *.mp3" in the dialog input box.
     MusicFileType = musicfiletype
     if MusicFileType.startswith('.'):
         MusicFileType = MusicFileType.strip('.')
@@ -155,7 +156,7 @@ def AddSpecifics(QuArKpath, gamename, gamefileslocation, gamepakfiletype,
             print "No .spf file found !"
             print "See & use the 'GetQ3typeEntitiesList.py' file first to create the needed .spf file"
             print "Operation Terminated !"
-            print "\a" # Makes the computer "Beep" once if a file is not found.
+            quarkx.beep() # Makes the computer "Beep" once if a file is not found.
     for name in range(len(names)):
         if names[name] == "New file.qrk":
             break
@@ -164,7 +165,7 @@ def AddSpecifics(QuArKpath, gamename, gamefileslocation, gamepakfiletype,
             print "See & use the 'GetQ3typeEntitiesList.py' file to create the needed .def and .spf files."
             print "Then use QuArK to create the needed 'New file.qrk' file needed."
             print "Operation Terminated !"
-            print "\a" # Makes the computer "Beep" once if a file is not found.
+            quarkx.beep() # Makes the computer "Beep" once if a file is not found.
 
     output = open(os.path.join(WorkDirectory, OutPutList), "w")
     qrkinput = open(os.path.join(WorkDirectory, "New file.qrk"), "r")
@@ -319,7 +320,7 @@ def AddSpecifics(QuArKpath, gamename, gamefileslocation, gamepakfiletype,
     qrkinput.close()
     output.close()
     WorkDirectory = WorkDirectory.replace("\\", "/")
-    os.remove(WorkDirectory + '/New file.qrk') # Deletes this temp file.
-    os.remove(WorkDirectory + '/' + gamename + 'Entities' + '.def') # Deletes this temp file.
-    os.remove(WorkDirectory + '/' + gamename + 'Entities' + '.spf') # Deletes this temp file.
+    os.remove(os.path.join(WorkDirectory, 'New file.qrk')) # Deletes this temp file.
+    os.remove(os.path.join(WorkDirectory, gamename + 'Entities' + '.def')) # Deletes this temp file.
+    os.remove(os.path.join(WorkDirectory, gamename + 'Entities' + '.spf')) # Deletes this temp file.
 
