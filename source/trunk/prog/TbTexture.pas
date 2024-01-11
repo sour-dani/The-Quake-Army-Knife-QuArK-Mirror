@@ -22,8 +22,8 @@ unit TbTexture;
 
 interface
 
-uses Windows, Messages, SysUtils, Classes, Graphics, Controls, Dialogs,
-     QkObjects, QkFileObjects, Forms, QkForm;
+uses Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
+     QkObjects, QkForm;
 
  {------------------------}
 
@@ -35,7 +35,7 @@ procedure DynamicTextureToolbar(Tex: TWinControl; const nLinks: TQList);
 
 implementation
 
-uses Setup, FormCfg, Undo, Quarkx, QkFormCfg;
+uses Setup, FormCfg, Quarkx, QkFileObjects, QkFormCfg;
 
 const
  txName = '_FORMTex';
@@ -134,7 +134,6 @@ end;
 destructor TTbTex.Destroy;
 begin
 {Unlink;}
-{Inc(DisableArrangeControls);}
  FormCfg1.Free;
  if ObjFormCfg<>Nil then ObjFormCfg.AddRef(-1);
  inherited;

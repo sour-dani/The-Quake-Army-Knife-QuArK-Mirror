@@ -69,7 +69,7 @@ end;
 
 function ConstructQObject(const Name: String; nParent: QObject) : QObject;
 { (Comment by Decker 2001-01-21)
- This function, will create an object based on the 'TypeInfo/FilenameExtension'
+ This function will create an object based on the 'TypeInfo/FilenameExtension'
  of the 'Name'. E.q. if 'Name' contains "MyTexture.WAL", it will create an object
  of the registered class which 'TypeInfo()' function return ".WAL".
   (Update by Decker 2002-06-20)
