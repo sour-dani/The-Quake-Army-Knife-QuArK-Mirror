@@ -456,7 +456,6 @@ var
  ItemIndex: Integer;
  S, T: String;
  L: TStringList;
- C: TColor;
 begin
  Log(LOG_VERBOSE, 'Preparing QuArK Explorer...');
 
@@ -487,7 +486,7 @@ begin
  FExplorer.SetMarsCaption(Self);
  FExplorer.ViewPanel:=Panel2;
  FExplorer.CreateSplitter;
- {InitSetup;  called by PythonLoadMain}
+ {InitSetup;  called by InitPython}
  ClearExplorer;
  RestorePositionTb('Main', False, FExplorer);
  OnCloseQuery:=FormCloseQuery;
@@ -573,14 +572,10 @@ begin
  HelpMenu.Items.Add(Item);
  {$ENDIF}
 
- C:=GetDockColor;
- topdock.Color:=C;
- leftdock.Color:=C;
- rightdock.Color:=C;
- bottomdock.Color:=C;
-
 {Image1.Picture.Bitmap.LoadFromResourceName(HInstance, 'QUARKLOGO');
  StatusBar1.SimpleText:=FmtLoadStr1(1, [QuArKVersion]);}
+
+ Perform(cm_SysColorChange, 0, 0); //Set the dock color
 end;
 
 (*procedure TForm1Button1Click(Sender: TObject);

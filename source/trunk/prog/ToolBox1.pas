@@ -851,14 +851,8 @@ begin
 end;
 
 procedure TToolBoxForm.FormCreate(Sender: TObject);
-var
- C: TColor;
 begin
- C:=GetDockColor;
- topdock.Color:=C;
- leftdock.Color:=C;
- rightdock.Color:=C;
- bottomdock.Color:=C;
+ Perform(cm_SysColorChange, 0, 0); //Set the dock color
 end;
 
 procedure TToolBoxForm.cmSysColorChange(var Msg: TWMSysCommand);

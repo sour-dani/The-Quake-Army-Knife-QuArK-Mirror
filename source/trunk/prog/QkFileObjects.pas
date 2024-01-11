@@ -2628,18 +2628,12 @@ begin
 end;
 
 procedure TQForm1.FormCreate(Sender: TObject);
-var
- C: TColor;
 begin
  DefPosition:=BoundsRect;
  MarsCap.ActiveBeginColor:=clNavy;
  MarsCap.ActiveEndColor:=clNavy;
  UpdateMarsCap;
- C:=GetDockColor;
- topdock.Color:=C;
- leftdock.Color:=C;
- rightdock.Color:=C;
- bottomdock.Color:=C;
+ Perform(cm_SysColorChange, 0, 0); //Set the dock color
 end;
 
 procedure TQForm1.cmSysColorChange(var Msg: TWMSysCommand);
