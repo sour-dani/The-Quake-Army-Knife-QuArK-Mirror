@@ -28,7 +28,8 @@ procedure OpenFullscreenWindow(const Caption: String; Root: QObject);
 
 implementation
 
-uses Messages, QkExceptions, Coordinates, EdSceneObject, qmath, Setup, Qk3D;
+uses Messages, QkExceptions, Coordinates, EdSceneObject, qmath, Setup, Qk3D,
+  ExtraFunctionality;
 
 type
   QFullScreenWindow = class
@@ -37,28 +38,27 @@ type
     Handle: HWND;
     FScene: TSceneObject;
     MapProjView: TCameraCoordinates;
-    PrevFrameTimer: Int64; //Delphi bug: LARGE_INTEGER doesn't work here!
-    FrameTimerFreq: Int64;
+    PrevFrameTimer: TLargeInteger;
+    FrameTimerFreq: TLargeInteger;
+    Caption: String;
+    Root: QObject;
+    NeedRerender: Boolean;
   public
-    constructor Create;
+    constructor Create(const nCaption: String; nRoot: QObject);
     destructor Destroy; override;
-    procedure Init(const nCaption: String);
+    procedure Init();
     function MessagePump : WPARAM;
     property Scene : TSceneObject read FScene;
   end;
-
-var
-  FSWindow: QFullScreenWindow;
 
 const
   FullScreenWindowClassName: string = 'QuArK FullScreen Window Class';
 
 var
+  FSWindow: QFullScreenWindow; //We're only allowing one fullscreen window at a time.
   FullScreenWindowClassRegistered: Boolean;
   FullScreenWindowClass: WNDCLASSEX;
   FullScreenWindowClassAtom: ATOM;
-  FullScreenCaption: String;
-  FullScreenRoot: QObject;
 
  { ----------------- }
 
@@ -67,12 +67,9 @@ begin
 //  if FSWindow<>nil then
 //    raise
 
-  FullScreenRoot:=Root;
-  FullScreenCaption:=Caption;
-
-  FSWindow:=QFullScreenWindow.Create;
+  FSWindow:=QFullScreenWindow.Create(Caption, Root);
   try
-    FSWindow.Init(FullScreenCaption);
+    FSWindow.Init();
     FSWindow.MessagePump();
   finally
     FSWindow.Free;
@@ -88,18 +85,19 @@ begin
   case Msg of
   WM_DESTROY:
   begin
-    //@
-    FSWindow.FScene.Free;
-    FSWindow.FScene:=nil;
+    with FSWindow do
+    begin
+      FScene.Free;
+      FScene:=nil;
 
-    FSWindow.Quit:=true;
-
-    Result := DefWindowProc(hWnd,Msg,wParam,lParam);
+      Quit:=true;
+    end;
+    Result := DefWindowProc(hWnd, Msg, wParam, lParam);
   end;
   WM_KILLFOCUS:
   begin
     DestroyWindow(hWnd);
-    Result := DefWindowProc(hWnd,Msg,wParam,lParam);
+    Result := DefWindowProc(hWnd, Msg, wParam, lParam);
   end;
   WM_PAINT:
   begin
@@ -107,9 +105,18 @@ begin
     try
       if DC<>0 then
       begin
-        //@
-        if FSWindow.Scene<>nil then
-          FSWindow.Scene.Draw3DView();
+        with FSWindow do
+        begin
+          if Scene<>nil then
+          begin
+            if NeedRerender then
+            begin
+              Scene.Render3DView();
+              NeedRerender:=False;
+            end;
+            Scene.Draw3DView();
+          end;
+        end;
       end;
     finally
       EndPaint(hWnd, PaintInfo);
@@ -124,16 +131,18 @@ begin
     Result := 0;
   end;
   else
-    Result := DefWindowProc(hWnd,Msg,wParam,lParam);
+    Result := DefWindowProc(hWnd, Msg, wParam, lParam);
   end;
 end;
 
  { ----------------- }
 
-constructor QFullScreenWindow.Create;
+constructor QFullScreenWindow.Create(const nCaption: String; nRoot: QObject);
 begin
-  inherited;
   Quit:=False;
+  inherited Create();
+  Root:=nRoot;
+  Caption:=nCaption;
   if not FullScreenWindowClassRegistered then
   begin
     FillChar(FullScreenWindowClass, SizeOf(FullScreenWindowClass), 0);
@@ -164,7 +173,7 @@ begin
   inherited;
 end;
 
-procedure QFullScreenWindow.Init(const nCaption: String);
+procedure QFullScreenWindow.Init;
 var
  Setup: QObject;
  ClientRect: TRect;
@@ -187,7 +196,7 @@ begin
   //MinDistance:=Minoow / GetFloatSpec('DarkFactor', 1);
   MapProjView.MinDistance:=1.0;
 
-  Handle := CreateWindowEx({WS_EX_TOPMOST} 0, FullScreenWindowClass.lpszClassName, PChar(nCaption), WS_POPUP, 0, 0, Width, Height, 0, 0, hInstance, nil);
+  Handle := CreateWindowEx({WS_EX_TOPMOST} 0, FullScreenWindowClass.lpszClassName, PChar(Caption), WS_POPUP, 0, 0, Width, Height, 0, 0, hInstance, nil);
   if Handle = 0 then
     Raise EErrorFmt(6014, ['CreateWindow']);
 
@@ -206,23 +215,20 @@ begin
 
     FScene:=GetNewSceneObject();
     Scene.SetViewWnd(Handle);
-    if GetClientRect(Handle, ClientRect) = false then   //Is this the right error check?
+    if GetClientRect(Handle, ClientRect) = false then
       //Error@
       ;
     Scene.SetDrawRect(ClientRect);
     Scene.SetViewSize(ClientRect.Right - ClientRect.Left, ClientRect.Bottom - ClientRect.Top);
     Scene.Init(MapProjView, dmFullScreen, dt3D, rmTextured, Setup.Specifics.Strings['Lib'], AllowsGDI);
-    if FullScreenRoot<>nil then
-      Q3DObject(FullScreenRoot).AddTo3DScene(Scene);
+    if Root<>nil then
+      Q3DObject(Root).AddTo3DScene(Scene);
     Scene.BuildScene(0, nil);
-    Scene.Render3DView();
-    Scene.Draw3DView();
-
+    NeedRerender:=True;
   except
     DestroyWindow(Handle);
     raise;
   end;
-  //@
 
   ShowWindow(Handle, SW_SHOWNORMAL);
 end;
@@ -231,8 +237,9 @@ function QFullScreenWindow.MessagePump : WPARAM;
 var
   Msg: TMsg;
   Eye: TVect;
-  FrameTimer: Int64;
+  FrameTimer: TLargeInteger;
   TimeDiff: Double;
+  SceneChanged: Boolean;
 begin
   while not Quit do
   begin
@@ -241,15 +248,20 @@ begin
       //@
       if Scene<>nil then
       begin
+        SceneChanged:=false;
 
-        QueryPerformanceCounter(FrameTimer); //@ Check for errors
+        if QueryPerformanceCounter(FrameTimer) = false then
+          ; //@ Check for errors
         TimeDiff := (FrameTimer - PrevFrameTimer) / FrameTimerFreq;
         PrevFrameTimer := FrameTimer;
 
         if GetAsyncKeyState(vk_Down) and $8000 <> 0 then
         begin
           Eye := FSWindow.MapProjView.Camera;
-          Eye.X := Eye.X - 100.0 * TimeDiff;
+          if GetAsyncKeyState(VK_SHIFT) and $8000 <> 0 then
+            Eye.X := Eye.X - 1000.0 * TimeDiff
+          else
+            Eye.X := Eye.X - 100.0 * TimeDiff;
           MapProjView.Camera := Eye;
           MapProjView.ResetCamera();
           FScene.SetCoords(FSWindow.MapProjView);
@@ -259,7 +271,10 @@ begin
         if GetAsyncKeyState(vk_Up) and $8000 <> 0 then
         begin
           Eye := FSWindow.MapProjView.Camera;
-          Eye.X := Eye.X + 100.0 * TimeDiff;
+          if GetAsyncKeyState(VK_SHIFT) and $8000 <> 0 then
+            Eye.X := Eye.X + 1000.0 * TimeDiff
+          else
+            Eye.X := Eye.X + 100.0 * TimeDiff;
           MapProjView.Camera := Eye;
           MapProjView.ResetCamera();
           FScene.SetCoords(FSWindow.MapProjView);
@@ -267,10 +282,11 @@ begin
           //@
         end;
         //@
+        //@ SceneChanged:=true;
 
-        Scene.BuildScene(0, nil);
-        Scene.Render3DView();
-        Scene.Draw3DView();
+        if SceneChanged then
+          Scene.BuildScene(0, nil);
+        NeedRerender:=True;
         UpdateWindow(Handle);
       end;
     end
