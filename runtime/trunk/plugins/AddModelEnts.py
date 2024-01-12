@@ -7,7 +7,7 @@
             - The game's ".lst files" folder must be extracted.
 """
 
-import os, os.path
+import os
 
 def AddMdlEnts(QuArKpath, gamename, gamefileslocation, modelfiletype, mdlentsfolder, mdlentsfiletype):
     WorkDirectory = os.path.join(QuArKpath, gamename)  ### Sets work folder (where .qrk file will be) Path here.

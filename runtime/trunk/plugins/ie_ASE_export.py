@@ -15,7 +15,7 @@ Info = {
    "author e-mail": "cdunde@sbcglobal.net",
    "quark":         "Version 6.6.0 Beta 2" }
 
-import time, math, os, os.path, struct, sys
+import time, math, os, sys
 import quarkx
 import quarkpy.qeditor
 import quarkpy.qmacro

@@ -17,7 +17,7 @@ Info = {
    "quark":         "Version 6.4" }
 
 
-import os, os.path
+import os
 import quarkx
 from quarkpy.maputils import *
 import quarkpy.mapbtns

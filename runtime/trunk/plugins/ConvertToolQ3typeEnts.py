@@ -8,7 +8,7 @@
             - This program will go one sub-folder deep and can use any file type that uses the '/*QUAKED' key.
 """
 
-import os, os.path
+import os
 
 def Q3typeEntList(root, QuArKpath, gamename, gamefileslocation,
          gamepakfiletype, entitiesfolder, entitiesfiletype,

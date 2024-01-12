@@ -13,7 +13,7 @@ skip = []
 text = "" # This is a temporary place in memory to copy an existing file's data to and
           # add to it, or write new entity data to for making an new file later.
 
-import os, os.path
+import os
 from ConvertToolGet_tokens import *
 
 def AddShaders(QuArKpath, gamename, gamefileslocation, shadersfolder, shadersfiletype):

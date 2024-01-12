@@ -8,7 +8,7 @@
             - This code will process files in the main "textures" folder and all sub-folders on down.
 """
 
-import os, os.path
+import os
 
 def AddTextures(QuArKpath, gamename, gamefileslocation, texturesfolder, texturesfiletype):
     WorkDirectory = os.path.join(QuArKpath, gamename)  ### Sets work folder (where .qrk file will be) Path here.

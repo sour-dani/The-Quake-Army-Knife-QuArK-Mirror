@@ -17,6 +17,7 @@
 #
 
 import quarkx
+import os
 import sys
 
 def OutputPyObjects(filename='python_objects'):

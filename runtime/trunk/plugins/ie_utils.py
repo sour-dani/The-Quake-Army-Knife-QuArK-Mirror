@@ -8,7 +8,7 @@ Various Model importer\exporter utility functions.
 # FOUND IN FILE "COPYING.TXT"
 #
 
-import os, os.path, time
+import os, time
 import quarkx
 import quarkpy.qutils
 

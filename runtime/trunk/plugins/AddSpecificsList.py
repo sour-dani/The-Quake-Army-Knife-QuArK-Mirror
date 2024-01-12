@@ -9,7 +9,7 @@
             - See "Additional Optional Settings" below. Changed using this tools dialog.
 """
 
-import os, os.path
+import os
 import quarkx
 
 def AddSpecifics(QuArKpath, gamename, gamefileslocation, gamepakfiletype,

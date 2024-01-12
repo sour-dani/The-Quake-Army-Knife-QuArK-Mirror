@@ -8,7 +8,7 @@
             - This program can use any file type that uses the 'entityDef' key.
 """
 
-import os, os.path
+import os
 from ConvertToolGet_tokens import *
 
 def D3typeEntList(root, QuArKpath, gamename, gamefileslocation,

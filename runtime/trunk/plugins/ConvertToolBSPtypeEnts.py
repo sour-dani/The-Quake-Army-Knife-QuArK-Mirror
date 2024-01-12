@@ -9,7 +9,7 @@
             - This program will go one sub-folder deep and looks for the 'classname' key in the .bsp file.
 """
 
-import os, os.path
+import os
 
 def BSPtypeEntList(root, QuArKpath, gamename, gamefileslocation,
          gamepakfiletype, entitiesfolder, entitiesfiletype,

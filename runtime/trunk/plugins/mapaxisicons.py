@@ -23,7 +23,7 @@ import quarkpy.mapoptions
 import quarkpy.qeditor
 import quarkpy.qhandles
 from quarkpy.qutils import *
-import os.path
+import os
 
 
 #
