@@ -27,10 +27,6 @@ interface
 uses Classes, Types, Windows, SysUtils{$IFDEF Delphi6orNewerCompiler}, StrUtils{$ENDIF};
 
 type
-  QWORD = {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
-  PQWORD = ^QWORD;
-  LPQWORD = PQWORD;
-
 {$ifndef Delphi2orNewerCompiler}
   AnsiChar = Char;
   PAnsiChar = PChar;
@@ -51,6 +47,10 @@ type
   PDouble = ^Double;
   PPointer = ^Pointer;
 {$endif}
+
+  QWORD = {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
+  PQWORD = ^QWORD;
+  LPQWORD = PQWORD;
 
   DWORDLONG = {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
   PDWORDLONG = ^DWORDLONG;
