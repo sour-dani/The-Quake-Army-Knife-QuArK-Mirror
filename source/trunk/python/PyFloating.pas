@@ -189,7 +189,7 @@ end;}
 
 (*procedure TPyFloatingWnd.FormKeyPress(Sender: TObject; var Key: Char);
 begin
- if Key=#27 then
+ if Key=Char(vk_Escape) then
   begin
    Key:=#0;
    Close;

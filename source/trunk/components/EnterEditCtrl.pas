@@ -106,13 +106,13 @@ end;
 
 procedure TEnterEdit.KeyPress;
 begin
- if Key=#13 then
+ if Key=Char(VK_RETURN) then
   begin
    DoAccept;
    Key:=#0;
   end
  else
-  if (Key=#27) and Cancel then
+  if (Key=Char(VK_ESCAPE)) and Cancel then
    Key:=#0
   else
    inherited;
@@ -194,13 +194,13 @@ end;
 
 procedure TEnterComboBox.KeyPress;
 begin
- if Key=#13 then
+ if Key=Char(VK_RETURN) then
   begin
    DoAccept;
    Key:=#0;
   end
  else
-  if (Key=#27) and FHasColor2 then
+  if (Key=Char(VK_ESCAPE)) and FHasColor2 then
    begin
     Cancel;
     Key:=#0;
