@@ -662,7 +662,8 @@ def debug(text):
     import sys
     sys.stderr.write(text+"\n")
     # rowdy: debug logging #FIXME: Make this a togglable option
-    #o = open('c:/rowdy/QuArK_debug.log', 'a')
+    #import os
+    #o = open(os.path.join(quarkx.exepath, 'logs', 'QuArK_debug.log'), 'a')
     #o.write('%s\n' % text)
     #o.close()
 

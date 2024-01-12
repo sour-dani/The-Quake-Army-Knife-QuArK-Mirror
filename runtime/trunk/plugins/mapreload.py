@@ -17,6 +17,7 @@ Info = {
    "quark":         "" }
 
 
+import os
 import quarkx
 import quarkpy.mapcommands
 import quarkpy.qmacro
@@ -46,7 +47,7 @@ class ReloadDlg (quarkpy.qmacro.dialogbox):
         Txt = "reload:"
         Typ = "EP"
         DefExt = "py"
-        BasePath = "%splugins"
+        BasePath = "%s"
         DirSep = "."
         CutPath = "C:\?\\"
         Hint = "Type in the name of the module (.py file),"$0D
@@ -61,7 +62,7 @@ class ReloadDlg (quarkpy.qmacro.dialogbox):
         cancel:py = {Txt="" }
 
     }
-    """%quarkx.exepath  # suggestion by tiglari(the quotes stay)
+    """%os.path.join(quarkx.exepath, "plugins")  # suggestion by tiglari(the quotes stay)
 
     #
     # __init__ initialize the object

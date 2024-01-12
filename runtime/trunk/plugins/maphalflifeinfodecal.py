@@ -14,6 +14,7 @@ import quarkx
 from quarkpy.maputils import *
 from quarkpy.maphandles import *
 import quarkpy.mapduplicator
+import quarkpy.qhandles
 import plugins.deckerutils
 StandardDuplicator = quarkpy.mapduplicator.StandardDuplicator
 DuplicatorManager = quarkpy.mapduplicator.DuplicatorManager
@@ -75,21 +76,21 @@ class HalfLifeInfodecalHelper(StandardDuplicator):
               if pos > -1:
                  item["texture"] = self.tex_numeric[:pos] + character + self.tex_numeric[pos + 1:]
               else:
-                 item["texture"] = self.tex_numeric + character	# Just append the character, and hope thats going to work
+                 item["texture"] = self.tex_numeric + character	# Just append the character, and hope that's going to work
         elif character in self.char_upper:
            if self.tex_upper:			# Is upper texture-template specified?
               pos = self.tex_upper.find(self.wildchar) # Try to find wildchar in texture-templatename
               if pos > -1:
                  item["texture"] = self.tex_upper[:pos] + character + self.tex_upper[pos + 1:]
               else:
-                 item["texture"] = self.tex_upper + character	# Just append the character, and hope thats going to work
+                 item["texture"] = self.tex_upper + character	# Just append the character, and hope that's going to work
         elif character in self.char_lower:
            if self.tex_lower:			# Is lower texture-template specified?
               pos = self.tex_lower.find(self.wildchar) # Try to find wildchar in texture-templatename
               if pos > -1:
                  item["texture"] = self.tex_lower[:pos] + character + self.tex_lower[pos + 1:]
               else:
-                 item["texture"] = self.tex_lower + character	# Just append the character, and hope thats going to work
+                 item["texture"] = self.tex_lower + character	# Just append the character, and hope that's going to work
         return item
 
     def buildimages(self, singleimage=None):
@@ -142,7 +143,6 @@ class HalfLifeInfodecalHelper(StandardDuplicator):
 class HalfLifeInfoDecalDupOffsetHandle(quarkpy.mapduplicator.DupOffsetHandle):
 
     def drag(self, v1, v2, flags, view):
-        import quarkpy.qhandles
         delta = v2-v1
         if flags&MB_CTRL:
             delta = quarkpy.qhandles.aligntogrid(self.pos + delta, 1) - self.pos

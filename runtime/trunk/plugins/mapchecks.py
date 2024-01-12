@@ -32,12 +32,12 @@ def BasicCheck(menu):
 
     if editor.Root.name != "worldspawn:b":
         err["The top-level entity of the map should be called 'worldspawn'."] = 0
-        errobj = errobj + [editor.Root]
+        errobj = errobj.append(editor.Root)
     else:
         test = editor.Root.findallsubitems("worldspawn", ':b')[1:]    # ignore the top-level one
         if len(test):
             err["Only one 'worldspawn' is allowed in the map."] = 0
-            errobj = errobj + test
+            errobj = errobj.append(test)
 
     test = editor.Root.findallsubitems("info_player_start", ':e')
     if len(test)==0:
@@ -45,7 +45,7 @@ def BasicCheck(menu):
             err["The map must contain at least one info_player_start."] = 0
     elif len(test)>1:
         err["The map should not contain several info_player_start."] = 0
-        errobj = errobj + test
+        errobj = errobj.append(test)
 
     MapLimits = quarkx.setupsubset(editor.MODE, "Display")["MapLimit"]
     if (quarkx.setupsubset()["MapLimit"]<>None):    # games can override default setting
