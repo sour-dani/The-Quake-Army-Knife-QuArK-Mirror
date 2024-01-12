@@ -150,8 +150,7 @@ var
   c: QComponent;
   fg: QFrameGroup;
   qf: QFrame;
-  needed_framecount: Longint;
-  cnt: Longint;
+  needed_framecount, cnt: Integer;
 begin
   l:=BuildComponentList;
   try
