@@ -89,7 +89,7 @@ begin
 
   F.SetInfoBaseLink(InfoBaseLink); {AiV}
 
-  if GetCursorPos(P) then
+  if GetCursorPos(P) then //FIXME: What if the popup is triggered by keyboard action? Then this position doesn't make any sense!
   begin
     Dec(P.X, F.Width div 2);
     Dec(P.Y, GetSystemMetrics(sm_CySizeFrame)+1);
