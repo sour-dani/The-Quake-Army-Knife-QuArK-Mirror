@@ -501,7 +501,7 @@ def viewsingleface(editor, view, vertex, poly):
 
     view.handles = []
     h = []
-     # add just the selected verttex of the primary face to the handle
+     # add just the selected vertex of the primary face to the handle
     h.append(TerrainVertexHandle(vertex, poly))
 
     view.handles = quarkpy.qhandles.FilterHandles(h, SS_MAP)
@@ -1149,7 +1149,7 @@ class TerrainLinCenterHandle(TerrainLinearHandle):
 
 
     def draw(self, view, cv, draghandle=None): # Just draws the handle and circle
-                                               # but does not actualy drag anything
+                                               # but does not actually drag anything
                                                # that is done in "def BuildHandles" above
         editor = self.mgr.editor
         selectlist = editor.layout.explorer.sellist
@@ -1215,7 +1215,7 @@ class TerrainLinCenterHandle(TerrainLinearHandle):
 
         self.mgr.DrawLinHandleCircle(view)  # calls to draw the circle
 
-    def linoperation(self, list, delta, g1, view):  # This conroles face movment
+    def linoperation(self, list, delta, g1, view):  # This controles face movement
 
         editor = self.editor
         self.delta = delta
@@ -1226,7 +1226,7 @@ class TerrainLinCenterHandle(TerrainLinearHandle):
         for obj in list:
             obj.translate(delta, g1 and grid[0])
         self.draghint = vtohint(delta)
-        return delta  # Where the face "group" is moved to in x, y and z corrds.
+        return delta  # Where the face "group" is moved to in x, y and z coords.
                       # But we only use z for Terrain Generator or polys will break.
 
     def TerrainSoftMove(self, view):
@@ -1250,7 +1250,7 @@ class TerrainLinCenterHandle(TerrainLinearHandle):
         # This section, to return, needed for Touch-up dragging error after undo
         if perimvertexs is None:
 
-           # stops from errasing stuff in the view after undo of Touch-up drag
+           # stops from erasing stuff in the view after undo of Touch-up drag
             holdlist = editor.layout.explorer.sellist
             editor.layout.explorer.sellist = []
             editor.layout.explorer.sellist = holdlist
@@ -1312,7 +1312,7 @@ class TerrainLinCenterHandle(TerrainLinearHandle):
             Zfactor = Zdelta.tuple[2]
 
 ## Method to try and stop faces from crashing into others and breaking poly
-## but creates problems when moving up and down faces togeather.
+## but creates problems when moving up and down faces together.
        #     if face.name == "up:f":
        #         for face2 in polyofface.subitems:
        #             if face2.name == "down:f" or face2.name == "downmoves:f":
@@ -1400,7 +1400,7 @@ def TerrainManager(editor, view, x, y, flags, handle):
                                 commonitem = (vertex,poly) # to add the selected vertex, with the handle, last
                                 commonitems.append(commonitem) # to add the selected vertex, with the handle, last
 
-                                # This section gets the faces that shair the common vertex location
+                                # This section gets the faces that share the common vertex location
                                 for a_face in allupFaces:
                                     if a_face == face:
                                             continue
@@ -1484,7 +1484,7 @@ def TerrainManager(editor, view, x, y, flags, handle):
                                 commonitem = (vertex,poly) # to add the selected vertex, with the handle, last
                                 commonitems.append(commonitem) # to add the selected vertex, with the handle, last
 
-                                # This section gets the faces that shair the common vertex location
+                                # This section gets the faces that share the common vertex location
                                 for a_face in alldownmovesFaces:
                                     if a_face == face:
                                             continue
@@ -1815,7 +1815,7 @@ class TerrainVertexHandle(quarkpy.qhandles.GenericHandle):
         # save a copy of the original faces
             orgfaces = self.poly.subitems
 
-        # first, loop through the faces to see if we are draging
+        # first, loop through the faces to see if we are dragging
         # more than one point at a time.  This loop uses the distance
         # between the projected screen position of the starting point
         # and the project screen position of the vertex.
@@ -1885,12 +1885,12 @@ class TerrainVertexHandle(quarkpy.qhandles.GenericHandle):
                                     d = v - self .pos
                                     vlist.append((abs (d), v))
 
-                        # sort the list of vertecies, this places the
+                        # sort the list of vertices, this places the
                         # most distant point at the end
                             vlist.sort ()
                             vmax = vlist [-1][1]
 
-                        # if we are draging two vertecies
+                        # if we are dragging two vertices
                             if dragtwo:
 
                             # if this face does not have more than one vertex
@@ -1905,11 +1905,11 @@ class TerrainVertexHandle(quarkpy.qhandles.GenericHandle):
                                 otherfixed =getotherfixed(vmax, mvlist, rotationaxis)
                                 fixedpoints = vmax, otherfixed
 
-                        # otherwise, we are draging one
+                        # otherwise, we are dragging one
                             else:
 
                             # if this face does not have any of the selected
-                            # vertecies, then skip
+                            # vertices, then skip
                                 if foundcount == 0:
                                     continue
 

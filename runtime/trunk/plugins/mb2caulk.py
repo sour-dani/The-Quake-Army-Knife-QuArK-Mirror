@@ -69,7 +69,7 @@ def cleanpoly(poly):
 #
 # project outline (a vertex-cycle) onto face of poly
 # if there's no impingement, return None.
-# otherwise return a poly or group, suitablefor replacing
+# otherwise return a poly or group, suitable for replacing
 # original poly
 #
 def projectOutlineTex(face,poly,outline,tex):

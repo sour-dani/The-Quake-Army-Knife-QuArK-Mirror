@@ -55,7 +55,7 @@ from quarkpy.maputils import *
 # Or so I hope.  This is pretty complicated :)
 #
 # The idea is that the object is swivelled around the Z axis and the tilted around
-#  a horizontal axis (both thru its center) so that the selected face is paralell
+#  a horizontal axis (both thru its center) so that the selected face is parallel
 #  to the tagged one, then the object is moved so that the selected face is the
 #  specified distance from the tagged one (along the latter's normal).
 #
@@ -64,7 +64,7 @@ from quarkpy.maputils import *
 #   if both planes are horizontal (parallel to the xy plane), no rotations are performed
 #
 #   if one of the planes is horizontal, no swivelling is performed, but the
-#     object is tilted around an axis paralell to a horizontal axis lying in
+#     object is tilted around an axis parallel to a horizontal axis lying in
 #     the non-horizontal plane, so that the two planes become parallel.
 #
 #   otherwise, horizontal axes are found in both planes (the bestaxes function).

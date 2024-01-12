@@ -511,7 +511,7 @@ def vertexmenu(self, editor, view, oldmenu=quarkpy.maphandles.VertexHandle.menu.
          VtxDragDlg(quarkx.clickform, 'vtxdrag', editor, setup, action, onclosing)
 
     #
-    # And now a bunch of simple litte menu item callbacks
+    # And now a bunch of simple little menu item callbacks
     #
     def lockclick(m, self=self, editor=editor):
         try:

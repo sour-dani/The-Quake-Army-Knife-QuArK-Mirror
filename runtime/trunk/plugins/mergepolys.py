@@ -81,8 +81,8 @@ def mergeable(tagged, poly1, o):
                 if oldface==face or oldface.type!=":f": continue
                 new.appenditem(oldface.copy())
             #
-            # the merged poly will be in o's group, so we need to copy
-            # all the faces.  any facees used by the tagged faces's
+            # The merged poly will be in o's group, so we need to copy
+            # all the faces. Any faces used by the tagged faces's
             # poly that are actually used by o will not be ok.
             #
             for tagface in poly1.faces:
@@ -99,10 +99,8 @@ def mergeable(tagged, poly1, o):
                          return None
             return new
 
-#
-# merge a poly to one with a tagged face
-#
 def MergePolyClick(m):
+    "merge a poly to one with a tagged face"
     editor=mapeditor()
     if editor is None: return
     undo = quarkx.action()
@@ -110,10 +108,8 @@ def MergePolyClick(m):
     undo.exchange(m.tagged.faceof[0], None)
     editor.ok(undo,"merge polys")
 
-#
-# makes menu item, put on menu in maptagside
-#
 def mergepoly(editor,o):
+    "makes menu item, put on menu in maptagside"
     item = quarkpy.qmenu.item("Merge Polys",MergePolyClick,"|This command can merge two brushes which `kiss' at a face, meaning that the faces have the same location, orientation, size and shape, but are oriented in opposite directions.\n\nTo use it, tag one of the kissing faces, then select the brush that contains the other.  If this menu item becomes enabled, the operation is then supposed to be able to combine the two brushes into one.  The selected brush will be `dominant', in that the resulting brush will be in its position of the group structure, and its textures and higher shared faces will be retained where relevant.\n\nIf the operation will change the overall shape, or create an invalid brush, this menu item is supposed to remain disabled.")
     item.state=quarkpy.qmenu.disabled
     tagged=gettagged(editor)
@@ -155,10 +151,8 @@ def MergePolysInGroup(group):
 
     return newgroup
 
-#
-# merge the mergeable polys in a group.
-#
 def MergePolysClick(m):
+    "merge the mergeable polys in a group."
     editor = mapeditor()
     if editor is None: return
     undo = quarkx.action()
@@ -166,10 +160,8 @@ def MergePolysClick(m):
     undo.exchange(m.o, new)
     editor.ok(undo,"merge polys in group")
 
-#
-# makes menu item, put on menu in maptagside
-#
 def groupmergepoly(editor,o):
+    "makes menu item, put on menu in maptagside"
     item = quarkpy.qmenu.item("Merge Polys",MergePolysClick,"|This command will try to merge all mergeable polys in the group.\n\mIt doesn't necessarily get the best answer, if you think you can do better, you can use Merge Polys on the face menu.")
     item.o=o
     return item

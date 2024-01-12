@@ -609,7 +609,7 @@ def buildwallmakerimages(self, singleimage=None):
                         replacedict[old[i]]=new[i]
 
             #
-            # seems awkward but doesnt work other wayz
+            # seems awkward but doesn't work other wayz
             #
             polylist=wallgroup.findallsubitems("",":p")
             for poly in polylist:
@@ -762,7 +762,7 @@ def groupmenu(o, editor, oldmenu=quarkpy.mapentities.GroupType.menu.im_func):
             undo.exchange(o, newdup)
             editor.ok(undo,'revert to wall maker')
 
-        revertitem = quarkpy.qmenu.item('Revert Walls to Duplicator',revertClick,"|This group was created from a wall maker duplicator.\nThis menu item will restore the original ducplicator and its data,\nfor convenient editing")
+        revertitem = quarkpy.qmenu.item('Revert Walls to Duplicator',revertClick,"|This group was created from a wall maker duplicator.\nThis menu item will restore the original duplicator and its data,\nfor convenient editing")
         menu = [revertitem]+menu
 
     return menu

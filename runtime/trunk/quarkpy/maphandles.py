@@ -636,7 +636,7 @@ class VertexHandle(qhandles.GenericHandle):
         orgfaces = self.poly.subitems
 
         #
-        # first, loop through the faces to see if we are draging
+        # first, loop through the faces to see if we are dragging
         # more than one point at a time.  This loop uses the distance
         # between the projected screen position of the starting point
         # and the project screen position of the vertex.
@@ -822,7 +822,7 @@ class VertexHandle(qhandles.GenericHandle):
                         vmax = vlist[-1][1]
 
                         #
-                        # if we are draging two vertices
+                        # if we are dragging two vertices
                         #
                         if dragtwo:
 
@@ -843,7 +843,7 @@ class VertexHandle(qhandles.GenericHandle):
                             fixedpoints = vmax, otherfixed
 
                         #
-                        # otherwise, we are draging one
+                        # otherwise, we are dragging one
                         #
                         else:
 
@@ -1045,7 +1045,7 @@ class CyanLHandle(qhandles.GenericHandle):
         #
         # converts p to coordinates with origin org,
         #  axisbase axis vectors.  See Python Tute
-        #  4.7.1. for the default argument constructioin
+        #  4.7.1. for the default argument construction
         #  x=x, etc.  Here the x on the left represents
         #  x in the function, x on the right x outside;
         #  when the function is called, we only need to

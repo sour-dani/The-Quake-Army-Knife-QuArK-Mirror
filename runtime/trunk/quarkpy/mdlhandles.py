@@ -1644,7 +1644,7 @@ class PVertexHandle(qhandles.GenericHandle):
                 if f in orgfaces:
                     # If the point is on the face.
                     if abs(self.pos*f.normal-f.dist) < epsilon:
-                        # Collect a list of verticies on the face along
+                        # Collect a list of vertices on the face along
                         # with the distances from the destination point.
                         # Also, count the number of vertices.
                         # NOTE: this loop uses the actual distance between the
@@ -1666,11 +1666,11 @@ class PVertexHandle(qhandles.GenericHandle):
                                 d = v - self .pos
                                 vlist.append((abs (d), v))
 
-                        # Sort the list of vertecies, this places the most distant point at the end.
+                        # Sort the list of vertices, this places the most distant point at the end.
                         vlist.sort ()
                         vmax = vlist [-1][1]
 
-                        # If we are draging two vertecies.
+                        # If we are dragging two vertices.
                         if dragtwo:
                             # If this face does not have more than one vertex selected, then skip it.
                             if foundcount != 2:
@@ -1682,9 +1682,9 @@ class PVertexHandle(qhandles.GenericHandle):
                             otherfixed = getotherfixed(vmax, mvlist, rotationaxis)
                             fixedpoints = vmax, otherfixed
 
-                        # Otherwise, we are draging one vertex.
+                        # Otherwise, we are dragging one vertex.
                         else:
-                            # If this face does not have any of the selected vertecies, then skip it.
+                            # If this face does not have any of the selected vertices, then skip it.
                             if foundcount == 0:
                                 continue
 

@@ -866,7 +866,7 @@ def wraptex(orig, side):
     newside = side.copy()
     newside.texturename = orig.texturename
     #
-    # Orient the new side paralell to the original
+    # Orient the new side parallel to the original
     #
     newside.setthreepoints((o, t1, t2,), 0)
     #
@@ -1021,7 +1021,7 @@ def pillarwrapdisabler(menuitem, tagged, o):
     #
     # Now we embark on a voyage of discovery around the poly,
     # looking for a face that shares 2 vertices with our selected
-    # face, such that these 2 vertices make an edge paralell to sep,
+    # face, such that these 2 vertices make an edge parallel to sep,
     # and so on around, till we get back to the originally selected
     # tagged face.  If at any prior time we fail, we bail, but if
     # we emerge successful, we attach to the menu-item a list of faces
@@ -1350,7 +1350,7 @@ gluepttext = "Moves this side to the tagged point"
 
 aligntext = "|Wrap texture from tagged:\n\nCopies the texture from the tagged face to this one, wrapping around a shared edge with proper alignment.\n\nThis is only really supposed work when the faces abutt at an edge, although it sometimes works more generally.|intro.mapeditor.menu.html#commandsmenu"
 mirroraligntext = "|Like aligntex, but wraps from a mirror-image of the face.\n\nUseful for aligning textures with bezier curves from the shape-generators|intro.mapeditor.menu.html#commandsmenu"
-wraptext = "|Wraps from the tagged face, around pillar in direction of selected, scaling to eliminate seams.\n\nWon't work if the edges to be wrapped around aren't all paralell, and scales texture minimally to fit.  `preserve aspect ratio' option controls whether one or both texture dimensions are scaled.|maped.plugins.tagside.html#texture"
+wraptext = "|Wraps from the tagged face, around pillar in direction of selected, scaling to eliminate seams.\n\nWon't work if the edges to be wrapped around aren't all parallel, and scales texture minimally to fit.  `preserve aspect ratio' option controls whether one or both texture dimensions are scaled.|maped.plugins.tagside.html#texture"
 
 aspecttext = "|If checked, aspect ratio of textures is preserved when texture is scaled wrapping around multiple sides (pillar and multi-wrap).\n\n Click to toggle check."
 checkaspectratio = quarkpy.qmenu.item("Preserve aspect ratio", ToggleCheck, aspecttext)
@@ -1535,7 +1535,7 @@ def UnlinkAllClick(m):
     newface = face.copy()
     newface["_tag"] = ""
     undo.exchange(face, newface)
-  editor.ok(undo,"Unlink All")  
+  editor.ok(undo,"Unlink All")
   editor.layout.sellist = [m.object]
 
 def selectmenuitem(o,text,command,help):
@@ -1773,7 +1773,6 @@ def gluepoly(editor, o):
   item.dict = tagdict
   item.o = o
   return item
-
 
 def GluePolyClick(m):
   editor=mapeditor()

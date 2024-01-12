@@ -176,7 +176,7 @@ def newpolymenu(o, editor, oldmenu=quarkpy.mapentities.PolyhedronType.menu.im_fu
         view = editor.layout.clickedview
     except:
         view = None
-    return  [curvemenu(o, editor, view)]+oldmenu(o, editor)
+    return [curvemenu(o, editor, view)]+oldmenu(o, editor)
 
 #
 # This trick of redefining things in modules you're based
