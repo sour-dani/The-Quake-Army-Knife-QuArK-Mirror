@@ -669,9 +669,9 @@ end;
 
 procedure TFormCfg.AcceptEditFloat(Sender: TObject);
 const
- None : TDouble = (1 shl 25)*1.0*(1 shl 25); //FIXME: This appears to be a valid value?
+ None : Double = (1 shl 25)*1.0*(1 shl 25); //FIXME: This appears to be a valid value?
 var
- Value, LimitMin, LimitMax: TDouble;
+ Value, LimitMin, LimitMax: Double;
  Arg, Arg1, S: String;
  N, Needed, P: Integer;
  ValueList, ValuePtr: ^Single;
@@ -1679,7 +1679,7 @@ var
  BmpHandle: HBitmap;
  obj: PyObject;
  PythonCode, ReadOnly: Boolean;
- Lu4: array[1..4] of TDouble;
+ Lu4: array[1..4] of Double;
  Valeurs: vec3_t;
  ValeursV: TVect;
  TextRows: Integer;

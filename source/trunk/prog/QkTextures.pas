@@ -2160,7 +2160,7 @@ function TFQTexture.MacroCommand(Cmd: Integer) : Boolean;
 var
   Pal: TToolbar97;
   S: String;
-  Size: array[1..2] of TDouble;
+  Size: array[1..2] of Double;
 begin
   MacroCommand:=True;
 

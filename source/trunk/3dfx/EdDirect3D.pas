@@ -62,10 +62,10 @@ type
     procedure ClearSurfaces(Surf: PSurface3D; SurfSize: Integer); override;
     function StartBuildScene(var SurfaceExtraSize, VertexSize: Integer) : TBuildMode; override;
     procedure EndBuildScene; override;
-    procedure stScalePoly(Texture: PTexture3; var ScaleS, ScaleT: TDouble); override;
-    procedure stScaleModel(Skin: PTexture3; var ScaleS, ScaleT: TDouble); override;
-    procedure stScaleSprite(Skin: PTexture3; var ScaleS, ScaleT: TDouble); override;
-    procedure stScaleBezier(Texture: PTexture3; var ScaleS, ScaleT: TDouble); override;
+    procedure stScalePoly(Texture: PTexture3; var ScaleS, ScaleT: Double); override;
+    procedure stScaleModel(Skin: PTexture3; var ScaleS, ScaleT: Double); override;
+    procedure stScaleSprite(Skin: PTexture3; var ScaleS, ScaleT: Double); override;
+    procedure stScaleBezier(Texture: PTexture3; var ScaleS, ScaleT: Double); override;
     procedure WriteSurfaceExtra(PS: PArithByte; Surface: PSurface3D); override;
     procedure WriteVertex(PV: PArithByte; Source: Pointer; const ns,nt: Single; HiRes: Boolean); override;
     procedure ReleaseResources;
@@ -175,7 +175,7 @@ begin
  LightingQuality:=nQuality;
 end;
 
-procedure TDirect3DSceneObject.stScalePoly(Texture: PTexture3; var ScaleS, ScaleT: TDouble);
+procedure TDirect3DSceneObject.stScalePoly(Texture: PTexture3; var ScaleS, ScaleT: Double);
 begin
   with Texture^ do
   begin
@@ -184,7 +184,7 @@ begin
   end;
 end;
 
-procedure TDirect3DSceneObject.stScaleModel(Skin: PTexture3; var ScaleS, ScaleT: TDouble);
+procedure TDirect3DSceneObject.stScaleModel(Skin: PTexture3; var ScaleS, ScaleT: Double);
 begin
   with Skin^ do
   begin
@@ -193,7 +193,7 @@ begin
   end;
 end;
 
-procedure TDirect3DSceneObject.stScaleSprite(Skin: PTexture3; var ScaleS, ScaleT: TDouble);
+procedure TDirect3DSceneObject.stScaleSprite(Skin: PTexture3; var ScaleS, ScaleT: Double);
 begin
   with Skin^ do
   begin
@@ -202,7 +202,7 @@ begin
   end;
 end;
 
-procedure TDirect3DSceneObject.stScaleBezier(Texture: PTexture3; var ScaleS, ScaleT: TDouble);
+procedure TDirect3DSceneObject.stScaleBezier(Texture: PTexture3; var ScaleS, ScaleT: Double);
 begin
   ScaleS:=1;
   ScaleT:=1;
@@ -661,7 +661,7 @@ procedure TDirect3DSceneObject.EndBuildScene;
 type
  TLightingList = record
                   LightNumber: DWORD;
-                  LightBrightness: TDouble;
+                  LightBrightness: Double;
                  end;
 
 var
@@ -887,7 +887,7 @@ var
   pBackBuffer: IDirect3DSurface9;
   DX, DY, DZ: Double;
   VX, VY, VZ: TVect;
-  Scaling: TDouble;
+  Scaling: Double;
   LocX, LocY: D3DValue;
   TransX, TransY, TransZ: D3DValue;
   l_CameraEye: TD3DXMatrix;

@@ -42,7 +42,7 @@ const
 type
   PPointProj = ^TPointProj;
   TPointProj = record
-                x, y, oow: Single; //FIXME: TDouble?
+                x, y, oow: Single; //FIXME: Double?
                 OffScreen: Byte;
                 OnEdge: Byte;
                end;
@@ -54,7 +54,7 @@ type
     FastDisplay: Boolean;   { can use the standard drawing routines }
     FlatDisplay: Boolean;   { is a 2D view }
     HiddenRegions: Byte;   { os_xxx }
-    MinDistance, MaxDistance: TDouble;
+    MinDistance, MaxDistance: Double;
     ScrCenter: TPoint;
      { 3D point -> window (x,y,w), w is the distance from the viewer with the same scale as x and y }
     function Proj(const V: TVect) : TPointProj; virtual; abstract;
@@ -71,13 +71,13 @@ type
      { 3D vector from Pt in the direction of the eye }
     function VectorEye(const Pt: TVect) : TVect; virtual; abstract;
      { is the "eye" in the given half space ? }
-    function PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: TDouble) : Boolean; virtual; abstract;
+    function PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: Double) : Boolean; virtual; abstract;
      { compare two TPointProj.oow depths }
     function NearerThan(const oow1, oow2: Single) : Boolean; virtual; abstract;
    (*{ normal vector end }
     function VecteurNormalDe(const Centre, Normale: TVect) : TVect;*)
      { scaling factor, if any }
-    function ScalingFactor(const Pt: PVect) : TDouble; virtual;
+    function ScalingFactor(const Pt: PVect) : Double; virtual;
      { set as current CCoord }
     procedure SetAsCCoord(nDC: HDC);
      { checks for orthogonality }
@@ -97,16 +97,16 @@ type
 
 (*T2DCoordinates = class(TCoordinates)
   protected
-    pProjZ, Facteur: TDouble;
+    pProjZ, Facteur: Double;
     procedure InitProjVar;
   public
-    function ScalingFactor(const Pt: PVect) : TDouble; override;
+    function ScalingFactor(const Pt: PVect) : Double; override;
     function NearerThan(const oow1, oow2: Single) : Boolean; override;
   end;
 
   TStdCoordinates = class(T2DCoordinates)
   protected
-    pProjX, pProjY: TDouble;
+    pProjX, pProjY: Double;
     Vue: (v_XY, v_YmX, v_mXmY, v_mYX, v_Autre);
     procedure InitProjVar;
   public
@@ -120,7 +120,7 @@ type
     function VectorX : TVect; override;
     function VectorY : TVect; override;
     function VectorEye(const Pt: TVect) : TVect; override;
-    function PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: TDouble) : Boolean; override;
+    function PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: Double) : Boolean; override;
   end;
 
   TXY2Coordinates = class(TXYCoordinates)
@@ -130,7 +130,7 @@ type
     function VectorX : TVect; override;
     function VectorY : TVect; override;
     function VectorEye(const Pt: TVect) : TVect; override;
-    function PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: TDouble) : Boolean; override;
+    function PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: Double) : Boolean; override;
   end;
 
   TXZCoordinates = class(TStdCoordinates)
@@ -140,30 +140,30 @@ type
     function VectorX : TVect; override;
     function VectorY : TVect; override;
     function VectorEye(const Pt: TVect) : TVect; override;
-    function PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: TDouble) : Boolean; override;
+    function PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: Double) : Boolean; override;
   end;
 
   TAACoordinates = class(T2DCoordinates)
   protected
-    SinAngle, CosAngle: TDouble;    { normalized, length 1 }
-    SinAngleV, CosAngleV: TDouble;  { not normalized, length pProjZ }
+    SinAngle, CosAngle: Double;    { normalized, length 1 }
+    SinAngleV, CosAngleV: Double;  { not normalized, length pProjZ }
   public
     function Espace(const P: TPointProj) : TVect; override;
     function Proj(const V: TVect) : TPointProj; override;
     function VectorX : TVect; override;
     function VectorY : TVect; override;
     function VectorEye(const Pt: TVect) : TVect; override;
-    function PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: TDouble) : Boolean; override;
+    function PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: Double) : Boolean; override;
     {function Orthogonal : Boolean; override;}
   end;*)
 
   T2DCoordinates = class(TCoordinates)
   protected
-    pProjZ: TDouble;
+    pProjZ: Double;
     mx, mxinv: TMatrixTransformation;
     procedure InitProjVar;
   public
-    function ScalingFactor(const Pt: PVect) : TDouble; override;
+    function ScalingFactor(const Pt: PVect) : Double; override;
     function NearerThan(const oow1, oow2: Single) : Boolean; override;
     function Espace(const P: TPointProj) : TVect; override;
     function Proj(const V: TVect) : TPointProj; override;
@@ -171,7 +171,7 @@ type
     function VectorY : TVect; override;
     function VectorZ : TVect; override;
     function VectorEye(const Pt: TVect) : TVect; override;
-    function PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: TDouble) : Boolean; override;
+    function PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: Double) : Boolean; override;
   end;
 
   TXYCoordinates = class(T2DCoordinates)
@@ -189,7 +189,7 @@ type
   T3DCoordinates = class(TCoordinates)
   protected
     Eye, Look, Right, Down: TVect;
-    ooWFactor, SpaceFactor: TDouble;
+    ooWFactor, SpaceFactor: Double;
     procedure InitProjVar;
   public
     function Espace(const P: TPointProj) : TVect; override;
@@ -198,21 +198,21 @@ type
     function VectorY : TVect; override;
     function VectorZ : TVect; override;
     function VectorEye(const Pt: TVect) : TVect; override;
-    function PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: TDouble) : Boolean; override;
+    function PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: Double) : Boolean; override;
     function NearerThan(const oow1, oow2: Single) : Boolean; override;
-    function ScalingFactor(const Pt: PVect) : TDouble; override;
-    property FCheckRadius: TDouble read ooWFactor;
+    function ScalingFactor(const Pt: PVect) : Double; override;
+    property FCheckRadius: Double read ooWFactor;
   end;
 
   TCameraCoordinates = class(T3DCoordinates)
   protected
-    FHorzAngle, FPitchAngle, RFactorDistance: TDouble;
+    FHorzAngle, FPitchAngle, RFactorDistance: Double;
   public
     VAngleDegrees: Single;
-    RFactorBase: TDouble;
+    RFactorBase: Double;
     property Camera: TVect read Eye write Eye;
-    property HorzAngle: TDouble read FHorzAngle write FHorzAngle;
-    property PitchAngle: TDouble read FPitchAngle write FPitchAngle;
+    property HorzAngle: Double read FHorzAngle write FHorzAngle;
+    property PitchAngle: Double read FPitchAngle write FPitchAngle;
     procedure ResetCamera;
     procedure Resize(nWidth, nHeight: Integer); override;
   end;
@@ -222,14 +222,14 @@ type
 var
   CCoord : TCoordinates;
 
-{function GetCoordinates(const Up: TVect; const Scale: TDouble) : T2DCoordinates;
-function GetTopDownAngle(const Angle, Scale: TDouble; BottomUp: Boolean) : TXYCoordinates;
-function GetAngleCoord(const Angle, VAngle, Scale: TDouble) : T2DCoordinates;}
+{function GetCoordinates(const Up: TVect; const Scale: Double) : T2DCoordinates;
+function GetTopDownAngle(const Angle, Scale: Double; BottomUp: Boolean) : TXYCoordinates;
+function GetAngleCoord(const Angle, VAngle, Scale: Double) : T2DCoordinates;}
 
 function GetMatrixCoordinates(const mx: TMatrixTransformation) : T2DCoordinates;
 
 function Get3DCoord : TCameraCoordinates;
-procedure CameraVectors(const nHorzAngle, nPitchAngle, nLength: TDouble; var Look, Right, Down: TVect);
+procedure CameraVectors(const nHorzAngle, nPitchAngle, nLength: Double; var Look, Right, Down: TVect);
 
  {------------------------}
 
@@ -246,7 +246,7 @@ const
 
 function Ligne95(var P1, P2: TPointProj; Test3D: Boolean) : Boolean;
 var
- F: TDouble;
+ F: Double;
  P1x, P2x: TPoint;
 begin
  if Test3D then
@@ -723,9 +723,9 @@ end;
 
  {------------------------}
 
-(*function GetCoordinates(const Up: TVect; const Scale: TDouble) : T2DCoordinates;
+(*function GetCoordinates(const Up: TVect; const Scale: Double) : T2DCoordinates;
 var
- R: TDouble;
+ R: Double;
 begin
  if Abs(Up.Z)>1-rien then
   begin
@@ -769,7 +769,7 @@ begin
    end;
 end;
 
-function GetTopDownAngle(const Angle, Scale: TDouble; BottomUp: Boolean) : TXYCoordinates;
+function GetTopDownAngle(const Angle, Scale: Double; BottomUp: Boolean) : TXYCoordinates;
 begin
  if BottomUp then
   Result:=TXY2Coordinates.Create
@@ -784,9 +784,9 @@ begin
   end;
 end;
 
-function GetAngleCoord(const Angle, VAngle, Scale: TDouble) : T2DCoordinates;
+function GetAngleCoord(const Angle, VAngle, Scale: Double) : T2DCoordinates;
 var
- R: TDouble;
+ R: Double;
  Up: TVect;
 begin
  Up.Z:=Sin(VAngle);
@@ -832,14 +832,14 @@ begin
  SetROP2(g_DrawInfo.DC, R2_CopyPen);
 end;
 
-function TCoordinates.ScalingFactor(const Pt: PVect) : TDouble;
+function TCoordinates.ScalingFactor(const Pt: PVect) : Double;
 begin
  ScalingFactor:=1.0;
 end;
 
 (*function TCoordinates.VecteurNormalDe(const Centre, Normale: TVect) : TVect;
 var
- Dist1: TDouble;
+ Dist1: Double;
 begin
  Dist1:=LongueurVectNormal/ScalingFactor;
  Result.X:=Centre.X + Normale.X*Dist1;
@@ -883,7 +883,7 @@ var
  V: array[0..3] of TVect;
  W, Normale: TVect;
  Pts: array[0..3] of TPointProj;
-{Facteur: TDouble;
+{Facteur: Double;
  Trait: TPoint;}
  R: Integer;
 begin
@@ -1063,7 +1063,7 @@ end;
 
  {------------------------}
 
-function T2DCoordinates.ScalingFactor(const Pt: PVect) : TDouble;
+function T2DCoordinates.ScalingFactor(const Pt: PVect) : Double;
 begin
  ScalingFactor:=pProjZ;
 end;
@@ -1117,14 +1117,14 @@ begin
  Result.Z:=-mxinv[3,3]+Pt.Z;
 end;
 
-function T2DCoordinates.PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: TDouble) : Boolean;
+function T2DCoordinates.PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: Double) : Boolean;
 begin
  Result:=(mx[3,1]*NormaleX + mx[3,2]*NormaleY + mx[3,3]*NormaleZ)<0;
 end;
 
 function T2DCoordinates.Espace(const P: TPointProj) : TVect;
 var
- X, Y: TDouble;
+ X, Y: Double;
 begin
  X:=P.X-pDeltaX;
  Y:=P.Y-pDeltaY;
@@ -1278,14 +1278,14 @@ begin
  Result.Z:={-}pProjZ;
 end;
 
-function TXYCoordinates.PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: TDouble) : Boolean;
+function TXYCoordinates.PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: Double) : Boolean;
 begin
  Result:=NormaleZ>0;
 end;
 
 function TXYCoordinates.Espace(const P: TPointProj) : TVect;
 var
- X, Y: TDouble;
+ X, Y: Double;
 begin
  X:=P.X-pDeltaX;
  Y:=pDeltaY-P.Y;
@@ -1334,7 +1334,7 @@ begin
  Result.Z:= - pProjZ;
 end;
 
-function TXY2Coordinates.PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: TDouble) : Boolean;
+function TXY2Coordinates.PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: Double) : Boolean;
 begin
  Result:=NormaleZ<0;
 end;
@@ -1370,7 +1370,7 @@ end;
 
 function TXZCoordinates.Espace(const P: TPointProj) : TVect;
 var
- X: TDouble;
+ X: Double;
 begin
  X:=P.X-pDeltaX;
  Espace.X:=(  X  *pProjX - P.oow*pProjY) * Facteur;
@@ -1399,7 +1399,7 @@ begin
  Result.Z:=0;
 end;
 
-function TXZCoordinates.PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: TDouble) : Boolean;
+function TXZCoordinates.PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: Double) : Boolean;
 begin
  Result:=NormaleX*pProjY - NormaleY*pProjX > 0;
 end;
@@ -1408,7 +1408,7 @@ end;
 
 function TAACoordinates.Espace(const P: TPointProj) : TVect;
 var
- V1, X, Y: TDouble;
+ V1, X, Y: Double;
 begin
  X:=(P.X - pDeltaX) * pProjZ;
  Y:=pDeltaY - P.Y;
@@ -1420,7 +1420,7 @@ end;
 
 function TAACoordinates.Proj(const V: TVect) : TPointProj;
 var
- V1: TDouble;
+ V1: Double;
 begin
  V1:=V.X*SinAngle+V.Y*CosAngle;
  Result.X:=(pProjZ*(V.X*CosAngle - V.Y*SinAngle)) + pDeltaX;
@@ -1449,7 +1449,7 @@ begin
  Result.Z:=SinAngleV;
 end;
 
-function TAACoordinates.PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: TDouble) : Boolean;
+function TAACoordinates.PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: Double) : Boolean;
 begin
  Result:=NormaleX*SinAngle*CosAngleV*pProjY + NormaleY*CosAngle*CosAngleV + NormaleZ*SinAngleV > 0;
 end;
@@ -1489,7 +1489,7 @@ end;*)
 
 function T3DCoordinates.Espace(const P: TPointProj) : TVect;
 var
- Dist, X, Y: TDouble;
+ Dist, X, Y: Double;
 begin
  Dist:=ooWFactor/P.oow;
  X:=(P.x-ScrCenter.X)*SpaceFactor;
@@ -1502,7 +1502,7 @@ end;
 function T3DCoordinates.Proj(const V: TVect) : TPointProj;
 var
  Delta: TVect;
- Dist: TDouble;
+ Dist: Double;
 begin
  Delta.X:=V.X - Eye.X;
  Delta.Y:=V.Y - Eye.Y;
@@ -1540,7 +1540,7 @@ begin
  Result.Z:=-Eye.Z+Pt.Z;
 end;
 
-function T3DCoordinates.PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: TDouble) : Boolean;
+function T3DCoordinates.PositiveHalf(const NormaleX, NormaleY, NormaleZ, Dist: Double) : Boolean;
 begin
  Result:=NormaleX*Eye.X + NormaleY*Eye.Y + NormaleZ*Eye.Z > Dist;
 end;
@@ -1554,10 +1554,10 @@ begin
   Result:=(oow2>=0) or (oow1<oow2);
 end;
 
-function T3DCoordinates.ScalingFactor(const Pt: PVect) : TDouble;
+function T3DCoordinates.ScalingFactor(const Pt: PVect) : Double;
 var
  Delta: TVect;
- Dist: TDouble;
+ Dist: Double;
 begin
  if Pt=Nil then
   Result:=inherited ScalingFactor(Nil)
@@ -1578,9 +1578,9 @@ end;
 
  {------------------------}
 
-procedure CameraVectors(const nHorzAngle, nPitchAngle, nLength: TDouble; var Look, Right, Down: TVect);
+procedure CameraVectors(const nHorzAngle, nPitchAngle, nLength: Double; var Look, Right, Down: TVect);
 var
- SA,CA,SP,CP: TDouble;
+ SA,CA,SP,CP: Double;
 begin
  SA:=Sin(nHorzAngle);  CA:=Cos(nHorzAngle);
  SP:=Sin(nPitchAngle); CP:=Cos(nPitchAngle);
@@ -1597,8 +1597,8 @@ end;
 
 procedure TCameraCoordinates.ResetCamera;
 var
- FarDistance: TDouble;
- nRFactor: TDouble;
+ FarDistance: Double;
+ nRFactor: Double;
 begin
  FarDistance:=SetupSubSet(ssGeneral, '3D view').GetFloatSpec('FarDistance', 1500);
  nRFactor:=RFactorDistance/FarDistance;

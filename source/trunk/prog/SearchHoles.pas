@@ -50,7 +50,7 @@ const
 type
  PInfo = ^TInfo;
  TInfo = record
-          Distance: TDouble;
+          Distance: Double;
           Poly: TPolyedre;
           Face: PSurface;
          end;
@@ -111,14 +111,14 @@ var
    F, F1: PSurface;
    nFace: TFace;
    Derriere: Boolean;
-   Dist1: TDouble;
+   Dist1: Double;
    Info: TInfo;
    nCentre: TInfoSource;
 
     PROCEDURE TrierTampon(Gauche,Droite : INTEGER);
     VAR
      I,J : INTEGER;
-     Pivot: TDouble;
+     Pivot: Double;
      UneCase: TInfo;
     BEGIN
      I:=Gauche; J:=Droite;
@@ -145,8 +145,8 @@ var
      FK: PSurface;
      Centre: TInfoSource;
      P1, P2: TVect;
-     Norm2: array[0..MaxFVertices-1] of record Y,Z,Dist: TDouble end;
-     Min, Max, D1, D2: TDouble;
+     Norm2: array[0..MaxFVertices-1] of record Y,Z,Dist: Double end;
+     Min, Max, D1, D2: Double;
     begin
      P1:=Sommets[0]^.P;
      for S:=NbS-1 downto 0 do
@@ -226,8 +226,8 @@ var
      FK: PSurface;
      Centre: TInfoSource;
      P1, P2: TVect;
-     Norm2: array[0..MaxFVertices-1] of record X,Z,Dist: TDouble end;
-     Min, Max, D1, D2: TDouble;
+     Norm2: array[0..MaxFVertices-1] of record X,Z,Dist: Double end;
+     Min, Max, D1, D2: Double;
     begin
      P1:=Sommets[0]^.P;
      for S:=NbS-1 downto 0 do
@@ -307,8 +307,8 @@ var
      FK: PSurface;
      Centre: TInfoSource;
      P1, P2: TVect;
-     Norm2: array[0..MaxFVertices-1] of record X,Y,Dist: TDouble end;
-     Min, Max, D1, D2: TDouble;
+     Norm2: array[0..MaxFVertices-1] of record X,Y,Dist: Double end;
+     Min, Max, D1, D2: Double;
     begin
      P1:=Sommets[0]^.P;
      for S:=NbS-1 downto 0 do

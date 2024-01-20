@@ -66,7 +66,7 @@ type
               function GetNegative: String;
               procedure SetNegative(const Neg: String);
             protected
-             {procedure ResultatAnalyseClic(var Liste: PAnalyseClic; nH: TDouble);}
+             {procedure ResultatAnalyseClic(var Liste: PAnalyseClic; nH: Double);}
              {function GetTreeView(var M: TMapExplorer) : Boolean;}
             public
              {procedure Dessiner; virtual;
@@ -76,7 +76,7 @@ type
              {function GetOrigin(var Pt: TVect) : Boolean; virtual;
               function AnalyserClic(ModeAnalyse: Integer) : TTreeMap;}
               procedure AnalyseClic(Liste: PyObject); override;
-              procedure Deplacement(const PasGrille: TDouble); override;
+              procedure Deplacement(const PasGrille: Double); override;
              {property Origin: TVect read GetOrigin1 write SetOrigin;
               property HasOrigin: Boolean read GetHasOrigin;}
               procedure ChercheExtremites(var Min, Max: TVect); override;
@@ -107,7 +107,7 @@ type
                   function CalculePosEcran(var P: TPoint; var V: TVect) : Integer;
                   function VecteurNormalDirection(var V: TVect) : Boolean;
                   function ModeAngle(var S: String) : Integer;}
-                  procedure Deplacement(const PasGrille: TDouble); override;
+                  procedure Deplacement(const PasGrille: Double); override;
                  {procedure PreDessinerSel; override;
                   procedure PostDessinerSel; override;}
                 end;
@@ -134,7 +134,7 @@ type
                     procedure ChercheExtremites(var Min, Max: TVect); override;
                     procedure PreDessinerSel; override;
                     procedure Dessiner; override;
-                    procedure Deplacement(const PasGrille: TDouble); override;
+                    procedure Deplacement(const PasGrille: Double); override;
                     procedure ListeEntites(Entites: TQList; Cat: TEntityChoice); override;
                     function GetFormName : String; override;
                    {function AjouterRef(Liste: TList; Niveau: Integer) : Integer; override;}
@@ -379,7 +379,7 @@ begin
  until False;
 end;
 
-procedure TTreeMap.Deplacement(const PasGrille: TDouble);
+procedure TTreeMap.Deplacement(const PasGrille: Double);
 var
  I: Integer;
  SubElement : TTreeMap;
@@ -448,7 +448,7 @@ begin
  Specifics.Values['origin']:=vtos(nOrigin);
 end;*)
 
-(*procedure TTreeMap.Deplacement(const PasGrille: TDouble);
+(*procedure TTreeMap.Deplacement(const PasGrille: Double);
 var
  Pt: TVect;
 begin
@@ -740,7 +740,7 @@ function TTreeMapSpec.CalculePosAngle(var V: TVect) : Integer;
 var
  S: String;
  Code: Integer;
- Angle, Rapport: TDouble;
+ Angle, Rapport: Double;
  Origin: TVect;
 begin
  Result:=0;
@@ -827,7 +827,7 @@ begin
  end;
 end;*)
 
-procedure TTreeMapSpec.Deplacement(const PasGrille: TDouble);
+procedure TTreeMapSpec.Deplacement(const PasGrille: Double);
 var
  mx: PyObject;
 begin
@@ -1180,7 +1180,7 @@ begin
   end;
 end;
 
-procedure TTreeMapEntity.Deplacement(const PasGrille: TDouble);
+procedure TTreeMapEntity.Deplacement(const PasGrille: Double);
 var
  Pt: TVect;
 begin
@@ -1274,7 +1274,7 @@ var
  BBox: TBBoxInfo;
  V: TVect;
  R, {Max,} I, J, X1, Y1, X2, Y2: Integer;
-{Facteur: TDouble;
+{Facteur: Double;
  Trait: TPoint;
  Form4: TForm4;}
  Vs: array[0..2] of TVect;
@@ -1441,7 +1441,7 @@ var
  R{, Min,Max}: Integer;
 {Brush: HBrush;
  Pen: HPen;
- Rayon: TDouble;}
+ Rayon: Double;}
  OriginPt: TPointProj;
 {Form4: TForm4;}
  I, J, X1, Y1, X2, Y2: Integer;
@@ -1859,8 +1859,8 @@ const
  SpecColor2 = '_color';
 var
  Light: Single;
- L4: array[1..4] of TDouble;
- L3: array[1..3] of TDouble;
+ L4: array[1..4] of Double;
+ L3: array[1..3] of Double;
  I3: array[1..3] of Integer;
  S: String;
  FoundAColor: Boolean;

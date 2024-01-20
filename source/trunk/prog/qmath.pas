@@ -27,61 +27,60 @@ interface
 uses Windows, SysUtils, Graphics;
 
 type
- TInteger = Integer;
- TDouble = Double;
  PVect = ^TVect;
  TVect = record
-          X, Y, Z: TDouble;
+          X, Y, Z: Double;
          end;
- scalar_t = Single;
- vec2_p = ^vec2_t;
- vec2_t = packed array[0..1] of scalar_t;
-
- vec3_p = ^vec3_t;
- vec3_t = packed array[0..2] of scalar_t;
-
- vec5_p = ^vec5_t;
- vec5_t = packed array[0..4] of scalar_t;
- vec_st_p = ^vec_st_t;
- vec_st_t = record
-             s,t: TDouble;
-            end; 
  TVect4 = record
-           X, Y, Z, D: TDouble;
+           X, Y, Z, D: Double;
           end;
  TVect5 = record
-           X, Y, Z, S, T: TDouble;
+           X, Y, Z, S, T: Double;
           end;
  TVect7 = record
-           X1, X2, X3, X4, X5, X6, X7: TDouble;
+           X1, X2, X3, X4, X5, X6, X7: Double;
           end;
  TVect10 = record
-           X1, X2, X3, X4, X5, X6, X7, X8, X9, X10: TDouble;
+           X1, X2, X3, X4, X5, X6, X7, X8, X9, X10: Double;
           end;
 
-function VecLength(const V1: TVect): TDouble;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+ vec2_p = ^vec2_t;
+ vec2_t = packed array[0..1] of Single;
+
+ vec3_p = ^vec3_t;
+ vec3_t = packed array[0..2] of Single;
+
+ vec5_p = ^vec5_t;
+ vec5_t = packed array[0..4] of Single;
+
+ vec_st_p = ^vec_st_t;
+ vec_st_t = record
+             s,t: Double;
+            end;
+
+function VecLength(const V1: TVect): Double;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 function Cross(const V1, V2: TVect) : TVect;
-function Dot(const V1, V2: TVect) : TDouble;
+function Dot(const V1, V2: TVect) : Double;
 procedure Normalise(var V: TVect); overload;
 procedure Normalise(var V: TVect; var S: Double); overload;
-function AngleXY(const X, Y: TDouble) : TDouble;
-procedure ReadDoubleArray(const S1: String; var Vals: array of TDouble);
+function AngleXY(const X, Y: Double) : Double;
+procedure ReadDoubleArray(const S1: String; var Vals: array of Double);
 function ReadVector(const S: String) : TVect;
-function ReadNumValueEx(const S: String) : TDouble;
-function itos(const I: TInteger) : String;
-function ftos(const F: TDouble) : String;
-function ftos0(const F: TDouble) : String;
-function ftos1(const F: TDouble) : String;
-function ftosp(const F: TDouble; const P: integer) : String;
-{function dtos(const D: TDouble) : String;}
-function dtosp(const D: TDouble; const P: integer) : String;
+function ReadNumValueEx(const S: String) : Double;
+function itos(const I: Integer) : String;
+function ftos(const F: Double) : String;
+function ftos0(const F: Double) : String;
+function ftos1(const F: Double) : String;
+function ftosp(const F: Double; const P: integer) : String;
+{function dtos(const D: Double) : String;}
+function dtosp(const D: Double; const P: integer) : String;
 function vtos(const V: TVect) : String;
 function vtos1(const V: TVect) : String;
 function CalculeMAngle(const Angles: TVect) : TVect;
 function coltov(C: TColor) : TVect;
 function coltos255(C: TColor) : String;
 function vtocol(const V: TVect) : TColor;
-function vtocol255(const R,G,B: TDouble) : TColor;
+function vtocol255(const R,G,B: Double) : TColor;
 procedure NormaliseCol1(var V: TVect);
 {function sReadIntegers(const S1: String; Int: PLongInt; MaxCount: Integer) : Integer;
 function sWriteIntegers(Int: PLongInt; Count: Integer) : String;}
@@ -111,16 +110,16 @@ const
 type
  TModeProj = (VueXY, VueXZ, Vue3D);
  TProjEventEx = function (const P: TVect; var Pt: TPoint) : Boolean of object;
- TProfondeurEventEx = function (const P: TVect) : TDouble of object;
+ TProfondeurEventEx = function (const P: TVect) : Double of object;
 
 var
- g_pProjZ: TDouble;
+ g_pProjZ: Double;
  g_ModeProj: TModeProj;
 
 function Proj(const P: TVect) : TPoint;
 function ProjEx(const P: TVect; var Dest: TPoint) : Boolean;
 function Espace(X,Y,Z: Integer) : TVect;
-function Profondeur(const V: TVect) : TDouble;
+function Profondeur(const V: TVect) : Double;
 procedure InitProjVar;
 
 function TailleMaximaleEcranX: Integer;
@@ -132,13 +131,13 @@ uses QkExceptions;
 
 var
  pDeltaX, pDeltaY, pDeltaZ: Integer;
- pProjX, pProjY: TDouble;
+ pProjX, pProjY: Double;
  CalculeProj3D: TProjEventEx;
  CalculeProfondeur3D: TProfondeurEventEx;
 
- Facteur: TDouble;
+ Facteur: Double;
 
-function VecLength(const V1: TVect) : TDouble;
+function VecLength(const V1: TVect) : Double;
 begin
   Result:=Sqrt(Dot(V1, V1));
 end;
@@ -150,14 +149,14 @@ begin
  Cross.Z := v1.X*v2.Y - v1.Y*v2.X;
 end;
 
-function Dot(const V1, V2: TVect) : TDouble;
+function Dot(const V1, V2: TVect) : Double;
 begin
  Dot:=V1.X*V2.X + V1.Y*V2.Y + V1.Z*V2.Z;
 end;
 
 procedure Normalise(var V: TVect);
 var
- F,S: TDouble;
+ F,S: Double;
 begin
  S:=Sqrt(Sqr(V.X)+Sqr(V.Y)+Sqr(V.Z));
  if (S = 0) then
@@ -170,7 +169,7 @@ end;
 
 procedure Normalise(var V: TVect; var S: Double);
 var
- F : TDouble;
+ F : Double;
 begin
  S:=Sqrt(Sqr(V.X)+Sqr(V.Y)+Sqr(V.Z));
  if (S = 0) then
@@ -222,7 +221,7 @@ begin
  Facteur:=1/(Sqr(pProjX)+Sqr(pProjY));
 end;
 
-function Profondeur(const V: TVect) : TDouble;
+function Profondeur(const V: TVect) : Double;
 begin
  case g_ModeProj of
   VueXY: Profondeur:=-V.Z;
@@ -245,17 +244,17 @@ begin
    Result:=ArcTan(Y/X)+pi;
 end;
 
-function itos(const I: TInteger) : String;
+function itos(const I: Integer) : String;
 begin
  Result:=IntToStr(I);
 end;
 
-function ftos(const F: TDouble) : String;
+function ftos(const F: Double) : String;
 const
  maxDigits = 2;
 var
  i: Integer;
- FP: TDouble;
+ FP: Double;
 begin
  if Abs(F) < High(Integer) - 2 then //Safety margin
  begin
@@ -273,7 +272,7 @@ begin
  Result:=FloatToStrF(F, ffFixed, 7, i);
 end;
 
-function ftos0(const F: TDouble) : String;
+function ftos0(const F: Double) : String;
 var
  R: Int64;
 begin
@@ -290,7 +289,7 @@ begin
  Result:=FloatToStrF(F, ffFixed, 7, 5);
 end;
 
-function ftos1(const F: TDouble) : String;
+function ftos1(const F: Double) : String;
 var
  R: Int64;
 begin
@@ -307,7 +306,7 @@ begin
  Result:=FloatToStrF(F, ffFixed, 7, 5);
 end;
 
-function ftosp(const F: TDouble; const P: integer) : String;
+function ftosp(const F: Double; const P: integer) : String;
 var
  R: Int64;
 begin
@@ -324,12 +323,12 @@ begin
  Result:=FloatToStrF(F, ffFixed, 7, P);
 end;
 
-{function dtos(const D: TDouble) : String;
+{function dtos(const D: Double) : String;
 const
  maxDigits = 2;
 var
  i: Integer;
- DP: TDouble;
+ DP: Double;
 begin
  if Abs(D) < High(Integer) - 2 then //Safety margin
  begin
@@ -347,7 +346,7 @@ begin
  Result:=FloatToStrF(D, ffFixed, 15, i);
 end;}
 
-function dtosp(const D: TDouble; const P: integer) : String;
+function dtosp(const D: Double; const P: integer) : String;
 var
  R: Int64;
 begin
@@ -364,7 +363,7 @@ begin
  Result:=FloatToStrF(D, ffFixed, 15, P);
 end;
 
-procedure ReadDoubleArray(const S1: String; var Vals: array of TDouble);
+procedure ReadDoubleArray(const S1: String; var Vals: array of Double);
 var
  P, I: Integer;
  S: String;
@@ -387,7 +386,7 @@ end;
 
 function ReadVector(const S: String) : TVect;
 var
- Lu: array[1..3] of TDouble;
+ Lu: array[1..3] of Double;
 begin
  ReadDoubleArray(S, Lu);
  Result.X:=Lu[1];
@@ -395,7 +394,7 @@ begin
  Result.Z:=Lu[3];
 end;
 
-function ReadNumValueEx(const S: String) : TDouble;
+function ReadNumValueEx(const S: String) : Double;
 var
  S1, S2: String;
  P: Integer;
@@ -450,7 +449,7 @@ end;
 
 function CalculeMAngle(const Angles: TVect) : TVect;
 var
- A, B: TDouble;
+ A, B: Double;
 begin
  A:=Angles.Y*Deg2Rad;
  B:=Angles.X*Deg2Rad;
@@ -471,7 +470,7 @@ end;
 
 (*function LirePositionFenetre(const R: TRect) : String;
 var
- XMax, YMax: TDouble;
+ XMax, YMax: Double;
 begin
 {DecimalSeparator:='.';}
  XMax:=1/TailleMaximaleEcranX;
@@ -484,7 +483,7 @@ end;
 
 function AppliquerPositionFenetre(const S: String) : TRect;
 var
- V: array[0..3] of TDouble;
+ V: array[0..3] of Double;
  XMax, YMax: Integer;
 begin
  ReadDoubleArray(S, V);
@@ -531,7 +530,7 @@ begin
  Result:=vtocol255(V.X*$100, V.Y*$100, V.Z*$100);
 end;
 
-function vtocol255(const R,G,B: TDouble) : TColor;
+function vtocol255(const R,G,B: Double) : TColor;
 var
  ComposantesCible: array[1..3] of Byte absolute Result;
  Entier: Int64;
@@ -550,7 +549,7 @@ end;
 
 procedure NormaliseCol1(var V: TVect);
 var
- Max: TDouble;
+ Max: Double;
 begin
  if V.X>V.Y then Max:=V.X else Max:=V.Y;
  if V.Z>Max then Max:=V.Z;
@@ -643,7 +642,7 @@ end;
 
 function SolveForThreePoints(const V1, V2, V3: TVect5; var P1, P2, P3:TVect) : Boolean;
 var
-  Denom : TDouble;
+  Denom : Double;
   D1, D2 : TVect;
 begin
   //Original Python code from quarkpy.maputils.py

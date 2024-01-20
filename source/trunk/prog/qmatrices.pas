@@ -26,7 +26,7 @@ uses SysUtils, qmath;
 
 type
  PMatrixTransformation = ^TMatrixTransformation;
- TMatrixTransformation = array[1..3, 1..3] of TDouble;
+ TMatrixTransformation = array[1..3, 1..3] of Double;
 
 const
  MatriceIdentite : TMatrixTransformation =
@@ -36,10 +36,10 @@ const
 
  {------------------------}
 
-procedure AjusteGrille1(var Delta: TVect; const PasGrille: TDouble);
+procedure AjusteGrille1(var Delta: TVect; const PasGrille: Double);
 procedure TransformationLineaire(var Pt: TVect);
 function InverseOrientation : Boolean;
-procedure Info_mx_Rot(N1,N2: Integer; V: TDouble);
+procedure Info_mx_Rot(N1,N2: Integer; V: Double);
 procedure Info_mx_Symetrie(Coord: Integer);
 function AddMatrices(const M1, M2: TMatrixTransformation) : TMatrixTransformation;
 function SubMatrices(const M1, M2: TMatrixTransformation) : TMatrixTransformation;
@@ -54,11 +54,11 @@ function MatrixMultByVect(const Matrice : TMatrixTransformation; const V: vec3_t
 function MatrixFromCols(const V1, V2, V3 : TVect) : TMatrixTransformation;
 function MatrixFromRows(const V1, V2, V3 : TVect) : TMatrixTransformation; overload;
 function MatrixFromRows(const V1, V2, V3 : vec3_t) : TMatrixTransformation; overload;
-function Determinant(const Matrice: TMatrixTransformation) : TDouble;
+function Determinant(const Matrice: TMatrixTransformation) : Double;
 
-function RotMatrixZ(V: TDouble; InMatrix:TMatrixTransformation) : TMatrixTransformation;
-function RotMatrixY(V: TDouble; InMatrix:TMatrixTransformation) : TMatrixTransformation;
-function RotMatrixPitchRoll(Pitch: TDouble; Roll: TDouble; InMatrix: TMatrixTransformation) : TMatrixTransformation;
+function RotMatrixZ(V: Double; InMatrix:TMatrixTransformation) : TMatrixTransformation;
+function RotMatrixY(V: Double; InMatrix:TMatrixTransformation) : TMatrixTransformation;
+function RotMatrixPitchRoll(Pitch: Double; Roll: Double; InMatrix: TMatrixTransformation) : TMatrixTransformation;
 
 procedure RotateVecs(const Matrice: TMatrixTransformation; var vec_out: vec3_p; count: Integer);
 
@@ -70,7 +70,7 @@ uses Qk3D;
 
  {------------------------}
 
-procedure AjusteGrille1(var Delta: TVect; const PasGrille: TDouble);
+procedure AjusteGrille1(var Delta: TVect; const PasGrille: Double);
 begin
  if PasGrille>0 then
   begin
@@ -111,9 +111,9 @@ begin
        -Matrice[1,3]*Matrice[2,2]*Matrice[3,1];
 end;
 
-procedure Info_mx_Rot(N1,N2: Integer; V: TDouble);
+procedure Info_mx_Rot(N1,N2: Integer; V: Double);
 var
- Angle: TDouble;
+ Angle: Double;
 begin
  Angle:=V * Deg2Rad;
  g_DrawInfo.Matrice:=MatriceIdentite;
@@ -129,9 +129,9 @@ begin
  g_DrawInfo.Matrice[Coord,Coord]:=-1;
 end;
 
-function RotMatrixZ(V: TDouble; InMatrix:TMatrixTransformation) : TMatrixTransformation;
+function RotMatrixZ(V: Double; InMatrix:TMatrixTransformation) : TMatrixTransformation;
 var
- Angle: TDouble;
+ Angle: Double;
 begin
  Angle:=V * Deg2Rad;
  Result:=InMatrix;
@@ -140,9 +140,9 @@ begin
  {0}                       {0}                       {1}
 end;
 
-function RotMatrixY(V: TDouble; InMatrix:TMatrixTransformation) : TMatrixTransformation;
+function RotMatrixY(V: Double; InMatrix:TMatrixTransformation) : TMatrixTransformation;
 var
- Angle: TDouble;
+ Angle: Double;
 begin
  Angle:=V * Deg2Rad;
  Result:=InMatrix;
@@ -151,10 +151,10 @@ begin
  Result[3,1]:=Sin(Angle);  {0}               Result[3,3]:=Cos(Angle);
 end;
 
-function RotMatrixPitchRoll(Pitch: TDouble; Roll: TDouble; InMatrix: TMatrixTransformation) : TMatrixTransformation ;
+function RotMatrixPitchRoll(Pitch: Double; Roll: Double; InMatrix: TMatrixTransformation) : TMatrixTransformation ;
 var
- AngleP: TDouble;
- AngleR: TDouble;
+ AngleP: Double;
+ AngleR: Double;
 begin
  AngleP:=Pitch * Deg2Rad;
  AngleR:=Roll * Deg2Rad;
@@ -217,7 +217,7 @@ end;
 
 function MatriceInverse(const M: TMatrixTransformation) : TMatrixTransformation;
 var
- Facteur: TDouble;
+ Facteur: Double;
 {Aux: TMatriceDeplacement;}
  I,J,I1,I2,J1,J2: Integer;
 begin
@@ -326,7 +326,7 @@ end;
 
 function stomx(const S: String) : TMatrixTransformation;
 var
- V: array[1..{12}9] of TDouble;
+ V: array[1..{12}9] of Double;
 begin
  ReadDoubleArray(S, V);
  Result:=TMatrixTransformation(V);

@@ -46,7 +46,7 @@ type
   end;
   daliasframe_p = ^daliasframe_t;
   daliasframe_t = packed record
-    scale, translate: array[0..2] of scalar_t;
+    scale, translate: array[0..2] of Single;
     name: array[0..15] of Byte;
     verts: array[0..0] of dtrivertx_t;
   end;
@@ -249,7 +249,7 @@ var
  typ, besttyp: Boolean;
  best_st, best_xyz, best_tris, strip_st, strip_xyz, strip_tris, tmpptr: ^TIntegerArray;
  st1: dstvert_p;
- skinwidth1, skinheight1: TDouble;
+ skinwidth1, skinheight1: Double;
  s, t: Single;
 
   function StripLength(starttri: Integer) : Integer;
@@ -465,7 +465,7 @@ var
   Vert1, Vert2, Vert3: vec3_t;
   Vec1, Vec2, Vec3, EchelleCompacter: TVect;
   tvx: dtrivertx_t;
-  Aire, Maximum: TDouble;
+  Aire, Maximum: Double;
 begin
   with Info do case Format of
     rf_Siblings:

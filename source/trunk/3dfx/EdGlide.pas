@@ -48,10 +48,10 @@ type
    ScreenX, ScreenY: Integer;
    TranspFactor: Single;
    function StartBuildScene({var PW: TPaletteWarning;} var SurfaceExtraSize, VertexSize: Integer) : TBuildMode; override;
-   procedure stScalePoly(Texture: PTexture3; var ScaleS, ScaleT: TDouble); override;
-   procedure stScaleModel(Skin: PTexture3; var ScaleS, ScaleT: TDouble); override;
-   procedure stScaleBezier(Texture: PTexture3; var ScaleS, ScaleT: TDouble); override;
-   procedure stScaleSprite(Skin: PTexture3; var ScaleS, ScaleT: TDouble); override;
+   procedure stScalePoly(Texture: PTexture3; var ScaleS, ScaleT: Double); override;
+   procedure stScaleModel(Skin: PTexture3; var ScaleS, ScaleT: Double); override;
+   procedure stScaleBezier(Texture: PTexture3; var ScaleS, ScaleT: Double); override;
+   procedure stScaleSprite(Skin: PTexture3; var ScaleS, ScaleT: Double); override;
    procedure WriteSurfaceExtra(PS: PArithByte; Surface: PSurface3D); override;
    procedure WriteVertex(PV: PArithByte; Source: Pointer; const ns,nt: Single; HiRes: Boolean); override;
    procedure PostBuild(nVertexList, nVertexList2: TList); override;
@@ -78,7 +78,7 @@ type
 
 procedure Do3DFXTwoMonitorsActivation; //FIXME: Currently unused!
 procedure Do3DFXTwoMonitorsDeactivation; //FIXME: Currently unused!
-procedure Set3DFXGammaCorrection(Value: TDouble);
+procedure Set3DFXGammaCorrection(Value: Double);
 
 var
  ScreenSizeX: Integer;
@@ -101,7 +101,7 @@ const
 type
  PSurfaceExtra = ^TSurfaceExtra;
  TSurfaceExtra = record
-                  GlideRadius: scalar_t;
+                  GlideRadius: Single;
                  end;
 
  PVect3D = ^TVect3D;
@@ -116,7 +116,7 @@ type
  PVertex3D = ^TVertex3D;
  TVertex3D = record
               v: PVect3D;
-              s,t: scalar_t;
+              s,t: Single;
              end;
 
  TGlideTextureFiltering = (tfNone, tfBilinear, tfTrilinear);
@@ -707,9 +707,9 @@ begin
   end;
 end;
 
-procedure TGlideSceneObject.stScalePoly(Texture: PTexture3; var ScaleS, ScaleT: TDouble);
+procedure TGlideSceneObject.stScalePoly(Texture: PTexture3; var ScaleS, ScaleT: Double);
 var
- CorrW, CorrH: TDouble;
+ CorrW, CorrH: Double;
 begin
   CorrW:= 1/(EchelleTexture*256);
   CorrH:=-1/(EchelleTexture*256);
@@ -729,7 +729,7 @@ begin
 end;
 
 
-procedure StandardScaling(Tex: PTexture3; var ScaleS, ScaleT: TDouble);
+procedure StandardScaling(Tex: PTexture3; var ScaleS, ScaleT: Double);
 var
  w, h: Integer;
 begin
@@ -758,17 +758,17 @@ begin
   else ScaleT := h / Tex.TexH;
 end;
 
-procedure TGlideSceneObject.stScaleModel(Skin: PTexture3; var ScaleS, ScaleT: TDouble);
+procedure TGlideSceneObject.stScaleModel(Skin: PTexture3; var ScaleS, ScaleT: Double);
 begin
   StandardScaling(Skin, ScaleS, ScaleT);
 end;
 
-procedure TGlideSceneObject.stScaleSprite(Skin: PTexture3; var ScaleS, ScaleT: TDouble);
+procedure TGlideSceneObject.stScaleSprite(Skin: PTexture3; var ScaleS, ScaleT: Double);
 begin
   StandardScaling(Skin, ScaleS, ScaleT);
 end;
 
-procedure TGlideSceneObject.stScaleBezier(Texture: PTexture3; var ScaleS, ScaleT: TDouble);
+procedure TGlideSceneObject.stScaleBezier(Texture: PTexture3; var ScaleS, ScaleT: Double);
 begin
   // SilverPaladin - 1/5/2003 - This is a change.  This routine was not
   // returning a scale but the unaltered w and h variables. So, when handled
@@ -813,7 +813,7 @@ begin
  grSstControl(GR_CONTROL_DEACTIVATE);
 end;
 
-procedure Set3DFXGammaCorrection(Value: TDouble);
+procedure Set3DFXGammaCorrection(Value: Double);
 begin
  grGammaCorrectionValue(Value);
 end;
@@ -829,7 +829,7 @@ type
  TLoadVProc = procedure (var PrevV1: TV1; PV: PVertex3D);
 
 var
- FlatZFactor, FlatZDelta, FlatZValue: TDouble;
+ FlatZFactor, FlatZDelta, FlatZValue: Double;
  LoadV: TLoadVProc;
  IteratedAlpha: Boolean;
 
@@ -844,7 +844,7 @@ procedure LoadV3D(var PrevV1: TV1; PV: PVertex3D); forward;
 
 (*procedure TSceneObject.GetProjInfo(var ProjInfo: TProjInfo; nRFactor: scalar_t);
 var
- SA,CA,SP,CP: TDouble;
+ SA,CA,SP,CP: Double;
 begin
  ProjInfo.Eye:=Eye;
  SA:=Sin(HorzAngle);  CA:=Cos(HorzAngle);
@@ -913,7 +913,7 @@ end;
 
 procedure TGlideSceneObject.Render3DView;
 var
- OldMinDist, OldMaxDist: TDouble;
+ OldMinDist, OldMaxDist: Double;
 begin
  if not GlideLoaded then
   raise EError(6007);

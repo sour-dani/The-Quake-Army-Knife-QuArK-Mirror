@@ -29,14 +29,14 @@ type
  TLightList = record
                SubLightList, Next: PLightList;
                Position, Min, Max: vec3_t;
-               Brightness: scalar_t;
+               Brightness: Single;
                Color: TColorRef;
               end;
  TLightParams = record
-                 ZeroLight: scalar_t; //Minimum lighting (ambient)
-                 BrightnessSaturation: scalar_t; //Maximum brightness cut-off for software lighting
-                 SoftwareRange: scalar_t; //Range for software lighting (starting at 0, which is ambient)
-                 IntensityScale: scalar_t; //Game-dependent multiplication factor for the 'light' specific
+                 ZeroLight: Single; //Minimum lighting (ambient)
+                 BrightnessSaturation: Single; //Maximum brightness cut-off for software lighting
+                 SoftwareRange: Single; //Range for software lighting (starting at 0, which is ambient)
+                 IntensityScale: Single; //Game-dependent multiplication factor for the 'light' specific
                 end;
 
  TTextureFiltering = (tfNone, tfBilinear, tfTrilinear, tfAnisotropic);
@@ -72,10 +72,10 @@ type
  protected
    TextureFiltering: TTextureFiltering;
    ScreenX, ScreenY: Integer;
-   procedure stScalePoly(Texture: PTexture3; var ScaleS, ScaleT: TDouble); override;
-   procedure stScaleModel(Skin: PTexture3; var ScaleS, ScaleT: TDouble); override;
-   procedure stScaleSprite(Skin: PTexture3; var ScaleS, ScaleT: TDouble); override;
-   procedure stScaleBezier(Texture: PTexture3; var ScaleS, ScaleT: TDouble); override;
+   procedure stScalePoly(Texture: PTexture3; var ScaleS, ScaleT: Double); override;
+   procedure stScaleModel(Skin: PTexture3; var ScaleS, ScaleT: Double); override;
+   procedure stScaleSprite(Skin: PTexture3; var ScaleS, ScaleT: Double); override;
+   procedure stScaleBezier(Texture: PTexture3; var ScaleS, ScaleT: Double); override;
    procedure WriteSurfaceExtra(PS: PArithByte; Surface: PSurface3D); override;
    procedure WriteVertex(PV: PArithByte; Source: Pointer; const ns,nt: Single; HiRes: Boolean); override;
    procedure ClearSurfaces(Surf: PSurface3D; SurfSize: Integer); override;
@@ -176,9 +176,9 @@ procedure LightAtPoint(var Point1: TP3D;
                        const NormalePlan: vec3_t);
 var
  LP: PLightList;
- Light: array[0..2] of TDouble;
+ Light: array[0..2] of Double;
  Incoming: vec3_t;
- Dist1, DistToSource: TDouble;
+ Dist1, DistToSource: Double;
  K: Integer;
 begin
   //with Point1 do
@@ -245,7 +245,7 @@ procedure RenderQuad(PV1, PV2, PV3, PV4: PVertex3D;
                      var Currentf: GLfloat4;
                      LP: PLightList;
                      const NormalePlan: vec3_t;
-                     Dist: scalar_t;
+                     Dist: Single;
                      const LightParams: TLightParams;
                      LightingQuality: Integer);
 const
@@ -258,7 +258,7 @@ var
  f, fstep: Single;
  SubList: PLightList;
  LPP: ^PLightList;
- DistToSource, Dist1: TDouble;
+ DistToSource, Dist1: Double;
  light: GLfloat4;
  NormalVector: packed array[0..2] of GLfloat;
 begin
@@ -562,7 +562,7 @@ begin
  LightingQuality:=nQuality;
 end;
 
-procedure TGLSceneObject.stScalePoly(Texture: PTexture3; var ScaleS, ScaleT: TDouble);
+procedure TGLSceneObject.stScalePoly(Texture: PTexture3; var ScaleS, ScaleT: Double);
 begin
   //with Texture^ do
   begin
@@ -571,7 +571,7 @@ begin
   end;
 end;
 
-procedure TGLSceneObject.stScaleModel(Skin: PTexture3; var ScaleS, ScaleT: TDouble);
+procedure TGLSceneObject.stScaleModel(Skin: PTexture3; var ScaleS, ScaleT: Double);
 begin
   //with Skin^ do
   begin
@@ -580,7 +580,7 @@ begin
   end;
 end;
 
-procedure TGLSceneObject.stScaleSprite(Skin: PTexture3; var ScaleS, ScaleT: TDouble);
+procedure TGLSceneObject.stScaleSprite(Skin: PTexture3; var ScaleS, ScaleT: Double);
 begin
   //with Skin^ do
   begin
@@ -589,7 +589,7 @@ begin
   end;
 end;
 
-procedure TGLSceneObject.stScaleBezier(Texture: PTexture3; var ScaleS, ScaleT: TDouble);
+procedure TGLSceneObject.stScaleBezier(Texture: PTexture3; var ScaleS, ScaleT: Double);
 begin
   ScaleS:=1;
   ScaleT:=1;
@@ -1174,7 +1174,7 @@ procedure TGLSceneObject.EndBuildScene;
 type
  TLightingList = record
                   LightNumber: GLenum;
-                  LightBrightness: TDouble;
+                  LightBrightness: Double;
                  end;
 
 var
@@ -1357,7 +1357,7 @@ procedure TGLSceneObject.Render3DView;
 var
  DX, DY, DZ: Double;
  VX, VY, VZ: TVect;
- Scaling: TDouble;
+ Scaling: Double;
  LocX, LocY: GLdouble;
  TransX, TransY, TransZ: GLdouble;
  MatrixTransform: TMatrix4f;

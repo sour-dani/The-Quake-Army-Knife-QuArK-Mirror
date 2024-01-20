@@ -210,7 +210,7 @@ type
  TSurface = record
             { définition de la face }
              Normale: TVect;
-             Dist: TDouble;
+             Dist: Double;
              Params: TFaceParams;
              case Integer of
               0: (Q2Contents, Q2Flags, Q2Value: Integer;
@@ -219,10 +219,10 @@ type
             end;
 
 const
- TailleSurfDef1 = SizeOf(TVect)+6*SizeOf(TDouble);     {Normale..Params}
+ TailleSurfDef1 = SizeOf(TVect)+6*SizeOf(Double);     {Normale..Params}
  TailleSurfQ2   = 3*SizeOf(Integer);                {Q2Contents..Q2Value}
  TailleSurfDef  = TailleSurfDef1+TailleSurfQ2;      {Normale..Q2Value}
- TailleSurfPlan = SizeOf(TVect)+SizeOf(TDouble);       {Normale..Dist}
+ TailleSurfPlan = SizeOf(TVect)+SizeOf(Double);       {Normale..Dist}
  TailleSurfParm1= TailleSurfDef1 - TailleSurfPlan;  {Params}
  TailleSurfParm = TailleSurfDef  - TailleSurfPlan;  {Params..Q2Value}
  TailleSurfVis  = TailleSurfParm + TailleNomTex;    {Params..NomTex}
@@ -320,7 +320,7 @@ begin
    if Abr>=8 then
     Abr:=Abr shr 5;
    if Abr=7 then
-    S.ReadBuffer(OldF^.Normale, SizeOf(TVect)+SizeOf(TDouble))
+    S.ReadBuffer(OldF^.Normale, SizeOf(TVect)+SizeOf(Double))
    else
     begin
      OldF^.Normale:={Origine}OriginVectorZero;
@@ -332,7 +332,7 @@ begin
       5 : OldF^.Normale.Z:=-1;
       6 : OldF^.Normale.Z:=1;
      end;
-     S.ReadBuffer(OldF^.Dist, SizeOf(TDouble));
+     S.ReadBuffer(OldF^.Dist, SizeOf(Double));
     end;
    F:=TFace.Create(LoadStr1(139), Result);
    Result.SubElements.Add(F);

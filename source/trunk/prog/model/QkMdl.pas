@@ -59,12 +59,12 @@ type
   mdl_t = record
     id, version: LongInt;
     scale, origin: vec3_t;
-    radius: scalar_t;
+    radius: Single;
     offsets: vec3_t;
     numskins, skinwidth, skinheight: LongInt;
     numverts, numtris, numframes: LongInt;
     synctype, flags: LongInt;
-    size: scalar_t;
+    size: Single;
   end;
   mdl_ra_t = record
     numstverts: LongInt;
@@ -1112,7 +1112,7 @@ var
   Vert1, Vert2, Vert3: vec3_t;
   tvx: trivertx_t;
   NormalesSommets: ^TVect_array;
-  Aire, AireTotale, Maximum: TDouble;
+  Aire, AireTotale, Maximum: Double;
 
   function Compacter(const T: vec3_t): trivertx_t;
   begin

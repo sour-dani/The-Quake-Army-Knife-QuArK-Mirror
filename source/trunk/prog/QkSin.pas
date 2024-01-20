@@ -187,7 +187,7 @@ var
  Lmp: PPaletteLmp;
  S: String;
  V: array[1..2] of Single;
- Cl: array[0..2] of TDouble;
+ Cl: array[0..2] of Double;
  begin
  with Info do case Format of
   rf_Default: begin  { as stand-alone file }

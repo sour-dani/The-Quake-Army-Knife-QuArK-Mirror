@@ -27,7 +27,7 @@ uses SysUtils, qmath;
 type
  PQuaternion = ^TQuaternion;
  TQuaternion = record
-                X, Y, Z, W: TDouble;
+                X, Y, Z, W: Double;
                end;
 
  {------------------------}
@@ -35,7 +35,7 @@ type
 function MultiplyQuaternions(const Q1, Q2: TQuaternion) : TQuaternion;
 function qtos(const Q: TQuaternion) : String;
 function stoq(const S: String) : TQuaternion;
-function QuaternionNorm(const Q: TQuaternion) : TDouble;
+function QuaternionNorm(const Q: TQuaternion) : Double;
 function QuaternionInverse(const Q: TQuaternion) : TQuaternion;
 procedure QuaternionNormalise(var Q: TQuaternion);
 
@@ -47,15 +47,15 @@ uses Qk3D;
 
  {------------------------}
 
-function QuaternionNorm(const Q: TQuaternion) : TDouble;
+function QuaternionNorm(const Q: TQuaternion) : Double;
 begin
  Result:=sqrt(Q.X*Q.X + Q.Y*Q.Y + Q.Z*Q.Z + Q.W*Q.W);
 end;
 
 function MultiplyQuaternions(const Q1, Q2: TQuaternion) : TQuaternion;
 var
- r: array[1..4] of TDouble;
- d: TDouble;
+ r: array[1..4] of Double;
+ d: Double;
 begin
   r[1]:=Q2.W * Q1.X + Q2.X * Q1.W + Q2.Y * Q1.Z - Q2.Z * Q1.Y;
   r[2]:=Q2.W * Q1.Y + Q2.Y * Q1.W + Q2.Z * Q1.X - Q2.X * Q1.Z;
@@ -70,7 +70,7 @@ end;
 
 function QuaternionInverse(const Q: TQuaternion) : TQuaternion;
 var
- Facteur: TDouble;
+ Facteur: Double;
 begin
  Facteur:=1/QuaternionNorm(Q);
  Result.X:=-Q.X * Facteur;
@@ -81,7 +81,7 @@ end;
 
 procedure QuaternionNormalise(var Q: TQuaternion);
 var
- F,S: TDouble;
+ F,S: Double;
 begin
  S:=Sqrt(Sqr(Q.X)+Sqr(Q.Y)+Sqr(Q.Z)+Sqr(Q.W));
  if (S = 0) then
@@ -100,7 +100,7 @@ end;
 
 function stoq(const S: String) : TQuaternion;
 var
- V: array[1..4] of TDouble;
+ V: array[1..4] of Double;
 begin
  ReadDoubleArray(S, V);
  Result:=TQuaternion(V);

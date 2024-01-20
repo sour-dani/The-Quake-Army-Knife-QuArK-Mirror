@@ -115,7 +115,7 @@ type
           Vertex0, Vertex1: Word;
          end;
  PTexInfoVecs = ^TTexInfoVecs;
- TTexInfoVecs = array[0..1, 0..3] of scalar_t;
+ TTexInfoVecs = array[0..1, 0..3] of Single;
  PTexInfo = ^TTexInfo;
  TTexInfo = record
              vecs: TTexInfoVecs;     // [s/t][xyz offset]
@@ -253,14 +253,14 @@ var
  LastError: String;
  P1, P2, P3, NN: TVect;
  P5_1, P5_2, P5_3: TVect5;
- PlaneDist: TDouble;
+ PlaneDist: Double;
  texcoord: vec2_t;
  Q3Vertex: TQ3Vertex;
  Q3VertexP: PQ3Vertex;
  TextureList: QTextureList;
  miptex, q12surf: boolean;
  Norm2: TVect;
- Facteur: TDouble;
+ Facteur: Double;
 
  function AdjustTexScale(const V: TVect5) : TVect5;
  begin

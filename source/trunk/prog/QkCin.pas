@@ -171,7 +171,7 @@ end;
 procedure TCinDataInfo.EstimateLength;
 var
  Progress: TStreamPos;
- Estimated: TDouble;
+ Estimated: Double;
 begin
  if EOF then Exit;
  Progress:=TStreamPos(FrameOfs.Last)-OfsData;

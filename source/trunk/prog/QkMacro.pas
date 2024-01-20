@@ -332,7 +332,7 @@ procedure DrawMapMacros(Entity: QObject; Macros, Entities: TQList);
    I, J: Integer;
    Test, Macro: QObject;
    V1, V2: TVect;
-   R: TDouble;
+   R: Double;
    Pt1, Pt2, Pt3, Pt4, Pt5: TPoint;
    Pen: HPen;
   begin

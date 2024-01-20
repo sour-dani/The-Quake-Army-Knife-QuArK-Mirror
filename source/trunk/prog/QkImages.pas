@@ -1843,7 +1843,7 @@ end;
 procedure TFQImages.EditSizeAccept(Sender: TObject);
 var
  NewPSD: TPixelSetDescription;
- Size: array[1..2] of TDouble;
+ Size: array[1..2] of Double;
 begin
  ReadDoubleArray(EditSize.Text, Size);
  NewPSD.Init;

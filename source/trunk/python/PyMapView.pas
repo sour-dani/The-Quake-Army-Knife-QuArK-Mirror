@@ -130,7 +130,7 @@ type
                  StillQuality, MovingQuality: Integer;
                  Renderer: String;
                  FKey3D: array[TKey3D] of Word;
-                 FRAMETIME: TDouble;
+                 FRAMETIME: Double;
                  Animation: PAnimationSeq;
                  OldCameraPos: PyObject;
                  FPainting: Boolean;
@@ -569,7 +569,7 @@ end;
 
 procedure TPyMapView.UpdateCoords(Inv: Boolean);
 var
- VAngle: TDouble;
+ VAngle: Double;
 begin
  if Inv then
   Invalidate;
@@ -727,7 +727,7 @@ var
  Bitmap: TBitmap;
  R, Dest: TRect;
  P1: TPointProj;
- X, Y, W, H: TDouble;
+ X, Y, W, H: Double;
  scaling: Single;
 begin
  with BackgroundImage do
@@ -1427,16 +1427,16 @@ const
 var
  K, K1: TKey3D;
  KeySet: set of TKey3D;
- Speed, Accel: array[Boolean] of TDouble;
- RotateSpeed: TDouble;
- v: array[1..5] of TDouble;
+ Speed, Accel: array[Boolean] of Double;
+ RotateSpeed: Double;
+ v: array[1..5] of Double;
  LR: Boolean;
  DC, SrcDC: HDC;
  TickCounts: array[0..NumTickCounts-1] of DWORD;
  NumTicks: Integer;
  Msg: TMsg;
  nEye, Look, Right, Down: TVect;
- nHorzAngle, nPitchAngle: TDouble;
+ nHorzAngle, nPitchAngle: Double;
  BackBuffer, OldBmp: HBitmap;
  Brush: HBrush;
  NeedFullRedraw: Boolean;
@@ -1444,7 +1444,7 @@ var
  F: System.Text;
 {$ENDIF}
 
-  function Test(var v1: TDouble; KPlus, KMinus: TKey3D; Max: TDouble; Zero: Boolean) : Boolean;
+  function Test(var v1: Double; KPlus, KMinus: TKey3D; Max: Double; Zero: Boolean) : Boolean;
   begin
    Result:=True;
 
@@ -1574,7 +1574,7 @@ begin
        nEye:=Camera;
       end;
 
-     { compute the distance (TDouble), each pair-of-keys produce, if they are active in the KeySet }
+     { compute the distance (Double), each pair-of-keys produce, if they are active in the KeySet }
      Test(    v[1], keyForward,      keyBack,           Speed[keyRun in KeySet], True);
      LR:=Test(v[2], keyStepRight,    keyStepLeft,       Speed[keyRun in KeySet], False);
      Test(    v[3], PyMapView.keyUp, PyMapView.keyDown, Speed[keyRun in KeySet], True);
@@ -1586,7 +1586,7 @@ begin
       { no strafe, interprent Left/Right-keys as horizontal-rotation-distance (Yaw) }
       Test(v[4], keyLeft, keyRight, RotateSpeed, True);
 
-     { if no strafe-keys were active, then set the distance (TDouble) to zero. E.q. no strafe-movement at all }
+     { if no strafe-keys were active, then set the distance (Double) to zero. E.q. no strafe-movement at all }
      if not LR then
       v[2]:=0;
 
@@ -1770,12 +1770,12 @@ const
  dg_OnlyHighlighted = $20000;
  dg_n_mask = $FFFF;
 (*var
- x1, y1, x2, y2: TDouble;
- a,b,c,d: TDouble;
+ x1, y1, x2, y2: Double;
+ a,b,c,d: Double;
  DC: HDC;
  R: TRect;
  S, T, HMin, HMax, HX, HY: Integer;
- X, Y: TDouble;
+ X, Y: Double;
  Center: TPointProj;
 
   function Dot(x,y: Integer; hx,hy: Integer) : Boolean;
@@ -1795,9 +1795,9 @@ const
 
   type TDir = set of (Up, Down, Left, Right);
 
-  procedure ExtendedDraw(const x,y: TDouble; hx,hy: Integer; Dir: TDir);
+  procedure ExtendedDraw(const x,y: Double; hx,hy: Integer; Dir: TDir);
   var
-   v,w: TDouble;
+   v,w: Double;
    I: Integer;
   begin
    if Up in Dir then
@@ -1892,20 +1892,20 @@ begin
 end;*)
 
 var
- x1, y1, x2, y2: TDouble;
- a,b,c,d: TDouble;
+ x1, y1, x2, y2: Double;
+ a,b,c,d: Double;
  DC: HDC;
  R, CR: TRect;
- PasG, PasInv: TDouble;
+ PasG, PasInv: Double;
  I,J,K, Taille, Highlight: Integer;
- pXI, pXJ, pYI, pYJ, pXJ0, pYJ0: TDouble;
+ pXI, pXJ, pYI, pYJ, pXJ0, pYJ0: Double;
  pX, pY: TVect;
  Pen: HPen;
  PointArray, P, P2: PInteger;
  Center: TPointProj;
  BB, OH: Boolean;
 
-  procedure Tester(X,Y: TDouble);
+  procedure Tester(X,Y: Double);
   var
    S, T: Integer;
   begin
@@ -2722,7 +2722,7 @@ function mScale(self, args: PyObject) : PyObject; cdecl;
 var
  v1: PyVect;
  V: PVect;
- F: TDouble;
+ F: Double;
 begin
  Result:=Nil;
  try

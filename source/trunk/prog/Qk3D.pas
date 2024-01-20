@@ -31,7 +31,7 @@ type
  TAnalyseClic = record
                  Suivant: PAnalyseClic;
                  T: Q3DObject;
-                 H: TDouble;
+                 H: Double;
                 end;}
  Q3DObject = class(QObject)
              protected
@@ -44,7 +44,7 @@ type
                function GetOrigin(var Pt: TVect) : Boolean; virtual;
               {function AnalyserClic(ModeAnalyse: Integer) : Q3DObject;}
                procedure AnalyseClic(Liste: PyObject); virtual;
-               procedure Deplacement(const PasGrille: TDouble); virtual;
+               procedure Deplacement(const PasGrille: Double); virtual;
                procedure ChercheExtremites(var Min, Max: TVect); virtual;
               {function VisuallySelected : Boolean; virtual;}
               {function AjouterRef(Liste: TList; Niveau: Integer) : Integer; virtual;}
@@ -85,7 +85,7 @@ type
                   {VisibleRect: TRect;}
                   {SelectionVisuelle: TTreeMap;}
                   X, Y: Integer;
-                  ClicZ: TDouble;
+                  ClicZ: Double;
                   Clic, Clic2: TVect;
                   Matrice: TMatrixTransformation;
                   MapIcons: HImageList;
@@ -186,7 +186,7 @@ begin
  GetOrigin:=False;
 end;
 
-procedure Q3DObject.Deplacement(const PasGrille: TDouble);
+procedure Q3DObject.Deplacement(const PasGrille: Double);
 begin
 end;
 
@@ -312,7 +312,7 @@ begin
  end;
 end;
 
-(*procedure Q3DObject.ResultatAnalyseClic(var Liste: PAnalyseClic; nH: TDouble);
+(*procedure Q3DObject.ResultatAnalyseClic(var Liste: PAnalyseClic; nH: Double);
 var
  P2: ^PAnalyseClic;
  Nouveau: PAnalyseClic;
@@ -385,7 +385,7 @@ end;
 function qTranslate(self, args: PyObject) : PyObject; cdecl;
 var
  V1: PyVect;
- nGrid: TDouble;
+ nGrid: Double;
 begin
  Result:=Nil;
  try
@@ -412,7 +412,7 @@ end;
 
 function qForceToGrid(self, args: PyObject) : PyObject; cdecl;
 var
- nGrid: TDouble;
+ nGrid: Double;
 begin
  Result:=Nil;
  try

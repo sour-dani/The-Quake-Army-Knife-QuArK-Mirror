@@ -137,7 +137,7 @@ function ColorIsLight(C: TColorRef) : Boolean;
 
 procedure GameCfgDlg;
 procedure DisplayAddOnsList(ListView1: TListView);
-function InitGeneralGammaBuffer(var Buf: TGeneralGammaBuffer; var FG: TDouble) : Boolean;
+function InitGeneralGammaBuffer(var Buf: TGeneralGammaBuffer; var FG: Double) : Boolean;
 
  {------------------------}
 
@@ -1110,11 +1110,11 @@ end;
 
 type
  TGammaBuffer = record
-                 Factor: TDouble;
+                 Factor: Double;
                  Map: array[0..255] of SmallInt;
                 end;
 
-function GetGammaValue: TDouble;
+function GetGammaValue: Double;
 begin
  Result:=SetupSubSet(ssGeneral, 'Display').GetFloatSpec('Gamma', 11/8);
  if Result<1.0 then
@@ -1141,9 +1141,9 @@ begin
  Buf.Map[B]:=Result;
 end;
 
-function InitGeneralGammaBuffer(var Buf: TGeneralGammaBuffer; var FG: TDouble) : Boolean;
+function InitGeneralGammaBuffer(var Buf: TGeneralGammaBuffer; var FG: Double) : Boolean;
 var
- FG1: TDouble;
+ FG1: Double;
  B: Integer;
 begin
  FG1:=GetGammaValue;

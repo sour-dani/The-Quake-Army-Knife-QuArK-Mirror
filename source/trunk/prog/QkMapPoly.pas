@@ -65,7 +65,7 @@ type
  EPolyedreInvalide = class(Exception)
                      end;
 
- TFaceParams = array[1..5] of TDouble; //Shift X, Shift Y, rotate, Scale X, Scale Y
+ TFaceParams = array[1..5] of Double; //Shift X, Shift Y, rotate, Scale X, Scale Y
 
  TFace     = class;
  PSurface = ^TSurface;
@@ -82,7 +82,7 @@ type
                DescFaces: Pointer;
                NbAretes2: Integer;
                procedure DestroyVertices;
-               function ConstructVertices1(const DistMin: TDouble; var Err1, Err2: String) : Boolean;
+               function ConstructVertices1(const DistMin: Double; var Err1, Err2: String) : Boolean;
                function PyCloneEmpty : TPolyhedron;
              protected
                PolyhedronState: TPolyhedronState;
@@ -119,7 +119,7 @@ type
                procedure AddFace(FJ: TFace; Copy: Boolean);
                function EnumAretes(Sommet: PVertex; var nVertices: TFVertexTable) : Integer;
                function PyGetAttr(attr: PyChar) : PyObject; override;
-               procedure Deplacement(const PasGrille: TDouble); override;
+               procedure Deplacement(const PasGrille: Double); override;
              end;
 
  {Fixme: Polyedre must die!}
@@ -132,7 +132,7 @@ type
                       function GetTextureMirror : Boolean;
                       procedure SetTextureMirror(Value: Boolean);
                     protected
-                      procedure UserTexScale(AltTexSrc: QObject; var CorrW, CorrH: TDouble);
+                      procedure UserTexScale(AltTexSrc: QObject; var CorrW, CorrH: Double);
                     public
                       property NomTex : String read GetNomTex write SetNomTex;
                       procedure FindTextures(SortedList: TStringList); override;
@@ -168,7 +168,7 @@ type
                 { Vertices: PTableauPointsProj or Nil }
              public
                Normale: TVect;
-               Dist: TDouble;
+               Dist: Double;
                destructor Destroy; override;
                procedure PreDessinerSel; override;
                procedure Dessiner; override;
@@ -197,13 +197,13 @@ type
                function CentreFace : TVect;
                function GetOrigin(var Pt: TVect) : Boolean; override;
                procedure ChercheExtremites(var Min, Max: TVect); override;
-               procedure Deplacement(const PasGrille: TDouble); override;
+               procedure Deplacement(const PasGrille: Double); override;
                procedure Distortion(const nNormal, FixPoint: TVect);
                procedure DistortionPoint(const Fix1, Fix2, Src, Dest: TVect);
                procedure OperationInScene(Aj: TAjScene; PosRel: Integer); override;
               {property VertexCount[Cmpo: Integer] : Integer read GetVertexCount;
                property Vertex[Cmpo, I: Integer] : TVect read GetVertex;}
-               procedure SetFaceFromParams(const nNormale: TVect; nDist: TDouble; const TexParams: TFaceParams);
+               procedure SetFaceFromParams(const nNormale: TVect; nDist: Double; const TexParams: TFaceParams);
                function GetFaceError : String;
               {function AjouterRef(Liste: TList; Niveau: Integer) : Integer; override;}
                property FaceOfPoly: PSurface read GetFaceOfPoly;
@@ -317,7 +317,7 @@ end;
 
 procedure TroisPointsDansFaceAncienStyle(const S: TFace; var Pt, Pt2, Pt3: TVect);
 {var
- Distance, DistMin: TDouble;
+ Distance, DistMin: Double;
  I: Integer;
  Ok: Boolean;}
 begin
@@ -340,7 +340,7 @@ begin
   TroisPointsDansFaceRapide(S, Pt, Pt2, Pt3);
 end;
 
-{function Chk(X: TDouble) : Boolean;
+{function Chk(X: Double) : Boolean;
 begin
  X:=Abs(X);
  Chk:=(X>rien2) and (X<1+rien2);
@@ -355,12 +355,12 @@ end;
 type
  TTag = record
          Index: Integer;
-         Produit: TDouble;
+         Produit: Double;
         end;
 var
  Tag1, Tag2, Tag3: TTag;
  I, J: Integer;
- Produit: TDouble;
+ Produit: Double;
  V, P1, P0, W: TVect;
  Sommets, P, PTest: ^TVect;
  NbSommets: Integer;
@@ -593,7 +593,7 @@ procedure SoustractionPolyedre(Old, New: TQList; P: TPolyedre; SoustraitPolyMax:
 type
  TFace1 = record
            Surface: PSurface;
-           Distance: TDouble;
+           Distance: Double;
           end;
  PTableauFaces = ^TTableauFaces;
  TTableauFaces = array[0..0] of TFace1;
@@ -605,7 +605,7 @@ var
  S: TFace;
 {Test, Liberer: TTreeMap;}
  ListeFaces: PTableauFaces;
- R, RMin: TDouble;
+ R, RMin: Double;
 begin
  GetMem(ListeFaces, P.Faces.Count*SizeOf(TFace1)); try
  for I:=0 to P.Faces.Count-1 do
@@ -708,7 +708,7 @@ end;
 
 {procedure AjusterNormale(var Normale: TVect);
 var
- Norme: TDouble;
+ Norme: Double;
  Delta: TVect;
 
   procedure TestV(const V: TVect);
@@ -720,7 +720,7 @@ var
     end;
   end;
 
-  procedure Test(const X, Y, Z: TDouble);
+  procedure Test(const X, Y, Z: Double);
   var
    V: TVect;
   begin
@@ -754,10 +754,10 @@ type
               Created: PVertex;
              end;
 
-function AjouteSommet(const Pt: TVect; DistMin: TDouble; Sommets: TList) : Integer;
+function AjouteSommet(const Pt: TVect; DistMin: Double; Sommets: TList) : Integer;
 var
  I: Integer;
- Dist: TDouble;
+ Dist: Double;
  Test, Old: PVertexEx;
 begin
  Result:=-1;
@@ -856,7 +856,7 @@ var
  NbPts{, Resultat}: Integer;
 {Pt1, Pt2: TPoint;}
  PI: TVect;
- D1, D2: TDouble;
+ D1, D2: Double;
  P1, P2, V,W: TVect;
 begin
  Result:=False;
@@ -945,7 +945,7 @@ var
  TestFace: TFace;
  Test: PSurface;
  Normale1: TVect;
- Dist1: TDouble;
+ Dist1: System.Double;
  Q: QObject;
 
   procedure Parcourir(T: TTreeMap);
@@ -1185,10 +1185,10 @@ begin
   end;
 end;
 
-function InterieurArrete(Faces: TList; const Org, Arr: TVect; var Min, Max: TDouble; F1,F2: Integer) : Boolean;
+function InterieurArrete(Faces: TList; const Org, Arr: TVect; var Min, Max: Double; F1,F2: Integer) : Boolean;
 var
  I: Integer;
- Denom, Alpha: TDouble;
+ Denom, Alpha: Double;
 begin
  Min:=-1E11;
  Max:=1E11;
@@ -1221,7 +1221,7 @@ begin
  Result:=Max > Min+rien;
 end;
 
-function TPolyhedron.ConstructVertices1(const DistMin: TDouble; var Err1, Err2: String) : Boolean;
+function TPolyhedron.ConstructVertices1(const DistMin: Double; var Err1, Err2: String) : Boolean;
 type
   TUnSommet = record Ar: Integer; end;
   TableauSommets = array[0..MaxPVertices-1] of TUnSommet;
@@ -1231,7 +1231,7 @@ var
   I, J, K: Integer;
   FI, FJ: TFace;
   Org, Arr: TVect;
-  NiNj, Alpha, Min, Max: TDouble;
+  NiNj, Alpha, Min, Max: Double;
   Pt: TVect;
   Aretes, FaceList: TList;
  {FacesVCount: ^TableauEntiers;}
@@ -1597,7 +1597,7 @@ begin
   Result:=True;
 end;
 
-function PolyedreNonVide1(nFaces: TList; ReloadData : Boolean; const DistMin: TDouble) : Boolean;
+function PolyedreNonVide1(nFaces: TList; ReloadData : Boolean; const DistMin: Double) : Boolean;
 const
  PlaceHolder = PVertex(1);
 type
@@ -1608,7 +1608,7 @@ var
  I, J, L: Integer;
  FI, FJ: TFace;
  Org, Arr: TVect;
- NiNj, Alpha, Min, Max: TDouble;
+ NiNj, Alpha, Min, Max: Double;
  Pt: TVect;
  FaceList: TList;
 {FacesVCount: ^TableauEntiers;}
@@ -2360,7 +2360,7 @@ begin
     end;
 end;
 
-procedure TPolyhedron.Deplacement(const PasGrille: TDouble);
+procedure TPolyhedron.Deplacement(const PasGrille: Double);
 var
  Info1: TVect;
  OldOrg, NewOrg: TVect;
@@ -2682,7 +2682,7 @@ end;
 *)
 var
  V1b, V2b: TVect;
- R: TDouble;
+ R: Double;
 begin
  V1b.X:=V2.X-V1.X;
  V1b.Y:=V2.Y-V1.Y;
@@ -2702,7 +2702,7 @@ end;
 function TFace.SetThreePointsEx_etp(const V1, V2, V3, nNormale: TVect) : Boolean;
 var
  V1b, V2b: TVect;
- R: TDouble;
+ R: Double;
 begin
  Result:=True;
  V1b.X:=V2.X-V1.X;
@@ -2732,7 +2732,7 @@ end;
 function TFace.SetThreePointsEnhEx(const V1, V2, V3, nNormale: TVect) : Boolean;
 var
  V1b, V2b: TVect;
- R: TDouble;
+ R: Double;
 begin
  Result:=True;
  V1b.X:=V2.X-V1.X;
@@ -2757,7 +2757,7 @@ begin
    Result:=False;
 end;
 
-procedure TTexturedTreeMap.UserTexScale(AltTexSrc: QObject; var CorrW, CorrH: TDouble);
+procedure TTexturedTreeMap.UserTexScale(AltTexSrc: QObject; var CorrW, CorrH: Double);
 const
  DefTexSize = 64;
 var
@@ -2781,7 +2781,7 @@ function TFace.GetThreePointsUserTex(var V1, V2, V3: TVect; AltTexSrc: QObject) 
 var
  TexP: array[1..4] of TVect;
  I, W, H: Integer;
- CorrW, CorrH: TDouble;
+ CorrW, CorrH: Double;
 begin
  Result:=GetThreePointsT(TexP[1], TexP[2], TexP[3]);
  if not Result then Exit;
@@ -2839,7 +2839,7 @@ end;
 function TFace.GetThreePointsUserTexNoRecenter(var V1, V2, V3: TVect; AltTexSrc: QObject) : Boolean;
 var
  TexP: array[1..4] of TVect;
- CorrW, CorrH: TDouble;
+ CorrW, CorrH: Double;
 begin
  Result:=GetThreePointsT(TexP[1], TexP[2], TexP[3]);
  if not Result then Exit;
@@ -2862,7 +2862,7 @@ end;
 
 procedure TFace.SetThreePointsUserTex(const V1, V2, V3: TVect; AltTexSrc: QObject);
 var
- CorrW, CorrH: TDouble;
+ CorrW, CorrH: Double;
  P2, P3: TVect;
 begin
  if not LoadData then Exit;
@@ -2878,7 +2878,7 @@ end;
 
 procedure TFace.SetThreePointsUserTexWithSize(const V1, V2, V3: TVect; const Size: TPoint);
 var
- CorrW, CorrH: TDouble;
+ CorrW, CorrH: Double;
  P2, P3: TVect;
 begin
  if not LoadData then Exit;
@@ -2897,7 +2897,7 @@ end;
    SetThreePointsEx_etp, which was SetThreePointsEx
 procedure TFace.SetThreePointsUserTex_etp(const V1, V2, V3: TVect; AltTexSrc: QObject);
 var
- CorrW, CorrH: TDouble;
+ CorrW, CorrH: Double;
  P2, P3: TVect;
 begin
  if not LoadData then Exit;
@@ -2930,7 +2930,7 @@ procedure TFace.SimulateEnhTex(var V1, V2, V3: TVect; var Mirror: boolean);
 var
   TexV: array[1..6] of Single;
   V1b, V2b: TVect;
-  R: TDouble;
+  R: Double;
 begin
   if LoadData and GetFloatsSpec('tv',TexV) then
   begin
@@ -3295,7 +3295,7 @@ var
  Brush: HBrush;
  LogBrush: TLogBrush;
  Poly: TPolyedre;
- Rapport: TDouble;
+ Rapport: Double;
  P: PSurface;
  FirstPoly: Boolean;
 begin
@@ -3479,12 +3479,12 @@ begin
   end;
 end;
 
-procedure TFace.Deplacement(const PasGrille: TDouble);
+procedure TFace.Deplacement(const PasGrille: Double);
 var
  Pt, PTex: array[1..3] of TVect;
  I: Integer;
  OldOrg, NewOrg, InfoClic: TVect;
- f: TDouble;
+ f: Double;
 begin
  if GetThreePoints(Pt[1], Pt[2], Pt[3]) then
   begin
@@ -3607,7 +3607,7 @@ const
  N2 = 2;
 var
  Axe: TVect;
- L: TDouble;
+ L: Double;
  I: Integer;
  M, Base: TMatrixTransformation;
 begin
@@ -3789,7 +3789,7 @@ end;*)
 
 function PointsToPlane(const Normale: TVect) : Char;
 var
- X1, Y1, Z1: TDouble;
+ X1, Y1, Z1: Double;
 begin
  X1:=Abs(Normale.X);
  Y1:=Abs(Normale.Y);
@@ -3806,7 +3806,7 @@ begin
    Result:='Y';   { face points to axis Y }
 end;
 (*var
- A, S, C: TDouble;
+ A, S, C: Double;
 begin
  A:=Abs(Normale.X);
  S:=Abs(Normale.Y);
@@ -3825,11 +3825,11 @@ end;*)
 
 
 
-procedure TFace.SetFaceFromParams(const nNormale: TVect; nDist: TDouble; const TexParams: TFaceParams);
+procedure TFace.SetFaceFromParams(const nNormale: TVect; nDist: Double; const TexParams: TFaceParams);
 
-  procedure ApplyParams(var PX, PY: TDouble);
+  procedure ApplyParams(var PX, PY: Double);
   var
-   A, S, C: TDouble;
+   A, S, C: Double;
   begin
    PX:=PX-TexParams[1];
    PY:=PY+TexParams[2];
@@ -3985,7 +3985,7 @@ var
  TexP: array[1..3] of TVect;
  TexPt: array[1..3] of TPoint3D;
  Det: LongInt;
- DetInv: TDouble;
+ DetInv: Double;
  Form4: TForm4;
 
   procedure ProjTex3D(PX, PY: LongInt; var X, Y: LongInt);

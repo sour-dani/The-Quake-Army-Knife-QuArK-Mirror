@@ -59,7 +59,7 @@ type
  PSurface3D = ^TSurface3D;
  TSurface3D = record
                Normale: vec3_t;          { not defined if GL_TRI_STRIP }
-               Dist: scalar_t;           { not defined if GL_TRI_STRIP }
+               Dist: Single;             { not defined if GL_TRI_STRIP }
                VertexCount: Integer;    { < 0 for a Bezier's GL_TRI_STRIP (OpenGL only) }
                AlphaColor: TColorRef;
                TextureMode: TTextureRenderMode;
@@ -112,7 +112,7 @@ type
    DisplayMode: TDisplayMode;
    DisplayType: TDisplayType;
    RenderMode: TRenderMode;
-   FarDistance: TDouble;
+   FarDistance: Double;
    FogDensity: Single;
    FInitialized: Boolean;
    DWMLoaded: Boolean;
@@ -121,10 +121,10 @@ type
    procedure ClearSurfaces(Surf: PSurface3D; SurfSize: Integer); virtual;
    function StartBuildScene({var PW: TPaletteWarning;} var SurfaceExtraSize, VertexSize: Integer) : TBuildMode; virtual; abstract;
    procedure EndBuildScene; virtual;
-   procedure stScalePoly(Texture: PTexture3; var ScaleS, ScaleT: TDouble); virtual; abstract;
-   procedure stScaleModel(Skin: PTexture3; var ScaleS, ScaleT: TDouble); virtual; abstract;
-   procedure stScaleBezier(Texture: PTexture3; var ScaleS, ScaleT: TDouble); virtual; abstract;
-   procedure stScaleSprite(Texture: PTexture3; var ScaleS, ScaleT: TDouble); virtual; abstract;
+   procedure stScalePoly(Texture: PTexture3; var ScaleS, ScaleT: Double); virtual; abstract;
+   procedure stScaleModel(Skin: PTexture3; var ScaleS, ScaleT: Double); virtual; abstract;
+   procedure stScaleBezier(Texture: PTexture3; var ScaleS, ScaleT: Double); virtual; abstract;
+   procedure stScaleSprite(Texture: PTexture3; var ScaleS, ScaleT: Double); virtual; abstract;
    procedure WriteSurfaceExtra(PS: PArithByte; Surface: PSurface3D); virtual; abstract;
    procedure WriteVertex(PV: PArithByte; Source: Pointer; const ns,nt: Single; HiRes: Boolean); virtual; abstract;
    procedure PostBuild(nVertexList, nVertexList2: TList); virtual;
@@ -181,7 +181,7 @@ type
   {CurrentPalettePtr: PGuPalette;}
    PaletteCache: TList;
    DefaultGamePalette: Integer;
-   GammaValue: TDouble;
+   GammaValue: Double;
   {Colors: TBitmapInfoColors;
    PaletteLmp: PPaletteLmp;}
    {NoGamma{, WallTexLoaded: Boolean;}
@@ -413,7 +413,7 @@ var
  PV: PArithByte;
  TexPt: array[1..3] of TVect;
  DeltaV, v2, v3: TVect;
- CorrW, CorrH, aa, bb, {cc,} dd, dot22, dot23, dot33, mdet: TDouble;
+ CorrW, CorrH, aa, bb, {cc,} dd, dot22, dot23, dot33, mdet: Double;
  nVertexList, nVertexList2: TList;
  R: TRect;
  Gauche: Integer;
@@ -481,7 +481,7 @@ var
     vp0, vp1, vp2: vec3_p;
     stp: vec_st_p;
     v2, v3, DeltaV: TVect;
-    dd: TDouble;
+    dd: Double;
   begin
     PV:=PArithByte(Surf3D) + SizeOf(TSurface3D) + SurfaceExtraSize;
 

@@ -618,7 +618,7 @@ var
  Bitmap: TBitmap;
  Ok: Boolean;
  WidthObj: PyObject;
- cratio: TDouble;
+ cratio: Double;
 begin
  Result:=Nil;
  try
@@ -1514,7 +1514,7 @@ var
  c2c: array[0..3] of Byte absolute c2;
  c3c: array[0..3] of Byte absolute Result;
  I: Integer;
- R: TDouble;
+ R: Double;
 begin
  for I:=0 to 2 do
   begin

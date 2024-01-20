@@ -36,7 +36,7 @@ type
            end;
   PyVectST = ^TyVectST;
   TyVectST = object(TyVect)
-              TexS, TexT: TDouble;
+              TexS, TexT: Double;
              end;
   PyQuaternion = ^TyQuaternion;
   TyQuaternion = object(TyObject)
@@ -104,7 +104,7 @@ var
  {------------------------}
 
 function MakePyQuaternion(const nQ: TQuaternion) : PyQuaternion; overload;
-function MakePyQuaternion(nX, nY, nZ, nW: TDouble) : PyQuaternion; overload;
+function MakePyQuaternion(nX, nY, nZ, nW: Double) : PyQuaternion; overload;
 
 function GetQuaternionAttr(self: PyObject; attr: PyChar) : PyObject; cdecl;
 function PrintQuaternion(self: PyObject) : PyObject; cdecl;
@@ -205,7 +205,7 @@ implementation
 uses qdraw, QkExceptions, QkMapObjects, QkMapPoly, Qk3D;
 
 const
- COERCEDFROMFLOAT : TDouble = -1E308; //Sentinel value if object was created through coercing of a float value.
+ COERCEDFROMFLOAT : Double = -1E308; //Sentinel value if object was created through coercing of a float value.
 
  {------------------------}
 
@@ -566,7 +566,7 @@ end;
 
  {------------------------}
 
-function PyVectST_S(v1: PyObject) : TDouble;
+function PyVectST_S(v1: PyObject) : Double;
 begin
  if PyVect(v1)^.ST then
   Result:=PyVectST(v1)^.TexS
@@ -574,7 +574,7 @@ begin
   Result:=0;
 end;
 
-function PyVectST_T(v1: PyObject) : TDouble;
+function PyVectST_T(v1: PyObject) : Double;
 begin
  if PyVect(v1)^.ST then
   Result:=PyVectST(v1)^.TexT
@@ -682,7 +682,7 @@ end;
 function VectorDivide(v1, v2: PyObject) : PyObject;
 var
  W1, W2: TVect;
- f: TDouble;
+ f: Double;
 begin
  Result:=Nil;
  try
@@ -800,7 +800,7 @@ end;
 
 function VectorCoerce(var v1, v2: PyObject) : Integer;
 var
- f: TDouble;
+ f: Double;
  v3: PyObject;
 begin
  try
@@ -925,7 +925,7 @@ begin
   end;
 end;
 
-function MakePyQuaternion(nX, nY, nZ, nW: TDouble) : PyQuaternion;
+function MakePyQuaternion(nX, nY, nZ, nW: Double) : PyQuaternion;
 begin
  Result:=PyQuaternion(PyObject_New(@TyQuaternion_Type));
  with PyQuaternion(Result)^.Q do
@@ -1022,7 +1022,7 @@ end;
 function QuaternionDivide(v1, v2: PyObject) : PyObject;
 var
  W1, W2: TQuaternion;
- f: TDouble;
+ f: Double;
 begin
  Result:=Nil;
  try
@@ -1122,7 +1122,7 @@ end;
 
 function QuaternionCoerce(var v1, v2: PyObject) : Integer;
 var
- f: TDouble;
+ f: Double;
  v3: PyObject;
 begin
  try
@@ -1391,7 +1391,7 @@ end;
 function MatrixDivide(v1, v2: PyObject) : PyObject;
 var
  M: TMatrixTransformation;
- F: TDouble;
+ F: Double;
  I, J: Integer;
 begin
  Result:=Nil;

@@ -1015,7 +1015,7 @@ var
   W1, W2: TVect;
   Normale: TVect;
   obj: PyObject;
-  f, d0,dv,d1: TDouble;
+  f, d0,dv,d1: Double;
 begin
   if CurrentFrame=Nil then
     Exit;

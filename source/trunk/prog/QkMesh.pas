@@ -62,7 +62,7 @@ type
            procedure SetControlPoints(const Buf: TMeshBuf5); virtual;
          public
            class function TypeInfo: String; override;
-           procedure Deplacement(const PasGrille: TDouble); override;
+           procedure Deplacement(const PasGrille: Double); override;
            procedure Dessiner; override;
            procedure PreDessinerSel; override;
            procedure ObjectState(var E: TEtatObjet); override;
@@ -134,7 +134,7 @@ const
 function TMesh.GetMeshSize;
 var
  S: String;
- V: array[1..2] of TDouble;
+ V: array[1..2] of Double;
 begin
  Result.X:=1;  { default value }
  Result.Y:=1;
@@ -218,12 +218,12 @@ begin
 end;
 
  { Movement of the patch under translations, inflations, and linear mappings }
-procedure TMesh.Deplacement(const PasGrille: TDouble);
+procedure TMesh.Deplacement(const PasGrille: Double);
 var
  cp, ncp: TMeshBuf5;
  I, J: Integer;
  InfoClic, V, dgdu, dgdv: TVect;
- F: TDouble;
+ F: Double;
  Source, Dest, P1, P2: PMeshControlPoints5;
  Transpose: Boolean;
 begin
@@ -766,7 +766,7 @@ var
  Triangles, TriPtr: PMeshTriangle;
  TriCount, I, PrevL, L: Integer;
  W1, W2, Normale: TVect;
- d0, d1, dv, f: TDouble;
+ d0, d1, dv, f: Double;
  backside: boolean;
  Pts: TPointProj;
 begin
@@ -835,7 +835,7 @@ procedure TMesh.SwapSides;
 var
  cp, ncp: TMeshBuf5;
  I, J, K: Integer;
-{ F: TDouble;}
+{ F: Double;}
  Source, Dest{, P1, P2}: PMeshControlPoints5;
 begin
  cp:=ControlPoints;

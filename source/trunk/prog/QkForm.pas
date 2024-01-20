@@ -907,7 +907,7 @@ var
  I: Integer;
  Q, AddOns: QObject;
  TbInfo: TTbInfo;
- nWidth: TDouble;
+ nWidth: Double;
 begin
  AddOns:=MakeAddOnsList; try
  TbInfo.Base:=TQList.Create; try
@@ -979,7 +979,7 @@ end;
 
 procedure TQkForm.SavePositionTo(const Tag: String; Dest: QObject);
 var
- XMax, YMax: TDouble;
+ XMax, YMax: Double;
  R: TRect;
  V: array[0..3] of Single;
 begin

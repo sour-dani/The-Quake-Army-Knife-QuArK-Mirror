@@ -70,14 +70,14 @@ type
  PQ1Plane = ^TQ1Plane;
  TQ1Plane = record
             normal: vec3_t;
-            dist: scalar_t;
+            dist: Single;
             flags: Integer;
            end;
 
  PQ3Plane = ^TQ3Plane;
  TQ3Plane = record
             normal: vec3_t;
-            dist: scalar_t;
+            dist: Single;
            end;
 
  { Note: although PbPlane (for Q1/Q2) and  TQ3Plane
@@ -187,13 +187,13 @@ type
  TTreeBspPlane = class(TTreeMapGroup)
   public
    Normal: TVect;
-   Dist: TDouble;
+   Dist: Double;
    Source: PChar;
    Number: Integer;
    constructor Create(const nName: String; nParent: QObject; Source: PQ1Plane; Index: Integer); overload;
 
    class function TypeInfo: String; override;
-   function GetNearPlanes(Close: TDouble; Bsp: QBsp): PyObject;
+   function GetNearPlanes(Close: Double; Bsp: QBsp): PyObject;
    function PyGetAttr(attr: PyChar) : PyObject; override;
  end;
 
@@ -248,7 +248,7 @@ type
           procedure GetPlanes(var L: TQList);
           function GetNodes: QObject;
           function GetBspNode(Node: PChar; const Name: String; Parent: QObject; var Stats: TNodeStats) : TTreeBspNode;
-          function GetClosePlanes(Close:TDouble): PyObject;
+          function GetClosePlanes(Close:Double): PyObject;
         protected
           function OpenWindow(nOwner: TComponent) : TQForm1; override;
           procedure SaveFile(Info: TInfoEnreg1); override;
@@ -1564,7 +1564,7 @@ begin
   end;
 end;
 
-function PlanesClose(const Plane1, Plane2: PChar; const SurfType: Char; const Close: TDouble): boolean;
+function PlanesClose(const Plane1, Plane2: PChar; const SurfType: Char; const Close: Double): boolean;
 var
   PlanePt1, PlanePt2, PlaneNorm1, PlaneNorm2: TVect;
 begin
@@ -1591,7 +1591,7 @@ begin
   end;
 end;
 
-function QBsp.GetClosePlanes(Close:TDouble): PyObject;
+function QBsp.GetClosePlanes(Close:Double): PyObject;
 var
   I, J, PlaneSize, PlaneInc, HalfPlaneCount: Integer;
   Planes2, Planes3: PChar;
@@ -1701,7 +1701,7 @@ begin
  TypeInfo:=':bspplane';
 end;
 
-function TTreeBspPlane.GetNearPlanes(Close: TDouble; Bsp: QBsp): PyObject;
+function TTreeBspPlane.GetNearPlanes(Close: Double; Bsp: QBsp): PyObject;
 var
   I, PlaneInc, HalfPlaneCount: Integer;
   Planes2: PChar;

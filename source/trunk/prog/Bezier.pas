@@ -55,7 +55,7 @@ type
 
               { use the properties below to read/write control points. }
              procedure AutoSetSmooth;  { guess the 'smooth' specific based on current control points }
-             function OrthogonalVector(u,v: scalar_t) : vec3_t;
+             function OrthogonalVector(u,v: Single) : vec3_t;
 
              procedure AnalyseClic(Liste: PyObject); override;
              function PyGetAttr(attr: PyChar) : PyObject; override;
@@ -120,9 +120,9 @@ uses qdraw, Coordinates, QuarkX, QkExceptions, Setup,
   *****)
 
  { Various versions of the Bezier line formula }
-function BezierLine3(const u: TDouble; const p0, p1, p2: TVect) : TVect;
+function BezierLine3(const u: Double; const p0, p1, p2: TVect) : TVect;
 var
- f0, f1, f2: TDouble;
+ f0, f1, f2: Double;
 begin
  f0:=(1-u)*(1-u);
  f1:=2*u*(1-u);
@@ -132,9 +132,9 @@ begin
  Result.Z := p0.Z*f0 + p1.Z*f1 + p2.Z*f2;
 end;
 
-function BezierLine53(const u: TDouble; const p0, p1, p2: vec5_t) : TVect;
+function BezierLine53(const u: Double; const p0, p1, p2: vec5_t) : TVect;
 var
- f0, f1, f2: TDouble;
+ f0, f1, f2: Double;
 begin
  f0:=(1-u)*(1-u);
  f1:=2*u*(1-u);
@@ -144,9 +144,9 @@ begin
  Result.Z := p0[2]*f0 + p1[2]*f1 + p2[2]*f2;
 end;
 
-function BezierLine52(const u: TDouble; const p0, p1, p2: vec5_t) : vec_st_t;
+function BezierLine52(const u: Double; const p0, p1, p2: vec5_t) : vec_st_t;
 var
- f0, f1, f2: TDouble;
+ f0, f1, f2: Double;
 begin
  f0:=(1-u)*(1-u);
  f1:=2*u*(1-u);
@@ -155,9 +155,9 @@ begin
  Result.t := p0[4]*f0 + p1[4]*f1 + p2[4]*f2;
 end;
 
-function BezierLine22(const u: TDouble; const p0, p1, p2: vec_st_t) : vec_st_t;
+function BezierLine22(const u: Double; const p0, p1, p2: vec_st_t) : vec_st_t;
 var
- f0, f1, f2: TDouble;
+ f0, f1, f2: Double;
 begin
  f0:=(1-u)*(1-u);
  f1:=2*u*(1-u);
@@ -180,7 +180,7 @@ var
  BezierMeshDetail: Integer;
  P, Q1, Q2: PMeshControlPoints5;
  I1, J1: Integer;
- f: TDouble;
+ f: Double;
  r1, r2, r3: vec_st_t;
 begin
  BezierMeshDetail:=GetBezierDetail();
@@ -276,7 +276,7 @@ end;
 function TBezier.GetMeshSize;
 var
  S: String;
- V: array[1..2] of TDouble;
+ V: array[1..2] of Double;
 begin
  Result.X:=1;  { default value }
  Result.Y:=1;
@@ -321,7 +321,7 @@ var
  cp: TMeshBuf5;
  BezierMeshDetail: Integer;
  I, I0, J, CurJ: Integer;
- u, v: TDouble;
+ u, v: Double;
  p0, p1, p2: TVect;
  Dest: PMeshControlPoints3;
 
@@ -409,7 +409,7 @@ begin
 end;
 
  { Compute orthogonal vectors }
-function TBezier.OrthogonalVector(u,v: scalar_t) : TMeshControlPoints3;
+function TBezier.OrthogonalVector(u,v: Single) : TMeshControlPoints3;
 var
  cp: TMeshBuf5;
  I, J: Integer;
@@ -915,7 +915,7 @@ var
  Triangles, TriPtr: PMeshTriangle;
  TriCount, I, PrevL, L: Integer;
  W1, W2, Normale: TVect;
- d0, d1, dv, f: TDouble;
+ d0, d1, dv, f: Double;
  backside: boolean;
  Pts: TPointProj;
 begin

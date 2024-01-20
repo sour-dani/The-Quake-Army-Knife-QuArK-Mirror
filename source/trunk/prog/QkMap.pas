@@ -463,7 +463,7 @@ var
  InvPoly, InvFaces: Integer;
  TxCommand: Char;
  OriginBrush: TPolyhedron;
- Facteur: TDouble;
+ Facteur: Double;
  Delta, Delta1: TVect;
  B: TBezier;
  M: TMesh;
@@ -1599,7 +1599,7 @@ expected one.
  var
    I: Integer;
    Surface: TFace;
-   tmpReorder: TDouble;
+   tmpReorder: Double;
    Size: TPoint;
    NumericValue1, NumericValue2, ContentsFlags: Integer;
    PolyError: String;
@@ -3247,7 +3247,7 @@ var
  P, PT, VT: TThreePoints;
  Params: TFaceParams;
  Delta1, V, V2, V3: TVect;
- Facteur: TDouble;
+ Facteur: Double;
  FS: PSurface;
  PX, PY: vec3d;
  rval : Single; { for Value/lightvalue }
@@ -3255,7 +3255,7 @@ var
  Size: TPoint;
  TextureName: String;
  Mirror, EtpMirror: Boolean;
- tmpReorder: TDouble;
+ tmpReorder: Double;
 
  type
    FlagDef = record
@@ -3588,7 +3588,7 @@ var
   procedure ApproximateParams(const Normale: TVect; const V: TThreePoints; var Params: TFaceParams; Mirror: Boolean);
   var
     PX, PY: vec3d;
-    A, P2, S, C: TDouble;
+    A, P2, S, C: Double;
     I: Integer;
     Plan: Char;
   begin
