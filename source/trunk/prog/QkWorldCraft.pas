@@ -48,13 +48,14 @@ type
     m_bVisible: Bool;
   end;
 
-  RMFTexture_21 = packed record //@ UNTESTED
+  RMFTexture_21 = packed record
     texture: array[0..MAX_PATH-1] of Byte;
     rotate: Single;
     shift: array[0..1] of Single;
     scale: array[0..1] of Single;
     smooth: Byte;
     material: Byte;
+    PADDING1: array[0..1] of Byte;
     q2surface: DWORD;
     q2contents: DWORD;
     q2value: DWORD;
@@ -67,9 +68,8 @@ type
     rotate: Single;
     scale: array[0..1] of Single;
     smooth: Byte;
-    PADDING1: Byte;
     material: Byte;
-    PADDING2: Byte;
+    PADDING1: array[0..1] of Byte;
     q2surface: DWORD;
     q2contents: DWORD;
     nLightmapScale: Integer;
@@ -227,25 +227,39 @@ var
      OldTex.texture[16]:=0;
 
      // Read the rest - skip the name
-     F.ReadBuffer(OldTex.rotate, SizeOf(OldTex.rotate) + SizeOf(OldTex.shift) + SizeOf(OldTex.scale));
+     F.ReadBuffer(OldTex.rotate, SizeOf(OldTex.rotate));
+     F.ReadBuffer(OldTex.shift, SizeOf(OldTex.shift));
+     F.ReadBuffer(OldTex.scale, SizeOf(OldTex.scale));
    end
    else if RMFVersion < 1.2 then
    begin
      // Didn't have smooth/material groups
      F.ReadBuffer(OldTex.texture[0], 40);
-     F.ReadBuffer(OldTex.texture[0], SizeOf(OldTex.texture) - (MAX_PATH) + SizeOf(OldTex.rotate) + SizeOf(OldTex.shift) + SizeOf(OldTex.scale));
+     F.ReadBuffer(OldTex.rotate, SizeOf(OldTex.rotate));
+     F.ReadBuffer(OldTex.shift, SizeOf(OldTex.shift));
+     F.ReadBuffer(OldTex.scale, SizeOf(OldTex.scale));
    end
    else if RMFVersion < 1.7 then
    begin
      // No quake2 fields yet and smaller texture size.
      F.ReadBuffer(OldTex.texture[0], 40);
-     F.ReadBuffer(OldTex.rotate, SizeOf(OldTex) - 3*SizeOf(Integer) - MAX_PATH);
+     F.ReadBuffer(OldTex.rotate, SizeOf(OldTex.rotate));
+     F.ReadBuffer(OldTex.shift, SizeOf(OldTex.shift));
+     F.ReadBuffer(OldTex.scale, SizeOf(OldTex.scale));
+     F.ReadBuffer(OldTex.smooth, SizeOf(OldTex.smooth));
+     F.ReadBuffer(OldTex.material, SizeOf(OldTex.material));
+     F.ReadBuffer(OldTex.PADDING1, SizeOf(OldTex.PADDING1));
    end
    else if RMFVersion < 1.8 then
    begin
      // Texture name field changed from 40 to MAX_PATH in size.
-     F.ReadBuffer(OldTex.texture[0], 40);
-     F.ReadBuffer(OldTex.rotate, SizeOf(OldTex) - MAX_PATH);
+     F.ReadBuffer(OldTex.texture[0], MAX_PATH);
+     F.ReadBuffer(OldTex.rotate, SizeOf(OldTex.rotate));
+     F.ReadBuffer(OldTex.shift, SizeOf(OldTex.shift));
+     F.ReadBuffer(OldTex.scale, SizeOf(OldTex.scale));
+     F.ReadBuffer(OldTex.smooth, SizeOf(OldTex.smooth));
+     F.ReadBuffer(OldTex.material, SizeOf(OldTex.material));
+     F.ReadBuffer(OldTex.PADDING1, SizeOf(OldTex.PADDING1));
    end
    else if RMFVersion < 2.2 then
    begin
@@ -275,9 +289,12 @@ var
    if DummyInteger>256 then
      Raise EErrorFmt(5779, [LoadStr1(5783)]);
    F.ReadBuffer(LoadPoints[0][0], DummyInteger*3*SizeOf(Single));
-   if RMFVersion < 2.2 then
+
+   // Negate Z for older RMF files.
+   if RMFVersion < 0.5 then
      for i := 0 to DummyInteger-1 do
        LoadPoints[i][2]:=-LoadPoints[i][2];
+
    Surface.SetThreePoints(MakeVect(LoadPoints[0][0], LoadPoints[0][1], LoadPoints[0][2]), MakeVect(LoadPoints[2][0], LoadPoints[2][1], LoadPoints[2][2]), MakeVect(LoadPoints[1][0], LoadPoints[1][1], LoadPoints[1][2]));  //FIXME
    if not Surface.LoadData then
      raise InternalE('LoadData failure');   //FIXME: ERROR!
@@ -506,6 +523,7 @@ begin
         if FSize<SizeOf(RMFVersion) then
           Raise EError(5519);
         F.ReadBuffer(RMFVersion, SizeOf(RMFVersion));
+        RMFVersion:=RMFVersion+0.001; //Using a floating points for version numbers is dumb due to floating point noise, so let's workaround that design flaw.
         if (RMFVersion < RMFLastCompatVersion) or (RMFVersion > RMFMaxVersion) then
           Raise EErrorFmt(5779, [LoadStr1(5780)]);
         if RMFVersion >= 0.8 then
