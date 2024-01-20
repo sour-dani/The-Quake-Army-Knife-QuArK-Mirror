@@ -185,6 +185,9 @@ procedure TextsToMenuShortCuts(Texts: TStringList);
  { "Texts" is modified by this function.
    Each Texts.Objects[i] must point to the TMenuItem whose shortcut is to be set. }
 
+function MaximumSizeWindowX: Integer;
+function MaximumSizeWindowY: Integer;
+
  {------------------------}
 
 implementation
@@ -891,10 +894,10 @@ begin
   end;
  if Ok or Source.GetFloatsSpec(Tag, V) then
   begin
-   XMax:=TailleMaximaleEcranX;
+   XMax:=MaximumSizeWindowX;
    R.Left:=Round(V[0]*XMax);
    R.Right:=Round(V[2]*XMax);
-   YMax:=TailleMaximaleEcranY;
+   YMax:=MaximumSizeWindowY;
    R.Top:=Round(V[1]*YMax);
    R.Bottom:=Round(V[3]*YMax);
    RestoredRect:=R;
@@ -992,8 +995,8 @@ begin
                 Dest.Specifics.Strings[Tag]:='max';
                end;
   wsNormal: begin
-             XMax:=1/TailleMaximaleEcranX;
-             YMax:=1/TailleMaximaleEcranY;
+             XMax:=1/MaximumSizeWindowX;
+             YMax:=1/MaximumSizeWindowY;
              R:=BoundsRect;
              V[0]:=R.Left  *XMax;
              V[1]:=R.Top   *YMax;
@@ -1302,6 +1305,45 @@ begin
    WndParent:=(Owner as TWinControl).Handle;
   end;
 end;
+
+ {------------------------}
+
+function MaximumSizeWindowX: Integer;
+begin
+ Result:=GetSystemMetrics(sm_CxMaximized)-2*GetSystemMetrics(sm_CxSizeFrame);
+end;
+
+function MaximumSizeWindowY: Integer;
+begin
+ Result:=GetSystemMetrics(sm_CyMaximized)-2*GetSystemMetrics(sm_CySizeFrame);
+end;
+
+(*function LirePositionFenetre(const R: TRect) : String;
+var
+ XMax, YMax: Double;
+begin
+{DecimalSeparator:='.';}
+ XMax:=1/MaximumSizeWindowX;
+ YMax:=1/MaximumSizeWindowY;
+ Result:=FloatToStrF(R.Left  *XMax, ffFixed, 5,3)
+   +' '+ FloatToStrF(R.Top   *YMax, ffFixed, 5,3)
+   +' '+ FloatToStrF(R.Right *XMax, ffFixed, 5,3)
+   +' '+ FloatToStrF(R.Bottom*YMax, ffFixed, 5,3);
+end;
+
+function AppliquerPositionFenetre(const S: String) : TRect;
+var
+ V: array[0..3] of Double;
+ XMax, YMax: Integer;
+begin
+ ReadDoubleArray(S, V);
+ XMax:=MaximumSizeWindowX;
+ Result.Left:=Round(V[0]*XMax);
+ Result.Right:=Round(V[2]*XMax);
+ YMax:=MaximumSizeWindowY;
+ Result.Top:=Round(V[1]*YMax);
+ Result.Bottom:=Round(V[3]*YMax);
+end;*)
 
  {------------------------}
 

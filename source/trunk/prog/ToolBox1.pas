@@ -505,7 +505,7 @@ begin
     Explorer.Parent:=PanelBig;
    {Explorer.ObjToolbar:=ObjToolbar;}
     Explorer.AllowEditing:=aeUndo;
-    Explorer.Height:=TailleMaximaleEcranY;
+    Explorer.Height:=MaximumSizeWindowY;
    {Explorer.LoadAllAuto:=True;}
     MarsCap.AppCaption:=LoadStr1(5441);
     MarsCap.ActiveBeginColor:=clBlack;

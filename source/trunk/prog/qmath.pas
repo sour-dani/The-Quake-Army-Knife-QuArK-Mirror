@@ -24,7 +24,7 @@ interface
 
 {$I DelphiVer.inc}
 
-uses Windows, SysUtils, Graphics;
+uses Types, SysUtils, Graphics;
 
 type
  PVect = ^TVect;
@@ -121,9 +121,6 @@ function ProjEx(const P: TVect; var Dest: TPoint) : Boolean;
 function Espace(X,Y,Z: Integer) : TVect;
 function Profondeur(const V: TVect) : Double;
 procedure InitProjVar;
-
-function TailleMaximaleEcranX: Integer;
-function TailleMaximaleEcranY: Integer;
 
 implementation
 
@@ -457,43 +454,6 @@ begin
  Result.Y:=Sin(A)*Cos(B);
  Result.Z:=Sin(B);
 end;
-
-function TailleMaximaleEcranX: Integer;
-begin
- Result:=GetSystemMetrics(sm_CxMaximized)-2*GetSystemMetrics(sm_CxSizeFrame);
-end;
-
-function TailleMaximaleEcranY: Integer;
-begin
- Result:=GetSystemMetrics(sm_CyMaximized)-2*GetSystemMetrics(sm_CySizeFrame);
-end;
-
-(*function LirePositionFenetre(const R: TRect) : String;
-var
- XMax, YMax: Double;
-begin
-{DecimalSeparator:='.';}
- XMax:=1/TailleMaximaleEcranX;
- YMax:=1/TailleMaximaleEcranY;
- Result:=FloatToStrF(R.Left  *XMax, ffFixed, 5,3)
-   +' '+ FloatToStrF(R.Top   *YMax, ffFixed, 5,3)
-   +' '+ FloatToStrF(R.Right *XMax, ffFixed, 5,3)
-   +' '+ FloatToStrF(R.Bottom*YMax, ffFixed, 5,3);
-end;
-
-function AppliquerPositionFenetre(const S: String) : TRect;
-var
- V: array[0..3] of Double;
- XMax, YMax: Integer;
-begin
- ReadDoubleArray(S, V);
- XMax:=TailleMaximaleEcranX;
- Result.Left:=Round(V[0]*XMax);
- Result.Right:=Round(V[2]*XMax);
- YMax:=TailleMaximaleEcranY;
- Result.Top:=Round(V[1]*YMax);
- Result.Bottom:=Round(V[3]*YMax);
-end;*)
 
  {------------------------------------}
 

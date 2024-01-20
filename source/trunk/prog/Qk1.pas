@@ -2268,7 +2268,7 @@ begin
       else
        HintInfo.HintPos.X:=I;
       HintInfo.HintColor:=$00F0CAA6;
-      HintInfo.HintMaxWidth:=TailleMaximaleEcranX-20-I;
+      HintInfo.HintMaxWidth:=MaximumSizeWindowX-20-I;
       Application.HintHidePause:=MaxInt;
      end
     else

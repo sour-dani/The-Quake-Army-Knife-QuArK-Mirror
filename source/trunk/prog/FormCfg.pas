@@ -1084,7 +1084,7 @@ begin
        FormCfg.TxtSpec:=Self.TxtArg;
        FormCfg.HintPrefix:=Self.HintPrefix;
        FormCfg.OnNeedGameInfo:=Self.OnNeedGameInfo;
-       if Pt.X+Self.Width+Width > TailleMaximaleEcranX then
+       if Pt.X+Self.Width+Width > MaximumSizeWindowX then
         Dec(Pt.X, Width)
        else
         Inc(Pt.X, Self.Width);
