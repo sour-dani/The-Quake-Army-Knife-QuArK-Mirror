@@ -98,7 +98,7 @@ uses
   QkModelRoot in 'prog\model\QkModelRoot.pas',
   QkModelTag in 'prog\model\QkModelTag.pas',
   QkQkl in 'prog\model\QkQkl.pas',
-  qkskindrawobject in 'prog\model\qkskindrawobject.pas',
+  QkSkinDrawObject in 'prog\model\QkSkinDrawObject.pas',
   QkSkinGroup in 'prog\model\QkSkinGroup.pas',
   QkSkinSubGroup in 'prog\model\QkSkinSubGroup.pas',
   QkTagFrame in 'prog\model\QkTagFrame.pas',

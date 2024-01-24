@@ -63,7 +63,7 @@ type
 
 implementation
 
-uses qkskindrawobject, QkSysData;
+uses QkSkinDrawObject, QkSysData;
 
 class function QMdlObject.TypeInfo;
 begin

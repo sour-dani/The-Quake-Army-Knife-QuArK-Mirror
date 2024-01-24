@@ -41,7 +41,7 @@ type
 
 implementation
 
-uses QuarkX, QkObjectClassList, qkskindrawobject, Python, Game, QkExceptions,
+uses QuarkX, QkObjectClassList, QkSkinDrawObject, Python, Game, QkExceptions,
   qkskingroup, qkframegroup, qkbonegroup, qkpcx, qktextures, qkmiscgroup;
 
 function QModelFile.Loaded_Component(Root: QModelRoot; const cname: string): QComponent;

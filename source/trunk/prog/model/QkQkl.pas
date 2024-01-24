@@ -35,7 +35,7 @@ type
 
 implementation
 
-uses QuarkX, QkObjectClassList, qkskindrawobject, Python, Game, QkExceptions,
+uses QuarkX, QkObjectClassList, QkSkinDrawObject, Python, Game, QkExceptions,
   qkskingroup, qkframegroup, qkbonegroup, qkpcx, qktextures, qkmiscgroup;
 
 class function QQkl.TypeInfo;
