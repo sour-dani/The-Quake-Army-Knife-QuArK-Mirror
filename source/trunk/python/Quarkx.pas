@@ -2805,7 +2805,7 @@ begin
  Result:=Nil;
  try
  // SilverPaladin - 10/25/03 - Eliminated platform dependant warning
- {$IFDEF WINDOWS}
+ {$IFDEF MSWINDOWS}
   with GetHeapStatus do
     with ConstructQObject('heapstatus', Nil) do
     begin
