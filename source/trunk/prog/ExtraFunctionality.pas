@@ -48,6 +48,7 @@ type
   PPointer = ^Pointer;
 {$endif}
 
+{$ifdef MSWINDOWS}
   QWORD = {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
   PQWORD = ^QWORD;
   LPQWORD = PQWORD;
@@ -67,6 +68,7 @@ type
   {$EXTERNALSYM DWORD_PTR}
   HANDLE_PTR = type NativeUInt;
   {$EXTERNALSYM HANDLE_PTR}
+{$endif}
 {$endif}
 
 {$IFDEF CPU64BITS}
@@ -88,6 +90,7 @@ type
   PArithByte = PAnsiChar;
 {$endif}
 
+{$ifdef MSWINDOWS}
 {$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 7, and they exist in Delphi 11.3
   PMemoryStatusEx = ^TMemoryStatusEx;
   _MEMORYSTATUSEX = record
@@ -146,7 +149,7 @@ type
   TOSVersionInfoEx = TOSVersionInfoExA;
   {$ENDIF}
 
-  RESTRICTIONS = LongWord; //Really: enum 
+  RESTRICTIONS = LongWord; //Really: enum
 
 const
 {$ifndef Delphi4orNewerCompiler} // FIXME: I'm not sure when this was introduced;
@@ -391,6 +394,7 @@ const
   REST_USEDESKTOPINICACHE = $41000005;
 
 function CopyCursor(pcur: HCursor): HCursor; // This is a macro that wasn't converted
+{$endif}
 
 {$ifndef DelphiXE6orNewerCompiler} //FIXME: Not sure about the version of Delphi these were added
 function StrToUInt(const S: string): Cardinal;
@@ -415,6 +419,7 @@ function StartsStr(const ASubText, AText: string): Boolean;
 function EndsStr(const ASubText, AText: string): Boolean;
 {$endif}
 
+{$ifdef MSWINDOWS}
 var
   DelayFunc_GlobalMemoryStatusEx: Boolean;
   DelayFunc_GetNativeSystemInfo: Boolean;
@@ -462,6 +467,7 @@ var
   SetDllDirectoryW: function (lpPathName : LPCWSTR): BOOL; stdcall;
   IsWow64Process: function (hProcess : THandle; var Wow64Process : BOOL): BOOL; stdcall;
   SHRestricted: function (rest: RESTRICTIONS): DWORD; stdcall;
+{$endif}
 {$endif}
 {$endif}
 
@@ -530,7 +536,9 @@ function BoolToStr(B: Boolean; UseBoolStrs: Boolean = False): string;
 function PosEx(const SubStr, S: string; Offset: Cardinal = 1): Integer;
 
 //This was added in Delphi 6 Update Pack 2, but there's no way to check for that...
+{$ifdef MSWINDOWS}
 function CheckWin32Version(AMajor: Integer; AMinor: Integer = 0): Boolean;
+{$endif}
 {$endif}
 
 {$ifndef DelphiXEorNewerCompiler}
@@ -541,7 +549,9 @@ function SplitString(const S, Delimiters: string): TStringDynArray;
 function LastPos(const SubStr: String; const S: String): Integer;
 
 //This function doesn't exist at all in Delphi:
+{$ifdef MSWINDOWS}
 function CheckWin32VersionWithServicePack(AMajor: Integer; AMinor: Integer = 0; AServicePackMajor: Integer = 0; AServicePackMinor: Integer = 0): Boolean; //Note: We use the wrong datatype to be consistent with CheckWin32Version.
+{$endif}
 
 //This function doesn't exist at all in Delphi:
 {$IFDEF UNICODE}
@@ -556,6 +566,7 @@ function CompareFileName(const S1, S2: string): Integer;
 
 implementation
 
+{$ifdef MSWINDOWS}
 {$ifndef Delphi2010orNewerCompiler}
 //Only used in initialization-section for DelayFunc.
 var
@@ -566,6 +577,7 @@ function CopyCursor(pcur: HCursor): HCursor;
 begin
   Result:=HCURSOR(CopyIcon(HICON(pcur)));
 end;
+{$endif}
 
 {$ifndef DelphiXE6orNewerCompiler}
 function StrToUInt(const S: string): Cardinal;
@@ -755,12 +767,14 @@ begin
     Result := Result + Offset;
 end;
 
+{$ifdef MSWINDOWS}
 function CheckWin32Version(AMajor: Integer; AMinor: Integer = 0): Boolean;
 begin
   Result := (Win32MajorVersion > AMajor) or
             ((Win32MajorVersion = AMajor) and
              (Win32MinorVersion >= AMinor));
 end;
+{$endif}
 {$endif}
 
 {$ifndef DelphiXEorNewerCompiler}
@@ -794,6 +808,7 @@ begin
     Result := ((Length(S) - Length(SubStr)) + 1) - Result + 1;
 end;
 
+{$ifdef MSWINDOWS}
 function CheckWin32VersionWithServicePack(AMajor, AMinor, AServicePackMajor, AServicePackMinor: Integer): Boolean;
 var
   OS: TOSVersionInfoEx;
@@ -818,6 +833,7 @@ begin
             ((Win32MajorVersion = AMajor) and (Win32MinorVersion = AMinor) and (Win32ServicePackMajor >= AServicePackMajor)) or
             ((Win32MajorVersion = AMajor) and (Win32MinorVersion = AMinor) and (Win32ServicePackMajor = AServicePackMajor) and (Win32ServicePackMinor >= AServicePackMinor));
 end;
+{$endif}
 
 {$IFDEF UNICODE}
 function WideLowerCaseFileName(const S: string): string;
@@ -861,6 +877,7 @@ begin
   {$ENDIF}
 end;
 
+{$ifdef MSWINDOWS}
 initialization
   //Initialized the delay loading functions.
 {$ifdef Delphi2010orNewerCompiler}
@@ -898,5 +915,6 @@ initialization
   DelayFunc_SetDllDirectory := (PPointer(@SetDllDirectory) <> nil);
   DelayFunc_IsWow64Process := (PPointer(@IsWow64Process) <> nil);
   DelayFunc_SHRestricted := (PPointer(@SHRestricted) <> nil);
+{$endif}
 {$endif}
 end.
