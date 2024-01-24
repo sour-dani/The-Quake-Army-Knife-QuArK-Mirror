@@ -35,7 +35,7 @@ type
 
  QTexture1 = class(QTextureFile)
              protected
-               procedure ChargerFin(F: TStream; TailleRestante: TStreamPos); virtual;
+               procedure SaveFileEnd(F: TStream; TailleRestante: TStreamPos); virtual;
               {procedure LireEnteteFichier(Source: TStream; const Nom: String; var SourceTaille: TStreamPos); override;}
                procedure SaveFile(Info: TInfoEnreg1); override;
                procedure LoadFile(F: TStream; FSize: TStreamPos); override;
@@ -234,7 +234,7 @@ begin
   Info.FileObjectDescriptionText:=LoadStr1(5131);
 end;
 
-procedure QTexture1.ChargerFin(F: TStream; TailleRestante: TStreamPos);
+procedure QTexture1.SaveFileEnd(F: TStream; TailleRestante: TStreamPos);
 begin
 end;
 
@@ -275,7 +275,7 @@ begin
           Taille1:=Taille1 div 4;  { next images are scaled-down }
         end;
         F.Position:=Base+Max;
-        ChargerFin(F, FSize-Max);
+        SaveFileEnd(F, FSize-Max);
         F.Position:=Base+FSize;
     end;
   else
