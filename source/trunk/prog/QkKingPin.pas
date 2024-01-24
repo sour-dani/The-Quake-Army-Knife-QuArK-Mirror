@@ -32,8 +32,8 @@ QTextureKP = class(QTextureFile)
 {    source_image : QFileObject;}
 {    static global_palette : QImage;}
   protected
-    procedure Enregistrer(Info: TInfoEnreg1); override;
-    procedure Charger(F: TStream; Taille: TStreamPos); override;
+    procedure SaveFile(Info: TInfoEnreg1); override;
+    procedure LoadFile(F: TStream; Taille: TStreamPos); override;
   public
 {    constructor Create(const nName: String; nParent: QObject);
     destructor Destroy; override;
@@ -87,7 +87,7 @@ end;
 class function QTextureKP.CustomParams : Integer;
 begin
   {this really sucks, but the texture display code
-  requires multiple texure images, and we need to fake them}
+  requires multiple texture images, and we need to fake them}
   Result:=cp4MipIndexes or cpAnyHeight;
 end;
 
@@ -130,7 +130,7 @@ begin
     Result:=OpacityFromFlags(StrToIntDef(S,0), Info);
 end;
 
-procedure QTextureKP.Charger(F: TStream; Taille: TStreamPos);
+procedure QTextureKP.LoadFile(F: TStream; Taille: TStreamPos);
 const
   Spec1 = 'Image#=';
   PosNb = 6;
@@ -152,7 +152,7 @@ begin
     begin  { as stand-alone file }
       Flags:=CustomParams;
 
-      {create appropiate image object}
+      {create appropriate image object}
       s:=GetSpecArg('Image1');
       {is the image there ?}
       if length(s) = Length(spec1) then
@@ -168,7 +168,7 @@ begin
           SourceStream.Release;
         end;
 
-        {invoke fake charger}
+        {invoke fake LoadFile}
         {size specific}
         tex_size := (source_image as QImage).getsize;
         V[1]:=tex_size.x;
@@ -253,11 +253,7 @@ begin
   end;
 end;
 
-{ tiglari:  Not sure what this is actually for, tho it seems to write
-   info in the object-specific format to the header format.
-
-  mac: dont know it, too :)}
-procedure QTextureKP.Enregistrer;
+procedure QTextureKP.SaveFile;
 var
   S: String;
   Header: TQ2Miptex;
