@@ -1131,7 +1131,7 @@ begin
             Root.CurrentComponent := Root.GetComponentFromIndex(0);
           TheComp := Root.CurrentComponent;
           if TheComp = nil then
-            raise Exception.Create('Nothing to save! (Root.CurrentComponent = nil [QMDLFILE.ENREGISTRER])');
+            raise Exception.Create('Nothing to save! (Root.CurrentComponent = nil)');
 
           FrameList := TheComp.BuildFrameList;
           SkinList := TheComp.BuildSkinList;
