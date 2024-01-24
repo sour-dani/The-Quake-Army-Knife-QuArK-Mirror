@@ -23,8 +23,7 @@ unit Game2;
 interface
 
 uses
-  Windows, SysUtils, Classes, Graphics, Controls, Forms,
-  TB97, ComCtrls, StdCtrls, QkForm;
+  SysUtils, Classes, Graphics, Controls, Forms, TB97, ComCtrls, StdCtrls, QkForm;
 
 type
   TAddOnsAddDlg = class(TQkForm)
@@ -114,7 +113,7 @@ var
 begin
  OnActivate:=Nil;
 
- { search all QuArK's main directories }
+ //Search all QuArK's main directories
  searchPaths:=QApplPaths.Create;
  try
    while searchPaths.GetNextPath(somePath) do
