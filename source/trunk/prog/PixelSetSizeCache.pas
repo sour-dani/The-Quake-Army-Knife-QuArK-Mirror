@@ -22,7 +22,7 @@ unit PixelSetSizeCache;
 
 interface
 
-uses Windows, Classes, QkObjects;
+uses Types, Classes, QkObjects;
 
 type
   TPixelSetSizeCache = class
