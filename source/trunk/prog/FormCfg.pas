@@ -1690,7 +1690,6 @@ var
  sSteps, sTickFreq: String;
  iSteps, iTickFreq: Integer;
  DropDownCount: Integer;
- SpecResult: TTryGetResult;
  Metrics: TTextMetric;
 begin
  if Form=Nil then Exit;
@@ -1929,8 +1928,7 @@ begin
                   csEverywhere: Icone:=0;  { normally found }
                  end;
                  ComboBox:=TEnterComboBox.Create(Self);
-                 SpecResult:=TryGetIntegers('Rows', DropDownCount);
-                 if SpecResult<>tgrSuccess then
+                 if TryGetIntegers('Rows', DropDownCount)<>tgrSuccess then
                   DropDownCount:=0;
                  if DropDownCount > 1 then
                    ComboBox.DropDownCount:=DropDownCount;
@@ -2272,8 +2270,7 @@ begin
 {Decker 2002-12-29}
            'M': begin { Memo / Multiline-text-displaybox }
                  Icone := 0;
-                 SpecResult := TryGetIntegers('Rows', TextRows);
-                 if SpecResult<>tgrSuccess then
+                 if TryGetIntegers('Rows', TextRows)<>tgrSuccess then
                   TextRows := 3;
                  if TextRows < 1 then
                    TextRows := 1

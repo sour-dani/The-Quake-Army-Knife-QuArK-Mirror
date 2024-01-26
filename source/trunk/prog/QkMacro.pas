@@ -496,7 +496,6 @@ var
  Gr: QExplorerGroup;
  ClearList{, L, L1}: TStringList;
  I: Integer;
- SpecResult: TTryGetResult;
 begin
  Acces;
  case GetTyp of
@@ -558,8 +557,7 @@ begin
     end;
   typMacro:
     begin
-     SpecResult:=Specifics.TryGetIntegers('count', I);
-     if SpecResult<>tgrSuccess then
+     if Specifics.TryGetIntegers('count', I)<>tgrSuccess then
       I:=1;
      while I>0 do
       begin
