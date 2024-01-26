@@ -1677,7 +1677,7 @@ begin
   for I:=0 to 3 do
    begin
     B:=MakePalettedImageData(mjAny, SrcDC, Size.X, Size.Y, w1 shr I, h1 shr I, Format);
-    Move(S[0], Dest^, MemSize);
+    Move(B[0], Dest^, MemSize);
     if info.largeLod=info.smallLod then Break;
     Inc(Dest, MemSize);
     MemSize:=MemSize div 4;
