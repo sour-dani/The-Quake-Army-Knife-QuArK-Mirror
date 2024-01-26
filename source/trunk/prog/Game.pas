@@ -146,7 +146,7 @@ implementation
 {$R *.DFM}
 
 uses StrUtils, Graphics, QkPak, Setup, QkUnknown, QkTextures, Travail, ToolBox1,
-  QkImages, Game2, QkQuakeCtx, Config, PakFiles, QkExceptions, Quarkx, PyImages,
+  QkImages, AddOns, QkQuakeCtx, Config, PakFiles, QkExceptions, Quarkx, PyImages,
   ApplPaths, Qk1, SteamFS, Python, Logging, FileExists2, ExtraFunctionality;
 
 var
