@@ -665,7 +665,7 @@ Strings = {
     # 5217: "'%s' : Cannot (un)do this operation any more because the file has been closed",
     # 5218: "Warning: the tree view you see is incomplete, because the Explorer views of QuArK cannot display the same objects more than once.",
     5219: "The file %s's \"save\" support has not (yet) been added. File ignored.",
-    5220: "'%s' : Invalid file size. The file is %u bytes length instead of %u",
+    5220: "'%s' : Specific '%s' is not of type %s",
     5221: "Cannot display '%s' in the tree view, because it is already visible in another Explorer views in QuArK.",
     5222: "This file contains a link to the file '%s' which cannot be found. The link has been ignored (and deleted).",
     5223: "Internal error (%s) - this program is buggy !//Please report: %0:s",
