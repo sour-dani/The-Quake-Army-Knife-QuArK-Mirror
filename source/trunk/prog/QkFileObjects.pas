@@ -1891,8 +1891,6 @@ begin
       end
      else
       S:=FFileObject.Name + FFileObject.TypeInfo;
-     I:=LastPos('/', S);
-     if I>0 then S:=Copy(S, I+1, MaxInt);
      if S<>'' then
       begin
        CleanupFileName(S);
