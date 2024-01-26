@@ -33,10 +33,11 @@ type
     BitBtn1: TBitBtn;
     BitBtn2: TBitBtn;
     BitBtn3: TBitBtn;
+    procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
     procedure ListView1DblClick(Sender: TObject);
     procedure ListView1KeyPress(Sender: TObject; var Key: Char);
-    procedure FormActivate(Sender: TObject);
     procedure BitBtn3Click(Sender: TObject);
   private
     KeySelDlg: TKeySelDlg;
@@ -49,9 +50,24 @@ uses Quarkx;
 
 {$R *.DFM}
 
+procedure TKeyDlg.FormCreate(Sender: TObject);
+begin
+ Caption:=LoadStr1(721);
+ ListView1.Columns[0].Caption:=LoadStr1(722);
+ ListView1.Columns[1].Caption:=LoadStr1(723);
+{Label1.Caption:=LoadStr1(724);}
+ BitBtn3.Caption:=LoadStr1(725);
+end;
+
 procedure TKeyDlg.FormDestroy(Sender: TObject);
 begin
  KeySelDlg.Free;
+end;
+
+procedure TKeyDlg.FormActivate(Sender: TObject);
+begin
+ ImageList1.AddMasked(BitBtn3.Glyph, clAqua);
+ ListView1.Selected:=ListView1.Items[0];
 end;
 
 procedure TKeyDlg.ListView1DblClick(Sender: TObject);
@@ -76,17 +92,6 @@ begin
    ListView1DblClick(Nil);
    Key:=#0;
   end;
-end;
-
-procedure TKeyDlg.FormActivate(Sender: TObject);
-begin
- Caption:=LoadStr1(721);
- ListView1.Columns[0].Caption:=LoadStr1(722);
- ListView1.Columns[1].Caption:=LoadStr1(723);
-{Label1.Caption:=LoadStr1(724);}
- ImageList1.AddMasked(BitBtn3.Glyph, clAqua);
- BitBtn3.Caption:=LoadStr1(725);
- ListView1.Selected:=ListView1.Items[0];
 end;
 
 procedure TKeyDlg.BitBtn3Click(Sender: TObject);

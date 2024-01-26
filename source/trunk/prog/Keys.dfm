@@ -12,6 +12,7 @@ object KeyDlg: TKeyDlg
   Font.Style = []
   Position = poScreenCenter
   OnActivate = FormActivate
+  OnCreate = FormCreate
   OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
