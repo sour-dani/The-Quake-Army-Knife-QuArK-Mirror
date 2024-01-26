@@ -880,14 +880,15 @@ end;
 
 procedure CleanupFileName(var S: String);
 const
- cDOSFilenameValidChars = ['a'..'z', 'A'..'Z', '0'..'9', '.',
-  '$', '%', '''', '-', '_', '@', '{', '}', '~', '`', '!', '#', '(', ')'];
+  //Semi-colon and comma are invalid if long filenames are not supported.
+  cInvalidChars = ['\', '/', ':', '*', '?', '"', '<', '>', '|'{, ';', ','}];
 var
  I: Integer;
 begin
  for I:=Length(S) downto 1 do
  begin
-   if not (S[I] in cDOSFilenameValidChars) then
+   if (S[I] < #20) //Control characters are invalid
+   or (S[I] in cInvalidChars) then
      System.Delete(S, I, 1);
  end;
 end;
