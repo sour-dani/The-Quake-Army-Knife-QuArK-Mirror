@@ -75,10 +75,11 @@ type
     nLightmapScale: Integer;
   end;
 
-const //@
+const
   RMFMaxVersion: Single = 3.7;
   RMFLastCompatVersion: Single = 0.3;
-  RmfID: array[0..2] of Byte = (Byte('R'), Byte('M'), Byte('F'));
+  RmfID: array[0..2] of AnsiChar = ('R', 'M', 'F');
+  DocInfoSignature: array[0..7] of AnsiChar = ('D', 'O', 'C', 'I', 'N', 'F', 'O', #0);
   old_group_bytes: Integer = 134;
 
 {------------------------}
@@ -124,8 +125,9 @@ var
 
  BrushNum, FaceNum: Integer;
 
- RMFVersion: Single;
- RMFHeader: array[0..2] of Byte;
+ RMFVersion, CameraToolVersion: Single;
+ RMFHeader: array[0..2] of AnsiChar;
+ DocInfo: array[0..7] of AnsiChar;
  VisGroup: RMFVisGroup;
  DummyByte: Byte;
  DummyInteger: Integer;
@@ -572,10 +574,30 @@ begin
         end;
 
         // read camera
-        if RMFVersion < 1.4 then
+        if (RMFVersion >= 0.9) and (RMFVersion < 1.4) then
         begin
-          F.ReadBuffer(DummyVector[0], 3*SizeOf(Single)); //unused
-          F.ReadBuffer(DummyVector[0], 3*SizeOf(Single)); //unused
+          F.ReadBuffer(DummyVector[0], 3*SizeOf(Single)); //Position
+          F.ReadBuffer(DummyVector[0], 3*SizeOf(Single)); //Direction
+        end
+        else if RMFVersion >= 1.4 then
+        begin
+          F.ReadBuffer(DocInfo, SizeOf(DocInfo));
+          if not CompareMem(@DocInfo, @DocInfoSignature, SizeOf(DocInfoSignature)) then
+            Raise EErrorFmt(5779, [FmtLoadStr1(5782, [DocInfo, 'DOCINFO'])]);
+
+          F.ReadBuffer(CameraToolVersion, SizeOf(Single));
+          CameraToolVersion:=CameraToolVersion+0.001;
+
+          if CameraToolVersion>=0.2 then
+            F.ReadBuffer(DummyInteger, SizeOf(Integer)); //Active camera
+
+          F.ReadBuffer(DummyInteger, SizeOf(Integer)); //Number of camera's
+          for i := 0 to DummyInteger-1 do
+          begin
+            F.ReadBuffer(DummyVector[0], 3*SizeOf(Single)); //Position
+            F.ReadBuffer(DummyVector[0], 3*SizeOf(Single)); //Direction
+          end;
+          //@ Do something with the camera's
         end;
 
         Racine.FixupAllReferences;
