@@ -113,13 +113,13 @@ type
                           DescriptionText: String;
                           FileExt: Integer;
                           DefaultExt: String;
-                          QuArKFileObject: Boolean;
-                          Unformatted: Boolean;
                           PythonMacro: String;
                          {OpenFilter: Integer;
                           FileExtCount: Integer;
                           FileExt: array[0..MaxFileExt-1] of Integer;
                           DefaultExt: array[0..MaxFileExt-1] of String;}
+                          QuArKFileObject: Boolean;
+                          Unformatted: Boolean;
                          end;
   QFileObjectClass = class of QFileObject;
   QFileObject = class(QObject)

@@ -112,7 +112,7 @@ uses qhelper, PyMenus, PyToolbars, PyObjects, Setup, Qk1, QConsts,
  {-------------------}
 
 var
- ci_obj: PyObject = Nil;
+ ci_obj: PyObject = Nil; //FIXME: Does this leak?
 
 function ClickItemNow(obj: PyObject; Options: Integer; nForm: TPyForm) : Boolean;
 var
