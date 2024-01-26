@@ -880,14 +880,22 @@ end;
 
 procedure CleanupFileName(var S: String);
 const
+{$ifdef MSWINDOWS}
   //Semi-colon and comma are invalid if long filenames are not supported.
   cInvalidChars = ['\', '/', ':', '*', '?', '"', '<', '>', '|'{, ';', ','}];
+{$else}
+  cInvalidChars = ['/'];
+{$endif}
 var
  I: Integer;
 begin
  for I:=Length(S) downto 1 do
  begin
+   {$ifdef MSWINDOWS}
    if (S[I] < #20) //Control characters are invalid
+   {$else}
+   if (S[I] = #0) //Null bytes are invalid
+   {$endif}
    or (S[I] in cInvalidChars) then
      System.Delete(S, I, 1);
  end;
