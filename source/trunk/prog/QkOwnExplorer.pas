@@ -23,7 +23,7 @@ unit QkOwnExplorer;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  Messages, SysUtils, Classes, Graphics, Controls, Forms,
   QkObjects, QkFileExplorer, ExtCtrls, QkForm, QkFileObjects, TB97;
 
 type
@@ -88,8 +88,7 @@ begin
  inherited;
 end;
 
-procedure TQFormExplorer.FormClose(Sender: TObject;
-  var Action: TCloseAction);
+procedure TQFormExplorer.FormClose(Sender: TObject; var Action: TCloseAction);
 var
  F: TQForm1;
 begin

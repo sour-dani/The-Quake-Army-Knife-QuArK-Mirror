@@ -23,7 +23,7 @@ unit HelpPopup1;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   StdCtrls, QkForm, ExtCtrls, ActnList;
 
 type
