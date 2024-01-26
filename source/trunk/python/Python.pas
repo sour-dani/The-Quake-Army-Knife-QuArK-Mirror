@@ -1989,7 +1989,7 @@ end;
 procedure TestPythonObjectDump;
 begin
   if g_PythonObjects.Count>0 then
-    if Windows.MessageBox(0, 'Some Python objects were not correctly freed. This is a bug. Do you want to write a data report (PythonObjectDump.txt) ?', 'DEBUGGING - BETA VERSION', MB_YESNO) = IDYES then
+    if Windows.MessageBox(0, 'Some Python objects were not correctly freed. This is a bug. Do you want to write a data report (PythonObjectDump.txt) ?', 'QuArK - DEBUGGING', MB_YESNO) = IDYES then
       PythonObjectDump;
 end;
 {$ENDIF}
