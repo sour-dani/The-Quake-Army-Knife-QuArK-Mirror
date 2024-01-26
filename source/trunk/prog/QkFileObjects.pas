@@ -139,7 +139,7 @@ type
                   function LoadName: String;
                   procedure WriteSiblingsTo(Info1: TInfoEnreg1);
                 public
-                  Filename: String;
+                  Filename: TFileName;
                   ReadFormat: Integer;
                   destructor Destroy; override;
                   class procedure FileObjectClassInfo(var Info: TFileObjectClassInfo); virtual;
@@ -1897,9 +1897,6 @@ begin
        if S='' then
         S:=LoadStr1(180);
       end;
-     { tigari: .map extension fix }
-     S:=Copy(S,1,Length(S)-Length(ExtractFileExt(S)));
-     {/tiglari}
      SaveDialog1.FileName:=S;
      if CheckWindows98And2000 then
        SaveDialog1.Options:=[ofHideReadOnly, ofOverwritePrompt, ofPathMustExist, ofEnableSizing]
