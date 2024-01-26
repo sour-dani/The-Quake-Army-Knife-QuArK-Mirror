@@ -547,13 +547,10 @@ end;
 procedure TQList.Clear;
 var
   I: Integer;
-  QO: QObject;
 begin
-  // SilverPaladin - 12/01/03 - Clearing is done from end down now with a assigned check
   for I:=Count-1 downto 0
   do begin
-    QO := QObject(List{$ifndef DelphiXE2orNewerCompiler}^{$ENDIF}[I]);
-    if Assigned(QO) then QO.AddRef(-1);
+    QObject(List{$ifndef DelphiXE2orNewerCompiler}^{$ENDIF}[I]).AddRef(-1);
   end;
   {$IFNDEF TLIST_NOVIRTUALCLEAR}
   inherited Clear;
@@ -600,10 +597,6 @@ begin
   for I:=0 to Count-1 do
   begin
     Result:=QObject(List{$ifndef DelphiXE2orNewerCompiler}^{$ENDIF}[I]);
-    // SilverPaladin - 12/01/03 - Added an assigned check to bullet proof against
-    // access violations.
-    if not(Assigned(Result)) then
-      Break; // Quit the loop go on to Result := Nil;
     if SameText(Result.GetFullName, nName) then
       Exit; // Exit out at current selection, it is the one we want.
   end;
@@ -1271,11 +1264,11 @@ var
   Q: QObject;
 begin
   { no call to Acces }
-  for I:=Parent.SubElements.Count-1 downto 0
-  do begin
+  for I:=Parent.SubElements.Count-1 downto 0 do
+  begin
     Q:=Parent.SubElements[I];
-    if (Assigned(Q) and (Q.Name <> ''))
-    then begin
+    if Q.Name <> '' then
+    begin
       Q.FixupReference;
       BrowseFixupRef(Q);
     end;
