@@ -165,11 +165,6 @@ begin
         L.Add(Info.DefaultExt);
         L.Add(LoadStr1(Info.FileExt));
       end;
-      SetLength(Info.FileObjectDescriptionText,0);
-      SetLength(Info.DefaultExt,0);
-      SetLength(Info.PythonMacro,0);
-      {DanielPharos: Not really good to do it this way
-      but it's better than leaking memory!}
     end;
   end;
 end;
@@ -211,11 +206,6 @@ begin
           AllTypes2 := AllTypes2 + '*.' + Info.DefaultExt;
         end;
       end;
-      SetLength(Info.FileObjectDescriptionText,0);
-      SetLength(Info.DefaultExt,0);
-      SetLength(Info.PythonMacro,0);
-      {DanielPharos: Not really good to do it this way
-      but it's better than leaking memory!}
     end;
   end;
   L.Insert(0, FmtLoadStr1(768, [AllTypes1, AllTypes2]));
