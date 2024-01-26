@@ -112,7 +112,7 @@ end;
 class procedure QFormContext.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5179);
+ Info.DescriptionText:=LoadStr1(5179);
 {Info.FileExt:=779;
  Info.WndInfo:=[wiWindow];}
 end;

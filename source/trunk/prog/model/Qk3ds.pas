@@ -73,7 +73,7 @@ end;
 class procedure Q3DSFile.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
   inherited;
-  Info.FileObjectDescriptionText:=LoadStr1(5178);
+  Info.DescriptionText:=LoadStr1(5178);
   Info.FileExt:=807;
 end;
 

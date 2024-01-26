@@ -77,7 +77,7 @@ end;
 class procedure QTextureSin.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5165);
+ Info.DescriptionText:=LoadStr1(5165);
  Info.FileExt:=793;
 end;
 
@@ -264,7 +264,7 @@ end;
 class procedure QSinPak.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5166);
+ Info.DescriptionText:=LoadStr1(5166);
  Info.FileExt:=794;
 end;
 

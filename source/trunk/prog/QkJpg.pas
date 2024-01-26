@@ -60,7 +60,7 @@ end;
 class procedure QJPeg.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5172);
+ Info.DescriptionText:=LoadStr1(5172);
  Info.FileExt:=801;
  Info.WndInfo:=[wiWindow];
 end;

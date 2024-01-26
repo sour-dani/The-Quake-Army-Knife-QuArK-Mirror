@@ -107,7 +107,7 @@ end;
 class procedure QBmp.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5138);
+ Info.DescriptionText:=LoadStr1(5138);
  Info.FileExt:=782;
  Info.WndInfo:=[wiWindow];
 end;

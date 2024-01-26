@@ -49,7 +49,7 @@ end;
 class procedure QHmfFile.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5180);
+ Info.DescriptionText:=LoadStr1(5180);
  Info.FileExt:=808;
 end;
 

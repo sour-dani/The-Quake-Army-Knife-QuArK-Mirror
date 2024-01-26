@@ -60,7 +60,7 @@ end;
 class procedure QDDS.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
   inherited;
-  Info.FileObjectDescriptionText:=LoadStr1(5192);
+  Info.DescriptionText:=LoadStr1(5192);
   Info.FileExt:=819;
   Info.WndInfo:=[wiWindow];
 end;

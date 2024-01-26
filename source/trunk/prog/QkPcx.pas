@@ -84,7 +84,7 @@ end;
 class procedure QPcx.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5137);
+ Info.DescriptionText:=LoadStr1(5137);
  Info.FileExt:=781;
  Info.WndInfo:=[wiWindow];
 end;

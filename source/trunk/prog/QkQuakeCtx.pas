@@ -260,7 +260,7 @@ end;
 class procedure QQuakeCtx.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5155);
+ Info.DescriptionText:=LoadStr1(5155);
 {Info.FileExt:=779;
  Info.WndInfo:=[wiWindow];}
 end;

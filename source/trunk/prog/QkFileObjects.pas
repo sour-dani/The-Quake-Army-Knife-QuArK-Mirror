@@ -110,7 +110,7 @@ type
   PFileObjectClassInfo = ^TFileObjectClassInfo;
   TFileObjectClassInfo = record
                           WndInfo: TFileObjectWndInfo;
-                          FileObjectDescriptionText: String;
+                          DescriptionText: String;
                           FileExt: Integer;
                           DefaultExt: String;
                           QuArKFileObject: Boolean;
@@ -1594,8 +1594,8 @@ class procedure QFileObject.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  Finalize(Info); //Must call Finalize in order to release the Strings before FillChar.
  FillChar(Info, SizeOf(Info), 0);
- Info.FileObjectDescriptionText:=TypeInfo;
- Info.DefaultExt:=Copy(Info.FileObjectDescriptionText, 2, MaxInt);
+ Info.DescriptionText:=TypeInfo;
+ Info.DefaultExt:=Copy(Info.DescriptionText, 2, MaxInt);
 end;
 
 class function QFileObject.CanLoadBlankFileExt(const Filename: String; nParent: QObject): Boolean;
@@ -1863,7 +1863,7 @@ begin
            FilterIndex:=SavingAsText;
           Inc(SavingAsText);
          end;
-        Info1.FileObjectDescriptionText:='';
+        Info1.DescriptionText:='';
         Info1.DefaultExt:='';
        end;
       Inc(I);
@@ -2592,7 +2592,7 @@ begin
       else
        begin}
         FileObject.FileObjectClassInfo(Info);
-        MarsCap.AppCaption:=FmtLoadStr1(5123, [Info.FileObjectDescriptionText]);
+        MarsCap.AppCaption:=FmtLoadStr1(5123, [Info.DescriptionText]);
         UpdateMarsCap;
       {end;}
       RedrawWindow(Handle, Nil, 0, rdw_Invalidate or rdw_Frame);

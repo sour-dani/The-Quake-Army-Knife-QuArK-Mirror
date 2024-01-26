@@ -61,7 +61,7 @@ end;
 class procedure QFtx.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5226);
+ Info.DescriptionText:=LoadStr1(5226);
  Info.FileExt:=820;
  Info.WndInfo:=[wiWindow];
 end;

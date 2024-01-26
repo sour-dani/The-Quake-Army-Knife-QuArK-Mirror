@@ -542,7 +542,7 @@ end;
 class procedure QCin.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5158);
+ Info.DescriptionText:=LoadStr1(5158);
  Info.FileExt:=789;
  Info.WndInfo:=[wiWindow];
 end;

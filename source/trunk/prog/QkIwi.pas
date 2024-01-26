@@ -57,7 +57,7 @@ end;
 class procedure QIwi.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
   inherited;
-  Info.FileObjectDescriptionText:=LoadStr1(5231);
+  Info.DescriptionText:=LoadStr1(5231);
   Info.FileExt:=824;
   Info.WndInfo:=[wiWindow];
 end;

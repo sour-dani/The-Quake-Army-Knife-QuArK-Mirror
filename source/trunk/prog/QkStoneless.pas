@@ -50,7 +50,7 @@ end;
 class procedure QXMPFile.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5870);
+ Info.DescriptionText:=LoadStr1(5870);
  Info.FileExt:=836;
 end;
 

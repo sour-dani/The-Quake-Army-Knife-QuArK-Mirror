@@ -590,7 +590,7 @@ end;
 class procedure QZipFolder.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
   inherited;
-  Info.FileObjectDescriptionText:=LoadStr1(5136);
+  Info.DescriptionText:=LoadStr1(5136);
   Info.WndInfo:=[wiSameExplorer];
 end;
 
@@ -646,7 +646,7 @@ end;
 class procedure QZipPak.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
   inherited;
-  Info.FileObjectDescriptionText:=LoadStr1(5169);
+  Info.DescriptionText:=LoadStr1(5169);
   Info.FileExt:=797;
   Info.WndInfo:=[wiOwnExplorer];
 end;

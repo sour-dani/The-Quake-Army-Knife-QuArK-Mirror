@@ -632,7 +632,7 @@ end;
 class procedure QQme.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5141);
+ Info.DescriptionText:=LoadStr1(5141);
  Info.FileExt:=783;
  Info.WndInfo:=[wiOwnExplorer];
 end;

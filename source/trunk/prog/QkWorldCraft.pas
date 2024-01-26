@@ -92,7 +92,7 @@ end;
 class procedure QRmfMapFile.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5150);
+ Info.DescriptionText:=LoadStr1(5150);
  Info.FileExt:=827;
 end;
 

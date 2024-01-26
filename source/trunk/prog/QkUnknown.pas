@@ -87,7 +87,7 @@ end;*)
 class procedure QUnknown.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
   inherited;
-  Info.FileObjectDescriptionText:=LoadStr1(5121);
+  Info.DescriptionText:=LoadStr1(5121);
  {Info.FileExtCount:=1;
   Info.FileExt[0]:=774;}
   Info.FileExt:=774;
@@ -134,7 +134,7 @@ begin
     begin
       LabelName.Caption:=FileObject.Name+FileObject.TypeInfo;
       FileObject.FileObjectClassInfo(Info);
-      LabelType.Caption:=Info.FileObjectDescriptionText;
+      LabelType.Caption:=Info.DescriptionText;
       LabelSize.Caption:=FmtLoadStr1(5392, [FileObject.GetObjectSize(Nil, False)]);
     end;
   end;

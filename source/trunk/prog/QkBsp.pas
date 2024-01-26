@@ -465,7 +465,7 @@ end;
 class procedure QBsp.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5134);
+ Info.DescriptionText:=LoadStr1(5134);
 {Info.FileExtCount:=1;}
  Info.FileExt{[0]}:=779;
 {Info.DefaultExt[0]:='bsp';}

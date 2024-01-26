@@ -69,7 +69,7 @@ end;
 class procedure QGCFFolder.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5711);
+ Info.DescriptionText:=LoadStr1(5711);
  Info.WndInfo:=[wiSameExplorer];
 end;
 
@@ -311,7 +311,7 @@ end;
 class procedure QGCF.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5710);
+ Info.DescriptionText:=LoadStr1(5710);
  Info.FileExt:=816;
  Info.WndInfo:=[wiOwnExplorer];
 end;

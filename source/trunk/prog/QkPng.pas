@@ -60,7 +60,7 @@ end;
 class procedure QPng.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
   inherited;
-  Info.FileObjectDescriptionText:=LoadStr1(5181);
+  Info.DescriptionText:=LoadStr1(5181);
   Info.FileExt:=810;
   Info.WndInfo:=[wiWindow];
 end;

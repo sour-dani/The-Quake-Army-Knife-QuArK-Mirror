@@ -100,7 +100,7 @@ end;
 class procedure QCoD2Pak.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5147);
+ Info.DescriptionText:=LoadStr1(5147);
  Info.FileExt:=821;
 end;
 
@@ -114,7 +114,7 @@ end;
 class procedure QCoD2Bsp.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5151);
+ Info.DescriptionText:=LoadStr1(5151);
  Info.FileExt:=828;
 end;
 
@@ -129,7 +129,7 @@ end;
 class procedure QCoD2Material.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5152);
+ Info.DescriptionText:=LoadStr1(5152);
  Info.FileExt:=829;
 end;
 

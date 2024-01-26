@@ -96,7 +96,7 @@ end;
 class procedure QMd2File.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
   inherited;
-  Info.FileObjectDescriptionText:=LoadStr1(5145);
+  Info.DescriptionText:=LoadStr1(5145);
   Info.FileExt:=787;
 end;
 

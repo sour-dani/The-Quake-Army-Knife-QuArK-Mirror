@@ -585,7 +585,7 @@ end;
 class procedure QSprFile.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
   inherited;
-  Info.FileObjectDescriptionText:=LoadStr1(5171);
+  Info.DescriptionText:=LoadStr1(5171);
   Info.FileExt:=799;
   Info.WndInfo:=[];
 end;
@@ -663,7 +663,7 @@ end;
 class procedure QSp2File.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
   inherited;
-  Info.FileObjectDescriptionText:=LoadStr1(5171);
+  Info.DescriptionText:=LoadStr1(5171);
   Info.FileExt:=800;
   Info.WndInfo:=[wiWindow,wiSameExplorer];
 end;

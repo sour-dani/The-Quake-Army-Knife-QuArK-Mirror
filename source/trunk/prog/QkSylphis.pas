@@ -52,7 +52,7 @@ end;
 class procedure SylphisPak.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5148);
+ Info.DescriptionText:=LoadStr1(5148);
  Info.FileExt:=809;
 end;
 
@@ -66,7 +66,7 @@ end;
 class procedure QCMapFile.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5149);
+ Info.DescriptionText:=LoadStr1(5149);
  Info.FileExt:=822;
 end;
 

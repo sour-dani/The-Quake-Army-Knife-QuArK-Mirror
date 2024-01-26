@@ -829,7 +829,7 @@ end;
 class procedure QVMFFile.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5715);
+ Info.DescriptionText:=LoadStr1(5715);
  Info.FileExt:=817;
 end;
 

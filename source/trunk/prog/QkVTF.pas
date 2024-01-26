@@ -63,7 +63,7 @@ end;
 class procedure QVTF.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
   inherited;
-  Info.FileObjectDescriptionText:=LoadStr1(5709);
+  Info.DescriptionText:=LoadStr1(5709);
   Info.FileExt:=814;
   Info.WndInfo:=[wiWindow];
 end;

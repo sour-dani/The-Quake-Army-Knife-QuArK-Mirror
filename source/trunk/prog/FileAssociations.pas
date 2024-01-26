@@ -60,7 +60,7 @@ begin
  if (QClassPtr<>Nil) and (QClassPtr.InheritsFrom(QFileObject)) then
   begin
    QFileObjectClass(QClassPtr).FileObjectClassInfo(QClassInfo);
-   Description:=QClassInfo.FileObjectDescriptionText;
+   Description:=QClassInfo.DescriptionText;
   end;
 
  Result:=False;

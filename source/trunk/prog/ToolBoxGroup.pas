@@ -77,7 +77,7 @@ end;
 class procedure QToolBoxGroup.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5140);
+ Info.DescriptionText:=LoadStr1(5140);
  Info.WndInfo:=[wiSameExplorer];
  Include(Info.WndInfo, wiNeverOpen);
 end;

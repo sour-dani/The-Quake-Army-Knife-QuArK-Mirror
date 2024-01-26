@@ -60,7 +60,7 @@ end;
 class procedure QTga.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5168);
+ Info.DescriptionText:=LoadStr1(5168);
  Info.FileExt:=796;
  Info.WndInfo:=[wiWindow];
 end;

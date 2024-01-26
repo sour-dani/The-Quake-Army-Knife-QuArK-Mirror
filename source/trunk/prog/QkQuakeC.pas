@@ -230,7 +230,7 @@ end;
 class procedure QQuakeC.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5124);
+ Info.DescriptionText:=LoadStr1(5124);
  Info.FileExt:=773;
  Info.WndInfo:=[wiWindow];
 end;
@@ -257,7 +257,7 @@ end;
 class procedure QHexenC.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5139);
+ Info.DescriptionText:=LoadStr1(5139);
  Info.FileExt:=780;
 end;
 

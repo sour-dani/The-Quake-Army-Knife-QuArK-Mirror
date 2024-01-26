@@ -294,7 +294,7 @@ end;
 class Procedure QM32.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
   inherited;
-  Info.FileObjectDescriptionText:=LoadStr1(5177);
+  Info.DescriptionText:=LoadStr1(5177);
   Info.FileExt:=806;
   Info.WndInfo:=[wiWindow];
 end;

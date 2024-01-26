@@ -95,7 +95,7 @@ end;
 class procedure D3Pak.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5146);
+ Info.DescriptionText:=LoadStr1(5146);
  Info.FileExt:=813;
 end;
 
@@ -355,7 +355,7 @@ class procedure D3MaterialFile.FileObjectClassInfo(var Info: TFileObjectClassInf
 begin
  inherited;
  // Rowdy: technically Doom 3 does not have material lists (equivalent to Q3's shader lists)
- Info.FileObjectDescriptionText:=LoadStr1(5753);
+ Info.DescriptionText:=LoadStr1(5753);
  Info.FileExt{Count}:=823;
 end;
 

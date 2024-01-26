@@ -886,7 +886,7 @@ end;
 class procedure QTextureLnk.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
   inherited;
-  Info.FileObjectDescriptionText:=LoadStr1(5130);
+  Info.DescriptionText:=LoadStr1(5130);
 end;
 
 function QTextureLnk.LoadPixelSet;

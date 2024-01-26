@@ -69,7 +69,7 @@ end;
 class procedure QVPKFolder.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5733);
+ Info.DescriptionText:=LoadStr1(5733);
  Info.WndInfo:=[wiSameExplorer];
 end;
 
@@ -310,7 +310,7 @@ end;
 class procedure QVPK.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5732);
+ Info.DescriptionText:=LoadStr1(5732);
  Info.FileExt:=825;
  Info.WndInfo:=[wiOwnExplorer];
 end;

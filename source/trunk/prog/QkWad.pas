@@ -141,7 +141,7 @@ end;
 class procedure QWad.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5129);
+ Info.DescriptionText:=LoadStr1(5129);
 {Info.FileExtCount:=1;}
  Info.FileExt{[0]}:=776;
 {Info.DefaultExt[0]:='wad';}
@@ -450,7 +450,7 @@ end;}
 class procedure QTextureList.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5135);
+ Info.DescriptionText:=LoadStr1(5135);
  Info.FileExt{Count}:=0;
 end;
 

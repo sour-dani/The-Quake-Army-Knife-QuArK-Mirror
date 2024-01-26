@@ -219,7 +219,7 @@ end;
 class procedure QExplorerGroup.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5120);
+ Info.DescriptionText:=LoadStr1(5120);
 {Info.FileExtCount:=1;}
  Info.FileExt{[0]}:=772;
 {Info.DefaultExt[0]:='qrk';}

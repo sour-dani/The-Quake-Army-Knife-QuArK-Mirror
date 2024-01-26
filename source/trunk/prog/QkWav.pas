@@ -243,7 +243,7 @@ end;
 class procedure QWav.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5157);
+ Info.DescriptionText:=LoadStr1(5157);
  Info.FileExt:=788;
  Info.WndInfo:=[wiWindow];
 end;

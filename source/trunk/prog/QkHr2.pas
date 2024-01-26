@@ -75,7 +75,7 @@ end;
 class procedure QM8.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5163);
+ Info.DescriptionText:=LoadStr1(5163);
  Info.FileExt:=792;
 end;
 
@@ -210,7 +210,7 @@ end;
 class procedure QHr2Model.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5167);
+ Info.DescriptionText:=LoadStr1(5167);
  Info.FileExt:=795;
 end;
 

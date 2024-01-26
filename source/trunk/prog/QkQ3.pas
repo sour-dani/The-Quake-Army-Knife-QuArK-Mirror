@@ -183,7 +183,7 @@ end;
 class procedure Q_HFile.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5174);
+ Info.DescriptionText:=LoadStr1(5174);
  Info.FileExt:=803;
 end;
 
@@ -204,7 +204,7 @@ end;
 class procedure Q_CFile.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5173);
+ Info.DescriptionText:=LoadStr1(5173);
  Info.FileExt:=802;
 end;
 
@@ -218,7 +218,7 @@ end;
 class procedure Q3Pak.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5170);
+ Info.DescriptionText:=LoadStr1(5170);
  Info.FileExt:=798;
 end;
 
@@ -521,7 +521,7 @@ end;
 class procedure QShaderFile.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5175);
+ Info.DescriptionText:=LoadStr1(5175);
  Info.FileExt{Count}:=804;
 end;
 

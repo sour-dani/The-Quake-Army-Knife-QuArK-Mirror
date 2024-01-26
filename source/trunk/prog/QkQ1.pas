@@ -231,7 +231,7 @@ end;
 class procedure QTexture1.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
   inherited;
-  Info.FileObjectDescriptionText:=LoadStr1(5131);
+  Info.DescriptionText:=LoadStr1(5131);
 end;
 
 procedure QTexture1.SaveFileEnd(F: TStream; TailleRestante: TStreamPos);
@@ -354,7 +354,7 @@ end;
 class procedure QRCFile.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5856);
+ Info.DescriptionText:=LoadStr1(5856);
  Info.FileExt:=833;
  Info.WndInfo:=[wiWindow];
 end;
@@ -369,7 +369,7 @@ end;
 class procedure QSRCFile.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5857);
+ Info.DescriptionText:=LoadStr1(5857);
  Info.FileExt:=834;
  Info.WndInfo:=[wiWindow];
 end;

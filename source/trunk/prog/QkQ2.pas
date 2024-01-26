@@ -214,7 +214,7 @@ end;
 class procedure QTexture2.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
   inherited;
-  Info.FileObjectDescriptionText:=LoadStr1(5132);
+  Info.DescriptionText:=LoadStr1(5132);
 { Info.FileExtCount:=1;}
   Info.FileExt{[0]}:=777;
 { Info.DefaultExt[0]:='wal';}

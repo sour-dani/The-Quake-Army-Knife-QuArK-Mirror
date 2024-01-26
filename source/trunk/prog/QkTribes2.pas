@@ -51,7 +51,7 @@ end;
 class procedure QVL2File.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5182);
+ Info.DescriptionText:=LoadStr1(5182);
  Info.FileExt:=811;
 end;
 
@@ -72,7 +72,7 @@ end;
 class procedure QCSScript.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5183);
+ Info.DescriptionText:=LoadStr1(5183);
  Info.FileExt:=812;
 end;
 

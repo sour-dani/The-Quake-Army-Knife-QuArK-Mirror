@@ -49,7 +49,7 @@ end;
 class procedure QQuakeMapFile.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5142);
+ Info.DescriptionText:=LoadStr1(5142);
  Info.FileExt:=784;
 end;
 

@@ -149,7 +149,7 @@ end;
 class procedure QText.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5160);
+ Info.DescriptionText:=LoadStr1(5160);
  Info.FileExt:=790;
  Info.WndInfo:=[wiWindow];
 end;
@@ -228,7 +228,7 @@ end;
 class procedure QCfgFile.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5161);
+ Info.DescriptionText:=LoadStr1(5161);
  Info.FileExt:=791;
  Info.WndInfo:=[wiWindow];
 end;
@@ -243,7 +243,7 @@ end;
 class procedure QJsonFile.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5854);
+ Info.DescriptionText:=LoadStr1(5854);
  Info.FileExt:=831;
  Info.WndInfo:=[wiWindow];
 end;
@@ -258,7 +258,7 @@ end;
 class procedure QXmlFile.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5855);
+ Info.DescriptionText:=LoadStr1(5855);
  Info.FileExt:=832;
  Info.WndInfo:=[wiWindow];
 end;
@@ -273,7 +273,7 @@ end;
 class procedure QNutFile.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5869);
+ Info.DescriptionText:=LoadStr1(5869);
  Info.FileExt:=835;
  Info.WndInfo:=[wiWindow];
 end;

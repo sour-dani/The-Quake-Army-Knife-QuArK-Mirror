@@ -225,7 +225,7 @@ end;
 class procedure QToolBox.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5127);
+ Info.DescriptionText:=LoadStr1(5127);
 end;
 
 {function QToolBox.IsExplorerItem(Q: QObject) : TIsExplorerItem;

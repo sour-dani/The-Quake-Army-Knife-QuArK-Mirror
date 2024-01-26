@@ -46,7 +46,7 @@ end;
 class procedure QQkl.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
   inherited;
-  Info.FileObjectDescriptionText:=LoadStr1(5143);
+  Info.DescriptionText:=LoadStr1(5143);
   Info.FileExt:=785;
   Info.QuArKFileObject:=True;
 end;

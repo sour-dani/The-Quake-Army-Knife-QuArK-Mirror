@@ -136,7 +136,7 @@ end;
 class procedure QVMTFile.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
   inherited;
-  Info.FileObjectDescriptionText:=LoadStr1(5716);
+  Info.DescriptionText:=LoadStr1(5716);
   Info.FileExt:=815;
   Info.WndInfo:=[wiWindow];
 end;

@@ -46,7 +46,7 @@ end;
 class procedure QKPF.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5153);
+ Info.DescriptionText:=LoadStr1(5153);
  Info.FileExt:=830;
 end;
 

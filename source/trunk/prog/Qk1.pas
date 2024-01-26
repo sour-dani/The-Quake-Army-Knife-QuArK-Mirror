@@ -1071,8 +1071,8 @@ begin
  if FileObject<>Nil then
   FileObject.FileObjectClassInfo(Info)
  else
-  Info.FileObjectDescriptionText:=LoadStr1(5125);
- News1.Caption:=FmtLoadStr1(2, [Info.FileObjectDescriptionText]);
+  Info.DescriptionText:=LoadStr1(5125);
+ News1.Caption:=FmtLoadStr1(2, [Info.DescriptionText]);
 
  //FileMenu.Tag is used to flag if the RecentFiles need to be updated
  if FileMenu.Tag=0 then
@@ -1361,7 +1361,7 @@ var
  F: TCustomForm;
  Gr, Gr1: QExplorerGroup;
 begin
- Info.FileObjectDescriptionText:=LoadStr1(5125);
+ Info.DescriptionText:=LoadStr1(5125);
  NewClass:='.qrk';
  NewObj:='';
  Gr:=Nil; try
@@ -1398,7 +1398,7 @@ begin
  else
   FileObject:=Nil;
  if FileObject=Nil then
-  FileObject:=BuildFileRoot(FmtLoadStr1(5128, [Info.FileObjectDescriptionText]) + NewClass, Nil);
+  FileObject:=BuildFileRoot(FmtLoadStr1(5128, [Info.DescriptionText]) + NewClass, Nil);
  FileObject.Filename:='';
  FileObject.OpenStandAloneWindow(Nil, False);
  finally Gr.Free; end;
@@ -1863,11 +1863,11 @@ begin
        ConvertClass:=QFileObject(Q).TestConversionType(I);
        if ConvertClass=Nil then Break;
        ConvertClass.FileObjectClassInfo(Info);
-       if L.IndexOf(Info.FileObjectDescriptionText)<0 then
-        L.Add(Info.FileObjectDescriptionText);
-       if (ConvertClass=Q.ClassType) and (Chk<>Info.FileObjectDescriptionText) then
+       if L.IndexOf(Info.DescriptionText)<0 then
+        L.Add(Info.DescriptionText);
+       if (ConvertClass=Q.ClassType) and (Chk<>Info.DescriptionText) then
         if Chk='' then
-         Chk:=Info.FileObjectDescriptionText
+         Chk:=Info.DescriptionText
         else
          Chk:='!';
        Inc(I);
@@ -1925,7 +1925,7 @@ begin
          Break;
         end;
        ConvertClass.FileObjectClassInfo(Info);
-       if S=Info.FileObjectDescriptionText then
+       if S=Info.DescriptionText then
         begin
          Dup:=ConvertClass.Create(Q.Name, Nil);
          Dup.AddRef(+1); try

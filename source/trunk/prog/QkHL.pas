@@ -65,7 +65,7 @@ end;
 class procedure QTextureHL.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5164);
+ Info.DescriptionText:=LoadStr1(5164);
 end;
 
 class function QTextureHL.CustomParams : Integer;

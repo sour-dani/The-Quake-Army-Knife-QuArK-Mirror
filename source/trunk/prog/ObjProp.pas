@@ -130,14 +130,14 @@ begin
    if (CommonType<>Nil) and CommonType.InheritsFrom(QFileObject) then
     begin
      QFileObjectClass(CommonType).FileObjectClassInfo(Info);
-     Label4.Caption:=Info.FileObjectDescriptionText + '   ';
+     Label4.Caption:=Info.DescriptionText + '   ';
      Chk:=-1;
      I:=1;
      repeat
       ConvertClass:=QFileObject(QL[0]).TestConversionType(I);
       if ConvertClass=Nil then Break;
       ConvertClass.FileObjectClassInfo(Info);
-      ListBox1.Items.Add(Info.FileObjectDescriptionText);
+      ListBox1.Items.Add(Info.DescriptionText);
       if ConvertClass=CommonType then
        Chk:=I-1;
       Inc(I);

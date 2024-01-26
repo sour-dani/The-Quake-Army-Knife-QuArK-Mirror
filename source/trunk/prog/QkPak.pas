@@ -232,7 +232,7 @@ end;
 class procedure QPakFolder.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5136);
+ Info.DescriptionText:=LoadStr1(5136);
  Info.WndInfo:=[wiSameExplorer];
 end;
 
@@ -802,7 +802,7 @@ end;
 class procedure QPak.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5133);
+ Info.DescriptionText:=LoadStr1(5133);
  Info.FileExt:=778;
  Info.WndInfo:=[wiOwnExplorer];
 end;
@@ -823,7 +823,7 @@ end;
 class procedure QImport.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5162);
+ Info.DescriptionText:=LoadStr1(5162);
  Info.WndInfo:=[];
 end;
 

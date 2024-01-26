@@ -228,7 +228,7 @@ end;
 class procedure QToolbar.FileObjectClassInfo(var Info: TFileObjectClassInfo);
 begin
  inherited;
- Info.FileObjectDescriptionText:=LoadStr1(5156);
+ Info.DescriptionText:=LoadStr1(5156);
 end;
 
 function QToolbar.CreateToolbar(nOwner: TQkForm; nTag: Integer) : TToolbar97;
