@@ -3,6 +3,7 @@ QQRKSRC1
 // It's the text version of file: HLTex_BuzzyBots.qrk
 
 {
+  QuArKProtected = "1"
   Description = "HL Textures - BuzzyBots"
   Toolbox Folders.qtx =
   {
