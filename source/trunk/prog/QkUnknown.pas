@@ -23,7 +23,7 @@ unit QkUnknown;
 interface
 
 uses
-  Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  Messages, SysUtils, Classes, Graphics, Controls, Forms,
   ExtCtrls, QkObjects, QkFileObjects, QkExplorer, StdCtrls,
   TB97, QkForm;
 
@@ -38,8 +38,6 @@ type
               class function TypeInfo: String; override;
               class procedure FileObjectClassInfo(var Info: TFileObjectClassInfo); override;
               function IsExplorerItem(Q: QObject) : TIsExplorerItem; override;
-              procedure ReadData(var Buf; BufSize: TStreamPos);
-              function ReadDataSize : TStreamPos;
             end;
 
   TFQUnknown = class(TQForm1)
@@ -97,30 +95,6 @@ end;
 function QUnknown.IsExplorerItem(Q: QObject) : TIsExplorerItem;
 begin
   Result:=ieResult[True];
-end;
-
-procedure QUnknown.ReadData(var Buf; BufSize: TStreamPos);
-const
-  cStart = Length('Data=');
-var
-  S: String;
-begin
-  Acces;
-  S:=GetSpecArg('Data');
-  if Length(S)-cStart <> BufSize then
-    Raise EErrorFmt(5220, [Name, Length(S)-cStart, BufSize]);
-  Move(PChar(S)[cStart], Buf, BufSize);
-end;
-
-function QUnknown.ReadDataSize : TStreamPos;
-const
-  cStart = Length('Data=');
-var
-  S: String;
-begin
-  Acces;
-  S:=GetSpecArg('Data');
-  Result:=Length(S)-cStart;
 end;
 
  {------------------------}

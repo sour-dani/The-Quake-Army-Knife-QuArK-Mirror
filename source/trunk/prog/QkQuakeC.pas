@@ -27,9 +27,6 @@ uses
   QkFileObjects, StdCtrls, SyntaxMemo, ExtCtrls, Menus, QkObjects, TB97,
   QkForm, QkText, Python;
 
-const
- OutputProgsDat = 'progs.dat';
-
 type
  QQuakeC = class(QText)
            protected
@@ -83,7 +80,10 @@ procedure CompilerPatches(const L: TQList; var CfgFile: String);
 implementation
 
 uses Undo, Qk1, Setup, FormCfg, Quarkx, QkExceptions, QPAcc, Game,
-     QkUnknown, Keys, Travail, QkObjectClassList;
+     QkUnknown, QkSpecifics, Keys, Travail, QkObjectClassList;
+
+const
+ OutputProgsDat = 'progs.dat';
 
 {$R *.DFM}
 
@@ -140,6 +140,8 @@ begin
 end;
 
 procedure CompilerPatches(const L: TQList; var CfgFile: String);
+const
+  SpecData = 'Data';
 var
  SL, SL1: TStringList;
  I: Integer;
@@ -149,6 +151,7 @@ var
  Source: TMemoryStream;
  Target: TFileStream;
  OutFileName: String;
+ B: String;
 begin
  if L.Count=0 then Exit;
  ProgressIndicatorStart(0,0); try
@@ -186,8 +189,11 @@ begin
 
   { open streams }
  Source:=TMemoryStream.Create; try
- Source.SetSize((Q as QUnknown).ReadDataSize);
- (Q as QUnknown).ReadData(Source.Memory^, Source.Size);
+ Q.Acces;
+ if (Q as QUnknown).Specifics.TryGetBytes(SpecData, B)<>tgrSuccess then
+   Raise EErrorFmt(5220, [Q.Name, SpecData, 'Bytes']);
+ Source.SetSize(Length(B));
+ Move(PChar(B)[1], Source, Length(B)); //FIXME: B[0]
 
  OutFileName:=OutputFile(OutputProgsDat);
  try
