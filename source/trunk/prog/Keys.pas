@@ -23,7 +23,7 @@ unit Keys;
 interface
 
 uses
-  Classes, Graphics, Controls, Forms, Dialogs,
+  Windows, Classes, Graphics, Controls, Forms, Dialogs,
   KeySel, StdCtrls, Buttons, ComCtrls, ImgList;
 
 type
@@ -71,7 +71,7 @@ end;
 
 procedure TKeyDlg.ListView1KeyPress(Sender: TObject; var Key: Char);
 begin
- if Key=#13 then
+ if Key=Char(vk_Return) then
   begin
    ListView1DblClick(Nil);
    Key:=#0;
