@@ -225,41 +225,27 @@ type
     procedure SetTvParent(nParent: QObject);
     function GetIntSpec(const Name: String) : Integer; //FIXME: Switch to QkSpecifics.Integer?
     procedure SetIntSpec(const Name: String; Value: Integer); //FIXME: Switch to QkSpecifics.Integer?
-    function GetSelUnique : Boolean;
-    { true if object is selected but not any grand* parent }
-    procedure SetSelUnique(Value: Boolean);
-    { selects object; unselects grand*parents & their other children }
+    function GetSelUnique : Boolean; //True if object is selected but not any grand* parent
+    procedure SetSelUnique(Value: Boolean); //Selects object; unselects grand*parents & their other children
     function GetVectSpec(const Name: String) : TVect;
     procedure SetVectSpec(const Name: String; const Value: TVect);
-    function Copying(F: TStream; TransfertSource: Boolean) : Boolean;
-    { for direct copying objects that haven't been loaded
-      yet, see QkObjects.txt:Copying }
+    function Copying(F: TStream; TransfertSource: Boolean) : Boolean; //For direct copying objects that haven't been loaded yet, see QkObjects.txt:Copying
   protected
     FName: String;
-    FFlags: Byte; { ofXXX flags above }
-    FNode: PQStreamRef; { info about where on disk the objects info is, see QkObjects.txt:delay_loading }
+    FFlags: Byte; //ofXXX flags above
+    FNode: PQStreamRef; //Info about where on disk the objects info is, see QkObjects.txt:delay_loading
     FParent: QObject;
-    FSelMult: Byte; { smXXX flags above }
-    FLoading: Boolean; { true while object is being loaded }
-    FPyNoParent: Boolean;  { used by polyhedrons }
-    procedure SaveFile(Info: TInfoEnreg1); virtual;
-    { core function for writing to file, normally overridden,
-      nature of Info varies per file format unit (e.g. QkSin) }
-    procedure LoadFile(F: TStream; FSize: TStreamPos); virtual;
-    { core function for reading from file, normally overridden }
-    procedure FixupReference; virtual;
-    { normally does nothing, sometimes packs things up into a
-      more efficient format, e.g. TTreeMapEntity origin (QkMapObject.pas)}
+    FSelMult: Byte; //smXXX flags above
+    FLoading: Boolean; //True while object is being loaded
+    FPyNoParent: Boolean; //Used by polyhedrons
+    procedure SaveFile(Info: TInfoEnreg1); virtual; //Core function for writing to file, normally overridden, nature of Info varies per file format unit (e.g. QkSin)
+    procedure LoadFile(F: TStream; FSize: TStreamPos); virtual; //Core function for reading from file, normally overridden
+    procedure FixupReference; virtual; //Normally does nothing, sometimes packs things up into a more efficient format, e.g. TTreeMapEntity origin (QkMapObject.pas)
     procedure ReadUnformatted(F: TStream; Size: TStreamPos);
-    procedure SaveUnformatted(F: TStream);
-    { for reading/writing raw data to/from a Data specific,
-      used in overrides for Load/SaveFile }
+    procedure SaveUnformatted(F: TStream); //For reading/writing raw data to/from a Data specific, used in overrides for Load/SaveFile
     procedure FileCrashRecoverHack;
   public
-    { propriétés commune aux QObjects }
-    PythonObj: TPythonObj;
-    { structure with Python Object fields; to make a real
-      Python object, take a pointer to this }
+    PythonObj: TPythonObj; //Structure with Python Object fields; to make a real Python object, take a pointer to this
     constructor Create(const nName: String; nParent: QObject);
     { prep for expansion in a treeview }
     procedure LoadAll;
@@ -271,10 +257,8 @@ type
     property Specifics: TSpecificsList read FSpecifics write FSpecifics;
     property SubElements: TQList read FSubElements;
     function Ancestry: String;
-    procedure AddRef(Delta: Integer);
-    { incr/decr Py reference count, frees if 0 }
-    procedure Acces;
-    { does actual full read-in }
+    procedure AddRef(Delta: Integer); //Incr/decr Py reference count, frees if 0
+    procedure Acces; //Does actual full read-in
     procedure LoadInternal(F: TStream; FSize: TStreamPos);
     function GetObjectSize(Loaded: TQStream; LoadNow: Boolean) : Integer;
     procedure ObjectState(var E: TEtatObjet); virtual;
@@ -304,24 +288,18 @@ type
     function GetFloatsSpecPartial(const Name: String; var F: array of Single) : Integer; //FIXME: Switch to QkSpecifics.Float?
     function GetFloatsSpec(const Name: String; var F: array of Single) : Boolean; //FIXME: Switch to QkSpecifics.Float?
     procedure SetFloatsSpec(const Name: String; const F: array of Single); //FIXME: Switch to QkSpecifics.Float?
-    function GetSpecArg(const Name: String) : String;
-    { Returns "<specific-name>=<args>" }
-   {procedure SetTextsSpec(const Name: String; const L: TStrings);}
+    function GetSpecArg(const Name: String) : String; //Returns "<specific-name>=<args>"
     function FindSubObject(const nName: String; WantClass, BrowseClass: QObjectClass) : QObject;
     function LocateSubElement(const LocName: String; var Index: Integer) : QObject; overload;
     procedure FindAllSubObjects(const nName: String; {nName='' for all} WantClass, BrowseClass: QObjectClass; L: TQList);
-    procedure Modified;
-    { sets ofModified flag (FFlags) for object and its transitive FParents }
-    procedure CopyExtraData(var HasText: Boolean); dynamic;
-    { for copying non-Quark representations of i.e. images to
-      the clipboard.  If no non-Quark rep, does nothing }
+    procedure Modified; //Sets ofModified flag (FFlags) for object and its transitive FParents
+    procedure CopyExtraData(var HasText: Boolean); dynamic; //For copying non-Quark representations of i.e. images to the clipboard.  If no non-Quark rep, does nothing
     function TopLevel : Boolean;
     procedure LoadedFileLink(const nName: String; ErrorMsg: Integer);
     procedure OperationInScene(Aj: TAjScene; PosRel: Integer); virtual;
     function GetObjectMenu(Control: TControl) : TPopupMenu; dynamic;
    {property NodeLoadInfo: PQStreamRef read FNode;}
-    class function TypeInfo: String; virtual; abstract;
-    { returns `extension' of object, see QkObjects.txt:TypeInfo }
+    class function TypeInfo: String; virtual; abstract; //Returns `extension' of object, see QkObjects.txt:TypeInfo
     function GetFullName: String;
     procedure ClearAllSelection;
     function PyGetAttr(attr: PyChar) : PyObject; virtual;
@@ -329,8 +307,7 @@ type
     procedure PySetParent(nParent: QObject);
     function IsClosed: Boolean;
     property PyNoParent: Boolean write FPyNoParent;
-    function DirectDataAccess(var S: TStream; var Size: TStreamPos) : Boolean;
-    { stuff that should be done when an object has been read in from text rep. }
+    function DirectDataAccess(var S: TStream; var Size: TStreamPos) : Boolean; //Stuff that should be done when an object has been read in from text rep.
     procedure FinalizeFromText; virtual;
     function WriteSubElements : Boolean; virtual;
     function ClassList : TStringList;
@@ -1872,38 +1849,6 @@ begin
     Raise EErrorFmt(5220, [Name, SpecUnformatted, 'Bytes']);
   F.WriteBuffer(B, Length(B));
 end;
-
-(*procedure QObject.SetTextsSpec(const Name: String; const L: TStrings);
-var
- S, S1: String;
- I, Taille: Integer;
- P: PChar;
-begin
- Taille:=0;
- for I:=0 to L.Count-1 do
-  Inc(Taille, Length(L[I])+1);
- if Taille=0 then
-  S:=''
- else
-  begin
-   SetLength(S, Taille-1);
-   P:=PChar(S);
-   for I:=0 to L.Count-1 do
-    begin
-     S1:=L[I];
-     if S1<>'' then
-      begin
-       Move(S1[1], P^, Length(S1));
-       Inc(P, Length(S1));
-      end;
-     P^:=#$0D;
-     Inc(P);
-    end;
-   Dec(P);
-   P^:=#0;
-  end;
- Specifics.Values[Name]:=S;
-end;*)
 
  {------------------------}
 
