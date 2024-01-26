@@ -23,7 +23,7 @@ unit QkPcx;
 interface
 
 uses Windows, Classes, QkImages, QkPixelSet, QkObjects, QkFileObjects,
-     QkDevil, QkFreeImage;
+     Devil, FreeImage;
 
 type
  QPcx = class(QImage)

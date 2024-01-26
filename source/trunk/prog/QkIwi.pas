@@ -23,7 +23,7 @@ unit QkIwi;
 interface
 
 uses Classes, QkImages, QkPixelSet, QkObjects, QkFileObjects,
-     QkDevIL;
+     DevIL;
 
 type
   QIwi = class(QImage)

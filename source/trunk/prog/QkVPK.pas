@@ -22,7 +22,7 @@ unit QkVPK;
 
 interface
 
-uses Windows, SysUtils, Classes, QkObjects, QkFileObjects, QkPak, QkHLLib;
+uses Windows, SysUtils, Classes, QkObjects, QkFileObjects, QkPak, HLLib;
 
 type
  QVPKFolder = class(QPakFolder)

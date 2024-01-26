@@ -23,7 +23,7 @@ unit QkVTF;
 interface
 
 uses Classes, QkImages, QkPixelSet, QkObjects, QkFileObjects,
-  QkVTFLib, QkDevIL;
+  VTFLib, DevIL;
 
 type
   QVTF = class(QImage)

@@ -23,7 +23,7 @@ unit QkTga;
 interface
 
 uses Classes, QkImages, QkPixelSet, QkObjects, QkFileObjects,
-     QkDevIL, QkFreeImage;
+     DevIL, FreeImage;
 
 type
  QTga = class(QImage)

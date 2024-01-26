@@ -22,7 +22,7 @@ unit QkGCF;
 
 interface
 
-uses Windows, SysUtils, Classes, QkObjects, QkFileObjects, QkPak, QkHLLib;
+uses Windows, SysUtils, Classes, QkObjects, QkFileObjects, QkPak, HLLib;
 
 type
  QGCFFolder = class(QPakFolder)

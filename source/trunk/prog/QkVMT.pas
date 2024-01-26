@@ -22,7 +22,7 @@ unit QkVMT;
 
 interface
 
-uses Windows, Classes, QkWad, QkPixelSet, QkObjects, QkFileObjects, QkVTFLib;
+uses Windows, Classes, QkWad, QkPixelSet, QkObjects, QkFileObjects, VTFLib;
 
 type
   QVMTStage = class(QObject)

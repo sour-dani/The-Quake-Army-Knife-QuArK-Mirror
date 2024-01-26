@@ -26,7 +26,7 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   QkObjects, QkFileObjects, TB97, ExtCtrls, PaintPanel, Game,
   QkForm, QkTextures, QkPixelSet, StdCtrls, EnterEditCtrl,
-  QkDevIL, QkFreeImage;
+  DevIL, FreeImage;
 
 type
  QImage = class(QPixelSet)

@@ -23,7 +23,7 @@ unit QkJpg;
 interface
 
 uses Classes, QkImages, QkPixelSet, QkObjects, QkFileObjects,
-     QkDevIL, QkFreeImage;
+     DevIL, FreeImage;
 
 type
  QJPeg = class(QImage)

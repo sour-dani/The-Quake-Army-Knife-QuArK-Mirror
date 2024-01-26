@@ -22,7 +22,7 @@ unit QkBmp;
 
 interface
 
-uses Windows, Classes, QkImages, QkObjects, QkFileObjects, QkDevIL, QkFreeImage;
+uses Windows, Classes, QkImages, QkObjects, QkFileObjects, DevIL, FreeImage;
 
 type
  QBmp = class(QImage)

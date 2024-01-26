@@ -23,7 +23,7 @@ unit QkDDS;
 interface
 
 uses Windows, Classes, QkImages, QkPixelSet, QkObjects, QkFileObjects,
-     QkDevIL, QkFreeImage;
+     DevIL, FreeImage;
 
 type
   QDDS = class(QImage)

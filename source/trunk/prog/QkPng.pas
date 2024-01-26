@@ -23,7 +23,7 @@ unit QkPng;
 interface
 
 uses Classes, QkImages, QkPixelSet, QkObjects, QkFileObjects,
-     QkDevIL, QkFreeImage;
+     DevIL, FreeImage;
 
 type
   QPng = class(QImage)
