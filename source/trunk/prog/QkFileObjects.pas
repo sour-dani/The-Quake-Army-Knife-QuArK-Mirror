@@ -1823,7 +1823,7 @@ var
  SaveDialog1: TSaveDialog;
  Info, Info1: TFileObjectClassInfo;
  S, FileName, AddToRecents: String;
- I, P, SavingTo, SavingAsText: Integer;
+ I, SavingTo, SavingAsText: Integer;
  Dup: QFileObject;
  ConvertClass: QFileObjectClass;
  FilterIndex: Integer;
@@ -1885,11 +1885,9 @@ begin
      S:=FFileObject.Filename;
      if S<>'' then
       begin
+       //Remove the path and the extension
        S:=ExtractFileName(S);
-       P:=Length(S);
-       while (P>0) and (S[P]<>'.') do Dec(P);
-       if P>0 then
-        S:=Copy(S,1,P-1);
+       SetLength(S, Length(S) - Length(ExtractFileExt(S)));
       end
      else
       S:=FFileObject.Name + FFileObject.TypeInfo;
