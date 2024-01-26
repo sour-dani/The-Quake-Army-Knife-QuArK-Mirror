@@ -396,7 +396,6 @@ var
   g_CF_QObjects: UINT;
   g_ClipboardChain: TClipboardHandler = EndOfClipboardChain;
 (*g_PopupMenuObject: QObject;*)
-(*CodeConstruction: Char;*)
 
 function FileAccessQ(const theFilename: String; Mode: TModeAcces) : TQStream;
 procedure LoadedItem(Format: Integer; F: TStream; Q: QObject; Size: TStreamPos);
@@ -1874,17 +1873,6 @@ begin
   F.WriteBuffer(S[cStart], Length(S)-cStart+1);
 end;
 
-procedure TInfoEnreg1.WriteSibling(const Path: String; Obj: QObject);
-begin
-  Raise InternalE('cannot store the sibling file '+Path);
-end;
-
-destructor TInfoEnreg1.Destroy;
-begin
-  TempObject.AddRef(-1);
-  inherited;
-end;
-
 (*procedure QObject.SetTextsSpec(const Name: String; const L: TStrings);
 var
  S, S1: String;
@@ -2848,6 +2836,19 @@ begin
   end;
 
   FParent:=nParent;
+end;
+
+ {------------------------}
+
+procedure TInfoEnreg1.WriteSibling(const Path: String; Obj: QObject);
+begin
+  Raise InternalE('cannot store the sibling file '+Path);
+end;
+
+destructor TInfoEnreg1.Destroy;
+begin
+  TempObject.AddRef(-1);
+  inherited;
 end;
 
  {------------------------}

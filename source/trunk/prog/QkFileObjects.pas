@@ -318,8 +318,6 @@ function BuildFileRoot(const theFilename: String; nParent: QObject) : QFileObjec
 begin
  Result:=ConstructQObject(ExtractFileName(theFilename), nParent) as QFileObject;
  Result.Filename:=theFilename;
-(*  { set ReadFormat according to the file extension }
- Result.ReadFormat:=Ord(CodeConstruction)-(Ord('A')-rf_Default); *)
  Result.ReadFormat:=rf_Default;
  Result.Flags:=Result.Flags or ofFileLink;
 end;
