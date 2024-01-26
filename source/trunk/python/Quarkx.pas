@@ -2804,7 +2804,6 @@ function xHeapStatus(self, args: PyObject) : PyObject; cdecl;
 begin
  Result:=Nil;
  try
- // SilverPaladin - 10/25/03 - Eliminated platform dependant warning
  {$IFDEF MSWINDOWS}
   with GetHeapStatus do
     with ConstructQObject('heapstatus', Nil) do

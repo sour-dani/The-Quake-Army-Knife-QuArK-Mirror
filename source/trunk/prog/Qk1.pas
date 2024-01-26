@@ -203,7 +203,6 @@ type
     procedure wmRenderFormat(var Msg: TMessage); message wm_RenderFormat;
     procedure wmRenderAllFormats(var Msg: TMessage); message wm_RenderAllFormats;
     procedure wmDestroyClipboard(var Msg: TMessage); message wm_DestroyClipboard;
-   {procedure wmCommand(var Msg: TMessage); message wm_Command;}
   public
     property Explorer: TQrkExplorer read FExplorer;
     constructor Create(AOwner: TComponent); override;
@@ -1116,6 +1115,7 @@ begin
    end;
    FileMenu.Tag:=1;
   end;
+  //FIXME: Move to FormCreate?
   obj:=GetEmptyTuple;
   try
     Py_XDECREF(CallMacro(obj,'loadentityplugins'));
@@ -2223,14 +2223,6 @@ procedure TForm1.Options2Click(Sender: TObject);
 begin
  ShowConfigDlg('Games:'+SetupGameSet.Name);
 end;
-
-(*procedure TForm1.wmCommand(var Msg: TMessage);
-begin
- if (Msg.wParam>=cmObjFirst) and (Msg.wParam<=cmObjLast) then
-  g_PopupMenuObject.CallMenuCmd(Msg.wParam)
- else
-  inherited;
-end;*)
 
 procedure TForm1.AppShowHint(var HintStr: string; var CanShow: Boolean; var HintInfo: THintInfo);
 const

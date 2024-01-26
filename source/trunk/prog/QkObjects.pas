@@ -115,9 +115,6 @@ const
   smSousSelVide = $02;
   smSpecial     = $04;
 
-  cmObjFirst = $6800;
-  cmObjLast  = $68FE;
-
  {MaxFloatAccept = 1E7-1;
   MinFloatAccept = 1E-8;}
 
@@ -2637,25 +2634,6 @@ begin
     Result:=False;
   end;
 end;
-
-(*procedure QObject.CallMenuCmd(Cmd: Integer);
-begin
-end;
-
-procedure QObject.CallPopupMenu(const ScreenPoint: TPoint);
-var
- Menu: HMenu;
-begin
- Menu:=CreatePopupMenu; try
- if PopulateMenu(Menu) then
-  begin
-   g_PopupMenuObject:=Self;
-   TrackPopupMenu(Menu, 0, ScreenPoint.X, ScreenPoint.Y, 0, g_Form1.Handle, Nil)
-  end
- else
-  PlaySound(SOUND_ERROR);
- finally DestroyMenu(Menu); end;
-end;*)
 
 function QObject.PyGetAttr(attr: PyChar) : PyObject;
 var
