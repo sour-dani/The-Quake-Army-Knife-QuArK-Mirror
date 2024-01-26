@@ -32,6 +32,11 @@ interface
 {$I DelphiVer.inc}
 {$INCLUDE MemManager.inc}
 
+{$IFNDEF Delphi4orNewerCompiler}
+  //Delphi 2 and 3 don't have a virtual TList.Clear
+  {$DEFINE TLIST_NOVIRTUALCLEAR}
+{$ENDIF}
+
 uses SysUtils, Messages, Classes, Windows, Controls, Graphics, Forms, qmath,
   Menus, CommCtrl, Python, QkSpecifics;
 
@@ -340,13 +345,7 @@ type
   public
     function Add(Q: QObject) : Integer;
     procedure Delete(I: Integer);
-    {$IFDEF CompiledWithDelphi2}
-      {$DEFINE NOVIRTUALCLEAR}
-    {$ENDIF}
-    {$IFDEF CompiledWithDelphi3}
-      {$DEFINE NOVIRTUALCLEAR}
-    {$ENDIF}
-    {$IFDEF NOVIRTUALCLEAR}
+    {$IFDEF TLIST_NOVIRTUALCLEAR}
     destructor Destroy; override;
     procedure Clear;
     {$ELSE}
@@ -556,10 +555,12 @@ begin
     QO := QObject(List{$ifndef DelphiXE2orNewerCompiler}^{$ENDIF}[I]);
     if Assigned(QO) then QO.AddRef(-1);
   end;
+  {$IFNDEF TLIST_NOVIRTUALCLEAR}
   inherited Clear;
+  {$ENDIF}
 end;
 
-{$IFDEF NOVIRTUALCLEAR}
+{$IFDEF TLIST_NOVIRTUALCLEAR}
 destructor TQList.Destroy;
 var
   I: Integer;
