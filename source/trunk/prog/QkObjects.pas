@@ -1851,26 +1851,26 @@ end;
 
 procedure QObject.ReadUnformatted(F: TStream; Size: TStreamPos);
 const
-  cSpec1 = 'Data=';
+  SpecUnformatted = 'Data';
 var
-  S: String;
+  B: String; //FIXME: TByteDynArray;
 begin
-  { read as unformatted data }
-  S:=cSpec1;
-  SetLength(S, Length(cSpec1)+Size);
-  F.ReadBuffer(S[Length(cSpec1)+1], Size);
-  Specifics.AddStringFull(S);
+  //Read as unformatted data
+  SetLength(B, Size);
+  F.ReadBuffer(B, Size);
+  Specifics.Bytes[SpecUnformatted]:=B;
 end;
 
 procedure QObject.SaveUnformatted(F: TStream);
 const
-  cStart = Length('Data=X');
+  SpecUnformatted = 'Data';
 var
-  S: String;
+  B: String; //FIXME: TByteDynArray;
 begin
-  { write as unformatted data }
-  S:=GetSpecArg('Data');
-  F.WriteBuffer(S[cStart], Length(S)-cStart+1);
+  //Write as unformatted data
+  if Specifics.TryGetBytes(SpecUnformatted, B)<>tgrSuccess then
+    Raise EErrorFmt(5220, [Name, SpecUnformatted, 'Bytes']);
+  F.WriteBuffer(B, Length(B));
 end;
 
 (*procedure QObject.SetTextsSpec(const Name: String; const L: TStrings);

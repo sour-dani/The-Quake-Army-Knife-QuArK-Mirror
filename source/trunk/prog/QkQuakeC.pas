@@ -141,7 +141,7 @@ end;
 
 procedure CompilerPatches(const L: TQList; var CfgFile: String);
 const
-  SpecData = 'Data';
+ SpecUnformatted = 'Data';
 var
  SL, SL1: TStringList;
  I: Integer;
@@ -151,7 +151,7 @@ var
  Source: TMemoryStream;
  Target: TFileStream;
  OutFileName: String;
- B: String;
+ B: String; //FIXME: TByteDynArray;
 begin
  if L.Count=0 then Exit;
  ProgressIndicatorStart(0,0); try
@@ -190,8 +190,8 @@ begin
   { open streams }
  Source:=TMemoryStream.Create; try
  Q.Acces;
- if (Q as QUnknown).Specifics.TryGetBytes(SpecData, B)<>tgrSuccess then
-   Raise EErrorFmt(5220, [Q.Name, SpecData, 'Bytes']);
+ if (Q as QUnknown).Specifics.TryGetBytes(SpecUnformatted, B)<>tgrSuccess then
+   Raise EErrorFmt(5220, [Q.Name, SpecUnformatted, 'Bytes']);
  Source.SetSize(Length(B));
  Move(PChar(B)[1], Source, Length(B)); //FIXME: B[0]
 
