@@ -41,7 +41,8 @@ type
 
 implementation
 
-uses QkQkl, QkMdl, QkMd2, QkMd3, form_model, QkHr2, ApplPaths, Setup;
+uses Quarkx, QkQkl, QkMdl, QkMd2, QkMd3, form_model, QkHr2, ApplPaths,
+  Setup, ExtraFunctionality;
 
 function QModel.TestConversionType(I: Integer) : QFileObjectClass;
 begin
@@ -113,7 +114,9 @@ begin
   S:=Specifics.Strings['FileName'];
   if S='' then
     S:=Name;
-  BuildCorrectFileName(S);
+  CleanupFileName(S);
+  if S='' then
+   S:=LoadStr1(180);
   S:=ConcatPaths([GameModelPath, S+TypeInfo]);
   SaveInFile(rf_Default, OutputFile(S));
   filename:=PyString_FromString(ToPyChar(S));

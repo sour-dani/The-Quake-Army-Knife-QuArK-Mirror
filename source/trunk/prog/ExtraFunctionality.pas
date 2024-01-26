@@ -563,6 +563,7 @@ function WideCompareFileName(const S1, S2: string): Integer;
 
 //This function doesn't exist at all in Delphi:
 function CompareFileName(const S1, S2: string): Integer;
+procedure CleanupFileName(var S: String);
 
 implementation
 
@@ -875,6 +876,20 @@ begin
   {$ELSE}
   Result:=AnsiCompareFileName(S1, S2);
   {$ENDIF}
+end;
+
+procedure CleanupFileName(var S: String);
+const
+ cDOSFilenameValidChars = ['a'..'z', 'A'..'Z', '0'..'9', '.',
+  '$', '%', '''', '-', '_', '@', '{', '}', '~', '`', '!', '#', '(', ')'];
+var
+ I: Integer;
+begin
+ for I:=Length(S) downto 1 do
+ begin
+   if not (S[I] in cDOSFilenameValidChars) then
+     System.Delete(S, I, 1);
+ end;
 end;
 
 {$ifdef MSWINDOWS}

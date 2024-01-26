@@ -102,7 +102,6 @@ procedure ListSourceDirs(Dirs: TStrings);
 function NeedGameFile(const FileName, PakFile: String) : QFileObject;
 function NeedGameFileBase(const BaseDir, FileName, PakFile: String) : QFileObject;
 function CheckForRelativePath(const Path: String) : String;
-procedure BuildCorrectFileName(var S: String);
 function GettmpQuArK : String;
 function GetBaseDir : String;
 function BaseOutputPath : String;
@@ -1449,23 +1448,6 @@ var
  C1: array[1..3] of Byte absolute C;
 begin
  Result:=3*C1[1] + 6*C1[2] + C1[3] > $500;
-end;
-
-const
- cDOSFilenameValidChars = ['a'..'z', 'A'..'Z', '0'..'9', '.',
-  '$', '%', '''', '-', '_', '@', '{', '}', '~', '`', '!', '#', '(', ')'];
-
-procedure BuildCorrectFileName(var S: String);
-var
- I: Integer;
-begin
- for I:=Length(S) downto 1 do
- begin
-   if not (S[I] in cDOSFilenameValidChars) then
-     System.Delete(S, I, 1);
- end;
- if S='' then
-   S:=LoadStr1(180);
 end;
 
  {------------------------}

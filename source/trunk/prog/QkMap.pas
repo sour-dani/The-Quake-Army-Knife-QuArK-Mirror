@@ -350,7 +350,9 @@ begin
  Result:=Specifics.Strings['FileName'];
  if Result='' then
   Result:=Name;
- BuildCorrectFileName(Result);
+ CleanupFileName(Result);
+ if Result='' then
+  Result:=LoadStr1(180);
 end;
 
 procedure QMap.Go1(maplist, extracted: PyObject; var FirstMap: String; var QCList: TQList);

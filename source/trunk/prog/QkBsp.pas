@@ -1083,7 +1083,9 @@ begin
  S:=Specifics.Strings['FileName'];
  if S='' then
   S:=Name;
- BuildCorrectFileName(S);
+ CleanupFileName(S);
+ if S='' then
+  S:=LoadStr1(180);
  if FirstMap='' then
   FirstMap:=S;
  S:=ConcatPaths([GameMapPath, S+TypeInfo]);

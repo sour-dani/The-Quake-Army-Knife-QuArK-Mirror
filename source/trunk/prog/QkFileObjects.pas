@@ -1896,7 +1896,11 @@ begin
      I:=LastPos('/', S);
      if I>0 then S:=Copy(S, I+1, MaxInt);
      if S<>'' then
-      BuildCorrectFileName(S);
+      begin
+       CleanupFileName(S);
+       if S='' then
+        S:=LoadStr1(180);
+      end;
      { tigari: .map extension fix }
      S:=Copy(S,1,Length(S)-Length(ExtractFileExt(S)));
      {/tiglari}
