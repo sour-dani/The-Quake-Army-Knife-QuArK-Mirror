@@ -41,69 +41,58 @@ const
 var
   CheckQuArKSAS: Boolean = true;
 
-//FIXME: Not used anymore... More somewhere else? CONST certain parameters?
-function DoFileOperation(Operation: Word; FilesFrom: TStringList; FilesTo: TStringList; FileOpFlags: Word): Boolean;
+//FIXME: Not used anymore... More somewhere else?
+function DoFileOperation(const FilesFrom, FilesTo: TStringList; Operation: UINT; FileOpFlags: FILEOP_FLAGS): Boolean;
 
-  procedure ParseFiles(Files: TStringList; Target: Pointer);
+  //This helper function is missing in Delphi:
+  function ConvertTStringListToCZZSTR(const Files: TStringList): PChar;
   var
     Dest: PChar;
     I: Integer;
+    TotalLength: Integer;
   begin
-    Dest:=Target;
+    TotalLength := 1; //The second null of the double null terminator.
+    for I:=0 to Files.Count-1 do
+      Inc(TotalLength, Length(Files[I]) + 1); //Don't forget the null terminator.
+    GetMem(Result, TotalLength * SizeOf(Char));
+    Dest:=Result;
     for I:=0 to Files.Count-1 do
     begin
-      StrPCopy(Dest, Files[I]);
+      StrCopy(Dest, PChar(Files[I]));
       Inc(Dest, Length(Files[I])+1);
     end;
+    StrCopy(Dest, PChar('')); //Create the double null-termination = empty string at the end
   end;
 
 var
   PFilesFrom, PFilesTo: Pointer;
   FileOp: TSHFileOpStruct;
-  FilesFromCharLength: Integer;
-  FilesToCharLength: Integer;
-  I: Integer;
 begin
+  Result:=False;
   PFilesFrom:=nil;
   PFilesTo:=nil;
   try
     if (FilesFrom<>nil) and (FilesFrom.Count > 0) then
-    begin
-      FilesFromCharLength := 1;
-      for I:=0 to FilesFrom.Count-1 do
-        FilesFromCharLength := FilesFromCharLength + Length(FilesFrom[I]) + 1;
-      GetMem(PFilesFrom, FilesFromCharLength+1);
-      ZeroMemory(PFilesFrom, FilesFromCharLength+1);
-      ParseFiles(FilesFrom, PFilesFrom);
-    end
+      PFilesFrom:=ConvertTStringListToCZZSTR(FilesFrom)
     else
       PFilesFrom := nil;
     if (FilesTo<>nil) and (FilesTo.Count > 0) then
-    begin
-      FilesToCharLength := 1;
-      for I:=0 to FilesTo.Count-1 do
-        FilesToCharLength := FilesToCharLength + Length(FilesTo[I]) + 1;
-      GetMem(PFilesTo, FilesToCharLength+1);
-      ZeroMemory(PFilesTo, FilesToCharLength+1);
-      ParseFiles(FilesTo, PFilesTo);
-    end
+      PFilesTo:=ConvertTStringListToCZZSTR(FilesTo)
     else
-       PFilesTo := nil;
+      PFilesTo := nil;
     FillChar(FileOp, SizeOf(FileOp), 0);
     FileOp.wFunc := Operation;
     FileOp.pFrom := PFilesFrom;
     FileOp.pTo := PFilesTo;
     FileOp.fFlags := FileOpFlags;
     if SHFileOperation(FileOp) <> 0 then
-    begin
-      if FileOp.fAnyOperationsAborted = false then
-        Log(LOG_WARNING, 'Warning: User aborted file operation!');
-      Result:=false;
-    end
+      Log(LOG_WARNING, 'Warning: File operation failed!') //FIXME: Move to dict!
     else
     begin
-      Log(LOG_WARNING, 'Warning: File operation failed!');
-      Result:=false;
+      if FileOp.fAnyOperationsAborted = False then
+        Result:=True
+      else
+        Log(LOG_WARNING, 'Warning: User aborted file operation!'); //FIXME: Move to dict!
     end;
   finally
     if PFilesTo <> nil then
