@@ -25,6 +25,8 @@ interface
 uses
   SysUtils, StrUtils, Windows, Classes, ExtraFunctionality;
 
+{$I DelphiVer.inc}
+
 procedure LogSystemDetails;
 function CheckWindows98And2000: Boolean; //FIXME: Switch to using CheckWin32Version!
 function CheckWindowsMEAnd2000: Boolean; //FIXME: Switch to using CheckWin32Version!
@@ -83,6 +85,13 @@ type
 
   TMemory = class(TPersistent)
   private
+    {$IFDEF WIN16}
+    FMemAvail: Longint;
+    FMaxAvail: Longint;
+    FGDIRes: Word;
+    FUserRes: Word;
+    FSystemRes: Word;
+    {$ELSE}
     FMemoryLoad: DWORD;
     FPhysicalTotal, FPhysicalFree: DWORDLONG;
     FPageFileTotal, FPageFileFree: DWORDLONG;
@@ -90,16 +99,18 @@ type
     FAllocGranularity: DWORD;
     FMinAppAddress, FMaxAppAddress: Cardinal; //Actually, pointer, but can't publish a pointer as a property.
     FPageSize: DWORD;
-    FGDIRes: Byte;
-    FUserRes: Byte;
-    FSystemRes: Byte;
-    function GetSystemRes: Byte;
-    function GetGDIRes: Byte;
-    function GetUSERRes: Byte;
+    {$ENDIF}
   public
     procedure GetInfo;
     procedure Report(var sl :TStringList);
   published
+    {$IFDEF WIN16}
+    property MemAvailable: Longint read FMemAvail write FMemAvail stored false;
+    property MaxAvailable: Longint read FMaxAvail write FMaxAvail stored false;
+    property SystemRes :Word read FSystemRes write FSystemRes stored false;
+    property GDIRes :Word read FGDIRes write FGDIRes stored false;
+    property UserRes :Word read FUserRes write FUserRes stored false;
+    {$ELSE}
     property MemoryLoad :DWORD read FMemoryLoad write FMemoryLoad stored false;
     property PhysicalTotal :DWORDLONG read FPhysicalTotal write FPhysicalTotal stored false;
     property PhysicalFree :DWORDLONG read FPhysicalFree write FPhysicalFree stored false;
@@ -111,9 +122,7 @@ type
     property MaxAppAddress :Cardinal read FMaxAppAddress write FMaxAppAddress stored false;
     property MinAppAddress :Cardinal read FMinAppAddress write FMinAppAddress stored false;
     property PageSize :DWORD read FPageSize write FPageSize stored false;
-    property Win9x_SystemRes :Byte read FSystemRes write FSystemRes stored false;
-    property Win9x_GDIRes :Byte read FGDIRes write FGDIRes stored false;
-    property Win9x_UserRes :Byte read FUserRes write FUserRes stored false;
+    {$ENDIF}
   end;
 
   TOperatingSystem = class(TPersistent)
@@ -294,8 +303,6 @@ type
   end;
 
 implementation
-
-{$I DelphiVer.inc}
 
 uses Graphics, {$IFDEF CompiledWithDelphi2}ShellObj, OLE2, {$ELSE}ShlObj, ActiveX, {$ENDIF}TlHelp32, Psapi, Registry, Registry2, Logging, QkExceptions;
 
@@ -1387,33 +1394,6 @@ begin
   end;
 end;
 
-function TMemory.GetGDIRes: Byte;
-begin
-  {$IFDEF ONLYWIN9X}
-  Result:=GetFreeSysRes(cGDI)
-  {$ELSE}
-  Result:=0;
-  {$ENDIF}
-end;
-
-function TMemory.GetSystemRes: Byte;
-begin
-  {$IFDEF ONLYWIN9X}
-  Result:=GetFreeSysRes(cSystem)
-  {$ELSE}
-  Result:=0;
-  {$ENDIF}
-end;
-
-function TMemory.GetUSERRes: Byte;
-begin
-  {$IFDEF ONLYWIN9X}
-  Result:=GetFreeSysRes(cUser)
-  {$ELSE}
-  Result:=0;
-  {$ENDIF}
-end;
-
 procedure TMemory.GetInfo;
 var
   SI: TSystemInfo;
@@ -1422,6 +1402,13 @@ var
 begin
   Log(LOG_VERBOSE, 'Starting gathering memory information...');
 
+  {$IFDEF WIN16}
+  FMemAvail:=MemAvail;
+  FMaxAvail:=MaxAvail;
+  FSystemRes:=GetFreeSystemResources(gfsr_SystemResources);
+  FGDIRes:=GetFreeSystemResources(gfsr_GDIResources);
+  FUserRes:=GetFreeSystemResources(gfsr_UserResources);
+  {$ELSE}
   if DelayFunc_GlobalMemoryStatusEx then
   begin
     ZeroMemory(@MSEX,SizeOf(MSEX));
@@ -1462,18 +1449,24 @@ begin
   MaxAppAddress:=Cardinal(SI.lpMaximumApplicationAddress);
   MinAppAddress:=Cardinal(SI.lpMinimumApplicationAddress);
   PageSize:=SI.dwPageSize;
-  FSystemRes:=GetSystemRes;
-  FGDIRes:=GetGDIRes;
-  FUserRes:=GetUserRes;
+  {$ENDIF}
 end;
 
 procedure TMemory.Report(var sl: TStringList);
 begin
   with sl do
   begin
+    {$IFDEF WIN16}
+    add('Available Memory Total: '+FormatBytes(MemAvailable)+' Bytes');
+    add('Maximum Memory Total: '+FormatBytes(MaxAvailable)+' Bytes');
+    add('System Resources Free: '+IntToStr(SystemRes)+'%');
+    add('GDI Resources Free: '+IntToStr(GDIRes)+'%');
+    add('User Resources Free: '+IntToStr(UserRes)+'%');
+    {$ELSE}
     add('Physical Memory Total: '+FormatBytes(PhysicalTotal)+' Bytes');
     add('Physical Memory Free: '+FormatBytes(PhysicalFree)+' Bytes');
     add('Virtual Memory Free: '+FormatBytes(VirtualFree)+' Bytes');
+    {$ENDIF}
   end;
 end;
 

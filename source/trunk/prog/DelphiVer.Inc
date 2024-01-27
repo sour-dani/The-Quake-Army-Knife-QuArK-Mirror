@@ -256,6 +256,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 // Also set CPU architecture defines that were added in later Delph versions.
 // Based on information from: https://docwiki.embarcadero.com/RADStudio/Sydney/en/Conditional_compilation_(Delphi)
 
+//FIXME: Not sure if this is needed?
+{.$IFDEF CompiledWithDelphi1}
+{.$DEFINE WIN16}
+{.$ENDIF}
+
 {$IFNDEF DelphiXE2orNewerCompiler}
 {$IFNDEF CPUX64}
 {$DEFINE CPUX86}
