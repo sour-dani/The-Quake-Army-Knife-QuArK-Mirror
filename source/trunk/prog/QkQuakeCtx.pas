@@ -23,8 +23,8 @@ unit QkQuakeCtx;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  QkObjects, QkFileObjects, TB97, QkFormVw, Python, PyObjects;
+  SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  QkObjects, QkFileObjects, QkFormVw, Python, PyObjects;
 
 type
  QQuakeCtx = class(QFormObject)
@@ -54,7 +54,7 @@ function OpacityToFlags(Flags: Integer; Alpha: Integer) : Integer;
 
 implementation
 
-uses Setup, QkGroup, Quarkx, QkObjectClassList, QuickWal, QkPak, QkBSP, ToolBox1,
+uses Setup, Quarkx, QkObjectClassList, QuickWal, QkPak, QkBSP, ToolBox1,
      ToolBoxGroup, Game, QkMapObjects, FormCfg, QkExplorer, ApplPaths,
      QkForm, Travail, QkFormCfg, QkExceptions, Logging, ExtraFunctionality;
 
