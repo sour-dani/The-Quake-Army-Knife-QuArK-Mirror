@@ -24,6 +24,25 @@ interface
 
 uses Classes, SysUtils;
 
+const
+ Impulse0Def = 166;
+
+type
+ TTypeCode = (tcQuakeC, tcHexenC);
+ ECompileError = class(Exception)
+                  NoLigne: Integer;
+                  MsgErreur: String;
+                  constructor Create(const Erreur, nNomPatch: String; nNoLigne: Integer; const Extrait: String);
+                 end;
+
+procedure Compiler(Patch: TStrings; Source, Dest: TStream;
+                    Touches: TStringList; Impulse0: Integer;
+                    TypeCode: TTypeCode);
+
+implementation
+
+uses {Tableaux,} QkObjects, Quarkx, QkExceptions;
+
 type
  TType = (
         tVoid
@@ -82,28 +101,11 @@ type
  );
 
 const
- Impulse0Def = 166;
  VersionProgsDat = 6;
  MotsClefs: array[symLOCAL..symRETURN] of String =
   ('LOCAL', 'BIND', 'AUTOEXEC', 'IF', 'ELSE', 'WHILE', 'DO', 'RETURN');
  NomsTypes: array[tVoid..tPointer] of String =
   ('VOID', 'STRING', 'FLOAT', 'VECTOR', 'ENTITY');
-
-type
- TTypeCode = (tcQuakeC, tcHexenC);
- ECompileError = class(Exception)
-                  NoLigne: Integer;
-                  MsgErreur: String;
-                  constructor Create(const Erreur, nNomPatch: String; nNoLigne: Integer; const Extrait: String);
-                 end;
-
-procedure Compiler(Patch: TStrings; Source, Dest: TStream;
-                    Touches: TStringList; Impulse0: Integer;
-                    TypeCode: TTypeCode);
-
-implementation
-
-uses {Tableaux,} QkObjects, Quarkx, QkExceptions;
 
 const
  FacteurT : ARRAY[1..6] OF LONGINT = (8, 8, 8, 36, 1, 4);

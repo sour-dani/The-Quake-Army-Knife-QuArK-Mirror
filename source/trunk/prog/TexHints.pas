@@ -40,7 +40,6 @@ uses StrUtils, Setup, Game, Travail, QkPixelSet, QkTextures, ExtraFunctionality;
 
 procedure TTexHintWindow.Paint;
 var
-{Data: String;}
  I, X: Integer;
  Texture1: QPixelSet;
  PSD: TPixelSetDescription;
