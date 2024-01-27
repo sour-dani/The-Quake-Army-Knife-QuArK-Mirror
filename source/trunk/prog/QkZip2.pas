@@ -394,14 +394,12 @@ begin
 end;
 
 function ZipAddRef(Ref: PQStreamRef; var S: TStream) : TStreamPos;
-var
-  crc: LongWord;
 begin
   Ref^.Self.Position:=Ref^.Position;
   S:=TMemoryStream.Create;
   try
     try
-      crc:=ZipDecompressStream(Ref^.Self, S);
+      ZipDecompressStream(Ref^.Self, S);
     except on E: Exception do
       raise EErrorFmt(5815, [GetExceptionMessage(E)]);
     end;
