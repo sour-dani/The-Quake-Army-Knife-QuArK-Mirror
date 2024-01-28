@@ -137,7 +137,9 @@ type
     FServicePackMinor: WORD;
     FSuiteMask: WORD;
     FProductType: Byte;
+    {$IFDEF WIN32}
     FWow64: Boolean;
+    {$ENDIF}
     FArchitecture: WORD;
     FVersion: string;
     FRegUser: string;
@@ -164,7 +166,9 @@ type
     property ServicePackMinor :WORD read FServicePackMinor write FServicePackMinor stored false;
     property SuiteMask :WORD read FSuiteMask write FSuiteMask stored false;
     property ProductType :Byte read FProductType write FProductType stored false;
+    {$IFDEF WIN32}
     property Wow64 :Boolean read FWow64 write FWow64 stored false;
+    {$ENDIF}
     property Architecture :WORD read FArchitecture write FArchitecture stored false;
     property SerialNumber :string read FSerialNumber write FSerialNumber stored false;
     property RegisteredUser :string read FRegUser write FRegUser stored false;
@@ -1013,7 +1017,10 @@ procedure TOperatingSystem.GetInfo;
 var
   OS: TOSVersionInfoEx;
   SI :TSystemInfo;
+  {$IFDEF WIN32}
+  pProcessMachine, pNativeMachine: USHORT;
   bIsWow64: BOOL;
+  {$ENDIF}
   p: pchar;
   n: DWORD;
   WinH: HWND;
@@ -1071,22 +1078,41 @@ begin
     //See: http://msdn.microsoft.com/en-us/library/ms724833.aspx
   end;
 
-  if DelayFunc_IsWow64Process then
+  {$IFDEF WIN32}
+  if DelayFunc_IsWow64Process2 then
   begin
-    if IsWow64Process(GetCurrentProcess(), bIsWow64) = false then
+    if IsWow64Process2(GetCurrentProcess(), pProcessMachine, pNativeMachine) = false then
     begin
       Wow64:=False;
       Log(LOG_WARNING, 'Failed to determine Wow64 status!');
-      LogWindowsError(GetLastError(), 'TOperatingSystem.GetInfo: IsWow64Process(bIsWow64)');
+      LogWindowsError(GetLastError(), 'TOperatingSystem.GetInfo: IsWow64Process2(pProcessMachine)');
     end
     else
-      if bIsWow64 then
-        Wow64:=True
+      if pProcessMachine=IMAGE_FILE_MACHINE_UNKNOWN then
+        Wow64:=False
       else
-        Wow64:=False;
+        Wow64:=True;
   end
   else
-    Wow64:=False;
+  begin
+    if DelayFunc_IsWow64Process then
+    begin
+      if IsWow64Process(GetCurrentProcess(), bIsWow64) = false then
+      begin
+        Wow64:=False;
+        Log(LOG_WARNING, 'Failed to determine Wow64 status!');
+        LogWindowsError(GetLastError(), 'TOperatingSystem.GetInfo: IsWow64Process(bIsWow64)');
+      end
+      else
+        if bIsWow64 then
+          Wow64:=True
+        else
+          Wow64:=False;
+    end
+    else
+      Wow64:=False;
+  end;
+  {$ENDIF}
 
   ZeroMemory(@SI,SizeOf(SI));
   if DelayFunc_GetNativeSystemInfo then
@@ -1389,8 +1415,10 @@ begin
           add('Type: Unknown');
       end;
     end;
+    {$IFDEF WIN32}
     if Wow64 then
       add('Running under Wow64');
+    {$ENDIF}
   end;
 end;
 

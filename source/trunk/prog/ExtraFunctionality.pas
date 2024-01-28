@@ -57,6 +57,9 @@ type
   PDWORDLONG = ^DWORDLONG;
   LPDWORDLONG = PDWORDLONG;
 
+  USHORT = Word;
+  PUSHORT = ^USHORT;
+
 {$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 7, but existing in Delphi 11.3!
   PLPCTSTR = ^LPCTSTR;
 
@@ -427,6 +430,7 @@ var
   DelayFunc_SetDllDirectoryW: Boolean;
   DelayFunc_SetDllDirectory: Boolean;
   DelayFunc_IsWow64Process: Boolean;
+  DelayFunc_IsWow64Process2: Boolean;
   DelayFunc_SHRestricted: Boolean;
 
 {$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 7, and they exist in Delphi 11.3
@@ -455,6 +459,12 @@ function IsWow64Process(hProcess: THandle; var Wow64Process: BOOL): BOOL; overlo
 function IsWow64Process(hProcess: THandle; Wow64Process: PBOOL): BOOL; external kernel32 name 'IsWow64Process' delayed;
 function IsWow64Process(hProcess: THandle; var Wow64Process: BOOL): BOOL; external kernel32 name 'IsWow64Process' delayed;
 
+function IsWow64Process2(hProcess: THandle; pProcessMachine: PUSHORT; pNativeMachine: PUSHORT): BOOL; overload; stdcall;
+function IsWow64Process2(hProcess: THandle; var pProcessMachine: USHORT; var pNativeMachine: USHORT): BOOL; overload; stdcall;
+{$EXTERNALSYM IsWow64Process2}
+function IsWow64Process2(hProcess: THandle; pProcessMachine: PUSHORT; pNativeMachine: PUSHORT): BOOL; external kernel32 name 'IsWow64Process2' delayed;
+function IsWow64Process2(hProcess: THandle; var pProcessMachine: USHORT; var pNativeMachine: USHORT): BOOL; external kernel32 name 'IsWow64Process2' delayed;
+
 function SHRestricted(rest: RESTRICTIONS): DWORD; stdcall;
 {$EXTERNALSYM SHRestricted}
 function SHRestricted; external 'shell32.dll' name 'SHRestricted' delayed;
@@ -462,10 +472,11 @@ function SHRestricted; external 'shell32.dll' name 'SHRestricted' delayed;
 var
   GlobalMemoryStatusEx: function (var lpBuffer: TMemoryStatusEx): BOOL; stdcall;
   GetNativeSystemInfo: procedure (var lpSystemInformation: TSystemInfo); stdcall;
-  SetDllDirectory: function (lpPathName : LPCTSTR): BOOL; stdcall;
-  SetDllDirectoryA: function (lpPathName : LPCSTR): BOOL; stdcall;
-  SetDllDirectoryW: function (lpPathName : LPCWSTR): BOOL; stdcall;
-  IsWow64Process: function (hProcess : THandle; var Wow64Process : BOOL): BOOL; stdcall;
+  SetDllDirectory: function (lpPathName: LPCTSTR): BOOL; stdcall;
+  SetDllDirectoryA: function (lpPathName: LPCSTR): BOOL; stdcall;
+  SetDllDirectoryW: function (lpPathName: LPCWSTR): BOOL; stdcall;
+  IsWow64Process: function (hProcess: THandle; var Wow64Process: BOOL): BOOL; stdcall;
+  IsWow64Process2: function (hProcess: THandle; var pProcessMachine: USHORT; var pNativeMachine: USHORT): BOOL; stdcall;
   SHRestricted: function (rest: RESTRICTIONS): DWORD; stdcall;
 {$endif}
 {$endif}
@@ -551,6 +562,7 @@ function LastPos(const SubStr: String; const S: String): Integer;
 //This function doesn't exist at all in Delphi:
 {$ifdef MSWINDOWS}
 function CheckWin32VersionWithServicePack(AMajor: Integer; AMinor: Integer = 0; AServicePackMajor: Integer = 0; AServicePackMinor: Integer = 0): Boolean; //Note: We use the wrong datatype to be consistent with CheckWin32Version.
+function CheckWin32VersionWithBuildNumber(AMajor: Integer; AMinor: Integer = 0; ABuildNumber: Integer = 0): Boolean; //Note: We use the wrong datatype to be consistent with CheckWin32Version.
 {$endif}
 
 //This function doesn't exist at all in Delphi:
@@ -834,6 +846,21 @@ begin
             ((Win32MajorVersion = AMajor) and (Win32MinorVersion = AMinor) and (Win32ServicePackMajor >= AServicePackMajor)) or
             ((Win32MajorVersion = AMajor) and (Win32MinorVersion = AMinor) and (Win32ServicePackMajor = AServicePackMajor) and (Win32ServicePackMinor >= AServicePackMinor));
 end;
+
+function CheckWin32VersionWithBuildNumber(AMajor: Integer; AMinor: Integer = 0; ABuildNumber: Integer = 0): Boolean;
+var
+  OS: TOSVersionInfoEx;
+  Win32BuildNumber: Integer;
+begin
+  ZeroMemory(@OS,SizeOf(OS));
+  OS.dwOSVersionInfoSize:=SizeOf(TOSVersionInfo);
+  if not GetVersionEx(POSVersionInfo(@OS)^) then
+    raise exception.create('Unable to retrieve system details. Call to GetVersionEx failed!');
+  Win32BuildNumber:=OS.dwBuildNumber;
+  Result := (Win32MajorVersion > AMajor) or
+            ((Win32MajorVersion = AMajor) and (Win32MinorVersion >= AMinor)) or
+            ((Win32MajorVersion = AMajor) and (Win32MinorVersion = AMinor) and (Win32BuildNumber >= ABuildNumber));
+end;
 {$endif}
 
 {$IFDEF UNICODE}
@@ -911,6 +938,7 @@ initialization
   DelayFunc_SetDllDirectoryW := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003
   DelayFunc_SetDllDirectory := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003
   DelayFunc_IsWow64Process := CheckWin32VersionWithServicePack(5, 1, 2); //Windows XP with SP2, Windows Server 2003 with SP1
+  DelayFunc_IsWow64Process2 := CheckWin32VersionWithServicePack(10, 0, 16299); //Windows 10, version 1709
   DelayFunc_SHRestricted := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003, although it already existed in Windows 2000 as ordinal 100.
 {$else}
   //Note: The module 'kernel32' is always loaded inside a process.
@@ -920,6 +948,7 @@ initialization
   SetDllDirectoryW := GetProcAddress(GetModuleHandle('kernel32'), 'SetDllDirectoryW');
   {$IFDEF UNICODE}SetDllDirectory:=SetDllDirectoryW;{$ELSE}SetDllDirectory:=SetDllDirectoryA;{$ENDIF};
   IsWow64Process := GetProcAddress(GetModuleHandle('kernel32'), 'IsWow64Process');
+  IsWow64Process2 := GetProcAddress(GetModuleHandle('kernel32'), 'IsWow64Process2');
 
   ShellLib:=LoadLibrary('shell32.dll');
   try
@@ -938,6 +967,7 @@ initialization
   DelayFunc_SetDllDirectoryW := (PPointer(@SetDllDirectoryW) <> nil);
   DelayFunc_SetDllDirectory := (PPointer(@SetDllDirectory) <> nil);
   DelayFunc_IsWow64Process := (PPointer(@IsWow64Process) <> nil);
+  DelayFunc_IsWow64Process2 := (PPointer(@IsWow64Process2) <> nil);
   DelayFunc_SHRestricted := (PPointer(@SHRestricted) <> nil);
 {$endif}
 {$endif}
