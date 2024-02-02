@@ -143,7 +143,7 @@ type
                       function GetFaceOpacity(Default: Byte) : TTexOpacityInfo;
                     end;
 
- { The entire treatment of texture-positiong is somewhat crufty, since
+ { The entire treatment of texture-positioning is somewhat crufty, since
    the original scheme was to code this into the threepoints, but this
    creates problems, so they're being coded as a 6-vector specific called
    tv (the texture axes in the 'axis-base' coordinate system used in
