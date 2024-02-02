@@ -112,6 +112,7 @@ const
 {$IFDEF CompiledWithDelphi12}
   QuArKUsedCompiler       = 'Delphi 12';
 {$ELSE}
+  {$Message Warning 'Unhandled Delphi version!'}
   QuArKUsedCompiler       = 'Delphi';
 {$ENDIF}
 {$ENDIF}

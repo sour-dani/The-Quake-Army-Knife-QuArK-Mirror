@@ -1483,7 +1483,7 @@ asm
 
   //Result in RAX
   {$ELSE}
-  {$Message Error Unsupported CPU architecture!}
+  {$Message Error 'Unsupported CPU architecture!'}
   {$ENDIF}
   {$ENDIF}
 end;
@@ -1701,7 +1701,7 @@ asm
 
   //Result in RAX
   {$ELSE}
-  {$Message Error Unsupported CPU architecture!}
+  {$Message Error 'Unsupported CPU architecture!'}
   {$ENDIF}
   {$ENDIF}
 end;
@@ -1729,9 +1729,9 @@ asm
  //call PyArg_ParseTupleAndKeywords
  {$ELSE}
  {$IFDEF CPUX64}
- {$Message Error Unsupported CPU architecture!} //FIXME
+ {$Message Error 'Unsupported CPU architecture!'} //FIXME
  {$ELSE}
- {$Message Error Unsupported CPU architecture!}
+ {$Message Error 'Unsupported CPU architecture!'}
  {$ENDIF}
  {$ENDIF}
 end;*)

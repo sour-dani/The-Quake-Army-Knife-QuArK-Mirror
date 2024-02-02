@@ -155,7 +155,7 @@ asm
   mov rax, rcx
   sub rax, offset TLayoutMgr.PanelObject
  {$ELSE}
-  {$Message Error Unsupported CPU architecture!}
+  {$Message Error 'Unsupported CPU architecture!'}
  {$ENDIF}
 {$ENDIF}
 end;

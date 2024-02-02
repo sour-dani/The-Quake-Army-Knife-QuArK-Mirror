@@ -122,7 +122,7 @@ asm
   mov rax, rcx
   sub rax, offset QObject.PythonObj
  {$ELSE}
-  {$Message Error Unsupported CPU architecture!}
+  {$Message Error 'Unsupported CPU architecture!'}
  {$ENDIF}
 {$ENDIF}
 end;

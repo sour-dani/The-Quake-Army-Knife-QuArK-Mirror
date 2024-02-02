@@ -617,7 +617,7 @@ function TCPU.GetCPUVendor :string;
 	POP  rdi
 	POP  rbx
 	{$ELSE}
-	{$Message Error Unsupported CPU architecture!}
+	{$Message Error 'Unsupported CPU architecture!'}
 	{$ENDIF}
 	{$ENDIF}
   end;

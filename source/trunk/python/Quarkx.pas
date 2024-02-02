@@ -127,7 +127,7 @@ asm
   mov rax, [Py_None]
   inc qword ptr [rax]
  {$ELSE}
-  {$Message Error Unsupported CPU architecture!}
+  {$Message Error 'Unsupported CPU architecture!'}
  {$ENDIF}
 {$ENDIF}
 end;
