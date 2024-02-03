@@ -56,9 +56,6 @@ type
     procedure SetParent(AParent: TWinControl); override;
     {$IFEND}
   public
-   {procedure PreCoord(var X,Y: Integer);
-    procedure PostCoord(var X,Y: Integer);
-    function ComputeDC : HDC;}
     {$IF RTLVersion < 20}
     constructor Create(AOwner: TComponent); override;
     {$IFEND}
@@ -226,29 +223,10 @@ begin
 end;
 
 procedure TCursorScrollBox.DoPaint(DC: HDC; const PaintInfo: TPaintStruct);
-{var
- H: Integer;}
 begin
- {if FDisplayHPos=0 then
-  H:=HorzScrollBar.Position
- else
-  H:=FDisplayHPos;
- SetWindowOrgEx(PaintInfo.hDC, H, VertScrollBar.Position, Nil);}
  if Assigned(FOnPaint) then
   FOnPaint(Self, DC, PaintInfo.rcPaint);
 end;
-
-(*function TCursorScrollBox.ComputeDC : HDC;
-var
- H: Integer;
-begin
- Result:=GetDC(Handle);
- if FDisplayHPos=0 then
-  H:=HorzScrollBar.Position
- else
-  H:=FDisplayHPos;
- SetWindowOrgEx(Result, H, VertScrollBar.Position, Nil);
-end;*)
 
 procedure TCursorScrollBox.SetDisplayHPos(nPos: Integer);
 begin
@@ -281,24 +259,6 @@ begin
  if not (csDesigning in ComponentState) and Assigned(FOnScroll) then
   FOnScroll(Self);
 end;
-
-{procedure TCursorScrollBox.PreCoord(var X,Y: Integer);
-begin
- if FDisplayHPos=0 then
-  Inc(X, HorzScrollBar.Position)
- else
-  Inc(X, FDisplayHPos);
- Inc(Y, VertScrollBar.Position);
-end;
-
-procedure TCursorScrollBox.PostCoord(var X,Y: Integer);
-begin
- if FDisplayHPos=0 then
-  Dec(X, HorzScrollBar.Position)
- else
-  Dec(X, FDisplayHPos);
- Dec(Y, VertScrollBar.Position);
-end;}
 
 procedure TCursorScrollBox.Defilement(var Msg: TWMScroll; HorzScrollBar: TControlScrollBar);
 var
