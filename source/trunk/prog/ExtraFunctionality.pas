@@ -396,7 +396,8 @@ const
   REST_ALLOWCOMMENTTOGGLE = $41000004;
   REST_USEDESKTOPINICACHE = $41000005;
 
-function CopyCursor(pcur: HCursor): HCursor; // This is a macro that wasn't converted
+//This is a macro that wasn't converted.
+function CopyCursor(pcur: HCursor): HCursor;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 {$endif}
 
 {$ifndef DelphiXE6orNewerCompiler} //FIXME: Not sure about the version of Delphi these were added
