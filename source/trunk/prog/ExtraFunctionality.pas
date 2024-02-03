@@ -827,7 +827,7 @@ var
   OS: TOSVersionInfoEx;
   Win32ServicePackMajor, Win32ServicePackMinor: Integer;
 begin
-  if CheckWin32Version(5, 0) then //Windows 2000
+  if not CheckWin32Version(5, 0) then //Windows 2000
   begin
     Win32ServicePackMajor:=0;
     Win32ServicePackMinor:=0;
@@ -835,7 +835,7 @@ begin
   else
   begin
     ZeroMemory(@OS,SizeOf(OS));
-    OS.dwOSVersionInfoSize:=SizeOf(TOSVersionInfo);
+    OS.dwOSVersionInfoSize:=SizeOf(TOSVersionInfoEx);
     if not GetVersionEx(POSVersionInfo(@OS)^) then
       raise exception.create('Unable to retrieve system details. Call to GetVersionEx failed!');
     Win32ServicePackMajor:=OS.wServicePackMajor;
@@ -849,12 +849,12 @@ end;
 
 function CheckWin32VersionWithBuildNumber(AMajor: Integer; AMinor: Integer = 0; ABuildNumber: Integer = 0): Boolean;
 var
-  OS: TOSVersionInfoEx;
+  OS: TOSVersionInfo;
   Win32BuildNumber: Integer;
 begin
   ZeroMemory(@OS,SizeOf(OS));
   OS.dwOSVersionInfoSize:=SizeOf(TOSVersionInfo);
-  if not GetVersionEx(POSVersionInfo(@OS)^) then
+  if not GetVersionEx(OS) then
     raise exception.create('Unable to retrieve system details. Call to GetVersionEx failed!');
   Win32BuildNumber:=OS.dwBuildNumber;
   Result := (Win32MajorVersion > AMajor) or
@@ -961,14 +961,14 @@ initialization
     //ShellLib:=0;
   end;
 
-  DelayFunc_GlobalMemoryStatusEx := (PPointer(@GlobalMemoryStatusEx) <> nil);
-  DelayFunc_GetNativeSystemInfo := (PPointer(@GetNativeSystemInfo) <> nil);
-  DelayFunc_SetDllDirectoryA := (PPointer(@SetDllDirectoryA) <> nil);
-  DelayFunc_SetDllDirectoryW := (PPointer(@SetDllDirectoryW) <> nil);
-  DelayFunc_SetDllDirectory := (PPointer(@SetDllDirectory) <> nil);
-  DelayFunc_IsWow64Process := (PPointer(@IsWow64Process) <> nil);
-  DelayFunc_IsWow64Process2 := (PPointer(@IsWow64Process2) <> nil);
-  DelayFunc_SHRestricted := (PPointer(@SHRestricted) <> nil);
+  DelayFunc_GlobalMemoryStatusEx := Assigned(GlobalMemoryStatusEx);
+  DelayFunc_GetNativeSystemInfo := Assigned(GetNativeSystemInfo);
+  DelayFunc_SetDllDirectoryA := Assigned(SetDllDirectoryA);
+  DelayFunc_SetDllDirectoryW := Assigned(SetDllDirectoryW);
+  DelayFunc_SetDllDirectory := Assigned(SetDllDirectory);
+  DelayFunc_IsWow64Process := Assigned(IsWow64Process);
+  DelayFunc_IsWow64Process2 := Assigned(IsWow64Process2);
+  DelayFunc_SHRestricted := Assigned(SHRestricted);
 {$endif}
 {$endif}
 end.
