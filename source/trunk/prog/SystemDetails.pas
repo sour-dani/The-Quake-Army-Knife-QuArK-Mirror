@@ -1299,7 +1299,7 @@ begin
     rvVersionName:=rvVersionNameNT;
    end;
   end;
-  CSD:=strpas(OS.szCSDVersion);
+  CSD:=StrPas(OS.szCSDVersion);
   Version:='';
   RegisteredUser:='';
   RegisteredOrg:='';
@@ -1552,7 +1552,7 @@ end;
 
 procedure TWorkstation.GetInfo;
 var
-  bdata: pchar;
+  bdata: PByte;
   dummy: Integer;
   //KeyState: TKeyBoardState;
 const
@@ -1587,14 +1587,14 @@ begin
         if ValueExists(rvBIOSVersion) then
         begin
           //Is actually a REG_MULTI_SZ, but Delphi doesn't support that.
-          bdata:=stralloc(bdatasize + 1); //Note: One larger for null-terminator
+          GetMem(bdata, (bdatasize + 1) * SizeOf(Char)); //Note: One larger for null-terminator
           try
-            FillChar(bdata^,bdatasize+1,0);
-            dummy:=bdatasize*SizeOf(Char);
+            FillChar(bdata^, bdatasize + 1,0);
+            dummy:=bdatasize * SizeOf(Char);
             if TryReadBinaryData(rvBIOSVersion,bdata^,dummy) then
-              FBIOSCopyright:=strpas(pchar(bdata));
+              FBIOSCopyright:=StrPas(PChar(bdata));
           finally
-            strdispose(bdata);
+            FreeMem(bdata);
           end;
         end;
         if ValueExists(rvBIOSDate) then
@@ -2253,9 +2253,9 @@ procedure TDirectX.GetInfo;
     Result := Swap(Value shr 16) or (Swap(Value) shl 16);
   end;
 var
-  bdata :pchar;
-  sl :tstringlist;
-  i :integer;
+  bdata: PArithByte;
+  sl: TStringList;
+  i: Integer;
 const
   rkDirectX = {HKEY_LOCAL_MACHINE\}'SOFTWARE\Microsoft\DirectX';
   rvDXVersion = 'Version';
