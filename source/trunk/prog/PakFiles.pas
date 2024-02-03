@@ -61,7 +61,7 @@ begin
 
  //Only Quake1/2 PAK files support this at the moment
  //PK3 also, but we can't detect/strip them...
- if (UpperCase(RightStr(theFilename,4))<>'.PAK') then
+ if not SameText(ExtractFileExt(theFilename), '.pak') then
  begin
   Result:=False;
   Exit;
@@ -135,6 +135,7 @@ begin
       PakNumber1:=0;
     end;
 
+  //FIXME: Duplicate code... Make into a function?
   Filename2:=ExtractFilename(List[Index2]);
   S:=Copy(Filename2, I, Length(Filename2)-Length(PakOfficialFormat)+1);
   if SetupGameSet.Specifics.Strings['PakFormatHex']<>'' then
@@ -287,7 +288,7 @@ begin
      FoundFreeOne:=False;
      for I:=0 to PakFileMaxNumber do
      begin
-       AvailablePakFile:=ConcatPaths([GameModDir,'tmpQuArK' + IntToStr(I) + PakFileExt]);
+       AvailablePakFile:=ConcatPaths([GameModDir,'tmpQuArK' + IntToStr(I) + PakFileExt]); //FIXME: Hardcoded...?
        if FileExists(AvailablePakFile) = false then
        begin
          FoundFreeOne:=True;
