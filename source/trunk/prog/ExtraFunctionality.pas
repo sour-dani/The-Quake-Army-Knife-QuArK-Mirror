@@ -419,6 +419,7 @@ function UIntToStr(Value: Int64): string; overload;
 function ContainsText(const AText, ASubText: string): Boolean;
 function StartsText(const ASubText, AText: string): Boolean;
 function EndsText(const ASubText, AText: string): Boolean;
+function ContainsStr(const AText, ASubText: string): Boolean;
 function StartsStr(const ASubText, AText: string): Boolean;
 function EndsStr(const ASubText, AText: string): Boolean;
 {$endif}
@@ -660,6 +661,11 @@ end;
 function EndsText(const ASubText, AText: string): Boolean;
 begin
   Result := AnsiEndsText(ASubText, AText);
+end;
+
+function ContainsStr(const AText, ASubText: string): Boolean;
+begin
+  Result := AnsiContainsStr(AText, ASubText);
 end;
 
 function StartsStr(const ASubText, AText: String): Boolean;
