@@ -2288,11 +2288,13 @@ end;
 
 procedure HTMLDoc(const URL: String);
 
-  procedure OpenError(const Err: String);
+  procedure OpenError(const Err: String);{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
   begin
    raise EErrorFmt(5649, [URL, Err]);
   end;
 
+const
+  RegOpenCommand = '\%s\shell\open\command';
 var
   S, FullFile, ProgramCall: String;
   Reg: TRegistry2;
@@ -2343,21 +2345,17 @@ begin
   if (not Reg.ReadOpenKey('.html') and not Reg.ReadOpenKey('.htm'))
   or not Reg.TryReadString('', S) then
    OpenError(LoadStr1(5650));
-  S:='\'+S+'\shell\open\command';
+  S:=Format(RegOpenCommand, [S]);
   if not Reg.ReadOpenKey(S) or not Reg.TryReadString('', ProgramCall) or (ProgramCall='') then
    OpenError(FmtLoadStr1(5651, [S]));
  finally
   Reg.Free;
  end;
 
- I:=Pos('%1', ProgramCall);
- if I>0 then
- begin
-   System.Delete(ProgramCall,I,2);
-   System.Insert(EscapeCommandline(FullFile),ProgramCall,I);
- end
+ if ContainsStr(ProgramCall, '%1') then
+   ProgramCall:=StringReplace(ProgramCall, '%1', EscapeCommandline(FullFile), [rfReplaceAll])
  else
-   ProgramCall:=ProgramCall+' "'+EscapeCommandline(FullFile)+'"';
+   ProgramCall:=Format('%s "%s"', [ProgramCall, EscapeCommandline(FullFile)]);
 
  FillChar(SI, SizeOf(SI), 0);
  SI.cb:=SizeOf(SI);
