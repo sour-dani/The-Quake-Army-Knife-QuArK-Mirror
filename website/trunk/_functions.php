@@ -211,7 +211,7 @@ function RefreshCookies()
 	}
 }
 
-function pageBegin($title='')
+function pageBegin($title=NULL)
 {
 	global $mainroot;
 	global $Themes;
@@ -221,7 +221,7 @@ function pageBegin($title='')
 
 	echo '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">'."\n";
 	echo '<html lang="'.GetLanguageObj()->Tag.'">';
-	if ($title !== '')
+	if (!is_null($title))
 		$title = ' - ' . $title;
 	echo '<head><title>The Official QuArK website' . $title . '</title>'."\n";
 	echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">'."\n";
