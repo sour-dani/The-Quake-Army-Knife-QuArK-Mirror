@@ -34,7 +34,6 @@ uses Messages, QkExceptions, Coordinates, EdSceneObject, qmath, Setup, Qk3D,
 type
   QFullScreenWindow = class
   private
-    Quit: Boolean;
     Handle: HWND;
     FScene: TSceneObject;
     MapProjView: TCameraCoordinates;
@@ -43,6 +42,7 @@ type
     Caption: String;
     Root: QObject;
     NeedRerender: Boolean;
+    Quit: Boolean;
   public
     constructor Create(const nCaption: String; nRoot: QObject);
     destructor Destroy; override;
@@ -88,7 +88,7 @@ begin
     with FSWindow do
     begin
       FScene.Free;
-      FScene:=nil;
+      //FScene:=nil;
 
       Quit:=true;
     end;
@@ -142,6 +142,7 @@ begin
   Quit:=False;
   inherited Create();
   Root:=nRoot;
+  Root.AddRef(+1);
   Caption:=nCaption;
   if not FullScreenWindowClassRegistered then
   begin
@@ -169,6 +170,9 @@ begin
 
   MapProjView.Free;
   MapProjView:=nil;
+
+  Root.AddRef(-1);
+  //Root:=nil;
 
   inherited;
 end;
@@ -234,6 +238,9 @@ begin
 end;
 
 function QFullScreenWindow.MessagePump : WPARAM;
+const
+  WalkSpeed = 100.0;
+  RunSpeed = 1000.0;
 var
   Msg: TMsg;
   Eye: TVect;
@@ -259,9 +266,9 @@ begin
         begin
           Eye := FSWindow.MapProjView.Camera;
           if GetAsyncKeyState(VK_SHIFT) and $8000 <> 0 then
-            Eye.X := Eye.X - 1000.0 * TimeDiff
+            Eye.X := Eye.X - RunSpeed * TimeDiff
           else
-            Eye.X := Eye.X - 100.0 * TimeDiff;
+            Eye.X := Eye.X - WalkSpeed * TimeDiff;
           MapProjView.Camera := Eye;
           MapProjView.ResetCamera();
           FScene.SetCoords(FSWindow.MapProjView);
@@ -272,14 +279,65 @@ begin
         begin
           Eye := FSWindow.MapProjView.Camera;
           if GetAsyncKeyState(VK_SHIFT) and $8000 <> 0 then
-            Eye.X := Eye.X + 1000.0 * TimeDiff
+            Eye.X := Eye.X + RunSpeed * TimeDiff
           else
-            Eye.X := Eye.X + 100.0 * TimeDiff;
+            Eye.X := Eye.X + WalkSpeed * TimeDiff;
           MapProjView.Camera := Eye;
           MapProjView.ResetCamera();
           FScene.SetCoords(FSWindow.MapProjView);
           InvalidateRect(Handle, nil, false);
-          //@
+        end;
+
+        if GetAsyncKeyState(vk_Left) and $8000 <> 0 then
+        begin
+          Eye := FSWindow.MapProjView.Camera;
+          if GetAsyncKeyState(VK_SHIFT) and $8000 <> 0 then
+            Eye.Y := Eye.Y + RunSpeed * TimeDiff
+          else
+            Eye.Y := Eye.Y + WalkSpeed * TimeDiff;
+          MapProjView.Camera := Eye;
+          MapProjView.ResetCamera();
+          FScene.SetCoords(FSWindow.MapProjView);
+          InvalidateRect(Handle, nil, false);
+        end;
+
+        if GetAsyncKeyState(vk_Right) and $8000 <> 0 then
+        begin
+          Eye := FSWindow.MapProjView.Camera;
+          if GetAsyncKeyState(VK_SHIFT) and $8000 <> 0 then
+            Eye.Y := Eye.Y - RunSpeed * TimeDiff
+          else
+            Eye.Y := Eye.Y - WalkSpeed * TimeDiff;
+          MapProjView.Camera := Eye;
+          MapProjView.ResetCamera();
+          FScene.SetCoords(FSWindow.MapProjView);
+          InvalidateRect(Handle, nil, false);
+        end;
+
+        if GetAsyncKeyState($43) and $8000 <> 0 then //vk_C
+        begin
+          Eye := FSWindow.MapProjView.Camera;
+          if GetAsyncKeyState(VK_SHIFT) and $8000 <> 0 then
+            Eye.Z := Eye.Z - RunSpeed * TimeDiff
+          else
+            Eye.Z := Eye.Z - WalkSpeed * TimeDiff;
+          MapProjView.Camera := Eye;
+          MapProjView.ResetCamera();
+          FScene.SetCoords(FSWindow.MapProjView);
+          InvalidateRect(Handle, nil, false);
+        end;
+
+        if GetAsyncKeyState($44) and $8000 <> 0 then //vk_D
+        begin
+          Eye := FSWindow.MapProjView.Camera;
+          if GetAsyncKeyState(VK_SHIFT) and $8000 <> 0 then
+            Eye.Z := Eye.Z + RunSpeed * TimeDiff
+          else
+            Eye.Z := Eye.Z + WalkSpeed * TimeDiff;
+          MapProjView.Camera := Eye;
+          MapProjView.ResetCamera();
+          FScene.SetCoords(FSWindow.MapProjView);
+          InvalidateRect(Handle, nil, false);
         end;
         //@
         //@ SceneChanged:=true;
