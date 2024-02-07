@@ -102,10 +102,10 @@ begin
     end;
    AddOns:=MakeAddonsList; try
    Target:=AddOns.SubElements.FindName(ListView1.Selected.Caption);
-   Target.AddRef(+1);
-   finally AddOns.AddRef(-1); end;
    if Target=Nil then
     Raise InternalE('No Target for Add-on');
+   Target.AddRef(+1);
+   finally AddOns.AddRef(-1); end;
   end;
  if RadioButton3.Checked then
   begin
