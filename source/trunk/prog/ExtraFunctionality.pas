@@ -650,32 +650,32 @@ end;
 {$ifndef Delphi2010orNewerCompiler}
 function ContainsText(const AText, ASubText: string): Boolean;
 begin
-  Result := AnsiContainsText(AText, ASubText);
+  Result := AnsiContainsText(AText, ASubText); //Note: Apparently, this function are misnamed, and they handle unicode too!
 end;
 
 function StartsText(const ASubText, AText: string): Boolean;
 begin
-  Result := AnsiStartsText(ASubText, AText);
+  Result := AnsiStartsText(ASubText, AText); //Note: Apparently, this function are misnamed, and they handle unicode too!
 end;
 
 function EndsText(const ASubText, AText: string): Boolean;
 begin
-  Result := AnsiEndsText(ASubText, AText);
+  Result := AnsiEndsText(ASubText, AText); //Note: Apparently, this function are misnamed, and they handle unicode too!
 end;
 
 function ContainsStr(const AText, ASubText: string): Boolean;
 begin
-  Result := AnsiContainsStr(AText, ASubText);
+  Result := AnsiContainsStr(AText, ASubText); //Note: Apparently, this function are misnamed, and they handle unicode too!
 end;
 
 function StartsStr(const ASubText, AText: String): Boolean;
 begin
-  Result := AnsiStartsStr(ASubText, AText);
+  Result := AnsiStartsStr(ASubText, AText); //Note: Apparently, this function are misnamed, and they handle unicode too!
 end;
 
 function EndsStr(const ASubText, AText: String): Boolean;
 begin
- Result := AnsiEndsStr(ASubText, AText);
+ Result := AnsiEndsStr(ASubText, AText); //Note: Apparently, this function are misnamed, and they handle unicode too!
 end;
 {$endif}
 
