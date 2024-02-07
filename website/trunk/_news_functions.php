@@ -178,8 +178,9 @@ function displayNewsArticle($ArticleID)
 			$headtxt = '';
 		}
 		$bodytxt = '';
-		foreach ($thefile as $line)
+		while (!is_null(key($thefile))) //Can't use foreach here, because that ignored the current array pointer.
 		{
+			$line = current($thefile);
 			$line = str_ireplace('<headline>', '<p class="newsheadline">', $line);
 			$line = str_ireplace('</headline>', '</p>', $line);
 
@@ -200,6 +201,7 @@ function displayNewsArticle($ArticleID)
 			}
 
 			$bodytxt .= $line;
+			next($thefile);
 		}
 
 		pagePanel('news', $headtxt, $newsauthor . $newssource, $bodytxt);
