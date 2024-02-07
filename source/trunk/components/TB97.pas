@@ -245,6 +245,7 @@ type
 
     { Misc. }
     UpdatingBounds,          { Increment while internally changing the bounds. This allows it to move the toolbar freely }
+    DisableArrangeControls,  { Increment to disable ArrangeControls }
     Hidden: Integer;         { Incremented while the toolbar is temporarily hidden }
 
     { When floating. These are not used (and FloatParent isn't created) in design mode }
@@ -944,16 +945,10 @@ begin
     QuickSortEx (0, List.Count-1);
 end;
 
-function RedrawThisWindow(Handle: HWnd; lParam: LPARAM) : BOOL; stdcall;
-begin
- Result:=RedrawWindow(Handle, Nil, 0, RDW_UPDATENOW or RDW_ALLCHILDREN);
-end;
-
 procedure ProcessPaintMessages;
 { Dispatches all pending WM_PAINT messages. In effect, this is like an
   'UpdateWindow' on all visible windows }
-{AR}
-(*var             { THIS CAN LOCK !! Another version follows... }
+var
   Msg: TMsg;
 begin
   while PeekMessage(Msg, 0, WM_PAINT, WM_PAINT, PM_NOREMOVE) do begin
@@ -967,15 +962,7 @@ begin
     end;
     DispatchMessage (Msg);
   end;
-end;*)
-{AR}
-var
- Msg: TMsg;
-begin
- if PeekMessage(Msg, 0, WM_PAINT, WM_PAINT, PM_NOREMOVE) then
-  EnumWindows(@RedrawThisWindow, 0);
 end;
-{AR}
 
 
 { TDock97 - internal }
@@ -1766,7 +1753,7 @@ begin
   LineSeps := TList.Create;
   OrderList := TList.Create;
 
-  DisableAlign;
+  Inc (DisableArrangeControls);
   try
     ControlStyle := ControlStyle +
       [csAcceptsControls, csClickEvents, csDoubleClicks, csSetCaption] -
@@ -1801,9 +1788,9 @@ begin
     Color := clBtnFace;
     DockedTo := nil;
   finally
-    EnableAlign;
+    Dec (DisableArrangeControls);
   end;
-  Realign;
+  AutoArrangeControls;
 end;
 
 {AR}
@@ -2402,7 +2389,7 @@ var
   DockAllowsDrag, MultilineDocks: Boolean;
 label 1;
 begin
-  if (AlignDisabled) or
+  if (DisableArrangeControls > 0) or
      { Prevent flicker while loading or destroying }
      (csLoading in ComponentState) or
      { Following line added in 1.53 to stop the access violations that 1.52 was
@@ -2418,7 +2405,7 @@ begin
 
   DockAllowsDrag := (DockedTo = nil) or (DockedTo.FAllowDrag);
 
-  DisableAlign;
+  Inc (DisableArrangeControls);
   try
     OldBarWidth := FBarWidth;
     OldBarHeight := FBarHeight;
@@ -2679,7 +2666,7 @@ begin
       end;
     end;
   finally
-    EnableAlign;
+    Dec (DisableArrangeControls);
   end;
 end;
 
@@ -4084,11 +4071,11 @@ begin
           ArrangeControls (True, False, GetDockTypeOf(OldDockedTo),
             Value, FFloatingRightX, nil);
         if Parent <> Value then begin
-          DisableAlign;
+          Inc (DisableArrangeControls);
           try
             Parent := Value;
           finally
-            EnableAlign;
+            Dec (DisableArrangeControls);
           end;
         end;
         AutoArrangeControls;
@@ -4104,13 +4091,13 @@ begin
         if Parent <> nil then
           ArrangeControls (True, False, GetDockTypeOf(OldDockedTo),
             Value, FFloatingRightX, nil);
-        DisableAlign;
+        Inc (DisableArrangeControls);
         try
           if Parent <> FloatParent then
             Parent := FloatParent;
           SetVirtualBoundsRect (FFloatingRect);
         finally
-          EnableAlign;
+          Dec (DisableArrangeControls);
         end;
         AutoArrangeControls;
       end;
@@ -5763,7 +5750,7 @@ begin
     application's window. For some reason, this problem doesn't seem to occur
     on Windows NT 4 -- only 95 and 3.x.
 
-    The timer (which ticks 8 times a second) is only enabled when the
+    The timer (which ticks 20 times a second) is only enabled when the
     application is active and the mouse is over a button, so it uses virtually
     no processing power
 
