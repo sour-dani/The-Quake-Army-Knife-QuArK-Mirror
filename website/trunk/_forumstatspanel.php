@@ -52,7 +52,7 @@ if (count($RecentTopics) !== 0)
 	$forumstats .= '</ul>';
 }
 
-if (count($RecentEvents) !== 0)
+if ((!is_null($RecentEvents)) and (count($RecentEvents) !== 0)) #Note: A bug in SMF: this function can return NULL instead of an empty array if this functionality has been disabled.
 {
 	$forumstats .= '<p style="margin-bottom: 0px;"><b>Recent events:</b></p>';
 	$forumstats .= '<ul class="nowhitespace" style="display: inline;">';
