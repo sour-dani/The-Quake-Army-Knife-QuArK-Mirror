@@ -2,6 +2,7 @@
 //Note: SSI.php loads SMF. There could be huge GLOBAL or function conflicts!
 require('forums/SSI.php');
 require_once('_functions.php');
+require_once('_settings-database.php');
 
 global $Settings;
 global $ForumStatsRecentPosts, $ForumStatsRecentTopics, $ForumStatsRecentEvents;
