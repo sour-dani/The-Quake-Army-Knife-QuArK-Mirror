@@ -17,6 +17,7 @@ require_once('_base_code.php');
 require_once('_language_functions.php');
 require_once('_image_functions.php');
 require_once('_news_functions.php');
+require_once('_settings-database.php');
 
 # Load language file
 LoadLanguageFile('index.php');
