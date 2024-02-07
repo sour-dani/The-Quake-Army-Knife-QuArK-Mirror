@@ -369,7 +369,7 @@ function pageRawFile($filename)
 {
 	$thefile = file($filename);
 	$bodytext = '';
-	while (list($key, $line) = each($thefile))
+	foreach ($thefile as $line)
 	{
 		$bodytext .= $line;
 	}
@@ -381,7 +381,7 @@ function pagePanelFile($icon, $headline1, $headline2, $filename)
 {
 	$thefile = file($filename);
 	$bodytext = '';
-	while (list($key, $line) = each($thefile))
+	foreach ($thefile as $line)
 	{
 		$bodytext .= $line;
 	}

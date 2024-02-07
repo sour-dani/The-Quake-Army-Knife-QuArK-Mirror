@@ -126,20 +126,19 @@ function displayNewsArticle($ArticleID)
 		$thefile = file($newsroot.$CurrentNewsArticle->File);
 
 		# Figure out if there is a '<author>xxxx</author>' in the first line.
-		list($key, $author) = each($thefile);
-		$lowauthor = strtolower($author);
-		$start = strpos($lowauthor, '<author>');
-		$stop = strpos($lowauthor, '</author>');
+		$author = current($thefile);
+		$start = stripos($author, '<author>');
+		$stop = stripos($author, '</author>');
 		if (($start !== FALSE) and ($stop !== FALSE))
 		{
 			$start += strlen('<author>');
 			$newsauthor = substr($author, $start, $stop - $start);
+			next($thefile);
 		}
 		else
 		{
 			# No author tag
 			$newsauthor = NULL;
-			reset($thefile);
 		}
 
 		if ($CurrentNewsArticle->Author !== -1)
@@ -179,7 +178,7 @@ function displayNewsArticle($ArticleID)
 			$headtxt = '';
 		}
 		$bodytxt = '';
-		while (list($key, $line) = each($thefile))
+		foreach ($thefile as $line)
 		{
 			$line = str_ireplace('<headline>', '<p class="newsheadline">', $line);
 			$line = str_ireplace('</headline>', '</p>', $line);
