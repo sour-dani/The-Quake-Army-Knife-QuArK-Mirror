@@ -56,7 +56,7 @@ function suggestedpluginsPanel($SuggestedPlugin)
 	$bodytext .= DisplayPersonList($SuggestedPlugin->Interested, 'None');
 	if ($SuggestedPlugin->Done === 0)
 	{
-		if (is_null($SuggestedPlugin_>NameEncrypted))
+		if (is_null($SuggestedPlugin->NameEncrypted))
 		{
 			$bodytext .= "\n    <a href=".DisplayEncodedEmail($webmasteremail, 'Suggested plug-ins Interest').">Notify the Webmaster if you are interested in seeing this plug-in</a><br>";
 		}
