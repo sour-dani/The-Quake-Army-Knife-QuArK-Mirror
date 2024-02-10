@@ -112,7 +112,7 @@ var
 
 function LoadWinInet: Boolean;
 begin
-  HWinInet := LoadLibrary(winetdll);
+  HWinInet := SafeLoadLibrary(winetdll);
   If HWinInet = 0 Then
   begin
     Result := False;

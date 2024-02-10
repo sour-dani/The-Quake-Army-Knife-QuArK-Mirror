@@ -398,6 +398,10 @@ const
 
 //This is a macro that wasn't converted.
 function CopyCursor(pcur: HCursor): HCursor;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+
+//This function wasn't converted. //FIXME: At least in Delphi 7.
+function GetErrorMode(): UINT; stdcall;
+{$EXTERNALSYM GetErrorMode}
 {$endif}
 
 {$ifndef DelphiXE6orNewerCompiler} //FIXME: Not sure about the version of Delphi these were added
@@ -592,6 +596,8 @@ function CopyCursor(pcur: HCursor): HCursor;
 begin
   Result:=HCURSOR(CopyIcon(HICON(pcur)));
 end;
+
+function GetErrorMode; external kernel32 name 'GetErrorMode';
 {$endif}
 
 {$ifndef DelphiXE6orNewerCompiler}
@@ -957,7 +963,7 @@ initialization
   IsWow64Process := GetProcAddress(GetModuleHandle('kernel32'), 'IsWow64Process');
   IsWow64Process2 := GetProcAddress(GetModuleHandle('kernel32'), 'IsWow64Process2');
 
-  ShellLib:=LoadLibrary('shell32.dll');
+  ShellLib:=SafeLoadLibrary('shell32.dll');
   try
     if ShellLib = 0 then
       SHRestricted := nil

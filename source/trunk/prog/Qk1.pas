@@ -238,7 +238,7 @@ uses {$IFDEF MemTester}MemTester, {$ENDIF}ShellApi, Undo, QkQuakeC, Setup, Confi
   Running, Output1, QkTreeView, PyProcess, Console, Python, Quarkx, About,
   PyMapView, PyForms, Qk3D, EdSceneObject, QkObjectClassList, ApplPaths, FileAssociations,
   QkExceptions, QkQuakeCtx, AutoUpdater, QConsts, Toolbar1,
-  Splash, Logging, SystemDetails, Platform;
+  Splash, Logging, SystemDetails, ExtraFunctionality, Platform;
 
 type
   TCmdLineOptions = record
@@ -251,6 +251,7 @@ type
 var
   OnlyOnceMutex: THandle = 0;
   OldException: TExceptionEvent;
+  OldErrorMode: UInt;
   LoadingComplete: Boolean = false;
 
 const
@@ -287,6 +288,10 @@ begin
  // Set-up exception handling
  OldException:=Application.OnException;
  Application.OnException:=AppException;
+
+ // No messageboxes from LoadLibrary; just fail it.
+ OldErrorMode := SetErrorMode(GetErrorMode() or SEM_NOOPENFILEERRORBOX);
+ //Note that we can't use Delphi's SafeLoadLibrary, because it overwrites LastError.
 
  // Process the commandline
  LaunchOptions.DoInstance := true; //These are the defaults
@@ -423,6 +428,9 @@ begin
    CloseHandle(OnlyOnceMutex);
    OnlyOnceMutex:=0;
  end;
+
+ // Restore original ErrorMode
+ SetErrorMode(OldErrorMode);
 
  // Restore original exception handling
  Application.OnException:=OldException;
