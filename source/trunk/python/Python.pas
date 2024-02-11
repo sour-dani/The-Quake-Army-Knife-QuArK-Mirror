@@ -920,9 +920,9 @@ begin
   Py_SetProgramName(ToPyChar(Application.Exename));
   Py_Initialize;
   s:=PyStrPas(Py_GetVersion());
-  Log(LOG_PYTHON,'PYTHON:');
-  Log(LOG_PYTHON,'Version: '+s);
-  Log(LOG_PYTHON,'DLL: '+RetrieveModuleFilename(PythonLib));
+  Log(LOG_PYTHON, 'PYTHON:');
+  Log(LOG_PYTHON, 'Version: %s', [s]);
+  Log(LOG_PYTHON, 'DLL: %s', [RetrieveModuleFilename(PythonLib)]);
   Result:=3;
 
   //Process Py_GetVersion to find version number
@@ -1918,7 +1918,7 @@ end;
 procedure TestPythonObjectDump;
 begin
   if g_PythonObjects.Count>0 then
-    if Windows.MessageBox(0, 'Some Python objects were not correctly freed. This is a bug. Do you want to write a data report (PythonObjectDump.txt) ?', 'QuArK - DEBUGGING', MB_YESNO) = IDYES then
+    if Windows.MessageBox(0, Format('Some Python objects were not correctly freed. This is a bug. Do you want to write a data report (%s.txt) ?', [PythonObjectDumpFile]), 'QuArK - DEBUGGING', MB_YESNO) = IDYES then
       PythonObjectDump;
 end;
 {$ENDIF}
