@@ -1145,6 +1145,7 @@ Strings = {
     5872: "decompressed size mismatch",
     5873: "Checksum mismatch",
     5874: "Unsupported compression method",
+    5875: "Failed to open '%s' using '%s': %s",
 
     # DanielPharos would like to reserve 6000 .. 6099 for all renderers
     6000: "Unable to create SceneObject//%s",

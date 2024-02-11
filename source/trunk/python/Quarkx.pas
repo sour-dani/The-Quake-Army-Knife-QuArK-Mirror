@@ -2335,38 +2335,40 @@ begin
     end;
   end;
 
-  //FIXME: This doesn't always work; everything below is the old way to do things
-  (*if ShellExecute(0, 'open', PChar(FullFile), nil, nil, SW_SHOWDEFAULT) <= 32 then
-    raise EErrorFmt(5649, [FullFile, GetSystemErrorMessage(GetLastError)]);*)
+  if ShellExecute(0, 'open', PChar(FullFile), nil, nil, SW_SHOWDEFAULT) <= 32 then
+  begin
+    Log(LOG_WARNING, LoadStr1(5875), [FullFile, 'ShellExecute', GetSystemErrorMessage(GetLastError)]);
 
- Reg:=TRegistry2.Create;
- try
-  Reg.RootKey:=HKEY_CLASSES_ROOT;
-  if (not Reg.ReadOpenKey('.html') and not Reg.ReadOpenKey('.htm'))
-  or not Reg.TryReadString('', S) then
-   OpenError(LoadStr1(5650));
-  S:=Format(RegOpenCommand, [S]);
-  if not Reg.ReadOpenKey(S) or not Reg.TryReadString('', ProgramCall) or (ProgramCall='') then
-   OpenError(FmtLoadStr1(5651, [S]));
- finally
-  Reg.Free;
- end;
+    //Fall back to opening the associated program directly.
+    Reg:=TRegistry2.Create;
+    try
+      Reg.RootKey:=HKEY_CLASSES_ROOT;
+      if (not Reg.ReadOpenKey('.html') and not Reg.ReadOpenKey('.htm'))
+      or not Reg.TryReadString('', S) then
+        OpenError(LoadStr1(5650));
+      S:=Format(RegOpenCommand, [S]);
+      if not Reg.ReadOpenKey(S) or not Reg.TryReadString('', ProgramCall) or (ProgramCall='') then
+        OpenError(FmtLoadStr1(5651, [S]));
+     finally
+       Reg.Free;
+     end;
 
- if ContainsStr(ProgramCall, '%1') then
-   ProgramCall:=StringReplace(ProgramCall, '%1', EscapeCommandline(FullFile), [rfReplaceAll])
- else
-   ProgramCall:=Format('%s "%s"', [ProgramCall, EscapeCommandline(FullFile)]);
+    if ContainsStr(ProgramCall, '%1') then
+      ProgramCall:=StringReplace(ProgramCall, '%1', EscapeCommandline(FullFile), [rfReplaceAll])
+    else
+      ProgramCall:=Format('%s "%s"', [ProgramCall, EscapeCommandline(FullFile)]);
 
- FillChar(SI, SizeOf(SI), 0);
- SI.cb:=SizeOf(SI);
- FillChar(PI, SizeOf(PI), 0);
- if CreateProcess(Nil, PChar(ProgramCall), Nil, Nil, False, 0, Nil, Nil, SI, PI) then
- begin
-   CloseHandle(PI.hThread);
-   CloseHandle(PI.hProcess);
- end
- else
-  OpenError(FmtLoadStr1(5652, [ProgramCall]));
+    FillChar(SI, SizeOf(SI), 0);
+    SI.cb:=SizeOf(SI);
+    FillChar(PI, SizeOf(PI), 0);
+    if CreateProcess(Nil, PChar(ProgramCall), Nil, Nil, False, 0, Nil, Nil, SI, PI) then
+    begin
+      CloseHandle(PI.hThread);
+      CloseHandle(PI.hProcess);
+    end
+    else
+     OpenError(FmtLoadStr1(5652, [ProgramCall]));
+  end;
 end;
 
 function xHTMLDoc(self, args: PyObject) : PyObject; cdecl;
