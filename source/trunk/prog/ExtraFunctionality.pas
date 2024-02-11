@@ -554,9 +554,12 @@ function BoolToStr(B: Boolean; UseBoolStrs: Boolean = False): string;
   then PosEx returns 0.  By default, Offset equals 1. }
 function PosEx(const SubStr, S: string; Offset: Cardinal = 1): Integer;
 
-//This was added in Delphi 6 Update Pack 2, but there's no way to check for that...
+//This was added in Delphi 6 Update Pack 2.
 {$ifdef MSWINDOWS}
+{$IF not Defined(CheckWin32Version)}
+{$define ExtraFunc_CheckWin32Version}
 function CheckWin32Version(AMajor: Integer; AMinor: Integer = 0): Boolean;
+{$ifend}
 {$endif}
 {$endif}
 
@@ -794,12 +797,14 @@ begin
 end;
 
 {$ifdef MSWINDOWS}
+{$ifdef ExtraFunc_CheckWin32Version}
 function CheckWin32Version(AMajor: Integer; AMinor: Integer = 0): Boolean;
 begin
   Result := (Win32MajorVersion > AMajor) or
             ((Win32MajorVersion = AMajor) and
              (Win32MinorVersion >= AMinor));
 end;
+{$endif}
 {$endif}
 {$endif}
 
