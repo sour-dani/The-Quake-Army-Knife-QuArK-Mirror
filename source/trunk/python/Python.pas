@@ -654,8 +654,8 @@ implementation
 uses
   {$IFDEF Debug}QkObjects, {$ENDIF}
   {$IFDEF DebugPythonLeak}{$IFNDEF PyProfiling}Classes,{$ENDIF} QConsts, PyObjects, Quarkx,{$ENDIF}
-  Windows, Forms, SysUtils, StrUtils, QkExceptions, ApplPaths, VersionNumbers,
-  SystemDetails, Logging;
+  Windows, Forms, SysUtils, StrUtils, {Registry2,} QkExceptions,
+  ApplPaths, VersionNumbers, SystemDetails, Logging;
 
 {$IFDEF DebugPythonLeak}
 var g_PythonObjects: TList;
@@ -803,6 +803,34 @@ begin
   end;
   end;
 end;
+
+(*function GetPython1Version(): String;
+var
+  R: TRegistry2;
+begin
+  R:=TRegistry2.Create(KEY_READ);
+  try
+    R.RootKey:=HKEY_LOCAL_MACHINE;
+    if R.OpenKey('\SOFTWARE\Python\PythonCore\CurrentVersion', false) then
+      Result:=R.ReadString('');
+  finally
+    R.free;
+  end;
+end;
+
+function GetPython1DllPath(const Version: String): String;
+var
+  R: TRegistry2;
+begin
+  R:=TRegistry2.Create(KEY_READ);
+  try
+    R.RootKey:=HKEY_LOCAL_MACHINE;
+    if R.OpenKey('\SOFTWARE\Python\PythonCore\'+Version+'\Dll', false) then
+      Result:=R.ReadString('');
+  finally
+    R.free;
+  end;
+end;*)
 
 function IsPythonLoaded : Boolean;
 begin

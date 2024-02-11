@@ -2405,41 +2405,6 @@ begin
   end;
 end;
 
-procedure GetPythonDetails(var s: TStringlist);
-{
-  Peter: deprecated as of 18-08-2003.
-  Logging of Python interpreter details now done in Python.pas.
-
-  This routine looks in the wrong place anyway.  Versions of Python later than
-  2.0 do not use the \Software\Python\PythonCore\CurrentVersion registry key.
-}
-var
-  R: TRegistry2;
-  v: string;
-  installed: boolean;
-begin
-  Log(LOG_VERBOSE, 'Starting gathering Python information...');
-  R:=TRegistry2.Create(KEY_READ);
-  try
-    R.RootKey:=HKEY_LOCAL_MACHINE;
-    installed:=R.KeyExists('\SOFTWARE\Python\PythonCore\CurrentVersion');
-    if installed then
-    begin
-      R.OpenKey('\SOFTWARE\Python\PythonCore\CurrentVersion', false);
-      v:=R.ReadString('');
-      s.Add('Version: '+v);
-      R.OpenKey('\SOFTWARE\Python\PythonCore\'+v+'\Dll', false);
-      s.Add('Dll path: '+R.ReadString(''));
-    end
-    else
-    begin
-      s.Add('Not Installed.');
-    end;
-  finally
-    R.free;
-  end;
-end;
-
 function ProcessExists(const exeFileName: String): Boolean;
 var
   ContinueLoop: BOOL;
