@@ -783,7 +783,6 @@ function GoodPythonVersion(NumberToCheck: Integer; const PythonVersionNumber: TV
 begin
   //This function checks if the Python version 'encoded' in NumberToCheck
   //is equal or higher to the given PythonVersionNumber
-  Result:=false;
   case NumberToCheck of
   0:
   begin
@@ -792,63 +791,11 @@ begin
   end;
   230:
   begin
-    if Length(PythonVersionNumber) >= 1 then
-    begin
-      if PythonVersionNumber[0] > 2 then
-      begin
-        Result:=true;
-      end
-      else if PythonVersionNumber[0] = 2 then
-      begin
-        if Length(PythonVersionNumber) >= 2 then
-        begin
-          if PythonVersionNumber[1] > 3 then
-          begin
-            Result:=true;
-          end
-          else if PythonVersionNumber[1] = 3 then
-          begin
-            if Length(PythonVersionNumber) >= 3 then
-            begin
-              if PythonVersionNumber[2] >= 0 then
-              begin
-                Result:=true;
-              end;
-            end;
-          end;
-        end;
-      end;
-    end;
+    Result:=PythonVersionNumber.IsEqualOrGreater([2, 3, 0]);
   end;
   235:
   begin
-    if Length(PythonVersionNumber) >= 1 then
-    begin
-      if PythonVersionNumber[0] > 2 then
-      begin
-        Result:=true;
-      end
-      else if PythonVersionNumber[0] = 2 then
-      begin
-        if Length(PythonVersionNumber) >= 2 then
-        begin
-          if PythonVersionNumber[1] > 3 then
-          begin
-            Result:=true;
-          end
-          else if PythonVersionNumber[1] = 3 then
-          begin
-            if Length(PythonVersionNumber) >= 3 then
-            begin
-              if PythonVersionNumber[2] >= 5 then
-              begin
-                Result:=true;
-              end;
-            end;
-          end;
-        end;
-      end;
-    end;
+    Result:=PythonVersionNumber.IsEqualOrGreater([2, 3, 5]);
   end;
   else
   begin
@@ -872,7 +819,6 @@ var
   VersionNumber: TVersionNumber;
   VersionNumberString: String;
   FoundGoodVersion: Boolean;
-  FoundOwnVersion: Boolean;
 begin
   //See ProbableCauseOfFatalError in QuarkX for return value meaning
   Result:=6;
@@ -981,7 +927,6 @@ begin
 
   //Process Py_GetVersion to find version number
   FoundGoodVersion:=False;
-  FoundOwnVersion:=False;
 
   //DanielPharos: We're going to assume the Python version information always
   //is formatted as integers delimited by periods '.', with the number starting
@@ -990,49 +935,32 @@ begin
   if Index <> 0 then
   begin
     VersionNumberString:=LeftStr(s, Index-1);
-    VersionNumber:=SplitVersionNumber(VersionNumberString);
+    VersionNumber:=TVersionNumber.Create(VersionNumberString);
 
-    if Length(VersionNumber) >= 1 then
+    if VersionNumber.IsEqualOrGreater([3]) then
     begin
-      if VersionNumber[0] > 2 then
-      begin
-        //Python 3 or larger: Proceed at own risk!
-        FoundGoodVersion:=True;
-        LogAndWarn('Unsupported, future version ('+VersionNumberString+') of Python found! QuArK might behave unpredictably!');
-      end
-      else if (VersionNumber[0] = 2) then
-      begin
-        if Length(VersionNumber) >= 2 then
-        begin
-          if (VersionNumber[1] >= 4) then
-          begin
-            //Python 2.4 or higher: Supported!
-            FoundGoodVersion:=True;
-            if (VersionNumber[1] = 4) then
-            begin
-              if Length(VersionNumber) >= 3 then
-              begin
-                if (VersionNumber[2] = 4) then
-                begin
-                  FoundOwnVersion:=True;
-                end;
-              end;
-            end;
-            if not FoundOwnVersion then
-            begin
-              LogAndWarn('A different version ('+VersionNumberString+') of Python than supported found! QuArK might behave unpredictably!');
-            end;
-          end;
-        end;
-      end;
+      //Python 3 or larger: Proceed at own risk!
+      FoundGoodVersion:=True;
+      LogAndWarn(Format('Unsupported, future version (%s) of Python found! QuArK might behave unpredictably!', [VersionNumberString]));
+    end
+    else if VersionNumber.IsEqualOrGreater([2, 4]) then
+    begin
+      //Python 2.4 or higher: Supported!
+      FoundGoodVersion:=True;
+      if not VersionNumber.IsEqual([2, 4, 4]) then
+        LogAndWarn(Format('A different version (%s) of Python than supported found! QuArK might behave unpredictably!', [VersionNumberString]));
     end;
   end
   else
+  begin
+    Log(LOG_WARNING, 'Cannot parse Python version number %s!', [s]);
     VersionNumberString:=s;
+    VersionNumber:=TVersionNumber.Create('0');
+  end;
 
   if not FoundGoodVersion then
   begin
-    LogAndWarn('Unsupported version ('+VersionNumberString+') of Python found!');
+    LogAndWarn(Format('Unsupported version (%s) of Python found!', [VersionNumberString]));
     Exit;
   end;
   Result:=2;

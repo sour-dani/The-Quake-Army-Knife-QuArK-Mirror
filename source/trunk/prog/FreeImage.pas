@@ -278,17 +278,8 @@ begin
       FreeImage_Allocate           := InitDllPointer(HFreeImage, '_FreeImage_Allocate@24');
 
       //DanielPharos: This is an ugly string comparison, but it should work.
-      VersionNumber:=SplitVersionNumber(FreeImage_GetVersion);
-      if Length(VersionNumber) < 3 then
-        //Malformed FreeImage version number
-        LogAndRaiseError(FmtLoadStr1(5742, ['FreeImage']));
-      if (VersionNumber[0] <> 3) then
-        //We only support the 3.x releases
-        LogAndRaiseError(FmtLoadStr1(5742, ['FreeImage']));
-      if (VersionNumber[1] < 9) then
-        //We only support the 3.9.x and higher releases
-        LogAndRaiseError(FmtLoadStr1(5742, ['FreeImage']));
-      if (VersionNumber[1] = 9) and (VersionNumber[2] < 3) then
+      VersionNumber:=TVersionNumber.Create(FreeImage_GetVersion);
+      if VersionNumber.IsLess([3, 9, 3]) then
         //We only support the 3.9.3 and higher releases of the 3.9.x releases
         LogAndRaiseError(FmtLoadStr1(5742, ['FreeImage']));
 

@@ -23,34 +23,124 @@ unit VersionNumbers;
 interface
 
 type
-  TVersionNumber = array of Integer;
-
-function SplitVersionNumber(const VersionNumber: String; const Delimiter: String = '.') : TVersionNumber;
+  TVersionNumber = class
+  private
+    Numbers: array of Cardinal;
+    Remainder: String;
+  public
+    constructor Create(const Version: String; const Delimiter: String = '.');
+    function IsEqual(const VersionNumber: array of Cardinal): Boolean;
+    function IsEqualOrGreater(const VersionNumber: array of Cardinal): Boolean;
+    function IsLess(const VersionNumber: array of Cardinal): Boolean;
+  end;
 
  { ------------------- }
 
 implementation
 
-uses SysUtils, StrUtils, ExtraFunctionality;
+uses SysUtils, StrUtils, Math, ExtraFunctionality;
 
  { ------------------- }
 
-function SplitVersionNumber(const VersionNumber: String; const Delimiter: String): TVersionNumber;
+constructor TVersionNumber.Create(const Version: String; const Delimiter: String);
 var
   Index, OldIndex: Integer;
 begin
-  SetLength(Result, 0);
-  Index:=Pos(Delimiter, VersionNumber);
+  //Reset
+  SetLength(Numbers, 0);
+  Remainder:='';
+
+  Index:=Pos(Delimiter, Version);
   OldIndex:=1;
   while (Index > 0) do
   begin
-    SetLength(Result, Length(Result)+1);
-    Result[Length(Result)-1]:=StrToIntDef(MidStr(VersionNumber, OldIndex, Index - OldIndex), 0);
+    SetLength(Numbers, Length(Numbers)+1);
+    Numbers[Length(Numbers)-1]:=StrToIntDef(MidStr(Version, OldIndex, Index - OldIndex), 0);
     OldIndex:=Index+1;
-    Index:=PosEx(Delimiter, VersionNumber, OldIndex);
+    Index:=PosEx(Delimiter, Version, OldIndex);
   end;
-  SetLength(Result, Length(Result)+1);
-  Result[Length(Result)-1]:=StrToUIntDef(RightStr(VersionNumber, Length(VersionNumber) - OldIndex + 1), 0);
+  SetLength(Numbers, Length(Numbers)+1);
+  Numbers[Length(Numbers)-1]:=StrToUIntDef(RightStr(Version, Length(Version) - OldIndex + 1), 0);
+
+  //FIXME: Remainder
+end;
+
+//If no number is provided, interpret that as zero.
+function GetIndex(const VersionNumber: array of Cardinal; Index: Integer): Cardinal;
+begin
+  if Index >= Length(VersionNumber) then
+    Result:=0
+  else
+    Result:=VersionNumber[Index]
+end;
+
+//Are we equal to the provided version number?
+function TVersionNumber.IsEqual(const VersionNumber: array of Cardinal): Boolean;
+var
+  I: Integer;
+begin
+  for I:=0 to Max(Length(Numbers), Length(VersionNumber))-1 do
+  begin
+    if GetIndex(VersionNumber, I) <> GetIndex(Numbers, I) then
+    begin
+      //We are not equal to the provided version number.
+      Result:=False;
+      Exit;
+    end;
+    //We are equal to the provided version number for this index, so continue comparing.
+  end;
+  //We are equal to the provided version number.
+  Result:=True;
+end;
+
+//Are we equal to or greater than the provided version number?
+function TVersionNumber.IsEqualOrGreater(const VersionNumber: array of Cardinal): Boolean;
+var
+  I: Integer;
+begin
+  for I:=0 to Max(Length(Numbers), Length(VersionNumber))-1 do
+  begin
+    if GetIndex(Numbers, I) < GetIndex(VersionNumber, I) then
+    begin
+      //We are less than the provided version number.
+      Result:=False;
+      Exit;
+    end
+    else if GetIndex(Numbers, I) > GetIndex(VersionNumber, I) then
+    begin
+      //We are greater than the provided version number.
+      Result:=True;
+      Exit;
+    end;
+    //We are equal to the provided version number for this index, so continue comparing.
+  end;
+  //We are equal to the provided version number.
+  Result:=True;
+end;
+
+//Are we less than the provided version number?
+function TVersionNumber.Isless(const VersionNumber: array of Cardinal): Boolean;
+var
+  I: Integer;
+begin
+  for I:=0 to Max(Length(Numbers), Length(VersionNumber))-1 do
+  begin
+    if GetIndex(Numbers, I) < GetIndex(VersionNumber, I) then
+    begin
+      //We are less than the provided version number.
+      Result:=True;
+      Exit;
+    end
+    else if GetIndex(Numbers, I) > GetIndex(VersionNumber, I) then
+    begin
+      //We are greater than the provided version number.
+      Result:=False;
+      Exit;
+    end;
+    //We are equal to the provided version number for this index, so continue comparing.
+  end;
+  //We are equal to the provided version number.
+  Result:=False;
 end;
 
 end.
