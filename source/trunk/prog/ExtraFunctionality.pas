@@ -605,17 +605,17 @@ function StrToUInt(const S: string): Cardinal;
 const
   SInvalidCardinal = '''%s'' is not a valid cardinal value';
 begin
-  if TryStrToUInt(S, Result) then EConvertError.Create(Format(SInvalidCardinal, [S]));
+  if not TryStrToUInt(S, Result) then EConvertError.Create(Format(SInvalidCardinal, [S]));
 end;
 
 function StrToUIntDef(const S: string; Default: Cardinal): Cardinal;
 begin
-  if TryStrToUInt(S, Result) then Result:=Default;
+  if not TryStrToUInt(S, Result) then Result:=Default;
 end;
 
 function TryStrToUInt(const S: string; out Value: Cardinal): Boolean;
 const
-  MaxCardinal = 4294967295;
+  MaxCardinal = 4294967295; //FIXME: Use Cardinal.MaxValue in Delphi 11.3
 var
   Dummy: Int64;
 begin
