@@ -652,9 +652,10 @@ function PythonGetStackTrace() : TStringList;
 implementation
 
 uses
- {$IFDEF Debug} QkObjects, {$ENDIF}
- {$IFDEF DebugPythonLeak} {$IFNDEF PyProfiling}Classes,{$ENDIF} QConsts, PyObjects, Quarkx, {$ENDIF}
-  Windows, Forms, SysUtils, StrUtils, QkExceptions, ApplPaths, SystemDetails, Logging;
+  {$IFDEF Debug}QkObjects, {$ENDIF}
+  {$IFDEF DebugPythonLeak}{$IFNDEF PyProfiling}Classes,{$ENDIF} QConsts, PyObjects, Quarkx,{$ENDIF}
+  Windows, Forms, SysUtils, StrUtils, QkExceptions, ApplPaths, VersionNumbers,
+  SystemDetails, Logging;
 
 {$IFDEF DebugPythonLeak}
 var g_PythonObjects: TList;

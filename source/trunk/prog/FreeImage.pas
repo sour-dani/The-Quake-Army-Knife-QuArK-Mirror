@@ -205,7 +205,7 @@ procedure UnloadFreeImage(ForceUnload: boolean = false);
 
 implementation
 
-uses Setup, Quarkx, QkExceptions, Logging, ApplPaths;
+uses Setup, Quarkx, QkExceptions, Logging, ApplPaths, VersionNumbers;
 
 var
   TimesLoaded: Cardinal;

@@ -25,8 +25,6 @@ interface
 {$I DelphiVer.inc}
 
 type
-  TVersionNumber = array of Integer;
-
   TQPathType = (
       pQuArK, pQuArKAddon, pQuArKGameAddon, pQuArKDll, pQuArKLog, pQuArKHelp,  //QuArK's own paths
       pUserData, pUserGameData  //The user paths
@@ -60,7 +58,6 @@ function ReverseSlashes(const S: string): string;{$IFDEF Delphi2005orNewerCompil
 function ConcatPaths(const Paths: array of String) : String;
 function GetQPath(const PathToGet : TQPathType) : String; overload;
 function GetQPath(const PathToGet : TQPathType; const GameName: String) : String; overload;
-function SplitVersionNumber(const VersionNumber: String; const Delimiter: String = '.') : TVersionNumber;
 function EscapeCommandline(const S: string): string;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 
  { ------------------- }
@@ -207,32 +204,6 @@ begin
 
   Result:=True;
   Inc(m_NextPathToTry);
-end;
-
-function SplitVersionNumber(const VersionNumber: String; const Delimiter: String): TVersionNumber;
-var
-  Index: Integer;
-  OldIndex: Integer;
-begin
-  SetLength(Result, 0);
-  Index:=Pos(Delimiter, VersionNumber);
-  if Index=0 then
-  begin
-    //No delimiter found
-    SetLength(Result, 1);
-    Result[0]:=StrToIntDef(VersionNumber, 0);
-    Exit;
-  end;
-  OldIndex:=1;
-  while (Index > 0) do
-  begin
-    SetLength(Result, Length(Result)+1);
-    Result[Length(Result)-1]:=StrToIntDef(MidStr(VersionNumber, OldIndex, Index - OldIndex), 0);
-    OldIndex:=Index+1;
-    Index:=PosEx(Delimiter, VersionNumber, OldIndex);
-  end;
-  SetLength(Result, Length(Result)+1);
-  Result[Length(Result)-1]:=StrToIntDef(RightStr(VersionNumber, Length(VersionNumber) - OldIndex + 1), 0);
 end;
 
 //Note: This function does NOT add the quotes at the start and end of the argument.
