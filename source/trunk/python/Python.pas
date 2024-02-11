@@ -848,6 +848,8 @@ var
   VersionNumberString: String;
   FoundGoodVersion: Boolean;
 begin
+  VersionNumber:=nil;
+
   //See ProbableCauseOfFatalError in QuarkX for return value meaning
   Result:=6;
 
@@ -953,12 +955,9 @@ begin
   Log(LOG_PYTHON, 'DLL: %s', [RetrieveModuleFilename(PythonLib)]);
   Result:=3;
 
-  //Process Py_GetVersion to find version number
+  //Process Py_GetVersion to find version number. It is documented to be the version number, followed by a space, and its description.
+  try
   FoundGoodVersion:=False;
-
-  //DanielPharos: We're going to assume the Python version information always
-  //is formatted as integers delimited by periods '.', with the number starting
-  //after a space ' '.
   Index:=Pos(' ', s);
   if Index <> 0 then
   begin
@@ -1010,6 +1009,10 @@ begin
     end;
   end;
   Result:=1;
+
+  finally
+    if VersionNumber<>nil then VersionNumber.Free;
+  end;
 
   //Retrieve the values of the basic Python types
   obj1:=PyList_New(0);

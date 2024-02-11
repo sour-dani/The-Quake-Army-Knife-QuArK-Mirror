@@ -277,11 +277,14 @@ begin
       FreeImage_IsTransparent      := InitDllPointer(HFreeImage, '_FreeImage_IsTransparent@4');
       FreeImage_Allocate           := InitDllPointer(HFreeImage, '_FreeImage_Allocate@24');
 
-      //DanielPharos: This is an ugly string comparison, but it should work.
       VersionNumber:=TVersionNumber.Create(FreeImage_GetVersion);
-      if VersionNumber.IsLess([3, 9, 3]) then
-        //We only support the 3.9.3 and higher releases of the 3.9.x releases
-        LogAndRaiseError(FmtLoadStr1(5742, ['FreeImage']));
+      try
+        if VersionNumber.IsLess([3, 9, 3]) then
+          //We only support the 3.9.3 and higher releases of the 3.9.x releases
+          LogAndRaiseError(FmtLoadStr1(5742, ['FreeImage']));
+      finally
+        VersionNumber.Free;
+      end;
 
       FreeImage_SetOutputMessage(FreeImageErrorHandler);
 
