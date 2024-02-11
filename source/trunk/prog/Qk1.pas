@@ -290,7 +290,10 @@ begin
  Application.OnException:=AppException;
 
  // No messageboxes from LoadLibrary; just fail it.
- OldErrorMode := SetErrorMode(GetErrorMode() or SEM_NOOPENFILEERRORBOX);
+ if DelayFunc_GetErrorMode then
+   OldErrorMode := SetErrorMode(GetErrorMode() or SEM_NOOPENFILEERRORBOX)
+ else
+   OldErrorMode := SetErrorMode(SEM_NOOPENFILEERRORBOX);
  //Note that we can't use Delphi's SafeLoadLibrary, because it overwrites LastError.
 
  // Process the commandline

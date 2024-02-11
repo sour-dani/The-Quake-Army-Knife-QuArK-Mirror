@@ -398,10 +398,6 @@ const
 
 //This is a macro that wasn't converted.
 function CopyCursor(pcur: HCursor): HCursor;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
-
-//This function wasn't converted. //FIXME: At least in Delphi 7.
-function GetErrorMode(): UINT; stdcall;
-{$EXTERNALSYM GetErrorMode}
 {$endif}
 
 {$ifndef DelphiXE6orNewerCompiler} //FIXME: Not sure about the version of Delphi these were added
@@ -432,6 +428,7 @@ function EndsStr(const ASubText, AText: string): Boolean;
 var
   DelayFunc_GlobalMemoryStatusEx: Boolean;
   DelayFunc_GetNativeSystemInfo: Boolean;
+  DelayFunc_GetErrorMode: Boolean;
   DelayFunc_SetDllDirectoryA: Boolean;
   DelayFunc_SetDllDirectoryW: Boolean;
   DelayFunc_SetDllDirectory: Boolean;
@@ -448,6 +445,10 @@ function GlobalMemoryStatusEx; external kernel32 name 'GlobalMemoryStatusEx' del
 procedure GetNativeSystemInfo(var lpSystemInformation: TSystemInfo); stdcall;
 {$EXTERNALSYM GetNativeSystemInfo}
 procedure GetNativeSystemInfo; external kernel32 name 'GetNativeSystemInfo' delayed;
+
+function GetErrorMode(): UINT; stdcall;
+{$EXTERNALSYM GetErrorMode}
+function GetErrorMode; external kernel32 name 'GetErrorMode' delayed;
 
 function SetDllDirectory(lpPathName: LPCWSTR): BOOL; stdcall;
 {$EXTERNALSYM SetDllDirectory}
@@ -478,6 +479,7 @@ function SHRestricted; external 'shell32.dll' name 'SHRestricted' delayed;
 var
   GlobalMemoryStatusEx: function (var lpBuffer: TMemoryStatusEx): BOOL; stdcall;
   GetNativeSystemInfo: procedure (var lpSystemInformation: TSystemInfo); stdcall;
+  GetErrorMode: function : UINT; stdcall;
   SetDllDirectory: function (lpPathName: LPCTSTR): BOOL; stdcall;
   SetDllDirectoryA: function (lpPathName: LPCSTR): BOOL; stdcall;
   SetDllDirectoryW: function (lpPathName: LPCWSTR): BOOL; stdcall;
@@ -596,8 +598,6 @@ function CopyCursor(pcur: HCursor): HCursor;
 begin
   Result:=HCURSOR(CopyIcon(HICON(pcur)));
 end;
-
-function GetErrorMode; external kernel32 name 'GetErrorMode';
 {$endif}
 
 {$ifndef DelphiXE6orNewerCompiler}
@@ -947,6 +947,7 @@ initialization
 {$ifdef Delphi2010orNewerCompiler}
   DelayFunc_GlobalMemoryStatusEx := CheckWin32Version(5, 0); //Windows 2000
   DelayFunc_GetNativeSystemInfo := CheckWin32Version(5, 1); //Windows XP, Windows Server 2003
+  DelayFunc_GetErrorMode := CheckWin32Version(6, 0); //Windows Vista
   DelayFunc_SetDllDirectoryA := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003
   DelayFunc_SetDllDirectoryW := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003
   DelayFunc_SetDllDirectory := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003
@@ -956,7 +957,8 @@ initialization
 {$else}
   //Note: The module 'kernel32' is always loaded inside a process.
   GlobalMemoryStatusEx := GetProcAddress(GetModuleHandle('kernel32'), 'GlobalMemoryStatusEx');
-  GetNativeSystemInfo := GetProcAddress(GetModuleHandle('kernel32'),'GetNativeSystemInfo');
+  GetNativeSystemInfo := GetProcAddress(GetModuleHandle('kernel32'), 'GetNativeSystemInfo');
+  GetErrorMode := GetProcAddress(GetModuleHandle('kernel32'), 'GetErrorMode');
   SetDllDirectoryA := GetProcAddress(GetModuleHandle('kernel32'), 'SetDllDirectoryA');
   SetDllDirectoryW := GetProcAddress(GetModuleHandle('kernel32'), 'SetDllDirectoryW');
   {$IFDEF UNICODE}SetDllDirectory:=SetDllDirectoryW;{$ELSE}SetDllDirectory:=SetDllDirectoryA;{$ENDIF};
@@ -976,6 +978,7 @@ initialization
 
   DelayFunc_GlobalMemoryStatusEx := Assigned(GlobalMemoryStatusEx);
   DelayFunc_GetNativeSystemInfo := Assigned(GetNativeSystemInfo);
+  DelayFunc_GetErrorMode := Assigned(GetErrorMode);
   DelayFunc_SetDllDirectoryA := Assigned(SetDllDirectoryA);
   DelayFunc_SetDllDirectoryW := Assigned(SetDllDirectoryW);
   DelayFunc_SetDllDirectory := Assigned(SetDllDirectory);
