@@ -1702,77 +1702,34 @@ end;
 
 procedure Py_INCREF(o: PyObject);{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 begin
-  {$IFDEF PyRefDEBUG}
-  if o^.ob_refcnt<0 then
-    RefError();
-  {$ENDIF}
-  Inc(o^.ob_refcnt);
+  with o^ do
+  begin
+    {$IFDEF PyRefDEBUG}
+    if ob_refcnt<0 then
+      RefError();
+    {$ENDIF}
+    Inc(ob_refcnt);
+  end;
 end;
-
-(*
-procedure Py_INCREF(o: PyObject); assembler;
-asm
-{$IFDEF PyRefDEBUG}
- cmp dword ptr [eax], 0
- jl RefError
-{$ENDIF}
- inc dword ptr [eax]
-end;
-*)
-
-(*
-procedure Py_XINCREF(o: PyObject); assembler;
-asm
- or eax, eax
- jz @Null
-{$IFDEF PyRefDEBUG}
- cmp dword ptr [eax], 0
- jl RefError
-{$ENDIF}
- inc dword ptr [eax]
-@Null:
-end;
-*)
 
 procedure Py_XINCREF(o: PyObject);{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 begin
   if o <> nil then Py_INCREF(o);
 end;
 
-(*{$IFDEF Debug}
-procedure Py_Dealloc1(o: PyObject); forward;
-{$ENDIF}*)
-
 procedure Py_Dealloc(o: PyObject);{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 begin
-  if @o^.ob_type^.tp_dealloc<>nil then
-    o^.ob_type^.tp_dealloc(o);
+  with o^ do
+  begin
+    if @ob_type^.tp_dealloc<>nil then
+      ob_type^.tp_dealloc(o);
+  end;
 end;
-(*{$IFDEF Debug}
-var
- Size: Integer;
-begin
- Size:=PyTypeObject(o^.ob_type)^.tp_basicsize;
- if PyTypeObject(o^.ob_type)^.tp_itemsize>0 then
-  Inc(Size, PyTypeObject(o^.ob_type)^.tp_itemsize*PyVarObject(o)^.ob_size);
- Py_Dealloc1(o);
-{if Size<>16 then}
-  FillChar(o^, Size, $FF);
-end;
-procedure Py_Dealloc1(o: PyObject);
-{$ENDIF}
-assembler;
-asm
- push eax
- mov edx, [eax+TyObject.ob_type]
- call dword [edx+TyTypeObject.tp_dealloc] //FIXME: Check for nil-pointer first!
- add esp, 4
-end;
-*)
 
 procedure Py_DECREF(o: PyObject);
 begin
-  with o^ do begin
+  with o^ do
+  begin
     {$IFDEF PyRefDEBUG}
     if ob_refcnt <= 0 then
       RefError();
@@ -1783,33 +1740,6 @@ begin
   end;
 end;
 
-(*
-procedure Py_DECREF(o: PyObject); assembler;
-asm
-{$IFDEF PyRefDEBUG}
- cmp dword ptr [eax], 0
- jle RefError
-{$ENDIF}
- dec dword ptr [eax]
- jz Py_Dealloc
-end;
-*)
-
-(*
-procedure Py_XDECREF(o: PyObject); assembler;
-asm
- or eax, eax
- jz @Null
-{$IFDEF PyRefDEBUG}
- cmp dword ptr [eax], 0
- jle RefError
-{$ENDIF}
- dec dword ptr [eax]
- jz Py_Dealloc
-@Null:
-end;
-*)
-
 procedure Py_XDECREF(o: PyObject);
 begin
   if o <> nil then Py_DECREF(o);
@@ -1818,24 +1748,27 @@ end;
 procedure Py_REF_Delta(o: PyObject; Delta: Integer);
 begin
   if Delta=0 then
-   {$IFDEF DEBUG}
-   Raise InternalE('Delta = 0!');
-   {$ELSE}
-   Exit;
-   {$ENDIF}
-  {$IFDEF PyRefDEBUG}
-  if o^.ob_refcnt<0 then
-    RefError();
-  if (Delta<0) and (o^.ob_refcnt=0) then
-    RefError();
-  {$ENDIF}
-  Inc(o^.ob_refcnt, Delta);
-  {$IFDEF PyRefDEBUG}
-  if o^.ob_refcnt < 0 then
-    RefError();
-  {$ENDIF}
-  if o^.ob_refcnt <= 0 then
-    Py_Dealloc(o);
+    {$IFDEF DEBUG}
+    Raise InternalE('Delta = 0!');
+    {$ELSE}
+    Exit;
+    {$ENDIF}
+  with o^ do
+  begin
+    {$IFDEF PyRefDEBUG}
+    if ob_refcnt<0 then
+      RefError();
+    if (Delta<0) and (ob_refcnt=0) then
+      RefError();
+    {$ENDIF}
+    Inc(ob_refcnt, Delta);
+    {$IFDEF PyRefDEBUG}
+    if ob_refcnt < 0 then
+      RefError();
+    {$ENDIF}
+    if ob_refcnt <= 0 then
+      Py_Dealloc(o);
+  end;
 end;
 
 (*function PySeq_Length(o: PyObject) : {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF};
