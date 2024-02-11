@@ -664,102 +664,108 @@ var g_PythonObjects: TList;
  {-------------------}
 
 const
+  PythonVersionAny{: Cardinal} = $0000000; //Using Python's own PY_VERSION_HEX scheme here.
+  //PythonVersion230{: Cardinal} = $20300f0;
+  PythonVersion235{: Cardinal} = $20305f0;
+  //PythonVersion250{: Cardinal} = $20500f0;
+  //PythonVersion260{: Cardinal} = $20600f0;
+  //PythonVersion270{: Cardinal} = $20700f0;
   PythonProcList: array[0..{$IFDEF PyProfiling}60{$ELSE}58{$ENDIF}] of record
                                     Variable: Pointer;
                                     Name: PChar;
-                                    MinimalVersion: Integer; //Exact meaning in GoodPythonVersion
+                                    MinimalVersion: Cardinal;
                                   end =
-  ( (Variable: @@Py_Initialize;              Name: 'Py_Initialize';              MinimalVersion: 0 ),
-    (Variable: @@Py_Finalize;                Name: 'Py_Finalize';                MinimalVersion: 0 ),
-    (Variable: @@Py_GetVersion;              Name: 'Py_GetVersion';              MinimalVersion: 0 ),
-    (Variable: @@Py_SetProgramName;          Name: 'Py_SetProgramName';          MinimalVersion: 0 ),
-    (Variable: @@PyRun_SimpleString;         Name: 'PyRun_SimpleString';         MinimalVersion: 0 ),
-//  (Variable: @@Py_CompileString;           Name: 'Py_CompileString';           MinimalVersion: 0 ),
-//  (Variable: @@Py_InitModule;              Name: 'Py_InitModule';              MinimalVersion: 0 ), //Missing in DLL
-//  (Variable: @@Py_InitModule3;             Name: 'Py_InitModule3';             MinimalVersion: 0 ), //Missing in DLL
+  ( (Variable: @@Py_Initialize;              Name: 'Py_Initialize';              MinimalVersion: PythonVersionAny ),
+    (Variable: @@Py_Finalize;                Name: 'Py_Finalize';                MinimalVersion: PythonVersionAny ),
+    (Variable: @@Py_GetVersion;              Name: 'Py_GetVersion';              MinimalVersion: PythonVersionAny ),
+    (Variable: @@Py_SetProgramName;          Name: 'Py_SetProgramName';          MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyRun_SimpleString;         Name: 'PyRun_SimpleString';         MinimalVersion: PythonVersionAny ),
+//  (Variable: @@Py_CompileString;           Name: 'Py_CompileString';           MinimalVersion: PythonVersionAny ),
+//  (Variable: @@Py_InitModule;              Name: 'Py_InitModule';              MinimalVersion: PythonVersionAny ), //Missing in DLL
+//  (Variable: @@Py_InitModule3;             Name: 'Py_InitModule3';             MinimalVersion: PythonVersionAny ), //Missing in DLL
 {$IFDEF CPU64BITS}
-    (Variable: @@Py_InitModule4;             Name: 'Py_InitModule4_64';          MinimalVersion: 0 ),
+    (Variable: @@Py_InitModule4;             Name: 'Py_InitModule4_64';          MinimalVersion: PythonVersionAny ),
 {$ELSE}
-    (Variable: @@Py_InitModule4;             Name: 'Py_InitModule4';             MinimalVersion: 0 ),
+    (Variable: @@Py_InitModule4;             Name: 'Py_InitModule4';             MinimalVersion: PythonVersionAny ),
 {$ENDIF}
-    (Variable: @@PyModule_GetDict;           Name: 'PyModule_GetDict';           MinimalVersion: 0 ),
-    (Variable: @@PyModule_New;               Name: 'PyModule_New';               MinimalVersion: 0 ),
-//  (Variable: @@PyImport_ImportModule;      Name: 'PyImport_ImportModule';      MinimalVersion: 0 ),
-//  (Variable: @@PyEval_GetGlobals;          Name: 'PyEval_GetGlobals';          MinimalVersion: 0 ),
-//  (Variable: @@PyEval_GetLocals;           Name: 'PyEval_GetLocals';           MinimalVersion: 0 ),
+    (Variable: @@PyModule_GetDict;           Name: 'PyModule_GetDict';           MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyModule_New;               Name: 'PyModule_New';               MinimalVersion: PythonVersionAny ),
+//  (Variable: @@PyImport_ImportModule;      Name: 'PyImport_ImportModule';      MinimalVersion: PythonVersionAny ),
+//  (Variable: @@PyEval_GetGlobals;          Name: 'PyEval_GetGlobals';          MinimalVersion: PythonVersionAny ),
+//  (Variable: @@PyEval_GetLocals;           Name: 'PyEval_GetLocals';           MinimalVersion: PythonVersionAny ),
 {$IFDEF PYTHON27}
-    (Variable: @@PyEval_CallObjectWithKeywords; Name: 'PyEval_CallObjectWithKeywords'; MinimalVersion: 0 ),
+    (Variable: @@PyEval_CallObjectWithKeywords; Name: 'PyEval_CallObjectWithKeywords'; MinimalVersion: PythonVersionAny ),
 {$ELSE}
-    (Variable: @@PyEval_CallObject;          Name: 'PyEval_CallObject';          MinimalVersion: 0 ),
+    (Variable: @@PyEval_CallObject;          Name: 'PyEval_CallObject';          MinimalVersion: PythonVersionAny ),
 {$ENDIF}
-    (Variable: @@PyCallable_Check;           Name: 'PyCallable_Check';           MinimalVersion: 0 ),
-    (Variable: @@PyErr_Print;                Name: 'PyErr_Print';                MinimalVersion: 0 ),
-    (Variable: @@PyErr_Clear;                Name: 'PyErr_Clear';                MinimalVersion: 0 ),
-    (Variable: @@PyErr_Occurred;             Name: 'PyErr_Occurred';             MinimalVersion: 0 ),
-    (Variable: @@PyErr_Fetch;                Name: 'PyErr_Fetch';                MinimalVersion: 0 ),
-    (Variable: @@PyErr_Restore;              Name: 'PyErr_Restore';              MinimalVersion: 0 ),
-    (Variable: @@PyErr_NewException;         Name: 'PyErr_NewException';         MinimalVersion: 0 ),
-    (Variable: @@PyErr_SetString;            Name: 'PyErr_SetString';            MinimalVersion: 0 ),
-    (Variable: @@PyErr_ExceptionMatches;     Name: 'PyErr_ExceptionMatches';     MinimalVersion: 0 ),
-    (Variable: @@PyObject_Length;            Name: 'PyObject_Length';            MinimalVersion: 0 ),
-//    (Variable: @@PyObject_GetItem;           Name: 'PyObject_GetItem';           MinimalVersion: 0 ),
-    (Variable: @@PyObject_HasAttrString;     Name: 'PyObject_HasAttrString';     MinimalVersion: 0 ),
-    (Variable: @@PyObject_GetAttrString;     Name: 'PyObject_GetAttrString';     MinimalVersion: 0 ),
-    (Variable: @@PyObject_IsTrue;            Name: 'PyObject_IsTrue';            MinimalVersion: 0 ),
-    (Variable: @@PyObject_Str;               Name: 'PyObject_Str';               MinimalVersion: 0 ),
-    (Variable: @@PyObject_Repr;              Name: 'PyObject_Repr';              MinimalVersion: 0 ),
-    (Variable: @@PySequence_GetItem;         Name: 'PySequence_GetItem';         MinimalVersion: 0 ),
-    (Variable: @@PySequence_In;              Name: 'PySequence_In';              MinimalVersion: 0 ), //Is a legacy alias for the new PySequence_Contains
-    (Variable: @@PySequence_Index;           Name: 'PySequence_Index';           MinimalVersion: 0 ),
-    (Variable: @@PySequence_DelItem;         Name: 'PySequence_DelItem';         MinimalVersion: 0 ),
-    (Variable: @@PyMapping_HasKey;           Name: 'PyMapping_HasKey';           MinimalVersion: 0 ),
-    (Variable: @@PyMapping_HasKeyString;     Name: 'PyMapping_HasKeyString';     MinimalVersion: 0 ),
-    (Variable: @@PyNumber_Float;             Name: 'PyNumber_Float';             MinimalVersion: 0 ),
-    (Variable: @@Py_BuildValue;              Name: 'Py_BuildValue';              MinimalVersion: 0 ),
-    (Variable: @@PyArg_ParseTuple;           Name: 'PyArg_ParseTuple';           MinimalVersion: 0 ),
-    (Variable: @@PyTuple_New;                Name: 'PyTuple_New';                MinimalVersion: 0 ),
-    (Variable: @@PyTuple_GetItem;            Name: 'PyTuple_GetItem';            MinimalVersion: 0 ),
-    (Variable: @@PyTuple_SetItem;            Name: 'PyTuple_SetItem';            MinimalVersion: 0 ),
-    (Variable: @@PyList_New;                 Name: 'PyList_New';                 MinimalVersion: 0 ),
-    (Variable: @@PyList_GetItem;             Name: 'PyList_GetItem';             MinimalVersion: 0 ),
-    (Variable: @@PyList_SetItem;             Name: 'PyList_SetItem';             MinimalVersion: 0 ),
-    (Variable: @@PyList_Insert;              Name: 'PyList_Insert';              MinimalVersion: 0 ),
-    (Variable: @@PyList_Append;              Name: 'PyList_Append';              MinimalVersion: 0 ),
-    (Variable: @@PyDict_New;                 Name: 'PyDict_New';                 MinimalVersion: 0 ),
-    (Variable: @@PyDict_SetItemString;       Name: 'PyDict_SetItemString';       MinimalVersion: 0 ),
-    (Variable: @@PyDict_GetItemString;       Name: 'PyDict_GetItemString';       MinimalVersion: 0 ),
-    (Variable: @@PyDict_GetItem;             Name: 'PyDict_GetItem';             MinimalVersion: 0 ),
-    (Variable: @@PyDict_Keys;                Name: 'PyDict_Keys';                MinimalVersion: 0 ),
-    (Variable: @@PyDict_Values;              Name: 'PyDict_Values';              MinimalVersion: 0 ),
-    (Variable: @@PyDict_Next;                Name: 'PyDict_Next';                MinimalVersion: 0 ),
-    (Variable: @@PyString_FromString;        Name: 'PyString_FromString';        MinimalVersion: 0 ),
-    (Variable: @@PyString_AsString;          Name: 'PyString_AsString';          MinimalVersion: 0 ),
-    (Variable: @@PyString_FromStringAndSize; Name: 'PyString_FromStringAndSize'; MinimalVersion: 0 ),
-    (Variable: @@PyString_Size;              Name: 'PyString_Size';              MinimalVersion: 0 ),
-    (Variable: @@PyInt_FromLong;             Name: 'PyInt_FromLong';             MinimalVersion: 0 ),
-    (Variable: @@PyInt_AsLong;               Name: 'PyInt_AsLong';               MinimalVersion: 0 ),
-//    (Variable: @@PyInt_FromSsize_t;          Name: 'PyInt_FromSsize_t';          MinimalVersion: 250 ),
-//    (Variable: @@PyInt_FromSize_t;           Name: 'PyInt_FromSize_t';           MinimalVersion: 250 ),
-//    (Variable: @@PyInt_AsSsize_t;            Name: 'PyInt_AsSsize_t';            MinimalVersion: 250 ),
-//    (Variable: @@PyInt_AsUnsignedLongMask;   Name: 'PyInt_AsUnsignedLongMask';   MinimalVersion: 230 ),
-//    (Variable: @@PyLong_FromLong;            Name: 'PyLong_FromLong';            MinimalVersion: 0 ),
-//    (Variable: @@PyLong_FromUnsignedLong;    Name: 'PyLong_FromUnsignedLong';    MinimalVersion: 0 ),
-//    (Variable: @@PyLong_FromSsize_t;         Name: 'PyLong_FromSsize_t';         MinimalVersion: 260 ),
-//    (Variable: @@PyLong_FromSize_t;          Name: 'PyLong_FromSize_t';          MinimalVersion: 260 ),
-//    (Variable: @@PyLong_FromDouble;          Name: 'PyLong_FromDouble';          MinimalVersion: 0 ),
-//    (Variable: @@PyLong_AsLong;              Name: 'PyLong_AsLong';              MinimalVersion: 0 ),
-//    (Variable: @@PyLong_AsLongAndOverflow;   Name: 'PyLong_AsLongAndOverflow';   MinimalVersion: 270 ),
-//    (Variable: @@PyLong_AsSsize_t;           Name: 'PyLong_AsSsize_t';           MinimalVersion: 260 ),
-//    (Variable: @@PyLong_AsUnsignedLong;      Name: 'PyLong_AsUnsignedLong';      MinimalVersion: 0 ),
-//    (Variable: @@PyLong_AsUnsignedLongMask;  Name: 'PyLong_AsUnsignedLongMask';  MinimalVersion: 230 ),
-//    (Variable: @@PyLong_AsDouble;            Name: 'PyLong_AsDouble';            MinimalVersion: 0 ),
-    (Variable: @@PyFloat_FromDouble;         Name: 'PyFloat_FromDouble';         MinimalVersion: 0 ),
-    (Variable: @@PyFloat_AsDouble;           Name: 'PyFloat_AsDouble';           MinimalVersion: 0 ),
-    (Variable: @@PyObject_Init;              Name: 'PyObject_Init';              MinimalVersion: 0 ),
-    (Variable: @@PyCFunction_New;            Name: 'PyCFunction_New';            MinimalVersion: 0 ),
-    (Variable: @@PyGC_Collect;               Name: 'PyGC_Collect';               MinimalVersion: 235 ){$IFDEF PyProfiling},
-    (Variable: @@PyThreadState_Get;          Name: 'PyThreadState_Get';          MinimalVersion: 0 ),
-    (Variable: @@PyCode_Addr2Line;           Name: 'PyCode_Addr2Line';           MinimalVersion: 230 ){$ENDIF}
+    (Variable: @@PyCallable_Check;           Name: 'PyCallable_Check';           MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyErr_Print;                Name: 'PyErr_Print';                MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyErr_Clear;                Name: 'PyErr_Clear';                MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyErr_Occurred;             Name: 'PyErr_Occurred';             MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyErr_Fetch;                Name: 'PyErr_Fetch';                MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyErr_Restore;              Name: 'PyErr_Restore';              MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyErr_NewException;         Name: 'PyErr_NewException';         MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyErr_SetString;            Name: 'PyErr_SetString';            MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyErr_ExceptionMatches;     Name: 'PyErr_ExceptionMatches';     MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyObject_Length;            Name: 'PyObject_Length';            MinimalVersion: PythonVersionAny ),
+//    (Variable: @@PyObject_GetItem;           Name: 'PyObject_GetItem';           MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyObject_HasAttrString;     Name: 'PyObject_HasAttrString';     MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyObject_GetAttrString;     Name: 'PyObject_GetAttrString';     MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyObject_IsTrue;            Name: 'PyObject_IsTrue';            MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyObject_Str;               Name: 'PyObject_Str';               MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyObject_Repr;              Name: 'PyObject_Repr';              MinimalVersion: PythonVersionAny ),
+    (Variable: @@PySequence_GetItem;         Name: 'PySequence_GetItem';         MinimalVersion: PythonVersionAny ),
+    (Variable: @@PySequence_In;              Name: 'PySequence_In';              MinimalVersion: PythonVersionAny ), //Is a legacy alias for the new PySequence_Contains
+    (Variable: @@PySequence_Index;           Name: 'PySequence_Index';           MinimalVersion: PythonVersionAny ),
+    (Variable: @@PySequence_DelItem;         Name: 'PySequence_DelItem';         MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyMapping_HasKey;           Name: 'PyMapping_HasKey';           MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyMapping_HasKeyString;     Name: 'PyMapping_HasKeyString';     MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyNumber_Float;             Name: 'PyNumber_Float';             MinimalVersion: PythonVersionAny ),
+    (Variable: @@Py_BuildValue;              Name: 'Py_BuildValue';              MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyArg_ParseTuple;           Name: 'PyArg_ParseTuple';           MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyTuple_New;                Name: 'PyTuple_New';                MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyTuple_GetItem;            Name: 'PyTuple_GetItem';            MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyTuple_SetItem;            Name: 'PyTuple_SetItem';            MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyList_New;                 Name: 'PyList_New';                 MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyList_GetItem;             Name: 'PyList_GetItem';             MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyList_SetItem;             Name: 'PyList_SetItem';             MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyList_Insert;              Name: 'PyList_Insert';              MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyList_Append;              Name: 'PyList_Append';              MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyDict_New;                 Name: 'PyDict_New';                 MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyDict_SetItemString;       Name: 'PyDict_SetItemString';       MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyDict_GetItemString;       Name: 'PyDict_GetItemString';       MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyDict_GetItem;             Name: 'PyDict_GetItem';             MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyDict_Keys;                Name: 'PyDict_Keys';                MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyDict_Values;              Name: 'PyDict_Values';              MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyDict_Next;                Name: 'PyDict_Next';                MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyString_FromString;        Name: 'PyString_FromString';        MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyString_AsString;          Name: 'PyString_AsString';          MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyString_FromStringAndSize; Name: 'PyString_FromStringAndSize'; MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyString_Size;              Name: 'PyString_Size';              MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyInt_FromLong;             Name: 'PyInt_FromLong';             MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyInt_AsLong;               Name: 'PyInt_AsLong';               MinimalVersion: PythonVersionAny ),
+//    (Variable: @@PyInt_FromSsize_t;          Name: 'PyInt_FromSsize_t';          MinimalVersion: PythonVersion250 ),
+//    (Variable: @@PyInt_FromSize_t;           Name: 'PyInt_FromSize_t';           MinimalVersion: PythonVersion250 ),
+//    (Variable: @@PyInt_AsSsize_t;            Name: 'PyInt_AsSsize_t';            MinimalVersion: PythonVersion250 ),
+//    (Variable: @@PyInt_AsUnsignedLongMask;   Name: 'PyInt_AsUnsignedLongMask';   MinimalVersion: PythonVersion230 ),
+//    (Variable: @@PyLong_FromLong;            Name: 'PyLong_FromLong';            MinimalVersion: PythonVersionAny ),
+//    (Variable: @@PyLong_FromUnsignedLong;    Name: 'PyLong_FromUnsignedLong';    MinimalVersion: PythonVersionAny ),
+//    (Variable: @@PyLong_FromSsize_t;         Name: 'PyLong_FromSsize_t';         MinimalVersion: PythonVersion260 ),
+//    (Variable: @@PyLong_FromSize_t;          Name: 'PyLong_FromSize_t';          MinimalVersion: PythonVersion260 ),
+//    (Variable: @@PyLong_FromDouble;          Name: 'PyLong_FromDouble';          MinimalVersion: PythonVersionAny ),
+//    (Variable: @@PyLong_AsLong;              Name: 'PyLong_AsLong';              MinimalVersion: PythonVersionAny ),
+//    (Variable: @@PyLong_AsLongAndOverflow;   Name: 'PyLong_AsLongAndOverflow';   MinimalVersion: PythonVersion270 ),
+//    (Variable: @@PyLong_AsSsize_t;           Name: 'PyLong_AsSsize_t';           MinimalVersion: PythonVersion260 ),
+//    (Variable: @@PyLong_AsUnsignedLong;      Name: 'PyLong_AsUnsignedLong';      MinimalVersion: PythonVersionAny ),
+//    (Variable: @@PyLong_AsUnsignedLongMask;  Name: 'PyLong_AsUnsignedLongMask';  MinimalVersion: PythonVersion230 ),
+//    (Variable: @@PyLong_AsDouble;            Name: 'PyLong_AsDouble';            MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyFloat_FromDouble;         Name: 'PyFloat_FromDouble';         MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyFloat_AsDouble;           Name: 'PyFloat_AsDouble';           MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyObject_Init;              Name: 'PyObject_Init';              MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyCFunction_New;            Name: 'PyCFunction_New';            MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyGC_Collect;               Name: 'PyGC_Collect';               MinimalVersion: PythonVersion235 ){$IFDEF PyProfiling},
+    (Variable: @@PyThreadState_Get;          Name: 'PyThreadState_Get';          MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyCode_Addr2Line;           Name: 'PyCode_Addr2Line';           MinimalVersion: PythonVersion230 ){$ENDIF}
   );
 
 var
@@ -779,29 +785,18 @@ end;
 
  {-------------------}
 
-function GoodPythonVersion(NumberToCheck: Integer; const PythonVersionNumber: TVersionNumber) : boolean;
+function GoodPythonVersion(NumberToCheck: Cardinal; const PythonVersionNumber: TVersionNumber) : boolean;
+var
+  PY_MAJOR_VERSION, PY_MINOR_VERSION, PY_MICRO_VERSION{, PY_RELEASE_LEVEL, PY_RELEASE_SERIAL}: Cardinal;
 begin
   //This function checks if the Python version 'encoded' in NumberToCheck
-  //is equal or higher to the given PythonVersionNumber
-  case NumberToCheck of
-  0:
-  begin
-    //All Python versions will do
-    Result:=true;
-  end;
-  230:
-  begin
-    Result:=PythonVersionNumber.IsEqualOrGreater([2, 3, 0]);
-  end;
-  235:
-  begin
-    Result:=PythonVersionNumber.IsEqualOrGreater([2, 3, 5]);
-  end;
-  else
-  begin
-    raise InternalE('Call to GoodPythonVersion with an unknown NumberToCheck!');
-  end;
-  end;
+  //is equal or higher to the given PythonVersionNumber.
+  PY_MAJOR_VERSION := NumberToCheck shr 24;
+  PY_MINOR_VERSION := (NumberToCheck shr 16) mod 256;
+  PY_MICRO_VERSION := (NumberToCheck shr 8) mod 256;
+  //PY_RELEASE_LEVEL := (NumberToCheck shr 4) mod 16;
+  //PY_RELEASE_SERIAL := NumberToCheck mod 16;
+  Result:=PythonVersionNumber.IsEqualOrGreater([PY_MAJOR_VERSION, PY_MINOR_VERSION, PY_MICRO_VERSION]);
 end;
 
 (*function GetPython1Version(): String;
@@ -928,10 +923,10 @@ begin
   end;
   Result:=4;
 
-  //First load the all-version functions
+  //First load the all-version functions (in order to load Py_GetVersion)
   for I:=Low(PythonProcList) to High(PythonProcList) do
   begin
-    if (PythonProcList[I].MinimalVersion = 0) then
+    if (PythonProcList[I].MinimalVersion = PythonVersionAny) then
     begin
       P:=GetProcAddress(PythonLib, PythonProcList[I].Name);
       if P=Nil then
@@ -995,7 +990,7 @@ begin
   //Now that we know the Python version, load the version-specific functions
   for I:=Low(PythonProcList) to High(PythonProcList) do
   begin
-    if (PythonProcList[I].MinimalVersion = 0) then
+    if (PythonProcList[I].MinimalVersion = PythonVersionAny) then
       continue;
     if GoodPythonVersion(PythonProcList[I].MinimalVersion, VersionNumber) then
     begin
