@@ -3645,7 +3645,6 @@ begin
  if PythonLoaded then
   Exit;
 
- {InitConsole;}
  I:=InitializePython;
  if I>0 then FatalError(I);
 
@@ -3661,7 +3660,6 @@ begin
     import quarkpy
  }
  if PyRun_SimpleString(ToPyChar(S))<>0 then FatalError(-8);
- InitSetup;
 
  PythonCodeEnd;
  PythonLoaded := True;

@@ -358,9 +358,13 @@ begin
    Log(LOG_VERBOSE, 'Setting up console...');
    InitConsole;
 
-   // Python initialization and Defaults.qrk and Setup.qrk loading
+   // Python initialization
    Log(LOG_VERBOSE, 'Initializing Python...');
    InitPython;
+
+   // Defaults.qrk and Setup.qrk loading
+   Log(LOG_VERBOSE, 'Loading settings...');
+   InitSetup;
 
    if LaunchOptions.DoInstance and (SetupSubSet(ssGeneral, 'Startup').Specifics.Strings['SingleInstance']<>'') then
    begin
