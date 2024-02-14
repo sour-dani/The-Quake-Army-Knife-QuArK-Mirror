@@ -500,7 +500,6 @@ begin
  FExplorer.SetMarsCaption(Self);
  FExplorer.ViewPanel:=Panel2;
  FExplorer.CreateSplitter;
- {InitSetup;  called by InitPython}
  ClearExplorer;
  RestorePositionTb('Main', False, FExplorer);
  OnCloseQuery:=FormCloseQuery;
@@ -1637,10 +1636,11 @@ begin
     F.Free;
   end;
 
+ if not SaveRecentFiles then
+  if g_SetupSet[ssGeneral]<> nil then
+   g_SetupSet[ssGeneral].Specifics.Strings['RecentFiles']:='';
  if LoadingComplete then //If Python isn't loaded, some strings would become corrupted.
   begin
-   if not SaveRecentFiles then
-    g_SetupSet[ssGeneral].Specifics.Strings['RecentFiles']:='';
    try
     SaveSetupNow;
    except
