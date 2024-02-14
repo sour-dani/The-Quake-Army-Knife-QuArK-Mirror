@@ -106,7 +106,7 @@ const
  ToolBoxOpen   = 2;  { is currently open }
 
 var
-  PythonLoaded: Boolean;
+  PythonInited: Boolean;
 
  {-------------------}
 
@@ -3642,7 +3642,7 @@ var
  S: String;
  I: Integer;
 begin
- if PythonLoaded then
+ if PythonInited then
   Exit;
 
  I:=InitializePython;
@@ -3662,7 +3662,7 @@ begin
  if PyRun_SimpleString(ToPyChar(S))<>0 then FatalError(-8);
 
  PythonCodeEnd;
- PythonLoaded := True;
+ PythonInited := True;
 end;
 
 procedure ConnectToPython;
@@ -3679,7 +3679,7 @@ var
   obj: PyObject;
   I: Integer;
 begin
-  if not PythonLoaded then
+  if not PythonInited then
    Exit;
 
   if PyRun_SimpleString(PythonShutdown)<>0 then FatalError(-6);
@@ -3728,7 +3728,7 @@ begin
 
   Py_Finalize;
   UnInitializePython;
-  PythonLoaded := False;
+  PythonInited := False;
 end;
 
 procedure PythonCodeEnd;
