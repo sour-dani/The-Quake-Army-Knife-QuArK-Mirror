@@ -950,13 +950,20 @@ begin
   Result:=3;
 
   //Process Py_GetVersion to find version number. It is documented to be the version number, followed by a space, and its description.
-  try
-  FoundGoodVersion:=False;
   Index:=Pos(' ', s);
   if Index <> 0 then
-  begin
-    VersionNumberString:=LeftStr(s, Index-1);
+    VersionNumberString:=LeftStr(s, Index-1)
+  else
+    VersionNumberString:=s;
+
+  try
     VersionNumber:=TVersionNumber.Create(VersionNumberString);
+
+    if VersionNumber.Count = 0 then
+    begin
+      Log(LOG_WARNING, 'Cannot parse Python version number %s!', [s]);
+      Exit;
+    end;
 
     if VersionNumber.IsEqualOrGreater([3]) then
     begin
@@ -970,39 +977,34 @@ begin
       FoundGoodVersion:=True;
       if not VersionNumber.IsEqual([2, 4, 4]) then
         LogAndWarn(Format('A different version (%s) of Python than supported found! QuArK might behave unpredictably!', [VersionNumberString]));
-    end;
-  end
-  else
-  begin
-    Log(LOG_WARNING, 'Cannot parse Python version number %s!', [s]);
-    VersionNumberString:=s;
-    VersionNumber:=TVersionNumber.Create('0');
-  end;
+    end
+    else
+      FoundGoodVersion:=False;
 
-  if not FoundGoodVersion then
-  begin
-    LogAndWarn(Format('Unsupported version (%s) of Python found!', [VersionNumberString]));
-    Exit;
-  end;
-  Result:=2;
-
-  //Now that we know the Python version, load the version-specific functions
-  for I:=Low(PythonProcList) to High(PythonProcList) do
-  begin
-    if (PythonProcList[I].MinimalVersion = PythonVersionAny) then
-      continue;
-    if GoodPythonVersion(PythonProcList[I].MinimalVersion, VersionNumber) then
+    if not FoundGoodVersion then
     begin
-      P:=GetProcAddress(PythonLib, PythonProcList[I].Name);
-      if P=Nil then
-      begin
-        Log(LOG_PYTHON, LOG_CRITICAL, 'Unable to load %s!', [PythonProcList[I].Name]);
-        Exit;
-      end;
-      PPointer(PythonProcList[I].Variable)^:=P;
+      LogAndWarn(Format('Unsupported version (%s) of Python found!', [VersionNumberString]));
+      Exit;
     end;
-  end;
-  Result:=1;
+    Result:=2;
+
+    //Now that we know the Python version, load the version-specific functions
+    for I:=Low(PythonProcList) to High(PythonProcList) do
+    begin
+      if (PythonProcList[I].MinimalVersion = PythonVersionAny) then
+        continue;
+      if GoodPythonVersion(PythonProcList[I].MinimalVersion, VersionNumber) then
+      begin
+        P:=GetProcAddress(PythonLib, PythonProcList[I].Name);
+        if P=Nil then
+        begin
+          Log(LOG_PYTHON, LOG_CRITICAL, 'Unable to load %s!', [PythonProcList[I].Name]);
+          Exit;
+        end;
+        PPointer(PythonProcList[I].Variable)^:=P;
+      end;
+    end;
+    Result:=1;
 
   finally
     if VersionNumber<>nil then VersionNumber.Free;

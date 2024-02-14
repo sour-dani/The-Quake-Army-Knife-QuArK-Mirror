@@ -29,6 +29,7 @@ type
     Remainder: String;
   public
     constructor Create(const Version: String; const Delimiter: String = '.');
+    function Count: Integer;
     function IsEqual(const VersionNumber: array of Cardinal): Boolean;
     function IsEqualOrGreater(const VersionNumber: array of Cardinal): Boolean;
     function IsLess(const VersionNumber: array of Cardinal): Boolean;
@@ -63,6 +64,11 @@ begin
   Numbers[Length(Numbers)-1]:=StrToUIntDef(RightStr(Version, Length(Version) - OldIndex + 1), 0);
 
   //FIXME: Remainder
+end;
+
+function TVersionNumber.Count: Integer;
+begin
+  Result:=Length(Numbers);
 end;
 
 //If no number is provided, interpret that as zero.
