@@ -1639,7 +1639,7 @@ begin
  if not SaveRecentFiles then
   if g_SetupSet[ssGeneral]<> nil then
    g_SetupSet[ssGeneral].Specifics.Strings['RecentFiles']:='';
- if LoadingComplete then //If Python isn't loaded, some strings would become corrupted.
+ if IsPythonInited then //If Python isn't initialized, some strings would become corrupted.
   begin
    try
     SaveSetupNow;

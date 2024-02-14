@@ -42,6 +42,7 @@ var
 
  {-------------------}
 
+function IsPythonInited : Boolean;
 procedure InitPython;
 procedure ConnectToPython;
 procedure ShutdownPython;
@@ -3635,6 +3636,11 @@ begin
  Log('%s Error Code: %d', [S, Err]);
  Application.MessageBox(PChar(S), FatalErrorCaption, MB_ICONERROR or MB_OK);
  ExitProcess(Err);
+end;
+
+function IsPythonInited : Boolean;
+begin
+  Result:=PythonInited;
 end;
 
 procedure InitPython;
