@@ -3775,30 +3775,6 @@ begin
      ShowConsole(True);
     end;
 end;
-(*{const
- nTitle = ' - Python Error...';}
-var
- Z: array[0..255] of Char;
-{P: PChar;}
- H: HWnd;
-begin
- if PyErr_Occurred<>Nil then
-  if PyErr_ExceptionMatches(QuarkxAborted) then
-   PyErr_Clear   { silent exception }
-  else
-   begin
-    PyErr_Print;
-    GetConsoleTitle(Z, High(Z)+1);
-   {P:=StrEnd(Z);
-    StrCopy(P, nTitle);
-    SetConsoleTitle(Z);}
-    H:=FindWindow('tty', Z);
-   {P^:=#0;
-    SetConsoleTitle(Z);}
-    SetForegroundWindow(H);
-   end;
- {PyErr_Restore(Nil, Nil, Nil);}
-end;*)
 
  {-------------------}
 (*
