@@ -139,7 +139,7 @@ type
 
  FnFreeFunc      = procedure(ptr: Pointer); cdecl;
  FnDestructor    = procedure(o: PyObject); cdecl;
- FnPrintFunc     = function(o: PyObject; f: CFILE; i: Integer) : Integer; cdecl;
+ FnPrintFunc     = function(o: PyObject; f: CFILE; flags: Integer) : Integer; cdecl;
  FnGetAttrFunc   = function(o: PyObject; attr: PyChar) : PyObject; cdecl;
  FnGetAttrOFunc  = function(o: PyObject; attr: PyObject) : PyObject; cdecl;
  FnSetAttrFunc   = function(o: PyObject; attr: PyChar; v: PyObject) : Integer; cdecl;
@@ -365,7 +365,7 @@ Py_Initialize: procedure; cdecl;
 Py_Finalize: procedure; cdecl;
 Py_SetProgramName: procedure (name : PyChar); cdecl;
 Py_GetVersion: function : (*const*) PyChar; cdecl;
-//Py_GetBuildNumber: function : (*const*) PyChar; cdecl; //New in Python 2.5
+//Py_GetBuildNumber: function : (*const*) PyChar; cdecl; //Introduced during Python 2.5 development, but removed before release.
 //Py_GetPlatform: function : (*const*) PyChar; cdecl;
 //Py_GetCopyright: function : (*const*) PyChar; cdecl;
 //Py_GetCompiler: function : (*const*) PyChar; cdecl;
@@ -434,6 +434,7 @@ PyList_Append: function (list: PyObject; item: PyObject) : Integer; cdecl;
 PyDict_New: function : PyObject; cdecl;
 PyDict_SetItemString: function (dict: PyObject; const key: PyChar; item: PyObject) : Integer; cdecl;
 PyDict_GetItemString: function (dict: PyObject; const key: PyChar) : PyObject; cdecl;
+//PyDict_SetItem: function (dict: PyObject; key: PyObject; item: PyObject) : Integer; cdecl;
 PyDict_GetItem: function (dict, key: PyObject) : PyObject; cdecl;
 PyDict_Keys: function (dict: PyObject) : PyObject; cdecl;
 PyDict_Values: function (dict: PyObject) : PyObject; cdecl;
@@ -475,14 +476,12 @@ PyObject_Init: function (o: PyObject; t: PyTypeObject) : PyObject; cdecl;
 
 PyCFunction_New: function (const Def: TyMethodDef; self: PyObject) : PyObject; cdecl;
 
-//New in Python 2.3: (NOT TESTED)
+//New in Python 2.3:
 //PyBool_Check: function (o: PyObject) : Integer; cdecl;
 //Py_False: function : PyObject; cdecl;
 //Py_True: function : PyObject; cdecl;
 //PyBool_FromLong: function (Value: LongInt) : PyObject; cdecl;
-
-//Note: Added in Python 2.3.5
-PyGC_Collect: procedure; cdecl;
+PyGC_Collect: function : {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}; cdecl;
 
 {$IFDEF PyProfiling}
 type
@@ -665,8 +664,8 @@ var g_PythonObjects: TList;
 
 const
   PythonVersionAny{: Cardinal} = $0000000; //Using Python's own PY_VERSION_HEX scheme here.
-  //PythonVersion230{: Cardinal} = $20300f0;
-  PythonVersion235{: Cardinal} = $20305f0;
+  PythonVersion230{: Cardinal} = $20300f0;
+  //PythonVersion235{: Cardinal} = $20305f0;
   //PythonVersion250{: Cardinal} = $20500f0;
   //PythonVersion260{: Cardinal} = $20600f0;
   //PythonVersion270{: Cardinal} = $20700f0;
@@ -763,7 +762,7 @@ const
     (Variable: @@PyFloat_AsDouble;           Name: 'PyFloat_AsDouble';           MinimalVersion: PythonVersionAny ),
     (Variable: @@PyObject_Init;              Name: 'PyObject_Init';              MinimalVersion: PythonVersionAny ),
     (Variable: @@PyCFunction_New;            Name: 'PyCFunction_New';            MinimalVersion: PythonVersionAny ),
-    (Variable: @@PyGC_Collect;               Name: 'PyGC_Collect';               MinimalVersion: PythonVersion235 ){$IFDEF PyProfiling},
+    (Variable: @@PyGC_Collect;               Name: 'PyGC_Collect';               MinimalVersion: PythonVersion230 ){$IFDEF PyProfiling},
     (Variable: @@PyThreadState_Get;          Name: 'PyThreadState_Get';          MinimalVersion: PythonVersionAny ),
     (Variable: @@PyCode_Addr2Line;           Name: 'PyCode_Addr2Line';           MinimalVersion: PythonVersion230 ){$ENDIF}
   );
