@@ -348,7 +348,7 @@ $Applications[] = new cApplication('QuArK 5.6', '56', '#40C040', False, True, Fa
                                   );
 $Applications[] = new cApplication('QuArK 5.7', '57', '#40C040', False, True, False,
                                    'GPL', mktime(0, 0, 0, 2, 28, 1999), NULL, //Date from Yahoo groups posting
-                                   NULL, //FIXME: Missing!
+                                   array($downloadroot.'oldies/quark57.exe'),
                                    array($DependencyPython15, )
                                   );
 $Applications[] = new cApplication('QuArK 5.8', '58', '#40C040', False, True, False,
