@@ -421,15 +421,18 @@ PyNumber_Float: function (o: PyObject) : PyObject; cdecl;
 Py_BuildValue: function (const fmt: PyChar{, ...}) : PyObject; cdecl;
 PyArg_ParseTuple: function (src: PyObject; const fmt: PyChar{, ...}) : Integer; cdecl;
 //PyArg_ParseTupleAndKeywords: function (args, kw: PyObject; const fmt: PyChar; keywords: PPyChar{, ...}) : Integer; cdecl;
+
 PyTuple_New: function (size: {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}) : PyObject; cdecl;
 PyTuple_GetItem: function (tuple: PyObject; index: {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}) : PyObject; cdecl;
 PyTuple_SetItem: function (tuple: PyObject; index: {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}; item: PyObject) : Integer; cdecl;
+//PyTuple_Size: function (tuple: PyObject) : {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}; cdecl;
 
 PyList_New: function (size: {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}) : PyObject; cdecl;
 PyList_GetItem: function (list: PyObject; index: {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}) : PyObject; cdecl;
 PyList_SetItem: function (list: PyObject; index: {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}; item: PyObject) : Integer; cdecl;
 PyList_Insert: function (list: PyObject; index: {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}; item: PyObject) : Integer; cdecl;
 PyList_Append: function (list: PyObject; item: PyObject) : Integer; cdecl;
+//PyList_Size: function (list: PyObject) : {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}; cdecl;
 
 PyDict_New: function : PyObject; cdecl;
 PyDict_SetItemString: function (dict: PyObject; const key: PyChar; item: PyObject) : Integer; cdecl;
@@ -438,8 +441,9 @@ PyDict_GetItemString: function (dict: PyObject; const key: PyChar) : PyObject; c
 PyDict_GetItem: function (dict, key: PyObject) : PyObject; cdecl;
 PyDict_Keys: function (dict: PyObject) : PyObject; cdecl;
 PyDict_Values: function (dict: PyObject) : PyObject; cdecl;
-//function PyDict_Items(dict: PyObject) : PyObject; cdecl;
-//function PyDict_DelItemString(dict: PyObject; key: PyChar) : Integer; cdecl;
+//PyDict_Items: function(dict: PyObject) : PyObject; cdecl;
+//PyDict_DelItemString: function(dict: PyObject; key: PyChar) : Integer; cdecl;
+//PyDict_Size: function (dict: PyObject) : {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}; cdecl;
 PyDict_Next: function (dict: PyObject; pos : {$IFDEF PYTHON25} Py_ssize_tPtr {$ELSE} PInteger {$ENDIF}; key : PyObjectPtr; value : PyObjectPtr) : Integer; cdecl;
 
 PyString_FromString: function (const str: PyChar) : PyObject; cdecl;
@@ -603,6 +607,12 @@ var
   PyThreadState_Get: function : PyThreadState; cdecl;
   PyCode_Addr2Line: function(co: PyCodeObject; addrq: Integer) : Integer; cdecl; //Note: Added in Python 2.3.0
 {$ENDIF}
+
+//Macro's
+//function PyTuple_GET_SIZE(o: PyObject) : {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF};{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+//function PyList_GET_SIZE(o: PyObject) : {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF};{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+//function PyDict_GET_SIZE(o: PyObject) : {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF};{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+//function PyString_GET_SIZE(o: PyObject) : {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF};{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 
  {-------------------}
 
@@ -1882,6 +1892,30 @@ begin
       PythonObjectDump;
 end;
 {$ENDIF}
+
+//Careful! No error checking is performed.
+(*function PyTuple_GET_SIZE(o: PyObject) : {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF};
+begin
+  Result:=PyVarObject(o).ob_size;
+end;*)
+
+//Careful! No error checking is performed.
+(*function PyList_GET_SIZE(o: PyObject) : {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF};
+begin
+  Result:=PyVarObject(o).ob_size;
+end;*)
+
+//Careful! No error checking is performed.
+(*function PyDict_GET_SIZE(o: PyObject) : {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF};
+begin
+  Result:=PyVarObject(o).ob_size;
+end;*)
+
+//Careful! No error checking is performed.
+(*function PyString_GET_SIZE(o: PyObject) : {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF};
+begin
+  Result:=PyVarObject(o).ob_size;
+end;*)
 
 initialization
   PythonLib:=0;
