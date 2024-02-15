@@ -74,6 +74,12 @@ type
 {$endif}
 {$endif}
 
+  //Delphi is making the mistake of locking their Unicode implementation to UTF-16; we're better than that.
+{$IFDEF UNICODE}
+  UnicodeChar = WideChar;
+  PUnicodeChar = ^WideChar;
+{$ENDIF}
+
 {$IFDEF CPU64BITS}
   size_t = UInt64;
   ssize_t = Int64;
@@ -571,20 +577,23 @@ function SplitString(const S, Delimiters: string): TStringDynArray;
 function LastPos(const SubStr: String; const S: String): Integer;
 
 function CharInSet(C: AnsiChar; const CharSet: TSysCharSet): Boolean; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+{$ifndef Delphi2orNewerCompiler}
 function CharInSet(C: WideChar; const CharSet: TSysCharSet): Boolean; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+{$endif}
+//function CharInSet(C: UnicodeChar; const CharSet: TSysCharSet): Boolean; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 
-//This function doesn't exist at all in Delphi:
+//These functions doesn't exist at all in Delphi:
 {$ifdef MSWINDOWS}
 function CheckWin32VersionWithServicePack(AMajor: Integer; AMinor: Integer = 0; AServicePackMajor: Integer = 0; AServicePackMinor: Integer = 0): Boolean; //Note: We use the wrong datatype to be consistent with CheckWin32Version.
 function CheckWin32VersionWithBuildNumber(AMajor: Integer; AMinor: Integer = 0; ABuildNumber: Integer = 0): Boolean; //Note: We use the wrong datatype to be consistent with CheckWin32Version.
 {$endif}
-
-//This function doesn't exist at all in Delphi:
+{$ifndef Delphi2orNewerCompiler}
+function WideLowerCaseFileName(const S: WideString): WideString;
+function WideCompareFileName(const S1, S2: WideString): Integer;
+{$endif}
 {$IFDEF UNICODE}
-function WideLowerCaseFileName(const S: string): string;
-
-//This function doesn't exist at all in Delphi:
-function WideCompareFileName(const S1, S2: string): Integer;
+function UnicodeLowerCaseFileName(const S: UnicodeString): string;
+function UnicodeCompareFileName(const S1, S2: UnicodeString): Integer;
 {$ENDIF}
 
 //This function doesn't exist at all in Delphi:
@@ -662,32 +671,32 @@ end;
 {$ifndef Delphi2010orNewerCompiler}
 function ContainsText(const AText, ASubText: string): Boolean;
 begin
-  Result := AnsiContainsText(AText, ASubText); //Note: Apparently, this function are misnamed, and they handle unicode too!
+  Result := AnsiContainsText(AText, ASubText); //Note: Apparently, this function is misnamed, and it handles unicode too!
 end;
 
 function StartsText(const ASubText, AText: string): Boolean;
 begin
-  Result := AnsiStartsText(ASubText, AText); //Note: Apparently, this function are misnamed, and they handle unicode too!
+  Result := AnsiStartsText(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
 end;
 
 function EndsText(const ASubText, AText: string): Boolean;
 begin
-  Result := AnsiEndsText(ASubText, AText); //Note: Apparently, this function are misnamed, and they handle unicode too!
+  Result := AnsiEndsText(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
 end;
 
 function ContainsStr(const AText, ASubText: string): Boolean;
 begin
-  Result := AnsiContainsStr(AText, ASubText); //Note: Apparently, this function are misnamed, and they handle unicode too!
+  Result := AnsiContainsStr(AText, ASubText); //Note: Apparently, this function is misnamed, and it handles unicode too!
 end;
 
 function StartsStr(const ASubText, AText: String): Boolean;
 begin
-  Result := AnsiStartsStr(ASubText, AText); //Note: Apparently, this function are misnamed, and they handle unicode too!
+  Result := AnsiStartsStr(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
 end;
 
 function EndsStr(const ASubText, AText: String): Boolean;
 begin
- Result := AnsiEndsStr(ASubText, AText); //Note: Apparently, this function are misnamed, and they handle unicode too!
+ Result := AnsiEndsStr(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
 end;
 {$endif}
 
@@ -847,10 +856,19 @@ begin
   Result := C in CharSet;
 end;
 
+{$ifndef Delphi2orNewerCompiler}
 function CharInSet(C: WideChar; const CharSet: TSysCharSet): Boolean;
 begin
-  Result := AnsiChar(C) in CharSet;
+  Result := AnsiChar(C) in CharSet; //FIXME: At some point beyond Delphi 7, the cast to AnsiChar is not longer needed.
 end;
+{$endif}
+
+{$IFDEF UNICODE}
+(*function CharInSet(C: UnicodeChar; const CharSet: TSysCharSet): Boolean;
+begin
+  Result := UnicodeChar(C) in CharSet; //FIXME: At some point beyond Delphi 7, the cast to AnsiChar is not longer needed.
+end;*)
+{$ENDIF}
 
 {$ifdef MSWINDOWS}
 function CheckWin32VersionWithServicePack(AMajor, AMinor, AServicePackMajor, AServicePackMinor: Integer): Boolean;
@@ -894,8 +912,8 @@ begin
 end;
 {$endif}
 
-{$IFDEF UNICODE}
-function WideLowerCaseFileName(const S: string): string;
+{$ifndef Delphi2orNewerCompiler}
+function WideLowerCaseFileName(const S: WideString): WideString;
 var
   I,L: Integer;
 begin
@@ -921,16 +939,49 @@ begin
     Result := WideLowerCase(S);
 end;
 
-function WideCompareFileName(const S1, S2: string): Integer;
+function WideCompareFileName(const S1, S2: WideString): Integer;
 begin
   Result := WideCompareStr(WideLowerCaseFileName(S1), WideLowerCaseFileName(S2));
+end;
+{$endif}
+
+{$IFDEF UNICODE}
+function UnicodeLowerCaseFileName(const S: UnicodeString): UnicodeString;
+var
+  I,L: Integer;
+begin
+  if SysLocale.FarEast then
+  begin
+    L := Length(S);
+    SetLength(Result, L);
+    I := 1;
+    while I <= L do
+    begin
+      Result[I] := S[I];
+      if S[I] in LeadBytes then
+      begin
+        Inc(I);
+        Result[I] := S[I];
+      end
+      else
+        if Result[I] in ['A'..'Z'] then Inc(Byte(Result[I]), 32);
+      Inc(I);
+    end;
+  end
+  else
+    Result := UnicodeLowerCase(S);
+end;
+
+function UnicodeCompareFileName(const S1, S2: UnicodeString): Integer;
+begin
+  Result := UnicodeCompareStr(UnicodeLowerCaseFileName(S1), UnicodeLowerCaseFileName(S2));
 end;
 {$ENDIF}
 
 function CompareFileName(const S1, S2: string): Integer;
 begin
   {$IFDEF UNICODE}
-  Result:=WideCompareFileName(S1, S2);
+  Result:=UnicodeCompareFileName(S1, S2);
   {$ELSE}
   Result:=AnsiCompareFileName(S1, S2);
   {$ENDIF}

@@ -633,10 +633,10 @@ function InitializePython : Integer;
 procedure UnInitializePython;
 procedure SizeDownPython;
 
-//These functions convert the Delphi String (AnsiString or WideString) to Python's PChar (PAnsiChar or PWideChar) and back.
+//These functions convert the Delphi String (AnsiString or UnicodeString) to Python's PChar (PAnsiChar or PUnicodeChar) and back.
 {$IFDEF UNICODE}
-function PyStrPas(const P: PyChar) : WideString;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
-function ToPyChar(const S: WideString) : PyChar;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+function PyStrPas(const P: PyChar) : UnicodeString;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+function ToPyChar(const S: UnicodeString) : PyChar;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 {$ELSE}
 function PyStrPas(const P: PyChar) : AnsiString;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 function ToPyChar(const S: AnsiString) : PyChar;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
@@ -1789,12 +1789,12 @@ begin
 end;*)
 
 {$IFDEF UNICODE}
-function PyStrPas(const P: PyChar) : WideString;
+function PyStrPas(const P: PyChar) : UnicodeString;
 begin
- Result:=WideString(P);
+ Result:=UnicodeString(P);
 end;
 
-function ToPyChar(const S: WideString) : PyChar;
+function ToPyChar(const S: UnicodeString) : PyChar;
 begin
  Result:=PAnsiChar(AnsiString(S));
 end;
