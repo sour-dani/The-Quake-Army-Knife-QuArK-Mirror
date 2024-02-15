@@ -364,6 +364,9 @@ var
 Py_Initialize: procedure; cdecl;
 Py_Finalize: procedure; cdecl;
 Py_SetProgramName: procedure (name : PyChar); cdecl;
+//Py_GetProgramName: function : PyChar; cdecl;
+//Py_SetPythonHome: procedure (name : PyChar); cdecl;
+//Py_GetPythonHome: function : PyChar; cdecl;
 Py_GetVersion: function : (*const*) PyChar; cdecl;
 //Py_GetBuildNumber: function : (*const*) PyChar; cdecl; //Introduced during Python 2.5 development, but removed before release.
 //Py_GetPlatform: function : (*const*) PyChar; cdecl;
@@ -857,9 +860,13 @@ begin
   //See ProbableCauseOfFatalError in QuarkX for return value meaning
   Result:=6;
 
-  if SetEnvironmentVariable('PYTHONHOME', PChar(ExtractFileDir(Application.Exename))) = false then
+  //We are using PYTHONHOME env instead of calling Py_SetPythonHome,
+  //because this automatically gives us static storage that Python required.
+  //Be careful though,  you are not allowed to change its value!
+  S:=ExtractFileDir(Application.Exename);
+  if SetEnvironmentVariable('PYTHONHOME', PChar(S)) = false then
     Exit;
-  if SetEnvironmentVariable('PYTHONPATH', PChar(ConcatPaths([ExtractFileDir(Application.Exename), 'Lib']))) = false then //Note that this doesn't actually work if Python is embedded, but for consistency, let's set it anyway.
+  if SetEnvironmentVariable('PYTHONPATH', PChar(ConcatPaths([S, 'Lib']))) = false then //Note that this doesn't actually work if Python is embedded, but for consistency, let's set it anyway.
     Exit;
 //FIXME: Not used for now
 //  if SetEnvironmentVariable('PYTHONOPTIMIZE', '1') = false then
