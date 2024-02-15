@@ -187,7 +187,7 @@ implementation
 uses Types, qhelper, QkWad, QkBsp, ToolBox1, QkImages, Setup, Travail, qmath,{ QkPcx,}
   TbPalette, TbTexture, Undo, QkExplorer, QkPak, QkQuakeCtx, Quarkx, QkExceptions,
   CCode, PyObjects, QkHr2, QkHL, QkSin, QkFormCfg, Logging,
-  QkQ1, QkQ2, QkQ3, QkCoD2, QkObjectClassList, QkD3, ApplPaths, Platform{, ExtraFunctionality};
+  QkQ1, QkQ2, QkQ3, QkCoD2, QkObjectClassList, QkD3, ApplPaths, Platform, ExtraFunctionality;
 
 {$R *.DFM}
 
@@ -477,7 +477,7 @@ var
             { wildcards }
             SourceDir:=WriteTo;
 
-            while (SourceDir<>'') and not (SourceDir[Length(SourceDir)] in ['/', '\']) do
+            while (SourceDir<>'') and not CharInSet(SourceDir[Length(SourceDir)], ['/', '\']) do
               SetLength(SourceDir, Length(SourceDir)-1);
 
             DirsList:=TStringList.Create;

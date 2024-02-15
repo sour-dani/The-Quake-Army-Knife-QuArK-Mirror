@@ -171,7 +171,7 @@ begin
  S:=IncludeTrailingPathDelimiter(StrPas(Z));
  J:=5;
  for I:=1 to Length(Q.Name) do
-  if Q.Name[I] in ['a'..'z', 'A'..'Z', '0'..'9', '_'] then
+  if CharInSet(Q.Name[I], ['a'..'z', 'A'..'Z', '0'..'9', '_']) then
    begin
     S:=S+Q.Name[I];
     Dec(J);

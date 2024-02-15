@@ -54,7 +54,7 @@ type
 
 implementation
 
-uses Quarkx, QkExceptions, PyObjects, Game, QkObjectClassList, Logging;
+uses Quarkx, QkExceptions, PyObjects, Game, QkObjectClassList, Logging, ExtraFunctionality;
 
 var
   HLLoaded: Boolean;
@@ -259,7 +259,7 @@ begin
   Acces;
   for I:=1 to Length(PakPath) do
   begin
-    if PakPath[I] in ['/','\'] then
+    if CharInSet(PakPath[I], ['/','\']) then
     begin
       Folder:=SubElements.FindName(Copy(PakPath, 1, I-1) + '.vpkfolder');
       if (Folder=Nil) or not (Folder is QVPKFolder) then

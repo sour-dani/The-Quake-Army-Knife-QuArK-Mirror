@@ -600,7 +600,7 @@ begin
   Acces;
   for I:=1 to Length(PakPath) do
   begin
-    if PakPath[I] in ['/','\'] then
+    if CharInSet(PakPath[I], ['/','\']) then
     begin
       Folder:=SubElements.FindName(Copy(PakPath, 1, I-1) + '.zipfolder');
       if (Folder=Nil) or not (Folder is QZipFolder) then
@@ -717,7 +717,7 @@ begin
   Q.AddRef(+1);
   try
     I:=Length(PathAndShortName);
-    while (I>0) and not (PathAndShortName[I] in ['/','\']) do
+    while (I>0) and not (CharInSet(PathAndShortName[I], ['/','\'])) do
       Dec(I);
     Folder:=GetFolder(Copy(PathAndShortName, 1, I));
     Q.Parent:=Folder;

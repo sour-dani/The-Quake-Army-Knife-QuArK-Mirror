@@ -677,7 +677,7 @@ var
       end;
      end;
     if (P[0]<>'/') or (P[1]<>'/') then Exit;
-    while not (P^ in [#13, #10, #0]) do
+    while not CharInSet(P^, [#13, #10, #0]) do
      Inc(P);
    until False;
   end;
@@ -711,7 +711,7 @@ var
     while P^='$' do
      begin
       Lu(1);
-      while P^ in ['0'..'9', 'a'..'f', 'A'..'F'] do
+      while CharInSet(P^, ['0'..'9', 'a'..'f', 'A'..'F']) do
        begin
         Result:=Result+Chr((HexVal(P[0]) shl 4) or HexVal(P[1]));
         Inc(P, 2);
@@ -826,7 +826,7 @@ begin
    I:=1;
    while P[I] <> '=' do
     begin
-     if P[I] in [#13, #10, #0] then
+     if CharInSet(P[I], [#13, #10, #0]) then
       SyntaxError(5197);
      Inc(I);
     end;

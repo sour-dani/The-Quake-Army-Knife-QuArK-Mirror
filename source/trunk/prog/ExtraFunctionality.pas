@@ -570,6 +570,9 @@ function SplitString(const S, Delimiters: string): TStringDynArray;
 //This function doesn't exist at all in Delphi 7:
 function LastPos(const SubStr: String; const S: String): Integer;
 
+function CharInSet(C: AnsiChar; const CharSet: TSysCharSet): Boolean; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+function CharInSet(C: WideChar; const CharSet: TSysCharSet): Boolean; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+
 //This function doesn't exist at all in Delphi:
 {$ifdef MSWINDOWS}
 function CheckWin32VersionWithServicePack(AMajor: Integer; AMinor: Integer = 0; AServicePackMajor: Integer = 0; AServicePackMinor: Integer = 0): Boolean; //Note: We use the wrong datatype to be consistent with CheckWin32Version.
@@ -837,6 +840,16 @@ begin
   Result := Pos(ReverseString(SubStr), ReverseString(S)) ;
   if (Result <> 0) then
     Result := ((Length(S) - Length(SubStr)) + 1) - Result + 1;
+end;
+
+function CharInSet(C: AnsiChar; const CharSet: TSysCharSet): Boolean;
+begin
+  Result := C in CharSet;
+end;
+
+function CharInSet(C: WideChar; const CharSet: TSysCharSet): Boolean;
+begin
+  Result := AnsiChar(C) in CharSet;
 end;
 
 {$ifdef MSWINDOWS}

@@ -68,7 +68,7 @@ type
 implementation
 
 uses qhelper, QkMapObjects, QkMapPoly, qmath, Setup, Duplicator, Quarkx, QkExceptions,
-     Travail, QkObjectClassList;
+     Travail, QkObjectClassList, ExtraFunctionality;
 
 {$R *.DFM}
 
@@ -261,7 +261,7 @@ begin
  while P^ <> #0 do
  begin
    Start := P;
-   while not (P^ in [#0, #10, #13]) do Inc(P);
+   while not CharInSet(P^, [#0, #10, #13]) do Inc(P);
    SetString(TMP, Start, P - Start);
    Q.Specifics.AddStringFull(TMP);
    if P^ = #13 then Inc(P);
@@ -644,7 +644,7 @@ begin
  S:=Q.Name+Q.TypeInfo;
  Result:=ieResult[
   { any ".qme0" to ".qme8" }
-    SameText(Copy(S, Length(S)-4, 4), '.qme') and (S[Length(S)] in ['0'..'8'])];
+    SameText(Copy(S, Length(S)-4, 4), '.qme') and CharInSet(S[Length(S)], ['0'..'8'])];
 end;
 
 function MakeFileQObject(F: TStream; const FullName: String; nParent: QObject) : QFileObject;

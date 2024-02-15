@@ -84,7 +84,8 @@ procedure WriteColormapFile();
 implementation
 
 uses
-  qhelper, Travail, Quarkx, QkExceptions, Game, Setup, QkWad, QkPcx, QkObjectClassList;
+  qhelper, Travail, Quarkx, QkExceptions, Game, Setup, QkWad, QkPcx,
+  QkObjectClassList, ExtraFunctionality;
 
 const
  LUMP_ENTITIES = 0;
@@ -301,18 +302,18 @@ var
   Zero, Next, A: String;
 begin
   Result:='';
-  if (Length(Name)>=2) and (Name[1]='+') and (Name[2] in ['0'..'9', 'A'..'J', 'a'..'j']) then
+  if (Length(Name)>=2) and (Name[1]='+') and CharInSet(Name[2], ['0'..'9', 'A'..'J', 'a'..'j']) then
   begin
     Zero:=Name+#13; Zero[2]:='0';
     A   :=Name+#13; A[2]   :='a';
-    if Name[2] in ['9', 'J', 'j'] then
+    if CharInSet(Name[2], ['9', 'J', 'j']) then
       Next:=''
     else
     begin
      Next:=Name+#13;
      Next[2]:=Succ(Next[2]);
     end;
-    if Name[2] in ['0'..'9'] then   { first sequence }
+    if CharInSet(Name[2], ['0'..'9']) then   { first sequence }
     begin
       case Seq of
         0: Result:= Next +   A  + Zero;

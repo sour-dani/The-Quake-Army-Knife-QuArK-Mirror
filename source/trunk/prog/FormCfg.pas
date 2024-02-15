@@ -1885,7 +1885,7 @@ begin
            Raise InternalE('No Typ');
           {$ENDIF}
           Found:=csSomewhere;
-          if S[1] in ['a'..'z'] then   { pad to left }
+          if CharInSet(S[1], ['a'..'z']) then   { pad to left }
            if (Txt<>Nil) and (Txt is TLabel) then
             begin
              TLabel(Txt).AutoSize:=True;

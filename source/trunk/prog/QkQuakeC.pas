@@ -80,7 +80,7 @@ procedure CompilerPatches(const L: TQList; var CfgFile: String);
 implementation
 
 uses Undo, Qk1, Setup, FormCfg, Quarkx, QkExceptions, QPAcc, Game,
-     QkUnknown, QkSpecifics, Keys, Travail, QkObjectClassList;
+     QkUnknown, QkSpecifics, Keys, Travail, QkObjectClassList, ExtraFunctionality;
 
 const
  OutputProgsDat = 'progs.dat';
@@ -519,7 +519,7 @@ begin
         ChangeMode(sfMotClef or $100);
        J:=K-1;
       end;
-     '/': if S[J+1] in ['*','/'] then
+     '/': if CharInSet(S[J+1], ['*','/']) then
            begin
             ChangeMode(sfComments);
             if S[J+1]='/' then
@@ -541,7 +541,7 @@ begin
        K:=J;
        repeat
         Inc(J);
-       until (S[J] in [#0, S[K]]);
+       until CharInSet(S[J], [#0, S[K]]);
       end;
      else
       ChangeMode(sfNormal or $100);

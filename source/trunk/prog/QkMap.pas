@@ -776,7 +776,7 @@ expected one.
          S:='';
          repeat
            C:=Source^;
-           if C in [#0, #13, #10] then
+           if CharInSet(C, [#0, #13, #10]) then
            begin
              if (C=#13) or ((C=#10) and not Juste13) then
                Inc(LineNoBeingParsed);
@@ -800,7 +800,7 @@ expected one.
 
      '-', '0'..'9':
        begin
-         if (C='-') and not (Source^ in ['0'..'9','.']) then
+         if (C='-') and not CharInSet(Source^, ['0'..'9','.']) then
            ReadStringToken()
          else
          begin
@@ -811,7 +811,7 @@ expected one.
              if C=#0 then
                Break;
              Inc(Source);
-           until not (C in ['0'..'9', '.']);
+           until not CharInSet(C, ['0'..'9', '.']);
 
            { Did we encounter a exponent-value? Something like: "1.322e-12"
              Then continue to read the characters }
@@ -823,7 +823,7 @@ expected one.
                if C=#0 then
                  Break;
                Inc(Source);
-             until not (C in ['0'..'9', '-', '+']);
+             until not CharInSet(C, ['0'..'9', '-', '+']);
            end;
 
            if (C=#0) or (C in cSeperators) then
@@ -855,7 +855,7 @@ expected one.
              if C=#0 then
                Break;
              Inc(Source);
-           until C in [#13, #10];
+           until CharInSet(C, [#13, #10]);
 
            if (C=#13) or ((C=#10) and not Juste13) then
              Inc(LineNoBeingParsed);
@@ -3098,7 +3098,7 @@ begin
        outputname:=Copy(SpecName, Length('output#')+1, MaxInt);
        for i := length(outputname) downto 1 do
        begin
-         if outputname[i] in ['0'..'9'] then
+         if CharInSet(outputname[i], ['0'..'9']) then
            setlength(outputname,i-1)
          else
            break;

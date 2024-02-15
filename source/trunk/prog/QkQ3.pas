@@ -560,7 +560,7 @@ var
   procedure SkipSpaces;
   begin
    repeat
-    while Source^ in [' ', Chr(vk_Tab)] do
+    while CharInSet(Source^, [' ', Chr(vk_Tab)]) do
      Inc(Source);
     if Source^=#13 then
      begin
@@ -584,11 +584,11 @@ var
    P1, P2: PChar;
   begin
    P1:=Source;
-   while not (Source^ in [#13, #10, #0]) do
+   while not CharInSet(Source^, [#13, #10, #0]) do
     Inc(Source);
    P2:=Source;
    // if the string ends with sp or tab, remove them
-   while (P2>P1) and (P2[-1] in [' ', Chr(vk_Tab)]) do
+   while (P2>P1) and CharInSet(P2[-1], [' ', Chr(vk_Tab)]) do
     Dec(P2);
    SetString(Result, P1, P2-P1);
   end;
@@ -599,10 +599,10 @@ var
    Spec: String;
   begin
    P1:=Source;
-   while not (Source^ in [' ', Chr(vk_Tab), #13, #10, #0]) do
+   while not CharInSet(Source^, [' ', Chr(vk_Tab), #13, #10, #0]) do
     Inc(Source);
    SetString(Spec, P1, Source-P1);
-   while Source^ in [' ', Chr(vk_Tab)] do
+   while CharInSet(Source^, [' ', Chr(vk_Tab)]) do
     Inc(Source);
 
     { decker:
@@ -668,8 +668,8 @@ begin
           Source[I+1] := ' ';
         end
         else begin
-          if Source[I] in [#13,#10]
-          then Comment:=False;
+          if CharInSet(Source[I], [#13, #10]) then
+            Comment:=False;
         end;
 
         if (Comment or SectionComment) then

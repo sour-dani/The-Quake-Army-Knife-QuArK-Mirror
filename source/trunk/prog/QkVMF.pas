@@ -41,7 +41,7 @@ implementation
 
 uses Qk1, QkQme, QkMapPoly, qmath, Travail, Setup,
   Qk3D, QkBsp, Undo, Game, Quarkx, QkExceptions, QkSpecifics,
-  QkObjectClassList, MapError, Logging, DispFace, QConsts;
+  QkObjectClassList, MapError, Logging, DispFace, QConsts, ExtraFunctionality;
 
  {------------------------}
 
@@ -177,7 +177,7 @@ expected one.
          S:='';
          repeat
            C:=Source^;
-           if C in [#0, #13, #10] then
+           if CharInSet(C, [#0, #13, #10]) then
            begin
              if FinDeLigne and (S<>'') and (S[Length(S)]='"') then
              begin
@@ -198,7 +198,7 @@ expected one.
 
      '-', '0'..'9':
        begin
-         if (C='-') and not (Source^ in ['0'..'9','.']) then
+         if (C='-') and not (CharInSet(Source^, ['0'..'9','.'])) then
            ReadStringToken()
          else
          begin
@@ -209,7 +209,7 @@ expected one.
              if C=#0 then
                Break;
              Inc(Source);
-           until not (C in ['0'..'9', '.']);
+           until not (CharInSet(C, ['0'..'9', '.']));
 
            { Did we encounter a exponent-value? Something like: "1.322e-12"
              Then continue to read the characters }
@@ -221,7 +221,7 @@ expected one.
                if C=#0 then
                  Break;
                Inc(Source);
-             until not (C in ['0'..'9', '-', '+']);
+             until not (CharInSet(C, ['0'..'9', '-', '+']));
            end;
 
            if (C=#0) or (C in cSeperators) then
@@ -253,7 +253,7 @@ expected one.
              if C=#0 then
                Break;
              Inc(Source);
-           until C in [#13, #10];
+           until CharInSet(C, [#13, #10]);
 
            if (C=#13) or ((C=#10) {and not Juste13}) then
              Inc(LineNoBeingParsed);
@@ -321,7 +321,7 @@ expected one.
     i: Integer;
   begin
     for i:=length(s) downto 1 do
-      if s[i] in ['"','[',']'] then
+      if CharInSet(s[i], ['"','[',']']) then //FIXME: This can be done more efficiently.
         delete(s,i,1);
     ReadDoubleArray(s,result);
   end;
