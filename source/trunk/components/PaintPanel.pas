@@ -36,6 +36,8 @@ type
     FOnPaint: TPaintPanelEvent;
     FOnSetCursor: TSetCursorEvent;
   protected
+    procedure InternalInvalidate;
+    procedure InternalUpdate;
     procedure wmGetDlgCode(var Msg: TMessage); message wm_GetDlgCode;
     procedure wmSetCursor(var Msg: TWMSetCursor); message wm_SetCursor;
     procedure wmPaint(var Msg: TMessage); message wm_Paint;
@@ -44,8 +46,6 @@ type
     property Caption stored False;
   public
     constructor Create(AOwner: TComponent); override;
-    procedure InternalInvalidate;
-    procedure InternalUpdate;
   published
     property OnPaint: TPaintPanelEvent read FOnPaint write FOnPaint;
     property OnSetCursor: TSetCursorEvent read FOnSetCursor write FOnSetCursor;
