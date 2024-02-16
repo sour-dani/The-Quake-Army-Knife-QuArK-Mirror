@@ -1031,8 +1031,7 @@ begin
 
   { adds the size of the loaded data }
   for I:=0 to Specifics.Count-1 do
-    Inc(Result, 2*SizeOf(String)+(Length(Specifics.Names[I])+Length(Specifics.StringsFromIndex[I]))*SizeOf(Char));
-    //FIXME: This doesn't take into account possible string sharing/pooling between objects!
+    Inc(Result, Specifics.GetSize(I));
 
   for I:=0 to SubElements.Count-1 do
     Inc(Result, SubElements[I].GetObjectSize(Loaded, LoadNow));

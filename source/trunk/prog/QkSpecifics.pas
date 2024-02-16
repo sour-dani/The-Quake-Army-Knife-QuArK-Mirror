@@ -95,6 +95,7 @@ type
     procedure Clear;
     procedure Delete(const Name: string; raiseError: Boolean = false); overload;
     procedure Delete(Index: Integer); overload;
+    function GetSize(Index: Integer) : Integer;
     function IndexOfName(const Name: string): Integer;
     procedure Insert(Index: Integer; const Item: TSpecificsItem);
     procedure InsertFloat(Index: Integer; const Name: string; const F: Single);
@@ -200,8 +201,8 @@ procedure TSpecificsList.Delete(const Name: string; raiseError: Boolean);
 var
   Index: Integer;
 begin
-  Index:=IndexOfName(Name);
-  if Index<0 then
+  Index := IndexOfName(Name);
+  if Index < 0 then
   begin
     if raiseError then
       Error(@SListIndexError, Index);
@@ -334,6 +335,12 @@ function TSpecificsList.GetStringFromIndex(Index: Integer): string;
 begin
   if (Index < 0) or (Index >= FCount) then Error(@SListIndexError, Index);
   Result := FList^[Index].Value;
+end;
+
+function TSpecificsList.GetSize(Index: Integer) : Integer;
+begin
+  Result := SizeOf(String)+Length(Names[Index])+SizeOf(String)+Length(BytesFromIndex[Index]); //FIXME: Or SizeOf(Bytes), ...
+  //FIXME: This doesn't take into account possible string sharing/pooling between objects!
 end;
 
 procedure TSpecificsList.Grow;
