@@ -53,6 +53,9 @@ type
     UsedCompilerLabel: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure OKButtonClick(Sender: TObject);
+  private
+    FOldFontChange: TNotifyEvent;
+    procedure FontChange(Sender: TObject);
   protected
     procedure MouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean); override;
     procedure MouseWheelUp(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean); override;
@@ -152,18 +155,12 @@ begin
   MarsCap.ActiveBeginColor := $A08000;
   MarsCap.ActiveEndColor := clYellow;
   SetFormIcon(iiQuArK);
+  FOldFontChange:=Font.OnChange;
+  Font.OnChange:=FontChange;
   inherited;
   OnMouseWheelDown:=MouseWheelDown;
   OnMouseWheelUp:=MouseWheelUp;
-
-  //Delphi 7 doesn't support setting only some font properties, so we have to override them.
-  Registration.Font.Name:=Font.Name;
-  ProductName1.Font.Name:=Font.Name;
-  ProductName2.Font.Name:=Font.Name;
-  ProductName3.Font.Name:=Font.Name;
-  ProductName4.Font.Name:=Font.Name;
-  ProductName5.Font.Name:=Font.Name;
-  ProductName6.Font.Name:=Font.Name;
+  FontChange(Sender); //Force font refresh
 
   Logo.Picture.Bitmap.LoadFromResourceName(HInstance, 'QUARKLOGO');
   if RegisteredTo<>'' then
@@ -233,6 +230,21 @@ begin
   ProductName4.Left:=ProductName3.BoundsRect.Right;
   ProductName5.Left:=ProductName4.BoundsRect.Right + 6;
   ProductName6.Left:=ProductName5.BoundsRect.Right;
+end;
+
+procedure TAboutBox.FontChange(Sender: TObject);
+begin
+  if Assigned(FOldFontChange) then
+    FOldFontChange(Sender);
+
+  //Using ParentFont for these would overwrite Font.Color.
+  Registration.Font.Name:=Font.Name;
+  ProductName1.Font.Name:=Font.Name;
+  ProductName2.Font.Name:=Font.Name;
+  ProductName3.Font.Name:=Font.Name;
+  ProductName4.Font.Name:=Font.Name;
+  ProductName5.Font.Name:=Font.Name;
+  ProductName6.Font.Name:=Font.Name;
 end;
 
 procedure TAboutBox.MouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
