@@ -37,7 +37,7 @@ type
                 public
                   Length: Integer;
                   Stream: TStream;
-                  StreamSource, StreamSize: Integer;
+                  StreamSource, StreamSize: TStreamPos;
                   StaticData: Boolean;
                   procedure ReadProc(nPos: Integer); virtual; abstract;
                   function DisplayProc(nPos: Integer) : Boolean; virtual; abstract;
@@ -239,7 +239,7 @@ begin
       Exit;
      Q.Acces;
     end;
-   I:=Q.Specifics.IndexOfName('Data');
+   I:=Q.Specifics.IndexOfName('Data'); //FIXME: This can be done more efficiently now, with TryGetString! Also, BYTES!
    if I>=0 then
     Data:=Q.Specifics.StringsFromIndex[I];
   end;
