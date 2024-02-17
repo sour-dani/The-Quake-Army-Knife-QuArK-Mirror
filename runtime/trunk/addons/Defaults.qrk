@@ -9376,26 +9376,26 @@ QQRKSRC1
 
   Default forms.qctx =
   {
-// Start of the model filetype:forms for the Model Editor only.
-  // Definition of "includes"
+    // Start of the model filetype:forms for the Model Editor only.
     t_ModelEditor_texturebrowser:incl =
     {
       Typ = "EPR"
-      DefExt = "tga; *.dds; *.png; *.jpg; *.bmp; *.ftx; *.vtf"
+      DefExt = "tga; *.dds; *.png; *.jpg; *.pcx; *.bmp; *.ftx; *.vtf; *.iwi"
       BasePath = "?\?\?"
       CutPath = "?\?\?\?\"
       DirSep = "/"
     }
-// Forms available for all editors.
-  // Definition of "includes"
+
     t_texturebrowser:incl =
     {
       Typ = "EP"
-      DefExt = "tga; *.dds; *.png; *.jpg; *.bmp; *.ftx; *.vtf"
+      DefExt = "tga; *.dds; *.png; *.jpg; *.pcx; *.bmp; *.ftx; *.vtf; *.iwi"
       BasePath = "$Game\?\?"
       CutPath = "$Game\?\"
       DirSep = "/"
     }
+
+    // Forms available for all editors.
     Polyhedron:form =     // form on the polyhedrons page
     {
       Style = "1"
@@ -9909,7 +9909,6 @@ QQRKSRC1
         Hint="If checked, only the first segment is generated" $0D " (speeds up editing of complex shapes)"
       }
 
-
 //      texture specs: =
 //      {
 //        Typ="B"
@@ -10380,8 +10379,9 @@ QQRKSRC1
       }
       PAKs and Archives.qtxfolder = {
         Pak.pak = { }
-        GCF.gcf = { }
-        VPK.vpk = { }
+        Game Cache File.gcf = { }
+        KEX Pack File.kpf = { }
+        Valve Pak File.vpk = { }
         ZIP Archive.zip = { }
       }
       Images and Textures.qtxfolder =
