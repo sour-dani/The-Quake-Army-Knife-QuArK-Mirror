@@ -1165,37 +1165,37 @@ QQRKSRC1
     // Definition of "includes"
     t_modelbrowser:incl = 
     {
-          Typ = "EP"
-          DefExt = "md3"
-          BasePath = "$Game\base\"
-          CutPath = "$Game\base\?"
-          DirSep = "/"
-          AugPath = "models"
+      Typ = "EP"
+      DefExt = "md3"
+      BasePath = "$Game\base\"
+      CutPath = "$Game\base\?"
+      DirSep = "/"
+      AugPath = "models"
     }
     t_efxbrowser:incl = 
     {
-          Typ = "EP"
-          DefExt = "efx"
-          BasePath = "$Game\base\"
-          CutPath = "$Game\base\?\"
-          DirSep = "/"
+      Typ = "EP"
+      DefExt = "efx"
+      BasePath = "$Game\base\"
+      CutPath = "$Game\base\?\"
+      DirSep = "/"
     }
     t_scriptbrowser:incl = 
     {
-          Typ = "EP"
-          DefExt = "ibi"
-          BasePath = "$Game\base\"
-          CutPath = "$Game\base\?\"
-          DirSep = "/"
+      Typ = "EP"
+      DefExt = "ibi"
+      BasePath = "$Game\base\"
+      CutPath = "$Game\base\?\"
+      DirSep = "/"
     }
     t_soundbrowser:incl = 
     {
-          Typ = "EP"
-          DefExt = "wav; mp3"
-          BasePath = "$Game\base\"
-          CutPath = "$Game\base\?"
-          DirSep = "/"
-          AugPath = "sound"
+      Typ = "EP"
+      DefExt = "wav; mp3"
+      BasePath = "$Game\base\"
+      CutPath = "$Game\base\?"
+      DirSep = "/"
+      AugPath = "sound"
     }
 
     misc_crystal_crate:form =

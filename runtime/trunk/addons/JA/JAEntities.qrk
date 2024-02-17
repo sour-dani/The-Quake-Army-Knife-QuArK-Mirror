@@ -1514,40 +1514,40 @@ QQRKSRC1
   Entity forms.fctx =
   {
     // Definition of "includes"
-      t_modelbrowser:incl = 
-      {
-            Typ = "EP"
-            DefExt = "md3"
-            BasePath = "$Game\base\models"
-            CutPath = "$Game\base\?"
-            DirSep = "/"
-            AugPath = "models"
-      }
-      t_efxbrowser:incl = 
-      {
-            Typ = "EP"
-            DefExt = "efx"
-            BasePath = "$Game\base\effects"
-            CutPath = "$Game\base\?\"
-            DirSep = "/"
-      }
-      t_scriptbrowser:incl = 
-      {
-            Typ = "EP"
-            DefExt = "ibi"
-            BasePath = "$Game\base\scripts"
-            CutPath = "$Game\base\?\"
-            DirSep = "/"
-      }
-      t_soundbrowser:incl = 
-      {
-            Typ = "EP"
-            DefExt = "wav; *.mp3"
-            BasePath = "$Game\base\sound"
-            CutPath = "$Game\base\?"
-            DirSep = "/"
-            AugPath = "sound"
-      }
+    t_modelbrowser:incl = 
+    {
+      Typ = "EP"
+      DefExt = "md3"
+      BasePath = "$Game\base\models"
+      CutPath = "$Game\base\?"
+      DirSep = "/"
+      AugPath = "models"
+    }
+    t_efxbrowser:incl = 
+    {
+      Typ = "EP"
+      DefExt = "efx"
+      BasePath = "$Game\base\effects"
+      CutPath = "$Game\base\?\"
+      DirSep = "/"
+    }
+    t_scriptbrowser:incl = 
+    {
+      Typ = "EP"
+      DefExt = "ibi"
+      BasePath = "$Game\base\scripts"
+      CutPath = "$Game\base\?\"
+      DirSep = "/"
+    }
+    t_soundbrowser:incl = 
+    {
+      Typ = "EP"
+      DefExt = "wav; *.mp3"
+      BasePath = "$Game\base\sound"
+      CutPath = "$Game\base\?"
+      DirSep = "/"
+      AugPath = "sound"
+    }
 
     misc_crystal_crate:form =
     {
