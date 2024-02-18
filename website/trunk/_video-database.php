@@ -235,7 +235,7 @@ new cVideo(
 ,'T1'
 ,'M1'
 ,"Here is a nice pack of three video tutorials to help you learn how to make interior structures for SimWorld and other Torque based games using the Quark editor. There are three video tutorials included, each on a different topic:<br>
-&nbsp;<br>
+<br>
 Quark1.avi - Part 1 - Teaches how to set up Quark for SimWorld and other Torque based games.<br>
 Quark2.avi - Part 2 - Teaches some basic Quark operations like: creating and moving brushes, negative brushes, duplicators, and texture assignment.<br>
 Quark3.avi - Part 3 - Teaches how to export from Quark into SimWorld."
