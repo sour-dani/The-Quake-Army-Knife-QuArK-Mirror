@@ -171,7 +171,7 @@ function displayNewsArticle($ArticleID)
 		{
 			$headtxt = DisplayDate($CurrentNewsArticle->Date);
 
-			$headtxt .= '&nbsp;&nbsp;&nbsp;<span class="newsago">('.DisplayTimeAgo($CurrentNewsArticle->Date).')</span>';
+			$headtxt .= '<span class="newsago">('.DisplayTimeAgo($CurrentNewsArticle->Date).')</span>';
 		}
 		else
 		{

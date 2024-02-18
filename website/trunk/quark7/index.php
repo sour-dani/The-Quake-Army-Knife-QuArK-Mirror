@@ -54,7 +54,7 @@ function pageLocalDisplay()
 		$newsauthor = '<a class="personlink" href="../person.php?PersonID='.($news[2]+1).'">'.$personsdatabase[$news[2]]->getDisplayName().'</a>';
 
 		$bodytext = GetFile($news[0]);
-		pagePanel('quark', $news[1].' - '.DisplayDate($news[3]).'&nbsp;&nbsp;&nbsp;<span class="newsago"> ('.DisplayTimeAgo($news[3]).')</span>', $newsauthor, $bodytext);
+		pagePanel('quark', $news[1].' - '.DisplayDate($news[3]).'<span class="newsago"> ('.DisplayTimeAgo($news[3]).')</span>', $newsauthor, $bodytext);
 	}
 }
 
