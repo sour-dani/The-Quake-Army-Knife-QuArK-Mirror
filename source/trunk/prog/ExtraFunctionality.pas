@@ -217,6 +217,8 @@ const
   IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE = $0040;
   IMAGE_DLLCHARACTERISTICS_NX_COMPAT = $0100;
 
+  UOI_TIMERPROC_EXCEPTION_SUPPRESSION(*: DWORD*) = 7;
+
   INVALID_SET_FILE_POINTER = DWORD(-1);
 
   UNLEN = 256; // Maximum user name length, in characters (not bytes), excluding terminating 0-characters.

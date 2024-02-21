@@ -265,6 +265,7 @@ const
 
 procedure MainInit;
 var
+  Info: BOOL;
   Metrics: TNonClientMetrics;
 begin
   //Open the log file.
@@ -279,6 +280,14 @@ begin
       Log(LOG_WARNING, 'Failed to change the DLL search path; QuArK will be vulnerable to DLL hijacking!');
       LogWindowsError(GetLastError(), 'SetDllSearchPath: SetDllDirectory("")');
     end;
+
+  //Tell Windows 2000 and higher not to supress exceptions that happen in TimerProc's.
+  if CheckWin32Version(5, 0) then //Windows 2000
+  begin
+    Info:=False;
+    if not SetUserObjectInformation(GetCurrentProcess(), UOI_TIMERPROC_EXCEPTION_SUPPRESSION, @Info, SizeOf(Info)) then
+      Log(LOG_WARNING, 'SetDllDirectory not available; QuArK will be vulnerable to DLL hijacking!');
+  end;
 
   //Initialize the default fonts to whatever the system is using.
   FillChar(Metrics, SizeOf(Metrics), 0);
