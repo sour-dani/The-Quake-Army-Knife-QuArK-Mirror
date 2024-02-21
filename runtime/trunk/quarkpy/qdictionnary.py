@@ -1146,6 +1146,7 @@ Strings = {
     5873: "Checksum mismatch",
     5874: "Unsupported compression method",
     5875: "Failed to open '%s' using '%s': %s",
+    5876: "Failed to properly interact with splash screen",
 
     # DanielPharos would like to reserve 6000 .. 6099 for all renderers
     6000: "Unable to create SceneObject//%s",
