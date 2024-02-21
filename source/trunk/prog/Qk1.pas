@@ -264,13 +264,30 @@ const
  {------------------------}
 
 procedure MainInit;
+var
+  Metrics: TNonClientMetrics;
 begin
-  //Remove the current directory from the DLL search path
-  SetDllSearchPath();
-
-  InitDefaultFonts;
-
+  //Open the log file.
   OpenLogFile;
+
+  //Remove the current directory from the DLL search path
+  if not DelayFunc_SetDllDirectory then
+    Log(LOG_WARNING, 'SetDllDirectory not available; QuArK will be vulnerable to DLL hijacking!')
+  else
+    if SetDllDirectory('') = false then
+    begin
+      Log(LOG_WARNING, 'Failed to change the DLL search path; QuArK will be vulnerable to DLL hijacking!');
+      LogWindowsError(GetLastError(), 'SetDllSearchPath: SetDllDirectory("")');
+    end;
+
+  //Initialize the default fonts to whatever the system is using.
+  FillChar(Metrics, SizeOf(Metrics), 0);
+  Metrics.cbSize:=SizeOf(Metrics);
+  if SystemParametersInfo(SPI_GETNONCLIENTMETRICS, 0, @Metrics, 0) then
+  begin
+    DefFontData.Name:=PChar(@Metrics.lfMessageFont.lfFaceName);
+    DefFontData.Height:=Metrics.lfMessageFont.lfHeight;
+  end;
 end;
 
  {------------------------}

@@ -34,8 +34,6 @@ function ProcessExists(const exeFileName: String): Boolean;
 function WindowExists(const WindowName: String): Boolean;
 function RetrieveModuleFilename(ModuleHandle: HMODULE): String;
 procedure WarnDriverBugs;
-procedure SetDllSearchPath;
-procedure InitDefaultFonts;
 
 type
   TCPUID = packed record
@@ -327,19 +325,6 @@ var
   WindowsPlatformCompatibility: TPlatformType;
   WindowsPlatform: TPlatform;
   DriverBugs: TStringList;
-
-procedure InitDefaultFonts;
-var
-  Metrics: TNonClientMetrics;
-begin
-  FillChar(Metrics, SizeOf(Metrics), 0);
-  Metrics.cbSize:=SizeOf(Metrics);
-  if SystemParametersInfo(SPI_GETNONCLIENTMETRICS, 0, @Metrics, 0) then
-  begin
-    DefFontData.Name:=PChar(@Metrics.lfMessageFont.lfFaceName);
-    DefFontData.Height:=Metrics.lfMessageFont.lfHeight;
-  end;
-end;
 
 function FormatBytes(const Number: Integer) : String; overload;
 begin
@@ -2573,21 +2558,6 @@ begin
     S:=S+'For more information, see: https://quark.sourceforge.io/forums/index.php?topic=1064'#13#10#13#10;
     S:=S+'You can disable this check by unchecking Configuration > Startup > Check for bugs.';
     Windows.MessageBox(0, PChar(S), 'QuArK', MB_ICONWARNING or MB_OK);
-  end;
-end;
-
-procedure SetDllSearchPath;
-begin
-  if not DelayFunc_SetDllDirectory then
-  begin
-    Log(LOG_WARNING, 'SetDllDirectory not available; QuArK will be vulnerable to DLL hijacking!');
-    Exit;
-  end;
-
-  if SetDllDirectory('') = false then
-  begin
-    Log(LOG_WARNING, 'Failed to change the DLL search path; QuArK will be vulnerable to DLL hijacking!');
-    LogWindowsError(GetLastError(), 'SetDllSearchPath: SetDllDirectory("")');
   end;
 end;
 
