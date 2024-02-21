@@ -303,13 +303,14 @@ end;
 
 constructor TForm1.Create(AOwner: TComponent);
 const
- TimerID = 0;
+ TimerInterval = 500; //in ms
 var
  I: Integer;
  S: String;
  Splash: TSplashScreen;
  MutexError: DWORD;
  LaunchOptions: TCmdLineOptions;
+ TimerID: UINT(*_PTR*);
 begin
  // Set-up exception handling
  OldException:=Application.OnException;
@@ -435,14 +436,19 @@ begin
    if LaunchOptions.DoSplash then
    begin
      Log(LOG_VERBOSE, 'Waiting for splash screen...');
-     SetTimer(Self.Handle, TimerID, 500, nil);
+     TimerID:=SetTimer(0, 0, TimerInterval, nil); //Create a timer to periodically wake up to check the WaitHandle.
+     if TimerID = 0 then
+     begin
+       LogWindowsError(GetLastError(), 'SetTimer('+IntToStr(TimerInterval)+')');
+       LogAndRaiseError(LoadStr1(5876));
+     end;
      try
        repeat
          WaitMessage;
          Application.ProcessMessages;
        until (WaitForSingleObject(Splash.WaitHandle, 0) = WAIT_OBJECT_0);
      finally
-       KillTimer(Self.Handle, TimerID);
+       KillTimer(0, TimerID);
      end;
      Splash.Close;
    end;
