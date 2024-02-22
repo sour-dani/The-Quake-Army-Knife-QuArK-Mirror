@@ -3413,7 +3413,6 @@ end;
 
 function LoadStr1(I: Integer) : String;
 var
- key: TyIntObject;
  obj: PyObject;
  P: PyChar;
 begin
@@ -3425,11 +3424,8 @@ begin
    Exit;
  end;
  Result:='';
- key.ob_refcnt:=1;
- key.ob_type:=PyInt_Type;
- key.ob_ival:=I;
  try
-  obj:=PyDict_GetItem(Py_xStrings, @key);
+  obj:=PyDict_GetItem(Py_xStrings, PyInt_FromLong(I));
   if obj=Nil then
   begin
    Log(LOG_WARNING, 'Cannot find string number %d in LoadStr1!', [I]);

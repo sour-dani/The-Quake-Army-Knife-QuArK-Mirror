@@ -59,11 +59,11 @@ type
  TyVarObject = object(TyObject)
                 ob_size: {$IFDEF PYTHON25}Py_ssize_t{$ELSE}Integer{$ENDIF};
                end;
- PyIntObject = ^TyIntObject;
+(* PyIntObject = ^TyIntObject;
  TyIntObject = object(TyObject)
                 ob_ival: LongInt;
                end;
-(* PyTupleObject = ^TyTupleObject;
+ PyTupleObject = ^TyTupleObject;
  TyTupleObject = object(TyVarObject)
                   ob_item: array[0..0] of PyObject;
                  end;
