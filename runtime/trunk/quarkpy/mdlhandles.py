@@ -558,8 +558,6 @@ class TagHandle(qhandles.GenericHandle):
         self.tagframe = tagframe
         self.cursor = CR_CROSSH
         self.undomsg = "mesh tag move"
-        if not ico_dict.has_key('ico_objects'):
-            ico_dict['ico_objects'] = LoadIconSet("images\\objects", 16)
 
 
     def extrasmenu(self, editor, view):
