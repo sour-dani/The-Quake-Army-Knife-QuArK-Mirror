@@ -277,8 +277,8 @@ begin
   else
     if SetDllDirectory('') = false then
     begin
+      LogWindowsError(GetLastError(), 'MainInit: SetDllDirectory("")');
       Log(LOG_WARNING, 'Failed to change the DLL search path; QuArK will be vulnerable to DLL hijacking!');
-      LogWindowsError(GetLastError(), 'SetDllSearchPath: SetDllDirectory("")');
     end;
 
   //Tell Windows 2000 and higher not to supress exceptions that happen in TimerProc's.
@@ -286,7 +286,10 @@ begin
   begin
     Info:=False;
     if not SetUserObjectInformation(GetCurrentProcess(), UOI_TIMERPROC_EXCEPTION_SUPPRESSION, @Info, SizeOf(Info)) then
-      Log(LOG_WARNING, 'SetDllDirectory not available; QuArK will be vulnerable to DLL hijacking!');
+    begin
+      LogWindowsError(GetLastError(), 'MainInit: SetUserObjectInformation(UOI_TIMERPROC_EXCEPTION_SUPPRESSION, False)');
+      Log(LOG_WARNING, 'SetUserObjectInformation(UOI_TIMERPROC_EXCEPTION_SUPPRESSION, False) failed; QuArK may be vulnerable to TimerProc vulnerabilities!');
+    end;
   end;
 
   //Initialize the default fonts to whatever the system is using.
