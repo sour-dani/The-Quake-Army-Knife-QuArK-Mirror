@@ -29,7 +29,7 @@ ico_dict['ico_mapdups'] = LoadIconSet("images\\mapdups", 16)
 class DuplicatorManager:
     "Abstract base class for Duplicators."
 
-    Icon = (ico_objects, iiDuplicator)    # defaults
+    Icon = (ico_dict['ico_objects'], iiDuplicator)    # defaults
 
     def buildimages(self, singleimage=None):
         s = self.dup["macro"]
@@ -434,7 +434,7 @@ class DupOffsetHandle(maphandles.CenterHandle):
 class DupTemplate(StandardDuplicator):
     "Brush template"
 
-    Icon = (ico_objects, 27)
+    Icon = (ico_dict['ico_objects'], 27)
     BuildItem = None
 
     def applylinear(self, matrix, direct=0):

@@ -47,7 +47,7 @@ class PortalsDlg(qmacro.dialogbox):
            close = qtoolbar.button(
               self.close,
               "click here to remove portals from your map",
-              ico_editor, 0,
+              ico_dict['ico_editor'], 0,
               "Ok, hide portals"))
 
     def windowrect(self):

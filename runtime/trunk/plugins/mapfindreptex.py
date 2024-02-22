@@ -121,8 +121,8 @@ class SearchReplaceTextureDlg(quarkpy.qmacro.dialogbox):
         #
 
         quarkpy.qmacro.dialogbox.__init__(self, form, src,
-           close      = quarkpy.qtoolbar.button(self.close, "Close this box", ico_editor, 0, "Close", 1),
-           ReplaceAll = quarkpy.qtoolbar.button(self.ReplaceAll, "Search/replace textures", ico_editor, 2, "Search/replace", 1)
+           close      = quarkpy.qtoolbar.button(self.close, "Close this box", ico_dict['ico_editor'], 0, "Close", 1),
+           ReplaceAll = quarkpy.qtoolbar.button(self.ReplaceAll, "Search/replace textures", ico_dict['ico_editor'], 2, "Search/replace", 1)
         )
 
 

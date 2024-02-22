@@ -72,17 +72,17 @@ class TFTGDlg(quarkpy.qmacro.dialogbox):
         ok1 = quarkpy.qtoolbar.button(
                 self.TFTG,
                 "force all faces to match the grid",
-                ico_editor, 2,
+                ico_dict['ico_editor'], 2,
                 "Force Faces"),
         #ok2 = quarkpy.qtoolbar.button(
             #    self.TFTG,
             #    "do it",
-            #    ico_editor, 2,
+            #    ico_dict['ico_editor'], 2,
             #    "Force Faces"),
         cancel = quarkpy.qtoolbar.button(
             self.close,
             "close this box",
-            ico_editor, 0,
+            ico_dict['ico_editor'], 0,
             "Cancel"))
 
     def TFTG(self, btn):

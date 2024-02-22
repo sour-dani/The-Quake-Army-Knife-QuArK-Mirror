@@ -84,12 +84,12 @@ class LoadMapDlg(quarkpy.qmacro.dialogbox):
         close = quarkpy.qtoolbar.button(
             self.close,
             "Load the selected map file",
-            ico_editor, 3,
+            ico_dict['ico_editor'], 3,
             "Load map file"),
         cancel = quarkpy.qtoolbar.button(
             self.cancel,
             "Cancel & close window",
-            ico_editor, 0,
+            ico_dict['ico_editor'], 0,
             "Cancel"))
 
     def onclose(self, dlg):

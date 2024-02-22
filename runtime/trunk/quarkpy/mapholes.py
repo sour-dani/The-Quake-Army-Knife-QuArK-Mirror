@@ -53,7 +53,7 @@ class LinesDlg(qmacro.dialogbox):
            close = qtoolbar.button(
               self.close,
               "click here to remove the arrow from your map",
-              ico_editor, 0,
+              ico_dict['ico_editor'], 0,
               "Ok, hide arrow"))
 
     def windowrect(self):

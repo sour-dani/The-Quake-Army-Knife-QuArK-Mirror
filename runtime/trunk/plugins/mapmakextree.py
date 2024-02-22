@@ -75,12 +75,12 @@ class MakeXTreeDlg(quarkpy.qmacro.dialogbox):
       close = quarkpy.qtoolbar.button(
         self.close,
         "close this box",
-        ico_editor, 0,
+        ico_dict['ico_editor'], 0,
         "Close"),
       MakeXTree = quarkpy.qtoolbar.button(
         self.MakeXTree,
         "make tree",
-        ico_editor, 3,
+        ico_dict['ico_editor'], 3,
         "Make Tree"))
 
   def AcceptDialog(self):

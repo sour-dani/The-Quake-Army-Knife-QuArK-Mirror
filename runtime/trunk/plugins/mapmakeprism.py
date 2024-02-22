@@ -205,12 +205,12 @@ class MakePrismDlg(quarkpy.qmacro.dialogbox):
             close = quarkpy.qtoolbar.button(
                 self.close,
                 "close this box",
-                ico_editor, 0,
+                ico_dict['ico_editor'], 0,
                 "Close"),
             MakePrism = quarkpy.qtoolbar.button(
                 self.MakePrism,
                 "make prism",
-                ico_editor, 3,
+                ico_dict['ico_editor'], 3,
                 "Make Prism"))
 
 

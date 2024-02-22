@@ -83,12 +83,12 @@ class VtxPinDlg(quarkpy.dlgclasses.placepersistent_dialogbox):
           cancel = quarkpy.qtoolbar.button(
             self.cancel,
             "Cancel dialog",
-            ico_editor, 0,
+            ico_dict['ico_editor'], 0,
             "Cancel"),
           exit = quarkpy.qtoolbar.button(
             self.exit,
             "Exit & apply changes",
-            ico_editor, 2,
+            ico_dict['ico_editor'], 2,
             "Exit & Apply")
         )
 

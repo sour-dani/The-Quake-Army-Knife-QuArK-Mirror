@@ -403,7 +403,7 @@ class EntitiesFileDlg(quarkpy.qmacro.dialogbox):
         self.listfiletype = listfiletype
         # Create the dialog form and the buttons
         quarkpy.qmacro.dialogbox.__init__(self, entitiesfiledialog, src,
-            UseTheseSelections = quarkpy.qtoolbar.button(self.UseTheseSelections,"Use These Selections",ico_editor, 3, "Use These Selections")
+            UseTheseSelections = quarkpy.qtoolbar.button(self.UseTheseSelections,"Use These Selections",ico_dict['ico_editor'], 3, "Use These Selections")
             )
 
     def datachange(self, df):
@@ -764,7 +764,7 @@ class DataFileDlg(quarkpy.qmacro.dialogbox):
         self.listfiletype = listfiletype
         # Create the dialog form and the buttons
         quarkpy.qmacro.dialogbox.__init__(self, datafiledialog, src,
-            ReturnSelections = quarkpy.qtoolbar.button(self.ReturnSelections,"Return Selections",ico_editor, 3, "Return Selections")
+            ReturnSelections = quarkpy.qtoolbar.button(self.ReturnSelections,"Return Selections",ico_dict['ico_editor'], 3, "Return Selections")
             )
 
     def ReturnSelections(self, btn):
@@ -1420,8 +1420,8 @@ class TypeOfConversionDlg(quarkpy.qmacro.dialogbox):
 
         # Create the dialog form and the buttons
         quarkpy.qmacro.dialogbox.__init__(self, form1, src,
-            MakeFiles = quarkpy.qtoolbar.button(self.MakeFiles,"Make .qrk Files",ico_editor, 3, "Make .qrk Files"),
-            close = quarkpy.qtoolbar.button( self.close, "DO NOT close this dialog\n ( to retain your settings )\nuntil you check your new files.", ico_editor, 0, "Cancel function")
+            MakeFiles = quarkpy.qtoolbar.button(self.MakeFiles,"Make .qrk Files",ico_dict['ico_editor'], 3, "Make .qrk Files"),
+            close = quarkpy.qtoolbar.button( self.close, "DO NOT close this dialog\n ( to retain your settings )\nuntil you check your new files.", ico_dict['ico_editor'], 0, "Cancel function")
             )
 
     def datachange(self, df):

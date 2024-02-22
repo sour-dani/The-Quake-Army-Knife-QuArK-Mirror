@@ -90,12 +90,12 @@ class ReloadDlg (quarkpy.qmacro.dialogbox):
         close = quarkpy.qtoolbar.button(
             self.close,
             "Reload the named module",
-            ico_editor, 2,
+            ico_dict['ico_editor'], 2,
             "Reload"),
         cancel = quarkpy.qtoolbar.button(
             self.cancel,
             "Cancel & close window",
-            ico_editor, 0,
+            ico_dict['ico_editor'], 0,
             "Cancel"))
 
 #    def datachange(self, df):

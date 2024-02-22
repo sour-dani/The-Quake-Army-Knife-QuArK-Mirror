@@ -28,7 +28,7 @@ ico_dict['ico_mapdups'] = LoadIconSet("images\\mapdups", 16)
 class DuplicatorManager:
     "Abstract base class for Duplicators."
 
-    Icon = (ico_objects, iiDuplicator)    # defaults
+    Icon = (ico_dict['ico_objects'], iiDuplicator)    # defaults
 
     def buildimages(self, singleimage=None):
         s = self.dup["macro"]

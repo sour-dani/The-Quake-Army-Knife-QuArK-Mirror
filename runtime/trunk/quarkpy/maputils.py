@@ -42,7 +42,7 @@ def loadlocaltextures(item):
     items = []
     for tex in quarkx.texturesof([editor.Root]):
         m = qmenu.item(tex, chooselocaltexture)
-        m.menuicon = ico_objects[1][iiTexture]
+        m.menuicon = ico_dict['ico_objects'][1][iiTexture]
         items.append(m)
     return items
 

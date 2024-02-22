@@ -443,7 +443,7 @@ class SimpleCancelDlgBox(qmacro.dialogbox):
 
     def __init__(self, form, src):
         qmacro.dialogbox.__init__(self, form, src,
-          cancel = qtoolbar.button(self.cancel, "close this box", qutils.ico_editor, 0, "Cancel"))
+          cancel = qtoolbar.button(self.cancel, "close this box", qutils.ico_dict['ico_editor'], 0, "Cancel"))
 
     def cancel(self, m):
         self.src = None

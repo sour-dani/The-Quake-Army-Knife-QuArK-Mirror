@@ -79,8 +79,8 @@ class TextureSearchDlg(quarkpy.qmacro.dialogbox):
 
         # Create the dialog form and the buttons
         quarkpy.qmacro.dialogbox.__init__(self, form, src,
-            close = quarkpy.qtoolbar.button(self.close,"close this box",ico_editor, 0, "Close"),
-            Search = quarkpy.qtoolbar.button(self.doSearch,"Search",ico_editor, 3, "Search")
+            close = quarkpy.qtoolbar.button(self.close,"close this box",ico_dict['ico_editor'], 0, "Close"),
+            Search = quarkpy.qtoolbar.button(self.doSearch,"Search",ico_dict['ico_editor'], 3, "Search")
         )
 
     def doSearch(self, btn):

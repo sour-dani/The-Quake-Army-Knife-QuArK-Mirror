@@ -85,7 +85,7 @@ class LiveEditDlg (placepersistent_dialogbox):
            exit = qtoolbar.button(
             self.cancel,
             "close dialog",
-            qutils.ico_editor, 0,
+            qutils.ico_dict['ico_editor'], 0,
             "Exit"))
 
     def cancel(self, dlg):

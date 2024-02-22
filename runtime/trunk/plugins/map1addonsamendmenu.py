@@ -120,12 +120,12 @@ class AddonsDlg (quarkpy.qmacro.dialogbox):
         close = quarkpy.qtoolbar.button(
             self.close,
             "Add the selected program",
-            ico_editor, 3,
+            ico_dict['ico_editor'], 3,
             "Reload"),
         cancel = quarkpy.qtoolbar.button(
             self.cancel,
             "Cancel & close window",
-            ico_editor, 0,
+            ico_dict['ico_editor'], 0,
             "Cancel"))
 
     def onclose(self, dlg):
@@ -572,12 +572,12 @@ class DeleteDlg(quarkpy.qmacro.dialogbox):
         close = quarkpy.qtoolbar.button(
             self.close,
             "Remove the selected items\nfrom their Menu Categories",
-            ico_editor, 3,
+            ico_dict['ico_editor'], 3,
             "Reload"),
         cancel = quarkpy.qtoolbar.button(
             self.cancel,
             "Cancel & close window",
-            ico_editor, 0,
+            ico_dict['ico_editor'], 0,
             "Cancel"))
 
     def onclose(self, dlg):

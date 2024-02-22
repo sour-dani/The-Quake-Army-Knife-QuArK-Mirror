@@ -441,10 +441,10 @@ class ModelLayout(BaseLayout):
     def bs_additionalpages(self, panel):
         "Builds additional pages for the multi-pages panel."
         thesepages = []
-        page1 = qtoolbar.button(self.filldataform, "Specifics/Args-view||Specifics/Args-view:\n\nThis view displays the general parameters for the selected object(s).\n\nSee the infobase for a more detailed description and use of this view display.", ico_objects, iiEntity, "Specifics/Args-view", infobaselink="intro.mapeditor.dataforms.html#specsargsview")
+        page1 = qtoolbar.button(self.filldataform, "Specifics/Args-view||Specifics/Args-view:\n\nThis view displays the general parameters for the selected object(s).\n\nSee the infobase for a more detailed description and use of this view display.", ico_dict['ico_objects'], iiEntity, "Specifics/Args-view", infobaselink="intro.mapeditor.dataforms.html#specsargsview")
         page1.pc = [self.bs_dataform(panel)]
         thesepages.append(page1)
-        skin = qtoolbar.button(self.fillskinform, "Skin-view||Skin-view:\n\nParameters about the selected skin", ico_objects, iiPcx, "Skin-view", infobaselink="intro.mapeditor.dataforms.html#faceview")
+        skin = qtoolbar.button(self.fillskinform, "Skin-view||Skin-view:\n\nParameters about the selected skin", ico_dict['ico_objects'], iiPcx, "Skin-view", infobaselink="intro.mapeditor.dataforms.html#faceview")
         skin.pc = [self.bs_skinform(panel)]
         thesepages.append(skin)
         return thesepages, mppages
@@ -647,7 +647,7 @@ class ModelLayout(BaseLayout):
             for s in sl[1:]:
                 icon2 = qutils.EntityIconSel(s)
                 if not (icon is icon2):
-                    icon = ico_objects[1][iiEntity]
+                    icon = ico_dict['ico_objects'][1][iiEntity]
                     break
             for i in range(0, len(sfbtn.menu)):
                 m = sfbtn.menu[i]
@@ -907,7 +907,7 @@ class ModelLayout(BaseLayout):
             for s in sl[1:]:
                 icon2 = qutils.EntityIconSel(s)
                 if not (icon is icon2):
-                    icon = ico_objects[1][iiEntity]
+                    icon = ico_dict['ico_objects'][1][iiEntity]
                     break
             cap = ""
             for i in range(0, len(sfbtn.menu)):
@@ -918,7 +918,7 @@ class ModelLayout(BaseLayout):
                     cap = SFTexts[i]
             if cap == "":
                 cap = "set model type"
-        icon = ico_objects[1][iiEntity]
+        icon = ico_dict['ico_objects'][1][iiEntity]
         try:
             sfbtn.caption = cap
         except:

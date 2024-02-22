@@ -89,7 +89,7 @@ class Orientation(quarkpy.qmacro.dialogbox):
         self.face = None
         src = quarkx.newobj(":")
         quarkpy.qmacro.dialogbox.__init__(self, quarkx.clickform, src,
-          cancel = quarkpy.qtoolbar.button(self.close, "close this box", ico_editor, 0, "Close"))
+          cancel = quarkpy.qtoolbar.button(self.close, "close this box", ico_dict['ico_editor'], 0, "Close"))
         editor = mapeditor()
         if editor is None: return
         face = editor.layout.explorer.uniquesel

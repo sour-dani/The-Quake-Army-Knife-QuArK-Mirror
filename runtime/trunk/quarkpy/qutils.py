@@ -243,7 +243,7 @@ def LoadIconSet(filename, width, transparencypt=(0,0)):
 
 
 def LoadIconSet1(filename, width, transparencypt=(0,0)):
-    return LoadIconSet(quarkx.setupsubset(SS_GENERAL, "Display")["IconPath"]+filename, width, transparencypt)
+    return LoadIconSet(os.path.join(quarkx.setupsubset(SS_GENERAL, "Display")["IconPath"], filename), width, transparencypt)
 
 
 #
@@ -304,16 +304,8 @@ def loadmdleditor():
 #   live pointer memory leaks.
 #
 ico_dict = {}
-
-#
-# Putting these two in the ico_dict doesn't achieve
-#  any purpose (lots of code gets clunkier, no benefit)
-#
-# Default icons for the objects
-ico_objects = LoadIconSet("images\\objects", 16)
-
-# Generic editor icons
-ico_editor = LoadIconSet("images\\editor", 16)
+ico_dict['ico_objects'] = LoadIconSet("images\\objects", 16) # Default icons for the objects
+ico_dict['ico_editor'] = LoadIconSet("images\\editor", 16) # Generic editor icons
 
 # Note: There are also some icon-loading calls in qeditor.py; search for "Icons for the layout of the Map/Model Editor"
 
@@ -399,10 +391,10 @@ def DuplicatorIconSel(dup):
 #
 
 def GroupIconUnsel(grp, ico_objects_group_set={
-  (0,0):ico_objects[0][iiGroupHidden],
-  (0,1):ico_objects[0][iiGroup],
-  (4,0):ico_objects[0][iiGroupHiddenXed],
-  (4,1):ico_objects[0][iiGroupXed]}):
+  (0,0):ico_dict['ico_objects'][0][iiGroupHidden],
+  (0,1):ico_dict['ico_objects'][0][iiGroup],
+  (4,0):ico_dict['ico_objects'][0][iiGroupHiddenXed],
+  (4,1):ico_dict['ico_objects'][0][iiGroupXed]}):
     if grp[";view"]:
         try:
             view = int(grp[";view"])
@@ -422,13 +414,13 @@ def GroupIconUnsel(grp, ico_objects_group_set={
     elif grp.name.startswith("Full3D True 3D"):
         if quarkx.setupsubset(SS_MODEL, "Options")["Full3DTrue3Dmode"] != "1":
             iiGroup = 31
-    return ico_objects[0][iiGroup]
+    return ico_dict['ico_objects'][0][iiGroup]
 
 def GroupIconSel(grp, ico_objects_group_set={
-  (0,0):ico_objects[1][iiGroupHidden],
-  (0,1):ico_objects[1][iiGroup],
-  (4,0):ico_objects[1][iiGroupHiddenXed],
-  (4,1):ico_objects[1][iiGroupXed]}):
+  (0,0):ico_dict['ico_objects'][1][iiGroupHidden],
+  (0,1):ico_dict['ico_objects'][1][iiGroup],
+  (4,0):ico_dict['ico_objects'][1][iiGroupHiddenXed],
+  (4,1):ico_dict['ico_objects'][1][iiGroupXed]}):
     if grp[";view"]:
         try:
             view = int(grp[";view"])
@@ -448,7 +440,7 @@ def GroupIconSel(grp, ico_objects_group_set={
     elif grp.name.startswith("Full3D True 3D"):
         if quarkx.setupsubset(SS_MODEL, "Options")["Full3DTrue3Dmode"] != "1":
             iiGroup = 31
-    return ico_objects[1][iiGroup]
+    return ico_dict['ico_objects'][1][iiGroup]
 
 #
 # Variable icons handlers for Model objects
@@ -479,7 +471,7 @@ def ModelIcon(modelobj, iconset):
     # If it is hidden, draw an X
     if DummyItem is not None:
         if DummyItem['show'] != chr(1):
-            return ico_editor[iconset][0]
+            return ico_dict['ico_editor'][iconset][0]
 
     # Needed to display the correct icons of these groups for imported models.
     if modelobj.type ==":bbg":
@@ -501,7 +493,7 @@ def ModelIcon(modelobj, iconset):
     if tag < len(icons):
         return icons[tag]
     else:
-        return ico_objects[iconset][iiUnknown]
+        return ico_dict['ico_objects'][iconset][iiUnknown]
 
 def ModelGroupIconSel(obj):
     "This function is called from the Delphi code, QObject.DisplayDetails function,"
@@ -528,9 +520,9 @@ def ComponentIcon(compobj, iconset):
     #icons = ico_dict['mdlobjs'][iconset]
 
     if compobj['show'] == chr(1):
-        return ico_objects[iconset][iiComponent]
+        return ico_dict['ico_objects'][iconset][iiComponent]
     else:
-        return ico_editor[iconset][0]
+        return ico_dict['ico_editor'][iconset][0]
 
 def ComponentIconSel(obj):
     return ComponentIcon(obj, 1)
@@ -543,8 +535,6 @@ def ComponentIconUnsel(obj):
 #
 
 def BBoxIcon(bbox, iconset):
-    if not ico_dict.has_key('ico_objects'):
-        ico_dict['ico_objects'] = LoadIconSet("images\\objects", 16)
     icons = ico_dict['ico_objects'][iconset]
 
     if bbox['show'][0] == 1.0:
@@ -556,14 +546,14 @@ def BBoxIconSel(bbox):
     from qeditor import mapeditor
     editor = mapeditor()
     if (editor is None) or (editor.MODE != SS_MODEL):
-        return ico_objects[1][iiPolyhedron]
+        return ico_dict['ico_objects'][1][iiPolyhedron]
     return BBoxIcon(bbox, 1)
 
 def BBoxIconUnsel(bbox):
     from qeditor import mapeditor
     editor = mapeditor()
     if (editor is None) or (editor.MODE != SS_MODEL):
-        return ico_objects[0][iiPolyhedron]
+        return ico_dict['ico_objects'][0][iiPolyhedron]
     return BBoxIcon(bbox, 0)
 
 #
@@ -571,8 +561,6 @@ def BBoxIconUnsel(bbox):
 #
 
 def BoneIcon(bone, iconset):
-    if not ico_dict.has_key('ico_objects'):
-        ico_dict['ico_objects'] = LoadIconSet("images\\objects", 16)
     icons = ico_dict['ico_objects'][iconset]
 
     if bone['show'][0] == 1.0:
@@ -591,8 +579,6 @@ def BoneIconUnsel(bone):
 #
 
 def TagIcon(tag, iconset):
-    if not ico_dict.has_key('ico_objects'):
-        ico_dict['ico_objects'] = LoadIconSet("images\\objects", 16)
     icons = ico_dict['ico_objects'][iconset]
 
     if not tag.dictspec.has_key("show"):

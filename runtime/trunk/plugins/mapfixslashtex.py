@@ -113,8 +113,8 @@ class FixSlashTextureDlg(quarkpy.qmacro.dialogbox):
         #
 
         quarkpy.qmacro.dialogbox.__init__(self, form, src,
-           close      = quarkpy.qtoolbar.button(self.close, "Close this box", ico_editor, 0, "Close", 1),
-           ReplaceAll = quarkpy.qtoolbar.button(self.ReplaceAll, "Convert slashes textures", ico_editor, 2, "Convert slashes", 1)
+           close      = quarkpy.qtoolbar.button(self.close, "Close this box", ico_dict['ico_editor'], 0, "Close", 1),
+           ReplaceAll = quarkpy.qtoolbar.button(self.ReplaceAll, "Convert slashes textures", ico_dict['ico_editor'], 2, "Convert slashes", 1)
         )
 
 

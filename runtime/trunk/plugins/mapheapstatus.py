@@ -129,7 +129,7 @@ class HeapStatus(quarkpy.dlgclasses.placepersistent_dialogbox):
         cancel = quarkpy.qtoolbar.button(
             self.cancel,
             "Close",
-            ico_editor, 0,
+            ico_dict['ico_editor'], 0,
             "Cancel"))
 
     def cancel(self, dlg):

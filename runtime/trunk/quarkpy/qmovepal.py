@@ -108,8 +108,8 @@ class ConfigDialog(qmacro.dialogbox):
             self.mode = menu
         setup = quarkx.setupsubset(self.mode, "Building").copy()
         qmacro.dialogbox.__init__(self, quarkx.clickform, setup,
-          ok = qtoolbar.button(self.close, "close this box", ico_editor, 3, "Close"),
-          cancel = qtoolbar.button(self.cancel, "cancel changes", ico_editor, 0, "Cancel"))
+          ok = qtoolbar.button(self.close, "close this box", ico_dict['ico_editor'], 3, "Close"),
+          cancel = qtoolbar.button(self.cancel, "cancel changes", ico_dict['ico_editor'], 0, "Cancel"))
 
     def onclose(self, dlg):
         if self.src is not None:
@@ -211,9 +211,9 @@ class MdlConfigDialog(qmacro.dialogbox):
         self.editor = editor
         setup = quarkx.setupsubset(self.mode, "Building").copy()
         qmacro.dialogbox.__init__(self, quarkx.clickform, setup,
-          applychange = qtoolbar.button(self.apply, "apply the change", ico_editor, 1, "Apply"),
-          ok = qtoolbar.button(self.close, "apply and close", ico_editor, 3, "Close"),
-          cancel = qtoolbar.button(self.cancel, "cancel changes", ico_editor, 0, "Cancel"))
+          applychange = qtoolbar.button(self.apply, "apply the change", ico_dict['ico_editor'], 1, "Apply"),
+          ok = qtoolbar.button(self.close, "apply and close", ico_dict['ico_editor'], 3, "Close"),
+          cancel = qtoolbar.button(self.cancel, "cancel changes", ico_dict['ico_editor'], 0, "Cancel"))
 
     def apply(self, dlg):
         if self.src is not None:

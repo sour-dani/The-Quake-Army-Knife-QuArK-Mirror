@@ -129,7 +129,7 @@ class MakeTexMultDlg(quarkpy.qmacro.dialogbox):
         close = quarkpy.qtoolbar.button(
             self.close,
             "close this box",
-            ico_editor, 0,
+            ico_dict['ico_editor'], 0,
             "Close"))
 
     def onclose(self, dlg):

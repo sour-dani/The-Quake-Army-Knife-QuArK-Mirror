@@ -76,8 +76,8 @@ class SearchDlg(quarkpy.qmacro.dialogbox):
 
 
         quarkpy.qmacro.dialogbox.__init__(self, quarkx.clickform, src,
-          ok = quarkpy.qtoolbar.button(self.search, "search for the given classname", ico_editor, 1, " Search ", 1),
-          cancel = quarkpy.qtoolbar.button(self.close, "close this box", ico_editor, 0, " Cancel ", 1))
+          ok = quarkpy.qtoolbar.button(self.search, "search for the given classname", ico_dict['ico_editor'], 1, " Search ", 1),
+          cancel = quarkpy.qtoolbar.button(self.close, "close this box", ico_dict['ico_editor'], 0, " Cancel ", 1))
         self.editor = editor
 
     def search(self, reserved):

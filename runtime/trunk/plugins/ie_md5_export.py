@@ -1100,8 +1100,8 @@ class ExportSettingsDlg(quarkpy.qmacro.dialogbox):
 
         # Create the dialog form and the buttons.
         quarkpy.qmacro.dialogbox.__init__(self, form1, src,
-            MakeFiles = quarkpy.qtoolbar.button(self.MakeFiles,"DO NOT close this dialog\n ( to retain your settings )\nuntil you check your new files.",ico_editor, 3, "Export Model"),
-            close = quarkpy.qtoolbar.button(self.close, "DO NOT close this dialog\n ( to retain your settings )\nuntil you check your new files.", ico_editor, 0, "Cancel Export")
+            MakeFiles = quarkpy.qtoolbar.button(self.MakeFiles,"DO NOT close this dialog\n ( to retain your settings )\nuntil you check your new files.",ico_dict['ico_editor'], 3, "Export Model"),
+            close = quarkpy.qtoolbar.button(self.close, "DO NOT close this dialog\n ( to retain your settings )\nuntil you check your new files.", ico_dict['ico_editor'], 0, "Cancel Export")
             )
 
     def datachange(self, df):

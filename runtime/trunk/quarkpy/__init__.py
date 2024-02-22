@@ -82,8 +82,8 @@ def RunQuArK():
 
     import qutils
     quarkx.setupchanged = qutils.SetupChanged
-    unselicons = qutils.ico_objects[0]
-    selicons = qutils.ico_objects[1]
+    unselicons = qutils.ico_dict['ico_objects'][0]
+    selicons = qutils.ico_dict['ico_objects'][1]
     for i in range(0, qutils.iiTotalImageCount):
         quarkx.seticons(i, selicons[i], unselicons[i])
     quarkx.seticons(qutils.iiPolyhedron, qutils.BBoxIconSel,       qutils.BBoxIconUnsel)
@@ -116,12 +116,8 @@ def RunQuArK():
 # Revert everything we did here
 def QuArK_shutdown():
     import sys
-    if "qutils" in sys.modules:
+    if "quarkpy.qutils" in sys.modules:
         import qutils
-
-        del qutils.ico_objects
-        del qutils.ico_editor
-
         for key in qutils.ico_dict.keys():
             del qutils.ico_dict[key]
         del qutils.ico_dict

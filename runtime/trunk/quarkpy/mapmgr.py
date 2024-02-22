@@ -208,20 +208,20 @@ class MapLayout(BaseLayout):
     def bs_additionalpages(self, panel):
         "Builds additional pages for the multi-pages panel."
         thesepages = []
-        page1 = qtoolbar.button(self.filldataform, "Specifics/Args-view||Specifics/Args-view:\n\nThis view displays the general parameters for the selected object(s).\n\nSee the infobase for a more detailed description and use of this view display.", ico_objects, iiEntity, "Specifics/Args-view", infobaselink="intro.mapeditor.dataforms.html#specsargsview")
+        page1 = qtoolbar.button(self.filldataform, "Specifics/Args-view||Specifics/Args-view:\n\nThis view displays the general parameters for the selected object(s).\n\nSee the infobase for a more detailed description and use of this view display.", ico_dict['ico_objects'], iiEntity, "Specifics/Args-view", infobaselink="intro.mapeditor.dataforms.html#specsargsview")
         page1.pc = [self.bs_dataform(panel)]
         thesepages.append(page1)
-        page2 = qtoolbar.button(self.fillpolyform, "Polyhedron-view||Polyhedron-view:\n\nThis display shows the parameters about the selected polyhedron(s).\n\nSee the infobase for a more detailed description and use of this view display.", ico_objects, iiPolyhedron, "Polyhedron-view", infobaselink="intro.mapeditor.dataforms.html#polyhedronview")
+        page2 = qtoolbar.button(self.fillpolyform, "Polyhedron-view||Polyhedron-view:\n\nThis display shows the parameters about the selected polyhedron(s).\n\nSee the infobase for a more detailed description and use of this view display.", ico_dict['ico_objects'], iiPolyhedron, "Polyhedron-view", infobaselink="intro.mapeditor.dataforms.html#polyhedronview")
         page2.pc = [self.bs_polyform(panel)]
         thesepages.append(page2)
-        page3 = qtoolbar.button(self.fillfaceform, "Face-view||Face-view:\n\nThis display shows the parameters about the selected face(s).\n\nSee the infobase for a more detailed description and use of this view display.", ico_objects, iiFace, "Face-view", infobaselink="intro.mapeditor.dataforms.html#faceview")
+        page3 = qtoolbar.button(self.fillfaceform, "Face-view||Face-view:\n\nThis display shows the parameters about the selected face(s).\n\nSee the infobase for a more detailed description and use of this view display.", ico_dict['ico_objects'], iiFace, "Face-view", infobaselink="intro.mapeditor.dataforms.html#faceview")
         page3.pc = [self.bs_faceform(panel)]
         page3.needangle = 1
         thesepages.append(page3)
         # only show the bezier-page, if the game supports bezierpatches
         beziersupport = quarkx.setupsubset()["BezierPatchSupport"]
         if (beziersupport is not None) and (beziersupport == "1"):
-            page4 = qtoolbar.button(self.fillbezierform, Strings[-459], ico_objects, iiBezier)#, Strings[-409])
+            page4 = qtoolbar.button(self.fillbezierform, Strings[-459], ico_dict['ico_objects'], iiBezier)#, Strings[-409])
             page4.pc = [self.bs_bezierform(panel)]
             thesepages.append(page4)
         return thesepages, mppages
@@ -272,7 +272,7 @@ class MapLayout(BaseLayout):
             for s in sl[1:]:
                 icon2 = qutils.EntityIconSel(s)
                 if not (icon is icon2):
-                    icon = ico_objects[1][iiEntity]
+                    icon = ico_dict['ico_objects'][1][iiEntity]
                     break
             sfbtn.state = 0
             cap = ""
@@ -288,7 +288,7 @@ class MapLayout(BaseLayout):
         else:
             sfbtn.state = qtoolbar.disabled
             cap = SFLetters[:len(sfbtn.menu)]
-            icon = ico_objects[1][iiEntity]
+            icon = ico_dict['ico_objects'][1][iiEntity]
         sfbtn.caption = cap
         btnlist = self.mpp.btnpanel.buttons
         if not (btnlist[1].icons[3] is icon):

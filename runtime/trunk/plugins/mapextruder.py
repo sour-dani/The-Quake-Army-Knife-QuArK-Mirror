@@ -162,7 +162,7 @@ class TextureDlg (quarkpy.dlgclasses.placepersistent_dialogbox):
            exit = quarkpy.qtoolbar.button(
             self.commit,
             "Commit your texture changes and return to regular editing\n (you can't just bail; instead, Undo your changes then commit)\n (if, in spite of my efforts, you find some way to close this box without hitting `commit', you will have made a mess.",
-            ico_editor, 0,
+            ico_dict['ico_editor'], 0,
             "Commit Texturing"))
 
     def commit(self, dlg):

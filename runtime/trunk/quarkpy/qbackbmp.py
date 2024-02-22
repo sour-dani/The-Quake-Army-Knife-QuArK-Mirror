@@ -103,7 +103,7 @@ class BackBmpDlg(qmacro.dialogbox):
             ok = qtoolbar.button(
                 self.ok,
                 "apply and view changes",
-                ico_editor, 1,
+                ico_dict['ico_editor'], 1,
                 "Ok"),
             remove = qtoolbar.button(
                 self.remove,
@@ -113,7 +113,7 @@ class BackBmpDlg(qmacro.dialogbox):
             no = qtoolbar.button(
                 self.no,
                 "close this dialog",
-                ico_editor, 0,
+                ico_dict['ico_editor'], 0,
                 "Close"))
 
     def ok(self, m):
@@ -268,7 +268,7 @@ class MdlBackBmpDlg(qmacro.dialogbox):
             ok = qtoolbar.button(
                 self.ok,
                 "apply and view changes",
-                ico_editor, 1,
+                ico_dict['ico_editor'], 1,
                 "Ok"),
             remove = qtoolbar.button(
                 self.remove,
@@ -278,7 +278,7 @@ class MdlBackBmpDlg(qmacro.dialogbox):
             no = qtoolbar.button(
                 self.no,
                 "close this dialog",
-                ico_editor, 0,
+                ico_dict['ico_editor'], 0,
                 "Close"))
 
     def ok(self, m):
