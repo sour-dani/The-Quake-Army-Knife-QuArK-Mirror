@@ -1647,8 +1647,8 @@ var
  I: Integer;
  F: TForm;
 begin
- //Make sure we don't get called again, through TQkForm.Destroy.
- OnClose:=nil;
+ //Stop all timer activity, if any left.
+ ClearTimers;
 
  //Discard all idle jobs.
  P:=IdleJobs;
@@ -1683,7 +1683,6 @@ begin
    end;
   end;
  ClearGameBuffers(False);
- ClearTimers;
  ClearWireframeCache;
  CloseSetupSet;
 
@@ -1696,7 +1695,6 @@ begin
    if Components[I] is TDynMenuItem then
      TDynMenuItem(Components[I]).SrcObj:=Nil;
  end;
- // QObjectClassList.Free;
 
  Application.UnHookMainWindow(WindowHook);
 end;
