@@ -64,7 +64,7 @@ begin
     ThreadHandle:=CreateThread(nil, 0, @InstallPackages, nil, 0, ThreadId);
     if ThreadHandle = 0 then
     begin
-      MessageBox(InstallWindow.Handle, 'Unable to create installer thread. Update unsuccessful.', 'QuArK', MB_ICONEXCLAMATION or MB_OK);
+      MessageBox(InstallWindow.Handle, PChar(LoadStr1(5888)), 'QuArK', MB_ICONEXCLAMATION or MB_OK);
       Exit;
     end;
     SetThreadPriority(ThreadHandle, THREAD_PRIORITY_ABOVE_NORMAL);
@@ -164,7 +164,7 @@ begin
       Exit;
     end;
   end;
-  InstallWindow.Label1.Caption:='QuArK needs to be restarted for the updates to be applied.'; //@
+  InstallWindow.Label1.Caption:=LoadStr1(5889);
   Result:=0;
 end;
 
@@ -179,7 +179,7 @@ procedure TAutoUpdateInstaller.FormCloseQuery(Sender: TObject; var CanClose: Boo
 begin
   if ThreadHandle<>0 then
   begin
-    if MessageBox(Handle, 'Installation of the updates is still busy. Stopping the update will most likely result in a corrupt install. Are you sure you want to stop the installation?', 'QuArK', MB_ICONEXCLAMATION or MB_YESNO or MB_DEFBUTTON2) = IDNO then
+    if MessageBox(Handle, PChar(LoadStr1(5890)), 'QuArK', MB_ICONEXCLAMATION or MB_YESNO or MB_DEFBUTTON2) = IDNO then
     begin
       CanClose:=False;
       Exit;

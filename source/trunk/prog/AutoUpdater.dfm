@@ -8,7 +8,6 @@ object AutoUpdater: TAutoUpdater
   ClientWidth = 492
   Color = clBtnFace
   ParentFont = True
-  OldCreateOrder = True
   Position = poScreenCenter
   OnCreate = FormCreate
   PixelsPerInch = 96
