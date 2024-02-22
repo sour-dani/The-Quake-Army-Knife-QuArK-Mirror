@@ -124,8 +124,8 @@ procedure DoUpdate(AllowOnline: Boolean; AutomaticCheck: Boolean);
 
 implementation
 
-uses StrUtils, SysUtils, DateUtils, QkObjects, QConsts, Setup, Logging, Travail,
-  QkExceptions, AutoUpdateInstaller, TextBoxForm, ExtraFunctionality;
+uses StrUtils, SysUtils, DateUtils, Quarkx, QkObjects, QConsts, Setup, Logging,
+  Travail, QkExceptions, AutoUpdateInstaller, TextBoxForm, ExtraFunctionality;
 
 var
   UpdateIndexFile: TUpdateIndexFile;
@@ -477,7 +477,7 @@ begin
                   UpdatesFound:=True;
                   Notifications.Add(Messages[I].Text);
                 end;
-              ShowTextBox('QuArK Notification', 'There are new update notifications:', Notifications);
+              ShowTextBox(LoadStr1(5877), LoadStr1(5878), Notifications);
             finally
               Notifications.Free;
             end;
@@ -530,7 +530,7 @@ begin
       Result := true;
     except
       on E: Exception do
-        LogAndWarn('The online update check has failed with the following error: '+E.Message+#13#10#13#10+'If this error persists, please contact the QuArK development team.');
+        LogAndWarn(FmtLoadStr1(5879, [E.Message]));
     end;
   finally
     UpdateIndexFile.Free;
@@ -557,14 +557,14 @@ begin
       if AutoUpdateOnline = false then
       begin
         //Something went wrong, let's fall back to the offline 'update'
-        Log(LOG_WARNING, 'Unable to check for updates online! Using offline update routine.');
+        Log(LOG_WARNING, LoadStr1(5880));
         DoOfflineUpdate := True;
       end
       else
       begin
         if not AutomaticCheck then
           if not UpdatesFound then
-            Application.MessageBox('No updates were found.', 'QuArK', MB_TASKMODAL or MB_ICONINFORMATION or MB_OK);
+            Application.MessageBox(PChar(LoadStr1(5881)), 'QuArK', MB_TASKMODAL or MB_ICONINFORMATION or MB_OK);
       end;
     end
     else
@@ -578,17 +578,20 @@ begin
     //Offline 'update'
     if DaySpan(Now, QuArKCompileDate) >= QuArKDaysOld then
     begin
-      Log(LOG_WARNING, 'Offline update: Old version of QuArK detected!');
-      if Application.MessageBox('This version of QuArK is rather old. Do you want to open the QuArK website to check for updates?', 'QuArK', MB_TASKMODAL or MB_ICONINFORMATION or MB_YESNO) = IDYES then
+      Log(LOG_WARNING, LoadStr1(5882));
+      if Application.MessageBox(PChar(LoadStr1(5883)), 'QuArK', MB_TASKMODAL or MB_ICONINFORMATION or MB_YESNO) = IDYES then
       begin
         if ShellExecute(0, 'open', QuArKWebsite, nil, nil, SW_SHOWDEFAULT) <= 32 then
-          Application.MessageBox('Unable to open website: Call to ShellExecute failed!' + #13#10#13#10 + 'Please manually go to: ' + QuArKWebsite, 'QuArK', MB_TASKMODAL or MB_ICONEXCLAMATION or MB_OK);
+        begin
+          LogWindowsError(GetLastError(), 'DoUpdate: ShellExecute("open", "'+QuArKWebsite+'")');
+          Application.MessageBox(PChar(FmtLoadStr1(5884, [QuArKWebsite])), 'QuArK', MB_TASKMODAL or MB_ICONEXCLAMATION or MB_OK);
+        end;
       end;
     end
     else
     begin
       if not AutomaticCheck then
-        Application.MessageBox('No updates were found.', 'QuArK', MB_TASKMODAL or MB_ICONINFORMATION or MB_OK);
+        Application.MessageBox(PChar(LoadStr1(5885)), 'QuArK', MB_TASKMODAL or MB_ICONINFORMATION or MB_OK);
     end;
   end;
 end;
@@ -614,7 +617,7 @@ begin
   end;
   if not PackageSelected then
   begin
-    Application.MessageBox('No packages selected. Please first select packages to install, or click "Cancel".', 'QuArK', MB_TASKMODAL or MB_ICONEXCLAMATION or MB_OK);
+    Application.MessageBox(PChar(LoadStr1(5886)), 'QuArK', MB_TASKMODAL or MB_ICONEXCLAMATION or MB_OK);
     Exit;
   end;
   Close;
@@ -630,7 +633,7 @@ begin
   I:=(Sender as TCheckListBox).ItemIndex;
   if I=-1 then
   begin
-    Label1.Caption:='Description';
+    Label1.Caption:=LoadStr1(5887);
     Label1.Font.Color:=clGrayText;
   end
   else
@@ -643,7 +646,7 @@ begin
     else
       S:=''; //Shouldn't happen!
     end;   *)
-    Label1.Caption:=S + #13 + #10 + UpdatePackages[I].Description;
+    Label1.Caption:=S + #13#10 + UpdatePackages[I].Description;
     Label1.Font.Color:=clWindowText;
   end;
 end;

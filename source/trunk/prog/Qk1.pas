@@ -412,10 +412,9 @@ begin
      end;
    end;
 
-   { DanielPharos: It's safer to do the update-check BEFORE loading Python,
+   { DanielPharos: It's better to do the update-check BEFORE loading Python,
      but then the option in the Defaults will have to be removed, since it
-     won't be loaded yet. Change this when the update-screen isn't a nag-screen
-     anymore! (Store data in registry?) }
+     won't be loaded yet, and we couldn't localize the text. }
    //Check for updates
    if LaunchOptions.DoUpdate and (SetupSubSet(ssGeneral, 'Startup').Specifics.Strings['UpdateCheck']<>'') then
    begin
