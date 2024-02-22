@@ -313,7 +313,7 @@ var
  Splash: TSplashScreen;
  MutexError: DWORD;
  LaunchOptions: TCmdLineOptions;
- TimerID: UINT(*_PTR*);
+ TimerID: {$IFDEF WIN64}UINT_PTR{$ELSE}UINT{$ENDIF};
 begin
  // Set-up exception handling
  OldException:=Application.OnException;
