@@ -420,6 +420,9 @@ function QWad.TestConversionType(I: Integer) : QFileObjectClass;
 begin
  case I of
   1: Result:=QWad;
+  //2: Result:=QShaderFile; //FIXME: How to convert the stages?
+  //3: Result:=D3MaterialFile;
+  //4: Result:=QVMT; //FIXME: This should be as compatible; is this inheriting from a wrong type?
  else
   Result:=Nil;
  end;
