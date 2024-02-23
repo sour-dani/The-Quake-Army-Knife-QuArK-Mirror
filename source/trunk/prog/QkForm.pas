@@ -399,7 +399,7 @@ begin
  if Assigned(OnClose) then
   begin
    Dummy:=caFree;
-   OnClose(Self, Dummy);
+   OnClose(Self, Dummy); //FIXME: Why are we calling OnClose in the destructor? That's way too late! (Can causes double-calling if .Close was called first.)
   end;
 {DestroyMarsCap(MarsCap);}
  inherited;
