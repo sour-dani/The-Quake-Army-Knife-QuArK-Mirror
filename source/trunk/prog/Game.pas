@@ -170,6 +170,7 @@ function GetGameFileBase(const BaseDir, FileName, PakFileName: String; LookInCD:
 
 procedure ReleaseGameFiles;
 begin
+ Log(LOG_VERBOSE, 'Called: ReleaseGameFiles');
  g_Form1.SavePendingFiles(True);
  GameFiles.Free;
  GameFiles:=Nil;
@@ -192,11 +193,15 @@ begin
    if GameFiles[I].PythonObj.ob_refcnt = 1 then
     Eligible.Add(Pointer(I)); //Don't store the objects themselves, as this will mess with their refcount.
 
+  Log(LOG_VERBOSE, 'SizeDownGameFiles: Found %d gamefiles eligible for unloading.', [Eligible.Count]);
+
   //Delete files if we are above the maximum amount of files.
   Setup:=SetupSubSet(ssGeneral, 'Memory');
   MaxFiles:=Round(Setup.GetFloatSpec('GameFiles', 15));
   if MaxFiles<0 then MaxFiles:=0;
   I:=Min(GameFiles.Count-MaxFiles, Eligible.Count);
+  if I>0 then
+    Log(LOG_VERBOSE, 'SizeDownGameFiles: Max gamefiles exceeded; unloading %d gamefiles...', [I]);
   while I > 0 do
    begin
     GameFiles.Delete(Integer(Eligible.Last));
@@ -221,6 +226,9 @@ begin
       Break;
      end;
    end;
+
+  if J<>Eligible.Count then
+    Log(LOG_VERBOSE, 'SizeDownGameFiles: Memory threshold exceeded; unloading %d gamefiles...', [Eligible.Count-J+1]);
 
   //And delete the rest.
   for I:=Eligible.Count-1 downto J do
