@@ -144,7 +144,7 @@ implementation
 
 {$R *.DFM}
 
-uses StrUtils, Graphics, QkPak, Setup, QkUnknown, QkTextures, Travail, ToolBox1,
+uses Math, StrUtils, Graphics, QkPak, Setup, QkUnknown, QkTextures, Travail, ToolBox1,
   QkImages, AddOns, QkQuakeCtx, Config, PakFiles, QkExceptions, Quarkx, PyImages,
   ApplPaths, Qk1, SteamFS, Python, Logging, FileExists2, ExtraFunctionality;
 
@@ -178,55 +178,58 @@ end;
 procedure SizeDownGameFiles;
 var
  MaxFiles, MemLeft: Integer;
- I: Integer;
-{FreeSize: Integer;
- Remove: Boolean;
- Q: QObject;}
+ I, J: Integer;
+ Eligible: TList; // of Integer, sorted
  Setup: QObject;
 begin
  if GameFiles=Nil then
   Exit;
 
- Setup:=SetupSubSet(ssGeneral, 'Memory');
- MaxFiles:=Round(Setup.GetFloatSpec('GameFiles', 15));
-(*if MaxFiles<0 then MaxFiles:=0;
- for I:=GameFiles.Count-MaxFiles-1 downto 0 do
-  GameFiles.Delete(I);*)
- if GameFiles.Count>MaxFiles then
-  begin
-   ReleaseGameFiles;
-   ClearGBList;
-   Exit;
-  end;
+ Eligible:=TList.Create;
+ try
+  //Make a list of all the gamefiles that can be deleted.
+  for I:=0 to GameFiles.Count-1 do
+   if GameFiles[I].PythonObj.ob_refcnt = 1 then
+    Eligible.Add(Pointer(I)); //Don't store the objects themselves, as this will mess with their refcount.
 
- MemLeft:=Round(Setup.GetFloatSpec('GameBufferSize', 8) *1024*1024);
- for I:=GameFiles.Count-1 downto 0 do
-  begin
-   Dec(MemLeft, GameFiles[I].GetObjectSize(Nil, False));
-   if MemLeft<=0 then
-    begin
-     ReleaseGameFiles;
-     ClearGBList;
-     Exit;
-    end;
-  end;
-(*Remove:=False;
- for I:=GameFiles.Count-1 downto 0 do
-  begin
-   Q:=GameFiles[I];
-   if not Remove then
-    begin
-     Dec(FreeSize, Q.GetObjectSize(Nil, False));
-     if FreeSize<=0 then
-      Remove:=True;   { game buffer overflow }
-    end;
-   if Remove then
-    begin  { object has to be removed }
-     Q.Free;
-     GameFiles.Delete(I);
-    end
-  end;
- ClearGBList;*)
+  //Delete files if we are above the maximum amount of files.
+  Setup:=SetupSubSet(ssGeneral, 'Memory');
+  MaxFiles:=Round(Setup.GetFloatSpec('GameFiles', 15));
+  if MaxFiles<0 then MaxFiles:=0;
+  I:=Min(GameFiles.Count-MaxFiles, Eligible.Count);
+  while I > 0 do
+   begin
+    GameFiles.Delete(Integer(Eligible.Last));
+    Eligible.Count:=Eligible.Count-1;
+    Dec(I);
+   end;
+
+  MemLeft:=Round(Setup.GetFloatSpec('GameBufferSize', 8) *1024*1024);
+  //First, subtract memory in gamefiles we can't delete.
+  for I:=0 to GameFiles.Count-1 do
+   if Eligible.IndexOf(Pointer(I))=-1 then
+    Dec(MemLeft, GameFiles[I].GetObjectSize(Nil, False));
+
+  //Then, find the point where we reach the memory threshold.
+  J:=Eligible.Count;
+  for I:=0 to Eligible.Count-1 do
+   begin
+    Dec(MemLeft, GameFiles[Integer(Eligible[I])].GetObjectSize(Nil, False));
+    if MemLeft<=0 then
+     begin
+      J:=I;
+      Break;
+     end;
+   end;
+
+  //And delete the rest.
+  for I:=Eligible.Count-1 downto J do
+   GameFiles.Delete(Integer(Eligible[I]));
+ finally
+  Eligible.Free;
+ end;
+
+ ClearGBList;
 end;
 
 procedure ClearGBList;
