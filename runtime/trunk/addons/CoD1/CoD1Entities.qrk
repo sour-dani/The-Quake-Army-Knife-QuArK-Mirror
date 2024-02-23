@@ -793,13 +793,13 @@ QQRKSRC1
     info_grenade_hint:form =
     {
       help = "AI will try to get a grenade to go through this point in space w"
-       "hen throwing a grenade.  This is how AI understandsthrowing grenades t"
-       "hrough windows and doors."
+       "hen throwing a grenade.  This is how AI understands throwing grenades "
+       "through windows and doors."
       bbox = '-4 -4 -4 4 4 4'
     }
     info_player_start:form =
     {
-      help = "equivelant to info_player_deathmatch"
+      help = "equivalent to info_player_deathmatch"
       bbox = '-16 -16 0 16 16 72'
       t_player_size = !
       mdl = "models/players/sarge/upper.md3"
