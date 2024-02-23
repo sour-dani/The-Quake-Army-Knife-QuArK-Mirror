@@ -1063,7 +1063,7 @@ begin
           try
             ResultatAnalyseClic(Liste, CCoord.Proj(W1), obj);
           finally
-            Py_DECREF(obj);
+            Py_XDECREF(obj);
           end;
         end;
       end;

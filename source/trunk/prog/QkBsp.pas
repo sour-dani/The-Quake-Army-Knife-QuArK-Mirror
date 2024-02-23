@@ -1598,6 +1598,7 @@ var
   I, J, PlaneSize, PlaneInc, HalfPlaneCount: Integer;
   Planes2, Planes3: PChar;
   SurfType: Char;
+  o: PyObject;
 begin
   Result:=PyList_New(0);
   HalfPlaneCount:=(PlaneCount-1) div 2;
@@ -1610,16 +1611,21 @@ begin
   Planes2:=Planes;
   for I:=0 to HalfPlaneCount do
   begin
-      Planes3 := Planes2+PlaneInc;
-      for J:=I+1 to HalfPlaneCount do
+    Planes3 := Planes2+PlaneInc;
+    for J:=I+1 to HalfPlaneCount do
+    begin
+      if PlanesClose(Planes2, Planes3,SurfType,Close) then
       begin
-          if PlanesClose(Planes2, Planes3,SurfType,Close) then
-          begin
-            PyList_Append(Result,PyInt_FromLong(I*2));
-            Break;
-          end;
-        Inc(Planes3,PlaneInc);
+        o:=PyInt_FromLong(I*2);
+        try
+          PyList_Append(Result, o);
+        finally
+          Py_XDECREF(o);
+        end;
+        Break;
       end;
+      Inc(Planes3, PlaneInc);
+    end;
     Inc(Planes2, PlaneInc);
   end;
 end;
@@ -1708,6 +1714,7 @@ var
   I, PlaneInc, HalfPlaneCount: Integer;
   Planes2: PChar;
   SurfType: Char;
+  o: PyObject;
 begin
   Result:=PyList_New(0);
   with Bsp do
@@ -1722,8 +1729,15 @@ begin
     Planes2:=Planes;
     for I:=0 to HalfPlaneCount do
     begin
-        if PlanesClose(Source, Planes2, SurfType, Close) then
-            PyList_Append(Result,PyInt_FromLong(I*2));
+      if PlanesClose(Source, Planes2, SurfType, Close) then
+      begin
+        o:=PyInt_FromLong(I*2);
+        try
+          PyList_Append(Result, o);
+        finally
+          Py_XDECREF(o);
+        end;
+      end;
       Inc(Planes2, PlaneInc);
     end;
   end;
@@ -1932,21 +1946,27 @@ procedure TTreeBspNode.GetFaces(var L : PyObject);
 var
   FirstLFace: PChar;
   LFaceIndex: Integer;
+  o: PyObject;
 begin
-   if Specifics.Strings['leaf']='' then
-   begin
-     ShowMessage('Faces only for leaves');
-     Exit;
-   end;
-   with PQ3Leaf(Source)^ do
-   begin
-     { leaffaces are integer sized in both Q2/Q3 }
-     Bsp.GetBspEntryData(Bsp.FileHandler.GetLumpLeafFaces(), FirstLFace);
-     for LFaceIndex:=first_leafface to first_leafface+num_leaffaces do
-     begin
-        PyList_Append(L,PyInt_FromLong(LFaceIndex));
-     end;
-   end;
+  if Specifics.Strings['leaf']='' then
+  begin
+    ShowMessage('Faces only for leaves');
+    Exit;
+  end;
+  with PQ3Leaf(Source)^ do
+  begin
+    { leaffaces are integer sized in both Q2/Q3 }
+    Bsp.GetBspEntryData(Bsp.FileHandler.GetLumpLeafFaces(), FirstLFace);
+    for LFaceIndex:=first_leafface to first_leafface+num_leaffaces do
+    begin
+      o:=PyInt_FromLong(LFaceIndex);
+      try
+        PyList_Append(L, o);
+      finally
+        Py_XDECREF(o);
+      end;
+    end;
+  end;
 end;
 
 function TTreeBspNode.PyGetAttr(attr: PyChar) : PyObject;
