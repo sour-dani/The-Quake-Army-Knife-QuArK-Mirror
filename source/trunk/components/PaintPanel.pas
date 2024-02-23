@@ -130,7 +130,7 @@ var
  Msg0: TMsg;
 begin
  while PeekMessage(Msg0, Handle, wm_InternalPaint, wm_InternalPaint,
-  pm_Remove) do
+  pm_Remove or pm_NoYield) do
    ;
  if GetUpdateRect(Handle, R, False) then
   begin
@@ -154,7 +154,7 @@ var
  Msg: TMsg;
 begin
  if not PeekMessage(Msg, Handle, wm_InternalPaint, wm_InternalPaint,
-  pm_NoRemove) then
+  pm_NoRemove or pm_NoYield) then
    PostMessage(Handle, wm_InternalPaint, 0,0);
 end;
 
@@ -164,7 +164,7 @@ var
  Bidon: TMessage;
 begin
  if PeekMessage(Msg, Handle, wm_InternalPaint, wm_InternalPaint,
-  pm_Remove) then
+  pm_Remove or pm_NoYield) then
    wmInternalPaint(Bidon);
 end;
 

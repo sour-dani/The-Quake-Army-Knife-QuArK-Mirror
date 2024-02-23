@@ -206,12 +206,12 @@ begin
 
     Stop:=False;
 
-    while PeekMessage(Msg, FForm.Handle, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE) do
+    while PeekMessage(Msg, FForm.Handle, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE or PM_NOYIELD) do
     begin
       Stop:=Stop or ((Msg.message=WM_KEYDOWN) and (Msg.wParam=VK_ESCAPE));
     end;
 
-    while PeekMessage(Msg, 0, WM_LBUTTONDOWN, WM_LBUTTONDOWN, PM_REMOVE) do
+    while PeekMessage(Msg, 0, WM_LBUTTONDOWN, WM_LBUTTONDOWN, PM_REMOVE or PM_NOYIELD) do
     begin
       if GetCursorPos(Pt) then
       begin

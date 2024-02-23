@@ -1662,8 +1662,8 @@ begin
        end;
       end;
 
-     while PeekMessage(Msg, Handle, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE) do ;
-     while PeekMessage(Msg, Handle, WM_MOUSEFIRST, WM_MOUSELAST, PM_REMOVE) do ;
+     while PeekMessage(Msg, Handle, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE or PM_NOYIELD) do ;
+     while PeekMessage(Msg, Handle, WM_MOUSEFIRST, WM_MOUSELAST, PM_REMOVE or PM_NOYIELD) do ;
     until False;
 
     {$IFDEF POSITIONLOG}
