@@ -98,10 +98,6 @@ begin
 end;
 
 procedure QSprite.GetVertices(var p: vec3_p);
-  function vec3(x,y,z: Integer): vec3_t;
-  begin
-    result[0]:=x; result[1]:=y; result[2]:=z;
-  end;
 var
   size: TPoint;
   p_o: vec3_p;
@@ -109,13 +105,21 @@ begin
   size:=Skin0.GetSize;
   GetMem(p_o, sizeof(vec3_t)*4);
   p:=p_o;
-  p_o^:=vec3(0,0,0);
+  p_o^[0]:=0.0;
+  p_o^[1]:=0.0;
+  p_o^[2]:=0.0;
   inc(p_o);
-  p_o^:=vec3(size.x,0,0);
+  p_o^[0]:=size.x;
+  p_o^[1]:=0.0;
+  p_o^[2]:=0.0;
   inc(p_o);
-  p_o^:=vec3(0,size.y,0);
+  p_o^[0]:=0.0;
+  p_o^[1]:=size.y;
+  p_o^[2]:=0.0;
   inc(p_o);
-  p_o^:=vec3(size.x,size.y,0);
+  p_o^[1]:=size.x;
+  p_o^[1]:=size.y;
+  p_o^[2]:=0.0;
 end;
 
 procedure QSprite.AddTo3DScene(Scene: TObject);
