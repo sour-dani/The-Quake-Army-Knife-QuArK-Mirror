@@ -8,6 +8,7 @@ Various constants and routines
 # FOUND IN FILE "COPYING.TXT"
 #
 
+import os
 import quarkx
 
 # a few colors
