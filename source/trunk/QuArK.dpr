@@ -60,7 +60,9 @@ uses
   // Runtime optimization
   //
   FastMove in 'prog\FastMove.pas',
+{$IFNDEF Delphi2009orNewerCompiler}
   FastCode in 'prog\FastCode\FastCode.pas',
+{$ENDIF}
   RtlVclOptimize in 'prog\RtlVclOptimize.pas',
 
   Forms, SysUtils, {$IFNDEF LINUX}Windows,{$ENDIF}
