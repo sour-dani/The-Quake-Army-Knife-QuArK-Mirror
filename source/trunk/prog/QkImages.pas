@@ -112,7 +112,7 @@ type
 
  {------------------------}
 
-function TestConversionImages(var I: Integer{; Exclude: QImage}) : QImageClass;
+function TestConversionImages(var I: Integer) : QImageClass;
 
  {------------------------}
 
@@ -123,25 +123,6 @@ uses Types, QkPcx, QkBmp, QkTga, QkDDS, QkFTX, QkIwi, QkJpg, QkPng, QkSoF, QkVTF
      Logging, ExtraFunctionality;
 
 {$R *.DFM}
-
-(*function TestConversionImages(var I: Integer; Exclude: QImage) : QImageClass;
-const
- IntlImages: array[1..2] of QImageClass = (QPcx, QBmp);
-var
- J: Integer;
-begin
- for J:=Low(IntlImages) to High(IntlImages) do
-  if (Exclude=Nil) or not Exclude.InheritsFrom(IntlImages[J]) then
-   begin
-    Dec(I);
-    if I=0 then
-     begin
-      Result:=IntlImages[J];
-      Exit;
-     end;
-   end;
- Result:=Nil;
-end;*)
 
 function TestConversionImages(var I: Integer) : QImageClass;
 const
