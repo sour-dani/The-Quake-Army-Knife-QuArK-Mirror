@@ -355,7 +355,7 @@ initialization
     FastcodeStrCopy := FastcodeStrCopyIA32;
     FastcodeStrIComp := FastcodeStrICompIA32;
     FastcodeStrLen := FastcodeStrLenIA32;
-    FastcodeStrToInt32 := FastcodeStrStrToInt32IA32;
+    FastcodeStrToInt32 := FastcodeStrToInt32IA32; //DanielPharos: The uncompilable typo I fixed here proves this was never tested.
     FastcodeUpperCase := FastcodeUpperCaseIA32;
   {$ENDIF}
 {$ENDIF}
