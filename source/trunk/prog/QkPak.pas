@@ -107,8 +107,8 @@ type
 implementation
 
 uses Travail, QkExplorer, Quarkx, QkExceptions, PyObjects, Game, QkSin,
- Qkzip2, QkQ3, QkD3, QkCoD2, QkSylphis, QkObjectClassList, QkBsp,
- BrowseForFolder, Setup, Logging, ExtraFunctionality;
+ Qkzip2, QkQ3, QkD3, QkCoD2, QkKEX, QkSylphis, QkTribes2, QkGCF, QkNCF, QkVPK,
+ QkObjectClassList, QkBsp, BrowseForFolder, Setup, Logging, ExtraFunctionality;
 
 {$R *.DFM}
 
@@ -936,12 +936,17 @@ function QPakFolder.TestConversionType(I: Integer) : QFileObjectClass;
 begin
   case I of
     1: Result:=D3Pak;
-    2: Result:=Q3Pak;
-    3: Result:=QCoD2Pak;
-    4: Result:=QZipPak;
-    5: Result:=QSinPak;
+    2: Result:=QCoD2Pak;
+    3: Result:=Q3Pak;
+    4: Result:=QSinPak;
+    5: Result:=QPak;
     6: Result:=SylphisPak;
-    7: Result:=QPak;
+    7: Result:=QVPK;
+    8: Result:=QGCF;
+    9: Result:=QNCF;
+    10: Result:=QVL2File;
+    11: Result:=QKPF;
+    12: Result:=QZipPak;
     else
       Result:=Nil;
   end;
