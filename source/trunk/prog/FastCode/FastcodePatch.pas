@@ -60,6 +60,11 @@ var
   NewJump: PJump;
   OldProtect: Cardinal;
 begin
+  //DanielPharos: If the ASource and ADestination are the same, this would change
+  //the already correct instruction into a classic HCF (jump to self). Clearly,
+  //older CPU's weren't properly tested!
+  if Integer(ADestination) = Integer(ASource) then
+    Exit;
   if VirtualProtect(ASource, Size, PAGE_EXECUTE_READWRITE, OldProtect) then
   begin
     NewJump := PJump(ASource);
