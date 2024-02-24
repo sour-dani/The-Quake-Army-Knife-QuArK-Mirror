@@ -433,12 +433,12 @@ begin
         NVDXTStartupInfo.cb:=SizeOf(NVDXTStartupInfo);
         NVDXTStartupInfo.dwFlags:=STARTF_USESHOWWINDOW;
         NVDXTStartupInfo.wShowWindow:=SW_HIDE+SW_MINIMIZE;
+        if CreateProcess(PChar(ConcatPaths([GetQPath(pQuArKDll), 'nvdxt.exe'])), PChar('nvdxt.exe -rescale nearest -file "'+NVDXTFileNamePNG+'" -output "'+NVDXTFileNameDDS+'" -'+TexFormatParameter+' -'+QualityParameter), nil, nil, false, 0, nil, PChar(GetQPath(pQuArKDll)), NVDXTStartupInfo, NVDXTProcessInformation)=false then
+        begin
+          LogWindowsError(GetLastError(), 'CreateProcess(nvdxt.exe)');
+          LogAndRaiseError(FmtLoadStr1(5721, [FormatName, 'CreateProcess']));
+        end;
         try
-          if CreateProcess(PChar(ConcatPaths([GetQPath(pQuArKDll), 'nvdxt.exe'])), PChar('nvdxt.exe -rescale nearest -file "'+NVDXTFileNamePNG+'" -output "'+NVDXTFileNameDDS+'" -'+TexFormatParameter+' -'+QualityParameter), nil, nil, false, 0, nil, PChar(GetQPath(pQuArKDll)), NVDXTStartupInfo, NVDXTProcessInformation)=false then
-          begin
-            LogWindowsError(GetLastError(), 'CreateProcess(nvdxt.exe)');
-            LogAndRaiseError(FmtLoadStr1(5721, [FormatName, 'CreateProcess']));
-          end;
           CloseHandle(NVDXTProcessInformation.hThread);
 
           //DanielPharos: This is kinda dangerous, but NVDXT should exit rather quickly!
