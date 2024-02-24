@@ -68,8 +68,8 @@ begin
   if VirtualProtect(ASource, Size, PAGE_EXECUTE_READWRITE, OldProtect) then
   begin
     NewJump := PJump(ASource);
-    NewJump.OpCode := $E9;
-    NewJump.Distance := Pointer(Integer(ADestination) - Integer(ASource) - 5);
+    NewJump.OpCode := $E9; //E9 = x86 Jump
+    NewJump.Distance := Pointer(Integer(ADestination) - Integer(ASource) - Size);
 
     FlushInstructionCache(GetCurrentProcess, ASource, SizeOf(TJump));
     VirtualProtect(ASource, Size, OldProtect, @OldProtect);
