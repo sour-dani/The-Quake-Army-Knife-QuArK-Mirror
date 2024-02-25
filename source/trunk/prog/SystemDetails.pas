@@ -404,7 +404,7 @@ const
 
 function TCPU.CPUIDExists: boolean; register;
 asm
-	PUSHFD               //direct access to flags no possible, only via stack
+	PUSHFD               //direct access to flags not possible, only via stack
 	POP     EAX          //flags to EAX
 	MOV     EDX,EAX      //save current flags
 	XOR     EAX,ID_BIT   //not ID bit
