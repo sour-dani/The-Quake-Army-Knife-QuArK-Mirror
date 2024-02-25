@@ -1003,7 +1003,7 @@ begin
    {$else}
    if (S[I] = #0) //Null bytes are invalid
    {$endif}
-   or (S[I] in cInvalidChars) then
+   or CharInSet(S[I], cInvalidChars) then
      System.Delete(S, I, 1);
  end;
 end;
