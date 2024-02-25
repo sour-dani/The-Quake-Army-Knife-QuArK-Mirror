@@ -433,6 +433,7 @@ function EndsStr(const ASubText, AText: string): Boolean;
 {$endif}
 
 {$ifdef MSWINDOWS}
+{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 7, and they exist in Delphi 11.3
 var
   DelayFunc_GlobalMemoryStatusEx: Boolean;
   DelayFunc_GetNativeSystemInfo: Boolean;
@@ -442,10 +443,24 @@ var
   DelayFunc_SetDllDirectory: Boolean;
   DelayFunc_IsWow64Process: Boolean;
   DelayFunc_IsWow64Process2: Boolean;
+{$else}
+const
+  DelayFunc_GlobalMemoryStatusEx: Boolean = True;
+  DelayFunc_GetNativeSystemInfo: Boolean = True;
+  DelayFunc_GetErrorMode: Boolean = True;
+  DelayFunc_SetDllDirectoryA: Boolean = True;
+  DelayFunc_SetDllDirectoryW: Boolean = True;
+  DelayFunc_SetDllDirectory: Boolean = True;
+  DelayFunc_IsWow64Process: Boolean = True;
+  DelayFunc_IsWow64Process2: Boolean = True;
+{$endif}
+
+//Doesn't even exist in Delphi 11.3.
+var
   DelayFunc_SHRestricted: Boolean;
 
-{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 7, and they exist in Delphi 11.3
 {$ifdef Delphi2010orNewerCompiler} //Use delayed loading
+{$ifndef Delphi11orNewerCompiler}
 function GlobalMemoryStatusEx(var lpBuffer : TMEMORYSTATUSEX): BOOL; stdcall;
 {$EXTERNALSYM GlobalMemoryStatusEx}
 function GlobalMemoryStatusEx; external kernel32 name 'GlobalMemoryStatusEx' delayed;
@@ -479,12 +494,14 @@ function IsWow64Process2(hProcess: THandle; var pProcessMachine: USHORT; var pNa
 {$EXTERNALSYM IsWow64Process2}
 function IsWow64Process2(hProcess: THandle; pProcessMachine: PUSHORT; pNativeMachine: PUSHORT): BOOL; external kernel32 name 'IsWow64Process2' delayed;
 function IsWow64Process2(hProcess: THandle; var pProcessMachine: USHORT; var pNativeMachine: USHORT): BOOL; external kernel32 name 'IsWow64Process2' delayed;
+{$endif}
 
 function SHRestricted(rest: RESTRICTIONS): DWORD; stdcall;
 {$EXTERNALSYM SHRestricted}
 function SHRestricted; external 'shell32.dll' name 'SHRestricted' delayed;
 {$else}
 var
+{$ifndef Delphi11orNewerCompiler}
   GlobalMemoryStatusEx: function (var lpBuffer: TMemoryStatusEx): BOOL; stdcall;
   GetNativeSystemInfo: procedure (var lpSystemInformation: TSystemInfo); stdcall;
   GetErrorMode: function : UINT; stdcall;
@@ -493,6 +510,7 @@ var
   SetDllDirectoryW: function (lpPathName: LPCWSTR): BOOL; stdcall;
   IsWow64Process: function (hProcess: THandle; var Wow64Process: BOOL): BOOL; stdcall;
   IsWow64Process2: function (hProcess: THandle; var pProcessMachine: USHORT; var pNativeMachine: USHORT): BOOL; stdcall;
+{$endif}
   SHRestricted: function (rest: RESTRICTIONS): DWORD; stdcall;
 {$endif}
 {$endif}
@@ -949,34 +967,13 @@ end;
 
 {$IFDEF UNICODE}
 function UnicodeLowerCaseFileName(const S: UnicodeString): UnicodeString;
-var
-  I,L: Integer;
 begin
-  if SysLocale.FarEast then
-  begin
-    L := Length(S);
-    SetLength(Result, L);
-    I := 1;
-    while I <= L do
-    begin
-      Result[I] := S[I];
-      if S[I] in LeadBytes then
-      begin
-        Inc(I);
-        Result[I] := S[I];
-      end
-      else
-        if Result[I] in ['A'..'Z'] then Inc(Byte(Result[I]), 32);
-      Inc(I);
-    end;
-  end
-  else
-    Result := UnicodeLowerCase(S);
+  Result := AnsiLowerCase(S); //Yes, this function is misnamed in Delphi.
 end;
 
 function UnicodeCompareFileName(const S1, S2: UnicodeString): Integer;
 begin
-  Result := UnicodeCompareStr(UnicodeLowerCaseFileName(S1), UnicodeLowerCaseFileName(S2));
+  Result := CompareStr(UnicodeLowerCaseFileName(S1), UnicodeLowerCaseFileName(S2)); //UnicodeCompareStr doesn't exist, but CompareStr is documented to handle Unicode.
 end;
 {$ENDIF}
 
@@ -1016,6 +1013,7 @@ end;
 initialization
   //Initialized the delay loading functions.
 {$ifdef Delphi2010orNewerCompiler}
+{$ifndef Delphi11orNewerCompiler}
   DelayFunc_GlobalMemoryStatusEx := CheckWin32Version(5, 0); //Windows 2000
   DelayFunc_GetNativeSystemInfo := CheckWin32Version(5, 1); //Windows XP, Windows Server 2003
   DelayFunc_GetErrorMode := CheckWin32Version(6, 0); //Windows Vista
@@ -1024,9 +1022,11 @@ initialization
   DelayFunc_SetDllDirectory := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003
   DelayFunc_IsWow64Process := CheckWin32VersionWithServicePack(5, 1, 2); //Windows XP with SP2, Windows Server 2003 with SP1
   DelayFunc_IsWow64Process2 := CheckWin32VersionWithBuildNumber(10, 0, 16299); //Windows 10, version 1709
+{$endif}
   DelayFunc_SHRestricted := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003, although it already existed in Windows 2000 as ordinal 100.
 {$else}
   //Note: The module 'kernel32' is always loaded inside a process.
+{$ifndef Delphi11orNewerCompiler}
   GlobalMemoryStatusEx := GetProcAddress(GetModuleHandle('kernel32'), 'GlobalMemoryStatusEx');
   GetNativeSystemInfo := GetProcAddress(GetModuleHandle('kernel32'), 'GetNativeSystemInfo');
   GetErrorMode := GetProcAddress(GetModuleHandle('kernel32'), 'GetErrorMode');
@@ -1035,6 +1035,7 @@ initialization
   {$IFDEF UNICODE}SetDllDirectory:=SetDllDirectoryW;{$ELSE}SetDllDirectory:=SetDllDirectoryA;{$ENDIF};
   IsWow64Process := GetProcAddress(GetModuleHandle('kernel32'), 'IsWow64Process');
   IsWow64Process2 := GetProcAddress(GetModuleHandle('kernel32'), 'IsWow64Process2');
+{$endif}
 
   ShellLib:=SafeLoadLibrary('shell32.dll');
   try
@@ -1047,6 +1048,7 @@ initialization
     //ShellLib:=0;
   end;
 
+{$ifndef Delphi11orNewerCompiler}
   DelayFunc_GlobalMemoryStatusEx := Assigned(GlobalMemoryStatusEx);
   DelayFunc_GetNativeSystemInfo := Assigned(GetNativeSystemInfo);
   DelayFunc_GetErrorMode := Assigned(GetErrorMode);
@@ -1055,6 +1057,7 @@ initialization
   DelayFunc_SetDllDirectory := Assigned(SetDllDirectory);
   DelayFunc_IsWow64Process := Assigned(IsWow64Process);
   DelayFunc_IsWow64Process2 := Assigned(IsWow64Process2);
+{$endif}
   DelayFunc_SHRestricted := Assigned(SHRestricted);
 {$endif}
 {$endif}
