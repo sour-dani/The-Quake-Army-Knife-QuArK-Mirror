@@ -404,6 +404,7 @@ const
 
 function TCPU.CPUIDExists: boolean; register;
 asm
+	{$IFDEF CPUX86}
 	PUSHFD               //direct access to flags not possible, only via stack
 	POP     EAX          //flags to EAX
 	MOV     EDX,EAX      //save current flags
@@ -415,6 +416,23 @@ asm
 	XOR     EAX,EDX      //check if ID bit affected
 	JZ      @exit        //no, CPUID not available
 	MOV     AL,True      //Result=True
+	{$ELSE}
+	{$IFDEF CPUX64}
+	PUSHFQ               //direct access to flags not possible, only via stack
+	POP     RAX          //flags to EAX
+	MOV     RDX,RAX      //save current flags
+	XOR     RAX,ID_BIT   //not ID bit
+	PUSH    RAX          //onto stack
+	POPFQ                //from stack to flags, with not ID bit
+	PUSHFQ               //back to stack
+	POP     RAX          //get back to EAX
+	XOR     RAX,RDX      //check if ID bit affected
+	JZ      @exit        //no, CPUID not available
+	MOV     AL,True      //Result=True
+	{$ELSE}
+	{$Message Error 'Unsupported CPU architecture!'}
+	{$ENDIF}
+	{$ENDIF}
 @exit:
 end;
 
