@@ -773,6 +773,7 @@ begin
   end;
 end;
 
+{$IFDEF MeasureCPUFrequency}
 //FIXME: Get the timestamp in ONE CALL; otherwise the high and low part may DESYNC!
 //FIXME: Additionally, on multi-core machines, it may cause weird issues due to time differences between cores.
 //FIXME: Also, the RDTSC is not a SERIALIZING instruction, meaning it may get shifted around due to out-of-order execution!
@@ -788,6 +789,7 @@ asm
 	MOV @Result, EAX;
 end;
 
+//FIXME: This function has OVERLAP with code in TCPU; merge them!
 function GetCPUIDFlags: LongWord; assembler; register;
 asm
 	PUSH    EBX       //Save registers
@@ -799,7 +801,6 @@ asm
 	POP     EBX
 end;
 
-{$IFDEF MeasureCPUFrequency}
 function GetTimeStamp :TLargInt;
 begin
   result.QuadPart:=0;
