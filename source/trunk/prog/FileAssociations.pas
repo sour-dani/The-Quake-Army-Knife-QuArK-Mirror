@@ -22,7 +22,7 @@ unit FileAssociations;
 
 interface
 
-uses Windows, SysUtils, Classes, Registry2, QkObjects;
+uses SysUtils, Classes, QkObjects;
 
 procedure MakeAssociations(Config: QObject);
 procedure RefreshAssociations(Forced: Boolean);
@@ -34,7 +34,8 @@ procedure RemoveAssociations;
 
 implementation
 
-uses Forms, Quarkx, ApplPaths, Setup, QkExceptions, QkFileObjects, QkObjectClassList,
+uses Windows, Forms, StrUtils, Registry2, Quarkx, ApplPaths, Setup,
+     QkExceptions, QkFileObjects, QkObjectClassList,
      {$IFDEF CompiledWithDelphi2} ShellObj, {$ELSE} ShlObj, {$ENDIF}
      ExtraFunctionality, Logging;
 
