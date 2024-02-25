@@ -2289,7 +2289,7 @@ end;
 
 procedure HTMLDoc(const URL: String);
 
-  procedure OpenError(const Err: String);{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+  procedure OpenError(const URL, Err: String);{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
   begin
    raise EErrorFmt(5649, [URL, Err]);
   end;
@@ -2346,10 +2346,10 @@ begin
       Reg.RootKey:=HKEY_CLASSES_ROOT;
       if (not Reg.ReadOpenKey('.html') and not Reg.ReadOpenKey('.htm'))
       or not Reg.TryReadString('', S) then
-        OpenError(LoadStr1(5650));
+        OpenError(URL, LoadStr1(5650));
       S:=Format(RegOpenCommand, [S]);
       if not Reg.ReadOpenKey(S) or not Reg.TryReadString('', ProgramCall) or (ProgramCall='') then
-        OpenError(FmtLoadStr1(5651, [S]));
+        OpenError(URL, FmtLoadStr1(5651, [S]));
      finally
        Reg.Free;
      end;
@@ -2368,7 +2368,7 @@ begin
       CloseHandle(PI.hProcess);
     end
     else
-     OpenError(FmtLoadStr1(5652, [ProgramCall]));
+     OpenError(URL, FmtLoadStr1(5652, [ProgramCall]));
   end;
 end;
 
