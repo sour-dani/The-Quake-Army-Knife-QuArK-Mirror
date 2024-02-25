@@ -609,13 +609,9 @@ function TCPU.GetCPUVendor :string;
 
 var
   i :integer;
-  s :TStrBuf;
 begin
   Log(LOG_VERBOSE, 'Getting CPU vendor information...');
-  result:='';
-  s:=_GetCPUVendor;
-  for i:=Low(s) to High(s) do
-    result:=result+s[i];
+  result:=String(_GetCPUVendor);
   FVendorNo:=-1;
   for i:=low(CPUVendorIDs) to high(CPUVendorIDs) do
   begin
