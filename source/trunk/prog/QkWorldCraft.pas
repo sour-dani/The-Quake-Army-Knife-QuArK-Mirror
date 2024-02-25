@@ -98,7 +98,7 @@ end;
 
 procedure QRmfMapFile.LoadFile(F: TStream; FSize: TStreamPos);
 
-  function ReadRMFString : String;
+  function ReadRMFString : AnsiString;
   var
     StringLength: Byte;
   begin
@@ -108,7 +108,7 @@ procedure QRmfMapFile.LoadFile(F: TStream; FSize: TStreamPos);
     SetLength(Result, StringLength);
     if StringLength>0 then
     begin
-      F.ReadBuffer(Result[1], StringLength);
+      F.ReadBuffer(PAnsiChar(Result)^, StringLength);
       while Result[Length(Result)] = #0 do
       begin
         SetLength(Result, Length(Result)-1);
