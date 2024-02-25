@@ -514,7 +514,6 @@ var
   SHRestricted: function (rest: RESTRICTIONS): DWORD; stdcall;
 {$endif}
 {$endif}
-{$endif}
 
 type
   TMemoryStreamWithCapacity = class(TMemoryStream)
