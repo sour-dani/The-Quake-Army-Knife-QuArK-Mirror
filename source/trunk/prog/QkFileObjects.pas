@@ -628,7 +628,7 @@ var
  S: AnsiString;
 begin
  SetLength(S, Taille);
- F.ReadBuffer(S[1], Taille);
+ F.ReadBuffer(PAnsiChar(S)^, Taille);
  ConstructObjsFromText(Self, PChar(String(S)), Taille);
   { when loading from the Addons path, try to build a cached (compiled) version }
 (* if (ExtractFilePath(Filename)=GetApplicationAddonsPath())

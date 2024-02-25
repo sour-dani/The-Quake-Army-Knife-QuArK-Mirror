@@ -2585,12 +2585,12 @@ procedure QMapFile.LoadFile(F: TStream; FSize: TStreamPos);
 var
  Racine: TTreeMapBrush;
  ModeJeu: TGameCode;
- Source: String;
+ Source: AnsiString;
 begin
  case ReadFormat of
   rf_Default: begin  { as stand-alone file }
       SetLength(Source, FSize);
-      F.ReadBuffer(Source[1], FSize);
+      F.ReadBuffer(PAnsiChar(Source)^, FSize);
       Racine:=TTreeMapBrush.Create('', Self);
       Racine.AddRef(+1);
       try

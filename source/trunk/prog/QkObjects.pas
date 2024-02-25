@@ -1307,7 +1307,7 @@ end;
 
 procedure QObject.LoadFile(F: TStream; FSize: TStreamPos);
 var
-  Name, Names, ExtraSizes: String;
+  Name, Names, ExtraSizes: String; //FIXME: AnsiString?
   DeltaPos: TStreamPos;
   I, J, FileItemCount, Size, ExtraSize: Integer;
   NamePtr: PChar;
@@ -1377,7 +1377,7 @@ begin
       Raise EErrorFmt(5509, [53]);
 
     SetLength(Names, Size);
-    F.ReadBuffer(Names[1], Size);  { read the names }
+    F.ReadBuffer(PChar(Names)^, Size);  { read the names }
 
     if ExtraSize=0 then
       ExtraSizes:=''
@@ -1477,7 +1477,7 @@ var
   Taille, ExtraSize, DeltaPos, J: TStreamPos;
   Info: TFileItemInfo;
   Info1: TFileObjectClassInfo;
-  Name: String;
+  Name: String; //FIXME: AnsiString?
 begin
   {$IFDEF Debug}
   if Flags and ofNotLoadedToMemory = 0 then
@@ -1537,7 +1537,7 @@ begin
         Exit;
 
       SetLength(Name, {Size}Info.NameSize);
-      F.ReadBuffer(Name[1], {Size}Info.NameSize);  { read the single name }
+      F.ReadBuffer(PChar(Name)^, {Size}Info.NameSize);  { read the single name }
       if Name<>'Data' then
         Exit;
 

@@ -837,13 +837,13 @@ procedure QVMFFile.LoadFile(F: TStream; FSize: TStreamPos);
 var
  Root: TTreeMapBrush;
  ModeJeu: TGameCode;
- Source: String;
+ Source: AnsiString;
 begin
  Log(LOG_VERBOSE, 'Loading VMF file: %s', [self.name]);
  case ReadFormat of
   rf_Default: begin  { as stand-alone file }
       SetLength(Source, FSize);
-      F.ReadBuffer(Source[1], FSize);
+      F.ReadBuffer(PAnsiChar(Source)^, FSize);
       Root:=TTreeMapBrush.Create('', Self);
       Root.AddRef(+1);
       try

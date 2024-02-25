@@ -481,7 +481,7 @@ begin
  case ReadFormat of
   rf_Default: begin  { as stand-alone file }
       ProgressIndicatorStart(5453, FSize div ProgressStep); try
-      SetLength(Data, FSize);
+      SetLength(Data, FSize); //FIXME: AnsiString?
       Source:=PChar(Data);
       F.ReadBuffer(Source^, FSize);  { read the whole file at once }
       // cdunde: This is where the material file is read in, line by line as 'Data'.

@@ -136,7 +136,7 @@ function ReadAsQmeEntry(Q: QFileObject; SourceFile: TStream; Taille: TStreamPos)
 var
  I, Compte, TailleIds: Integer;
  Entetes, P: PEnteteNXF;
- Ids, S: String;
+ Ids, S: String; //FIXME: AnsiString?
 begin
  Result:=Q.ReadFormat=rf_Default;
  if Result then
@@ -154,7 +154,7 @@ begin
     end;
    SetLength(Ids, TailleIds);
    if TailleIds>0 then
-    SourceFile.ReadBuffer(Ids[1], TailleIds);
+    SourceFile.ReadBuffer(PChar(Ids)^, TailleIds);
    TailleIds:=1;
    P:=Entetes;
    for I:=1 to Compte do
