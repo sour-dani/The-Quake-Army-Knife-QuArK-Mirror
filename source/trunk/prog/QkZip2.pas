@@ -422,8 +422,8 @@ procedure QZipFolder.LoadFile(F: TStream; FSize: TStreamPos);
 var
   J: Integer;
   Dossier, nDossier: QObject;
-  Chemin, CheminPrec, fn: String;
-  dummystring: String;
+  Chemin, CheminPrec, fn: AnsiString;
+  dummystring: AnsiString;
   Q: QObject;
   FH: TFileHeader;
   org, Size: TStreamPos;
