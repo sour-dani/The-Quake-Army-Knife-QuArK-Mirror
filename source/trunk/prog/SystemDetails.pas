@@ -42,12 +42,12 @@ type
 
   TCPU = class(TPersistent)
   private
+    FCPUIDLevel: LongWord;
     FVendorID,
     FVendor,
     FSubModel: string;
     FModel,
     FCount,
-    FLevel,
     FStepping,
     FFamily,
     FTyp(*,
@@ -56,7 +56,7 @@ type
     FHasCPUID :boolean;
     function CPUIDExists :boolean;
     function GetCPUID :TCPUID;
-    function GetCPUIDLevel :integer;
+    function GetCPUIDLevel :LongWord;
     function GetCPUType :integer;
     function GetCPUVendor :string;
     function GetCPUVendorID :string;
@@ -69,7 +69,7 @@ type
     procedure Report(var sl :TStringList);
   published
     property HasCPUID :Boolean read FHasCPUID write FHasCPUID stored false;
-    property Level :cardinal read FLevel write FLevel stored false;
+    property CPUIDLevel :LongWord read FCPUIDLevel write FCPUIDLevel stored false;
     property Count :cardinal read FCount write FCount stored false;
     property Vendor :string read FVendor write FVendor stored false;
     property VendorID :string read FVendorID write FVendorID stored false;
@@ -443,18 +443,12 @@ begin
   result:=VCPUID;
 end;
 
-function TCPU.GetCPUIDLevel: integer;
-var
-  VLevel: Byte;
-begin
-  VLevel:=0;
-  asm
+function TCPU.GetCPUIDLevel: LongWord; assembler
+asm
 	MOV eax, 0      //Get Level
 	DB 0Fh,0a2h     //CPUID opcode
-	MOV VLevel,al
-  end;
-  result:=VLevel;
-End;
+	//MOV Result, eax //Not needed, Result = EAX
+end;
 
 function TCPU.GetCPUType: integer; assembler
 asm
@@ -506,10 +500,11 @@ asm
 // of the P5 processor.
 
 	PUSH ebx             //CPUID modifies EBX  !!!
-	MOV eax, 1           //Level
+	MOV eax, 1           //Function 01h: Feature Information
 	DB 0Fh,0a2h          //CPUID opcode
 	MOV al,ah
 	AND eax, 0FH
+  //MOV Result, eax //Not needed, Result = EAX
 	POP ebx
 
 @@end_CPUTyp:
@@ -770,25 +765,28 @@ begin
   end;
 end;
 
-function GetTimeStampHi: DWORD; assembler; register;
+//FIXME: Get the timestamp in ONE CALL; otherwise the high and low part may DESYNC!
+//FIXME: Additionally, on multi-core machines, it may cause weird issues due to time differences between cores.
+//FIXME: Also, the RDTSC is not a SERIALIZING instruction, meaning it may get shifted around due to out-of-order execution!
+function GetTimeStampHi: LongWord; assembler; register;
 asm
 	DW      $310F       //RDTSC Command
 	MOV @Result, EDX;
 end;
 
-function GetTimeStampLo: DWORD; assembler; register;
+function GetTimeStampLo: LongWord; assembler; register;
 asm
 	DW      $310F       //RDTSC Command
 	MOV @Result, EAX;
 end;
 
-function GetCPUIDFlags: DWORD; assembler; register;
+function GetCPUIDFlags: LongWord; assembler; register;
 asm
 	PUSH    EBX       //Save registers
 	PUSH    EDI
 	MOV     EAX,1     //Set up for CPUID
 	DW      $A20F     //CPUID OpCode
-	MOV @Result,EDX   //Put the flag array into a DWord
+	MOV @Result,EDX   //Put the flag array into a LongWord
 	POP     EDI       //Restore registers
 	POP     EBX
 end;
@@ -798,7 +796,7 @@ begin
   result.QuadPart:=0;
   if (GetCPUIDFlags and 16) <> 16 then
     exit;
-  result.HighPart:=DWORD(GetTimeStampHi);
+  result.HighPart:=GetTimeStampHi;
   result.LowPart:=GetTimeStampLo;
 end;
 
@@ -879,11 +877,11 @@ begin
   Family:=SI.dwProcessorType;
 //  Vendor:=
 //  VendorID:=
+  //Freq:=Round(GetCPUFreqEx);
   HasCPUID:=CPUIDExists;
   if HasCPUID then
   begin
-    Level:=GetCPUIDLevel;
-    //Freq:=Round(GetCPUFreqEx);
+    CPUIDLevel:=GetCPUIDLevel;
     Typ:=GetCPUType;
     CPUID:=GetCPUID;
     Stepping:=(CPUID.EAX and $f);
@@ -918,7 +916,9 @@ begin
     //add(format('%d x %s %s - %d MHz',[self.Count,Vendor,VendorID,Freq]));
     add(format('%d x %s %s',[self.Count,Vendor,VendorID]));
     add(format('Submodel: %s',[Submodel]));
-    add(format('Model ID: Family %d  Model %d  Stepping %d  Level %d',[Family,Model,Stepping,Level]));
+    add(format('Model ID: Family %d  Model %d  Stepping %d',[Family,Model,Stepping]));
+    if HasCPUID then
+      add(format('CPUID Level: Level %d',[CPUIDLevel]));
   end;
 end;
 
