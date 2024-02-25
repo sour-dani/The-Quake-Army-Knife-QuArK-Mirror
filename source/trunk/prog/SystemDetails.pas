@@ -25,6 +25,8 @@ interface
 uses
   SysUtils, StrUtils, Windows, Classes, ExtraFunctionality;
 
+{.$DEFINE MeasureCPUFrequency} //This seems like an awful waste of CPU cycles!
+
 {$I DelphiVer.inc}
 
 procedure LogSystemDetails;
@@ -50,8 +52,10 @@ type
     FCount,
     FStepping,
     FFamily,
-    FTyp(*,
-    FFreq*) :cardinal;
+    FTyp :cardinal;
+    {$IFDEF MeasureCPUFrequency}
+    FFreq: Cardinal;
+    {$ENDIF}
     FVendorNo :integer;
     FHasCPUID :boolean;
     function CPUIDExists :boolean;
@@ -60,7 +64,9 @@ type
     function GetCPUType :integer;
     function GetCPUVendor :string;
     function GetCPUVendorID :string;
-    //function GetCPUFreqEx :extended;
+    {$IFDEF MeasureCPUFrequency}
+    function GetCPUFreqEx :extended;
+    {$ENDIF}
     function GetSubModel :string;
   public
     constructor Create;
@@ -73,7 +79,9 @@ type
     property Count :cardinal read FCount write FCount stored false;
     property Vendor :string read FVendor write FVendor stored false;
     property VendorID :string read FVendorID write FVendorID stored false;
-    //property Freq :cardinal read FFreq write FFreq stored false;
+    {$IFDEF MeasureCPUFrequency}
+    property Freq :cardinal read FFreq write FFreq stored false;
+    {$ENDIF}
     property Family :cardinal read FFamily write FFamily stored false;
     property Stepping :cardinal read FStepping write FStepping stored false;
     property Model :cardinal read FModel write FModel stored false;
@@ -791,6 +799,7 @@ asm
 	POP     EBX
 end;
 
+{$IFDEF MeasureCPUFrequency}
 function GetTimeStamp :TLargInt;
 begin
   result.QuadPart:=0;
@@ -800,7 +809,7 @@ begin
   result.LowPart:=GetTimeStampLo;
 end;
 
-function GetTicksPerSecond(Iterations :Word) :Comp; //FIXME: This seems like an awful waste of CPU cycles!
+function GetTicksPerSecond(Iterations :Word) :extended;
 var
   Freq ,PerfCount,Target :int64;
   StartTime, EndTime, Elapsed :TLargInt;
@@ -837,16 +846,17 @@ begin
   until (PerfCount.QuadPart>=Target.QuadPart);
   {$ENDIF}
   StopTimer;
-  Result:=(Elapsed.QuadPart/Iterations);
+  Result:=Elapsed.QuadPart/Iterations;
 end;
 
-(*function TCPU.GetCPUFreqEx: extended;
+function TCPU.GetCPUFreqEx: extended;
 var
-  c :comp;
+  c :extended;
 begin
   c:=GetTicksPerSecond(1);
-  Result:=c/1E6;
-end;*)
+  Result:=c/1E6; //Hz to MHz
+end;
+{$ENDIF}
 
 function TCPU.GetSubModel :string;
 begin
@@ -877,7 +887,9 @@ begin
   Family:=SI.dwProcessorType;
 //  Vendor:=
 //  VendorID:=
-  //Freq:=Round(GetCPUFreqEx);
+  {$IFDEF MeasureCPUFrequency}
+  Freq:=Round(GetCPUFreqEx);
+  {$ENDIF}
   HasCPUID:=CPUIDExists;
   if HasCPUID then
   begin
@@ -913,8 +925,11 @@ procedure TCPU.Report(var sl: TStringList);
 begin
   with sl do
   begin
-    //add(format('%d x %s %s - %d MHz',[self.Count,Vendor,VendorID,Freq]));
+    {$IFDEF MeasureCPUFrequency}
+    add(format('%d x %s %s - %d MHz',[self.Count,Vendor,VendorID,Freq]));
+    {$ELSE}
     add(format('%d x %s %s',[self.Count,Vendor,VendorID]));
+    {$ENDIF}
     add(format('Submodel: %s',[Submodel]));
     add(format('Model ID: Family %d  Model %d  Stepping %d',[Family,Model,Stepping]));
     if HasCPUID then
