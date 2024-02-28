@@ -16,7 +16,7 @@ SetCompressor /SOLID lzma   ; We will use LZMA for best compression
 !define INSTALLER_EXENAME "quark-win32-6.6.0Beta8.exe"
 !define PRODUCT_NAME "QuArK"
 !define PRODUCT_NAME_FULL "Quake Army Knife"
-!define PRODUCT_COPYRIGHT "Copyright (c) 2022"
+!define PRODUCT_COPYRIGHT "Copyright (c) 2024"
 !define PRODUCT_VERSION "6.6.0 Beta 8"
 !define PRODUCT_VERSION_NUMBER "6.6.8.0"
 !define PRODUCT_VERSION_STRING "6.6 (Beta-Release)"
@@ -468,8 +468,7 @@ Section "!$(TEXT_SEC01_TITLE)" SEC01
   ;These are needed:
   ;DevIL.dll needs VC2005 runtime (MSVCP80.dll, MSVCR80.dll)
   ;HLLib.dll needs VC2010 runtime (MSVCP100.dll, MSVCR100.dll)
-  ;md5dll.dll needs default VC runtime (msvcrt.dll)
-  ;python.dll needs VC2003 runtime (MSVCR71.dll) ;Note that there are no VC2003, so we will have to include this library manually.
+  ;python.dll needs VC2003 runtime (MSVCR71.dll) ;Note that there is no VC2003 runtime installer, so we will have to include this library manually.
 
   Call _isInstalledVC2005
   Pop $0
@@ -599,10 +598,8 @@ Section Uninstall
   Delete "$INSTDIR\quarkpy\*.*"
   Delete "$INSTDIR\*.*"
 
-
   Delete "$SMPROGRAMS\QuArK\*.*"
   Delete "$DESKTOP\QuArK.lnk"
-
 
   RMDir "$INSTDIR\addons\WildWest"
   RMDir "$INSTDIR\addons\Warsow"
@@ -651,7 +648,6 @@ Section Uninstall
   RMDir "$INSTDIR\quarkpy"
   RMDir "$INSTDIR"
   RMDir "$SMPROGRAMS\QuArK"
-
 
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
