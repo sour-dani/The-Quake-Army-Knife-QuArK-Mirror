@@ -26,6 +26,7 @@ uses
   SysUtils, StrUtils, Windows, Classes, ExtraFunctionality;
 
 {.$DEFINE MeasureCPUFrequency} //This seems like an awful waste of CPU cycles!
+{.$DEFINE LogSensitiveInformation} //DECKER 2001.03.17 - we're not interested in Machine-/Username. We're not Login-Crackers!
 
 {$I DelphiVer.inc}
 
@@ -183,11 +184,13 @@ type
     property Directories :TStrings read FDirs write FDirs stored False;
   end;
 
+  {$IFDEF LogSensitiveInformation}
   TWorkstation = class(TPersistent)
   private
     FName: string;
     FUser: string;
-    //FSystemUpTime: Extended;
+    FFirmware: string;
+    FSystemUpTime: {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas //in ms
     FBIOSExtendedInfo: string;
     FBIOSCopyright: string;
     FBIOSName: string;
@@ -195,14 +198,14 @@ type
     //FScrollLock: Boolean;
     //FNumLock: Boolean;
     //FCapsLock: Boolean;
-    //function GetSystemUpTime: Extended;
   public
     procedure GetInfo;
     procedure Report(var sl :TStringList);
   published
     property Name :string read FName write FName stored false;
     property User :string read FUser write FUser stored false;
-    //property SystemUpTime :Extended read FSystemUpTime write FSystemUpTime stored false;
+    property Firmware :string read FFirmware write FFirmware stored false;
+    property SystemUpTime :{$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif} read FSystemUpTime write FSystemUpTime stored false;
     property BIOSCopyright :string read FBIOSCopyright write FBIOSCopyright stored false;
     property BIOSDate :string read FBIOSDate write FBIOSDate stored false;
     property BIOSExtendedInfo :string read FBIOSExtendedInfo write FBIOSExtendedInfo stored false;
@@ -211,6 +214,7 @@ type
     //property NumLock :Boolean read FNumLock write FNumLock stored false;
     //property ScrollLock :Boolean read FScrollLock write FScrollLock stored false;
   end;
+  {$ENDIF}
 
   TCurveCap = (ccCircles,ccPieWedges,ccChords,ccEllipses,ccWideBorders,ccStyledBorders,
                ccWideStyledBorders,ccInteriors,ccRoundedRects);
@@ -314,7 +318,7 @@ type
 
 implementation
 
-uses Graphics, {$IFDEF CompiledWithDelphi2}ShellObj, OLE2, {$ELSE}ShlObj, ActiveX, {$ENDIF}TlHelp32, Psapi, Registry, Registry2, Logging, QkExceptions;
+uses Math, Graphics, {$IFDEF CompiledWithDelphi2}ShellObj, OLE2, {$ELSE}ShlObj, ActiveX, {$ENDIF}TlHelp32, Psapi, Registry, Registry2, Logging, QkExceptions;
 
 type
   {$IFDEF Delphi4orNewerCompiler}
@@ -356,6 +360,17 @@ begin
     Result:='0';
 end;
 {$ENDIF}
+
+function FormatMilliSeconds(const Number: Integer) : String; overload;
+var
+  TMP: Word;
+  MS, S, M, H: Word;
+begin
+  DivMod(Number, 1000, TMP, MS); //FIXME: More modern Delphi's have a DivMod with UInt64!
+  DivMod(TMP, 60, TMP, S);
+  DivMod(TMP, 60, H, M);
+  Result:=format('%d:%.2d:%.2d.%.3d',[H,M,S,MS]);
+end;
 
 { TCPU }
 
@@ -1513,56 +1528,74 @@ begin
   end;
 end;
 
-(*function TWorkstation.GetSystemUpTime: Extended;
+{$IFDEF LogSensitiveInformation}
+function GetSystemUpTime: {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif};
 begin
-  //FIXME: On Windows Vista/Windows Server 2008:
-  //ULONGLONG GetTickCount64(); --> Read in as QWORD!
-  try
-    FSystemUpTime:=GetTickCount/1000;
-  except
-    FSystemUpTime:=0;
-  end;
-  result:=FSystemUpTime;
-end;*)
+  if DelayFunc_GetTickCount64 then
+    Result:=GetTickCount64
+  else
+    Result:=GetTickCount;
+end;
 
 function GetMachine: string;
 var
   n: dword;
-  buf: string;
 const
   rkMachine = {HKEY_LOCAL_MACHINE\}'SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName';
   rvMachine = 'ComputerName';
 begin
-  Log(LOG_VERBOSE, 'Gathering machine information...');
-  n:=254;
-  SetLength(buf,n);
-  GetComputerName(PChar(buf),n);
-  SetLength(buf,n-1);
-  result:=buf;
-  with TRegistry2.Create(KEY_READ) do
+  n:=MAX_COMPUTERNAME_LENGTH+1;
+  SetLength(Result, n);
+  if GetComputerName(PChar(Result), n) then
+    SetLength(Result, n)
+  else
   begin
-    rootkey:=HKEY_LOCAL_MACHINE;
-    if OpenKey(rkMachine,false) then
+    //Fallback: read it from the Registry directly.
+    with TRegistry2.Create(KEY_READ) do
     begin
-      if ValueExists(rvMachine) then
-        result:=ReadString(rvMachine);
-      CloseKey;
+      rootkey:=HKEY_LOCAL_MACHINE;
+      if OpenKey(rkMachine, false) then
+      begin
+        if ValueExists(rvMachine) then
+          Result:=ReadString(rvMachine);
+        CloseKey;
+      end;
+      free;
     end;
-    free;
   end;
 end;
 
 function GetUser: string;
 var
   n: dword;
-  buf: string;
 begin
-  Log(LOG_VERBOSE, 'Gathering user information...');
   n:=UNLEN+1; //Include room for the 0-terminating character
-  SetLength(buf,n);
-  GetUserName(PChar(buf),n);
-  SetLength(buf,n-1); //Cut off the 0-terminating character
-  result:=buf;
+  SetLength(Result, n);
+  if GetUserName(PChar(Result), n) then
+    SetLength(Result, n-1); //Cut off the 0-terminating character
+end;
+
+function GetFirmware: string;
+var
+  FirmwareType: _FIRMWARE_TYPE;
+begin
+  if not DelayFunc_GetFirmwareType then
+  begin
+    //Windows XP and lower only support BIOS.
+    Result:='BIOS';
+    Exit;
+  end;
+  GetFirmwareType(FirmwareType);
+  case FirmwareType of
+    FirmwareTypeUnknown:
+      Result:='Unknown';
+    FirmwareTypeBios:
+      Result:='BIOS';
+    FirmwareTypeUefi:
+      Result:='UEFI';
+    else
+      Result:='Unknown'; //FIXME: Log?
+  end;
 end;
 
 procedure TWorkstation.GetInfo;
@@ -1587,9 +1620,10 @@ const
   //rvVideoBiosVersion = 'VideoBiosVersion';
 begin
   Log(LOG_VERBOSE, 'Starting gathering workstation information...');
-  //FSystemUpTime:=GetSystemUpTime;
+  FSystemUpTime:=GetSystemUpTime;
   FName:=GetMachine;
   FUser:=GetUser;
+  FFirmware:=GetFirmware;
   if WindowsPlatformCompatibility=osWinNTComp then
   begin
     with TRegistry2.Create(KEY_READ) do
@@ -1638,9 +1672,11 @@ begin
   begin
     add('Name: '+Name);
     add('User: '+User);
-//    add('System Up Time: '+formatseconds(SystemUpTime,true,false,false));
+    add('Firmware: '+Firmware);
+    add('System Up Time: '+FormatMilliSeconds(SystemUpTime));
   end;
 end;
+{$ENDIF}
 
 function GetStringOrBinary(RegKey: TRegistry2; const ValueName, RootKeyName: String) : String;
 var
@@ -2394,6 +2430,7 @@ begin
   end;
 end;
 
+{$IFDEF LogSensitiveInformation}
 Procedure GetWorkStationDetails(var s: TStringlist);
 var
   c: TWorkStation;
@@ -2406,6 +2443,7 @@ begin
     c.free;
   end;
 end;
+{$ENDIF}
 
 Procedure GetOperatingSystemDetails(var s: TStringlist);
 var
@@ -2615,19 +2653,11 @@ begin
     s.add('');
     s.add('OS:');
     GetOperatingSystemDetails(s);
-(*Peter: removed as of 18-08-2003.
-    Logging of Python interpreter details now done in Python.pas.
-
+    {$IFDEF LogSensitiveInformation}
     s.add('');
-    s.add('PYTHON:');
-    GetPythonDetails(s);
-    s.add('');
-*)
-
-(*DECKER 2001.03.17 - we're not interested in Machine-/Username. We're not Login-Crackers!
     s.add('MACHINE:');
     GetWorkStationDetails(s);
-*)
+    {$ENDIF}
     s.add('');
     s.add('VIDEO:');
     GetDisplayDetails(s);
