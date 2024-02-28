@@ -1774,7 +1774,7 @@ $Games[] = new cGame(NULL ,'PAD' ,'World of Padman' ,'WoP' ,'wop.png'
                     );
 $Games[] = new cGame(NULL ,'WAOR' ,'Wrath: Aeon of Ruin' ,'WAOR' ,NULL
                     ,'http://www.wrath.game/' ,'https://en.wikipedia.org/wiki/Wrath:_Aeon_of_Ruin' ,'DarkPlaces', FALSE
-                    ,NULL
+                    ,'You must journey into the vast gloom to explore ancient ruins, discover forgotten secrets and battle the horrors that lurk within.'
                     ,array('KillPixel')
                     ,array('3D Realms', '1C')
                     ,NULL
