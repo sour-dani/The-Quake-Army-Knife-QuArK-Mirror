@@ -508,6 +508,8 @@ $LinksGame[] = new cLinkGroup('Star Wars Jedi Knight II: Jedi Outcast', 'JK2', a
           ,new cLink('Jedi Knight 2', 'http://www.jediknightii.net/', NULL, 'https://web.archive.org/web/20190104173659/http://www.jediknightii.net/')
           ,new cLink('Force Temple :: Jedi Knight 2: Jedi Outcast', 'http://www.force-temple.com/jk2/', NULL, 'https://web.archive.org/web/20090406011945/http://www.force-temple.com/jk2/')
           ,new cLink('EchoNetwork', 'http://www.echonetwork.net/', 'The Star Wars gaming resource', 'https://web.archive.org/web/20170620024235/http://www.echonetwork.net/')
+          ,new cLink('OpenJK', 'https://github.com/JACoders/OpenJK', 'OpenJK is a community effort to maintain and improve the game and engine powering Jedi Academy and Jedi Outcast, while maintaining full backwards compatibility with the existing games and mods.')
+          ,new cLink('JK2MV', 'https://jk2mv.org/', 'improved, modernized JK2 client and server.')
           ,new cLink('JKMods.com', 'http://www.jkmods.com/', NULL, 'https://web.archive.org/web/20060404181752/http://www.jkmods.com/')
            ));
 
@@ -516,6 +518,7 @@ $LinksGame[] = new cLinkGroup('Star Wars Jedi Knight: Jedi Academy', 'JA', array
            new cLink('JediKnight.Net', 'http://www.jediknight.net/', 'Star Wars Gaming At Its Best!', 'https://web.archive.org/web/20190108110946/http://www.jediknight.net/')
           ,new cLink('Force Temple :: Jedi Knight: Jedi Academy', 'http://www.force-temple.com/jk3/', NULL, 'https://web.archive.org/web/20090218172417/http://www.force-temple.com/jk3/')
           ,new cLink('EchoNetwork', 'http://www.echonetwork.net/', 'The Star Wars gaming resource', 'https://web.archive.org/web/20170620024235/http://www.echonetwork.net/', 'The Star Wars gaming resource')
+          ,new cLink('OpenJK', 'https://github.com/JACoders/OpenJK', 'OpenJK is a community effort to maintain and improve the game and engine powering Jedi Academy and Jedi Outcast, while maintaining full backwards compatibility with the existing games and mods.')
           ,new cLink('JKMods.com', 'http://www.jkmods.com/', NULL, 'https://web.archive.org/web/20060404181752/http://www.jkmods.com/')
           ,new cLink('The Jedi Academy', 'https://www.thejediacademy.net/', 'THE place for Jedi training.')
            ));
