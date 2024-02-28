@@ -232,6 +232,13 @@ const
 
   UNLEN = 256; // Maximum user name length, in characters (not bytes), excluding terminating 0-characters.
 
+  PROCESSOR_INTEL_386 = 386;
+  PROCESSOR_INTEL_486 = 486;
+  PROCESSOR_INTEL_PENTIUM = 586;
+  PROCESSOR_INTEL_IA64 = 2200;
+  PROCESSOR_AMD_X8664 = 8664;
+  //PROCESSOR_ARM = Reserved;
+
   { Color Management Capabilities }
 
   {$EXTERNALSYM CM_NONE}
@@ -473,10 +480,16 @@ const
   DelayFunc_GetTickCount64: Boolean = True;
 {$endif}
 
-//Doesn't even exist in Delphi 11.3.
 var
+  //Doesn't even exist in Delphi 11.3.
   DelayFunc_GetFirmwareType: Boolean;
   DelayFunc_SHRestricted: Boolean;
+{$endif}
+
+{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 7, and they exist in Delphi 11.3
+var
+  CPUCount: Integer;
+{$endif}
 
 {$ifdef Delphi2010orNewerCompiler} //Use delayed loading
 {$ifndef Delphi11orNewerCompiler} //FIXME: Not sure in which Delphi version these were added, but between Delphi 7 and 11.3.
@@ -505,14 +518,14 @@ function SetDllDirectoryW; external kernel32 name 'SetDllDirectoryW' delayed;
 function IsWow64Process(hProcess: THandle; Wow64Process: PBOOL): BOOL; overload; stdcall;
 function IsWow64Process(hProcess: THandle; var Wow64Process: BOOL): BOOL; overload; stdcall;
 {$EXTERNALSYM IsWow64Process}
-function IsWow64Process; external kernel32 name 'IsWow64Process' delayed;
-function IsWow64Process; external kernel32 name 'IsWow64Process' delayed;
+function IsWow64Process(hProcess: THandle; Wow64Process: PBOOL): BOOL; external kernel32 name 'IsWow64Process' delayed;
+function IsWow64Process(hProcess: THandle; var Wow64Process: BOOL): BOOL; external kernel32 name 'IsWow64Process' delayed;
 
 function IsWow64Process2(hProcess: THandle; pProcessMachine: PUSHORT; pNativeMachine: PUSHORT): BOOL; overload; stdcall;
 function IsWow64Process2(hProcess: THandle; var pProcessMachine: USHORT; var pNativeMachine: USHORT): BOOL; overload; stdcall;
 {$EXTERNALSYM IsWow64Process2}
-function IsWow64Process2; external kernel32 name 'IsWow64Process2' delayed;
-function IsWow64Process2; external kernel32 name 'IsWow64Process2' delayed;
+function IsWow64Process2(hProcess: THandle; pProcessMachine: PUSHORT; pNativeMachine: PUSHORT): BOOL; external kernel32 name 'IsWow64Process2' delayed;
+function IsWow64Process2(hProcess: THandle; var pProcessMachine: USHORT; var pNativeMachine: USHORT): BOOL; external kernel32 name 'IsWow64Process2' delayed;
 
 function GetTickCount64: ULONGLONG; stdcall;
 {$EXTERNALSYM GetTickCount64}
@@ -522,7 +535,8 @@ function GetTickCount64; external kernel32 name 'GetTickCount64' delayed;
 function GetFirmwareType(FirmwareType: PFIRMWARE_TYPE): BOOL; overload; stdcall;
 function GetFirmwareType(var FirmwareType: _FIRMWARE_TYPE): BOOL; overload; stdcall;
 {$EXTERNALSYM GetFirmwareType}
-function GetFirmwareType; external kernel32 name 'GetFirmwareType' delayed;
+function GetFirmwareType(FirmwareType: PFIRMWARE_TYPE): BOOL; external kernel32 name 'GetFirmwareType' delayed;
+function GetFirmwareType(var FirmwareType: _FIRMWARE_TYPE): BOOL; external kernel32 name 'GetFirmwareType' delayed;
 
 function SHRestricted(rest: RESTRICTIONS): DWORD; stdcall;
 {$EXTERNALSYM SHRestricted}
@@ -542,7 +556,6 @@ var
 {$endif}
   GetFirmwareType: function (var FirmwareType: _FIRMWARE_TYPE): BOOL; stdcall;
   SHRestricted: function (rest: RESTRICTIONS): DWORD; stdcall;
-{$endif}
 {$endif}
 
 type
@@ -892,6 +905,27 @@ begin
 end;
 {$endif}
 
+{$ifndef Delphi11orNewerCompiler}
+function GetCPUCount: Integer;
+{$IFDEF MSWINDOWS}
+var
+  SysInfo: TSystemInfo;
+begin
+  ZeroMemory(@SysInfo, SizeOf(SysInfo));
+  if DelayFunc_GetNativeSystemInfo then
+    GetNativeSystemInfo(SysInfo)
+  else
+    GetSystemInfo(SysInfo);
+  Result := SysInfo.dwNumberOfProcessors;
+end;
+{$ENDIF}
+{$IFDEF POSIX}
+begin
+  Result := sysconf(_SC_NPROCESSORS_ONLN);
+end;
+{$ENDIF}
+{$endif}
+
 //From: http://delphi.about.com/od/adptips2004/a/bltip0904_2.htm
 function LastPos(const SubStr: String; const S: String): Integer;
 begin
@@ -1095,5 +1129,9 @@ initialization
   DelayFunc_GetFirmwareType := Assigned(GetFirmwareType);
   DelayFunc_SHRestricted := Assigned(SHRestricted);
 {$endif}
+
+  {$ifndef Delphi11orNewerCompiler}
+  CPUCount:=GetCPUCount;
+  {$endif}
 {$endif}
 end.

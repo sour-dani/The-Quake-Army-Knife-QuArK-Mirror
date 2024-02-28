@@ -39,10 +39,6 @@ function RetrieveModuleFilename(ModuleHandle: HMODULE): String;
 procedure WarnDriverBugs;
 
 type
-  TCPUID = packed record
-    EAX, EBX, ECX, EDX: LongWord;
-  end;
-
   TCPU = class(TPersistent)
   private
     FCPUIDLevel: LongWord;
@@ -58,24 +54,22 @@ type
     FFreq: Cardinal;
     {$ENDIF}
     FVendorNo :integer;
-    FHasCPUID :boolean;
-    function CPUIDExists :boolean;
-    function GetCPUID :TCPUID;
-    function GetCPUIDLevel :LongWord;
-    function GetCPUType :integer;
-    function GetCPUVendor :string;
+    FHasCPUID, FHasRDTSC: Boolean;
+    function GetCPUType: Cardinal;
+    function CPUIDExists: Boolean;
     function GetCPUVendorID :string;
     {$IFDEF MeasureCPUFrequency}
     function GetCPUFreqEx :extended;
     {$ENDIF}
     function GetSubModel :string;
   public
-    constructor Create;
-    destructor Destroy; override;
+    //constructor Create;
+    //destructor Destroy; override;
     procedure GetInfo;
     procedure Report(var sl :TStringList);
   published
     property HasCPUID :Boolean read FHasCPUID write FHasCPUID stored false;
+    property HasRDTSC :Boolean read FHasRDTSC write FHasRDTSC stored false;
     property CPUIDLevel :LongWord read FCPUIDLevel write FCPUIDLevel stored false;
     property Count :cardinal read FCount write FCount stored false;
     property Vendor :string read FVendor write FVendor stored false;
@@ -331,7 +325,12 @@ type
   TPlatform = (osWin95, osWin98, osWin98SE, osWinME, osWinNT4, osWin2000, osWinXP, osWin2003, osWinVista, osWin7, osWin8, osWin81, osWin2008, osWin2008R2, osWin2012, osWin2012R2, osWin10, osWin2016, osWin2019, osWin2022, osWin11); //Note: Not all are currently detected!
   //FIXME: See: https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-osversioninfoexa
 
-  TStrBuf = array[0..11] of AnsiChar;
+  TVendorStr = array[0..11] of AnsiChar;
+  TFeatureFlags = record
+    EBX: LongWord;
+    ECX: LongWord;
+    EDX: LongWord;
+  end;
 
 var
   WindowsPlatformCompatibility: TPlatformType;
@@ -374,18 +373,19 @@ end;
 
 { TCPU }
 
-constructor TCPU.Create;
+(*constructor TCPU.Create;
 begin
   inherited;
-end;
+end;*)
 
-destructor TCPU.Destroy;
+(*destructor TCPU.Destroy;
 begin
   inherited;
-end;
+end;*)
 
 const
   ID_Bit = $200000;   // EFLAGS ID bit
+  TSC_Bit = $10;      // TimeStamp Counter EDX Feature Flag bit
 
   CPUVendorIDs :array[0..13] of string = ('GenuineIntel',
                                           'UMC UMC UMC',
@@ -417,7 +417,284 @@ const
                                         'Transmeta',
                                         'Vortex');
 
-function TCPU.CPUIDExists: boolean; register;
+procedure GetCPUIDLevelAndVendor(var Level: LongWord; var VendorStr: TVendorStr); assembler;
+asm
+	{$IFDEF CPUX86}
+	//Save registers that need to be preserved
+	PUSH esi
+	PUSH edi
+	//PUSH eax //scratch
+	PUSH ebx
+	//PUSH ecx //scratch
+	//PUSH edx //scratch
+
+	//Store output variables in safe places
+	MOV esi, Level
+	MOV edi, VendorStr //Put this EDI, because we're going to use STOSB to write to it
+
+	//Call the CPUID command
+	MOV eax, 0h     //Function 0h: Vendor-ID and Largest Standard Function
+	{$IFDEF Delphi6orNewerCompiler}
+	CPUID
+	{$ELSE}
+	DB 0Fh,0a2h     //Execute CPUID
+	{$ENDIF}
+	MOV [esi], eax  //Store Level
+
+	//Save the first 4 bytes
+	MOV  eax,ebx   //need CPUID EBX-value to be in EAX
+	XCHG ebx,ecx   //save ECX result in EBX
+	MOV  ecx,4     //loop 4 times
+	@1:
+	STOSB          //save 1 byte from EAX
+	SHR  eax,8     //shift to the next byte
+	LOOP @1
+
+	//Save the middle 4 bytes
+	MOV  eax,edx   //need CPUID EDX-value to be in EAX
+	MOV  ecx,4     //loop 4 times
+	@2:
+	STOSB          //save 1 byte from EAX
+	SHR  eax,8     //shift to the next byte
+	LOOP @2
+
+	//Save the last 4 bytes
+	MOV  eax,ebx   //need CPUID ECX-value to be in EAX (note: it's stored in EBX now)
+	MOV  ecx,4     //loop 4 times
+	@3:
+	STOSB          //save 1 byte from EAX
+	SHR  eax,8     //shift to the next byte
+	LOOP @3
+
+	//Restore registers
+	//POP edx
+	//POP ecx
+	POP ebx
+	//POP eax
+	POP edi
+	POP esi
+	{$ELSE}
+	{$IFDEF CPUX64}
+	//Save registers that need to be preserved
+	PUSH rsi
+	PUSH rdi
+	//PUSH rax //scratch
+	PUSH rbx
+	//PUSH rcx //scratch
+	//PUSH rdx //scratch
+
+	//Store output variables in safe places
+	MOV rsi, Level
+	MOV rdi, VendorStr //Put this RDI, because we're going to use STOSB to write to it
+
+	//Call the CPUID command
+	MOV rax, 0h     //Function 0h: Vendor-ID and Largest Standard Function
+	{$IFDEF Delphi6orNewerCompiler}
+	CPUID
+	{$ELSE}
+	DB 0Fh,0a2h     //Execute CPUID
+	{$ENDIF}
+	MOV [rsi], rax  //Store Level
+
+	//Save the first 4 bytes
+	MOV  rax,rbx   //need CPUID EBX-value to be in EAX
+	XCHG rbx,rcx   //save ECX result
+	MOV  rcx,4     //loop 4 times
+	@1:
+	STOSB          //save 1 byte from EAX
+	SHR  rax,8     //shift to the next byte
+	LOOP @1
+
+	//Save the middle 4 bytes
+	MOV  rax,rdx   //need CPUID EDX-value to be in EAX
+	MOV  rcx,4     //loop 4 times
+	@2:
+	STOSB          //save 1 byte from EAX
+	SHR  rax,8     //shift to the next byte
+	LOOP @2
+
+	//Save the last 4 bytes
+	MOV  rax,rbx   //need CPUID ECX-value to be in EAX
+	MOV  rcx,4     //loop 4 times
+	@3:
+	STOSB          //save 1 byte from EAX
+	SHR  rax,8     //shift to the next byte
+	LOOP @3
+
+	//Restore registers
+	//POP rdx
+	//POP rcx
+	POP rbx
+	//POP rax
+	POP rdi
+	POP rsi
+	{$ELSE}
+	{$Message Error 'Unsupported CPU architecture!'}
+	{$ENDIF}
+	{$ENDIF}
+end;
+
+procedure GetCPUIDSignatureAndFeatureFlags(var Signature: LongWord; var FeatureFlags: TFeatureFlags); assembler;
+asm
+	{$IFDEF CPUX86}
+	//Save registers that need to be preserved
+	PUSH esi
+	PUSH edi
+	//PUSH eax //scratch
+	PUSH ebx
+	//PUSH ecx //scratch
+	//PUSH edx //scratch
+
+	//Store output variables in safe places
+	MOV esi, Signature
+	MOV edi, FeatureFlags
+
+	//Call the CPUID command
+	MOV eax, 1h     //Function 1h: Feature Information
+	{$IFDEF Delphi6orNewerCompiler}
+	CPUID
+	{$ELSE}
+	DB 0Fh,0a2h     //Execute CPUID
+	{$ENDIF}
+	MOV [esi], eax  //Store Signature
+	MOV TFeatureFlags(edi).&EBX, ebx  //Store FeatureFlags EBX
+	MOV TFeatureFlags(edi).&ECX, ecx  //Store FeatureFlags ECX
+	MOV TFeatureFlags(edi).&EDX, edx  //Store FeatureFlags EDX
+
+	//Restore registers
+	//POP edx
+	//POP ecx
+	POP ebx
+	//POP eax
+	POP edi
+	POP esi
+	{$ELSE}
+	{$IFDEF CPUX64}
+	//Save registers that need to be preserved
+	PUSH rsi
+	PUSH rdi
+	//PUSH rax //scratch
+	PUSH rbx
+	//PUSH rcx //scratch
+	//PUSH rdx //scratch
+
+	//Store output variables in safe places
+	MOV rsi, Signature
+	MOV rdi, FeatureFlags
+
+	//Call the CPUID command
+	MOV rax, 1h     //Function 1h: Feature Information
+	{$IFDEF Delphi6orNewerCompiler}
+	CPUID
+	{$ELSE}
+	DB 0Fh,0a2h     //Execute CPUID
+	{$ENDIF}
+	MOV [rsi], eax  //Store Signature
+	MOV TFeatureFlags(rdi).&EBX, ebx  //Store FeatureFlags RBX
+	MOV TFeatureFlags(rdi).&ECX, ecx  //Store FeatureFlags RCX
+	MOV TFeatureFlags(rdi).&EDX, edx  //Store FeatureFlags RDX
+
+	//Restore registers
+	//POP rdx
+	//POP rcx
+	POP rbx
+	//POP rax
+	POP rdi
+	POP rsi
+	{$ELSE}
+	{$Message Error 'Unsupported CPU architecture!'}
+	{$ENDIF}
+	{$ENDIF}
+end;
+
+ { ----------------- }
+
+//Based on: Intel Processor Identification and the CPUID Instruction, Application Note 485, May 2012
+{$IFDEF CompiledWithDelphi1}
+{$DEFINE DoChecksX86}
+{$ENDIF}
+{$IFDEF CPUX86}
+{$DEFINE DoChecksX86}
+{$ENDIF}
+
+{$IFDEF DoChecksX86}
+function TCPU.GetCPUType: Cardinal; assembler;
+asm
+{$IFDEF CompiledWithDelphi1} //16 bit
+  // Intel 8086 processor check
+  // Bits 12-15 of the FLAGS register are always set on the 8086 processor.
+@check_8086:
+  pushf                   // push original FLAGS
+  pop ax                  // get original FLAGS
+  mov     cx, ax          // save original FLAGS
+  and     ax, 0FFFh       // clear bits 12-15 in FLAGS
+  push    ax              // save new FLAGS value on stack
+  popf                    // replace current FLAGS value
+  pushf                   // get new FLAGS
+  pop     ax              // store new FLAGS in AX
+  and     ax, 0F000h      // if bits 12-15 are set, then
+  cmp     ax, 0F000h      //  processor is an 8086/8088
+  mov     Result, 0       // turn on 8086/8088 flag
+  jne     check_80286     // go check for 80286
+  push    sp              // double check with push sp
+  pop     dx              // if value pushed was different
+  cmp     dx, sp          // means it's really an 8086
+  jne     end_cpu_type    // jump if processor is 8086/8088
+  mov     ax, 10h         // indicate unknown processor
+  jmp     @exit
+
+  // Intel 286 processor check
+  // Bits 12-15 of the FLAGS register are always clear on the Intel 286 processor in real-address mode.
+@check_80286:
+  smsw    ax             // save machine status word
+  and     ax, 1          // isolate PE bit of MSW
+  mov     _v86_flag, al  // save PE bit to indicate V86
+  or      cx, 0F000h     // try to set bits 12-15
+  push    cx             // save new FLAGS value on stack
+  popf                   // replace current FLAGS value
+  pushf                  // get new FLAGS
+  pop     ax             // store new FLAGS in AX
+  and     ax, 0F000h     // if bits 12-15 are clear
+  mov     ax, 2          // processor=80286, turn on 80286 flag
+  jz      @exit          // jump if processor is 80286
+{$ENDIF}
+
+  // Intel386 processor check
+  // The AC bit, bit #18, is a new bit introduced in the EFLAGS register on the Intel486 processor to generate alignment faults.
+  // This bit cannot be set on the Intel386 processor.
+@check_80386:
+  pushfd               // push original EFLAGS
+  pop     eax          // get original EFLAGS
+  mov     ecx, eax     // save original EFLAGS
+  xor     eax, 40000h  // flip AC bit in EFLAGS
+  push    eax          // save new EFLAGS value on stack
+  popfd                // replace current EFLAGS value
+  pushfd               // get new EFLAGS
+  pop     eax          // store new EFLAGS in EAX
+  xor     eax, ecx     // can't toggle AC bit processor=80386
+  mov     eax, 3       // turn on 80386 processor flag
+  jz      @exit        // jump if 80386 processor
+  push    ecx
+  popfd                // restore AC bit in EFLAGS first
+
+  // Intel486 processor check
+@check_80486:
+  mov     eax, 4  // turn on 80486 processor flag
+  je      @exit   // processor=80486
+@exit:
+end;
+{$ELSE}
+{$IFDEF CPUX64}
+function TCPU.GetCPUType: Cardinal;
+begin
+  Result:=$f;
+end;
+{$ELSE}
+{$Message Error 'Unsupported CPU architecture!'}
+{$ENDIF}
+{$ENDIF}
+
+function TCPU.CPUIDExists: Boolean; assembler; register;
 asm
 	{$IFDEF CPUX86}
 	PUSHFD               //direct access to flags not possible, only via stack
@@ -449,215 +726,6 @@ asm
 	{$ENDIF}
 	{$ENDIF}
 @exit:
-end;
-
-function TCPU.GetCPUID : TCPUID; register;
-var
-  VCPUID: TCPUID;
-begin
-  VCPUID.EAX:=0;
-  VCPUID.EBX:=0;
-  VCPUID.ECX:=0;
-  VCPUID.EDX:=0;
-  asm
-	PUSH    EDI          //Save reg.
-	PUSH    EAX
-	PUSH    EBX
-	PUSH    EDX
-	PUSH    ECX
-	LEA     EDI,VCPUID   //Pointer to output buffer in EDI
-	MOV     EAX,1
-	DW      $A20F        //CPUID Command Execute
-	STOSD
-	MOV     eax,ebx
-	STOSD
-	MOV     eax,ecx
-	STOSD
-	MOV     eax,edx
-	STOSD
-	POP     ECX
-	POP     EDX
-	POP     EBX
-	POP     EAX
-	POP     EDI          //Restore Reg.
-  end;
-  result:=VCPUID;
-end;
-
-function TCPU.GetCPUIDLevel: LongWord; assembler
-asm
-	MOV eax, 0      //Get Level
-	DB 0Fh,0a2h     //CPUID opcode
-	//MOV Result, eax //Not needed, Result = EAX
-end;
-
-function TCPU.GetCPUType: integer; assembler
-asm
-	PUSH ebx
-	PUSH ecx
-	PUSH edx
-
-	MOV ebx,esp
-	AND esp,0FFFFFFFCh   //align down to nearest dword
-	PUSHFD               //save original flags
-
-// i386 CPU check
-// The AC bit, bit #18, is a new bit introduced in the EFLAGS
-// register on the i486 DX CPU to generate alignment faults.
-// This bit can not be set on the i386 CPU.
-
-	PUSHFD
-	POP eax
-	MOV ecx,eax
-	XOR eax,40000h       //toggle AC bit
-	PUSH eax
-	POPFD
-	PUSHFD
-	POP eax
-	XOR eax,ecx
-	MOV eax,3            //assume 80386
-	JE @@end_CPUTyp      //it's a 386
-
-// i486 DX CPU / i487 SX MCP and i486 SX CPU checking
-// Checking for ability to set/clear ID flag (Bit 21) in EFLAGS
-// which indicates the presence of a processor
-// with the ability to use the CPUID instruction.
-
-	PUSHFD
-	POP eax
-	MOV ecx,eax
-	XOR eax,200000h      //toggle ID bit
-	PUSH eax
-	POPFD
-	PUSHFD
-	POP eax
-	XOR eax, ecx
-	MOV eax,4
-	JE @@end_CPUTyp      //it's a 486 w/o support for CPUID
-
-// Execute CPUID instruction to determine vendor, family,
-// model and stepping.  The use of the CPUID instruction used
-// in this program can be used for B0 and later steppings
-// of the P5 processor.
-
-	PUSH ebx             //CPUID modifies EBX  !!!
-	MOV eax, 1           //Function 01h: Feature Information
-	DB 0Fh,0a2h          //CPUID opcode
-	MOV al,ah
-	AND eax, 0FH
-  //MOV Result, eax //Not needed, Result = EAX
-	POP ebx
-
-@@end_CPUTyp:
-	POPFD                //restore original flags
-	MOV esp,ebx          //restore original ESP
-	POP edx
-	POP ecx
-	POP ebx
-end;
-
-function TCPU.GetCPUVendor :string;
-
-  function _GetCPUVendor :TStrBuf; assembler; register;
-  asm
-	{$IFDEF CPUX86}
-	//Save registers
-	PUSH ebx
-	PUSH edi
-
-	//Call the CPUID command
-	MOV  edi,eax   //store @Result (TStrBuf) in EDI
-	MOV  eax,0     //select CPUID standard function 0
-	DW   $A20F     //raw opcode
-
-	//Save the first 4 bytes
-	MOV  eax,ebx   //need CPUID EBX-value to be in EAX
-	XCHG ebx,ecx   //save ECX result
-	MOV  ecx,4     //loop 4 times
-	@1:
-	STOSB          //save 1 byte from EAX
-	SHR  eax,8     //shift to the next byte
-	LOOP @1
-
-	//Save the middle 4 bytes
-	MOV  eax,edx   //need CPUID EDX-value to be in EAX
-	MOV  ecx,4     //loop 4 times
-	@2:
-	STOSB          //save 1 byte from EAX
-	SHR  eax,8     //shift to the next byte
-	LOOP @2
-
-	//Save the last 4 bytes
-	MOV  eax,ebx   //need CPUID ECX-value to be in EAX
-	MOV  ecx,4     //loop 4 times
-	@3:
-	STOSB          //save 1 byte from EAX
-	SHR  eax,8     //shift to the next byte
-	LOOP @3
-
-	//Restore registers
-	POP  edi
-	POP  ebx
-	{$ELSE}
-	{$IFDEF CPUX64}
-	//Save registers
-	PUSH rbx
-	PUSH rdi
-
-	//Call the CPUID command
-	MOV  rdi,rdx   //store @Result (TStrBuf) in RDI
-	MOV  rax,0     //select CPUID standard function 0
-	DW   $A20F     //raw opcode
-
-	//Save the first 4 bytes
-	MOV  rax,rbx   //need CPUID EBX-value to be in EAX
-	XCHG rbx,rcx   //save ECX result
-	MOV  rcx,4     //loop 4 times
-	@1:
-	STOSB          //save 1 byte from EAX
-	SHR  rax,8     //shift to the next byte
-	LOOP @1
-
-	//Save the middle 4 bytes
-	MOV  rax,rdx   //need CPUID EDX-value to be in EAX
-	MOV  rcx,4     //loop 4 times
-	@2:
-	STOSB          //save 1 byte from EAX
-	SHR  rax,8     //shift to the next byte
-	LOOP @2
-
-	//Save the last 4 bytes
-	MOV  rax,rbx   //need CPUID ECX-value to be in EAX
-	MOV  rcx,4     //loop 4 times
-	@3:
-	STOSB          //save 1 byte from EAX
-	SHR  rax,8     //shift to the next byte
-	LOOP @3
-
-	//Restore registers
-	POP  rdi
-	POP  rbx
-	{$ELSE}
-	{$Message Error 'Unsupported CPU architecture!'}
-	{$ENDIF}
-	{$ENDIF}
-  end;
-
-var
-  i :integer;
-begin
-  Log(LOG_VERBOSE, 'Getting CPU vendor information...');
-  result:=String(_GetCPUVendor);
-  FVendorNo:=-1;
-  for i:=low(CPUVendorIDs) to high(CPUVendorIDs) do
-  begin
-    if result=CPUVendorIDs[i] then
-    begin
-      result:=CPUVendors[i];
-      FVendorNo:=i;
-      break;
-    end;
-  end;
 end;
 
 function TCPU.GetCPUVendorID :string;
@@ -807,46 +875,63 @@ begin
 end;
 
 {$IFDEF MeasureCPUFrequency}
-//FIXME: Get the timestamp in ONE CALL; otherwise the high and low part may DESYNC!
-//FIXME: Additionally, on multi-core machines, it may cause weird issues due to time differences between cores.
+//FIXME: On multi-core machines, it may cause weird issues due to time differences between cores.
 //FIXME: Also, the RDTSC is not a SERIALIZING instruction, meaning it may get shifted around due to out-of-order execution!
-function GetTimeStampHi: LongWord; assembler; register;
+function GetTimeStamp: TLargInt; assembler; register;
 asm
-	DW      $310F       //RDTSC Command
-	MOV @Result, EDX;
+	{$IFDEF CPUX86}
+	//Save registers that need to be preserved
+	PUSH esi
+	//PUSH eax //scratch
+	//PUSH edx //scratch
+
+	//Store output variables in safe places
+	MOV esi, eax
+
+	//Call the RDTSC command
+	{$IFDEF Delphi6orNewerCompiler}
+	RDTSC
+	{$ELSE}
+	DW $310F   //Call RDTSC
+	{$ENDIF}
+	MOV TLargInt(esi).&LowPart, eax
+	MOV TLargInt(esi).&HighPart, edx
+
+	//Restore registers
+	//POP edx
+	//POP eax
+	POP esi
+	{$ELSE}
+	{$IFDEF CPUX64}
+	//Save registers that need to be preserved
+	PUSH rsi
+	//PUSH rax //scratch
+	//PUSH rdx //scratch
+
+	//Store output variables in safe places
+	MOV rsi, rax
+
+	//Call the RDTSC command
+	DW $310F   //Call RDTSC
+	MOV TLargInt(rsi).&LowPart, rax
+	MOV TLargInt(rsi).&HighPart, rdx
+
+	//Restore registers
+	//POP rdx
+	//POP rax
+	POP rsi
+	{$ELSE}
+	{$Message Error 'Unsupported CPU architecture!'}
+	{$ENDIF}
+	{$ENDIF}
 end;
 
-function GetTimeStampLo: LongWord; assembler; register;
-asm
-	DW      $310F       //RDTSC Command
-	MOV @Result, EAX;
-end;
-
-//FIXME: This function has OVERLAP with code in TCPU; merge them!
-function GetCPUIDFlags: LongWord; assembler; register;
-asm
-	PUSH    EBX       //Save registers
-	PUSH    EDI
-	MOV     EAX,1     //Set up for CPUID
-	DW      $A20F     //CPUID OpCode
-	MOV @Result,EDX   //Put the flag array into a LongWord
-	POP     EDI       //Restore registers
-	POP     EBX
-end;
-
-function GetTimeStamp :TLargInt;
-begin
-  result.QuadPart:=0;
-  if (GetCPUIDFlags and 16) <> 16 then
-    exit;
-  result.HighPart:=GetTimeStampHi;
-  result.LowPart:=GetTimeStampLo;
-end;
-
-function GetTicksPerSecond(Iterations :Word) :extended;
+function TCPU.GetCPUFreqEx: extended;
+const
+  Iterations = 1;
 var
-  Freq ,PerfCount,Target :int64;
-  StartTime, EndTime, Elapsed :TLargInt;
+  Freq, PerfCount, Target: TLargeInteger;
+  StartTime, EndTime, Elapsed: TLargInt;
 
   procedure StartTimer;
   begin
@@ -881,14 +966,7 @@ begin
   {$ENDIF}
   StopTimer;
   Result:=Elapsed.QuadPart/Iterations;
-end;
-
-function TCPU.GetCPUFreqEx: extended;
-var
-  c :extended;
-begin
-  c:=GetTicksPerSecond(1);
-  Result:=c/1E6; //Hz to MHz
+  Result:=Result/1E6; //Hz to MHz
 end;
 {$ENDIF}
 
@@ -906,53 +984,74 @@ end;
 
 procedure TCPU.GetInfo;
 var
-  CPUID :TCPUID;
-  SI :TSystemInfo;
+  I: Integer;
+  CPUIDVendor: TVendorStr;
+  CPUIDSignature: LongWord;
+  CPUIDFeatureFlags: TFeatureFlags;
   ExtendedModel: Byte;
   ExtendedFamily: Byte;
 begin
   Log(LOG_VERBOSE, 'Starting gathering CPU information...');
-  ZeroMemory(@SI,SizeOf(SI));
-  if DelayFunc_GetNativeSystemInfo then
-    GetNativeSystemInfo(SI)
-  else
-    GetSystemInfo(SI);
-  Count:=SI.dwNumberOfProcessors;
-  Family:=SI.dwProcessorType;
-//  Vendor:=
-//  VendorID:=
-  {$IFDEF MeasureCPUFrequency}
-  Freq:=Round(GetCPUFreqEx);
-  {$ENDIF}
+  Count:=CPUCount;
   HasCPUID:=CPUIDExists;
   if HasCPUID then
   begin
-    CPUIDLevel:=GetCPUIDLevel;
-    Typ:=GetCPUType;
-    CPUID:=GetCPUID;
-    Stepping:=(CPUID.EAX and $f);
-    Model:=(CPUID.EAX shr 4 and $f);
-    Family:=(CPUID.EAX shr 8 and $f);
-    Typ:=(CPUID.EAX shr 12 and $7);
-    if Family = 6 then
+    GetCPUIDLevelAndVendor(FCPUIDLevel, CPUIDVendor);
+    if CPUIDLevel >= 1 then
     begin
-      //Use Extended Family and Extended Model field
-      ExtendedModel:=(CPUID.EAX shr 16 and $f);
-      //ExtendedFamily:=(CPUID.EAX shr 20 and $ff);
-      Model:=Model + (ExtendedModel shl 4);
-    end
-    else if Family = 15 then
-    begin
-      //Use Extended Family and Extended Model field
-      ExtendedModel:=(CPUID.EAX shr 16 and $f);
-      ExtendedFamily:=(CPUID.EAX shr 20 and $ff);
-      Model:=Model + (ExtendedModel shl 4);
-      Family:=Family + ExtendedFamily;
+      //FIXME: Modern Delphi's have System.GetCPUID. Switch to using that?
+      GetCPUIDSignatureAndFeatureFlags(CPUIDSignature, CPUIDFeatureFlags);
+      HasRDTSC:=(CPUIDFeatureFlags.EDX and TSC_Bit) = TSC_Bit;
+      Stepping:=(CPUIDSignature and $f);
+      Model:=(CPUIDSignature shr 4) and $f;
+      Family:=(CPUIDSignature shr 8) and $f;
+      Typ:=(CPUIDSignature shr 12) and $7;
+      if Family = 6 then
+      begin
+        //Use Extended Family and Extended Model field
+        ExtendedModel:=(CPUIDSignature shr 16) and $f;
+        //ExtendedFamily:=(CPUID.EAX shr 20 and $ff);
+        Model:=Model + (ExtendedModel shl 4);
+      end
+      else if Family = 15 then
+      begin
+        //Use Extended Family and Extended Model field
+        ExtendedModel:=(CPUIDSignature shr 16) and $f;
+        ExtendedFamily:=(CPUIDSignature shr 20) and $ff;
+        Model:=Model + (ExtendedModel shl 4);
+        Family:=Family + ExtendedFamily;
+      end;
+
+//        Log(LOG_VERBOSE, 'Getting CPU vendor information...');
+      FVendorNo:=-1;
+      for i:=low(CPUVendorIDs) to high(CPUVendorIDs) do
+      begin
+        if CPUVendorIDs[i]=CPUIDVendor then
+        begin
+          Vendor:=CPUVendors[i];
+          FVendorNo:=i;
+          break;
+        end;
+      end;
+      VendorID:=GetCPUVendorID;
+      SubModel:=GetSubModel;
     end;
-    Vendor:=GetCPUVendor;
-    VendorID:=GetCPUVendorID;
-    SubModel:=GetSubModel;
+  end
+  else
+  begin
+    Family:=GetCPUType;
+    Vendor:='Intel';
+    if Family=$f then
+      VendorID:='compatible'
+    else
+      VendorID:=Format('80%d86 or compatible', [Family]);
   end;
+  {$IFDEF MeasureCPUFrequency}
+  if HasRDTSC then
+    Freq:=Round(GetCPUFreqEx)
+  else
+    raise Exception.Create('RDTSC fallback not implemented!'); //FIXME: !
+  {$ENDIF}
 end;
 
 procedure TCPU.Report(var sl: TStringList);
@@ -964,10 +1063,14 @@ begin
     {$ELSE}
     add(format('%d x %s %s',[self.Count,Vendor,VendorID]));
     {$ENDIF}
-    add(format('Submodel: %s',[Submodel]));
-    add(format('Model ID: Family %d  Model %d  Stepping %d',[Family,Model,Stepping]));
     if HasCPUID then
+    begin
+      add(format('Submodel: %s',[Submodel]));
+      add(format('Model ID: Family %d  Model %d  Stepping %d',[Family,Model,Stepping]));
       add(format('CPUID Level: Level %d',[CPUIDLevel]));
+    end
+    else
+      add(format('Model ID: Family %d',[Family]));
   end;
 end;
 
