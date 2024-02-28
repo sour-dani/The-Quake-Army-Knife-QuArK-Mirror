@@ -389,18 +389,11 @@ begin
 end;
 
 destructor TQkForm.Destroy;
-var
- Dummy: TCloseAction;
 begin
  if PPointer(@WindowProc) <> nil then
-  Log(LOG_VERBOSE, 'Now closing form... (%s)', [Self.Caption])
+  Log(LOG_VERBOSE, 'Now destroying form... (%s)', [Self.Caption])
  else
-  Log(LOG_VERBOSE, 'Now closing form... (%s)', [Self.WindowText]);
- if Assigned(OnClose) then
-  begin
-   Dummy:=caFree;
-   OnClose(Self, Dummy); //FIXME: Why are we calling OnClose in the destructor? That's way too late! (Can causes double-calling if .Close was called first.)
-  end;
+  Log(LOG_VERBOSE, 'Now destroying form... (%s)', [Self.WindowText]);
 {DestroyMarsCap(MarsCap);}
  inherited;
 end;
