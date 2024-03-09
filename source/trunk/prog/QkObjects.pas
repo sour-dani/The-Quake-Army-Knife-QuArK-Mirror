@@ -1762,7 +1762,7 @@ begin
         begin
           S:=Specifics.StringsFromIndex[I]; //FIXME: Switch to Bytes?
           Size:=Length(S);
-          F.WriteBuffer(S, Size);
+          F.WriteBuffer(S[1], Size);
           if Size > qsShortSizeMax then
           begin
             Size2:=RequiredBytesToContainValue(Size);

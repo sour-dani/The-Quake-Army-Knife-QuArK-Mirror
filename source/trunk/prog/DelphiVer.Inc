@@ -259,6 +259,7 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 //FIXME: Not sure if this is needed?
 {.$IFDEF CompiledWithDelphi1}
 {.$DEFINE WIN16}
+{.$DEFINE CPU16BITS}
 {.$ENDIF}
 
 {$IFNDEF DelphiXE2orNewerCompiler}
