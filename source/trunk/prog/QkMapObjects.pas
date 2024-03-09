@@ -168,7 +168,7 @@ type
                  protected
                    procedure CouleurDessin(var C: TColor); override;
                  public
-                   Form4: TQkForm;
+                  {Form4: TQkForm;}
                    class function TypeInfo: String; override;
                    procedure ObjectState(var E: TEtatObjet); override;
                    procedure ListePolyedres(Polyedres, Negatif: TQList; Flags: Integer; Brushes: Integer); override;
