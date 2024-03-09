@@ -3733,6 +3733,9 @@ begin
   Py_XDECREF(HelpMenu);
   HelpMenu := Nil;
 
+  //Handle any remaining errors
+  PythonCodeEnd;
+
   Py_Finalize;
   UnInitializePython;
   PythonInited := False;
@@ -3743,6 +3746,9 @@ var
  ptype, pvalue, ptraceback: PyObject;
  str: PyObject;
 begin
+ if not PythonInited then
+  Exit;
+
  if PyErr_Occurred<>Nil then
   if PyErr_ExceptionMatches(QuarkxAborted)<>0 then
    begin
