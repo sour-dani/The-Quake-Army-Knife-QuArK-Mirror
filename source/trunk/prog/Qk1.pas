@@ -465,6 +465,11 @@ end;
 destructor TForm1.Destroy;
 begin
  inherited;
+
+ //These need Python to function:
+ Application.OnShowHint:=nil;
+ Application.OnHint:=nil;
+
  ShutdownPython;
  FreeConsole;
 
@@ -1607,7 +1612,12 @@ begin
    end;
   end;
 
- SavePendingFiles(True);
+ try
+  SavePendingFiles(True);
+ except
+  on EAbort do
+   CanClose:=False;
+ end;
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -1638,7 +1648,7 @@ begin
     end;
   end;
  ClearExplorer;
- SavePendingFiles(True);
+ SavePendingFiles(False);
  SavePositionTb('Main', False, Explorer);
  if not FNoTempDelete then
   DeleteTempFiles;
