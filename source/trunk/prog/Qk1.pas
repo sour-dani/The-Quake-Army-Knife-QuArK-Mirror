@@ -432,6 +432,11 @@ begin
    // Load the main form fully
    inherited;
    ConnectToPython;
+
+   //These need Python to function:
+   Application.OnShowHint:=AppShowHint;
+   Application.OnHint:=AppHint;
+
    LoadingComplete:=True;
  finally
    // Wait for splash screen to close
@@ -542,8 +547,6 @@ begin
  Application.OnIdle:=AppIdle;
  Application.OnActivate:=AppActivate;
  Application.OnDeactivate:=AppDeactivate;
- Application.OnShowHint:=AppShowHint;
- Application.OnHint:=AppHint;
 {Application.OnHelp:=AppHelp;}
 {Application.OnRestore:=AppRestore;}     { MARSCAPFIX }
 
@@ -2219,7 +2222,7 @@ begin
    Msg:=Hint;
   end;
  L:=TStringList.Create; try
- L.Add(FmtLoadStr1(4616, [QuArKVersion, QuArKMinorVersion, ExceptAddr, @TForm1.AppException]));
+ L.Add(FmtLoadStr1(4616, [QuArKVersion, QuArKMinorVersion, ExceptAddr, Pointer(GetModuleHandle(Nil))]));
  P:=Pos('//', Msg);
  if P=0 then
   L.Add(Msg+'.')
