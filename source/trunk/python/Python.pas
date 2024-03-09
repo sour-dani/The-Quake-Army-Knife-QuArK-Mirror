@@ -868,7 +868,7 @@ begin
     Exit;
   if SetEnvironmentVariable('PYTHONPATH', PChar(ConcatPaths([S, 'Lib']))) = false then //Note that this doesn't actually work if Python is embedded, but for consistency, let's set it anyway.
     Exit;
-//FIXME: Not used for now
+//DanielPharos: Not used for now
 //  if SetEnvironmentVariable('PYTHONOPTIMIZE', '1') = false then
 //    Exit;
 {$IFDEF Debug}
@@ -1095,7 +1095,7 @@ begin
   if PyErr_Occurred<>Nil then
     Exit;
   if Assigned(PyGC_Collect) then
-    PyGC_Collect; //FIXME: PythonEnd code?
+    PyGC_Collect; //Note: PythonCodeEnd is not needed here; this function is documented to not raise exceptions.
 end;
 
 function PyObject_NEW(t: PyTypeObject) : PyObject;
