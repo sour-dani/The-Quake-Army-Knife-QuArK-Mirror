@@ -1161,6 +1161,12 @@ Strings = {
     5888: "Unable to create installer thread. Update unsuccessful.",
     5889: "QuArK needs to be restarted for the updates to be applied.",
     5890: "Installation of the updates is still busy. Stopping the update will most likely result in a corrupt install. Are you sure you want to stop the installation?",
+    5891: "%s: File operation failed!",
+    5892: "%s: User aborted file operation!",
+    5893: "No QuArKSAS executable name found; defaulting to %s.",
+    5894: "Unable to extract file from Steam. %s not found.",
+    5895: "Unable to extract file from Steam. Call to %s failed.",
+    5896: "Unable to extract file from Steam. Cannot create cache directory.",
 
     # DanielPharos would like to reserve 6000 .. 6099 for all renderers
     6000: "Unable to create SceneObject//%s",

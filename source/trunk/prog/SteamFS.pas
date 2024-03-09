@@ -86,13 +86,13 @@ begin
     FileOp.pTo := PFilesTo;
     FileOp.fFlags := FileOpFlags;
     if SHFileOperation(FileOp) <> 0 then
-      Log(LOG_WARNING, 'Warning: File operation failed!') //FIXME: Move to dict!
+      Log(LOG_WARNING, LoadStr1(5891), ['DoFileOperation'])
     else
     begin
       if FileOp.fAnyOperationsAborted = False then
         Result:=True
       else
-        Log(LOG_WARNING, 'Warning: User aborted file operation!'); //FIXME: Move to dict!
+        Log(LOG_WARNING, LoadStr1(5892), ['DoFileOperation']);
     end;
   finally
     if PFilesTo <> nil then
@@ -199,7 +199,7 @@ begin
 
   if QuArKSASEXE='' then
   begin
-    Log(LOG_WARNING, 'No QuArKSAS executable name found; defaulting to QuArKSAS.exe.');
+    Log(LOG_WARNING, LoadStr1(5893), ['QuArKSAS.exe']);
     QuArKSASEXE:='QuArKSAS.exe';
   end;
 
@@ -212,11 +212,11 @@ begin
     //FIXME: First check if the Steam path exists at all!
 
     if FileExists(ConcatPaths([GetQPath(pQuArKDll), QuArKSASEXE])) = false then
-      LogAndRaiseError('Unable to extract file from Steam. dlls/'+QuArKSASEXE+' not found.'); //FIXME: Move to dict!
+      LogAndRaiseError(FmtLoadStr1(5894, ['dlls/'+QuArKSASEXE]));
     if FileExists(QSASFile) = false then
     begin
       if CopyFile(PChar(ConcatPaths([GetQPath(pQuArKDll), QuArKSASEXE])), PChar(QSASFile), true) = false then
-        LogAndRaiseError('Unable to extract file from Steam. Call to CopyFile failed.');
+        LogAndRaiseError(FmtLoadStr1(5895, ['CopyFile']));
     end;
 
     //Make sure its the same version
@@ -225,7 +225,7 @@ begin
       //Files do not match. The one in dlls is probably the most current one,
       //so let's update the Steam one.
       if CopyFile(PChar(ConcatPaths([GetQPath(pQuArKDll), QuArKSASEXE])), PChar(QSASFile), false) = false then
-        LogAndRaiseError('Unable to extract file from Steam. Call to CopyFile failed.');
+        LogAndRaiseError(FmtLoadStr1(5895, ['CopyFile']));
     end;
 
     CheckQuArKSAS:=false;
@@ -234,7 +234,7 @@ begin
   TmpDirectory:=GetSteamCacheDir;
   if DirectoryExists(TmpDirectory) = false then
     if CreateDir(TmpDirectory) = false then
-      LogAndRaiseError('Unable to extract file from Steam. Cannot create cache directory.');
+      LogAndRaiseError(LoadStr1(5896));
 
   //Note: No trailing slashes in paths allowed for QuArKSAS!
   QSASCommandLine:=Format('%s -g %s -gamedir "%s" -o "%s" -overwrite', [QSASFile, SteamAppID, ExcludeTrailingPathDelimiter(GetSteamBaseDir), TmpDirectory]);
@@ -250,13 +250,13 @@ begin
   QSASStartupInfo.dwFlags:=STARTF_USESHOWWINDOW;
   QSASStartupInfo.wShowWindow:=SW_SHOWMINNOACTIVE;
   if CreateProcess(nil, PChar(QSASCommandLine), nil, nil, false, 0, nil, PChar(QSASPath), QSASStartupInfo, QSASProcessInformation)=false then
-    LogAndRaiseError('Unable to extract file from Steam. Call to CreateProcess failed.');
+    LogAndRaiseError(FmtLoadStr1(5895, ['CreateProcess']));
   try
     CloseHandle(QSASProcessInformation.hThread);
 
     //DanielPharos: Waiting for INFINITE is rather dangerous, so let's wait only a certain amount of seconds
     if WaitForSingleObject(QSASProcessInformation.hProcess, QSASDelay)=WAIT_FAILED then
-      LogAndRaiseError('Unable to extract file from Steam. Call to WaitForSingleObject failed.');
+      LogAndRaiseError(FmtLoadStr1(5895, ['WaitForSingleObject']));
   finally
     CloseHandle(QSASProcessInformation.hProcess);
   end;
