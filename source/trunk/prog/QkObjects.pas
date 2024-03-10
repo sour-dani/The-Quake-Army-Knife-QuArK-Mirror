@@ -1833,7 +1833,7 @@ var
 begin
   //Read as unformatted data
   SetLength(B, Size);
-  F.ReadBuffer(B, Size);
+  F.ReadBuffer(B[1], Size);
   Specifics.Bytes[SpecUnformatted]:=B;
 end;
 
@@ -1846,7 +1846,7 @@ begin
   //Write as unformatted data
   if Specifics.TryGetBytes(SpecUnformatted, B)<>tgrSuccess then
     Raise EErrorFmt(5220, [Name, SpecUnformatted, 'Bytes']);
-  F.WriteBuffer(B, Length(B));
+  F.WriteBuffer(B[1], Length(B));
 end;
 
  {------------------------}
