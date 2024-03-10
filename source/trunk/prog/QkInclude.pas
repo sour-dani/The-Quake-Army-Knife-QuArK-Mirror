@@ -104,7 +104,7 @@ end;
 
 function DoIncludeData(Target, LookFrom: QObject; const InclName: String) : Boolean;
 var
- J: Integer;
+ I, J: Integer;
  Q, Q2, N: QObject;
  FullMatch: Boolean;
  MatchName: String;
@@ -124,11 +124,17 @@ begin
    else
     Q2:=Q;
    { copy all data from Q2 into Target }
-   for J:=0 to Q2.Specifics.Count-1 do
-    Target.Specifics.Insert(Target.Specifics.Count, Q2.Specifics.Items[J]);
-   for J:=0 to Q2.SubElements.Count-1 do
+   for I:=0 to Q2.Specifics.Count-1 do
     begin
-     N:=Q2.SubElements[J].Clone(Target, False);
+     J:=Target.Specifics.IndexOfName(Q2.Specifics.Names[I]);
+     if J < 0 then
+      Target.Specifics.Insert(Target.Specifics.Count, Q2.Specifics.Items[I])
+     else
+      Target.Specifics.Items[J]:=Q2.Specifics.Items[I]; //FIXME: Log the overwriting?
+    end;
+   for I:=0 to Q2.SubElements.Count-1 do
+    begin
+     N:=Q2.SubElements[I].Clone(Target, False);
     {if (IncludePos<0) or (IncludePos>=Target.SubElements.Count) then}
       Target.SubElements.Add(N)
     {else
