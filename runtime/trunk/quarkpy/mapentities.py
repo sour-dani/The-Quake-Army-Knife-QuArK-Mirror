@@ -750,11 +750,17 @@ class DefaultDrawEntityLines:
                         entity['pitch'] = '%f' % - direct.x
                     ### Draws the outer cone lines.
                     if (LightingOuterConeKeyword != "") and entity[LightingOuterConeKeyword]:
-                        cone = float(entity[LightingOuterConeKeyword])
+                        try:
+                            cone = float(entity[LightingOuterConeKeyword])
+                        except ValueError:
+                            cone = None
                         if not entity[LightingInnerConeKeyword]:
                             cv.pencolor = color
                     elif entity['spotlightwidth']:
-                        cone = float(entity['spotlightwidth'])/2.0
+                        try:
+                            cone = float(entity['spotlightwidth'])/2.0
+                        except ValueError:
+                            cone = None
                     else:
                         cone = None
                     if cone is not None:
@@ -764,8 +770,14 @@ class DefaultDrawEntityLines:
                             cv.line(view.proj(org+dirvectn*radius),org1)
                     ### Draws the inner cone lines.
                     if (LightingInnerConeKeyword != "") and entity[LightingInnerConeKeyword]:
-                        cone = float(entity[LightingInnerConeKeyword])
+                        try:
+                            cone = float(entity[LightingInnerConeKeyword])
+                        except ValueError:
+                            cone = None
                         cv.pencolor = color
+                    else:
+                        cone = None
+                    if cone is not None:
                         for i in range(NumerOfInnerConeLines):
                             phi = i*pi2/NumerOfInnerConeLines
                             dirvectn = qhandles.angles2vec1(direct.x+cone*math.cos(phi),direct.y+cone*math.sin(phi),direct.z)
