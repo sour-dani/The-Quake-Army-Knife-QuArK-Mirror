@@ -6824,8 +6824,8 @@ $0D"!NEAR_WAR12"
         weapon_shotgun:form = { t_weapon = ! }
         weapon_snark:form = { t_weapon = ! }
         weapon_tripmine:form = {
-                bbox = '-16 -16 -5 16 16 27'
                 t_weapon = !
+                bbox = '-16 -16 -5 16 16 27'
         }
         weapon_glock:form = { t_weapon = ! }
         weapon_mp5:form = { t_weapon = ! }
