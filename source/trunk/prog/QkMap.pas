@@ -1008,14 +1008,14 @@ expected one.
       ThreeSing[2] := NumericValue;
       S1 := S1+' '+FloatToStrF(NumericValue,ffFixed,7,2);
       ReadSymbol(sNumValueToken);
-      Surface.Specifics.AddString('color', S1); //FIXME: Switch to QkSpecifics.Integers?
+      Surface.Specifics.Strings['color']:=S1; //FIXME: Switch to QkSpecifics.Integers?
     { Surface.SetFloatsSpec('color', ThreeSing);  }
      end
     else
     if S = 'directstyle' then { following string value }
      begin
       ReadSymbol(sStringToken);
-      Surface.Specifics.AddString('directstyle', S);
+      Surface.Specifics.Strings['directstyle']:=S;
       ReadSymbol(sStringToken);
      end
     else
@@ -1037,12 +1037,12 @@ expected one.
                 end;
         'd' : if S1 = 'direct' then
                 begin
-                 Surface.Specifics.AddInteger('direct', Round(LastValue));
+                 Surface.Specifics.Integers['direct']:=Round(LastValue);
                 end
               else
               if S1 = 'directangle' then
                 begin
-                 Surface.Specifics.AddInteger('directangle', Round(LastValue));
+                 Surface.Specifics.Integers['directangle']:=Round(LastValue);
                 end;
         'f' : if S1 = 'friction' then
                 begin
@@ -1050,7 +1050,7 @@ expected one.
                 end;
         'l' : if S1 = 'lightvalue' then { assuming that this is the old Value }
                 begin
-                  Surface.Specifics.AddInteger('Value', Round(LastValue));
+                  Surface.Specifics.Integers['Value']:=Round(LastValue);
                 end;
         'n' : if S1 = 'nonlitvalue' then { note name discrepancy }
                 begin
@@ -1072,7 +1072,7 @@ expected one.
               else
               if S1 = 'trans_angle' then
                 begin
-                 Surface.Specifics.AddInteger('trans_angle', Round(LastValue));
+                 Surface.Specifics.Integers['trans_angle']:=Round(LastValue);
                 end;
      end
     end
@@ -1734,7 +1734,7 @@ expected one.
             else
              begin
               Result:=mjCoD;
-              Surface.Specifics.AddInteger('CoD_samplesize', NumericValue1);
+              Surface.Specifics.Integers['CoD_samplesize']:=NumericValue1;
              end;
           end;
          end;
@@ -2281,7 +2281,7 @@ begin
                 System.Delete(S, I, 1);
                end;
             end;
-            L.AddString(S1, S);
+            L.Strings[S1]:=S;
             { stuff for dealing with model attributes in BSP entity lists }
             if (BSP<>Nil) and SameText(S1, 'model') and (S<>'') and (S[1]='*') then
              begin

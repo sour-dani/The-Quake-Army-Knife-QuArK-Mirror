@@ -331,7 +331,7 @@ begin
     Arg := Target.Specifics.Values[Spec] + Arg;*)
    Target.Specifics.Strings[Spec] := Arg;
    if Arg='' then
-    Target.Specifics.AddString(Spec, '');
+    Target.Specifics.Strings[Spec]:='';
   end;
  for I:=0 to Q.SubElements.Count-1 do
   begin
@@ -579,13 +579,13 @@ begin
    Spec:=New.Specifics.Names[I];
    Arg:=New.Specifics.StringsFromIndex[I];
    if Arg <> Old.Specifics.Strings[Spec] then
-    Cfg.Specifics.AddString(Spec, Arg);  { this Specifics has been modified }
+    Cfg.Specifics.Strings[Spec]:=Arg;  { this Specifics has been modified }
   end;
  for I:=0 to Old.Specifics.Count-1 do
   begin
    Spec:=Old.Specifics.Names[I];
    if New.Specifics.IndexOfName(Spec)<0 then
-    Cfg.Specifics.AddString(Spec, '');  { this Specifics has been removed } //FIXME: How to mark as delete, instead of empty?
+    Cfg.Specifics.Strings[Spec]:='';  { this Specifics has been removed } //FIXME: How to mark as delete, instead of empty?
   end;
  for I:=0 to New.SubElements.Count-1 do
   begin

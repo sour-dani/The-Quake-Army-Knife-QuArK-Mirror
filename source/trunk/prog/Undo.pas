@@ -1119,10 +1119,11 @@ begin
      SubStrStart:=0;
     end;
    if Position>=0 then   { ajout d'un Specific }
-    if Position>=Count then
-     AddString(Spec, Arg)
-    else
-     InsertString(Position, Spec, Arg)
+    begin
+     if Position>Count then
+      Position:=Count;
+     InsertString(Position, Spec, Arg);
+    end
    else
     Arg:='';
   end;

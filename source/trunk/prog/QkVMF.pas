@@ -341,7 +341,7 @@ expected one.
   begin
     S1:=S;
     ReadSymbol(sStringQuotedToken);
-    P.Specifics.AddString(S1, S);
+    P.Specifics.Strings[S1]:=S;
     ReadSymbol(sStringQuotedToken);
   end;
 
@@ -467,7 +467,7 @@ expected one.
             surface.adddists(row,aryd);
             inc(row);
           end;
-          Surface.Specifics.AddString(S1+'_'+S2, S);
+          Surface.Specifics.Strings[S1+'_'+S2]:=S;
           ReadSymbol(sStringQuotedToken);
         end;
         ReadSymbol(sCurlyBracketRight);
@@ -520,7 +520,7 @@ expected one.
        num:=num+1;
        s:=outputname + '#'+IntToStr(num);
      end;
-     List.AddString(s, value)
+     List.Strings[s]:=value
    end;
 
  begin
@@ -540,7 +540,7 @@ expected one.
        if (S1='classname') then
           classname:=S
        else
-         SpecificList.AddString(S1, S);
+         SpecificList.Strings[S1]:=S;
 
        ReadSymbol(sStringQuotedToken);
      end
@@ -658,7 +658,7 @@ expected one.
      begin
        S1:=S;
        ReadSymbol(sStringQuotedToken);
-       group.Specifics.AddString(S1, S);
+       group.Specifics.Strings[S1]:=S;
        ReadSymbol(sStringQuotedToken);
      end
      else
@@ -693,7 +693,7 @@ expected one.
        Root.Name:=ClassnameWorldspawn;
      end
      else
-       Root.Specifics.AddString(S1, S);
+       Root.Specifics.Strings[S1]:=S;
      ReadSymbol(sStringQuotedToken);
    end;
 

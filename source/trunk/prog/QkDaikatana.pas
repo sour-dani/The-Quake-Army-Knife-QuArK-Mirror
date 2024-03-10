@@ -90,7 +90,7 @@ begin
   begin
     if S[I]='/' then
     begin
-      Texture.Specifics.AddString('Path', Copy(S,1,I-1));
+      Texture.Specifics.Strings['Path']:=Copy(S,1,I-1);
       Break;
     end;
   end;
@@ -138,11 +138,11 @@ begin
   Texture.Specifics.AddStringFull(S);
 
   if Header.Animation[0]<>0 then
-    Texture.Specifics.AddString('Anim', CharToPas(Header.Animation));
+    Texture.Specifics.Strings['Anim']:=CharToPas(Header.Animation);
 
-  Texture.Specifics.AddInteger('Contents', Header.Contents);
-  Texture.Specifics.AddInteger('Flags', Header.Flags);
-  Texture.Specifics.AddInteger('Value', Header.Value);
+  Texture.Specifics.Integers['Contents']:=Header.Contents;
+  Texture.Specifics.Integers['Flags']:=Header.Flags;
+  Texture.Specifics.Integers['Value']:=Header.Value;
   F.Position:=Base+Taille;
 end;
 

@@ -2037,7 +2037,7 @@ begin
   SubElements.Clear;
 
   for I:=0 to Source.Specifics.Count-1 do
-    Specifics.Add(Source.Specifics.Items[I]);
+    Specifics.Insert(Specifics.Count, Source.Specifics.Items[I]);
 
   SubElements.Capacity:=Source.SubElements.Count;
   for I:=0 to Source.SubElements.Count-1 do

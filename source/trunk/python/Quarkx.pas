@@ -2810,16 +2810,16 @@ begin
     with ConstructQObject('heapstatus', Nil) do
     begin
       Result:=@PythonObj;
-      Specifics.AddInteger('TotalAddrSpace', TotalAddrSpace);
-      Specifics.AddInteger('TotalUncommitted', TotalUncommitted);
-      Specifics.AddInteger('TotalCommitted', TotalCommitted);
-      Specifics.AddInteger('TotalAllocated', TotalAllocated);
-      Specifics.AddInteger('TotalFree', TotalFree);
-      Specifics.AddInteger('FreeSmall', FreeSmall);
-      Specifics.AddInteger('FreeBig', FreeBig);
-      Specifics.AddInteger('Unused', Unused);
-      Specifics.AddInteger('Overhead', Overhead);
-      Specifics.AddInteger('HeapErrorCode', HeapErrorCode);
+      Specifics.Integers['TotalAddrSpace']:=TotalAddrSpace;
+      Specifics.Integers['TotalUncommitted']:=TotalUncommitted;
+      Specifics.Integers['TotalCommitted']:=TotalCommitted;
+      Specifics.Integers['TotalAllocated']:=TotalAllocated;
+      Specifics.Integers['TotalFree']:=TotalFree;
+      Specifics.Integers['FreeSmall']:=FreeSmall;
+      Specifics.Integers['FreeBig']:=FreeBig;
+      Specifics.Integers['Unused']:=Unused;
+      Specifics.Integers['Overhead']:=Overhead;
+      Specifics.Integers['HeapErrorCode']:=HeapErrorCode;
       Py_INCREF(Result);
     end;
   {$ELSE}
@@ -2828,16 +2828,16 @@ begin
     with ConstructQObject('heapstatus', Nil) do
     begin
       Result:=@PythonObj;
-      Specifics.AddInteger('TotalAddrSpace', 0);
-      Specifics.AddInteger('TotalUncommitted', 0);
-      Specifics.AddInteger('TotalCommitted', 0);
-      Specifics.AddInteger('TotalAllocated', 0);
-      Specifics.AddInteger('TotalFree', 0);
-      Specifics.AddInteger('FreeSmall', 0);
-      Specifics.AddInteger('FreeBig', 0);
-      Specifics.AddInteger('Unused', 0);
-      Specifics.AddInteger('Overhead', 0);
-      Specifics.AddInteger('HeapErrorCode', 0);
+      Specifics.Integers['TotalAddrSpace']:=0;
+      Specifics.Integers['TotalUncommitted']:=0;
+      Specifics.Integers['TotalCommitted']:=0;
+      Specifics.Integers['TotalAllocated']:=0;
+      Specifics.Integers['TotalFree']:=0;
+      Specifics.Integers['FreeSmall']:=0;
+      Specifics.Integers['FreeBig']:=0;
+      Specifics.Integers['Unused']:=0;
+      Specifics.Integers['Overhead']:=0;
+      Specifics.Integers['HeapErrorCode']:=0;
       Py_INCREF(Result);
     end;
   {$ENDIF}

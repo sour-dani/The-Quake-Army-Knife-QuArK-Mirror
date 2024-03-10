@@ -2781,11 +2781,11 @@ begin
      if EditNames<>'' then
       begin  { adds a field to edit the name of the object(s) }
        Q:=QInternal.Create('', Form);
-       Q.Specifics.AddString('Txt', EditNames);
+       Q.Specifics.Strings['Txt']:=EditNames;
        if AllowEditName then
-        Q.Specifics.AddString('Typ', 'EN')
+        Q.Specifics.Strings['Typ']:='EN'
        else
-        Q.Specifics.AddString('Typ', 'ENR');
+        Q.Specifics.Strings['Typ']:='ENR';
        Form.SubElements.Insert(0, Q);
       end;
      if AddRemaining then
@@ -2804,7 +2804,7 @@ begin
             if NeedSep then
              begin    { makes a separator }
               Q:=QInternal.Create('', Form);
-              Q.Specifics.AddString('Typ', 'S');
+              Q.Specifics.Strings['Typ']:='S';
               Q.Specifics.Delete('Txt'); {Decker 2002-04-07 - fixup for "Decker 2001-06-14", which caused ugly separator in spec/args-view}
               Form.SubElements.Add(Q);
               NeedSep:=False;
@@ -2812,11 +2812,11 @@ begin
             { adds the new Spec to the Form }
             Q:=QInternal.Create(S, Form);
             if AllowEdit then
-             Q.Specifics.AddString('Txt', '&')
+             Q.Specifics.Strings['Txt']:='&'
             else
-             Q.Specifics.AddString('Txt', S);
+             Q.Specifics.Strings['Txt']:=S;
             if IsFloat then
-             Q.Specifics.AddString('Typ', 'EF');
+             Q.Specifics.Strings['Typ']:='EF';
             Form.SubElements.Add(Q);
            end;
          end;
@@ -2848,8 +2848,8 @@ begin
            if NeedEdit then
             begin
              Q:=QInternal.Create(MyName, Form);
-             Q.Specifics.AddString('Txt', '&');
-             Q.Specifics.AddString('Typ' ,'E');
+             Q.Specifics.Strings['Txt']:='&';
+             Q.Specifics.Strings['Typ']:='E';
              Form.SubElements.Insert(I, Q);
              Inc(I);
             end
@@ -3190,9 +3190,9 @@ begin
     else
      begin
       Q:=QInternal.Create(LoadStr1(146), Form);
-      Q.Specifics.AddString('Txt', '&');
-      Q.Specifics.AddString('Typ', 'ES'); //Edit w/ Specific
-      Q.Specifics.AddString(SpecTag, '');
+      Q.Specifics.Strings['Txt']:='&';
+      Q.Specifics.Strings['Typ']:='ES'; //Edit w/ Specific
+      Q.Specifics.Strings[SpecTag]:='';
       Form.SubElements.Add(Q);
       ScrollPos:=-1;
       PreSel:=0;

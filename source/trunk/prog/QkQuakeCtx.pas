@@ -420,7 +420,7 @@ var
     begin
       Result:=ConstructQObject(nname+ntypeinfo, Parent);
       if s<>'' then
-        Result.Specifics.AddString('ToolBox', s);
+        Result.Specifics.Strings['ToolBox']:=s;
       Parent.SubElements.Add(Result);
     end;
   end;
@@ -432,7 +432,7 @@ begin
       raise InternalE('addonRoot = nil');
 
     if addonRoot.specifics.IndexOfName('Description')=-1 then
-      addonRoot.specifics.AddString('Description', format('Addon for %s',[Specifics.Strings['GameDir']]));
+      addonRoot.specifics.Strings['Description']:=format('Addon for %s',[Specifics.Strings['GameDir']]);
     (*
       Build Textures
     *)
@@ -446,7 +446,7 @@ begin
       TexFolders.Name:=Specifics.Strings['GameDir']+' textures';
       TexRoot.Flags := TexRoot.Flags or ofTreeViewSubElement;
       if TexRoot.Specifics.IndexOfName('Root')=-1 then
-        TexRoot.Specifics.AddString('Root', TexFolders.GetFullName);
+        TexRoot.Specifics.Strings['Root']:=TexFolders.GetFullName;
       if TexRoot.SubElements.FindShortName(TexFolders.Name)=nil then
         TexRoot.SubElements.Add(TexFolders)
       else
@@ -614,7 +614,7 @@ var
     begin
       Result:=ConstructQObject(nname+ntypeinfo, Parent);
       if s<>'' then
-        Result.Specifics.AddString('ToolBox', s);
+        Result.Specifics.Strings['ToolBox']:=s;
       Parent.SubElements.Add(Result);
     end;
   end;
@@ -637,7 +637,7 @@ begin
       raise InternalE('Error obtaining Root (addonRoot = nil)');
 
     if addonRoot.specifics.IndexOfName('Description')=-1 then
-      addonRoot.specifics.AddString('Description', format('Addon for %s',[Specifics.Strings['GameDir']]));
+      addonRoot.specifics.Strings['Description']:=format('Addon for %s',[Specifics.Strings['GameDir']]);
     (*
       Now build entities found in .bsp files
     *)
@@ -648,10 +648,10 @@ begin
         TBX:=QToolBox.Create('Toolbox Folders', addonRoot);
         TBX.Flags := TBX.flags or ofTreeViewSubElement;
         addonRoot.Subelements.Add(TBX);
-        TBX.Specifics.AddString('ToolBox', 'New map items...');
+        TBX.Specifics.Strings['ToolBox']:='New map items...';
         EntityTBX:=QToolBoxGroup.Create(Format('%s entities', [Specifics.Strings['GameDir']]), TBX);
         TBX.Subelements.Add(EntityTBX);
-        TBX.Specifics.AddString('Root', EntityTBX.GetFullName);
+        TBX.Specifics.Strings['Root']:=EntityTBX.GetFullName;
         (*
           Convert {...} entites to :e entities
         *)
@@ -674,9 +674,9 @@ begin
             else if (e_sl.Names[j] = 'model') and (e_sl.Values['model'][1]='*') then continue; // remove model specifics if it points to a BSP model
             Entity.Specifics.AddStringFull(e_sl.Strings[j]);
           end;
-          Entity.Specifics.AddString(SpecDesc, '(insert description here)');
+          Entity.Specifics.Strings[SpecDesc]:='(insert description here)';
           if ext=':b' then
-            Entity.Specifics.AddString(SpecIncl, 'defpoly');
+            Entity.Specifics.Strings[SpecIncl]:='defpoly';
           if pos('_',Entity.name)<>0 then
           begin
             tb:=copy(Entity.name, 1,pos('_', Entity.Name))+'* entities';
@@ -721,15 +721,15 @@ begin
               eSpec:=QInternal.Create(Entity.Specifics.Names[j], eForm);
               if uppercase(Entity.Specifics.Names[j])='ORIGIN' then
                 hasOrigin:=true;
-              eSpec.Specifics.AddString('txt', '&');
-              eSpec.Specifics.AddString('hint', '(insert hint here)');
-              eSpec.Specifics.AddString('typ', GuessArgType(Entity.Specifics.Names[j], Entity.Specifics.Strings[Entity.Specifics.Names[j]]));
+              eSpec.Specifics.Strings['txt']:='&';
+              eSpec.Specifics.Strings['hint']:='(insert hint here)';
+              eSpec.Specifics.Strings['typ']:=GuessArgType(Entity.Specifics.Names[j], Entity.Specifics.Strings[Entity.Specifics.Names[j]]);
               eSpec.Flags := eSpec.flags or ofTreeViewSubElement;
               Entity.Specifics.Delete(J);
               eForm.SubElements.Add(eSpec);
             end;
             if (Entity.TypeInfo = ':e') and (hasOrigin) then
-              Entity.Specifics.AddString('Origin', '0 0 0'); // Hack for map editor
+              Entity.Specifics.Strings['Origin']:='0 0 0'; // Hack for map editor
           end;
         finally
           entities.free;

@@ -691,7 +691,7 @@ begin
     Face.NomTex:=S;
     if not q12surf then
       Face.SetThreePointsUserTex(P1,P2,P3,nil);
-    Face.Specifics.AddString(CannotEditFaceYet, '1');
+    Face.Specifics.Strings[CannotEditFaceYet]:='1';
     Surface1^.F:=Face;
     Face.LinkSurface(Surface1);
     PChar(Surface1):=PChar(Dest);

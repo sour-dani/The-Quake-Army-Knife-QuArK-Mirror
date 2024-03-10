@@ -120,10 +120,10 @@ begin
     begin
       vlMaterialAddNodeGroup(PvlChar(Q.name));
       if vlMaterialGetChildNode(PvlChar(Q.name))=vlFalse then
-        raise Exception.Create('Unable to parse VMT file. Call to vlMaterialGetChildNode failed.');
+        raise Exception.Create('Unable to parse VMT file. Call to vlMaterialGetChildNode failed.'); //FIXME: Move to dict!
       QVMTStage(Q).DumpData;
       if vlMaterialGetParentNode=vlFalse then
-        raise Exception.Create('Unable to parse VMT file. Call to vlMaterialGetParentNode failed.');
+        raise Exception.Create('Unable to parse VMT file. Call to vlMaterialGetParentNode failed.'); //FIXME: Move to dict!
     end;
   end;
 end;
@@ -318,11 +318,11 @@ begin
       F.ReadBuffer(RawBuffer^, FSize);
 
       if vlCreateMaterial(@VMTMaterial)=vlFalse then
-        LogAndRaiseError('Unable to load VMT file. Call to vlCreateMaterial failed.');
+        LogAndRaiseError('Unable to load VMT file. Call to vlCreateMaterial failed.'); //FIXME: Move to dict!
 
       try
         if vlBindMaterial(VMTMaterial)=vlFalse then
-          LogAndRaiseError('Unable to load VMT file. Call to vlBindMaterial failed.');
+          LogAndRaiseError('Unable to load VMT file. Call to vlBindMaterial failed.'); //FIXME: Move to dict!
 
         Setup:=SetupSubSet(ssFiles, 'VMT');
         try
@@ -340,11 +340,11 @@ begin
         end;
 
         if vlMaterialLoadLump(PvlVoid(RawBuffer), FSize)=vlFalse then
-          LogAndRaiseError('Unable to load VMT file. Call to vlMaterialLoadLump failed. Please make sure the file is a valid VMT file, and not damaged or corrupt.');
+          LogAndRaiseError('Unable to load VMT file. Call to vlMaterialLoadLump failed. Please make sure the file is a valid VMT file, and not damaged or corrupt.'); //FIXME: Move to dict!
         FreeMem(RawBuffer);
 
         if vlMaterialGetFirstNode=vlFalse then
-          LogAndRaiseError('Unable to load VMT file. Call to vlMaterialGetFirstNode failed.');
+          LogAndRaiseError('Unable to load VMT file. Call to vlMaterialGetFirstNode failed.'); //FIXME: Move to dict!
 
         NodeLevel:=0;
         SetLength(StageList, NodeLevel+1);
@@ -380,17 +380,17 @@ begin
           NODE_TYPE_STRING:
             begin
               NodeValueString:=vlMaterialGetNodeString;
-              StageList[NodeLevel].Specifics.AddString(PChar(NodeName), PChar(NodeValueString));
+              StageList[NodeLevel].Specifics.Strings[PChar(NodeName)]:=PChar(NodeValueString);
             end;
           NODE_TYPE_INTEGER:
             begin
               NodeValueInteger:=vlMaterialGetNodeInteger;
-              StageList[NodeLevel].Specifics.AddInteger(PChar(NodeName), NodeValueInteger);
+              StageList[NodeLevel].Specifics.Integers[PChar(NodeName)]:=NodeValueInteger;
             end;
           NODE_TYPE_SINGLE:
             begin
               NodeValueSingle:=vlMaterialGetNodeSingle;
-              StageList[NodeLevel].Specifics.AddFloat(PChar(NodeName), NodeValueSingle);
+              StageList[NodeLevel].Specifics.Floats[PChar(NodeName)]:=NodeValueSingle;
             end;
           end;
 
@@ -432,11 +432,11 @@ begin
     end;
 
     if vlCreateMaterial(@VMTMaterial)=vlFalse then
-      LogAndRaiseError('Unable to save VMT file. Call to vlCreateMaterial failed.');
+      LogAndRaiseError('Unable to save VMT file. Call to vlCreateMaterial failed.'); //FIXME: Move to dict!
 
     try
       if vlBindMaterial(VMTMaterial)=vlFalse then
-        LogAndRaiseError('Unable to save VMT file. Call to vlBindMaterial failed.');
+        LogAndRaiseError('Unable to save VMT file. Call to vlBindMaterial failed.'); //FIXME: Move to dict!
 
       for I:=0 to SubElements.Count-1 do
       begin
@@ -445,9 +445,9 @@ begin
         begin
           //DanielPharos: There should only one subelement: the root
           if vlMaterialCreate(PvlChar(Q.name))=vlFalse then
-            LogAndRaiseError('Unable to save VMT file. Call to vlMaterialCreate failed.');
+            LogAndRaiseError('Unable to save VMT file. Call to vlMaterialCreate failed.'); //FIXME: Move to dict!
           if vlMaterialGetFirstNode=vlFalse then
-            LogAndRaiseError('Unable to save VMT file. Call to vlMaterialGetFirstNode failed.');
+            LogAndRaiseError('Unable to save VMT file. Call to vlMaterialGetFirstNode failed.'); //FIXME: Move to dict!
 
           QVMTStage(Q).DumpData;
           break;
@@ -456,7 +456,7 @@ begin
 
       GetMem(RawBuffer, 2048);     //FIXME: 2048 is just a number. We need a better way! //FIXME: Put in try..finally
       if vlMaterialSaveLump(PvlVoid(RawBuffer), 2048, @OutputSize)=vlFalse then
-        LogAndRaiseError('Unable to save VMT file. Call to vlMaterialSaveLump failed.');
+        LogAndRaiseError('Unable to save VMT file. Call to vlMaterialSaveLump failed.'); //FIXME: Move to dict!
 
       F.WriteBuffer(RawBuffer^,OutputSize);
       FreeMem(RawBuffer);

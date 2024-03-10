@@ -245,7 +245,7 @@ begin
      F.readbuffer(m32header, sizeof(m32header));
      if m32header.Id <> MIP32_VERSION then
        raise Exception.Create('Not a valid m32 file!');
-     Specifics.AddString('Texture_Path', m32header.Name);
+     Specifics.Strings['Texture_Path']:=m32header.Name;
 
      //Verify if the texturename matches the filename
      S:=m32header.Name;
@@ -253,19 +253,19 @@ begin
      begin
        if S[I]='/' then
        begin
-         Specifics.AddString('Path', Copy(S,1,I-1));
+         Specifics.Strings['Path']:=Copy(S,1,I-1);
          S:=RightStr(S, Length(S)-I);
          Break;
        end;
      end;
      CheckTexName(S);
 
-     Specifics.AddString('Texture_Substitution_Path', m32header.Altname);
-     Specifics.AddString('Next_Frame_Path', m32header.Animname);
-     Specifics.AddString('Damage_Texture_Path', m32header.Damagename);
-     Specifics.AddString('Contents', format('%d',[m32header.contents]));
-     Specifics.AddString('Flags', format('%d',[m32header.flags]));
-     Specifics.AddString('Value', format('%d',[m32header.value]));
+     Specifics.Strings['Texture_Substitution_Path']:=m32header.Altname;
+     Specifics.Strings['Next_Frame_Path']:=m32header.Animname;
+     Specifics.Strings['Damage_Texture_Path']:=m32header.Damagename;
+     Specifics.Strings['Contents']:=format('%d',[m32header.contents]);
+     Specifics.Strings['Flags']:=format('%d',[m32header.flags]);
+     Specifics.Strings['Value']:=format('%d',[m32header.value]);
 
      V[1]:=m32header.Width[0];
      V[2]:=m32header.Height[0];

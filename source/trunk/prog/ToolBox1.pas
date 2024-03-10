@@ -545,10 +545,11 @@ begin
       for J:=0 to Q.Specifics.Count-1 do
        begin
         K:=SetupInfo.Specifics.IndexOfName(Q.Specifics.Names[J]);
-        if K >= 0 then
-         if SetupInfo.Specifics.BytesFromIndex[K]<>Q.Specifics.BytesFromIndex[J] then
-          ; {Raise EErrorFmt(5898, [Q.Specifics.Names[J]]);}
-        SetupInfo.Specifics.Add(Q.Specifics.Items[J]);
+        if K < 0 then
+         SetupInfo.Specifics.Insert(SetupInfo.Specifics.Count, Q.Specifics.Items[J])
+        else
+          if SetupInfo.Specifics.BytesFromIndex[K]<>Q.Specifics.BytesFromIndex[J] then
+           ; {Raise EErrorFmt(5898, [Q.Specifics.Names[J]]);}
        end;
       Root:=Explorer.FindRootFromSpec(Q);
       if Root=Nil then

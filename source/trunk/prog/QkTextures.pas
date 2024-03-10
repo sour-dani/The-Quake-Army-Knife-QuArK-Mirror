@@ -945,9 +945,9 @@ begin
         rather than having to put this info into datakp.qrk}
         if CurrentGameMode=mjKingPin then
         begin
-          Link.Specifics.AddString('Contents', Specifics.Strings['c']); //FIXME: Switch to QkSpecifics.Integers?
-          Link.Specifics.AddString('Flags', Specifics.Strings['f']); //FIXME: Switch to QkSpecifics.Integers?
-          Link.Specifics.AddString('Value', Specifics.Strings['v']); //FIXME: Switch to QkSpecifics.Integers?
+          Link.Specifics.Strings['Contents']:=Specifics.Strings['c']; //FIXME: Switch to QkSpecifics.Integers?
+          Link.Specifics.Strings['Flags']:=Specifics.Strings['f']; //FIXME: Switch to QkSpecifics.Integers?
+          Link.Specifics.Strings['Value']:=Specifics.Strings['v']; //FIXME: Switch to QkSpecifics.Integers?
         end
 {end  --- kingpin texture flag hack}
         else if CurrentGameMode=mjDK then

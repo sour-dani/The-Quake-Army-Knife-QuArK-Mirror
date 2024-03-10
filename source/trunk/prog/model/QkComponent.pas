@@ -444,7 +444,7 @@ begin
     else
     begin
       Result:=QComponent.Create('', Nil);
-      Result.Specifics.Add(Specifics.Items[Specifics.IndexOfName(SpecTris)]);
+      Result.Specifics.Insert(Result.Specifics.Count, Specifics.Items[Specifics.IndexOfName(SpecTris)]);
       Result.CurrentSkin:=nSkin;
     end;
   Result.Specifics.Strings['ssd']:=StaticBase;

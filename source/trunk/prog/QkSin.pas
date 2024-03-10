@@ -141,11 +141,11 @@ begin
 
        { reads misc flags }
       IntSpec['PalCrc']:=Header.PalCrc;
-      Specifics.AddInteger('direct', Header.direct);
+      Specifics.Integers['direct']:=Header.direct;
       SetFloatSpec('animtime', Header.animtime);
       SetFloatSpec('nonlit', Header.nonlit);
-      Specifics.AddInteger('directangle', Header.directangle);
-      Specifics.AddInteger('trans_angle', Header.trans_angle);
+      Specifics.Integers['directangle']:=Header.directangle;
+      Specifics.Integers['trans_angle']:=Header.trans_angle;
     { tiglari: this shouldn't be set since it shouldn't be in .swl's
 	   at all, nor in tex. def. files, it's a label for grouping light
 	   sources that go on & off together, treated as a string in the

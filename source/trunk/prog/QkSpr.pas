@@ -219,11 +219,11 @@ begin
   if dst.version<>1 then
     raise EErrorFmt(5800, [dst.version,2]);
   ObjectGameCode:=mjQuake;
-  Self.Specifics.AddInteger('SPR_STYPE', dst.sType);
-  Self.Specifics.AddInteger('SPR_TXTYPE', -1);
-  Self.Specifics.AddFloat('SPR_RADIUS', dst.boundingradius);
-  Self.Specifics.AddInteger('SPR_WIDTH', dst.width);
-  Self.Specifics.AddInteger('SPR_HEIGHT', dst.height);
+  Self.Specifics.Integers['SPR_STYPE']:=dst.sType;
+  Self.Specifics.Integers['SPR_TXTYPE']:=-1;
+  Self.Specifics.Floats['SPR_RADIUS']:=dst.boundingradius;
+  Self.Specifics.Integers['SPR_WIDTH']:=dst.width;
+  Self.Specifics.Integers['SPR_HEIGHT']:=dst.height;
   //FIXME: If dst.numframes < 1 THEN ERROR! Invalid number of frames!
   for i:=1 to dst.numframes do begin
     fs.ReadBuffer(group,4);
@@ -277,12 +277,12 @@ begin
   if dst.version<>2 then
     raise EErrorFmt(5774, [dst.version,2]);
   ObjectGameCode:=mjHalfLife;
-  Self.Specifics.AddInteger('SPR_STYPE', dst.sType);
-  Self.Specifics.AddInteger('SPR_TXTYPE', dst.texformat);
-  Self.Specifics.AddFloat('SPR_RADIUS', dst.boundingradius);
-  Self.Specifics.AddInteger('SPR_WIDTH', dst.width);
-  Self.Specifics.AddInteger('SPR_HEIGHT', dst.height);
-  Self.Specifics.AddInteger('SPR_NOFRAMES', dst.numframes);
+  Self.Specifics.Integers['SPR_STYPE']:=dst.sType;
+  Self.Specifics.Integers['SPR_TXTYPE']:=dst.texformat;
+  Self.Specifics.Floats['SPR_RADIUS']:=dst.boundingradius;
+  Self.Specifics.Integers['SPR_WIDTH']:=dst.width;
+  Self.Specifics.Integers['SPR_HEIGHT']:=dst.height;
+  Self.Specifics.Integers['SPR_NOFRAMES']:=dst.numframes;
 
   fs.ReadBuffer(FShort,2);
   for i:=0 to FShort-1 do begin
@@ -490,24 +490,24 @@ begin
   if dst.version<>2 then
     raise EErrorFmt(5802, [dst.version,2]);
   ObjectGameCode:=mjQuake2;
-  Self.Specifics.AddInteger('SPR_STYPE', -1);
-  Self.Specifics.AddInteger('SPR_TXTYPE', -1);
-  Self.Specifics.AddString('SPR_RADIUS', 'N / A');
-  Self.Specifics.AddString('SPR_WIDTH', 'N / A');
-  Self.Specifics.AddString('SPR_HEIGHT', 'N / A');
-  Self.Specifics.AddInteger('SPR_NOFRAMES', Dst.noframes);
+  Self.Specifics.Integers['SPR_STYPE']:=-1;
+  Self.Specifics.Integers['SPR_TXTYPE']:=-1;
+  Self.Specifics.Strings['SPR_RADIUS']:='N / A';
+  Self.Specifics.Strings['SPR_WIDTH']:='N / A';
+  Self.Specifics.Strings['SPR_HEIGHT']:='N / A';
+  Self.Specifics.Integers['SPR_NOFRAMES']:=Dst.noframes;
   fillchar(Frame,sizeof(Frame),#0);
   For i:=1 to dst.Noframes do begin
     f.Readbuffer(frame,sizeof(frame));
     str:=frame.fn;
     setlength(str,pos(#0,frame.fn));
-    Self.Specifics.AddInteger(Format('SPR_FRAME%d_CAPTION',[i]), i);
-    Self.Specifics.AddString(Format('SPR_FRAME%d_FTYPE',[i]), str);
-    Self.Specifics.AddInteger(Format('SPR_FRAME%d_XORG',[i]), frame.x);
-    Self.Specifics.AddInteger(Format('SPR_FRAME%d_YORG',[i]), frame.y);
-    Self.Specifics.AddInteger(Format('SPR_FRAME%d_WIDTH',[i]), frame.w);
-    Self.Specifics.AddInteger(Format('SPR_FRAME%d_HEIGHT',[i]), frame.h);
-    Self.Specifics.AddString(Format('SPR_FRAME%d_IDATASIZE',[i]), 'N / A');
+    Self.Specifics.Integers[Format('SPR_FRAME%d_CAPTION',[i])]:=i;
+    Self.Specifics.Strings[Format('SPR_FRAME%d_FTYPE',[i])]:=str;
+    Self.Specifics.Integers[Format('SPR_FRAME%d_XORG',[i])]:=frame.x;
+    Self.Specifics.Integers[Format('SPR_FRAME%d_YORG',[i])]:=frame.y;
+    Self.Specifics.Integers[Format('SPR_FRAME%d_WIDTH',[i])]:=frame.w;
+    Self.Specifics.Integers[Format('SPR_FRAME%d_HEIGHT',[i])]:=frame.h;
+    Self.Specifics.Strings[Format('SPR_FRAME%d_IDATASIZE',[i])]:='N / A';
 //    Loaded_FrameFile(self, fStr); //FIXME: Doesn't Work. Wonder Why??
   end;
 end;

@@ -269,7 +269,7 @@ begin
   begin
     if S[I]='/' then
     begin
-      Specifics.AddString('Path', Copy(S,1,I-1));
+      Specifics.Strings['Path']:=Copy(S,1,I-1);
       Break;
     end;
   end;
@@ -297,16 +297,16 @@ begin
   if AnimTex=Nil then
   begin
     if Header.Animation[0]<>0 then
-      Specifics.AddString('Anim', CharToPas(Header.Animation));
+      Specifics.Strings['Anim']:=CharToPas(Header.Animation);
   end
   else
   begin
     if AnimTex^<>#0 then
-      Specifics.AddString('Anim', AnimTex);
+      Specifics.Strings['Anim']:=AnimTex;
   end;
-  Specifics.AddInteger('Contents', Header.Contents);
-  Specifics.AddInteger('Flags', Header.Flags);
-  Specifics.AddInteger('Value', Header.Value);
+  Specifics.Integers['Contents']:=Header.Contents;
+  Specifics.Integers['Flags']:=Header.Flags;
+  Specifics.Integers['Value']:=Header.Value;
   F.Position:=Base+Taille;
 end;
 

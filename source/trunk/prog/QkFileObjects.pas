@@ -787,11 +787,11 @@ var
     end;
     Lu(1);
     if (OnlyValues=True) then
-      Level.Specifics.AddString('Items', Values) { All the Values are actually Items. Go figure! }
+      Level.Specifics.Strings['Items']:=Values { All the Values are actually Items. Go figure! }
     else
     begin
-      Level.Specifics.AddString('Items', Items);
-      Level.Specifics.AddString('Values', Values);
+      Level.Specifics.Strings['Items']:=Items;
+      Level.Specifics.Strings['Values']:=Values;
     end;
   end;
 
@@ -859,7 +859,7 @@ begin
          begin
           Arg:=StringVal();
           {if IgnoreLevel=0 then}
-           Level.Specifics.AddString(NameSpec, Arg);
+           Level.Specifics.Strings[NameSpec]:=Arg;
          end;
     '''':begin { Float number Specific }
           Arg:='';
@@ -882,7 +882,7 @@ begin
           Lu(1);
           NameSpec:=FloatSpecNameOf(NameSpec);
           {if IgnoreLevel=0 then}
-           Level.Specifics.AddString(NameSpec, Arg);
+           Level.Specifics.Strings[NameSpec]:=Arg;
          end;
 (*    '|': begin { Integer number Specific }
           Arg:='';

@@ -36,6 +36,7 @@ uses Classes;
 
 resourcestring
   SListItemNotFoundError = 'Item not found (%s)';
+  SDuplicateSpecific = 'Specifics list does not allow duplicates (%s)';
 
 type
   PSpecificsItem = ^TSpecificsItem;
@@ -86,11 +87,7 @@ type
     procedure SetCapacity(NewCapacity: Integer);
   public
     destructor Destroy; override;
-    function Add(const Item: TSpecificsItem): Integer;
-    function AddFloat(const Name: string; const F: Single): Integer;
-    function AddInteger(const Name: string; const I: Integer): Integer;
-    function AddString(const Name: string; const S: string): Integer;
-    function AddStringFull(const Data: string): Integer; //FIXME: This function needs to be removed in the future
+    procedure AddStringFull(const Data: string); //FIXME: This function needs to be removed in the future
     procedure Assign(Source: TPersistent); override;
     procedure Clear;
     procedure Delete(const Name: string; raiseError: Boolean = false); overload;
@@ -132,45 +129,13 @@ begin
   SetCapacity(0);
 end;
 
-function TSpecificsList.Add(const Item: TSpecificsItem): Integer;
-begin
-  Result := IndexOfName(Item.Key);
-  if Result<0 then
-    Result:=FCount;
-  Insert(Result, Item);
-end;
-
-function TSpecificsList.AddFloat(const Name: string; const F: Single): Integer;
-begin
-  Result := IndexOfName(Name);
-  if Result<0 then
-    Result:=FCount;
-  InsertFloat(Result, Name, F);
-end;
-
-function TSpecificsList.AddInteger(const Name: string; const I: Integer): Integer;
-begin
-  Result := IndexOfName(Name);
-  if Result<0 then
-    Result:=FCount;
-  InsertInteger(Result, Name, I);
-end;
-
-function TSpecificsList.AddString(const Name: string; const S: string): Integer;
-begin
-  Result := IndexOfName(Name);
-  if Result<0 then
-    Result:=FCount;
-  InsertString(Result, Name, S);
-end;
-
-function TSpecificsList.AddStringFull(const Data: string): Integer;
+procedure TSpecificsList.AddStringFull(const Data: string);
 var
   P: Integer;
 begin
   P := Pos('=', Data);
   if P = 0 then raise Exception.Create('Invalid string!');
-  Result := AddString(Copy(Data, 0, P-1), Copy(Data, P+1, MaxInt));
+  SetString(Copy(Data, 0, P-1), Copy(Data, P+1, MaxInt));
 end;
 
 procedure TSpecificsList.Assign(Source: TPersistent);
@@ -181,7 +146,7 @@ begin
   begin
     Clear;
     for I := 0 to TSpecificsList(Source).Count - 1 do
-      Add(TSpecificsList(Source).Items[I]);
+      Insert(FCount, TSpecificsList(Source).Items[I]);
     Exit;
   end;
   inherited Assign(Source);
@@ -363,80 +328,72 @@ end;
 procedure TSpecificsList.Insert(Index: Integer; const Item: TSpecificsItem);
 begin
   if (Index < 0) or (Index > FCount) then Error(@SListIndexError, Index); //Note: Index = FCount is allowed!
-  if Index = FCount then
+  if (IndexOfName(Item.Key) >= 0) then Error(@SDuplicateSpecific, Item.Key);
+  if FCount = FCapacity then Grow;
+  if Index < FCount then
+    System.Move(FList^[Index], FList^[Index + 1],
+      (FCount - Index) * SizeOf(TSpecificsItem));
+  with FList^[Index] do
   begin
-    if FCount = FCapacity then Grow;
-    if Index < FCount then
-      System.Move(FList^[Index], FList^[Index + 1],
-        (FCount - Index) * SizeOf(TSpecificsItem));
-    Inc(FCount);
-    with FList^[Index] do
-    begin
-      Pointer(Key) := nil;
-      Pointer(Value) := nil;
-    end;
+    Pointer(Key) := nil;
+    Pointer(Value) := nil;
   end;
   FList^[Index]:=Item;
+  Inc(FCount);
 end;
 
 procedure TSpecificsList.InsertFloat(Index: Integer; const Name: String; const F: Single);
 begin
   if (Index < 0) or (Index > FCount) then Error(@SListIndexError, Index); //Note: Index = FCount is allowed!
-  if Index = FCount then
+  if (IndexOfName(Name) >= 0) then Error(@SDuplicateSpecific, Name);
+  if FCount = FCapacity then Grow;
+  if Index < FCount then
+    System.Move(FList^[Index], FList^[Index + 1],
+      (FCount - Index) * SizeOf(TSpecificsItem));
+  with FList^[Index] do
   begin
-    if FCount = FCapacity then Grow;
-    if Index < FCount then
-      System.Move(FList^[Index], FList^[Index + 1],
-        (FCount - Index) * SizeOf(TSpecificsItem));
-    Inc(FCount);
-    with FList^[Index] do
-    begin
-      Pointer(Key) := nil;
-      Pointer(Value) := nil;
-      Key := Name;
-    end;
+    Pointer(Key) := nil;
+    Pointer(Value) := nil;
+    Key := Name;
   end;
   FList^[Index].Value := FloatToStr(F);
+  Inc(FCount);
 end;
 
 procedure TSpecificsList.InsertInteger(Index: Integer; const Name: String; const I: Integer);
 begin
   if (Index < 0) or (Index > FCount) then Error(@SListIndexError, Index); //Note: Index = FCount is allowed!
-  if Index = FCount then
+  if (IndexOfName(Name) >= 0) then Error(@SDuplicateSpecific, Name);
+  if FCount = FCapacity then Grow;
+  if Index < FCount then
+    System.Move(FList^[Index], FList^[Index + 1],
+      (FCount - Index) * SizeOf(TSpecificsItem));
+  with FList^[Index] do
   begin
-    if FCount = FCapacity then Grow;
-    if Index < FCount then
-      System.Move(FList^[Index], FList^[Index + 1],
-        (FCount - Index) * SizeOf(TSpecificsItem));
-    Inc(FCount);
-    with FList^[Index] do
-    begin
-      Pointer(Key) := nil;
-      Pointer(Value) := nil;
-      Key := Name;
-    end;
+    Pointer(Key) := nil;
+    Pointer(Value) := nil;
+    Key := Name;
   end;
   FList^[Index].Value := IntToStr(I);
+  Inc(FCount);
 end;
 
 procedure TSpecificsList.InsertString(Index: Integer; const Name: String; const S: string);
 begin
   if (Index < 0) or (Index > FCount) then Error(@SListIndexError, Index); //Note: Index = FCount is allowed!
-  if Index = FCount then
+  if (IndexOfName(Name) >= 0) then Error(@SDuplicateSpecific, Name);
+  if FCount = FCapacity then Grow;
+  if Index < FCount then
+    System.Move(FList^[Index], FList^[Index + 1],
+      (FCount - Index) * SizeOf(TSpecificsItem));
+  with FList^[Index] do
   begin
-    if FCount = FCapacity then Grow;
-    if Index < FCount then
-      System.Move(FList^[Index], FList^[Index + 1],
-        (FCount - Index) * SizeOf(TSpecificsItem));
-    Inc(FCount);
-    with FList^[Index] do
-    begin
-      Pointer(Key) := nil;
-      Key := Name;
-      Pointer(Value) := nil;
-    end;
+    Pointer(Key) := nil;
+    Key := Name;
+    Pointer(Value) := nil;
   end;
   FList^[Index].Value := S;
+  Inc(FCount);
 end;
 
 procedure TSpecificsList.Put(Index: Integer; const Item: TSpecificsItem);
@@ -469,7 +426,7 @@ var
 begin
   Index := IndexOfName(Name);
   if (Index < 0) then
-    AddString(Name, FloatToStr(F))
+    InsertFloat(FCount, Name, F)
   else
     FList^[Index].Value := FloatToStr(F);
 end;
@@ -486,7 +443,7 @@ var
 begin
   Index := IndexOfName(Name);
   if (Index < 0) then
-    AddString(Name, IntToStr(I))
+    InsertInteger(FCount, Name, I)
   else
     FList^[Index].Value := IntToStr(I);
 end;
@@ -503,7 +460,7 @@ var
 begin
   Index := IndexOfName(Name);
   if (Index < 0) then
-    AddString(Name, S)
+    InsertString(FCount, Name, S)
   else
     FList^[Index].Value := S;
 end;

@@ -629,9 +629,9 @@ var
        masked:=true
      else
      if (masked and (Spec='surfaceparm')) then
-       Target.Specifics.AddString('_esp_'+Readline, '1');
+       Target.Specifics.Strings['_esp_'+Readline]:='1';
    end;
-   Target.Specifics.AddString(Spec, ReadLine);
+   Target.Specifics.Strings[Spec]:=ReadLine;
   end;
 
 begin
