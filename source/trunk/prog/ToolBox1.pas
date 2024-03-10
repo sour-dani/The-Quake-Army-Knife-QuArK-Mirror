@@ -134,7 +134,7 @@ implementation
 
 uses Graphics, Qk1, Travail, Setup, qmath, QkWad, QkInclude, QkMapPoly,
   NewFolder, Undo, QkTextures, Quarkx, QuickWal, ToolBoxGroup, QkObjectClassList,
-  Platform, Logging;
+  QkExceptions, Logging, Platform;
 
 {$R *.DFM}
 
@@ -489,7 +489,7 @@ var
  ToolBoxList: TQList;
 {FirstPrivate: Integer;}
  SetupQrk: QFileObject;
- I, J: Integer;
+ I, J, K: Integer;
 {Node, NodeToSelect: TTreeNode;}
  Q: QToolBox;
  Root: QObject;
@@ -543,7 +543,13 @@ begin
       ProgressIndicatorIncrement;
       Q:=ToolBoxList[I] as QToolBox;
       for J:=0 to Q.Specifics.Count-1 do
-       SetupInfo.Specifics.Add(Q.Specifics.Items[J]);
+       begin
+        K:=SetupInfo.Specifics.IndexOfName(Q.Specifics.Names[J]);
+        if K >= 0 then
+         if SetupInfo.Specifics.BytesFromIndex[K]<>Q.Specifics.BytesFromIndex[J] then
+          ; {Raise EErrorFmt(5898, [Q.Specifics.Names[J]]);}
+        SetupInfo.Specifics.Add(Q.Specifics.Items[J]);
+       end;
       Root:=Explorer.FindRootFromSpec(Q);
       if Root=Nil then
        Continue;  { no data }
