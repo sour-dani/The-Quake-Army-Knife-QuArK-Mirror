@@ -435,6 +435,8 @@ Section "!$(TEXT_SEC01_TITLE)" SEC01
   File "${BUILDDIR}\addons\SoF2\*.*"
   SetOutPath "$INSTDIR\addons\STVEF"
   File "${BUILDDIR}\addons\STVEF\*.*"
+  SetOutPath "$INSTDIR\addons\SvenCoop"
+  File "${BUILDDIR}\addons\SvenCoop\*.*"
   SetOutPath "$INSTDIR\addons\Sylphis"
   File "${BUILDDIR}\addons\Sylphis\*.*"
   SetOutPath "$INSTDIR\addons\Torque"
