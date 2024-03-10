@@ -1225,7 +1225,7 @@ begin
  if Q=Nil then
   Exit;
  Q.Acces;
- J:=Q.GetFloatsSpecPartial('BBox', BBox);
+ J:=Q.GetFloatsSpecPartial('bbox', BBox);
  case J of
   6: Result:=True;
   7: begin
