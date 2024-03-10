@@ -133,7 +133,8 @@ function BrowseForTextureDlg(const TexName: String; SelectEventWnd: HWnd) : TToo
 implementation
 
 uses Graphics, Qk1, Travail, Setup, qmath, QkWad, QkInclude, QkMapPoly,
-  NewFolder, Undo, QkTextures, Quarkx, QuickWal, ToolBoxGroup, QkObjectClassList, Platform;
+  NewFolder, Undo, QkTextures, Quarkx, QuickWal, ToolBoxGroup, QkObjectClassList,
+  Platform, Logging;
 
 {$R *.DFM}
 
@@ -169,7 +170,8 @@ begin
   try
     Result.BrowseToolBox(FilteredToolBoxName);
   except
-    Result.Free;    { error opening ToolBox }
+    Log(LOG_WARNING, LoadStr1(5897), [FilteredToolBoxName]);
+    Result.Free;
     Raise;
   end;
 end;

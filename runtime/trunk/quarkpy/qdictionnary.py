@@ -1167,6 +1167,7 @@ Strings = {
     5894: "Unable to extract file from Steam. %s not found.",
     5895: "Unable to extract file from Steam. Call to %s failed.",
     5896: "Unable to extract file from Steam. Cannot create cache directory.",
+    5897: "Error opening toolbox %s",
 
     # DanielPharos would like to reserve 6000 .. 6099 for all renderers
     6000: "Unable to create SceneObject//%s",
