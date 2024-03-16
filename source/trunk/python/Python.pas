@@ -344,6 +344,48 @@ const
 {$ENDIF}
 {$ENDIF}
 
+ // Type flags (tp_flags)
+ Py_TPFLAGS_HAVE_GETCHARBUFFER   = 1 shl 0;
+ Py_TPFLAGS_HAVE_SEQUENCE_IN     = 1 shl 1;
+ Py_TPFLAGS_GC                   = 1 shl 2;
+ Py_TPFLAGS_HAVE_INPLACEOPS      = 1 shl 3;
+{$IFDEF PYTHON21}
+ Py_TPFLAGS_CHECKTYPES           = 1 shl 4;
+ Py_TPFLAGS_HAVE_RICHCOMPARE     = 1 shl 5;
+ Py_TPFLAGS_HAVE_WEAKREFS        = 1 shl 6;
+{$ENDIF}
+{$IFDEF PYTHON22}
+ Py_TPFLAGS_HAVE_ITER            = 1 shl 7;
+ Py_TPFLAGS_HAVE_CLASS           = 1 shl 8;
+ Py_TPFLAGS_HEAPTYPE             = 1 shl 9;
+ Py_TPFLAGS_BASETYPE             = 1 shl 10;
+ Py_TPFLAGS_READY                = 1 shl 12;
+ Py_TPFLAGS_READYING             = 1 shl 13;
+ Py_TPFLAGS_HAVE_GC              = 1 shl 14;
+{$ENDIF}
+{$IFDEF PYTHON23}
+ Py_TPFLAGS_HAVE_STACKLESS_EXTENSION = 3 shl 15;
+{$ENDIF}
+{$IFDEF PYTHON25}
+ Py_TPFLAGS_HAVE_INDEX           = 1 shl 17;
+{$ENDIF}
+{$IFDEF PYTHON26}
+ Py_TPFLAGS_HAVE_VERSION_TAG     = 1 shl 18;
+ Py_TPFLAGS_VALID_VERSION_TAG    = 1 shl 19;
+ Py_TPFLAGS_IS_ABSTRACT          = 1 shl 20;
+ Py_TPFLAGS_HAVE_NEWBUFFER       = 1 shl 21;
+ Py_TPFLAGS_INT_SUBCLASS         = 1 shl 23;
+ Py_TPFLAGS_LONG_SUBCLASS        = 1 shl 24;
+ Py_TPFLAGS_LIST_SUBCLASS        = 1 shl 25;
+ Py_TPFLAGS_TUPLE_SUBCLASS       = 1 shl 26;
+ Py_TPFLAGS_STRING_SUBCLASS      = 1 shl 27;
+ Py_TPFLAGS_UNICODE_SUBCLASS     = 1 shl 28;
+ Py_TPFLAGS_DICT_SUBCLASS        = 1 shl 29;
+ Py_TPFLAGS_BASE_EXC_SUBCLASS    = 1 shl 30;
+ Py_TPFLAGS_TYPE_SUBCLASS        = 1 shl 31;
+{$ENDIF}
+
+ // Flag passed to newmethodobject
 // METH_OLDARGS  = $0000; //Do not use!
  METH_VARARGS  = $0001;
  METH_KEYWORDS = $0002;
