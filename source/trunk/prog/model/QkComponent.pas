@@ -1026,7 +1026,7 @@ begin
   CTrisB:=Triangles(J, CTris);
   for I:=0 to J-1 do
   begin
-    if (CTris^[0].VertexNo < Count) and (CTris^[0].VertexNo < Count) and (CTris^[0].VertexNo < Count) then
+    if (CTris^[0].VertexNo < Count) and (CTris^[1].VertexNo < Count) and (CTris^[2].VertexNo < Count) then
     begin
       for L:=0 to 2 do
         with V[L], CVertArray^[CTris^[L].VertexNo] do
