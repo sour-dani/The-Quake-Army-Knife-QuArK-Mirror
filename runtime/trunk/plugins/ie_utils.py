@@ -62,22 +62,22 @@ def default_start_logging(IM_EX_name, IM_EX_textlog, filename, IM_or_EX, add_to_
     global tobj, textlog
 
     starttime = time.time()
-    if quarkx.setupsubset(SS_MODEL, "Options")['IELogging'] != "0":
+    if quarkx.setupsubset(quarkpy.qutils.SS_MODEL, "Options")['IELogging'] != "0":
         logging = 1
-        if quarkx.setupsubset(SS_MODEL, "Options")['IELogByFileType'] != "1" and textlog != "model_ie_log.txt" and tobj is not None:
+        if quarkx.setupsubset(quarkpy.qutils.SS_MODEL, "Options")['IELogByFileType'] != "1" and textlog != "model_ie_log.txt" and tobj is not None:
             if tobj.txtobj is not None:
                 tobj.txtobj.close()
                 textlog = "model_ie_log.txt"
                 tobj = dotext(textlog) # Calls the class to handle logging.
 
-        if quarkx.setupsubset(SS_MODEL, "Options")['IELogByFileType'] == "1" and textlog == "model_ie_log.txt" and tobj is not None:
+        if quarkx.setupsubset(quarkpy.qutils.SS_MODEL, "Options")['IELogByFileType'] == "1" and textlog == "model_ie_log.txt" and tobj is not None:
             if tobj.txtobj is not None:
                 tobj.txtobj.close()
                 textlog = IM_EX_textlog
                 tobj = dotext(textlog) # Calls the class to handle logging.
 
-        if quarkx.setupsubset(SS_MODEL, "Options")['IELogAll'] != "1":
-            if quarkx.setupsubset(SS_MODEL, "Options")['IELogByFileType'] != "1":
+        if quarkx.setupsubset(quarkpy.qutils.SS_MODEL, "Options")['IELogAll'] != "1":
+            if quarkx.setupsubset(quarkpy.qutils.SS_MODEL, "Options")['IELogByFileType'] != "1":
                 textlog = "model_ie_log.txt"
                 tobj = dotext(textlog) # Calls the class to handle logging.
             else:
@@ -85,7 +85,7 @@ def default_start_logging(IM_EX_name, IM_EX_textlog, filename, IM_or_EX, add_to_
                 tobj = dotext(textlog) # Calls the class to handle logging.
         else:
             if tobj is None:
-                if quarkx.setupsubset(SS_MODEL, "Options")['IELogByFileType'] != "1":
+                if quarkx.setupsubset(quarkpy.qutils.SS_MODEL, "Options")['IELogByFileType'] != "1":
                     textlog = "model_ie_log.txt"
                     tobj = dotext(textlog) # Calls the class to handle logging.
                 else:
@@ -129,7 +129,7 @@ def default_end_logging(filename, IM_or_EX, starttime, add_to_message=""):
 
     end = time.time()
     seconds = "in %.2f %s" % (end-starttime, "seconds")
-    if quarkx.setupsubset(SS_MODEL, "Options")['IELogging'] != "0":
+    if quarkx.setupsubset(quarkpy.qutils.SS_MODEL, "Options")['IELogging'] != "0":
         if IM_or_EX == "IM":
             tobj.logcon ("=====================================================================")
             tobj.logcon ("Successfully imported " + os.path.basename(filename))
@@ -146,7 +146,7 @@ def default_end_logging(filename, IM_or_EX, starttime, add_to_message=""):
                 tobj.logcon ("=====================================================================")
                 tobj.logcon ("")
                 tobj.logcon ("")
-            if quarkx.setupsubset(SS_MODEL, "Options")['IELogAll'] != "1":
+            if quarkx.setupsubset(quarkpy.qutils.SS_MODEL, "Options")['IELogAll'] != "1":
                 tobj.txtobj.close()
         else:
             tobj.logcon ("=====================================================================")
@@ -164,7 +164,7 @@ def default_end_logging(filename, IM_or_EX, starttime, add_to_message=""):
                 tobj.logcon ("=====================================================================")
                 tobj.logcon ("")
                 tobj.logcon ("")
-            if quarkx.setupsubset(SS_MODEL, "Options")['IELogAll'] != "1":
+            if quarkx.setupsubset(quarkpy.qutils.SS_MODEL, "Options")['IELogAll'] != "1":
                 tobj.txtobj.close()
     if IM_or_EX == "EX":
         if add_to_message == "":
