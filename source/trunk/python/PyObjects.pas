@@ -109,6 +109,7 @@ implementation
 
 uses Quarkx, QkExceptions, QkFileObjects, QkObjectClassList, QkExplorer, qhelper;
 
+{$INCLUDE PyVersions.inc}
 {$I DelphiVer.inc}
 
  {-------------------}
@@ -850,7 +851,6 @@ end;
 
 function GetPySpecArg(var Spec: String; value: PyObject) : String;
 var
- nValue: PyChar;
  I, N: Integer;
  obj: PyObject;
  PF: ^Single;
@@ -859,9 +859,7 @@ var
 begin
  if value^.ob_type = PyString_Type then
   begin
-   nValue:=PyString_AsString(value);
-   if nValue=Nil then Abort;
-   SetString(Result, PChar(PyStrPas(nValue)), PyString_Size(value));
+   Result:=PyString_AsDelphiString(value);
    Exit;
   end;
  if value^.ob_type = PyInt_Type then

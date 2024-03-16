@@ -40,6 +40,7 @@ type
  PyCharacterType = AnsiChar;
  PyChar = PAnsiChar;
  //PPyChar = ^PyChar;
+ PyString = AnsiString;
 
  {$IFDEF PYTHON25}
  Py_ssize_t = ssize_t;
@@ -492,9 +493,10 @@ PyDict_Values: function (dict: PyObject) : PyObject; cdecl;
 PyDict_Next: function (dict: PyObject; pos : {$IFDEF PYTHON25} Py_ssize_tPtr {$ELSE} PInteger {$ENDIF}; key : PyObjectPtr; value : PyObjectPtr) : Integer; cdecl;
 
 PyString_FromString: function (const str: PyChar) : PyObject; cdecl;
-PyString_AsString: function (o: PyObject) : PyChar; cdecl;
 PyString_FromStringAndSize: function (const str: PyChar; size: {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}) : PyObject; cdecl;
-PyString_Size: function (o: PyObject) : {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}; cdecl;
+//PyString_Size: function (o: PyObject) : {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}; cdecl;
+PyString_AsString: function (o: PyObject) : PyChar; cdecl;
+PyString_AsStringAndSize: function (o: PyObject; var buffer: PyChar; var length: {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}) : Integer; cdecl;
 
 PyInt_FromLong: function (Value: LongInt) : PyObject; cdecl;
 PyInt_AsLong: function (o: PyObject) : LongInt; cdecl;
@@ -696,6 +698,8 @@ function ToPyChar(const S: UnicodeString) : PyChar;{$IFDEF Delphi2005orNewerComp
 function PyStrPas(const P: PyChar) : AnsiString;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 function ToPyChar(const S: AnsiString) : PyChar;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 {$ENDIF}
+//This function does the same, but then with Delphi's String class.
+function PyString_AsDelphiString(str: PyObject) : PyString;
 
 {$IFDEF PyProfiling}
 function PythonGetStackTrace() : TStringList;
@@ -793,9 +797,10 @@ const
     (Variable: @@PyDict_Values;              Name: 'PyDict_Values';              MinimalVersion: PythonVersionAny ),
     (Variable: @@PyDict_Next;                Name: 'PyDict_Next';                MinimalVersion: PythonVersionAny ),
     (Variable: @@PyString_FromString;        Name: 'PyString_FromString';        MinimalVersion: PythonVersionAny ),
-    (Variable: @@PyString_AsString;          Name: 'PyString_AsString';          MinimalVersion: PythonVersionAny ),
     (Variable: @@PyString_FromStringAndSize; Name: 'PyString_FromStringAndSize'; MinimalVersion: PythonVersionAny ),
-    (Variable: @@PyString_Size;              Name: 'PyString_Size';              MinimalVersion: PythonVersionAny ),
+//    (Variable: @@PyString_Size;              Name: 'PyString_Size';              MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyString_AsString;          Name: 'PyString_AsString';          MinimalVersion: PythonVersionAny ),
+    (Variable: @@PyString_AsStringAndSize;   Name: 'PyString_AsStringAndSize';   MinimalVersion: PythonVersionAny ),
     (Variable: @@PyInt_FromLong;             Name: 'PyInt_FromLong';             MinimalVersion: PythonVersionAny ),
     (Variable: @@PyInt_AsLong;               Name: 'PyInt_AsLong';               MinimalVersion: PythonVersionAny ),
 //    (Variable: @@PyInt_FromSsize_t;          Name: 'PyInt_FromSsize_t';          MinimalVersion: PythonVersion250 ),
@@ -1868,6 +1873,15 @@ begin
  Result:=PAnsiChar(S);
 end;
 {$ENDIF}
+
+function PyString_AsDelphiString(str: PyObject) : PyString;
+var
+  P: PyChar;
+  Len: {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF};
+begin
+  if PyString_AsStringAndSize(str, P, Len) = -1 then raise Exception.Create('Unable to convert Python string!');
+  SetString(Result, P, Len);
+end;
 
 {$IFDEF PyProfiling}
 //Based on: https://stackoverflow.com/questions/1796510/accessing-a-python-traceback-from-the-c-api
