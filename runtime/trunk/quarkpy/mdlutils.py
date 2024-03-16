@@ -193,11 +193,11 @@ def make_tristodraw_dict(editor, comp):
             tristodraw = {}
             skin_tristodraw = {}
             tris = comp.triangles
-            for vtx in range(len(comp.dictitems['Frames:fg'].subitems[0].vertices)):
-                tristodraw[vtx] = []
             for i in range(len(tris)):
                 for j in range(len(tris[i])):
                     vtx = tris[i][j][0]
+                    if not vtx in tristodraw:
+                        tristodraw[vtx] = []
                     svtx = (i*3) + j
                     skin_tristodraw[svtx] = []
                     for k in range(len(tris[i])):
@@ -206,10 +206,10 @@ def make_tristodraw_dict(editor, comp):
                         if vtx == vtx2:
                             continue
                         if not vtx2 in tristodraw[vtx]:
-                            tristodraw[vtx] = tristodraw[vtx] + [vtx2]
+                            tristodraw[vtx].append(vtx2)
                         if not svtx2 in skin_tristodraw[svtx]:
-                            skin_tristodraw[svtx] = skin_tristodraw[svtx] + [svtx2]
-            for vtx in range(len(comp.dictitems['Frames:fg'].subitems[0].vertices)):
+                            skin_tristodraw[svtx].append(svtx2)
+            for vtx in tristodraw.keys():
                 if len(tristodraw[vtx]) == 0:
                     del tristodraw[vtx]
                     continue
@@ -222,13 +222,12 @@ def make_tristodraw_dict(editor, comp):
                     del editor.SkinViewList['handlepos'][comp.name]
             else:
                 editor.ModelComponentList['tristodraw'][comp.name] = tristodraw
-                keys = skin_tristodraw.keys()
-                for vtx in range(len(keys)):
-                    if len(skin_tristodraw[keys[vtx]]) == 0:
-                        del skin_tristodraw[keys[vtx]]
+                for svtx in skin_tristodraw.keys():
+                    if len(skin_tristodraw[svtx]) == 0:
+                        del skin_tristodraw[svtx]
                         continue
-                    skin_tristodraw[keys[vtx]].sort()
-                    skin_tristodraw[keys[vtx]].reverse()
+                    skin_tristodraw[svtx].sort()
+                    skin_tristodraw[svtx].reverse()
                 editor.SkinViewList['tristodraw'][comp.name] = skin_tristodraw
     else:
         if editor.ModelComponentList['tristodraw'].has_key(comp.name):
