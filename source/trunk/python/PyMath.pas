@@ -49,6 +49,32 @@ type
 
  {------------------------}
 
+(* Coerced types are as follows: (V = TVect, Q = TQuaternion, M = TMatrixTransformation)
+
+if V.Y = COERCEDFROMFLOAT
+  Float in V.X
+else
+  TVect
+
+if Q.Y = COERCEDFROMFLOAT (and Q.Z = COERCEDFROMFLOAT and Q.W = COERCEDFROMFLOAT)
+  Float in Q.X
+else
+  if Q.W = COERCEDFROMFLOAT
+    TVect in Q.X, Q.Y, Q.Z
+  else
+    TQuaternion
+
+if M[2,1] = COERCEDFROMFLOAT (and M[2,2] = COERCEDFROMFLOAT)
+  Float in M[1,1]
+else
+  if M[2,2] = COERCEDFROMFLOAT
+    TVect in M[1,1], M[2,1], M[3,1]
+  else
+    TMatrixTransformation
+*)
+
+ {------------------------}
+
 function MakePyVect3(const nX, nY, nZ: Double) : PyVect;
 function MakePyVect5(const nX, nY, nZ, nS, nT: Double) : PyVectST;
 function MakePyVect(const nV: TVect) : PyVect;
@@ -650,21 +676,23 @@ begin
   W1:=PyVect(v1)^.V;
   W2:=PyVect(v2)^.V;
   if (W1.Y <> COERCEDFROMFLOAT)
-  and (W2.Y <> COERCEDFROMFLOAT) then
+  and (W2.Y <> COERCEDFROMFLOAT) then //V * V
    Result:=PyFloat_FromDouble(Dot(W1,W2))
   else
    begin
-    if (W1.Y = COERCEDFROMFLOAT)
-    or (W2.Y <> COERCEDFROMFLOAT) then
+    if (W1.Y = COERCEDFROMFLOAT) //f * <something>
+    or (W2.Y <> COERCEDFROMFLOAT) then //<something> * V
      begin
+      //Swap
       W:=W1;
       W1:=W2;
       W2:=W;
-      if (W1.Y = COERCEDFROMFLOAT)
-      or (W2.Y <> COERCEDFROMFLOAT) then
+      if (W1.Y = COERCEDFROMFLOAT) //f * f
+      or (W2.Y <> COERCEDFROMFLOAT) then //V * V (shouldn't happen; already handled above)
        Raise EError(4443);
       v1:=v2;
      end;
+    //W1 is TVect, but W2 is a coerced Float
     if PyVect(v2)^.ST then
      Result:=MakePyVect5(W1.X*W2.X, W1.Y*W2.X, W1.Z*W2.X,
                          PyVectST(v1)^.TexS*W2.X,
@@ -691,8 +719,8 @@ begin
    Raise EError(4443);
   W1:=PyVect(v1)^.V;
   W2:=PyVect(v2)^.V;
-  if (W1.Y = COERCEDFROMFLOAT)
-  or (W2.Y <> COERCEDFROMFLOAT) then
+  if (W1.Y = COERCEDFROMFLOAT) //f * <something>
+  or (W2.Y <> COERCEDFROMFLOAT) then //<something> * V
    Raise EError(4443);
   f:=1/W2.X;
   if PyVect(v1)^.ST then
@@ -946,7 +974,9 @@ begin
  Result:=Nil;
  try
   if (v1^.ob_type <> @TyQuaternion_Type)
-  or (v2^.ob_type <> @TyQuaternion_Type) then
+  or (v2^.ob_type <> @TyQuaternion_Type)
+  or (PyQuaternion(v1)^.Q.W = COERCEDFROMFLOAT)
+  or (PyQuaternion(v2)^.Q.W = COERCEDFROMFLOAT) then
    Raise EError(4463);
   W1:=PyQuaternion(v1)^.Q;
   W2:=PyQuaternion(v2)^.Q;
@@ -968,7 +998,9 @@ begin
  Result:=Nil;
  try
   if (v1^.ob_type <> @TyQuaternion_Type)
-  or (v2^.ob_type <> @TyQuaternion_Type) then
+  or (v2^.ob_type <> @TyQuaternion_Type)
+  or (PyQuaternion(v1)^.Q.W = COERCEDFROMFLOAT)
+  or (PyQuaternion(v2)^.Q.W = COERCEDFROMFLOAT) then
    Raise EError(4463);
   W1:=PyQuaternion(v1)^.Q;
   W2:=PyQuaternion(v2)^.Q;
@@ -986,6 +1018,7 @@ end;
 function QuaternionMultiply(v1, v2: PyObject) : PyObject;
 var
  W1, W2, W: TQuaternion;
+ xxzz, wwyy, xw2, xy2, xz2, yw2, yz2, zw2: Double;
 begin
  Result:=Nil;
  try
@@ -994,23 +1027,37 @@ begin
    Raise EError(4463);
   W1:=PyQuaternion(v1)^.Q;
   W2:=PyQuaternion(v2)^.Q;
-  if (W1.Y <> COERCEDFROMFLOAT)
-  and (W2.Y <> COERCEDFROMFLOAT) then
-   Result:=MakePyQuaternion(MultiplyQuaternions(PyQuaternion(v1)^.Q, PyQuaternion(v2)^.Q))
+  if (W1.W <> COERCEDFROMFLOAT)
+  and (W2.W <> COERCEDFROMFLOAT) then //Q * Q
+   Result:=MakePyQuaternion(MultiplyQuaternions(W1, W2))
   else
    begin
-    if (W1.Y = COERCEDFROMFLOAT)
-    or (W2.Y <> COERCEDFROMFLOAT) then
+    if W1.Y = COERCEDFROMFLOAT then //f * Q --> Q * f
      begin
+      //Swap
       W:=W1;
       W1:=W2;
       W2:=W;
-      if (W1.Y = COERCEDFROMFLOAT)
-      or (W2.Y <> COERCEDFROMFLOAT) then
-       Raise EError(4463);
-      //v1:=v2;
      end;
-    Result:=MakePyQuaternion(W1.X*W2.X, W1.Y*W2.X, W1.Z*W2.X, W1.W*W2.X);
+    if W1.Y = COERCEDFROMFLOAT then //V,f * <something>
+     Raise EError(4463);
+    if W2.Y = COERCEDFROMFLOAT then //Q * f
+     Result:=MakePyQuaternion(W1.X*W2.X, W1.Y*W2.X, W1.Z*W2.X, W1.W*W2.X)
+    else //Q * V
+     begin
+      with W1 do
+       begin
+        xxzz := x*x - z*z;
+        wwyy := w*w - y*y;
+        xw2 := x*w*2.0;
+        xy2 := x*y*2.0;
+        xz2 := x*z*2.0;
+        yw2 := y*w*2.0;
+        yz2 := y*z*2.0;
+        zw2 := z*w*2.0;
+       end;
+      Result:=MakePyVect3((xxzz + wwyy)*W2.X + (xy2 + zw2)*W2.Y + (xz2 - yw2)*W2.Z, (xy2 - zw2)*W2.X + (W1.Y*W1.Y+W1.W*W1.W-W1.X*W1.X-W1.Z*W1.Z)*W2.Y + (yz2 + xw2)*W2.Z, (xz2 + yw2)*W2.X + (yz2 - xw2)*W2.Y + (wwyy - xxzz)*W2.Z);
+     end;
    end;
  except
   Py_XDECREF(Result);
@@ -1021,21 +1068,39 @@ end;
 
 function QuaternionDivide(v1, v2: PyObject) : PyObject;
 var
- W1, W2: TQuaternion;
- f: Double;
+ Q: TQuaternion;
+ F: Double;
 begin
  Result:=Nil;
  try
   if (v1^.ob_type <> @TyQuaternion_Type)
   or (v2^.ob_type <> @TyQuaternion_Type) then
    Raise EError(4463);
-  W1:=PyQuaternion(v1)^.Q;
-  W2:=PyQuaternion(v2)^.Q;
-  if (W1.Y = COERCEDFROMFLOAT)
-  or (W2.Y <> COERCEDFROMFLOAT) then
-   Raise EError(4463);
-  f:=1/W2.X;
-  Result:=MakePyQuaternion(W1.X*f, W1.Y*f, W1.Z*f, W1.W*f);
+  if (PyQuaternion(v1)^.Q.W <> COERCEDFROMFLOAT)
+  and (PyQuaternion(v2)^.Q.W <> COERCEDFROMFLOAT) then //Q / Q
+   Q:=MultiplyQuaternions(PyQuaternion(v1)^.Q, QuaternionInverse(PyQuaternion(v2)^.Q))
+  else
+   begin
+    if (PyQuaternion(v1)^.Q.W = COERCEDFROMFLOAT) //f,V / <something>
+    or (PyQuaternion(v2)^.Q.Y <> COERCEDFROMFLOAT) then //<something> / Q,V
+     begin
+      if (PyQuaternion(v1)^.Q.Y <> COERCEDFROMFLOAT) //Q,V / <something>
+      or (PyQuaternion(v2)^.Q.W = COERCEDFROMFLOAT) then //<something> / f,V
+       Raise EError(4444);
+      F:=PyQuaternion(v1)^.Q.X;
+      Q:=QuaternionInverse(PyQuaternion(v2)^.Q);
+     end
+    else //Q / f
+     begin
+      Q:=PyQuaternion(v1)^.Q;
+      F:=1.0/PyQuaternion(v2)^.Q.X;
+     end;
+    Q.X:=Q.X * F;
+    Q.Y:=Q.Y * F;
+    Q.Z:=Q.Z * F;
+    Q.W:=Q.W * F;
+   end;
+  Result:=MakePyQuaternion(Q);
  except
   Py_XDECREF(Result);
   EBackToPython;
@@ -1129,11 +1194,17 @@ begin
   Result:=-1;
   if v2^.ob_type <> @TyQuaternion_Type then
    begin
-    v3:=PyNumber_Float(v2);
-    if v3=Nil then Exit;
-    f:=PyFloat_AsDouble(v3);
-    Py_DECREF(v3);
-    v2:=MakePyQuaternion(f, COERCEDFROMFLOAT, COERCEDFROMFLOAT, COERCEDFROMFLOAT);
+    if v2^.ob_type = @TyVect_Type then
+     with PyVect(v2)^.V do
+      v2:=MakePyQuaternion(X, Y, Z, COERCEDFROMFLOAT)
+    else
+     begin
+      v3:=PyNumber_Float(v2);
+      if v3=Nil then Exit;
+      f:=PyFloat_AsDouble(v3);
+      Py_DECREF(v3);
+      v2:=MakePyQuaternion(f, COERCEDFROMFLOAT, COERCEDFROMFLOAT, COERCEDFROMFLOAT);
+     end;
    end
   else
    Py_INCREF(v2);
@@ -1352,23 +1423,24 @@ begin
   or (v2^.ob_type <> @TyMatrix_Type) then
    Raise EError(4444);
   if (PyMatrix(v1)^.M[2,2] <> COERCEDFROMFLOAT)
-  and (PyMatrix(v2)^.M[2,2] <> COERCEDFROMFLOAT) then
+  and (PyMatrix(v2)^.M[2,2] <> COERCEDFROMFLOAT) then //M * M
    M:=MultiplieMatrices(PyMatrix(v1)^.M, PyMatrix(v2)^.M)
   else
    begin
-    if PyMatrix(v1)^.M[2,1] = COERCEDFROMFLOAT then
+    if PyMatrix(v1)^.M[2,1] = COERCEDFROMFLOAT then //f * M --> M * f
      begin
+      //Swap
       v3:=v1;
       v1:=v2;
       v2:=v3;
      end;
-    if PyMatrix(v1)^.M[2,2] = COERCEDFROMFLOAT then
+    if PyMatrix(v1)^.M[2,2] = COERCEDFROMFLOAT then //V,f * <something>
      Raise EError(4444);
-    if PyMatrix(v2)^.M[2,1] = COERCEDFROMFLOAT then
+    if PyMatrix(v2)^.M[2,1] = COERCEDFROMFLOAT then //M * f
      for I:=1 to 3 do
       for J:=1 to 3 do
        M[I,J]:=PyMatrix(v1)^.M[I,J] * PyMatrix(v2)^.M[1,1]
-    else
+    else //M * V
      begin
       for I:=1 to 3 do
        begin
@@ -1400,20 +1472,20 @@ begin
   or (v2^.ob_type <> @TyMatrix_Type) then
    Raise EError(4444);
   if (PyMatrix(v1)^.M[2,2] <> COERCEDFROMFLOAT)
-  and (PyMatrix(v2)^.M[2,2] <> COERCEDFROMFLOAT) then
+  and (PyMatrix(v2)^.M[2,2] <> COERCEDFROMFLOAT) then //M / M
    M:=MultiplieMatrices(PyMatrix(v1)^.M, MatriceInverse(PyMatrix(v2)^.M))
   else
    begin
-    if (PyMatrix(v1)^.M[2,2] = COERCEDFROMFLOAT)
-    or (PyMatrix(v2)^.M[2,1] <> COERCEDFROMFLOAT) then
+    if (PyMatrix(v1)^.M[2,2] = COERCEDFROMFLOAT) //f,V / <something>
+    or (PyMatrix(v2)^.M[2,1] <> COERCEDFROMFLOAT) then //<something> / M,V
      begin
-      if (PyMatrix(v1)^.M[2,1] <> COERCEDFROMFLOAT)
-      or (PyMatrix(v2)^.M[2,2] = COERCEDFROMFLOAT) then
+      if (PyMatrix(v1)^.M[2,1] <> COERCEDFROMFLOAT) //M,V / <something>
+      or (PyMatrix(v2)^.M[2,2] = COERCEDFROMFLOAT) then //<something> / f,V
        Raise EError(4444);
       F:=PyMatrix(v1)^.M[1,1];
       M:=MatriceInverse(PyMatrix(v2)^.M);
      end
-    else
+    else //M / f
      begin
       M:=PyMatrix(v1)^.M;
       F:=1.0/PyMatrix(v2)^.M[1,1];
