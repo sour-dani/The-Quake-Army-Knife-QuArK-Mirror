@@ -1018,7 +1018,8 @@ end;
 function QuaternionMultiply(v1, v2: PyObject) : PyObject;
 var
  W1, W2, W: TQuaternion;
- xxzz, wwyy, xw2, xy2, xz2, yw2, yz2, zw2: Double;
+ M: TMatrixTransformation;
+ V: TVect;
 begin
  Result:=Nil;
  try
@@ -1045,18 +1046,12 @@ begin
      Result:=MakePyQuaternion(W1.X*W2.X, W1.Y*W2.X, W1.Z*W2.X, W1.W*W2.X)
     else //Q * V
      begin
-      with W1 do
-       begin
-        xxzz := x*x - z*z;
-        wwyy := w*w - y*y;
-        xw2 := x*w*2.0;
-        xy2 := x*y*2.0;
-        xz2 := x*z*2.0;
-        yw2 := y*w*2.0;
-        yz2 := y*z*2.0;
-        zw2 := z*w*2.0;
-       end;
-      Result:=MakePyVect3((xxzz + wwyy)*W2.X + (xy2 + zw2)*W2.Y + (xz2 - yw2)*W2.Z, (xy2 - zw2)*W2.X + (W1.Y*W1.Y+W1.W*W1.W-W1.X*W1.X-W1.Z*W1.Z)*W2.Y + (yz2 + xw2)*W2.Z, (xz2 + yw2)*W2.X + (yz2 - xw2)*W2.Y + (wwyy - xxzz)*W2.Z);
+      M:=QuaternionToMatrix(W1);
+      V.X:=W2.X;
+      V.Y:=W2.Y;
+      V.Z:=W2.Z;
+      V:=MatrixMultByVect(M, V);
+      Result:=MakePyVect3(V.X, V.Y, V.Z);
      end;
    end;
  except

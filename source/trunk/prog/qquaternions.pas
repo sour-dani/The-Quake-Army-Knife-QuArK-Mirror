@@ -22,7 +22,7 @@ unit qquaternions;
 
 interface
 
-uses SysUtils, qmath;
+uses SysUtils, qmath, qmatrices;
 
 type
  PQuaternion = ^TQuaternion;
@@ -38,6 +38,8 @@ function stoq(const S: String) : TQuaternion;
 function QuaternionNorm(const Q: TQuaternion) : Double;
 function QuaternionInverse(const Q: TQuaternion) : TQuaternion;
 procedure QuaternionNormalise(var Q: TQuaternion);
+function QuaternionToMatrix(const Q: TQuaternion) : TMatrixTransformation;
+//function QuaternionFromMatrix(const M: TMatrixTransformation) : TQuaternion;
 
  {------------------------}
 
@@ -105,5 +107,72 @@ begin
  ReadDoubleArray(S, V);
  Result:=TQuaternion(V);
 end;
+
+function QuaternionToMatrix(const Q: TQuaternion) : TMatrixTransformation;
+var
+  xx, yy, zz, xy, xz, yz, wx, wy, wz: Double;
+begin
+  xx := Q.X * Q.X;
+  yy := Q.Y * Q.Y;
+  zz := Q.Z * Q.Z;
+  xy := Q.X * Q.Y;
+  xz := Q.X * Q.Z;
+  yz := Q.Y * Q.Z;
+  wx := Q.W * Q.X;
+  wy := Q.W * Q.Y;
+  wz := Q.W * Q.Z;
+  Result[1,1]:=1.0 - 2.0 * (yy + zz);
+  Result[1,2]:=      2.0 * (xy + wz);
+  Result[1,3]:=      2.0 * (xz - wy);
+  Result[2,1]:=      2.0 * (xy - wz);
+  Result[2,2]:=1.0 - 2.0 * (xx + zz);
+  Result[2,3]:=      2.0 * (yz + wx);
+  Result[3,1]:=      2.0 * (xz + wy);
+  Result[3,2]:=      2.0 * (yz - wx);
+  Result[3,3]:=1.0 - 2.0 * (xx + yy);
+end;
+
+(*function QuaternionFromMatrix(const M: TMatrixTransformation) : TQuaternion; //FIXME: Untested
+var
+  S, X, Y, Z: Double;
+begin
+  //This function assumes the matrix is a rotation matrix.
+  S := Sqrt(Abs(M[1,1] + M[2,2] + M[3,3] + 1.0));
+  if S = 0.0 then
+  begin
+    X := Abs(M[3,2] - M[2,3]);
+    Y := Abs(M[1,3] - M[3,1]);
+    Z := Abs(M[2,1] - M[1,2]);
+    if (X >= Y) and (X >= Z) then
+    begin
+      Result.X:=1.0;
+      Result.Y:=0.0;
+      Result.Z:=0.0;
+      Result.W:=0.0;
+    end
+    else if (Y >= X) and (Y >= Z) then
+    begin
+      Result.X:=0.0;
+      Result.Y:=1.0;
+      Result.Z:=0.0;
+      Result.W:=0.0;
+    end
+    else
+    begin
+      Result.X:=0.0;
+      Result.Y:=0.0;
+      Result.Z:=1.0;
+      Result.W:=0.0;
+    end;
+  end
+  else
+  begin
+    Result.X:=-(M[3,2] - M[2,3]) / (2.0 * S);
+    Result.Y:=-(M[1,3] - M[3,1]) / (2.0 * S);
+    Result.Z:=-(M[2,1] - M[1,2]) / (2.0 * S);
+    Result.W:=0.5 * S;
+    QuaternionNormalise(Result);
+  end;
+end;*)
 
 end.
