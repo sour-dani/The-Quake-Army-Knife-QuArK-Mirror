@@ -51,30 +51,25 @@ uses Qk3D;
 
 function QuaternionNorm(const Q: TQuaternion) : Double;
 begin
- Result:=sqrt(Q.X*Q.X + Q.Y*Q.Y + Q.Z*Q.Z + Q.W*Q.W);
+ Result:=Sqrt(Sqr(Q.X)+Sqr(Q.Y)+Sqr(Q.Z)+Sqr(Q.W));
 end;
 
 function MultiplyQuaternions(const Q1, Q2: TQuaternion) : TQuaternion;
-var
- r: array[1..4] of Double;
- d: Double;
 begin
-  r[1]:=Q2.W * Q1.X + Q2.X * Q1.W + Q2.Y * Q1.Z - Q2.Z * Q1.Y;
-  r[2]:=Q2.W * Q1.Y + Q2.Y * Q1.W + Q2.Z * Q1.X - Q2.X * Q1.Z;
-  r[3]:=Q2.W * Q1.Z + Q2.Z * Q1.W + Q2.X * Q1.Y - Q2.Y * Q1.X;
-  r[4]:=Q2.W * Q1.W - Q2.X * Q1.X - Q2.Y * Q1.Y - Q2.Z * Q1.Z;
-  d:=sqrt(r[1] * r[1] + r[2] * r[2] + r[3] * r[3] + r[4] * r[4]);
-  Result.X:=r[1] / d;
-  Result.Y:=r[2] / d;
-  Result.Z:=r[3] / d;
-  Result.W:=r[4] / d;
+  //Note: Order of Q1 and Q2 swapped compare to many implementation;
+  //This is so it can be written the same as Matrix-multiplication.
+  Result.X:=Q2.W * Q1.X + Q2.X * Q1.W + Q2.Y * Q1.Z - Q2.Z * Q1.Y;
+  Result.Y:=Q2.W * Q1.Y + Q2.Y * Q1.W + Q2.Z * Q1.X - Q2.X * Q1.Z;
+  Result.Z:=Q2.W * Q1.Z + Q2.Z * Q1.W + Q2.X * Q1.Y - Q2.Y * Q1.X;
+  Result.W:=Q2.W * Q1.W - Q2.X * Q1.X - Q2.Y * Q1.Y - Q2.Z * Q1.Z;
+  //QuaternionNormalise(Result);
 end;
 
 function QuaternionInverse(const Q: TQuaternion) : TQuaternion;
 var
  Facteur: Double;
 begin
- Facteur:=1/QuaternionNorm(Q);
+ Facteur:=1.0/QuaternionNorm(Q);
  Result.X:=-Q.X * Facteur;
  Result.Y:=-Q.Y * Facteur;
  Result.Z:=-Q.Z * Facteur;
@@ -85,10 +80,10 @@ procedure QuaternionNormalise(var Q: TQuaternion);
 var
  F,S: Double;
 begin
- S:=Sqrt(Sqr(Q.X)+Sqr(Q.Y)+Sqr(Q.Z)+Sqr(Q.W));
+ S:=QuaternionNorm(Q);
  if (S = 0) then
-   exit;
- F:=1/S;
+   Exit;
+ F:=1.0/S;
  Q.X:=Q.X*F;
  Q.Y:=Q.Y*F;
  Q.Z:=Q.Z*F;

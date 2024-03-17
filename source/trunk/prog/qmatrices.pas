@@ -221,7 +221,7 @@ var
 {Aux: TMatriceDeplacement;}
  I,J,I1,I2,J1,J2: Integer;
 begin
- Facteur:=1/Determinant(M);
+ Facteur:=1.0/Determinant(M);
  J1:=2;
  J2:=3;
  for J:=1 to 3 do
