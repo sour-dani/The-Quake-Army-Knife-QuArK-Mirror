@@ -31,7 +31,6 @@ from quarkpy.qeditor import MapColor # Strictly needed for QuArK bones MapColor 
 md5_mesh_path = None
 md5_anim_path = None
 md5_model = None
-md5_bones = None
 md5_model_comps = []
 logging = 0
 importername = "ie_md5_import.py"
@@ -133,7 +132,7 @@ class md5_mesh:
 # IMPORT A MESH FILE ONLY SECTION
 ######################################################
 def load_md5(md5_filename, basepath, actionname):
-    global md5_model, md5_model_comps, md5_bones, progressbar, tobj, logging, Strings
+    global md5_model, md5_model_comps, progressbar, tobj, logging, Strings
 
     md5_model_comps = []
     filename = actionname.replace(".md5mesh", "")
@@ -700,7 +699,7 @@ def load_md5(md5_filename, basepath, actionname):
         else:
             Component = quarkx.newobj(filename + "_" + "Import Component " + str(CompNbr) + ':mc')
             CompNbr = CompNbr + 1
-        md5_model_comps = md5_model_comps + [Component.name]
+        md5_model_comps.append(Component.name)
         if mesh.mesh_index == 0:
             for bone in QuArK_bones:
                 bone['component'] = Component.name
@@ -719,7 +718,7 @@ def load_md5(md5_filename, basepath, actionname):
         Component.appenditem(sdogroup)
         Component.appenditem(skingroup)
         Component.appenditem(framesgroup)
-        ComponentList = ComponentList + [Component]
+        ComponentList.append(Component)
     if len(md5_model) > 1:
         Strings[2454] = Strings[2454].replace("Processing Components " + firstcomp + " to " + lastcomp + "\n" + "Importing Component " + str(mesh_count) + "\n\n", "")
     else:
