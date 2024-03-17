@@ -32,115 +32,49 @@ textlog = "md5_ie_log.txt"
 
 
 ######################################################
-# Vector, Quaterion, Matrix math stuff - some taken from
-# Jiba's blender2cal3d script
+# MATH FUNCTIONS
 ######################################################
-def quaternion2matrix(q):
-    xx = q[0] * q[0]
-    yy = q[1] * q[1]
-    zz = q[2] * q[2]
-    xy = q[0] * q[1]
-    xz = q[0] * q[2]
-    yz = q[1] * q[2]
-    wx = q[3] * q[0]
-    wy = q[3] * q[1]
-    wz = q[3] * q[2]
-    return [[1.0 - 2.0 * (yy + zz),       2.0 * (xy + wz),       2.0 * (xz - wy), 0.0],
-            [      2.0 * (xy - wz), 1.0 - 2.0 * (xx + zz),       2.0 * (yz + wx), 0.0],
-            [      2.0 * (xz + wy),       2.0 * (yz - wx), 1.0 - 2.0 * (xx + yy), 0.0],
-            [0.0                  , 0.0                  , 0.0                  , 1.0]]
-
 def matrix2quaternion(m):
+    m = ((m[0][0], m[1][0], m[2][0], 0.0)
+        ,(m[0][1], m[1][1], m[2][1], 0.0)
+        ,(m[0][2], m[1][2], m[2][2], 0.0)
+        ,(    0.0,     0.0,     0.0, 1.0))
+
     #See: http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/index.htm
     s = math.sqrt(abs(m[0][0] + m[1][1] + m[2][2] + m[3][3]))
     if s < 0.001:
         if ((m[0][0] > m[1][1]) and (m[0][0] > m[2][2])):
             s = math.sqrt(m[3][3] + m[0][0] - m[1][1] - m[2][2]) * 2.0
-            return quaternion_normalize([
-            -0.25 * s,
-            -(m[0][1] + m[1][0]) / s,
-            -(m[0][2] + m[2][0]) / s,
-            (m[2][1] - m[1][2]) / s,
-            ])
+            return (0.25 * s,
+                    (m[0][1] + m[1][0]) / s,
+                    (m[0][2] + m[2][0]) / s,
+                    (m[2][1] - m[1][2]) / s,
+            )
         elif (m[1][1] > m[2][2]):
             s = math.sqrt(m[3][3] + m[1][1] - m[0][0] - m[2][2]) * 2.0
-            return quaternion_normalize([
-            -(m[0][1] + m[1][0]) / s,
-            -0.25 * s,
-            -(m[1][2] + m[2][1]) / s,
-            (m[0][2] - m[2][0]) / s,
-            ])
+            return ((m[0][1] + m[1][0]) / s,
+                    0.25 * s,
+                    (m[1][2] + m[2][1]) / s,
+                    (m[0][2] - m[2][0]) / s,
+            )
         else:
             s = math.sqrt(m[3][3] + m[2][2] - m[0][0] - m[1][1]) * 2.0
-            return quaternion_normalize([
-            -(m[0][2] + m[2][0]) / s,
-            -(m[1][2] + m[2][1]) / s,
-            -0.25 * s,
-            (m[1][0] - m[0][1]) / s,
-            ])
-    return quaternion_normalize([
-        -(m[2][1] - m[1][2]) / (2.0 * s),
-        -(m[0][2] - m[2][0]) / (2.0 * s),
-        -(m[1][0] - m[0][1]) / (2.0 * s),
-        0.5 * s,
-        ])
-
-def quaternion_normalize(q):
-    l = math.sqrt(q[0] * q[0] + q[1] * q[1] + q[2] * q[2] + q[3] * q[3])
-    return q[0] / l, q[1] / l, q[2] / l, q[3] / l
-
-# This function takes a bone's matrix and inverses it
-# for exportation of data that uses the matrix, such as weights, bm = bone matrix.
-# Not being used in this file any more but should be saved and changed for individual bone call.
-def inverse_matrix(self):
-    self.bone_matrix_list = {}
-    for bone in range(len(self.bones)):
-        bm = []
-        worklist = [[0,0,0],[0,0,0],[0,0,0]]
-        try:
-            bonematrix = self.editor.ModelComponentList['bonelist'][self.bones[bone].name]['bonematrix']
-        except:
-            bonematrix = self.bones[bone].rotmatrix.tuple
-        bm = bonematrix
-        worklist[0][0] = ((bm[1][1]*bm[2][2]) - (bm[1][2]*bm[2][1])) * 1
-        worklist[0][1] = ((bm[1][0]*bm[2][2]) - (bm[1][2]*bm[2][0])) * -1
-        worklist[0][2] = ((bm[1][0]*bm[2][1]) - (bm[1][1]*bm[2][0])) * 1
-
-        worklist[1][0] = ((bm[0][1]*bm[2][2]) - (bm[0][2]*bm[2][1])) * -1
-        worklist[1][1] = ((bm[0][0]*bm[2][2]) - (bm[0][2]*bm[2][0])) * 1
-        worklist[1][2] = ((bm[0][0]*bm[2][1]) - (bm[0][1]*bm[2][0])) * -1
-
-        worklist[2][0] = ((bm[0][1]*bm[1][2]) - (bm[0][2]*bm[1][1])) * 1
-        worklist[2][1] = ((bm[0][0]*bm[1][2]) - (bm[0][2]*bm[1][0])) * -1
-        worklist[2][2] = ((bm[0][0]*bm[1][1]) - (bm[0][1]*bm[1][0])) * 1
-
-        bm[0][0] = worklist[0][0]
-        bm[1][0] = worklist[0][1]
-        bm[2][0] = worklist[0][2]
-
-        bm[0][1] = worklist[1][0]
-        bm[1][1] = worklist[1][1]
-        bm[2][1] = worklist[1][2]
-
-        bm[0][2] = worklist[2][0]
-        bm[1][2] = worklist[2][1]
-        bm[2][2] = worklist[2][2]
-
-        self.bone_matrix_list[self.bones[bone].name] = bm
-
-def vector_by_matrix(p, m):
-    return [
-        p[0] * m[0][0] + p[1] * m[1][0] + p[2] * m[2][0],
-        p[0] * m[0][1] + p[1] * m[1][1] + p[2] * m[2][1],
-        p[0] * m[0][2] + p[1] * m[1][2] + p[2] * m[2][2]
-       ]
+            return ((m[0][2] + m[2][0]) / s,
+                    (m[1][2] + m[2][1]) / s,
+                    0.25 * s,
+                    (m[1][0] - m[0][1]) / s
+            )
+    return ((m[2][1] - m[1][2]) / (2.0 * s),
+            (m[0][2] - m[2][0]) / (2.0 * s),
+            (m[1][0] - m[0][1]) / (2.0 * s),
+            0.5 * s,
+    )
 
 def reverse_vector_by_matrix(p, m):
-    return [
-        p[0] / m[0][0] - p[1] / m[1][0] - p[2] / m[2][0],
-        p[0] / m[0][1] - p[1] / m[1][1] - p[2] / m[2][1],
-        p[0] / m[0][2] - p[1] / m[1][2] - p[2] / m[2][2]
-       ]
+    return [p[0] / m[0][0] - p[1] / m[1][0] - p[2] / m[2][0],
+            p[0] / m[0][1] - p[1] / m[1][1] - p[2] / m[2][1],
+            p[0] / m[0][2] - p[1] / m[1][2] - p[2] / m[2][2]
+    ]
 
 
 ######################################################
@@ -148,22 +82,21 @@ def reverse_vector_by_matrix(p, m):
 ######################################################
 def write_shaders(filename, exp_list):
     shaders = []
+    shaderfile = None
     for comp in exp_list:
         if comp[0].dictspec.has_key('shader_name') and comp[0].dictspec['shader_name'] != "None" and not comp[0].dictspec['shader_name'] in shaders:
-            if len(shaders) == 0:
+            if shaderfile is None:
                 if filename.endswith(".md5mesh"):
                     shadername = filename.replace(".md5mesh", ".mtr")
                 else:
                     shadername = filename.replace(".md5anim", ".mtr")
                 shaderfile = open(shadername, "w")
-            shaders = shaders + [comp[0].dictspec['shader_name']]
+            shaders = shaders.append(comp[0].dictspec['shader_name'])
             shader = comp[0].dictspec['mesh_shader']
             shader = shader.replace("\r\n", "\n")
             shaderfile.write(shader)
-    try:
+    if shaderfile is not None:
         shaderfile.close()
-    except:
-        pass
 
 
 ######################################################
@@ -184,7 +117,7 @@ def set_lists(exp_list, objects, worldTable):
 # WRITE EXPORT FILE HEADER SECTION
 ######################################################
 def write_header(self, file, filename, component, worldTable):
-    global user_frame_list, tobj
+    global tobj
 
     # Get the component's Mesh.
     mesh = component.triangles
@@ -243,18 +176,16 @@ def export_mesh(self, file, filename, exp_list):
             bonelist = self.editor.ModelComponentList['bonelist']
             for joint in joints:
                 bone_name = joint.name
+                bone_data = bonelist[bone_name]['frames']['baseframe:mf']
                 if joint.dictspec['parent_name'] == "None":
-                    bone_data = bonelist[bone_name]['frames']['baseframe:mf']
-                    temp_joint_data[bone_name] = [bone_data['position'], bone_data['rotmatrix']]
+                    temp_joint_data[bone_name] = (bone_data['position'], bone_data['rotmatrix'])
                 else:
                     parent_name = joint.dictspec['parent_name']
-                    bone_data = bonelist[bone_name]['frames']['baseframe:mf']
-                    bone_pos = quarkx.vect(bone_data['position'])
-                    tempmatrix = bone_data['rotmatrix']
-                    bone_rot = quarkx.matrix((tempmatrix[0][0], tempmatrix[0][1], tempmatrix[0][2]), (tempmatrix[1][0], tempmatrix[1][1], tempmatrix[1][2]), (tempmatrix[2][0], tempmatrix[2][1], tempmatrix[2][2]))
                     parent_data = temp_joint_data[parent_name]
                     parent_pos = quarkx.vect(parent_data[0])
                     parent_rot = quarkx.matrix(parent_data[1])
+                    bone_pos = quarkx.vect(bone_data['position'])
+                    bone_rot = quarkx.matrix(bone_data['rotmatrix'])
                     bone_pos = ((parent_rot * bone_pos) + parent_pos).tuple
                     bone_rot = (parent_rot * bone_rot).tuple
                     temp_joint_data[bone_name] = [bone_pos, bone_rot]
@@ -290,24 +221,22 @@ def export_mesh(self, file, filename, exp_list):
                 bone_data = temp_joint_data[current_joint.name]
                 bone_pos = bone_data[0]
                 bone_rot = bone_data[1]
-        joint_data = joint_data + [(bone_pos, bone_rot)]
-        bone_rot = ((bone_rot[0][0], bone_rot[0][1], bone_rot[0][2], 0.0), (bone_rot[1][0], bone_rot[1][1], bone_rot[1][2], 0.0), (bone_rot[2][0], bone_rot[2][1], bone_rot[2][2], 0.0), (0.0, 0.0, 0.0, 1.0))
+        joint_data.append((bone_pos, bone_rot))
         bone_rot = matrix2quaternion(bone_rot)
         bone_pos0 = ie_utils.NicePrintableFloat(bone_pos[0])
-        bone_pos1 =  ie_utils.NicePrintableFloat(bone_pos[1])
-        bone_pos2 =  ie_utils.NicePrintableFloat(bone_pos[2])
-        bone_rot0 =  ie_utils.NicePrintableFloat(bone_rot[0])
-        bone_rot1 =  ie_utils.NicePrintableFloat(bone_rot[1])
-        bone_rot2 =  ie_utils.NicePrintableFloat(bone_rot[2])
+        bone_pos1 = ie_utils.NicePrintableFloat(bone_pos[1])
+        bone_pos2 = ie_utils.NicePrintableFloat(bone_pos[2])
+        bone_rot0 = ie_utils.NicePrintableFloat(bone_rot[0])
+        bone_rot1 = ie_utils.NicePrintableFloat(bone_rot[1])
+        bone_rot2 = ie_utils.NicePrintableFloat(bone_rot[2])
         file.write('\t"%s"\t%i ( %s %s %s ) ( %s %s %s )\t\t// %s\n' % (joint_name, parent_index, bone_pos0, bone_pos1, bone_pos2, bone_rot0, bone_rot1, bone_rot2, parent_bone_name))
     file.write('}\n')
     file.write('\n')
 
-    #Preparation: set-up a bone-name to bone-index convertion dict
+    #Preparation: set-up a bone-name to bone-index conversion dict
     bone_name_to_index = {}
     for bone_index in range(len(joints)):
         bone_name_to_index[joints[bone_index].name] = bone_index
-
 
     for comp_index in range(len(exp_list)):
         comp = exp_list[comp_index]
@@ -320,7 +249,7 @@ def export_mesh(self, file, filename, exp_list):
         old_verts = [] #For quick saving of duplicate x,y,z + weights
         new_triangles = []
         new_vertices = []
-        for i in xrange(0, len(triangles)):
+        for i in xrange(len(triangles)):
             new_triangle = []
             for j in xrange(3):
                 vert_index = triangles[i][j][0]
@@ -338,17 +267,17 @@ def export_mesh(self, file, filename, exp_list):
                     if not FoundAVert:
                         #Same vert_index, but different UV: split it!
                         new_vert_index = len(old_verts)
-                        old_verts += [vert_index]
-                        UVs_of_vert[vert_index] += [(vert_coord[0], vert_coord[1], new_vert_index)]
-                        new_vertices += [vertices[vert_index]]
+                        old_verts.append(vert_index)
+                        UVs_of_vert[vert_index].append((vert_coord[0], vert_coord[1], new_vert_index))
+                        new_vertices.append(vertices[vert_index])
                 else:
                     #Totally new vert_index
                     new_vert_index = len(old_verts)
-                    old_verts += [vert_index]
+                    old_verts.append(vert_index)
                     UVs_of_vert[vert_index] = [(vert_coord[0], vert_coord[1], new_vert_index)]
-                    new_vertices += [vertices[vert_index]]
-                new_triangle += [(new_vert_index, vert_coord[0], vert_coord[1])]
-            new_triangles += [new_triangle]
+                    new_vertices.append(vertices[vert_index])
+                new_triangle.append((new_vert_index, vert_coord[0], vert_coord[1]))
+            new_triangles.append(new_triangle)
         vertices = new_vertices
         triangles = new_triangles
 
@@ -393,7 +322,7 @@ def export_mesh(self, file, filename, exp_list):
             if weightvtxlist is not None and weightvtxlist.has_key(old_vert_index):
                 blend_index = -1 #Calculated later
                 blend_count = len(weightvtxlist[old_vert_index])
-                
+
                 #Create the weight_set for this vertex
                 weight_set = []
                 sorted_keys = weightvtxlist[old_vert_index].keys()
@@ -402,10 +331,9 @@ def export_mesh(self, file, filename, exp_list):
                 for key in sorted_keys:
                     bone_index = bone_name_to_index[key]
                     weight_value = weightvtxlist[old_vert_index][key]['weight_value']
-                    bone_pos = joint_data[bone_index][0]
-                    bone_pos = quarkx.vect(bone_pos)
-                    bone_rot = joint_data[bone_index][1]
-                    bone_rot = quarkx.matrix(bone_rot)
+                    bone_pos = quarkx.vect(joint_data[bone_index][0])
+                    bone_rot = quarkx.matrix(joint_data[bone_index][1])
+
                     # For Alice, FAKK2 or EF2 model being exported.
                     if joints[bone_index].dictspec.has_key('type') and joints[bone_index].dictspec['type'].startswith('skb-'):
                         weight_pos = quarkx.vect(weightvtxlist[old_vert_index][key]['vtx_offset'])
@@ -428,7 +356,7 @@ def export_mesh(self, file, filename, exp_list):
                 #2                weight_pos = quarkx.vect(check_pos)
                 #2        else:
                 #2            vtx_offsets = quarkx.vect(0.0, 0.0, 0.0)
-                #2            for k in xrange(0, len(sorted_keys)):
+                #2            for k in xrange(len(sorted_keys)):
                 #2                vtx_offsets += quarkx.vect(weightvtxlist[old_vert_index][key]['vtx_offset'])
                 #2            ovp = (vtx_offsets / len(sorted_keys)).tuple             # ovp = original current_vertex (computed)
                 #2            cp = (round(ovp[0],6), round(ovp[1],6), round(ovp[2],6)) # cp = compare vtx pos
@@ -451,7 +379,7 @@ def export_mesh(self, file, filename, exp_list):
                         weight_pos = (~bone_rot) * (current_vertex - bone_pos)
                     pos_x, pos_y, pos_z = weight_pos.tuple
                     weight_set += [(bone_index, weight_value, pos_x, pos_y, pos_z)]
-                
+
                 #Find shared sets of weights
                 SameSet = None
                 for tmp_weight_set in weight_sets:
@@ -472,7 +400,7 @@ def export_mesh(self, file, filename, exp_list):
                             break
                     if SameSet is not None:
                         break
-                
+
                 #Now save it all
                 if SameSet is not None:
                     #Shared set of weights; use old one to avoid duplication
@@ -481,9 +409,9 @@ def export_mesh(self, file, filename, exp_list):
                     #New set; add to the end of weights
                     blend_index = len(weights)
                     for weight in weight_set:
-                        weights += [weight]
-                    weight_sets += [(blend_index, blend_count)]
-                vert_blends += [(blend_index, blend_count)]
+                        weights.append(weight)
+                    weight_sets.append((blend_index, blend_count))
+                vert_blends.append((blend_index, blend_count))
             else: # Handles un-assigned vertexes and writes them to the mesh_error report for viewing by the user.
                 #(Similar code as above here)
                 #Create the weight_set for this vertex
@@ -492,7 +420,7 @@ def export_mesh(self, file, filename, exp_list):
                 blend_count = 1
                 bone_index = 0 #0 = origin bone
                 weight_value = 1.0
-                
+
                 bone_pos = joint_data[bone_index][0]
                 bone_pos = quarkx.vect(bone_pos)
                 bone_rot = joint_data[bone_index][1]
@@ -503,12 +431,12 @@ def export_mesh(self, file, filename, exp_list):
                 else:
                     weight_pos = (~bone_rot) * (current_vertex - bone_pos)
                 pos_x, pos_y, pos_z = weight_pos.tuple
-                
-                weights += [(bone_index, weight_value, pos_x, pos_y, pos_z)]
-                weight_sets += [(blend_index, blend_count)]
-                vert_blends += [(blend_index, blend_count)]
+
+                weights.append((bone_index, weight_value, pos_x, pos_y, pos_z))
+                weight_sets.append((blend_index, blend_count))
+                vert_blends.append((blend_index, blend_count))
                 # For vertex error report output.
-                self.mesh_vtx_errors = self.mesh_vtx_errors + [old_vert_index]
+                self.mesh_vtx_errors.append(old_vert_index)
 
         # Writes the "vert" section.
         Strings[2452] = comp.shortname + "\n" + Strings[2452]
@@ -554,7 +482,6 @@ def export_mesh(self, file, filename, exp_list):
                 self.mesh_errors = self.mesh_errors + str(self.mesh_vtx_errors[vtx]) + ", "
                 vtxcount = vtxcount + 1
 
-
         # Writes the "tri" section.
         Strings[2453] = comp.shortname + "\n" + Strings[2453]
         progressbar = quarkx.progressbar(2453, len(triangles))
@@ -595,8 +522,8 @@ def export_anim(self, file, filename, exp_list):
     global tobj, Strings
 
     NumberOfFrames = -1
-    for object in exp_list:
-        CurNumberOfFrames = len(object.dictitems['Frames:fg'].subitems)
+    for obj in exp_list:
+        CurNumberOfFrames = len(obj.dictitems['Frames:fg'].subitems)
         if NumberOfFrames == -1:
             NumberOfFrames = CurNumberOfFrames
         elif (CurNumberOfFrames != NumberOfFrames):
@@ -608,15 +535,15 @@ def export_anim(self, file, filename, exp_list):
 
     #Filter out all the baseframes, since we don't need them for MD5
     UseOnlyTheseFrames = []
-    for frame_counter in range(0,NumberOfFrames):
+    for frame_counter in range(NumberOfFrames):
         if not frames[frame_counter].shortname.endswith("baseframe"):
-            UseOnlyTheseFrames += [frame_counter]
+            UseOnlyTheseFrames.append(frame_counter)
     NumberOfFrames = len(UseOnlyTheseFrames)
 
     joints = self.bones
     NumberOfBones = len(joints)
     joints_parent_index = [[]]*NumberOfBones
-    for joint_counter in range(0,NumberOfBones):
+    for joint_counter in range(NumberOfBones):
         current_joint = joints[joint_counter]
         joints_parent_index[joint_counter] = -1
         if current_joint.dictspec['parent_name'] != "None":
@@ -627,13 +554,13 @@ def export_anim(self, file, filename, exp_list):
 
     # Get all the animation data
     QuArK_frame_position = [[]]*NumberOfFrames
-    QuArK_frame_matrix = [[]]*NumberOfFrames
+    QuArK_frame_quat = [[]]*NumberOfFrames
     progressbar = quarkx.progressbar(2455, NumberOfFrames*2)
-    for frame_counter in range(0,NumberOfFrames):
+    for frame_counter in range(NumberOfFrames):
         progressbar.progress()
         QuArK_frame_position[frame_counter] = [[]]*NumberOfBones
-        QuArK_frame_matrix[frame_counter] = [[]]*NumberOfBones
-        for joint_counter in range(0,NumberOfBones):
+        QuArK_frame_quat[frame_counter] = [[]]*NumberOfBones
+        for joint_counter in range(NumberOfBones):
             current_joint = joints[joint_counter]
             if not self.editor.ModelComponentList['bonelist'].has_key(current_joint.name):
                 # This bone has no vertexes assigned to it but could have a child bone for editing the model only.
@@ -644,64 +571,42 @@ def export_anim(self, file, filename, exp_list):
                 bone_pos = bone_data['position']
                 bone_rot = bone_data['rotmatrix']
             QuArK_frame_position[frame_counter][joint_counter] = quarkx.vect(bone_pos)
-            QuArK_frame_matrix[frame_counter][joint_counter] = quarkx.matrix(bone_rot)
+            quat = matrix2quaternion(bone_rot)
+            QuArK_frame_quat[frame_counter][joint_counter] = quarkx.quaternion(quat[0], quat[1], quat[2], quat[3])
 
     # Calculate all the MD5 animation data
     QuArK_frame_position_raw = [[]]*NumberOfFrames
-    QuArK_frame_matrix_raw = [[]]*NumberOfFrames
-    for frame_counter in range(0,NumberOfFrames):
+    QuArK_frame_quat_raw = [[]]*NumberOfFrames
+    for frame_counter in range(NumberOfFrames):
         progressbar.progress()
         QuArK_frame_position_raw[frame_counter] = [[]]*NumberOfBones
-        QuArK_frame_matrix_raw[frame_counter] = [[]]*NumberOfBones
-        BonesToDo = range(0,NumberOfBones)
-        BoneDone = []
-        for joint_counter in range(0,NumberOfBones):
-            BoneDone += [0]
-        while len(BonesToDo) != 0:
-            DelayBones = []
-            for joint_counter in BonesToDo:
-                current_joint = joints[joint_counter]
-                parent_index = joints_parent_index[joint_counter]
-                if parent_index != -1:
-                    if BoneDone[parent_index] == 0:
-                        #This bone is being processed before its parent! This is BAD!
-                        DelayBones += [joint_counter]
-                        continue
-                    #parent_bone = joints[parent_index]
-                    ParentMatrix = QuArK_frame_matrix[frame_counter][parent_index]
-                    temppos = QuArK_frame_position[frame_counter][joint_counter] - QuArK_frame_position[frame_counter][parent_index]
-                    QuArK_frame_position_raw[frame_counter][joint_counter] = (~ParentMatrix) * temppos
-                    QuArK_frame_matrix_raw[frame_counter][joint_counter] = (~ParentMatrix) * QuArK_frame_matrix[frame_counter][joint_counter]
-                else:
-                    QuArK_frame_position_raw[frame_counter][joint_counter] = QuArK_frame_position[frame_counter][joint_counter]
-                    QuArK_frame_matrix_raw[frame_counter][joint_counter] = QuArK_frame_matrix[frame_counter][joint_counter]
-                BoneDone[joint_counter] = 1
-            BonesToDo = DelayBones
+        QuArK_frame_quat_raw[frame_counter] = [[]]*NumberOfBones
+        for joint_counter in range(NumberOfBones):
+            parent_index = joints_parent_index[joint_counter]
+            if parent_index < 0:
+                QuArK_frame_position_raw[frame_counter][joint_counter] = QuArK_frame_position[frame_counter][joint_counter]
+                QuArK_frame_quat_raw[frame_counter][joint_counter] = QuArK_frame_quat[frame_counter][joint_counter]
+            else:
+                ParentQuat = QuArK_frame_quat[frame_counter][parent_index]
+                temppos = QuArK_frame_position[frame_counter][joint_counter] - QuArK_frame_position[frame_counter][parent_index]
+                QuArK_frame_position_raw[frame_counter][joint_counter] = (~ParentQuat) * temppos
+                QuArK_frame_quat_raw[frame_counter][joint_counter] = (~ParentQuat) * QuArK_frame_quat[frame_counter][joint_counter]
+                if QuArK_frame_quat_raw[frame_counter][joint_counter].w < 0.0:
+                    QuArK_frame_quat_raw[frame_counter][joint_counter] = -QuArK_frame_quat_raw[frame_counter][joint_counter]
     progressbar.close()
 
     hierarchy = []
     numAnimatedComponents = 0
     progressbar = quarkx.progressbar(2448, NumberOfBones * NumberOfFrames)
-    for joint_counter in range(0,NumberOfBones):
+    for joint_counter in range(NumberOfBones):
         progressbar.progress()
         Flags = [0, 0, 0, 0, 0, 0]   #Tx, Ty, Tz, Qx, Qy, Qz
         Values = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]   #Tx, Ty, Tz, Qx, Qy, Qz
-        for frame_counter in range(0,NumberOfFrames):
+        for frame_counter in range(NumberOfFrames):
             progressbar.progress()
-            # Convert the position to a tuple and rotmatrix to quaternions:
-            QuArK_frame_position_raw[frame_counter][joint_counter] = (QuArK_frame_position_raw[frame_counter][joint_counter]).tuple
-            rotmatrix = (QuArK_frame_matrix_raw[frame_counter][joint_counter]).tuple
-            rotmatrix = ((rotmatrix[0][0], rotmatrix[0][1], rotmatrix[0][2], 0.0)
-                        ,(rotmatrix[1][0], rotmatrix[1][1], rotmatrix[1][2], 0.0)
-                        ,(rotmatrix[2][0], rotmatrix[2][1], rotmatrix[2][2], 0.0)
-                        ,(            0.0,             0.0,             0.0, 1.0))
-            rotmatrix = matrix2quaternion(rotmatrix)
-            #if rotmatrix[3] > 0.0:
-            #    rotmatrix = (-rotmatrix[0], -rotmatrix[1], -rotmatrix[2])
-            QuArK_frame_matrix_raw[frame_counter][joint_counter] = rotmatrix
 
-            bone_pos = QuArK_frame_position_raw[frame_counter][joint_counter]
-            bone_rot = QuArK_frame_matrix_raw[frame_counter][joint_counter]
+            bone_pos = QuArK_frame_position_raw[frame_counter][joint_counter].xyz
+            bone_rot = QuArK_frame_quat_raw[frame_counter][joint_counter].xyzw
             if (frame_counter == 0):
                 Values[0] = bone_pos[0]
                 Values[1] = bone_pos[1]
@@ -710,29 +615,29 @@ def export_anim(self, file, filename, exp_list):
                 Values[4] = bone_rot[1]
                 Values[5] = bone_rot[2]
             else:
-                if ((Flags[0] == 0) and (abs(Values[0] - bone_pos[0]) > 0.0001)):
+                if (Flags[0] == 0) and (abs(Values[0] - bone_pos[0]) > 0.0001):
                     numAnimatedComponents += 1
                     Flags[0] = 1
-                if ((Flags[1] == 0) and (abs(Values[1] - bone_pos[1]) > 0.0001)):
+                if (Flags[1] == 0) and (abs(Values[1] - bone_pos[1]) > 0.0001):
                     numAnimatedComponents += 1
                     Flags[1] = 1
-                if ((Flags[2] == 0) and (abs(Values[2] - bone_pos[2]) > 0.0001)):
+                if (Flags[2] == 0) and (abs(Values[2] - bone_pos[2]) > 0.0001):
                     numAnimatedComponents += 1
                     Flags[2] = 1
-                if ((Flags[3] == 0) and (abs(Values[3] - bone_rot[0]) > 0.0001)):
+                if (Flags[3] == 0) and (abs(Values[3] - bone_rot[0]) > 0.0001):
                     numAnimatedComponents += 1
                     Flags[3] = 1
-                if ((Flags[4] == 0) and (abs(Values[4] - bone_rot[1]) > 0.0001)):
+                if (Flags[4] == 0) and (abs(Values[4] - bone_rot[1]) > 0.0001):
                     numAnimatedComponents += 1
                     Flags[4] = 1
-                if ((Flags[5] == 0) and (abs(Values[5] - bone_rot[2]) > 0.0001)):
+                if (Flags[5] == 0) and (abs(Values[5] - bone_rot[2]) > 0.0001):
                     numAnimatedComponents += 1
                     Flags[5] = 1
         hierarchy += [(Flags, Values)]
     progressbar.close()
 
     bounds = [[]]*NumberOfFrames
-    for frame_counter in range(0,NumberOfFrames):
+    for frame_counter in range(NumberOfFrames):
         current_min = [None, None, None]
         current_max = [None, None, None]
         for object in exp_list:
@@ -750,13 +655,13 @@ def export_anim(self, file, filename, exp_list):
 
     file.write('numFrames %i\n' % NumberOfFrames)
     file.write('numJoints %i\n' % len(joints))
-    file.write('frameRate 24\n')
+    file.write('frameRate 24\n') #FIXME: Store in some specific!
     file.write('numAnimatedComponents %i\n' % numAnimatedComponents)
     file.write('\n')
 
     file.write('hierarchy {\n')
     FlagStartIndex = [[]]*NumberOfBones
-    for joint_counter in range(0,NumberOfBones):
+    for joint_counter in range(NumberOfBones):
         if (joint_counter == 0):
             FlagStartIndex[joint_counter] = 0
         else:
@@ -770,8 +675,7 @@ def export_anim(self, file, filename, exp_list):
         else:
             parent_bone_name = joints[parent_index].shortname.split("_", 1)[1]
         hierarchy_item = hierarchy[joint_counter]
-        Flags = hierarchy_item[0]
-        Values = hierarchy_item[1]
+        Flags, Values = hierarchy_item
         FlagValue = 0
         FlagText = ''
         NumberOfFlags = 0
@@ -794,49 +698,49 @@ def export_anim(self, file, filename, exp_list):
     file.write('\n')
 
     file.write('bounds {\n')
-    for frame_counter in range(0,NumberOfFrames):
+    for frame_counter in range(NumberOfFrames):
         current_bound = bounds[frame_counter]
         current_min = current_bound[0]
         current_max = current_bound[1]
         file.write('\t(')
         for amt in current_min:
             amt = ie_utils.NicePrintableFloat(amt)
-            file.write(' %s' % (amt))
+            file.write(' %s' % (amt, ))
         file.write(' ) (')
         for amt in current_max:
             amt = ie_utils.NicePrintableFloat(amt)
-            file.write(' %s' % (amt))
+            file.write(' %s' % (amt, ))
         file.write(' )\n')
     file.write('}\n')
     file.write('\n')
 
     file.write('baseframe {\n')
-    for joint_counter in range(0,NumberOfBones):
+    for joint_counter in range(NumberOfBones):
         hierarchy_item = hierarchy[joint_counter]
         Values = hierarchy_item[1]
         file.write('\t( ')
         for value in range(len(Values)):
             amt = ie_utils.NicePrintableFloat(Values[value])
             if value == len(Values)-4:
-                file.write('%s ) ( ' % (amt))
+                file.write('%s ) ( ' % (amt, ))
                 continue
             if value == len(Values)-1:
-                file.write('%s )\n' % (amt))
+                file.write('%s )\n' % (amt, ))
                 break
-            file.write('%s ' % (amt))
+            file.write('%s ' % (amt, ))
     file.write('}\n')
     file.write('\n')
 
     progressbar = quarkx.progressbar(2452, NumberOfFrames * NumberOfBones)
-    for frame_counter in range(0,NumberOfFrames):
+    for frame_counter in range(NumberOfFrames):
         progressbar.progress()
         file.write('frame %i {\n' % frame_counter)
-        for joint_counter in range(0,NumberOfBones):
+        for joint_counter in range(NumberOfBones):
             progressbar.progress()
             hierarchy_item = hierarchy[joint_counter]
             Flags = hierarchy_item[0]
-            bone_pos = QuArK_frame_position_raw[frame_counter][joint_counter]
-            bone_rot = QuArK_frame_matrix_raw[frame_counter][joint_counter]
+            bone_pos = QuArK_frame_position_raw[frame_counter][joint_counter].xyz
+            bone_rot = QuArK_frame_quat_raw[frame_counter][joint_counter].xyzw
             FirstItem = 1
             for i in range(0,3):
                 if (Flags[i] != 0):
@@ -844,14 +748,14 @@ def export_anim(self, file, filename, exp_list):
                         file.write('\t')
                         FirstItem = 0
                     amt = ie_utils.NicePrintableFloat(bone_pos[i])
-                    file.write(' %s' % amt)
+                    file.write(' %s' % (amt, ))
             for i in range(0,3):
                 if (Flags[i+3] != 0):
                     if (FirstItem):
                         file.write('\t')
                         FirstItem = 0
                     amt = ie_utils.NicePrintableFloat(bone_rot[i])
-                    file.write(' %s' % amt)
+                    file.write(' %s' % (amt, ))
             if (FirstItem == 0):
                 file.write('\n')
         file.write('}\n')
@@ -1081,7 +985,7 @@ class ExportSettingsDlg(quarkpy.qmacro.dialogbox):
                         if item == len(self.editor.Root.subitems)-1:
                             break
             if foundbone == 0:
-                export_bones = export_bones + [bones[bone]]
+                export_bones.append(bones[bone])
         self.bones = export_bones
         self.mesh_vtx_errors = []
         self.mesh_errors = ""
