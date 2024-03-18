@@ -1120,7 +1120,7 @@ class md5anim:
 def load_md5anim(md5anim_filename, bones, actionname):
     theanim = md5anim() # Making an "instance" of this class.
     theanim.load_md5anim(md5anim_filename, bones, actionname) # Calling this class function to open and completely read the .md5_anim file.
-    theanim.apply(bones, actionname) # Calling this class function to create the amimation frames,
+    theanim.apply(bones, actionname) # Calling this class function to create the animation frames,
                                      # "bones" (see above), "actionname" is the full ,md5anim file name only.
 
     return
@@ -1375,7 +1375,7 @@ def dataformname(o):
              "Vertex Color"$22" - Color to use for this component's u,v vertex color mapping."$0D
              "            Click the color display button to select a color."$0D22
              "show weight colors"$22" - When checked, if component has vertex weight coloring they will show."$0D
-             "          If NOT checked and it has bones with vetexes, those will show."$0D
+             "          If NOT checked and it has bones with vertexes, those will show."$0D
              "shader file"$22" - Gives the full path and name of the .mtr material"$0D
              "           shader file that the selected skin texture uses, if any."$0D22
              "shader name"$22" - Gives the name of the shader located in the above file"$0D

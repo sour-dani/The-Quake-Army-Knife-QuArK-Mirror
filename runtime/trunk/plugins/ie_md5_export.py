@@ -871,7 +871,7 @@ def savemodel(root, filename, gamename, nomessage=0):
                 quarkx.msgbox("Component " + object.shortname + "\nnumber of animation frames\ndoes not equal other components.\nCan not create model.", quarkpy.qutils.MT_ERROR, quarkpy.qutils.MB_OK)
                 return
 
-    UIExportDialog(root, filename, editor) # Calls the dialog below which calls to save a mesh or animaition file.
+    UIExportDialog(root, filename, editor) # Calls the dialog below which calls to save a mesh or animation file.
     return
 
 
