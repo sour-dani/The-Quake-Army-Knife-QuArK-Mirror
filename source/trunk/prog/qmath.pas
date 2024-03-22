@@ -118,9 +118,7 @@ var
 
 function Proj(const P: TVect) : TPoint;
 function ProjEx(const P: TVect; var Dest: TPoint) : Boolean;
-function Espace(X,Y,Z: Integer) : TVect;
 function Profondeur(const V: TVect) : Double;
-procedure InitProjVar;
 
 implementation
 
@@ -131,8 +129,6 @@ var
  pProjX, pProjY: Double;
  CalculeProj3D: TProjEventEx;
  CalculeProfondeur3D: TProfondeurEventEx;
-
- Facteur: Double;
 
 function VecLength(const V1: TVect) : Double;
 begin
@@ -202,20 +198,6 @@ begin
    Dest:=Proj(P);
    ProjEx:=True;
   end;
-end;
-
-function Espace;
-begin
- Dec(X, pDeltaX);
- Y:=pDeltaY-Y;
- Espace.X:=(X*pProjX - Y*pProjY) * Facteur;
- Espace.Y:=(Y*pProjX + X*pProjY) * Facteur;
- Espace.Z:=(pDeltaZ-Z) / g_pProjZ;
-end;
-
-procedure InitProjVar;
-begin
- Facteur:=1/(Sqr(pProjX)+Sqr(pProjY));
 end;
 
 function Profondeur(const V: TVect) : Double;
