@@ -1179,12 +1179,12 @@ var
   n: DWORD;
   WinH: HWND;
   s: string;
+  bdata: PByte;
+  dummy: Integer;
   rkOSInfo: string;
   (*rvVersionName, rvVersionNumber, *)rvType: string;
   {$IFDEF LogSensitiveInformation}
   rvInstallDate: string;
-  bdata: PByte;
-  dummy: Integer;
   {$ENDIF}
 const
   rkOSInfo95 = {HKEY_LOCAL_MACHINE\}'SOFTWARE\Microsoft\Windows\CurrentVersion';
@@ -1195,7 +1195,7 @@ const
   rvVersionNumberNT = 'CurrentVersion';*)
   //rvProductType95 = 'ProductType'; //Overlaps with TOSVersionInfoEx.wProductType
   //rvProductTypeNT = 'SoftwareType'; //Overlaps with TOSVersionInfoEx.wProductType
-  rvType95 = 'InstallType'; //Note: Binary!
+  rvType95 = 'InstallType';
   rvTypeNT = 'CurrentType';
   rvInstallDate95 = 'FirstInstallDateTime';
   rvInstallDateNT = 'InstallDate';
@@ -1533,7 +1533,21 @@ begin
       if ValueExists(rvVersionNumber) then
         VersionNumber:=ReadString(rvVersionNumber);*)
       if ValueExists(rvType) then
-        Typ:=ReadString(rvType);
+      begin
+        if WindowsPlatformCompatibility=osWin95Comp then
+        begin
+          GetMem(bdata, 2);
+          try
+            dummy:=2;
+            if TryReadBinaryData(rvType,bdata^,dummy) then
+              Typ:=IntToStr(PWord(bdata)^); //FIXME: What do the numbers mean exactly?
+          finally
+            FreeMem(bdata);
+          end;
+        end
+        else
+          Typ:=ReadString(rvType);
+      end;
       if ValueExists(rvPlusVersionNumber) then
         PlusVersionNumber:=ReadString(rvPlusVersionNumber);
       if ValueExists(rvEditionID) then
