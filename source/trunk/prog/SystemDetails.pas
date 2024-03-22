@@ -322,7 +322,7 @@ type
   {$ENDIF}
 
   TPlatformType = (osWin95Comp, osWinNTComp);
-  TPlatform = (osWin95, osWin98, osWin98SE, osWinME, osWinNT4, osWin2000, osWinXP, osWin2003, osWinVista, osWin7, osWin8, osWin81, osWin2008, osWin2008R2, osWin2012, osWin2012R2, osWin10, osWin2016, osWin2019, osWin2022, osWin11); //Note: Not all are currently detected!
+  TPlatform = (osWin95, osWin98, osWin98SE, osWinME, (*osWinNT31, osWinNT35, osWinNT351,*) osWinNT4, osWin2000, osWinXP, osWin2003, osWinVista, osWin7, osWin8, osWin81, osWin2008, osWin2008R2, osWin2012, osWin2012R2, osWin10, osWin2016, osWin2019, osWin2022, osWin11); //Note: Not all are currently detected!
   //FIXME: See: https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-osversioninfoexa
 
   TVendorStr = array[0..11] of AnsiChar;
@@ -1308,8 +1308,28 @@ begin
       case MajorVersion of
       (*3:
        begin
-        Platform:='Windows NT 3.51';
-        WindowsPlatform:=osWinNT351;
+        case MinorVersion of
+        1:
+         begin
+          Platform:='Windows NT 3.1';
+          WindowsPlatform:=osWinNT31;
+         end;
+        5:
+         begin
+          Platform:='Windows NT 3.5';
+          WindowsPlatform:=osWinNT35;
+         end;
+        51:
+         begin
+          Platform:='Windows NT 3.51';
+          WindowsPlatform:=osWinNT351;
+         end;
+        else
+         begin
+          Platform:='Windows NT 3?';
+          WindowsPlatform:=osWinNT31;
+         end;
+        end;
         WindowsPlatformCompatibility:=osWinNTComp;
        end;*)
       4:
@@ -1317,12 +1337,12 @@ begin
         case MinorVersion of
         0:
          begin
-          Platform:='Windows NT4';
+          Platform:='Windows NT 4';
           WindowsPlatform:=osWinNT4;
          end;
         else
          begin
-          Platform:='Unknown (Probably OK)';
+          Platform:='Windows NT 4?';
           WindowsPlatform:=osWinNT4;
          end;
         end;
@@ -1348,7 +1368,7 @@ begin
          end;
         else
          begin
-          Platform:='Unknown (Probably OK)';
+          Platform:='Windows NT 5?';
           WindowsPlatform:=osWin2000;
          end;
         end;
@@ -1379,7 +1399,7 @@ begin
          end;
         else
          begin
-          Platform:='Unknown (Probably OK)';
+          Platform:='Windows NT 6?';
           WindowsPlatform:=osWinVista;
          end;
         end;
@@ -1395,7 +1415,7 @@ begin
          end;
         else
          begin
-          Platform:='Unknown (Probably OK)';
+          Platform:='Windows NT 10?';
           WindowsPlatform:=osWin10;
          end;
         end;
@@ -1405,13 +1425,13 @@ begin
        begin
         if MajorVersion>6 then
         begin
-          Platform:='Unknown (Probably OK)';
-          WindowsPlatform:=osWin81;
+          Platform:='Windows NT?';
+          WindowsPlatform:=osWin11;
           WindowsPlatformCompatibility:=osWinNTComp;
         end
         else
         begin
-          Platform:='Unknown';
+          Platform:='Windows?';
           WindowsPlatform:=osWin95;
           WindowsPlatformCompatibility:=osWin95Comp;
         end;
