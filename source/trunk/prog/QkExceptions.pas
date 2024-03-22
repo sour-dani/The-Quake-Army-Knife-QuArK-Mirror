@@ -146,16 +146,16 @@ begin
   end
   else
   begin
-    Log(LOG_WARNING, 'Unable to retrieve system error message for error: ' + UIntToStr(ErrNR));
+    Log(LOG_WARNING, 'Unable to retrieve system error message for error: %u', [ErrNR]);
     Result:='';
   end;
 end;
 
 procedure LogWindowsError(ErrNr: DWORD; const Call: String);
 begin
-  Log(LOG_WARNING, 'Error when calling a Windows API:' + #13#10 +
-                   'Call: ' + Call + #13#10 +
-                   'Reason: ' + GetSystemErrorMessage(ErrNr));
+  Log(LOG_WARNING, 'Error when calling a Windows API:' + sLineBreak +
+                   'Call: %s' + sLineBreak +
+                   'Reason: %s', [Call, GetSystemErrorMessage(ErrNr)]);
 end;
 
 end.
