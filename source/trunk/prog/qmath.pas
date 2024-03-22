@@ -69,7 +69,6 @@ function ReadVector(const S: String) : TVect;
 function ReadNumValueEx(const S: String) : Double;
 function itos(const I: Integer) : String;
 function ftos(const F: Double) : String;
-function ftos0(const F: Double) : String;
 function ftos1(const F: Double) : String;
 function ftosp(const F: Double; const P: integer) : String;
 {function dtos(const D: Double) : String;}
@@ -249,23 +248,6 @@ begin
  else
   i:=maxDigits;
  Result:=FloatToStrF(F, ffFixed, 7, i);
-end;
-
-function ftos0(const F: Double) : String;
-var
- R: Int64;
-begin
- if Abs(F) < High(R) - 2 then //Safety margin
- begin
-   R:=Round(F);
-   if Abs(F-R) <= rien then
-   begin
-     Result:=IntToStr(R)+'.0';
-     Exit;
-   end;
- end;
- {DecimalSeparator:='.';}
- Result:=FloatToStrF(F, ffFixed, 7, 5);
 end;
 
 function ftos1(const F: Double) : String;
