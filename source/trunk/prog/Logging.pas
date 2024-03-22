@@ -257,7 +257,7 @@ begin
     retaddr := walker;
     Inc(retaddr);
     if result<>'' then
-      result := result + #13#10;
+      result := result + sLineBreak;
     result := result + AddressInfo(Cardinal(retaddr^));
     walker := walker^;
   end;
@@ -291,9 +291,9 @@ begin
   Timestamp := Now;
   {$I-}
   if PythonStackTrace<>nil then
-   WriteLn(LogProfileFile, Format('[%s %s] Thread %d, Location %s'#13#10'Arguments: %s'#13#10'Delphi stack trace:#13#10%s'#13#10'Python stack trace:'#13#10'%s', [DateToStr(Timestamp), TimeToStr(Timestamp), GetCurrentThreadId, Location, JoinArgs(Args), GetStackReport(), PythonStackTrace.Text]))
+   WriteLn(LogProfileFile, Format('[%s %s] Thread %d, Location %s'+sLineBreak+'Arguments: %s'+sLineBreak+'Delphi stack trace:'+sLineBreak+'%s'+sLineBreak+'Python stack trace:'+sLineBreak+'%s', [DateToStr(Timestamp), TimeToStr(Timestamp), GetCurrentThreadId, Location, JoinArgs(Args), GetStackReport(), PythonStackTrace.Text]))
   else
-   WriteLn(LogProfileFile, Format('[%s %s] Thread %d, Location %s'#13#10'Arguments: %s'#13#10'Delphi stack trace:#13#10%s'#13#10, [DateToStr(Timestamp), TimeToStr(Timestamp), GetCurrentThreadId, Location, JoinArgs(Args), GetStackReport()]));
+   WriteLn(LogProfileFile, Format('[%s %s] Thread %d, Location %s'+sLineBreak+'Arguments: %s'+sLineBreak+'Delphi stack trace:'+sLineBreak+'%s'+sLineBreak, [DateToStr(Timestamp), TimeToStr(Timestamp), GetCurrentThreadId, Location, JoinArgs(Args), GetStackReport()]));
   Flush(LogProfileFile);
   {$I+}
 end;
