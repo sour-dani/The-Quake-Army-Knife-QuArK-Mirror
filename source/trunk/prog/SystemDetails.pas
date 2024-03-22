@@ -143,9 +143,11 @@ type
     {$ENDIF}
     FArchitecture: WORD;
     FVersion: string;
-    FRegUser: string;
+    {$IFDEF LogSensitiveInformation}
     FSerialNumber: string;
+    FRegUser: string;
     FRegOrg: string;
+    {$ENDIF}
     FEnv: TStrings;
     FDirs: TStrings;
     procedure GetEnvironment;
@@ -171,9 +173,11 @@ type
     property Wow64 :Boolean read FWow64 write FWow64 stored false;
     {$ENDIF}
     property Architecture :WORD read FArchitecture write FArchitecture stored false;
+    {$IFDEF LogSensitiveInformation}
     property SerialNumber :string read FSerialNumber write FSerialNumber stored false;
     property RegisteredUser :string read FRegUser write FRegUser stored false;
     property RegisteredOrg :string read FRegOrg write FRegOrg stored false;
+    {$ENDIF}
     property Environment :TStrings read FEnv write FEnv stored false;
     property Directories :TStrings read FDirs write FDirs stored False;
   end;
@@ -1165,9 +1169,11 @@ const
   rkOSInfoNT = {HKEY_LOCAL_MACHINE\}'SOFTWARE\Microsoft\Windows NT\CurrentVersion';
   rvVersionName95 = 'Version';
   rvVersionNameNT = 'CurrentType';
+  {$IFDEF LogSensitiveInformation}
   rvRegOrg = 'RegisteredOrganization';
   rvRegOwn = 'RegisteredOwner';
   rvProductID = 'ProductID';
+  {$ENDIF}
 
   cUserProfile = 'USERPROFILE';
   cUserProfileReg = {HKEY_CURRENT_USER\}'SOFTWARE\Microsoft\Windows\CurrentVersion\ProfileList';
@@ -1454,9 +1460,11 @@ begin
   end;
   CSD:=StrPas(OS.szCSDVersion);
   Version:='';
+  {$IFDEF LogSensitiveInformation}
   RegisteredUser:='';
   RegisteredOrg:='';
   SerialNumber:='';
+  {$ENDIF}
   with TRegistry2.Create(KEY_READ) do
   begin
     rootkey:=HKEY_LOCAL_MACHINE;
@@ -1464,12 +1472,14 @@ begin
     begin
       if ValueExists(rvVersionName) then
         Version:=ReadString(rvVersionName);
+      {$IFDEF LogSensitiveInformation}
       if ValueExists(rvRegOrg) then
         RegisteredOrg:=ReadString(rvRegOrg);
       if ValueExists(rvRegOwn) then
         RegisteredUser:=ReadString(rvRegOwn);
       if ValueExists(rvProductID) then
         SerialNumber:=ReadString(rvProductID);
+      {$ENDIF}
       FDirs.Add('CommonFiles='  +ReadString('CommonFilesDir'));
       FDirs.Add('ProgramFiles=' +ReadString('ProgramFilesDir'));
       FDirs.Add('Device='       +ReadString('DevicePath'));
