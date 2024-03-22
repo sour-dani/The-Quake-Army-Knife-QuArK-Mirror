@@ -338,13 +338,13 @@ begin
  begin
   S := UpperCase(ParamStr(I));
   if S = '/?' then
-   MessageBox(0, 'Available parameters:' + #13#10
-   + #13#10
-   + '/?: Displays this window' + #13#10
-   + '/NOINSTANCE: Skips the single-instance check (use at own risk!)' + #13#10
-   + '/NOSPLASH: Skips the splash-screen' + #13#10
-   + '/NOUPDATE: Skips the update check' + #13#10
-   + #13#10
+   MessageBox(0, 'Available parameters:' + sLineBreak
+   + sLineBreak
+   + '/?: Displays this window' + sLineBreak
+   + '/NOINSTANCE: Skips the single-instance check (use at own risk!)' + sLineBreak
+   + '/NOSPLASH: Skips the splash-screen' + sLineBreak
+   + '/NOUPDATE: Skips the update check' + sLineBreak
+   + sLineBreak
    + 'All other parameters will be interpreted as files to load.', 'QuArK', MB_TASKMODAL or MB_OK)
   else if S = '/NOINSTANCE' then
    LaunchOptions.DoInstance := false
@@ -400,9 +400,9 @@ begin
    begin
      if MutexError = ERROR_ALREADY_EXISTS then
      begin
-       S:='An instance of QuArK is already running. This can cause serious problems. ';
-       S:=S+'For example, changed configuration settings might not be saved, and QuArK might not update correctly.'#13#10;
-       S:=S+'This check can be disabled (at own risk!) in the configuration settings.'#13#10#13#10;
+       S:='An instance of QuArK is already running. This can cause serious problems.';
+       S:=S+' For example, changed configuration settings might not be saved, and QuArK might not update correctly.' + sLineBreak;
+       S:=S+'This check can be disabled (at own risk!) in the configuration settings.' + sLineBreak + sLineBreak;
        S:=S+'Are you sure you want to start a new instance of QuArK?';
        if Windows.MessageBox(0, PChar(S), PChar('QuArK'), MB_TASKMODAL or MB_YESNO or MB_ICONWARNING or MB_DEFBUTTON2) = idNo then
        begin
