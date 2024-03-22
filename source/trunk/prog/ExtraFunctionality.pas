@@ -605,6 +605,10 @@ function AnsiSameStr(const S1, S2: string): Boolean;
   operation is controlled by the current Windows locale. The return value
   is True if AnsiCompareText would have returned 0. }
 function AnsiSameText(const S1, S2: string): Boolean;
+
+{ FreeAndNil frees the given TObject instance and sets the variable reference
+  to nil.  Be careful to only pass TObjects to this routine. }
+procedure FreeAndNil(var Obj);
 {$endif}
 
 {$ifndef Delphi6orNewerCompiler}
@@ -851,6 +855,15 @@ function AnsiSameText(const S1, S2: string): Boolean;
 begin
   Result := CompareString(LOCALE_USER_DEFAULT, NORM_IGNORECASE, PChar(S1),
     Length(S1), PChar(S2), Length(S2)) = 2;
+end;
+
+procedure FreeAndNil(var Obj);
+var
+  P: TObject;
+begin
+  P := TObject(Obj);
+  TObject(Obj) := nil;  // clear the reference before destroying the object
+  P.Free;
 end;
 {$endif}
 
