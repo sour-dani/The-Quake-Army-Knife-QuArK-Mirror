@@ -646,7 +646,7 @@ begin
     else
       S:=''; //Shouldn't happen!
     end;   *)
-    Label1.Caption:=S + #13#10 + UpdatePackages[I].Description;
+    Label1.Caption:=S + sLineBreak + UpdatePackages[I].Description;
     Label1.Font.Color:=clWindowText;
   end;
 end;

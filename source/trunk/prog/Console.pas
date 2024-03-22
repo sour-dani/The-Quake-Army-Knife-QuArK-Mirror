@@ -651,7 +651,7 @@ begin
      begin
       J:=PipeBuffer^[I].DataLength;
       SetString(S, PChar(PipeBuffer^[I].Data), J);
-      Text:=Text+S+#13#10;
+      Text:=Text+S+sLineBreak;
      end;
     Inc(I);
     if I>=ConsoleHeight then Dec(I, ConsoleHeight);
