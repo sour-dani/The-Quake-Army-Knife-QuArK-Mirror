@@ -142,9 +142,8 @@ type
     FWow64: Boolean;
     {$ENDIF}
     FArchitecture: WORD;
-    FVersion: String;
-    FVersionNumber: String;
-    FInstallDate: DWORD;
+    (*FVersion: String;
+    FVersionNumber: String;*)
     FPlusVersionNumber: String;
     FType: String;
     FEditionID: String;
@@ -154,6 +153,8 @@ type
     FSerialNumber: String;
     FRegUser: String;
     FRegOrg: String;
+    FInstallDate: DWORD;
+    FInstallTime: QWORD;
     {$ENDIF}
     FEnv: TStrings;
     FDirs: TStrings;
@@ -179,9 +180,8 @@ type
     property Wow64: Boolean read FWow64 write FWow64 stored false;
     {$ENDIF}
     property Architecture: WORD read FArchitecture write FArchitecture stored false;
-    property Version: String read FVersion write FVersion stored false;
-    property VersionNumber: String read FVersionNumber write FVersionNumber stored false;
-    property InstallDate: DWORD read FInstallDate write FInstallDate stored false;
+    (*property Version: String read FVersion write FVersion stored false;
+    property VersionNumber: String read FVersionNumber write FVersionNumber stored false;*)
     property PlusVersionNumber: String read FPlusVersionNumber write FPlusVersionNumber stored false;
     property Typ: String read FType write FType stored false;
     property EditionID: String read FEditionID write FEditionID stored false;
@@ -191,6 +191,8 @@ type
     property SerialNumber: String read FSerialNumber write FSerialNumber stored false;
     property RegisteredUser: String read FRegUser write FRegUser stored false;
     property RegisteredOrg: String read FRegOrg write FRegOrg stored false;
+    property InstallDate: DWORD read FInstallDate write FInstallDate stored false;
+    property InstallTime: QWORD read FInstallTime write FInstallTime stored false;
     {$ENDIF}
     property Environment: TStrings read FEnv write FEnv stored false;
     property Directories: TStrings read FDirs write FDirs stored False;
@@ -330,7 +332,8 @@ type
 
 implementation
 
-uses Math, Graphics, {$IFDEF CompiledWithDelphi2}ShellObj, OLE2, {$ELSE}ShlObj, ActiveX, {$ENDIF}TlHelp32, Psapi, Registry, Registry2, Logging, QkExceptions;
+uses Math, Graphics, DateUtils, {$IFDEF CompiledWithDelphi2}ShellObj, OLE2, {$ELSE}ShlObj, ActiveX, {$ENDIF}
+  TlHelp32, Psapi, Registry, Registry2, Logging, QkExceptions;
 
 type
   {$IFDEF Delphi4orNewerCompiler}
@@ -1177,20 +1180,26 @@ var
   WinH: HWND;
   s: string;
   rkOSInfo: string;
-  rvVersionName, rvVersionNumber, rvType, rvInstallDate: string;
+  (*rvVersionName, rvVersionNumber, *)rvType: string;
+  {$IFDEF LogSensitiveInformation}
+  rvInstallDate: string;
+  bdata: PByte;
+  dummy: Integer;
+  {$ENDIF}
 const
   rkOSInfo95 = {HKEY_LOCAL_MACHINE\}'SOFTWARE\Microsoft\Windows\CurrentVersion';
   rkOSInfoNT = {HKEY_LOCAL_MACHINE\}'SOFTWARE\Microsoft\Windows NT\CurrentVersion';
-  rvVersionName95 = 'Version';
+  (*rvVersionName95 = 'Version';
   rvVersionNameNT = 'ProductName';
   rvVersionNumber95 = 'VersionNumber';
-  rvVersionNumberNT = 'CurrentVersion';
+  rvVersionNumberNT = 'CurrentVersion';*)
   //rvProductType95 = 'ProductType'; //Overlaps with TOSVersionInfoEx.wProductType
   //rvProductTypeNT = 'SoftwareType'; //Overlaps with TOSVersionInfoEx.wProductType
   rvType95 = 'InstallType'; //Note: Binary!
   rvTypeNT = 'CurrentType';
-  rvInstallDate95 = 'FirstInstallDateTime'; //REG_BINARY, 4 bytes
-  rvInstallDateNT = 'InstallDate'; //REG_DWORD
+  rvInstallDate95 = 'FirstInstallDateTime';
+  rvInstallDateNT = 'InstallDate';
+  rvInstallTime = 'InstallTime'; //Only on Win10+
   rvPlusVersionNumber = 'Plus! VersionNumber'; //Only on Win9x
   //rvBuild = 'CurrentBuild'; //Only on WinNT //Obsolete
   //rvBuildNumber = 'CurrentBuildNumber'; //Only on WinNT //Overlaps with TOSVersionInfo.dwBuildNumber
@@ -1204,7 +1213,7 @@ const
   {$IFDEF LogSensitiveInformation}
   rvRegOrg = 'RegisteredOrganization';
   rvRegOwn = 'RegisteredOwner';
-  rvProductID = 'ProductID';
+  rvProductID = 'ProductId';
   {$ENDIF}
 
   cUserProfile = 'USERPROFILE';
@@ -1482,25 +1491,28 @@ begin
   osWin95Comp:
    begin
     rkOSInfo:=rkOSInfo95;
-    rvVersionName:=rvVersionName95;
-    rvVersionNumber:=rvVersionNumber95;
+    (*rvVersionName:=rvVersionName95;
+    rvVersionNumber:=rvVersionNumber95;*)
     rvType:=rvType95;
+    {$IFDEF LogSensitiveInformation}
     rvInstallDate:=rvInstallDate95;
+    {$ENDIF}
    end;
   osWinNTComp:
    begin
     rkOSInfo:=rkOSInfoNT;
-    rvVersionName:=rvVersionNameNT;
-    rvVersionNumber:=rvVersionNumberNT;
+    (*rvVersionName:=rvVersionNameNT;
+    rvVersionNumber:=rvVersionNumberNT;*)
     rvType:=rvTypeNT;
+    {$IFDEF LogSensitiveInformation}
     rvInstallDate:=rvInstallDateNT;
+    {$ENDIF}
    end;
   end;
   CSD:=StrPas(OS.szCSDVersion);
-  Version:='';
-  VersionNumber:='';
+  (*Version:='';
+  VersionNumber:='';*)
   Typ:='';
-  InstallDate:=0;
   PlusVersionNumber:='';
   EditionID:='';
   DisplayVersion:='';
@@ -1508,21 +1520,20 @@ begin
   RegisteredUser:='';
   RegisteredOrg:='';
   SerialNumber:='';
+  InstallDate:=0;
+  InstallTime:=0;
   {$ENDIF}
   with TRegistry2.Create(KEY_READ) do
   begin
     rootkey:=HKEY_LOCAL_MACHINE;
     if OpenKey(rkOSInfo,false) then
     begin
-      if ValueExists(rvVersionName) then
+      (*if ValueExists(rvVersionName) then
         Version:=ReadString(rvVersionName);
       if ValueExists(rvVersionNumber) then
-        VersionNumber:=ReadString(rvVersionNumber);
+        VersionNumber:=ReadString(rvVersionNumber);*)
       if ValueExists(rvType) then
         Typ:=ReadString(rvType);
-(*  FIXME:
-  InstallDate:=0;
-  *)
       if ValueExists(rvPlusVersionNumber) then
         PlusVersionNumber:=ReadString(rvPlusVersionNumber);
       if ValueExists(rvEditionID) then
@@ -1536,6 +1547,24 @@ begin
         RegisteredUser:=ReadString(rvRegOwn);
       if ValueExists(rvProductID) then
         SerialNumber:=ReadString(rvProductID);
+      if ValueExists(rvInstallDate) then
+      begin
+        if WindowsPlatformCompatibility=osWin95Comp then
+        begin
+          GetMem(bdata, 4);
+          try
+            dummy:=4;
+            if TryReadBinaryData(rvInstallDate,bdata^,dummy) then
+              InstallDate:=PDWORD(bdata)^;
+          finally
+            FreeMem(bdata);
+          end;
+        end
+        else
+          InstallDate:=ReadDWORD(rvInstallDate);
+      end;
+      if ValueExists(rvInstallTime) then
+        InstallTime:=ReadQWORD(rvInstallTime);
       {$ENDIF}
       FDirs.Add('CommonFiles='  +ReadString('CommonFilesDir'));
       FDirs.Add('ProgramFiles=' +ReadString('ProgramFilesDir'));
@@ -1641,6 +1670,15 @@ begin
           add('Type: Unknown');
       end;
     end;
+    {$IFDEF LogSensitiveInformation}
+    add(format('Registered to person: %s',[RegisteredUser]));
+    add(format('Registered to company: %s',[RegisteredOrg]));
+    add(format('Serial: %s',[SerialNumber]));
+    if InstallTime<>0 then
+      add(format('Installed on: %s',[DateTimeToStr(Win64ToDateTime(InstallTime))]))
+    else
+      add(format('Installed on: %s',[DateTimeToStr(UnixToDateTime(InstallDate))]));
+    {$ENDIF}
     {$IFDEF WIN32}
     if Wow64 then
       add('Running under Wow64');

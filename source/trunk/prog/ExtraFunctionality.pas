@@ -168,8 +168,13 @@ type
   RESTRICTIONS = LongWord; //Really: enum
   _FIRMWARE_TYPE = LongWord; //Really: enum
   PFIRMWARE_TYPE = ^_FIRMWARE_TYPE;
+{$endif}
 
 const
+  { Days between TDateTime basis (12/31/1899) and Windows 64-bit timestamp basis (1/1/1601) }
+  Win64DateDelta = -109207;
+
+{$ifdef MSWINDOWS}
 {$ifndef Delphi4orNewerCompiler} // FIXME: I'm not sure when this was introduced;
                                  // but it at least exists in Delphi 4
   DUPLICATE_CLOSE_SOURCE     = $00000001;
@@ -454,6 +459,10 @@ function ContainsStr(const AText, ASubText: string): Boolean;
 function StartsStr(const ASubText, AText: string): Boolean;
 function EndsStr(const ASubText, AText: string): Boolean;
 {$endif}
+
+//These are missing altogether:
+function DateTimeToWin64(const AValue: TDateTime): QWORD;
+function Win64ToDateTime(const AValue: QWORD): TDateTime;
 
 {$ifdef MSWINDOWS}
 {$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 7, and they exist in Delphi 11.3
@@ -761,6 +770,16 @@ begin
  Result := AnsiEndsStr(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
 end;
 {$endif}
+
+function DateTimeToWin64(const AValue: TDateTime): QWORD;
+begin
+  Result := Round((AValue - Win64DateDelta) * SecsPerDay * 100000000);
+end;
+
+function Win64ToDateTime(const AValue: QWORD): TDateTime;
+begin
+  Result := AValue / SecsPerDay / 100000000 + Win64DateDelta;
+end;
 
 {$ifndef Delphi5orNewerCompiler}
 function CompareMem(P1, P2: Pointer; Length: Integer): Boolean; assembler;
