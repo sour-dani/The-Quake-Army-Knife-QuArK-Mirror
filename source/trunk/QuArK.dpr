@@ -275,6 +275,9 @@ uses
 {$ENDIF}
 
 begin
+  (*//Disable Runtime error messages
+  NoErrMsg:=True;*)
+
 {$IFDEF MemCheck}
   MemChk;
 {$ENDIF}
