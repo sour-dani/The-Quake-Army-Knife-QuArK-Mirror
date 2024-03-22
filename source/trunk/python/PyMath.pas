@@ -228,7 +228,7 @@ var
 
 implementation
 
-uses qdraw, QkExceptions, QkMapObjects, QkMapPoly, Qk3D;
+uses qdraw, qmathconvert, QkExceptions, QkMapObjects, QkMapPoly, Qk3D;
 
 const
  COERCEDFROMFLOAT : Double = -1E308; //Sentinel value if object was created through coercing of a float value.
@@ -310,7 +310,7 @@ begin
           Result:=PyFloat_FromDouble(PyVectST(self)^.TexT);
           Exit;
          end
-         else if StrComp(attr, 'tuple')=0 then
+         else if StrComp(attr, 'tuple')=0 then //FIXME: Remove in favor of .xyz?
          begin
           with PyVect(self)^.V do
            Result:=Py_BuildValueX('ddd', [X, Y, Z]);
@@ -872,6 +872,11 @@ begin
           Result:=MakePyQuaternion(Q1);
           Exit;
          end;
+   't':  if StrComp(attr, 'tomatrix')=0 then
+          begin
+           Result:=MakePyMatrix(QuaternionToMatrix(PyQuaternion(self)^.Q));
+           Exit;
+          end;
    'w': if attr[1]=#0 then
          begin
           Result:=PyFloat_FromDouble(PyQuaternion(self)^.Q.W);
@@ -1245,7 +1250,12 @@ begin
           end;
           Exit;
          end;
-   't':  if StrComp(attr, 'transposed')=0 then
+   't':  if StrComp(attr, 'toquaternion')=0 then
+         begin
+           Result:=MakePyQuaternion(MatrixToQuaternion(PyMatrix(self)^.M));
+           Exit;
+         end
+         else if StrComp(attr, 'transposed')=0 then
          begin
            Result:=MakePyMatrix(PyMatrix(self)^.M,true);
            Exit;

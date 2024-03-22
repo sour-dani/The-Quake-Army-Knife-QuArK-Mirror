@@ -34,42 +34,6 @@ textlog = "md5_ie_log.txt"
 ######################################################
 # MATH FUNCTIONS
 ######################################################
-def matrix2quaternion(m):
-    m = ((m[0][0], m[1][0], m[2][0], 0.0)
-        ,(m[0][1], m[1][1], m[2][1], 0.0)
-        ,(m[0][2], m[1][2], m[2][2], 0.0)
-        ,(    0.0,     0.0,     0.0, 1.0))
-
-    #See: http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/index.htm
-    s = math.sqrt(abs(m[0][0] + m[1][1] + m[2][2] + m[3][3]))
-    if s < 0.001:
-        if ((m[0][0] > m[1][1]) and (m[0][0] > m[2][2])):
-            s = math.sqrt(m[3][3] + m[0][0] - m[1][1] - m[2][2]) * 2.0
-            return (0.25 * s,
-                    (m[0][1] + m[1][0]) / s,
-                    (m[0][2] + m[2][0]) / s,
-                    (m[2][1] - m[1][2]) / s,
-            )
-        elif (m[1][1] > m[2][2]):
-            s = math.sqrt(m[3][3] + m[1][1] - m[0][0] - m[2][2]) * 2.0
-            return ((m[0][1] + m[1][0]) / s,
-                    0.25 * s,
-                    (m[1][2] + m[2][1]) / s,
-                    (m[0][2] - m[2][0]) / s,
-            )
-        else:
-            s = math.sqrt(m[3][3] + m[2][2] - m[0][0] - m[1][1]) * 2.0
-            return ((m[0][2] + m[2][0]) / s,
-                    (m[1][2] + m[2][1]) / s,
-                    0.25 * s,
-                    (m[1][0] - m[0][1]) / s
-            )
-    return ((m[2][1] - m[1][2]) / (2.0 * s),
-            (m[0][2] - m[2][0]) / (2.0 * s),
-            (m[1][0] - m[0][1]) / (2.0 * s),
-            0.5 * s,
-    )
-
 def reverse_vector_by_matrix(p, m):
     return [p[0] / m[0][0] - p[1] / m[1][0] - p[2] / m[2][0],
             p[0] / m[0][1] - p[1] / m[1][1] - p[2] / m[2][1],
@@ -188,7 +152,7 @@ def export_mesh(self, file, filename, exp_list):
                     bone_rot = quarkx.matrix(bone_data['rotmatrix'])
                     bone_pos = ((parent_rot * bone_pos) + parent_pos).tuple
                     bone_rot = (parent_rot * bone_rot).tuple
-                    temp_joint_data[bone_name] = [bone_pos, bone_rot]
+                    temp_joint_data[bone_name] = (bone_pos, bone_rot)
         joint_name = current_joint.shortname.split("_", 1)[1]
         joint_name = joint_name.replace(" ", "_")
         parent_index = -1
@@ -211,24 +175,26 @@ def export_mesh(self, file, filename, exp_list):
         baseframe = comp.dictitems['Frames:fg'].dictitems['baseframe:mf']
         if not self.editor.ModelComponentList['bonelist'].has_key(current_joint.name):
             # This bone has no vertexes assigned to it but could have a child bone for editing the model only.
-            bone_pos = current_joint.position.tuple
-            bone_rot = current_joint.rotmatrix.tuple
+            bone_pos = current_joint.position
+            bone_rot = current_joint.rotmatrix
         else:
-            bone_data = self.editor.ModelComponentList['bonelist'][current_joint.name]['frames'][baseframe.name]
-            bone_pos = bone_data['position']
-            bone_rot = bone_data['rotmatrix']
             if current_joint.dictspec.has_key('type') and current_joint.dictspec['type'] == 'skb-EF2':
                 bone_data = temp_joint_data[current_joint.name]
-                bone_pos = bone_data[0]
-                bone_rot = bone_data[1]
+                bone_pos, bone_rot = bone_data
+                bone_pos = quarkx.vect(bone_pos)
+                bone_rot = quarkx.matrix(bone_rot)
+            else:
+                bone_data = self.editor.ModelComponentList['bonelist'][current_joint.name]['frames'][baseframe.name]
+                bone_pos = quarkx.vect(bone_data['position'])
+                bone_rot = quarkx.matrix(bone_data['rotmatrix'])
         joint_data.append((bone_pos, bone_rot))
-        bone_rot = matrix2quaternion(bone_rot)
-        bone_pos0 = ie_utils.NicePrintableFloat(bone_pos[0])
-        bone_pos1 = ie_utils.NicePrintableFloat(bone_pos[1])
-        bone_pos2 = ie_utils.NicePrintableFloat(bone_pos[2])
-        bone_rot0 = ie_utils.NicePrintableFloat(bone_rot[0])
-        bone_rot1 = ie_utils.NicePrintableFloat(bone_rot[1])
-        bone_rot2 = ie_utils.NicePrintableFloat(bone_rot[2])
+        bone_rot = bone_rot.toquaternion
+        bone_pos0 = ie_utils.NicePrintableFloat(bone_pos.x)
+        bone_pos1 = ie_utils.NicePrintableFloat(bone_pos.y)
+        bone_pos2 = ie_utils.NicePrintableFloat(bone_pos.z)
+        bone_rot0 = ie_utils.NicePrintableFloat(bone_rot.x)
+        bone_rot1 = ie_utils.NicePrintableFloat(bone_rot.y)
+        bone_rot2 = ie_utils.NicePrintableFloat(bone_rot.z)
         file.write('\t"%s"\t%i ( %s %s %s ) ( %s %s %s )\t\t// %s\n' % (joint_name, parent_index, bone_pos0, bone_pos1, bone_pos2, bone_rot0, bone_rot1, bone_rot2, parent_bone_name))
     file.write('}\n')
     file.write('\n')
@@ -331,8 +297,7 @@ def export_mesh(self, file, filename, exp_list):
                 for key in sorted_keys:
                     bone_index = bone_name_to_index[key]
                     weight_value = weightvtxlist[old_vert_index][key]['weight_value']
-                    bone_pos = quarkx.vect(joint_data[bone_index][0])
-                    bone_rot = quarkx.matrix(joint_data[bone_index][1])
+                    bone_pos, bone_rot = joint_data[bone_index]
 
                     # For Alice, FAKK2 or EF2 model being exported.
                     if joints[bone_index].dictspec.has_key('type') and joints[bone_index].dictspec['type'].startswith('skb-'):
@@ -421,10 +386,7 @@ def export_mesh(self, file, filename, exp_list):
                 bone_index = 0 #0 = origin bone
                 weight_value = 1.0
 
-                bone_pos = joint_data[bone_index][0]
-                bone_pos = quarkx.vect(bone_pos)
-                bone_rot = joint_data[bone_index][1]
-                bone_rot = quarkx.matrix(bone_rot)
+                bone_pos, bone_rot = joint_data[bone_index]
                 # For EF2 model being exported.
                 if joints[bone_index].dictspec.has_key('type') and joints[bone_index].dictspec['type'] == 'skb-EF2':
                     weight_pos = ((bone_rot * current_vertex) + bone_pos) * weight_value
@@ -571,8 +533,7 @@ def export_anim(self, file, filename, exp_list):
                 bone_pos = bone_data['position']
                 bone_rot = bone_data['rotmatrix']
             QuArK_frame_position[frame_counter][joint_counter] = quarkx.vect(bone_pos)
-            quat = matrix2quaternion(bone_rot)
-            QuArK_frame_quat[frame_counter][joint_counter] = quarkx.quaternion(quat[0], quat[1], quat[2], quat[3])
+            QuArK_frame_quat[frame_counter][joint_counter] = quarkx.matrix(bone_rot).toquaternion
 
     # Calculate all the MD5 animation data
     QuArK_frame_position_raw = [[]]*NumberOfFrames

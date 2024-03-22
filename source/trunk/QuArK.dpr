@@ -214,6 +214,7 @@ uses
   QkWorldCraft in 'prog\QkWorldCraft.pas',
   QkZip2 in 'prog\QkZip2.pas',
   qmath in 'prog\qmath.pas',
+  qmathconvert in 'prog\qmathconvert.pas',
   qmatrices in 'prog\qmatrices.pas',
   qquaternions in 'prog\qquaternions.pas',
   QPAcc in 'prog\QPAcc.pas',

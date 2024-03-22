@@ -40,24 +40,6 @@ progressbar = None
 
 
 ######################################################
-# MATH FUNCTIONS
-######################################################
-def quaternion2matrix(q):
-    xx = q[0] * q[0]
-    yy = q[1] * q[1]
-    zz = q[2] * q[2]
-    xy = q[0] * q[1]
-    xz = q[0] * q[2]
-    yz = q[1] * q[2]
-    wx = q[3] * q[0]
-    wy = q[3] * q[1]
-    wz = q[3] * q[2]
-    return ((1.0 - 2.0 * (yy + zz),       2.0 * (xy + wz),       2.0 * (xz - wy)),
-            (      2.0 * (xy - wz), 1.0 - 2.0 * (xx + zz),       2.0 * (yz + wx)),
-            (      2.0 * (xz + wy),       2.0 * (yz - wx), 1.0 - 2.0 * (xx + yy)))
-
-
-######################################################
 # MD5 DATA STRUCTURES
 ######################################################
 class md5_vert:
@@ -236,7 +218,7 @@ def load_md5(md5_filename, basepath, actionname):
                 new_bone['flags'] = (0,0,0,0,0,0)
                 new_bone['show'] = (1.0,)
                 new_bone.position = new_md5_bone.position
-                new_bone.rotmatrix = quarkx.matrix(quaternion2matrix(new_md5_bone.rotation.xyzw))
+                new_bone.rotmatrix = new_md5_bone.rotation.tomatrix
                 new_bone['parent_index'] = str(new_md5_bone.parent_index) # QuArK code, this is NOT an integer but a string of its integer value.
                 if int(new_bone.dictspec['parent_index']) < 0:
                     new_bone['parent_name'] = "None"
@@ -1049,7 +1031,7 @@ class md5anim:
             framename = filename + " baseframe"
             bone_data = {}
             bone_data['position'] = QuArK_baseframe_position[bone_counter].xyz
-            bone_data['rotmatrix'] = quarkx.matrix(quaternion2matrix(QuArK_baseframe_quat[bone_counter].xyzw)).tuple
+            bone_data['rotmatrix'] = QuArK_baseframe_quat[bone_counter].tomatrix.tuple
             editor.ModelComponentList['bonelist'][current_bone.name]['frames'][framename + ':mf'] = bone_data
 
         #Create animation frames
@@ -1099,7 +1081,7 @@ class md5anim:
                 framename = filename + " frame "+str(frame_counter+1)
                 bone_data = {}
                 bone_data['position'] = QuArK_frame_position[frame_counter][bone_counter].xyz
-                bone_data['rotmatrix'] = quarkx.matrix(quaternion2matrix(QuArK_frame_quat[frame_counter][bone_counter].xyzw)).tuple
+                bone_data['rotmatrix'] = QuArK_frame_quat[frame_counter][bone_counter].tomatrix.tuple
                 editor.ModelComponentList['bonelist'][current_bone.name]['frames'][framename + ':mf'] = bone_data
 
         editor.ok(undo, "ANIM " + filename + " loaded")
