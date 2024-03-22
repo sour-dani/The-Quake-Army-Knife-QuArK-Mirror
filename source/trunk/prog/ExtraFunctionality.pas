@@ -582,12 +582,29 @@ type
   TSeekOrigin = (soBeginning, soCurrent, soEnd);
 {$ENDIF}
 
-{$ifndef Delphi5orNewerCompiler} // FIXME: I'm not sure when this was introduced;
-                                 // but it at least exists in Delphi 5
+{$ifndef Delphi4orNewerCompiler} // FIXME: I'm not sure when this was introduced;
+                                 // but it at least exists in Delphi 4
 { CompareMem performs a binary compare of Length bytes of memory referenced
   by P1 to that of P2.  CompareMem returns True if the memory referenced by
   P1 is identical to that of P2. }
 function CompareMem(P1, P2: Pointer; Length: Integer): Boolean; assembler;
+{$endif}
+
+{$ifndef Delphi5orNewerCompiler}
+{ SameText compares S1 to S2, without case-sensitivity. Returns true if
+  S1 and S2 are the equal, that is, if CompareText would return 0. SameText
+  has the same 8-bit limitations as CompareText }
+function SameText(const S1, S2: string): Boolean;
+
+{ AnsiSameStr compares S1 to S2, with case-sensitivity. The compare
+  operation is controlled by the current Windows locale. The return value
+  is True if AnsiCompareStr would have returned 0. }
+function AnsiSameStr(const S1, S2: string): Boolean;
+
+{ AnsiSameText compares S1 to S2, without case-sensitivity. The compare
+  operation is controlled by the current Windows locale. The return value
+  is True if AnsiCompareText would have returned 0. }
+function AnsiSameText(const S1, S2: string): Boolean;
 {$endif}
 
 {$ifndef Delphi6orNewerCompiler}
@@ -781,7 +798,7 @@ begin
   Result := AValue / SecsPerDay / 100000000 + Win64DateDelta;
 end;
 
-{$ifndef Delphi5orNewerCompiler}
+{$ifndef Delphi4orNewerCompiler}
 function CompareMem(P1, P2: Pointer; Length: Integer): Boolean; assembler;
 asm
         PUSH    ESI
@@ -801,6 +818,39 @@ asm
 @@1:    INC     EAX
 @@2:    POP     EDI
         POP     ESI
+end;
+{$endif}
+
+{$ifndef Delphi5orNewerCompiler}
+function SameText(const S1, S2: string): Boolean; assembler;
+asm
+        CMP     EAX,EDX
+        JZ      @1
+        OR      EAX,EAX
+        JZ      @2
+        OR      EDX,EDX
+        JZ      @3
+        MOV     ECX,[EAX-4]
+        CMP     ECX,[EDX-4]
+        JNE     @3
+        CALL    CompareText
+        TEST    EAX,EAX
+        JNZ     @3
+@1:     MOV     AL,1
+@2:     RET
+@3:     XOR     EAX,EAX
+end;
+
+function AnsiSameStr(const S1, S2: string): Boolean;
+begin
+  Result := CompareString(LOCALE_USER_DEFAULT, 0, PChar(S1), Length(S1),
+    PChar(S2), Length(S2)) = 2;
+end;
+
+function AnsiSameText(const S1, S2: string): Boolean;
+begin
+  Result := CompareString(LOCALE_USER_DEFAULT, NORM_IGNORECASE, PChar(S1),
+    Length(S1), PChar(S2), Length(S2)) = 2;
 end;
 {$endif}
 
