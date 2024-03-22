@@ -44,44 +44,44 @@ type
     FCPUIDLevel: LongWord;
     FVendorID,
     FVendor,
-    FSubModel: string;
+    FSubModel: String;
     FModel,
     FCount,
     FStepping,
     FFamily,
-    FTyp :cardinal;
+    FType: Cardinal;
     {$IFDEF MeasureCPUFrequency}
     FFreq: Cardinal;
     {$ENDIF}
-    FVendorNo :integer;
+    FVendorNo: Integer;
     FHasCPUID, FHasRDTSC: Boolean;
     function GetCPUType: Cardinal;
     function CPUIDExists: Boolean;
-    function GetCPUVendorID :string;
+    function GetCPUVendorID: String;
     {$IFDEF MeasureCPUFrequency}
-    function GetCPUFreqEx :extended;
+    function GetCPUFreqEx: Extended;
     {$ENDIF}
-    function GetSubModel :string;
+    function GetSubModel: String;
   public
     //constructor Create;
     //destructor Destroy; override;
     procedure GetInfo;
-    procedure Report(var sl :TStringList);
+    procedure Report(var sl: TStringList);
   published
-    property HasCPUID :Boolean read FHasCPUID write FHasCPUID stored false;
-    property HasRDTSC :Boolean read FHasRDTSC write FHasRDTSC stored false;
-    property CPUIDLevel :LongWord read FCPUIDLevel write FCPUIDLevel stored false;
-    property Count :cardinal read FCount write FCount stored false;
-    property Vendor :string read FVendor write FVendor stored false;
-    property VendorID :string read FVendorID write FVendorID stored false;
+    property HasCPUID: Boolean read FHasCPUID write FHasCPUID stored false;
+    property HasRDTSC: Boolean read FHasRDTSC write FHasRDTSC stored false;
+    property CPUIDLevel: LongWord read FCPUIDLevel write FCPUIDLevel stored false;
+    property Count: Cardinal read FCount write FCount stored false;
+    property Vendor: String read FVendor write FVendor stored false;
+    property VendorID: String read FVendorID write FVendorID stored false;
     {$IFDEF MeasureCPUFrequency}
-    property Freq :cardinal read FFreq write FFreq stored false;
+    property Freq: Cardinal read FFreq write FFreq stored false;
     {$ENDIF}
-    property Family :cardinal read FFamily write FFamily stored false;
-    property Stepping :cardinal read FStepping write FStepping stored false;
-    property Model :cardinal read FModel write FModel stored false;
-    property Typ :cardinal read FTyp write FTyp stored false;
-    property SubModel :string read FSubModel write FSubModel stored false;
+    property Family: Cardinal read FFamily write FFamily stored false;
+    property Stepping: Cardinal read FStepping write FStepping stored false;
+    property Model: Cardinal read FModel write FModel stored false;
+    property Typ: Cardinal read FType write FType stored false;
+    property SubModel: String read FSubModel write FSubModel stored false;
   end;
 
   TMemory = class(TPersistent)
@@ -103,26 +103,26 @@ type
     {$ENDIF}
   public
     procedure GetInfo;
-    procedure Report(var sl :TStringList);
+    procedure Report(var sl: TStringList);
   published
     {$IFDEF WIN16}
     property MemAvailable: Longint read FMemAvail write FMemAvail stored false;
     property MaxAvailable: Longint read FMaxAvail write FMaxAvail stored false;
-    property SystemRes :Word read FSystemRes write FSystemRes stored false;
-    property GDIRes :Word read FGDIRes write FGDIRes stored false;
-    property UserRes :Word read FUserRes write FUserRes stored false;
+    property SystemRes: Word read FSystemRes write FSystemRes stored false;
+    property GDIRes: Word read FGDIRes write FGDIRes stored false;
+    property UserRes: Word read FUserRes write FUserRes stored false;
     {$ELSE}
-    property MemoryLoad :DWORD read FMemoryLoad write FMemoryLoad stored false;
-    property PhysicalTotal :DWORDLONG read FPhysicalTotal write FPhysicalTotal stored false;
-    property PhysicalFree :DWORDLONG read FPhysicalFree write FPhysicalFree stored false;
-    property PageFileTotal :DWORDLONG read FPageFileTotal write FPageFileTotal stored false;
-    property PageFileFree :DWORDLONG read FPageFileFree write FPageFileFree stored false;
-    property VirtualTotal :DWORDLONG read FVirtualTotal write FVirtualTotal stored false;
-    property VirtualFree :DWORDLONG read FVirtualFree write FVirtualFree stored false;
-    property AllocGranularity :DWORD read FAllocGranularity write FAllocGranularity stored false;
-    property MaxAppAddress :Cardinal read FMaxAppAddress write FMaxAppAddress stored false;
-    property MinAppAddress :Cardinal read FMinAppAddress write FMinAppAddress stored false;
-    property PageSize :DWORD read FPageSize write FPageSize stored false;
+    property MemoryLoad: DWORD read FMemoryLoad write FMemoryLoad stored false;
+    property PhysicalTotal: DWORDLONG read FPhysicalTotal write FPhysicalTotal stored false;
+    property PhysicalFree: DWORDLONG read FPhysicalFree write FPhysicalFree stored false;
+    property PageFileTotal: DWORDLONG read FPageFileTotal write FPageFileTotal stored false;
+    property PageFileFree: DWORDLONG read FPageFileFree write FPageFileFree stored false;
+    property VirtualTotal: DWORDLONG read FVirtualTotal write FVirtualTotal stored false;
+    property VirtualFree: DWORDLONG read FVirtualFree write FVirtualFree stored false;
+    property AllocGranularity: DWORD read FAllocGranularity write FAllocGranularity stored false;
+    property MaxAppAddress: Cardinal read FMaxAppAddress write FMaxAppAddress stored false;
+    property MinAppAddress: Cardinal read FMinAppAddress write FMinAppAddress stored false;
+    property PageSize: DWORD read FPageSize write FPageSize stored false;
     {$ENDIF}
   end;
 
@@ -142,11 +142,18 @@ type
     FWow64: Boolean;
     {$ENDIF}
     FArchitecture: WORD;
-    FVersion: string;
+    FVersion: String;
+    FVersionNumber: String;
+    FInstallDate: DWORD;
+    FPlusVersionNumber: String;
+    FType: String;
+    FEditionID: String;
+    FDisplayVersion: String;
+    //FReleaseId: String;
     {$IFDEF LogSensitiveInformation}
-    FSerialNumber: string;
-    FRegUser: string;
-    FRegOrg: string;
+    FSerialNumber: String;
+    FRegUser: String;
+    FRegOrg: String;
     {$ENDIF}
     FEnv: TStrings;
     FDirs: TStrings;
@@ -156,61 +163,68 @@ type
     constructor Create;
     destructor Destroy; override;
     procedure GetInfo;
-    procedure Report(var sl :TStringList);
+    procedure Report(var sl: TStringList);
   published
-    property Extended :boolean read FExtended write FExtended stored false;
-    property MajorVersion :DWORD read FMajorVersion write FMajorVersion stored false;
-    property MinorVersion :DWORD read FMinorVersion write FMinorVersion stored false;
-    property BuildNumber :DWORD read FBuildNumber write FBuildNumber stored false;
-    property Platform :string read FPlatform write FPlatform stored false;
-    property Version :string read FVersion write FVersion stored false;
-    property CSD :string read FCSD write FCSD stored false;
-    property ServicePackMajor :WORD read FServicePackMajor write FServicePackMajor stored false;
-    property ServicePackMinor :WORD read FServicePackMinor write FServicePackMinor stored false;
-    property SuiteMask :WORD read FSuiteMask write FSuiteMask stored false;
-    property ProductType :Byte read FProductType write FProductType stored false;
+    property Extended: boolean read FExtended write FExtended stored false;
+    property MajorVersion: DWORD read FMajorVersion write FMajorVersion stored false;
+    property MinorVersion: DWORD read FMinorVersion write FMinorVersion stored false;
+    property BuildNumber: DWORD read FBuildNumber write FBuildNumber stored false;
+    property Platform: string read FPlatform write FPlatform stored false;
+    property CSD: string read FCSD write FCSD stored false;
+    property ServicePackMajor: WORD read FServicePackMajor write FServicePackMajor stored false;
+    property ServicePackMinor: WORD read FServicePackMinor write FServicePackMinor stored false;
+    property SuiteMask: WORD read FSuiteMask write FSuiteMask stored false;
+    property ProductType: Byte read FProductType write FProductType stored false;
     {$IFDEF WIN32}
-    property Wow64 :Boolean read FWow64 write FWow64 stored false;
+    property Wow64: Boolean read FWow64 write FWow64 stored false;
     {$ENDIF}
-    property Architecture :WORD read FArchitecture write FArchitecture stored false;
+    property Architecture: WORD read FArchitecture write FArchitecture stored false;
+    property Version: String read FVersion write FVersion stored false;
+    property VersionNumber: String read FVersionNumber write FVersionNumber stored false;
+    property InstallDate: DWORD read FInstallDate write FInstallDate stored false;
+    property PlusVersionNumber: String read FPlusVersionNumber write FPlusVersionNumber stored false;
+    property Typ: String read FType write FType stored false;
+    property EditionID: String read FEditionID write FEditionID stored false;
+    property DisplayVersion: String read FDisplayVersion write FDisplayVersion stored false;
+    //property ReleaseId: String read FReleaseId write FReleaseId stored false;
     {$IFDEF LogSensitiveInformation}
-    property SerialNumber :string read FSerialNumber write FSerialNumber stored false;
-    property RegisteredUser :string read FRegUser write FRegUser stored false;
-    property RegisteredOrg :string read FRegOrg write FRegOrg stored false;
+    property SerialNumber: String read FSerialNumber write FSerialNumber stored false;
+    property RegisteredUser: String read FRegUser write FRegUser stored false;
+    property RegisteredOrg: String read FRegOrg write FRegOrg stored false;
     {$ENDIF}
-    property Environment :TStrings read FEnv write FEnv stored false;
-    property Directories :TStrings read FDirs write FDirs stored False;
+    property Environment: TStrings read FEnv write FEnv stored false;
+    property Directories: TStrings read FDirs write FDirs stored False;
   end;
 
   {$IFDEF LogSensitiveInformation}
   TWorkstation = class(TPersistent)
   private
-    FName: string;
-    FUser: string;
-    FFirmware: string;
+    FName: String;
+    FUser: String;
+    FFirmware: String;
     FSystemUpTime: {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas //in ms
-    FBIOSExtendedInfo: string;
-    FBIOSCopyright: string;
-    FBIOSName: string;
-    FBIOSDate: string;
+    FBIOSExtendedInfo: String;
+    FBIOSCopyright: String;
+    FBIOSName: String;
+    FBIOSDate: String;
     //FScrollLock: Boolean;
     //FNumLock: Boolean;
     //FCapsLock: Boolean;
   public
     procedure GetInfo;
-    procedure Report(var sl :TStringList);
+    procedure Report(var sl: TStringList);
   published
-    property Name :string read FName write FName stored false;
-    property User :string read FUser write FUser stored false;
-    property Firmware :string read FFirmware write FFirmware stored false;
-    property SystemUpTime :{$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif} read FSystemUpTime write FSystemUpTime stored false;
-    property BIOSCopyright :string read FBIOSCopyright write FBIOSCopyright stored false;
-    property BIOSDate :string read FBIOSDate write FBIOSDate stored false;
-    property BIOSExtendedInfo :string read FBIOSExtendedInfo write FBIOSExtendedInfo stored false;
-    property BIOSName :string read FBIOSName write FBIOSName stored false;
-    //property CapsLock :Boolean read FCapsLock write FCapsLock stored false;
-    //property NumLock :Boolean read FNumLock write FNumLock stored false;
-    //property ScrollLock :Boolean read FScrollLock write FScrollLock stored false;
+    property Name: String read FName write FName stored false;
+    property User: String read FUser write FUser stored false;
+    property Firmware: String read FFirmware write FFirmware stored false;
+    property SystemUpTime: {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif} read FSystemUpTime write FSystemUpTime stored false;
+    property BIOSCopyright: String read FBIOSCopyright write FBIOSCopyright stored false;
+    property BIOSDate: String read FBIOSDate write FBIOSDate stored false;
+    property BIOSExtendedInfo: String read FBIOSExtendedInfo write FBIOSExtendedInfo stored false;
+    property BIOSName: String read FBIOSName write FBIOSName stored false;
+    //property CapsLock: Boolean read FCapsLock write FCapsLock stored false;
+    //property NumLock: Boolean read FNumLock write FNumLock stored false;
+    //property ScrollLock: Boolean read FScrollLock write FScrollLock stored false;
   end;
   {$ENDIF}
 
@@ -240,15 +254,15 @@ type
 
   TDisplay = class(TPersistent)
   private
-    FVertRes: integer;
-    FColorDepth: integer;
-    FHorzRes: integer;
-    FPixelDiagonal: integer;
-    FPixelHeight: integer;
-    FVertSize: integer;
-    FPixelWidth: integer;
-    FHorzSize: integer;
-    FTechnology: string;
+    FVertRes: Integer;
+    FColorDepth: Integer;
+    FHorzRes: Integer;
+    FPixelDiagonal: Integer;
+    FPixelHeight: Integer;
+    FVertSize: Integer;
+    FPixelWidth: Integer;
+    FHorzSize: Integer;
+    FTechnology: String;
     FCurveCaps: TCurveCaps;
     FLineCaps: TLineCaps;
     FPolygonCaps: TPolygonCaps;
@@ -270,48 +284,48 @@ type
     constructor Create;
     destructor Destroy; override;
     procedure GetInfo;
-    procedure Report(var sl :TStringList);
+    procedure Report(var sl: TStringList);
   published
-    property Adapter :TStrings read FAdapter write FAdapter stored false;
-    property Devices :TStrings read FDevices write FDevices stored false;
-    property Accelerator :TStrings read FAcc write FAcc stored false;
-    property DAC :TStrings read FDAC write FDAC stored false;
-    property Chipset :TStrings read FChipset write FChipset stored false;
-    property Memory :TStrings read FMemory write FMemory stored false;
-    property Provider :TStrings read FProvider write FProvider stored false;
-    property DriverDate :TStrings read FDriverDate write FDriverDate stored false;
-    property DriverVersion :TStrings read FDriverVersion write FDriverVersion stored false;
-    property HorzRes :integer read FHorzRes write FHorzRes stored false;
-    property VertRes :integer read FVertRes write FVertRes stored false;
-    property ColorDepth :integer read FColorDepth write FColorDepth stored false;
-    property Technology :string read FTechnology write FTechnology stored false;
-//    property HorzSize :integer read FHorzSize write FHorzSize stored false;
-//    property VertSize :integer read FVertSize write FVertSize stored false;
-    property PixelWidth :integer read FPixelWidth write FPixelWidth stored false;
-    property PixelHeight :integer read FPixelHeight write FPixelHeight stored false;
-    property PixelDiagonal :integer read FPixelDiagonal write FPixelDiagonal stored false;
-    property RasterCaps :TRasterCaps read FRasterCaps write FRasterCaps stored false;
-    property CurveCaps :TCurveCaps read FCurveCaps write FCurveCaps stored false;
-    property LineCaps :TLineCaps read FLineCaps write FLineCaps stored false;
-    property PolygonCaps :TPolygonCaps read FPolygonCaps write FPolygonCaps stored false;
-    property TextCaps :TTextCaps read FTextCaps write FTextCaps stored false;
-    property ShadeBlendCaps :TShadeBlendCaps read FShadeBlendCaps write FShadeBlendCaps stored false;
-    property ColorMgmtCaps :TColorMgmtCaps read FColorMgmtCaps write FColorMgmtCaps stored false;
-    property Modes :TStrings read FModes write FModes stored False;
+    property Adapter: TStrings read FAdapter write FAdapter stored false;
+    property Devices: TStrings read FDevices write FDevices stored false;
+    property Accelerator: TStrings read FAcc write FAcc stored false;
+    property DAC: TStrings read FDAC write FDAC stored false;
+    property Chipset: TStrings read FChipset write FChipset stored false;
+    property Memory: TStrings read FMemory write FMemory stored false;
+    property Provider: TStrings read FProvider write FProvider stored false;
+    property DriverDate: TStrings read FDriverDate write FDriverDate stored false;
+    property DriverVersion: TStrings read FDriverVersion write FDriverVersion stored false;
+    property HorzRes: Integer read FHorzRes write FHorzRes stored false;
+    property VertRes: Integer read FVertRes write FVertRes stored false;
+    property ColorDepth: Integer read FColorDepth write FColorDepth stored false;
+    property Technology: String read FTechnology write FTechnology stored false;
+//    property HorzSize: Integer read FHorzSize write FHorzSize stored false;
+//    property VertSize: Integer read FVertSize write FVertSize stored false;
+    property PixelWidth: Integer read FPixelWidth write FPixelWidth stored false;
+    property PixelHeight: Integer read FPixelHeight write FPixelHeight stored false;
+    property PixelDiagonal: Integer read FPixelDiagonal write FPixelDiagonal stored false;
+    property RasterCaps: TRasterCaps read FRasterCaps write FRasterCaps stored false;
+    property CurveCaps: TCurveCaps read FCurveCaps write FCurveCaps stored false;
+    property LineCaps: TLineCaps read FLineCaps write FLineCaps stored false;
+    property PolygonCaps: TPolygonCaps read FPolygonCaps write FPolygonCaps stored false;
+    property TextCaps: TTextCaps read FTextCaps write FTextCaps stored false;
+    property ShadeBlendCaps: TShadeBlendCaps read FShadeBlendCaps write FShadeBlendCaps stored false;
+    property ColorMgmtCaps: TColorMgmtCaps read FColorMgmtCaps write FColorMgmtCaps stored false;
+    property Modes: TStrings read FModes write FModes stored False;
   end;
 
   TDirectX = class(TPersistent)
   private
-    FVersion: string;
+    FVersion: String;
     FDirect3D: TStrings;
   public
     constructor Create;
     destructor Destroy; override;
     procedure GetInfo;
-    procedure Report(var sl :TStringList);
+    procedure Report(var sl: TStringList);
   published
-    property Version :string read FVersion write FVersion stored false;
-    property Direct3D :TStrings read FDirect3D write FDirect3D stored false;
+    property Version: String read FVersion write FVersion stored false;
+    property Direct3D: TStrings read FDirect3D write FDirect3D stored false;
   end;
 
 implementation
@@ -1163,12 +1177,30 @@ var
   WinH: HWND;
   s: string;
   rkOSInfo: string;
-  rvVersionName: string;
+  rvVersionName, rvVersionNumber, rvType, rvInstallDate: string;
 const
   rkOSInfo95 = {HKEY_LOCAL_MACHINE\}'SOFTWARE\Microsoft\Windows\CurrentVersion';
   rkOSInfoNT = {HKEY_LOCAL_MACHINE\}'SOFTWARE\Microsoft\Windows NT\CurrentVersion';
   rvVersionName95 = 'Version';
-  rvVersionNameNT = 'CurrentType';
+  rvVersionNameNT = 'ProductName';
+  rvVersionNumber95 = 'VersionNumber';
+  rvVersionNumberNT = 'CurrentVersion';
+  //rvProductType95 = 'ProductType'; //Overlaps with TOSVersionInfoEx.wProductType
+  //rvProductTypeNT = 'SoftwareType'; //Overlaps with TOSVersionInfoEx.wProductType
+  rvType95 = 'InstallType'; //Note: Binary!
+  rvTypeNT = 'CurrentType';
+  rvInstallDate95 = 'FirstInstallDateTime'; //REG_BINARY, 4 bytes
+  rvInstallDateNT = 'InstallDate'; //REG_DWORD
+  rvPlusVersionNumber = 'Plus! VersionNumber'; //Only on Win9x
+  //rvBuild = 'CurrentBuild'; //Only on WinNT //Obsolete
+  //rvBuildNumber = 'CurrentBuildNumber'; //Only on WinNT //Overlaps with TOSVersionInfo.dwBuildNumber
+  //rvCompositionEditionID = 'CompositionEditionID'; //Only on WinVista+
+  rvEditionID = 'EditionID'; //Only on WinVista+
+  //rvEditionSubManufacturer = 'EditionSubManufacturer'; //Only on WinVista+
+  //rvEditionSubstring = 'EditionSubstring'; //Only on WinVista+
+  //rvEditionSubVersion = 'EditionSubVersion'; //Only on WinVista+
+  rvDisplayVersion = 'DisplayVersion'; //Only on Win10+
+  //rvReleaseId = 'ReleaseId'; //Only on Win10+
   {$IFDEF LogSensitiveInformation}
   rvRegOrg = 'RegisteredOrganization';
   rvRegOwn = 'RegisteredOwner';
@@ -1451,15 +1483,27 @@ begin
    begin
     rkOSInfo:=rkOSInfo95;
     rvVersionName:=rvVersionName95;
+    rvVersionNumber:=rvVersionNumber95;
+    rvType:=rvType95;
+    rvInstallDate:=rvInstallDate95;
    end;
   osWinNTComp:
    begin
     rkOSInfo:=rkOSInfoNT;
     rvVersionName:=rvVersionNameNT;
+    rvVersionNumber:=rvVersionNumberNT;
+    rvType:=rvTypeNT;
+    rvInstallDate:=rvInstallDateNT;
    end;
   end;
   CSD:=StrPas(OS.szCSDVersion);
   Version:='';
+  VersionNumber:='';
+  Typ:='';
+  InstallDate:=0;
+  PlusVersionNumber:='';
+  EditionID:='';
+  DisplayVersion:='';
   {$IFDEF LogSensitiveInformation}
   RegisteredUser:='';
   RegisteredOrg:='';
@@ -1472,6 +1516,19 @@ begin
     begin
       if ValueExists(rvVersionName) then
         Version:=ReadString(rvVersionName);
+      if ValueExists(rvVersionNumber) then
+        VersionNumber:=ReadString(rvVersionNumber);
+      if ValueExists(rvType) then
+        Typ:=ReadString(rvType);
+(*  FIXME:
+  InstallDate:=0;
+  *)
+      if ValueExists(rvPlusVersionNumber) then
+        PlusVersionNumber:=ReadString(rvPlusVersionNumber);
+      if ValueExists(rvEditionID) then
+        EditionID:=ReadString(rvEditionID);
+      if ValueExists(rvDisplayVersion) then
+        DisplayVersion:=ReadString(rvDisplayVersion);
       {$IFDEF LogSensitiveInformation}
       if ValueExists(rvRegOrg) then
         RegisteredOrg:=ReadString(rvRegOrg);
@@ -1558,10 +1615,16 @@ begin
     PROCESSOR_ARCHITECTURE_UNKNOWN: add('Architecture: Unknown');
     else add('Architecture: Unknown');
     end;
-    if Length(Version)<>0 then
-     add(format('Version: %s %d.%d.%d',[Version,MajorVersion,MinorVersion,BuildNumber]))
-    else
-     add(format('Version: %d.%d.%d',[MajorVersion,MinorVersion,BuildNumber]));
+    if Length(EditionID)<>0 then
+    begin
+      if Length(DisplayVersion)<>0 then
+        add(format('Edition: %s %s %s',[EditionID, DisplayVersion, Typ]))
+      else
+        add(format('Edition: %s %s',[EditionID, Typ]));
+    end;
+    add(format('Version: %d.%d.%d',[MajorVersion,MinorVersion,BuildNumber]));
+    if Length(PlusVersionNumber)<>0 then
+      add(format('Plus! Version: %s',[PlusVersionNumber]));
     if Extended then
     begin
       if ServicePackMinor<>0 then
