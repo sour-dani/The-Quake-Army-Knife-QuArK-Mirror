@@ -68,20 +68,20 @@ type
     procedure GetInfo;
     procedure Report(var sl: TStringList);
   published
-    property HasCPUID: Boolean read FHasCPUID write FHasCPUID stored false;
-    property HasRDTSC: Boolean read FHasRDTSC write FHasRDTSC stored false;
-    property CPUIDLevel: LongWord read FCPUIDLevel write FCPUIDLevel stored false;
-    property Count: Cardinal read FCount write FCount stored false;
-    property Vendor: String read FVendor write FVendor stored false;
-    property VendorID: String read FVendorID write FVendorID stored false;
+    property HasCPUID: Boolean read FHasCPUID stored false;
+    property HasRDTSC: Boolean read FHasRDTSC stored false;
+    property CPUIDLevel: LongWord read FCPUIDLevel stored false;
+    property Count: Cardinal read FCount stored false;
+    property Vendor: String read FVendor stored false;
+    property VendorID: String read FVendorID stored false;
     {$IFDEF MeasureCPUFrequency}
-    property Freq: Cardinal read FFreq write FFreq stored false;
+    property Freq: Cardinal read FFreq stored false;
     {$ENDIF}
-    property Family: Cardinal read FFamily write FFamily stored false;
-    property Stepping: Cardinal read FStepping write FStepping stored false;
-    property Model: Cardinal read FModel write FModel stored false;
-    property Typ: Cardinal read FType write FType stored false;
-    property SubModel: String read FSubModel write FSubModel stored false;
+    property Family: Cardinal read FFamily stored false;
+    property Stepping: Cardinal read FStepping stored false;
+    property Model: Cardinal read FModel stored false;
+    property Typ: Cardinal read FType stored false;
+    property SubModel: String read FSubModel stored false;
   end;
 
   TMemory = class(TPersistent)
@@ -106,23 +106,23 @@ type
     procedure Report(var sl: TStringList);
   published
     {$IFDEF WIN16}
-    property MemAvailable: Longint read FMemAvail write FMemAvail stored false;
-    property MaxAvailable: Longint read FMaxAvail write FMaxAvail stored false;
-    property SystemRes: Word read FSystemRes write FSystemRes stored false;
-    property GDIRes: Word read FGDIRes write FGDIRes stored false;
-    property UserRes: Word read FUserRes write FUserRes stored false;
+    property MemAvailable: Longint read FMemAvail stored false;
+    property MaxAvailable: Longint read FMaxAvail stored false;
+    property SystemRes: Word read FSystemRes stored false;
+    property GDIRes: Word read FGDIRes stored false;
+    property UserRes: Word read FUserRes stored false;
     {$ELSE}
-    property MemoryLoad: DWORD read FMemoryLoad write FMemoryLoad stored false;
-    property PhysicalTotal: DWORDLONG read FPhysicalTotal write FPhysicalTotal stored false;
-    property PhysicalFree: DWORDLONG read FPhysicalFree write FPhysicalFree stored false;
-    property PageFileTotal: DWORDLONG read FPageFileTotal write FPageFileTotal stored false;
-    property PageFileFree: DWORDLONG read FPageFileFree write FPageFileFree stored false;
-    property VirtualTotal: DWORDLONG read FVirtualTotal write FVirtualTotal stored false;
-    property VirtualFree: DWORDLONG read FVirtualFree write FVirtualFree stored false;
-    property AllocGranularity: DWORD read FAllocGranularity write FAllocGranularity stored false;
-    property MaxAppAddress: Cardinal read FMaxAppAddress write FMaxAppAddress stored false;
-    property MinAppAddress: Cardinal read FMinAppAddress write FMinAppAddress stored false;
-    property PageSize: DWORD read FPageSize write FPageSize stored false;
+    property MemoryLoad: DWORD read FMemoryLoad stored false;
+    property PhysicalTotal: DWORDLONG read FPhysicalTotal stored false;
+    property PhysicalFree: DWORDLONG read FPhysicalFree stored false;
+    property PageFileTotal: DWORDLONG read FPageFileTotal stored false;
+    property PageFileFree: DWORDLONG read FPageFileFree stored false;
+    property VirtualTotal: DWORDLONG read FVirtualTotal stored false;
+    property VirtualFree: DWORDLONG read FVirtualFree stored false;
+    property AllocGranularity: DWORD read FAllocGranularity stored false;
+    property MaxAppAddress: Cardinal read FMaxAppAddress stored false;
+    property MinAppAddress: Cardinal read FMinAppAddress stored false;
+    property PageSize: DWORD read FPageSize stored false;
     {$ENDIF}
   end;
 
@@ -166,36 +166,36 @@ type
     procedure GetInfo;
     procedure Report(var sl: TStringList);
   published
-    property Extended: boolean read FExtended write FExtended stored false;
-    property MajorVersion: DWORD read FMajorVersion write FMajorVersion stored false;
-    property MinorVersion: DWORD read FMinorVersion write FMinorVersion stored false;
-    property BuildNumber: DWORD read FBuildNumber write FBuildNumber stored false;
-    property Platform: string read FPlatform write FPlatform stored false;
-    property CSD: string read FCSD write FCSD stored false;
-    property ServicePackMajor: WORD read FServicePackMajor write FServicePackMajor stored false;
-    property ServicePackMinor: WORD read FServicePackMinor write FServicePackMinor stored false;
-    property SuiteMask: WORD read FSuiteMask write FSuiteMask stored false;
-    property ProductType: Byte read FProductType write FProductType stored false;
+    property Extended: boolean read FExtended stored false;
+    property MajorVersion: DWORD read FMajorVersion stored false;
+    property MinorVersion: DWORD read FMinorVersion stored false;
+    property BuildNumber: DWORD read FBuildNumber stored false;
+    property Platform: string read FPlatform stored false;
+    property CSD: string read FCSD stored false;
+    property ServicePackMajor: WORD read FServicePackMajor stored false;
+    property ServicePackMinor: WORD read FServicePackMinor stored false;
+    property SuiteMask: WORD read FSuiteMask stored false;
+    property ProductType: Byte read FProductType stored false;
     {$IFDEF WIN32}
-    property Wow64: Boolean read FWow64 write FWow64 stored false;
+    property Wow64: Boolean read FWow64 stored false;
     {$ENDIF}
-    property Architecture: WORD read FArchitecture write FArchitecture stored false;
-    (*property Version: String read FVersion write FVersion stored false;
-    property VersionNumber: String read FVersionNumber write FVersionNumber stored false;*)
-    property PlusVersionNumber: String read FPlusVersionNumber write FPlusVersionNumber stored false;
-    property Typ: String read FType write FType stored false;
-    property EditionID: String read FEditionID write FEditionID stored false;
-    property DisplayVersion: String read FDisplayVersion write FDisplayVersion stored false;
-    //property ReleaseId: String read FReleaseId write FReleaseId stored false;
+    property Architecture: WORD read FArchitecture stored false;
+    (*property Version: String read FVersion stored false;
+    property VersionNumber: String read FVersionNumber stored false;*)
+    property PlusVersionNumber: String read FPlusVersionNumber stored false;
+    property Typ: String read FType stored false;
+    property EditionID: String read FEditionID stored false;
+    property DisplayVersion: String read FDisplayVersion stored false;
+    //property ReleaseId: String read FReleaseId stored false;
     {$IFDEF LogSensitiveInformation}
-    property SerialNumber: String read FSerialNumber write FSerialNumber stored false;
-    property RegisteredUser: String read FRegUser write FRegUser stored false;
-    property RegisteredOrg: String read FRegOrg write FRegOrg stored false;
-    property InstallDate: DWORD read FInstallDate write FInstallDate stored false;
-    property InstallTime: QWORD read FInstallTime write FInstallTime stored false;
+    property SerialNumber: String read FSerialNumber stored false;
+    property RegisteredUser: String read FRegUser stored false;
+    property RegisteredOrg: String read FRegOrg stored false;
+    property InstallDate: DWORD read FInstallDate stored false;
+    property InstallTime: QWORD read FInstallTime stored false;
     {$ENDIF}
-    property Environment: TStrings read FEnv write FEnv stored false;
-    property Directories: TStrings read FDirs write FDirs stored False;
+    property Environment: TStrings read FEnv stored false;
+    property Directories: TStrings read FDirs stored False;
   end;
 
   {$IFDEF LogSensitiveInformation}
@@ -209,6 +209,9 @@ type
     FBIOSCopyright: String;
     FBIOSName: String;
     FBIOSDate: String;
+    FKeyboardType: Integer;
+    FKeyboardSubtype: Integer;
+    FKeyboardNFunctionKeys: Integer;
     //FScrollLock: Boolean;
     //FNumLock: Boolean;
     //FCapsLock: Boolean;
@@ -216,17 +219,20 @@ type
     procedure GetInfo;
     procedure Report(var sl: TStringList);
   published
-    property Name: String read FName write FName stored false;
-    property User: String read FUser write FUser stored false;
-    property Firmware: String read FFirmware write FFirmware stored false;
-    property SystemUpTime: {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif} read FSystemUpTime write FSystemUpTime stored false;
-    property BIOSCopyright: String read FBIOSCopyright write FBIOSCopyright stored false;
-    property BIOSDate: String read FBIOSDate write FBIOSDate stored false;
-    property BIOSExtendedInfo: String read FBIOSExtendedInfo write FBIOSExtendedInfo stored false;
-    property BIOSName: String read FBIOSName write FBIOSName stored false;
-    //property CapsLock: Boolean read FCapsLock write FCapsLock stored false;
-    //property NumLock: Boolean read FNumLock write FNumLock stored false;
-    //property ScrollLock: Boolean read FScrollLock write FScrollLock stored false;
+    property Name: String read FName stored false;
+    property User: String read FUser stored false;
+    property Firmware: String read FFirmware stored false;
+    property SystemUpTime: {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif} read FSystemUpTime stored false;
+    property BIOSCopyright: String read FBIOSCopyright stored false;
+    property BIOSDate: String read FBIOSDate stored false;
+    property BIOSExtendedInfo: String read FBIOSExtendedInfo stored false;
+    property BIOSName: String read FBIOSName stored false;
+    property KeyboardType: Integer read FKeyboardType stored false;
+    property KeyboardSubtype: Integer read FKeyboardSubtype stored false;
+    property KeyboardNFunctionKeys: Integer read FKeyboardNFunctionKeys stored false;
+    //property CapsLock: Boolean read FCapsLock stored false;
+    //property NumLock: Boolean read FNumLock stored false;
+    //property ScrollLock: Boolean read FScrollLock stored false;
   end;
   {$ENDIF}
 
@@ -288,32 +294,32 @@ type
     procedure GetInfo;
     procedure Report(var sl: TStringList);
   published
-    property Adapter: TStrings read FAdapter write FAdapter stored false;
-    property Devices: TStrings read FDevices write FDevices stored false;
-    property Accelerator: TStrings read FAcc write FAcc stored false;
-    property DAC: TStrings read FDAC write FDAC stored false;
-    property Chipset: TStrings read FChipset write FChipset stored false;
-    property Memory: TStrings read FMemory write FMemory stored false;
-    property Provider: TStrings read FProvider write FProvider stored false;
-    property DriverDate: TStrings read FDriverDate write FDriverDate stored false;
-    property DriverVersion: TStrings read FDriverVersion write FDriverVersion stored false;
-    property HorzRes: Integer read FHorzRes write FHorzRes stored false;
-    property VertRes: Integer read FVertRes write FVertRes stored false;
-    property ColorDepth: Integer read FColorDepth write FColorDepth stored false;
-    property Technology: String read FTechnology write FTechnology stored false;
-//    property HorzSize: Integer read FHorzSize write FHorzSize stored false;
-//    property VertSize: Integer read FVertSize write FVertSize stored false;
-    property PixelWidth: Integer read FPixelWidth write FPixelWidth stored false;
-    property PixelHeight: Integer read FPixelHeight write FPixelHeight stored false;
-    property PixelDiagonal: Integer read FPixelDiagonal write FPixelDiagonal stored false;
-    property RasterCaps: TRasterCaps read FRasterCaps write FRasterCaps stored false;
-    property CurveCaps: TCurveCaps read FCurveCaps write FCurveCaps stored false;
-    property LineCaps: TLineCaps read FLineCaps write FLineCaps stored false;
-    property PolygonCaps: TPolygonCaps read FPolygonCaps write FPolygonCaps stored false;
-    property TextCaps: TTextCaps read FTextCaps write FTextCaps stored false;
-    property ShadeBlendCaps: TShadeBlendCaps read FShadeBlendCaps write FShadeBlendCaps stored false;
-    property ColorMgmtCaps: TColorMgmtCaps read FColorMgmtCaps write FColorMgmtCaps stored false;
-    property Modes: TStrings read FModes write FModes stored False;
+    property Adapter: TStrings read FAdapter stored false;
+    property Devices: TStrings read FDevices stored false;
+    property Accelerator: TStrings read FAcc stored false;
+    property DAC: TStrings read FDAC stored false;
+    property Chipset: TStrings read FChipset stored false;
+    property Memory: TStrings read FMemory stored false;
+    property Provider: TStrings read FProvider stored false;
+    property DriverDate: TStrings read FDriverDate stored false;
+    property DriverVersion: TStrings read FDriverVersion stored false;
+    property HorzRes: Integer read FHorzRes stored false;
+    property VertRes: Integer read FVertRes stored false;
+    property ColorDepth: Integer read FColorDepth stored false;
+    property Technology: String read FTechnology stored false;
+//    property HorzSize: Integer read FHorzSize stored false;
+//    property VertSize: Integer read FVertSize stored false;
+    property PixelWidth: Integer read FPixelWidth stored false;
+    property PixelHeight: Integer read FPixelHeight stored false;
+    property PixelDiagonal: Integer read FPixelDiagonal stored false;
+    property RasterCaps: TRasterCaps read FRasterCaps stored false;
+    property CurveCaps: TCurveCaps read FCurveCaps stored false;
+    property LineCaps: TLineCaps read FLineCaps stored false;
+    property PolygonCaps: TPolygonCaps read FPolygonCaps stored false;
+    property TextCaps: TTextCaps read FTextCaps stored false;
+    property ShadeBlendCaps: TShadeBlendCaps read FShadeBlendCaps stored false;
+    property ColorMgmtCaps: TColorMgmtCaps read FColorMgmtCaps stored false;
+    property Modes: TStrings read FModes stored False;
   end;
 
   TDirectX = class(TPersistent)
@@ -326,8 +332,8 @@ type
     procedure GetInfo;
     procedure Report(var sl: TStringList);
   published
-    property Version: String read FVersion write FVersion stored false;
-    property Direct3D: TStrings read FDirect3D write FDirect3D stored false;
+    property Version: String read FVersion stored false;
+    property Direct3D: TStrings read FDirect3D stored false;
   end;
 
 implementation
@@ -1013,34 +1019,34 @@ var
   ExtendedFamily: Byte;
 begin
   Log(LOG_VERBOSE, 'Starting gathering CPU information...');
-  Count:=CPUCount;
-  HasCPUID:=CPUIDExists;
-  if HasCPUID then
+  FCount:=CPUCount;
+  FHasCPUID:=CPUIDExists;
+  if FHasCPUID then
   begin
     GetCPUIDLevelAndVendor(FCPUIDLevel, CPUIDVendor);
     if CPUIDLevel >= 1 then
     begin
       //FIXME: Modern Delphi's have System.GetCPUID. Switch to using that?
       GetCPUIDSignatureAndFeatureFlags(CPUIDSignature, CPUIDFeatureFlags);
-      HasRDTSC:=(CPUIDFeatureFlags.EDX and TSC_Bit) = TSC_Bit;
-      Stepping:=(CPUIDSignature and $f);
-      Model:=(CPUIDSignature shr 4) and $f;
-      Family:=(CPUIDSignature shr 8) and $f;
-      Typ:=(CPUIDSignature shr 12) and $7;
+      FHasRDTSC:=(CPUIDFeatureFlags.EDX and TSC_Bit) = TSC_Bit;
+      FStepping:=(CPUIDSignature and $f);
+      FModel:=(CPUIDSignature shr 4) and $f;
+      FFamily:=(CPUIDSignature shr 8) and $f;
+      FType:=(CPUIDSignature shr 12) and $7;
       if Family = 6 then
       begin
         //Use Extended Family and Extended Model field
         ExtendedModel:=(CPUIDSignature shr 16) and $f;
         //ExtendedFamily:=(CPUID.EAX shr 20 and $ff);
-        Model:=Model + (ExtendedModel shl 4);
+        FModel:=Model + (ExtendedModel shl 4);
       end
       else if Family = 15 then
       begin
         //Use Extended Family and Extended Model field
         ExtendedModel:=(CPUIDSignature shr 16) and $f;
         ExtendedFamily:=(CPUIDSignature shr 20) and $ff;
-        Model:=Model + (ExtendedModel shl 4);
-        Family:=Family + ExtendedFamily;
+        FModel:=Model + (ExtendedModel shl 4);
+        FFamily:=Family + ExtendedFamily;
       end;
 
 //        Log(LOG_VERBOSE, 'Getting CPU vendor information...');
@@ -1049,23 +1055,23 @@ begin
       begin
         if CPUVendorIDs[i]=CPUIDVendor then
         begin
-          Vendor:=CPUVendors[i];
+          FVendor:=CPUVendors[i];
           FVendorNo:=i;
           break;
         end;
       end;
-      VendorID:=GetCPUVendorID;
-      SubModel:=GetSubModel;
+      FVendorID:=GetCPUVendorID;
+      FSubModel:=GetSubModel;
     end;
   end
   else
   begin
-    Family:=GetCPUType;
-    Vendor:='Intel';
+    FFamily:=GetCPUType;
+    FVendor:='Intel';
     if Family=$f then
-      VendorID:='compatible'
+      FVendorID:='compatible'
     else
-      VendorID:=Format('80%d86 or compatible', [Family]);
+      FVendorID:=Format('80%d86 or compatible', [Family]);
   end;
   {$IFDEF MeasureCPUFrequency}
   if HasRDTSC then
@@ -1225,7 +1231,7 @@ begin
   FDirs.Clear;
   if CheckWin32Version(5, 0) then //Windows 2000
   begin
-    Extended:=True;
+    FExtended:=True;
     ZeroMemory(@OS,SizeOf(OS));
     OS.dwOSVersionInfoSize:=SizeOf(TOSVersionInfoEx);
     if not GetVersionEx(POSVersionInfo(@OS)^) then
@@ -1233,28 +1239,28 @@ begin
   end
   else
   begin
-    Extended:=False;
+    FExtended:=False;
     ZeroMemory(@OS,SizeOf(OS));
     OS.dwOSVersionInfoSize:=SizeOf(TOSVersionInfo);
     if not GetVersionEx(POSVersionInfo(@OS)^) then
       raise exception.create('Unable to retrieve system details. Call to GetVersionEx failed!');
   end;
-  MajorVersion:=OS.dwMajorVersion;
-  MinorVersion:=OS.dwMinorVersion;
-  BuildNumber:=OS.dwBuildNumber;
-  if Extended then
+  FMajorVersion:=OS.dwMajorVersion;
+  FMinorVersion:=OS.dwMinorVersion;
+  FBuildNumber:=OS.dwBuildNumber;
+  if FExtended then
   begin
-    ServicePackMajor:=OS.wServicePackMajor;
-    ServicePackMinor:=OS.wServicePackMinor;
-    SuiteMask:=OS.wSuiteMask;
-    ProductType:=OS.wProductType;
+    FServicePackMajor:=OS.wServicePackMajor;
+    FServicePackMinor:=OS.wServicePackMinor;
+    FSuiteMask:=OS.wSuiteMask;
+    FProductType:=OS.wProductType;
   end
   else
   begin
-    ServicePackMajor:=0;
-    ServicePackMinor:=0;
-    SuiteMask:=0;
-    ProductType:=0;
+    FServicePackMajor:=0;
+    FServicePackMinor:=0;
+    FSuiteMask:=0;
+    FProductType:=0;
     //See: http://msdn.microsoft.com/en-us/library/ms724833.aspx
   end;
 
@@ -1263,15 +1269,15 @@ begin
   begin
     if IsWow64Process2(GetCurrentProcess(), pProcessMachine, pNativeMachine) = false then
     begin
-      Wow64:=False;
+      FWow64:=False;
       Log(LOG_WARNING, 'Failed to determine Wow64 status!');
       LogWindowsError(GetLastError(), 'TOperatingSystem.GetInfo: IsWow64Process2(pProcessMachine)');
     end
     else
       if pProcessMachine=IMAGE_FILE_MACHINE_UNKNOWN then
-        Wow64:=False
+        FWow64:=False
       else
-        Wow64:=True;
+        FWow64:=True;
   end
   else
   begin
@@ -1279,18 +1285,18 @@ begin
     begin
       if IsWow64Process(GetCurrentProcess(), bIsWow64) = false then
       begin
-        Wow64:=False;
+        FWow64:=False;
         Log(LOG_WARNING, 'Failed to determine Wow64 status!');
         LogWindowsError(GetLastError(), 'TOperatingSystem.GetInfo: IsWow64Process(bIsWow64)');
       end
       else
         if bIsWow64 then
-          Wow64:=True
+          FWow64:=True
         else
-          Wow64:=False;
+          FWow64:=False;
     end
     else
-      Wow64:=False;
+      FWow64:=False;
   end;
   {$ENDIF}
 
@@ -1299,12 +1305,12 @@ begin
     GetNativeSystemInfo(SI)
   else
     GetSystemInfo(SI);
-  Architecture:=SI.wProcessorArchitecture;
+  FArchitecture:=SI.wProcessorArchitecture;
 
   case OS.dwPlatformId of
     VER_PLATFORM_WIN32s:
      begin
-      Platform:='Windows 32s';
+      FPlatform:='Windows 32s';
       WindowsPlatformCompatibility:=osWin95Comp;
       WindowsPlatform:=osWin95;
      end;
@@ -1315,22 +1321,22 @@ begin
         case MinorVersion of
         0:
          begin
-          Platform:='Windows 95';
+          FPlatform:='Windows 95';
           WindowsPlatform:=osWin95;
          end;
         10:
          begin
-          Platform:='Windows 98';
+          FPlatform:='Windows 98';
           WindowsPlatform:=osWin98;
          end;
         90:
          begin
-          Platform:='Windows ME';
+          FPlatform:='Windows ME';
           WindowsPlatform:=osWinME;
          end;
         else
          begin
-          Platform:='Unknown (Probably OK)';
+          FPlatform:='Unknown (Probably OK)';
           WindowsPlatform:=osWin95;
          end;
         end;
@@ -1340,12 +1346,12 @@ begin
        begin
         if MajorVersion>4 then
         begin
-          Platform:='Unknown (Probably OK)';
+          FPlatform:='Unknown (Probably OK)';
           WindowsPlatform:=osWinME;
         end
         else
         begin
-          Platform:='Unknown';
+          FPlatform:='Unknown';
           WindowsPlatform:=osWin95;
         end;
        end;
@@ -1358,22 +1364,22 @@ begin
         case MinorVersion of
         1:
          begin
-          Platform:='Windows NT 3.1';
+          FPlatform:='Windows NT 3.1';
           WindowsPlatform:=osWinNT31;
          end;
         5:
          begin
-          Platform:='Windows NT 3.5';
+          FPlatform:='Windows NT 3.5';
           WindowsPlatform:=osWinNT35;
          end;
         51:
          begin
-          Platform:='Windows NT 3.51';
+          FPlatform:='Windows NT 3.51';
           WindowsPlatform:=osWinNT351;
          end;
         else
          begin
-          Platform:='Windows NT 3?';
+          FPlatform:='Windows NT 3?';
           WindowsPlatform:=osWinNT31;
          end;
         end;
@@ -1384,12 +1390,12 @@ begin
         case MinorVersion of
         0:
          begin
-          Platform:='Windows NT 4';
+          FPlatform:='Windows NT 4';
           WindowsPlatform:=osWinNT4;
          end;
         else
          begin
-          Platform:='Windows NT 4?';
+          FPlatform:='Windows NT 4?';
           WindowsPlatform:=osWinNT4;
          end;
         end;
@@ -1400,22 +1406,22 @@ begin
         case MinorVersion of
         0:
          begin
-          Platform:='Windows 2000';
+          FPlatform:='Windows 2000';
           WindowsPlatform:=osWin2000;
          end;
         1:
          begin
-          Platform:='Windows XP';
+          FPlatform:='Windows XP';
           WindowsPlatform:=osWinXP;
          end;
         2:
          begin
-          Platform:='Windows Server 2003 or Windows XP 64-bit';
+          FPlatform:='Windows Server 2003 or Windows XP 64-bit';
           WindowsPlatform:=osWin2003;
          end;
         else
          begin
-          Platform:='Windows NT 5?';
+          FPlatform:='Windows NT 5?';
           WindowsPlatform:=osWin2000;
          end;
         end;
@@ -1426,27 +1432,27 @@ begin
         case MinorVersion of
         0:
          begin
-          Platform:='Windows Vista or Windows Server 2008';
+          FPlatform:='Windows Vista or Windows Server 2008';
           WindowsPlatform:=osWinVista;
          end;
         1:
          begin
-          Platform:='Windows 7 or Windows Server 2008 R2';
+          FPlatform:='Windows 7 or Windows Server 2008 R2';
           WindowsPlatform:=osWin7;
          end;
         2:
          begin
-          Platform:='Windows 8 or Windows Server 2012';
+          FPlatform:='Windows 8 or Windows Server 2012';
           WindowsPlatform:=osWin8;
          end;
         3:
          begin
-          Platform:='Windows 8.1 or Windows Server 2012 R2';
+          FPlatform:='Windows 8.1 or Windows Server 2012 R2';
           WindowsPlatform:=osWin81;
          end;
         else
          begin
-          Platform:='Windows NT 6?';
+          FPlatform:='Windows NT 6?';
           WindowsPlatform:=osWinVista;
          end;
         end;
@@ -1457,12 +1463,12 @@ begin
         case MinorVersion of
         0:
          begin
-          Platform:='Windows 10';
+          FPlatform:='Windows 10';
           WindowsPlatform:=osWin10;
          end;
         else
          begin
-          Platform:='Windows NT 10?';
+          FPlatform:='Windows NT 10?';
           WindowsPlatform:=osWin10;
          end;
         end;
@@ -1472,13 +1478,13 @@ begin
        begin
         if MajorVersion>6 then
         begin
-          Platform:='Windows NT?';
+          FPlatform:='Windows NT?';
           WindowsPlatform:=osWin11;
           WindowsPlatformCompatibility:=osWinNTComp;
         end
         else
         begin
-          Platform:='Windows?';
+          FPlatform:='Windows?';
           WindowsPlatform:=osWin95;
           WindowsPlatformCompatibility:=osWin95Comp;
         end;
@@ -1509,19 +1515,19 @@ begin
     {$ENDIF}
    end;
   end;
-  CSD:=StrPas(OS.szCSDVersion);
-  (*Version:='';
-  VersionNumber:='';*)
-  Typ:='';
-  PlusVersionNumber:='';
-  EditionID:='';
-  DisplayVersion:='';
+  FCSD:=StrPas(OS.szCSDVersion);
+  (*FVersion:='';
+  FVersionNumber:='';*)
+  FType:='';
+  FPlusVersionNumber:='';
+  FEditionID:='';
+  FDisplayVersion:='';
   {$IFDEF LogSensitiveInformation}
-  RegisteredUser:='';
-  RegisteredOrg:='';
-  SerialNumber:='';
-  InstallDate:=0;
-  InstallTime:=0;
+  FRegUser:='';
+  FRegOrg:='';
+  FSerialNumber:='';
+  FInstallDate:=0;
+  FInstallTime:=0;
   {$ENDIF}
   with TRegistry2.Create(KEY_READ) do
   begin
@@ -1529,9 +1535,9 @@ begin
     if OpenKey(rkOSInfo,false) then
     begin
       (*if ValueExists(rvVersionName) then
-        Version:=ReadString(rvVersionName);
+        FVersion:=ReadString(rvVersionName);
       if ValueExists(rvVersionNumber) then
-        VersionNumber:=ReadString(rvVersionNumber);*)
+        FVersionNumber:=ReadString(rvVersionNumber);*)
       if ValueExists(rvType) then
       begin
         if WindowsPlatformCompatibility=osWin95Comp then
@@ -1540,27 +1546,27 @@ begin
           try
             dummy:=2;
             if TryReadBinaryData(rvType,bdata^,dummy) then
-              Typ:=IntToStr(PWord(bdata)^); //FIXME: What do the numbers mean exactly?
+              FType:=IntToStr(PWord(bdata)^); //FIXME: What do the numbers mean exactly?
           finally
             FreeMem(bdata);
           end;
         end
         else
-          Typ:=ReadString(rvType);
+          FType:=ReadString(rvType);
       end;
       if ValueExists(rvPlusVersionNumber) then
-        PlusVersionNumber:=ReadString(rvPlusVersionNumber);
+        FPlusVersionNumber:=ReadString(rvPlusVersionNumber);
       if ValueExists(rvEditionID) then
-        EditionID:=ReadString(rvEditionID);
+        FEditionID:=ReadString(rvEditionID);
       if ValueExists(rvDisplayVersion) then
-        DisplayVersion:=ReadString(rvDisplayVersion);
+        FDisplayVersion:=ReadString(rvDisplayVersion);
       {$IFDEF LogSensitiveInformation}
       if ValueExists(rvRegOrg) then
-        RegisteredOrg:=ReadString(rvRegOrg);
+        FRegOrg:=ReadString(rvRegOrg);
       if ValueExists(rvRegOwn) then
-        RegisteredUser:=ReadString(rvRegOwn);
+        FRegUser:=ReadString(rvRegOwn);
       if ValueExists(rvProductID) then
-        SerialNumber:=ReadString(rvProductID);
+        FSerialNumber:=ReadString(rvProductID);
       if ValueExists(rvInstallDate) then
       begin
         if WindowsPlatformCompatibility=osWin95Comp then
@@ -1569,16 +1575,16 @@ begin
           try
             dummy:=4;
             if TryReadBinaryData(rvInstallDate,bdata^,dummy) then
-              InstallDate:=PDWORD(bdata)^;
+              FInstallDate:=PDWORD(bdata)^;
           finally
             FreeMem(bdata);
           end;
         end
         else
-          InstallDate:=ReadDWORD(rvInstallDate);
+          FInstallDate:=ReadDWORD(rvInstallDate);
       end;
       if ValueExists(rvInstallTime) then
-        InstallTime:=ReadQWORD(rvInstallTime);
+        FInstallTime:=ReadQWORD(rvInstallTime);
       {$ENDIF}
       FDirs.Add('CommonFiles='  +ReadString('CommonFilesDir'));
       FDirs.Add('ProgramFiles=' +ReadString('ProgramFilesDir'));
@@ -1724,26 +1730,26 @@ begin
       Log(LOG_WARNING, 'Failed to retrieve memory status!');
       LogWindowsError(GetLastError(), 'TMemory.GetInfo: GlobalMemoryStatusEx(TMemoryStatusEx)');
     end;
-    MemoryLoad:=MSEX.dwMemoryLoad;
-    PhysicalTotal:=MSEX.ullTotalPhys;
-    PhysicalFree:=MSEX.ullAvailPhys;
-    VirtualTotal:=MSEX.ullTotalVirtual;
-    VirtualFree:=MSEX.ullAvailVirtual;
-    PageFileTotal:=MSEX.ullTotalPageFile;
-    PageFileFree:=MSEX.ullAvailPageFile;
+    FMemoryLoad:=MSEX.dwMemoryLoad;
+    FPhysicalTotal:=MSEX.ullTotalPhys;
+    FPhysicalFree:=MSEX.ullAvailPhys;
+    FVirtualTotal:=MSEX.ullTotalVirtual;
+    FVirtualFree:=MSEX.ullAvailVirtual;
+    FPageFileTotal:=MSEX.ullTotalPageFile;
+    FPageFileFree:=MSEX.ullAvailPageFile;
   end
   else
   begin
     ZeroMemory(@MS,SizeOf(MS));
     MS.dwLength:=SizeOf(MS);
     GlobalMemoryStatus(MS);
-    MemoryLoad:=MS.dwMemoryLoad;
-    PhysicalTotal:=MS.dwTotalPhys;
-    PhysicalFree:=MS.dwAvailPhys;
-    VirtualTotal:=MS.dwTotalVirtual;
-    VirtualFree:=MS.dwAvailVirtual;
-    PageFileTotal:=MS.dwTotalPageFile;
-    PageFileFree:=MS.dwAvailPageFile;
+    FMemoryLoad:=MS.dwMemoryLoad;
+    FPhysicalTotal:=MS.dwTotalPhys;
+    FPhysicalFree:=MS.dwAvailPhys;
+    FVirtualTotal:=MS.dwTotalVirtual;
+    FVirtualFree:=MS.dwAvailVirtual;
+    FPageFileTotal:=MS.dwTotalPageFile;
+    FPageFileFree:=MS.dwAvailPageFile;
   end;
 
   ZeroMemory(@SI,SizeOf(SI));
@@ -1751,10 +1757,10 @@ begin
     GetNativeSystemInfo(SI)
   else
     GetSystemInfo(SI);
-  AllocGranularity:=SI.dwAllocationGranularity;
-  MaxAppAddress:=Cardinal(SI.lpMaximumApplicationAddress);
-  MinAppAddress:=Cardinal(SI.lpMinimumApplicationAddress);
-  PageSize:=SI.dwPageSize;
+  FAllocGranularity:=SI.dwAllocationGranularity;
+  FMaxAppAddress:=Cardinal(SI.lpMaximumApplicationAddress);
+  FMinAppAddress:=Cardinal(SI.lpMinimumApplicationAddress);
+  FPageSize:=SI.dwPageSize;
   {$ENDIF}
 end;
 
@@ -1908,6 +1914,9 @@ begin
     FBIOSCopyright:=string(pchar(ptr(cBIOSCopyright)));
     FBIOSExtendedInfo:=string(pchar(ptr(cBIOSExtInfo)));
   end;
+  FKeyboardType:=GetKeyboardType(0);
+  FKeyboardSubtype:=GetKeyboardType(1);
+  FKeyboardNFunctionKeys:=GetKeyboardType(2);
   //GetKeyboardState(KeyState);
   //FCapsLock:=(KeyState[VK_CAPITAL] and $1)=1;
   //FNumLock:=(KeyState[VK_NUMLOCK] and $1)=1;
@@ -1922,6 +1931,32 @@ begin
     add('User: '+User);
     add('Firmware: '+Firmware);
     add('System Up Time: '+FormatMilliSeconds(SystemUpTime));
+    add('BIOS: '+BIOSName);
+    add('BIOS date: '+BIOSDate);
+    add('BIOS copyright: '+BIOSCopyright);
+    add('BIOS info: '+BIOSExtendedInfo);
+    case KeyboardType of
+     $4: add('Keyboard type: Enhanced 101- or 102-key keyboards (and compatibles)');
+     $7: add('Keyboard type: Japanese Keyboard');
+     $8: add('Keyboard type: Korean Keyboard');
+     $51: add('Keyboard type: Unknown type or HID keyboard');
+    else
+     add('Keyboard type: Unknown');
+    end;
+    add(format('Keyboard subtype: %d', [KeyboardSubtype]));
+    add(format('Keyboard functions keys: %d', [KeyboardNFunctionKeys]));
+    //if CapsLock then
+    //  add('Keyboard capslock: On')
+    //else
+    //  add('Keyboard numlock: Off');
+    //if NumLock then
+    //  add('Keyboard numlock: On')
+    //else
+    //  add('Keyboard capslock: Off');
+    //if ScrollLock then
+    //  add('Keyboard scrolllock: On')
+    //else
+    //  add('Keyboard scrolllock: Off');
   end;
 end;
 {$ENDIF}
