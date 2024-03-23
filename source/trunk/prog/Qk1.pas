@@ -431,7 +431,7 @@ begin
      Application.OnShowHint:=AppShowHint;
      Application.OnHint:=AppHint;
    except
-     //FIXME: Kill the splash-screen.
+     Splash.Terminate;
      raise;
    end;
  finally

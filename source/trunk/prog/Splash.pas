@@ -50,6 +50,7 @@ type
     TextColor: COLORREF;
     function GetWaitHandle: THandle;
   public
+    procedure Terminate;
     procedure UpdateDisclaimerColor;
     property WaitHandle: THandle read GetWaitHandle;
   end;
@@ -64,7 +65,8 @@ uses QConsts;
 
 const
   FLASH_COUNT = 3; //Must be larger than zero!
-  AFTER_FLASH_DELAY = 1200; //in ms
+  TICK_INTERVAL = 50; //in ms
+  AFTER_FLASH_DELAY = 24; //in ticks
 
 {$R *.DFM}
 
@@ -82,10 +84,17 @@ begin
     //Form.TextColor := clWhite - ($203333 * C);
     Form.TextColor := clWhite - ($333300 * C);
     Synchronize(Form.UpdateDisclaimerColor);
-    Sleep(50);
+    Sleep(TICK_INTERVAL);
+    if Terminated then
+      Exit;
     Dec(I);
   until I < 0;
-  Sleep(AFTER_FLASH_DELAY);
+  for I := 0 to AFTER_FLASH_DELAY - 1 do
+  begin
+    Sleep(TICK_INTERVAL);
+    if Terminated then
+      Exit;
+  end;
 end;
 
 function OpenSplashScreen : TSplashScreen;
@@ -157,6 +166,11 @@ end;
 function TSplashScreen.GetWaitHandle: THandle;
 begin
   Result:=Disclaimer.Handle;
+end;
+
+procedure TSplashScreen.Terminate;
+begin
+  Disclaimer.Terminate;
 end;
 
 procedure TSplashScreen.UpdateDisclaimerColor;
