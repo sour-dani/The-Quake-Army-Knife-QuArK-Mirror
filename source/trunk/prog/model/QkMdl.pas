@@ -142,7 +142,7 @@ var
   cmd, aa, bb: smallint;
   CTris: PComponentTris;
   CVert: vec3_p;
-  S: string;
+  S: string; //FIXME: Switch to bytes!
   p: pchar;
   dw: integer;
 begin
@@ -565,7 +565,7 @@ var
 
   CTris: PComponentTris;
   CVert: vec3_p;
-  S: string;
+  S: string; //FIXME: Switch to bytes!
   triangle_num, vertex_num, meshframe_num,skin_num:integer;
 
   i, j, k,l: Integer;
@@ -820,7 +820,7 @@ var
   I, J, K, Taille1, Delta, SkinCounter, DeltaW: Integer;
   SkinGroup: skingroup_t;
   P: PChar;
-  S: string;
+  S: string; //FIXME: Switch to bytes!
   SkinObj: QImage;
   STData: PVertxArray;
   Triangles, Tris: ^itriangle_t;

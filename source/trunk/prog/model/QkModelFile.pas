@@ -72,7 +72,7 @@ const
   Spec1 = 'Image1';
   Spec2 = 'Pal';
 var
-  S: String;
+  S: String; //FIXME: Switch to bytes!
   Skins: QSkinGroup;
 begin
   if component=nil then

@@ -134,8 +134,8 @@ const
 var
   index, cnt, i, j: Integer;
   tris, tris2, dest: PComponentTris;
-  trisB: String;
-  S: String;
+  trisB: String; //FIXME: Switch to bytes!
+  S: String; //FIXME: Switch to bytes!
   f1, f2, f3: boolean;
   v1,v2,v3: Integer;
 begin
@@ -537,7 +537,7 @@ var
   CVert, CVertJ, CVertK: vec3_p;
   VertexCount, nVertexCount, Target: Integer;
   VertexMap: ^TVertexMap;
-  S: String;
+  S: String; //FIXME: Switch to bytes!
   CTris: PComponentTris;
   FrSourcePts: vec3_p;
   FrameObj: QFrame;
@@ -1194,7 +1194,7 @@ const
   SpecTris = 'Tris';
 var
   Q: QObject;
-  S: String;
+  S: String; //FIXME: Switch to bytes!
   Count, I, L: Integer;
   Dest: PComponentTris;
   tri: PyObject;

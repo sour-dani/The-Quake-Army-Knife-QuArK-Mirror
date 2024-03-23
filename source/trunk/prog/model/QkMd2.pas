@@ -149,7 +149,7 @@ var
   Frame: QFrame;
   I, J, K: Integer;
   Z: array[0..MAX_SKINNAME-1] of Byte;
-  S: String;
+  S: String; //FIXME: Switch to Bytes
   TrisData, Tris: dtriangle_p;
   FrameData: daliasframe_p;
   STData: ^dstvert_array;

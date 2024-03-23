@@ -72,7 +72,7 @@ const
   VertSpec = 'Vertices';
 var
   p, p_org: vec3_p;
-  s:String;
+  s: String; //FIXME: Switch to bytes!
   j,c: integer;
   Dest: vec3_p;
 begin
@@ -94,7 +94,7 @@ const
   VertSpec = 'Vertices';
 var
   p_org: vec3_p;
-  s:String;
+  s: String; //FIXME: Switch to bytes!
   c: integer;
   Dest: vec3_p;
 begin
@@ -149,7 +149,7 @@ const
   //RefSpec = 'RefFrame';
   NewVertSpec = 'NewVertices';
 var
-  S, S2: String;
+  S, S2: String; //FIXME: Switch to bytes!
   currentModelComponent: QComponent;
   currentFrameNumber: Integer;
   bf,bf2: QModelTag;
@@ -246,7 +246,7 @@ const
   VertSpec = 'Vertices';
 var
   I, Count: Integer;
-  S: String;
+  S: String; //FIXME: Switch to bytes!
   Dest: vec3_p;
   vtxs: vec3_p;
 begin

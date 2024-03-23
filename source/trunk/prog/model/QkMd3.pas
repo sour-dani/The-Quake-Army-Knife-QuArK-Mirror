@@ -325,7 +325,7 @@ var
   i, j, k: Integer;
   Skin: QImage;
   Frame: QFrame;
-  s: String;
+  s: String; //FIXME: Switch to bytes!
   size: TPoint;
   sizeset: Boolean;
   org: TStreamPos;

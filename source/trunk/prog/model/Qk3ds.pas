@@ -215,7 +215,7 @@ var
   CTris: PComponentTris;
   CVert: vec3_p;
   v: vec3_t;
-  s: string;
+  s: string; //FIXME: Switch to bytes!
   i,k: integer;
   org2: TStreamPos;
   FrameObj: QFrame;

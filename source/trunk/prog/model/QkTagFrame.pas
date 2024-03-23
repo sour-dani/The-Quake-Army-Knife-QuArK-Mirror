@@ -53,7 +53,7 @@ const
   SpecOrigin = 'origin';
 var
   CVert: vec3_p;
-  S: string;
+  S: string; //FIXME: Switch to bytes!
 begin
   SetLength(S, SizeOf(vec3_t));
   PChar(CVert):=PChar(S);
@@ -83,7 +83,7 @@ const
   SpecRotMatrix = 'rotmatrix';
 var
   CVert: vec3_p;
-  S: string;
+  S: string; //FIXME: Switch to bytes!
 begin
   SetLength(S, SizeOf(TMatrixTransformation));
   PChar(CVert):=PChar(S);
