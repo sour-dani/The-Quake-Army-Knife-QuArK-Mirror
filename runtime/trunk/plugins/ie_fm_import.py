@@ -165,7 +165,6 @@ class fm_tex_coord:
         tobj.logcon ("texture coordinate u, v: " + str(self.u) + ", " + str(self.v))
         tobj.logcon ("----------------------------------------")
 
-
 class fm_skin:
     binary_format="<64c" #little-endian (<), char[64]
 
@@ -805,9 +804,7 @@ def animate_fm(fm): # The Frames Group is made here & returned to be added to th
             z=(fm.frames[i].scale[2]*fm.frames[i].vertices[j].vertices[2]+fm.frames[i].translate[2])
 
             #put the vertex in the right spot
-            mesh = mesh + (x,)
-            mesh = mesh + (y,)
-            mesh = mesh + (z,)
+            mesh = mesh + (x, y, z)
 
         frame['Vertices'] = mesh
         framesgroup.appenditem(frame)
