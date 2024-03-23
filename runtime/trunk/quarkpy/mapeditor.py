@@ -339,6 +339,7 @@ def autosavetime():
 
 def autosave(editor):
     if (editor.Root is not None) and (editor.fileobject.flags & OF_MODIFIED):
+        quarkx.log("Autosaving map...", LOG_INFO)
         progress = quarkx.progressbar(0,0)
         try:
             try:
