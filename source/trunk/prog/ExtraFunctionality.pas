@@ -67,9 +67,13 @@ type
   USHORT = Word;
   PUSHORT = ^USHORT;
 
-{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 7, but existing in Delphi 11.3!
+{$ifndef Delphi2007orNewerCompiler}
   PLPCTSTR = ^LPCTSTR;
 
+  INT_PTR = Integer;
+  {$EXTERNALSYM INT_PTR}
+  UINT_PTR = Cardinal;
+  {$EXTERNALSYM UINT_PTR}
   LONG_PTR = NativeInt;
   {$EXTERNALSYM LONG_PTR}
   ULONG_PTR = NativeUInt;
