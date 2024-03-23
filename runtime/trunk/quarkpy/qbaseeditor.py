@@ -120,7 +120,7 @@ class BaseEditor:
 
         def DrawAxis(setup=setup, view=view, MODE=self.MODE):
             X, Y, Z = setup["MapLimit"]
-            if (quarkx.setupsubset()["MapLimit"]<>None):    # games can overide default setting
+            if (quarkx.setupsubset()["MapLimit"]<>None):    # games can override default setting
                 X, Y, Z = quarkx.setupsubset()["MapLimit"]
 
             ax = []
@@ -228,7 +228,7 @@ class BaseEditor:
         # drawing of the selected face/poly parent in a selection of more than
         # one face to give a cleaner look when working in Terrain Generator.
         if (self.MODE == SS_MAP) and ("tb_terrmodes" in self.layout.toolbars):
-            if self.layout.toolbars["tb_terrmodes"] is not None and len(ex.sellist) > 1:
+            if (self.layout.toolbars["tb_terrmodes"] is not None) and (len(ex.sellist) > 1):
                 tb2 = self.layout.toolbars["tb_terrmodes"]
                 for b in tb2.tb.buttons:
                     if b.state == 2:
@@ -802,58 +802,47 @@ class BaseEditor:
         "Force all views to be redrawn."
 
         if self.MODE == SS_MODEL and currentview is not None:
-            import mdleditor
-            try:
-                if currentview.info["viewname"] == "skinview":
-                    if flagsmouse == 16384 and self.dragobject is not None:
-                        self.dragobject = None
-                        self.dragobject.handle = None
-                        dragobject = None
-                        return
-                    if flagsmouse == 2056 or flagsmouse == 16384:
-                        if flagsmouse == 16384:
-                            for v in self.layout.views:
-                                if v.viewmode != "wire":
-                                    v.invalidate(rebuild)
-                        return
-                    elif self.layout.selchange:
+            if currentview.info["viewname"] == "skinview":
+                if flagsmouse == 16384 and self.dragobject is not None:
+                    self.dragobject = None
+                    self.dragobject.handle = None
+                    dragobject = None
+                    return
+                if flagsmouse == 2056 or flagsmouse == 16384:
+                    if flagsmouse == 16384:
                         for v in self.layout.views:
-                            v.invalidate(rebuild)
-                        return
-                    else:
-                        return
-                else:
-                    if self.layout.selchange:
-                        for v in self.layout.views:
-                            if v.info["viewname"] == "editors3Dview" or v.info["viewname"] == "3Dwindow" or v.viewmode != "wire":
-                                import mdlmgr
-                                mdlmgr.treeviewselchanged = 1
-                                if quarkx.setupsubset(SS_MODEL, "Options")['AnimationActive'] == "1" or quarkx.setupsubset(SS_MODEL, "Options")['AnimationCFGActive'] == "1":
-                                    if v.info["viewname"] == "XY" and quarkx.setupsubset(SS_MODEL, "Options")['AnimateZ2Dview'] != "1":
-                                        pass
-                                    elif v.info["viewname"] == "XZ" and quarkx.setupsubset(SS_MODEL, "Options")['AnimateY2Dview'] != "1":
-                                        pass
-                                    elif v.info["viewname"] == "YZ" and quarkx.setupsubset(SS_MODEL, "Options")['AnimateX2Dview'] != "1":
-                                        pass
-                                    elif v.info["viewname"] == "editors3Dview" and quarkx.setupsubset(SS_MODEL, "Options")['AnimateEd3Dview'] != "1":
-                                        pass
-                                    elif v.info["viewname"] == "3Dwindow" and quarkx.setupsubset(SS_MODEL, "Options")['AnimateFloat3Dview'] != "1":
-                                        pass
-                                    else:
-                                        if self.ModelFaceSelList != []:
-                                            import mdlhandles
-                                            v.handles = mdlhandles.BuildHandles(self, self.layout.explorer, v)
-                                        v.invalidate(rebuild)
+                            if v.viewmode != "wire":
+                                v.invalidate(rebuild)
+                elif self.layout.selchange:
+                    for v in self.layout.views:
+                        v.invalidate(rebuild)
+            else:
+                if self.layout.selchange:
+                    for v in self.layout.views:
+                        if v.info["viewname"] == "editors3Dview" or v.info["viewname"] == "3Dwindow" or v.viewmode != "wire":
+                            import mdlmgr
+                            mdlmgr.treeviewselchanged = 1
+                            if quarkx.setupsubset(SS_MODEL, "Options")['AnimationActive'] == "1" or quarkx.setupsubset(SS_MODEL, "Options")['AnimationCFGActive'] == "1":
+                                if v.info["viewname"] == "XY" and quarkx.setupsubset(SS_MODEL, "Options")['AnimateZ2Dview'] != "1":
+                                    pass
+                                elif v.info["viewname"] == "XZ" and quarkx.setupsubset(SS_MODEL, "Options")['AnimateY2Dview'] != "1":
+                                    pass
+                                elif v.info["viewname"] == "YZ" and quarkx.setupsubset(SS_MODEL, "Options")['AnimateX2Dview'] != "1":
+                                    pass
+                                elif v.info["viewname"] == "editors3Dview" and quarkx.setupsubset(SS_MODEL, "Options")['AnimateEd3Dview'] != "1":
+                                    pass
+                                elif v.info["viewname"] == "3Dwindow" and quarkx.setupsubset(SS_MODEL, "Options")['AnimateFloat3Dview'] != "1":
+                                    pass
                                 else:
                                     if self.ModelFaceSelList != []:
                                         import mdlhandles
                                         v.handles = mdlhandles.BuildHandles(self, self.layout.explorer, v)
                                     v.invalidate(rebuild)
-                        return
-                    else:
-                        return
-            except:
-                pass
+                            else:
+                                if self.ModelFaceSelList != []:
+                                    import mdlhandles
+                                    v.handles = mdlhandles.BuildHandles(self, self.layout.explorer, v)
+                                v.invalidate(rebuild)
         else:
             for v in self.layout.views:
                 if (viewmode == '') or (v.viewmode == viewmode):
@@ -903,7 +892,6 @@ class BaseEditor:
             flagsmouse = flags
             currentview = view
             cursorpos = (x, y)
-            import mdleditor
             import mdlhandles
 
             if (flagsmouse == 560 or flagsmouse == 1072) and (view.info["viewname"] == "editors3Dview" or view.info["viewname"] == "3Dwindow"):
@@ -982,6 +970,7 @@ class BaseEditor:
 
              # This causes all in all views to be redrawn at end of selection drag.
             if modelfacelist == [] and flagsmouse == 2072 and currentview.info["viewname"] != "skinview":
+                import mdleditor
                 mdleditor.commonhandles(self)
 
         if flags & MB_DRAGEND: ### This is when the mouse button(s) is ACTUALLY released.
@@ -1032,6 +1021,7 @@ class BaseEditor:
 
                 if self.MODE == SS_MODEL:
                     if (flagsmouse == 2056 or flagsmouse == 2064 or flagsmouse == 2072 or flagsmouse == 2080):
+                        import mdleditor
                         mdleditor.commonhandles(self)
                         try:
                             # This section for True3Dmode end of drag.
@@ -1295,6 +1285,7 @@ class BaseEditor:
                     elif isinstance(self.dragobject, qhandles.HandleDragObject) and (flagsmouse == 1048):
                         self.dragobject = dragobject = None
                     elif flagsmouse == 16384 and isinstance(self.dragobject, mdlhandles.ModelFaceHandle):
+                        import mdleditor
                         self.dragobject = dragobject = None
                         mdleditor.commonhandles(self)
                     else:
@@ -1560,8 +1551,8 @@ class BaseEditor:
                 # If successful, immediately begin to drag
                 #
                 if self.dragobject is not None:
-
                     if (self.MODE == SS_MODEL):
+                        import mdleditor
                         if flagsmouse == 520 and view.info["viewname"] == "skinview":
                             self.dragobject.view = view
                             self.dragobject.dragto(x, y, flags | MB_DRAGGING)
