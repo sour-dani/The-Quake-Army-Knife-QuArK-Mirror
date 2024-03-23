@@ -97,7 +97,7 @@ var
  Q2MipTex: TQ2MipTex;
  Base: TStreamPos;
  I, W, H: Integer;
- Data: String;
+ Data: String; //FIXME: Switch to bytes!
 begin
  case ReadFormat of
   rf_Default: begin  { as stand-alone file }
@@ -121,7 +121,7 @@ begin
 
        { reads the palette }
       SetLength(Data, SizeOf(TPaletteLmp));
-      Move(Header.Palette, Data, SizeOf(TPaletteLmp));
+      Move(Header.Palette, Data[1], SizeOf(TPaletteLmp));
       Specifics.Bytes[Spec2]:=Data;
 
        { reads the image data }
