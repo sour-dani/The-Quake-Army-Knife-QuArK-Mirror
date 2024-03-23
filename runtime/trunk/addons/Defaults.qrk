@@ -2769,8 +2769,8 @@ QQRKSRC1
         Game = "Warfork"
         Code = "x" // Hardcoded value in Setup.PAS
 
-        Program = "warfork_x86.exe"
-        Directory = "C:\Program Files\fvi\fvi-launcher\applications\warfork\Warfork.app\Contents\Resources"
+        Program = "warfork_x64.exe"
+        Directory = "C:\Program Files\fvi"
         CheckDirectory = "*.EXE"
 
         CD = ""
