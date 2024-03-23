@@ -50,14 +50,18 @@ type
 
 {$ifdef MSWINDOWS}
   QWORD = {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
+  {$EXTERNALSYM QWORD}
   PQWORD = ^QWORD;
+  {$EXTERNALSYM PQWORD}
   LPQWORD = PQWORD;
+  {$EXTERNALSYM LPQWORD}
 
   DWORDLONG = {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
   {$EXTERNALSYM DWORDLONG}
   PDWORDLONG = ^DWORDLONG;
-  {$EXTERNALSYM LPDWORDLONG}
+  {$EXTERNALSYM PDWORDLONG}
   LPDWORDLONG = PDWORDLONG;
+  {$EXTERNALSYM LPDWORDLONG}
 
   ULONGLONG = {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
   {$EXTERNALSYM ULONGLONG}
@@ -65,7 +69,9 @@ type
   {$EXTERNALSYM PULONGLONG}
 
   USHORT = Word;
+  {$EXTERNALSYM USHORT}
   PUSHORT = ^USHORT;
+  {$EXTERNALSYM PUSHORT}
 
 {$ifndef Delphi2007orNewerCompiler}
   PLPCTSTR = ^LPCTSTR;
@@ -170,8 +176,11 @@ type
   {$ENDIF}
 
   RESTRICTIONS = LongWord; //Really: enum
+  {$EXTERNALSYM RESTRICTIONS}
   _FIRMWARE_TYPE = LongWord; //Really: enum
+  {$EXTERNALSYM _FIRMWARE_TYPE}
   PFIRMWARE_TYPE = ^_FIRMWARE_TYPE;
+  {$EXTERNALSYM PFIRMWARE_TYPE}
 {$endif}
 
 const
