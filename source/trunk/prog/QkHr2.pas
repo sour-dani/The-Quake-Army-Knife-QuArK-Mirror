@@ -272,6 +272,8 @@ begin
 
       with ReadMd2File(F, Origine, mdl) do
       begin
+       if CurrentComponent = nil then
+        CurrentComponent := GetComponentFromIndex(0);
        CTrisB:=CurrentComponent.Triangles(K, CTris);
        for I:=1 to K do
         begin
