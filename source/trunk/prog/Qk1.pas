@@ -436,7 +436,6 @@ begin
    end;
  finally
    // Wait for splash screen to close
-   if ExceptObject<> nil then Halt(1);
    if LaunchOptions.DoSplash then
    begin
      Log(LOG_VERBOSE, 'Waiting for splash screen...');
@@ -1654,6 +1653,12 @@ var
 begin
  //Stop all timer activity, if any left.
  ClearTimers;
+
+ Application.OnIdle:=nil;
+ Application.OnActivate:=nil;
+ Application.OnDeactivate:=nil;
+{Application.OnHelp:=nil;}
+{Application.OnRestore:=nil;}     { MARSCAPFIX }
 
  //Discard all idle jobs.
  P:=IdleJobs;
