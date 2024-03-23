@@ -29,7 +29,6 @@ logging = 0
 importername = "ie_fm_import.py"
 textlog = "fm_ie_log.txt"
 progressbar = None
-g_scale = 1.0
 
 ######################################################
 # FM Model Constants
@@ -48,13 +47,10 @@ MAX_MODELJOINTNODES=255
 # FM data structures
 ######################################################
 class fm_alias_triangle:
-    vertices=[]
-    lightnormalindex=0
-
     binary_format="<3BB" #little-endian (<), 3 Unsigned char
-    
+
     def __init__(self):
-        self.vertices=[0]*3
+        self.vertices=[0, 0, 0]
         self.lightnormalindex=0
 
     def load(self, file):
@@ -74,14 +70,11 @@ class fm_alias_triangle:
         tobj.logcon ("----------------------------------------")
 
 class fm_face:
-    vertex_index=[]
-    texture_index=[]
-
     binary_format="<3h3h" #little-endian (<), 3 short, 3 short
-    
+
     def __init__(self):
-        self.vertex_index = [ 0, 0, 0 ]
-        self.texture_index = [ 0, 0, 0]
+        self.vertex_index = [0, 0, 0]
+        self.texture_index = [0, 0, 0]
 
     def load (self, file):
         # file is the model file & full path, ex: C:\Heretic II\base\models\monsters\chicken2\tris.fm
@@ -103,8 +96,6 @@ class fm_face:
         tobj.logcon ("----------------------------------------")
 
 class glGLCommands_t:
-    TrisTypeNum=None
-
     binary_format="<i" #little-endian (<), 1 int
 
     def __init__(self):
@@ -126,10 +117,6 @@ class glGLCommands_t:
         tobj.logcon ("-------------------")
 
 class glCommandVertex_t:
-    u=0.0
-    v=0.0
-    vertexIndex=0
-
     binary_format="<2fi" #little-endian (<), 2 floats + 1 int
 
     def __init__(self):
@@ -157,9 +144,6 @@ class glCommandVertex_t:
         tobj.logcon ("")
 
 class fm_tex_coord:
-    u=0
-    v=0
-
     binary_format="<2h" #little-endian (<), 2 unsigned short
 
     def __init__(self):
@@ -183,8 +167,6 @@ class fm_tex_coord:
 
 
 class fm_skin:
-    name=""
-
     binary_format="<64c" #little-endian (<), char[64]
 
     def __init__(self):
@@ -202,30 +184,23 @@ class fm_skin:
         return self
 
     def dump (self):
-        print "================="
-        print "FM Skin"
+        print "FM Skin:"
         print "-----------------"
         print "skin name: ",self.name
         print "-----------------"
         print ""
 
 class fm_alias_frame:
-    scale=[]
-    translate=[]
-    name=[]
-    vertices=[]
-
     binary_format="<3f3f" #little-endian (<), 3 float, 3 float char[16]
     #did not add the "3bb" to the end of the binary format
     #because the alias_vertices will be read in through
-    #thier own loader
+    #their own loader
 
     def __init__(self):
         self.scale=[0.0]*3
         self.translate=[0.0]*3
         self.name=""
         self.vertices=[]
-
 
     def load (self, file):
         # file is the model file & full path, ex: C:\Heretic II\base\models\monsters\chicken2\tris.fm
@@ -277,18 +252,11 @@ class fm_obj:
 
     binary_format="<32c12i"  #little-endian (<), see above.
 
-    #fm data objects
-    tex_coords=[]
-    faces=[]
-    frames=[]
-    skins=[]
-
     def __init__ (self):
         self.tex_coords=[]
         self.faces=[]
         self.frames=[]
         self.skins=[]
-
 
     def load (self, file):
         global tobj, logging
@@ -738,7 +706,7 @@ class fm_obj:
 def load_textures(fm, message):
     global tobj, logging
     # Checks if the model has textures specified with it,
-    # if not trys to load some from the model's folder.
+    # if not, tries to load some from the model's folder.
     skinsize = (256, 256)
     skingroup = quarkx.newobj('Skins:sg')
     skingroup['type'] = chr(2)
@@ -809,11 +777,11 @@ def load_textures(fm, message):
                     skinsize = (fm.skin_width, fm.skin_height) # Used for QuArK.
 
         return skinsize, skingroup, message # Used for QuArK.
-	
+
 
 def animate_fm(fm): # The Frames Group is made here & returned to be added to the Component.
     global progressbar, tobj, logging
-	######### Animate the verts through the QuArK Frames lists.
+    ######### Animate the verts through the QuArK Frames lists.
     framesgroup = quarkx.newobj('Frames:fg')
 
     if logging == 1:
@@ -831,18 +799,10 @@ def animate_fm(fm): # The Frames Group is made here & returned to be added to th
         frame = quarkx.newobj(fm.frames[i].name + ':mf')
         mesh = ()
         #update the vertices
-    #    print "======================="
-    #    print "line 616 frame", i, frame.name
-    #    print "line 617 scale", fm.frames[i].scale
-    #    print "line 618 g_scale", g_scale
-    #    print "line 619 translate", fm.frames[i].translate
         for j in xrange(0,fm.num_vertices):
-    #        print "-----------------------"
-    #        print "line 622 vertices", fm.frames[i].vertices[j].vertices
-            x=(fm.frames[i].scale[0]*fm.frames[i].vertices[j].vertices[0]+fm.frames[i].translate[0])*g_scale
-            y=(fm.frames[i].scale[1]*fm.frames[i].vertices[j].vertices[1]+fm.frames[i].translate[1])*g_scale
-            z=(fm.frames[i].scale[2]*fm.frames[i].vertices[j].vertices[2]+fm.frames[i].translate[2])*g_scale
-    #        print "line 626 x,y,z", x,y,z
+            x=(fm.frames[i].scale[0]*fm.frames[i].vertices[j].vertices[0]+fm.frames[i].translate[0])
+            y=(fm.frames[i].scale[1]*fm.frames[i].vertices[j].vertices[1]+fm.frames[i].translate[1])
+            z=(fm.frames[i].scale[2]*fm.frames[i].vertices[j].vertices[2]+fm.frames[i].translate[2])
 
             #put the vertex in the right spot
             mesh = mesh + (x,)
@@ -905,8 +865,6 @@ def load_fm(fm_filename, name):
 ########################
 
 def import_fm_model(editor, fm_filename):
-
-
     # Now we start creating our Import Component.
     # But first we check for any other "Import Component"s,
     # if so we name this one 1 more then the largest number.

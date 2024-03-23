@@ -31,7 +31,6 @@ textlog = "fm_ie_log.txt"
 progressbar = None
 user_frame_list=[]
 user_skins_list=[]
-g_scale = 1.0
 
 
 ######################################################
@@ -71,12 +70,12 @@ FM_FRAME_NAME_LIST=(("stand",1,40),
 # FM data structures
 ######################################################
 class fm_alias_triangle: # See .md2 format doc "Vertices". A QuArK's "frame" ['Vertices'].
-    vertices = []
-    lightnormalindex = 0
     binary_format = "<3BB"
+
     def __init__(self):
-        self.vertices = [0] * 3
+        self.vertices = [0, 0, 0]
         self.lightnormalindex = 0
+
     def save(self, file):
         temp_data = [0] * 4
         temp_data[0] = self.vertices[0]
@@ -86,18 +85,19 @@ class fm_alias_triangle: # See .md2 format doc "Vertices". A QuArK's "frame" ['V
         data = struct.pack(self.binary_format, temp_data[0], temp_data[1], temp_data[2], temp_data[3])
         file.write(data)
         progressbar.progress()
+
     def dump(self):
         global tobj, logging
         tobj.logcon ("vertex 0,1,2, lightnormalindex: " + str(self.vertices[0]) + ", " + str(self.vertices[1]) + ", " + str(self.vertices[2]) + ", " + str(self.lightnormalindex))
         tobj.logcon ("----------------------------------------")
-        
+
 class fm_face: # See .md2 format doc "Triangles". QuArK's "component.triangles".
-    vertex_index=[]
-    texture_index=[]
     binary_format="<3h3h"
+
     def __init__(self):
-        self.vertex_index = [ 0, 0, 0 ]
-        self.texture_index = [ 0, 0, 0]
+        self.vertex_index = [0, 0, 0]
+        self.texture_index = [0, 0, 0]
+
     def save(self, file):
         temp_data=[0]*6
         temp_data[0]=self.vertex_index[0]
@@ -109,19 +109,20 @@ class fm_face: # See .md2 format doc "Triangles". QuArK's "component.triangles".
         data=struct.pack(self.binary_format,temp_data[0],temp_data[1],temp_data[2],temp_data[3],temp_data[4],temp_data[5])
         file.write(data)
         progressbar.progress()
+
     def dump (self):
         global tobj, logging
         tobj.logcon ("vertex indexes: " + str(self.vertex_index[0]) + ", " + str(self.vertex_index[1]) + ", " + str(self.vertex_index[2]))
         tobj.logcon ("texture indexes: " + str(self.texture_index[0]) + ", " + str(self.texture_index[1]) + ", " + str(self.texture_index[2]))
         tobj.logcon ("----------------------------------------")
-        
+
 class fm_tex_coord: # See .md2 format doc "Texture coordinates". QuArK's "component.triangles".
-    u=0
-    v=0
     binary_format="<2h"
+
     def __init__(self):
         self.u=0
         self.v=0
+
     def save(self, file, st_coord):
         temp_data=[0]*2
       #  temp_data[0]=self.u
@@ -131,20 +132,19 @@ class fm_tex_coord: # See .md2 format doc "Texture coordinates". QuArK's "compon
         data=struct.pack(self.binary_format, temp_data[0], temp_data[1])
         file.write(data)
         progressbar.progress()
+
     def dump (self):
         global tobj, logging
         tobj.logcon ("texture coordinate u, v: " + str(self.u) + ", " + str(self.v))
         tobj.logcon ("----------------------------------------")
 
 class glGLCommands_t:
-    TrisTypeNum=0
-    cmd_list=[]
     binary_format="<i" #little-endian (<), 1 int
-    
+
     def __init__(self):
         self.TrisTypeNum=0
         self.cmd_list=[]
-    
+
     def save(self,file):
         # file is the model file & full path, ex: C:\Heretic II\base\models\monsters\chicken2\tris.fm
         # data[0] ex: (4) or (-7), positive int = a triangle strip, negative int = a triangle fan, 0 = end of valid GL_commands data.
@@ -152,6 +152,7 @@ class glGLCommands_t:
         file.write(data)
         for cmd in self.cmd_list:
             cmd.save(file)
+
     def dump(self):
         global tobj, logging
         tobj.logcon ("-------------------")
@@ -160,17 +161,15 @@ class glGLCommands_t:
         tobj.logcon ("-------------------")
         for cmd in self.cmd_list:
             cmd.dump()
-        
+
 class glCommandVertex_t:
-    s=0.0
-    t=0.0
-    vert_index=0
     binary_format="<2fi" #little-endian (<), 2 floats + 1 int
-    
+
     def __init__(self):
         self.s=0.0
         self.t=0.0
         vert_index=0
+
     def save(self,file):
         # file is the model file & full path, ex: C:\Heretic II\base\models\monsters\chicken2\tris.fm
         # temp_data[0] and temp_data[1] ex: (0.1397, 0.6093), are 2D skin texture coords as floats, percentage of skin size.
@@ -181,6 +180,7 @@ class glCommandVertex_t:
         temp_data[2]=self.vert_index
         data=struct.pack(self.binary_format, temp_data[0],temp_data[1],temp_data[2])
         file.write(data)
+
     def dump (self):
         global tobj, logging
         tobj.logcon ("FM OpenGL Command Vertex")
@@ -190,10 +190,11 @@ class glCommandVertex_t:
         tobj.logcon ("")
 
 class fm_skin: # See .md2 format doc "Texture information".
-    name=""
     binary_format="<64s"
+
     def __init__(self):
         self.name=""
+
     def save(self, file):
         if not self.name.endswith(".m8") and not self.name.endswith(".m32"):
             fixname=self.name.split(".")[0]
@@ -203,16 +204,13 @@ class fm_skin: # See .md2 format doc "Texture information".
             temp_data=self.name
         data=struct.pack(self.binary_format, temp_data)
         file.write(data)
+
     def dump (self):
         print "FM Skin"
         print "skin name: ",self.name
         print ""
-        
+
 class fm_alias_frame: # See .md2 format doc "Vector", "Vertices" and "Frames". QuArK's "component.dictitems['Frames']".
-    scale=[]
-    translate=[]
-    name=[]
-    vertices=[]
  #   binary_format="<3f3f16s"
     binary_format="<3f3f"
 
@@ -221,6 +219,7 @@ class fm_alias_frame: # See .md2 format doc "Vector", "Vertices" and "Frames". Q
         self.translate=[0.0]*3
         self.name=""
         self.vertices=[]
+
     def save(self, file):
         temp_data=[0]*7
         temp_data[0]=float(self.scale[0])
@@ -253,7 +252,7 @@ class fm_alias_frame: # See .md2 format doc "Vector", "Vertices" and "Frames". Q
         tobj.logcon ("translate x,y,z: " + str(self.translate[0]) + ", " + str(self.translate[1]) + ", " + str(self.translate[2]))
         tobj.logcon ("name: " + self.name)
         tobj.logcon ("----------------------------------------")
-        
+
 class fm_obj:
     #Header Structure
     SectionName=[]       #char 32  This is used to identify the file (Must be 'header')
@@ -270,14 +269,6 @@ class fm_obj:
     num_frames=0         #int 10   The number of animation frames
     num_mesh_nodes=1     #int 11   The number of nodes, believe these are bones.
     binary_format="<12i" #little-endian (<), 12 integers (12i)
-    #fm data objects
-    tex_coords=[]
-    st_coord={}
-    faces=[]
-    frames=[]
-    skins=[]
-    GL_commands=[]
-    facelist=[]
 
     def __init__ (self):
         self.tex_coords=[]
@@ -285,6 +276,7 @@ class fm_obj:
         self.faces=[]
         self.frames=[]
         self.skins=[]
+        self.GL_commands=[]
         self.facelist=[]
 
     def save(self, file):
@@ -627,7 +619,7 @@ def fill_fm(fm, component):
     mesh = component.triangles
     Strings[2455] = component.shortname + "\n" + Strings[2455]
     progressbar = quarkx.progressbar(2455, len(mesh)*6)
-    
+
     #load up some intermediate data structures
     tex_list={}
     tex_count=0
@@ -702,7 +694,7 @@ def fill_fm(fm, component):
     #get the frame data
     #calculate 1 frame size  + (1 vert size*num_verts)
     fm.frame_size=40+(fm.num_vertices*4) #in bytes
-    
+
     #get the frame list
     user_frame_list = component.dictitems['Frames:fg']
     if user_frame_list=="default":
@@ -714,7 +706,7 @@ def fill_fm(fm, component):
     for frame in range(0,fm.num_frames):
         #add a frame
         fm.frames.append(fm_alias_frame())
-        
+
 # Each frame has a scale and transform value that gets the vertex value between 0-255.
 # Since the scale and transform are the same for all the verts in the frame,
 # we only need to figure this out once per frame
@@ -735,7 +727,7 @@ def fill_fm(fm, component):
         frame_scale_y=(bounding_box[1].y-bounding_box[0].y)/255
         frame_scale_z=(bounding_box[1].z-bounding_box[0].z)/255
         scale = (frame_scale_x, frame_scale_y, frame_scale_z)
-        
+
         #translate value of the mesh to center it on the origin
         frame_trans_x=bounding_box[0].x
         frame_trans_y=bounding_box[0].y
@@ -745,7 +737,7 @@ def fill_fm(fm, component):
         #fill in the data
         fm.frames[frame].scale = scale
         fm.frames[frame].translate = translate
-        
+
         # Now for the frame vertices.
         for vert_counter in range(0, fm.num_vertices):
             # Add a vertex to the fm structure.
@@ -765,12 +757,12 @@ def fill_fm(fm, component):
 
             # We need to add the lookup table check here.
             fm.frames[frame].vertices[vert_counter].lightnormalindex = 0
-            
+
     # Output all the frame names in the user_frame_list.
         fm.frames[frame].name = framename.split(":")[0]
         progressbar.progress()
 
-    # Compute these after everthing is loaded into a fm structure.
+    # Compute these after everything is loaded into a fm structure.
     header_size = 17 * 4 # 17 integers, each integer is 4 bytes.
     skin_size = 64 * fm.num_skins # 64 char per skin * number of skins.
     tex_coord_size = 4 * fm.num_tex_coords # 2 short * number of texture coords.
@@ -791,7 +783,7 @@ def find_strip_length(fm, start_tri, start_vert):
 
     m1=m2=0
     st1=st2=0
-    
+
     used[start_tri]=2
 
     last=start_tri
@@ -811,12 +803,12 @@ def find_strip_length(fm, start_tri, start_vert):
     st1=fm.faces[last].texture_index[(start_vert+2)%3]
     m2=fm.faces[last].vertex_index[(start_vert+1)%3]
     st2=fm.faces[last].texture_index[(start_vert+1)%3]
-    
+
     #look for matching triangle
     check=start_tri+1
-    
+
     for tri_counter in range(start_tri+1, fm.num_faces):
-        
+
         for k in range(0,3):
             if fm.faces[check].vertex_index[k]!=m1:
                 continue
@@ -826,7 +818,7 @@ def find_strip_length(fm, start_tri, start_vert):
                 continue
             if fm.faces[check].texture_index[(k+1)%3]!=st2:
                 continue
-            
+
             #if we can't use this triangle, this tri_strip is done
             if (used[tri_counter]!=0):
                 for clear_counter in range(start_tri+1, fm.num_faces):
@@ -846,7 +838,7 @@ def find_strip_length(fm, start_tri, start_vert):
             strip_st[strip_count+2]=fm.faces[tri_counter].texture_index[(k+2)%3]
             strip_tris[strip_count]=tri_counter
             strip_count+=1
-    
+
             used[tri_counter]=2
         check+=1
     return strip_count
@@ -861,7 +853,7 @@ def find_fan_length(fm, start_tri, start_vert):
 
     m1=m2=0
     st1=st2=0
-    
+
     used[start_tri]=2
 
     last=start_tri
@@ -869,7 +861,7 @@ def find_fan_length(fm, start_tri, start_vert):
     strip_vert[0]=fm.faces[last].vertex_index[start_vert%3]
     strip_vert[1]=fm.faces[last].vertex_index[(start_vert+1)%3]
     strip_vert[2]=fm.faces[last].vertex_index[(start_vert+2)%3]
-    
+
     strip_st[0]=fm.faces[last].texture_index[start_vert%3]
     strip_st[1]=fm.faces[last].texture_index[(start_vert+1)%3]
     strip_st[2]=fm.faces[last].texture_index[(start_vert+2)%3]
@@ -882,7 +874,7 @@ def find_fan_length(fm, start_tri, start_vert):
     m2=fm.faces[last].vertex_index[(start_vert+2)%3]
     st2=fm.faces[last].texture_index[(start_vert+2)%3]
 
-    #look for matching triangle    
+    #look for matching triangle
     check=start_tri+1
     for tri_counter in range(start_tri+1, fm.num_faces):
         for k in range(0,3):
@@ -894,7 +886,7 @@ def find_fan_length(fm, start_tri, start_vert):
                 continue
             if fm.faces[check].texture_index[(k+1)%3]!=st2:
                 continue
-            
+
             #if we can't use this triangle, this tri_strip is done
             if (used[tri_counter]!=0):
                 for clear_counter in range(start_tri+1, fm.num_faces):
@@ -905,12 +897,12 @@ def find_fan_length(fm, start_tri, start_vert):
             #new edge
             m2=fm.faces[check].vertex_index[(k+2)%3]
             st2=fm.faces[check].texture_index[(k+2)%3]
-            
+
             strip_vert[strip_count+2]=m2
             strip_st[strip_count+2]=st2
             strip_tris[strip_count]=tri_counter
             strip_count+=1
-    
+
             used[tri_counter]=2
         check+=1
     return strip_count
@@ -940,7 +932,7 @@ def build_GL_commands(fm):
     strip_tris=[0]*128
     global strip_count
     strip_count=0
-    
+
     #variables
     num_commands=0
     start_vert=0
@@ -952,74 +944,73 @@ def build_GL_commands(fm):
     best_tris=[0]*1024
     s=0.0
     t=0.0
-    
+
     for face_counter in range(0,fm.num_faces):
         if used[face_counter]==1: #don't evaluate a tri that's been used
-            pass
+            continue
+        best_length=0 #restart the counter
+        #for each vertex index in this face
+        for start_vert in range(0,3):
+            strip_length=find_strip_length(fm, face_counter, start_vert)
+            if (strip_length>best_length): 
+                best_type=0
+                best_length=strip_length
+                for index in range (0, best_length+2):
+                    best_st[index]=strip_st[index]
+                    best_vert[index]=strip_vert[index]
+                for index in range(0, best_length):
+                    best_tris[index]=strip_tris[index]
+
+            fan_length=find_fan_length(fm, face_counter, start_vert)
+            if (fan_length>best_length):
+                best_type=1
+                best_length=fan_length
+                for index in range (0, best_length+2):
+                    best_st[index]=strip_st[index]
+                    best_vert[index]=strip_vert[index]
+                for index in range(0, best_length):
+                    best_tris[index]=strip_tris[index]
+
+        #mark the tris on the best strip/fan as used
+        for used_counter in range (0, best_length):
+            used[best_tris[used_counter]]=1
+
+        temp_cmdlist=glGLCommands_t()
+        #push the number of commands into the command stream
+        if best_type==1:
+            temp_cmdlist.TrisTypeNum=(-(best_length+2))
+            num_commands+=1
         else:
-            best_length=0 #restart the counter
-            #for each vertex index in this face
-            for start_vert in range(0,3):
-                strip_length=find_strip_length(fm, face_counter, start_vert)
-                if (strip_length>best_length): 
-                    best_type=0
-                    best_length=strip_length
-                    for index in range (0, best_length+2):
-                        best_st[index]=strip_st[index]
-                        best_vert[index]=strip_vert[index]
-                    for index in range(0, best_length):
-                        best_tris[index]=strip_tris[index]
+            temp_cmdlist.TrisTypeNum=best_length+2
+            num_commands+=1
+        for command_counter in range (0, best_length+2):
+            #emit a vertex into the reorder buffer
+            cmd=glCommandVertex_t()
+            index=best_st[command_counter]
+            #calc and put S/T coords in the structure
+        #    s=fm.tex_coords[index].u # tex_coords is screwed up here.
+        #    t=fm.tex_coords[index].v # tex_coords is screwed up here.
+            s=fm.st_coord[index][0]
+            t=fm.st_coord[index][1]
+            try:
+                s=(s+0.5)/fm.skin_width
+                t=(t+0.5)/fm.skin_height
+            except:
+                s=(s+0.5)/1
+                t=(t+0.5)/1
+            cmd.s=s
+            cmd.t=t
+            cmd.vert_index=best_vert[command_counter]
+            temp_cmdlist.cmd_list.append(cmd)
+            num_commands+=3
+        fm.GL_commands.append(temp_cmdlist)
 
-                fan_length=find_fan_length(fm, face_counter, start_vert)
-                if (fan_length>best_length):
-                    best_type=1
-                    best_length=fan_length
-                    for index in range (0, best_length+2):
-                        best_st[index]=strip_st[index]
-                        best_vert[index]=strip_vert[index]
-                    for index in range(0, best_length):
-                        best_tris[index]=strip_tris[index]
-
-            #mark the tris on the best strip/fan as used
-            for used_counter in range (0, best_length):
-                used[best_tris[used_counter]]=1
-
-            temp_cmdlist=glGLCommands_t()
-            #push the number of commands into the command stream
-            if best_type==1:
-                temp_cmdlist.TrisTypeNum=(-(best_length+2))
-                num_commands+=1
-            else:
-                temp_cmdlist.TrisTypeNum=best_length+2
-                num_commands+=1
-            for command_counter in range (0, best_length+2):
-                #emit a vertex into the reorder buffer
-                cmd=glCommandVertex_t()
-                index=best_st[command_counter]
-                #calc and put S/T coords in the structure
-            #    s=fm.tex_coords[index].u # tex_coords is screwed up here.
-            #    t=fm.tex_coords[index].v # tex_coords is screwed up here.
-                s=fm.st_coord[index][0]
-                t=fm.st_coord[index][1]
-                try:
-                    s=(s+0.5)/fm.skin_width
-                    t=(t+0.5)/fm.skin_height
-                except:
-                    s=(s+0.5)/1
-                    t=(t+0.5)/1
-                cmd.s=s
-                cmd.t=t
-                cmd.vert_index=best_vert[command_counter]
-                temp_cmdlist.cmd_list.append(cmd)
-                num_commands+=3
-            fm.GL_commands.append(temp_cmdlist)
-    
     #end of list
-    temp_cmdlist=glGLCommands_t()    
+    temp_cmdlist=glGLCommands_t()
     temp_cmdlist.TrisTypeNum=0
-    fm.GL_commands.append(temp_cmdlist)  
+    fm.GL_commands.append(temp_cmdlist)
     num_commands+=1
-    
+
     #cleanup and return
     used=best_vert=best_st=best_tris=strip_vert=strip_st=strip_tris=0
     return num_commands
@@ -1065,15 +1056,17 @@ def save_fm(filename):
 
     #actually write it to disk
     file = open(filename,"wb")
-    fm.save(file)
-    if logging == 1:
-        fm.dump() # Writes the file Header last to the log for comparison reasons.
-    file.close()
+    try:
+        fm.save(file)
+        if logging == 1:
+            fm.dump() # Writes the file Header last to the log for comparison reasons.
+    finally:
+        file.close()
     progressbar.close()
     Strings[2455] = Strings[2455].replace(component.shortname + "\n", "")
 
     #cleanup
-    fm = 0
+    fm = None
 
     add_to_message = "Any used skin textures that are not a .m8 or .m32\nwill need to be created by saving it as a .m8 to go with the model"
     ie_utils.default_end_logging(filename, "EX", starttime, add_to_message) ### Use "EX" for exporter text, "IM" for importer text.
