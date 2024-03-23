@@ -3565,8 +3565,6 @@ end;
  {-------------------}
 
 procedure EBackToPython;
-var
- S: String;
 begin
  PythonCodeEnd;
  if not (ExceptObject is Exception) then
@@ -3575,10 +3573,7 @@ begin
   if ExceptObject is EAbort then
    PyErr_SetString(QuarkxAborted, ToPyChar(LoadStr1(4452)))
   else
-   begin
-    S:=Format('%s [%p]', [GetExceptionMessage(Exception(ExceptObject)), @TForm1.AppException]);
-    PyErr_SetString(QuarkxError, ToPyChar(S));
-   end;
+   PyErr_SetString(QuarkxError, ToPyChar(GetExceptionMessage(Exception(ExceptObject))));
 end;
 
 procedure EBackToUser;
@@ -3594,7 +3589,7 @@ begin
   else
    begin
     S:=GetExceptionMessage(Exception(ExceptObject));
-    g_Form1.AppException(Nil, Exception(ExceptObject));
+    CustomExceptionHandler.AppException(Nil, Exception(ExceptObject));
     PyErr_SetString(QuarkxAborted, ToPyChar(S));
    end;
 end;

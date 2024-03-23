@@ -135,6 +135,9 @@ type
     procedure UpdateToolbarSetup;
     procedure DefineProperties(Filer: TFiler); override;
     procedure Deactivate; override;
+    {$IFDEF Delphi6orNewerCompiler} //FIXME: How to handle this on Delphi 5-?
+    function HandleCreateException: Boolean; override;
+    {$ENDIF}
     function ProcessMenuShortcut(var Msg: TWMKeyDown; ShortCut: TShortCut) : Boolean; dynamic;
     procedure MouseWheelDown(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean); dynamic;
     procedure MouseWheelUp(Sender: TObject; Shift: TShiftState; MousePos: TPoint; var Handled: Boolean); dynamic;
@@ -403,6 +406,14 @@ begin
  LocalDoAccept(ActiveControl);
  inherited;
 end;
+
+{$IFDEF Delphi6orNewerCompiler}
+function TQkForm.HandleCreateException: Boolean;
+begin
+ //Don't allow creation to continue after an exception.
+ Result:=False;
+end;
+{$ENDIF}
 
 //Somewhere after Delphi 7, somebody decided to change the way mousewheel control messages are handled.
 //Windows delivers them to the proper window, but Delphi wants to handle non-window child controls too.

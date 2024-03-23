@@ -539,7 +539,7 @@ begin
     SetupInfo:=QToolBox.Create('', Nil);
     SetupInfo.AddRef(+1);
     for I:=0 to ToolBoxList.Count-1 do
-     try
+     begin
       ProgressIndicatorIncrement;
       Q:=ToolBoxList[I] as QToolBox;
       for J:=0 to Q.Specifics.Count-1 do
@@ -557,9 +557,6 @@ begin
       {Node:=}Explorer.AddRoot(Root);
       {if (I>=FirstPrivate) and (NodeToSelect=Nil) then
         NodeToSelect:=Node;}
-     except
-      on E: Exception do
-       g_Form1.AppException(Self, E);
      end;
     finally
      ProgressIndicatorStop;

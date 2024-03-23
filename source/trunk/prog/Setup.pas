@@ -417,11 +417,9 @@ begin
  except
   on E: Exception do
    begin
-    //FIXME: We shouldn't call this like this... MessageException should be private IMHO (DanielPharos)
     Log(LOG_CRITICAL, LoadStr1(5204), [GetExceptionMessage(E)]);
-    g_Form1.MessageException(E, LoadStr1(5204), [mbOk]);
+    CustomExceptionHandler.MessageException(E, LoadStr1(5204), [mbOk]);
     Halt(1);   { cannot load Defaults.qrk - fatal error }
-    Exit;
    end;
  end;
 
@@ -433,7 +431,7 @@ begin
    if V1 <> V2 then
     begin
      Log(LOG_CRITICAL, LoadStr1(5206), [V1, V2]);
-     MessageDlg(FmtLoadStr1(5206, [V1, V2]), mtError, [mbOk], 0);
+     CustomExceptionHandler.AppException(nil, Exception.Create(FmtLoadStr1(5206, [V1, V2])));
      Halt(1);   { wrong version of Defaults.qrk }
     end;
   end;
@@ -441,7 +439,7 @@ begin
   if g_SetupSet[T]=Nil then  { checks ":config" objects }
    begin
     Log(LOG_CRITICAL, LoadStr1(5205), [SetupSetName[T]]);
-    MessageDlg(FmtLoadStr1(5205, [SetupSetName[T]]), mtError, [mbOk], 0);
+    CustomExceptionHandler.AppException(nil, Exception.Create(FmtLoadStr1(5205, [SetupSetName[T]])));
     Halt(1);   { missing ":config" object }
    end;
  Version:=InternalVersion;
@@ -501,7 +499,7 @@ begin
      if Specifics.Strings['GameCfg']='' then
       begin
        Log(LOG_CRITICAL, LoadStr1(4624));
-       MessageDlg(LoadStr1(4624), mtError, [mbOk], 0);
+       CustomExceptionHandler.AppException(nil, Exception.Create(LoadStr1(4624)));
        Halt(1);   { missing ":config" object }
       end;
      Log(LOG_INFO, LoadStr1(4627), [Specifics.Strings['GameCfg']]);

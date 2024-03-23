@@ -275,8 +275,12 @@ uses
 {$ENDIF}
 
 begin
-  (*//Disable Runtime error messages
-  NoErrMsg:=True;*)
+  (*
+  {$IFDEF Delphi5orNewerCompiler}
+  //Disable Runtime error messages.
+  NoErrMsg:=True;
+  {$ENDIF}
+  *)
 
 {$IFDEF MemCheck}
   MemChk;
@@ -299,6 +303,9 @@ begin
   PatchCheckWin32Version;
   {$IFEND}
   {$ENDIF}
+
+  //Install exception hook to catch exception during TForm1 creation.
+  InstallExceptProc;
 
   Log(LOG_VERBOSE, 'Loading main form...');
   Application.CreateForm(TForm1, g_Form1);

@@ -22,7 +22,19 @@ unit QkExceptions;
 
 interface
 
-uses Windows, SysUtils, Classes, Dialogs;
+uses Windows, SysUtils, Classes, Controls, Dialogs, Forms, StdCtrls;
+
+type
+  TCustomExceptionHandler = class(TObject)
+  private
+    OldException: TExceptionEvent;
+    procedure AppExceptionMore(Sender: TObject);
+  public
+    constructor Create;
+    destructor Destroy; override;
+    procedure AppException(Sender: TObject; E: Exception);
+    function MessageException(const E: Exception; const Info: String; Buttons: TMsgDlgButtons) : TModalResult;
+  end;
 
 function GetExceptionMessage(E: Exception) : String;
 procedure LogAndWarn(const WarnMessage : String);
@@ -37,11 +49,17 @@ procedure GlobalDisplayWarnings;
 function GetSystemErrorMessage(ErrNr: DWORD) : String;
 procedure LogWindowsError(ErrNr: DWORD; const Call: String);
 
+procedure InstallExceptProc;
+procedure CustomExceptHandler(ExceptObject: TObject; ExceptAddr: Pointer);
+
+var
+  CustomExceptionHandler: TCustomExceptionHandler;
+
  {-------------------}
 
 implementation
 
-uses Forms, TextBoxForm, Quarkx, Logging, ExtraFunctionality;
+uses QConsts, TextBoxForm, Quarkx, Logging, ExtraFunctionality, Platform;
 
  {-------------------}
 
@@ -158,4 +176,182 @@ begin
                    'Reason: %s', [Call, GetSystemErrorMessage(ErrNr)]);
 end;
 
+ {------------------------}
+
+constructor TCustomExceptionHandler.Create();
+begin
+  //Hook application-level exception handling
+  OldException:=Application.OnException;
+  Application.OnException:=CustomExceptionHandler.AppException;
+end;
+
+destructor TCustomExceptionHandler.Destroy();
+begin
+  //Unhook application-level exception handling
+  Application.OnException:=OldException;
+  //OldException:=nil;
+
+  inherited;
+end;
+
+procedure TCustomExceptionHandler.AppException(Sender: TObject; E: Exception);
+begin
+  try
+    MessageException(E, '%s', [mbOk]);
+  except
+    //If anything goes wrong with QuArK's exception handling, use the old one
+    try
+      Log(LOG_ALWAYS, Format('Error: Exception in exception handler: %s', [GetExceptionMessage(E)]));
+    except
+      //Ignore any errors here
+    end;
+    OldException(Sender, E);
+  end;
+end;
+
+function TCustomExceptionHandler.MessageException(const E: Exception; const Info: String; Buttons: TMsgDlgButtons) : TModalResult;
+const
+ Fallback4614 = '&More >>';
+var
+ B: TButton;
+{P: Integer;}
+ S: String;
+begin
+(*if E.HelpContext=0 then
+  Application.ShowException(E)
+ else
+  begin
+   PlaySound(SOUND_ERROR);
+   MessageDlg(E.Message, mtError, [mbOk, mbHelp], E.HelpContext);
+  end;*)
+ if E is EAbort then
+  begin
+   Result:=mrNone;
+   Exit;   { silent exception }
+  end;
+ PlaySound(SOUND_ERROR);
+ Include(Buttons, mbIgnore);
+ if E.HelpContext<>0 then Include(Buttons, mbHelp);
+ S:=Format(Info, [GetExceptionMessage(E)]);
+ try
+   Log(LOG_ALWAYS, 'Error: '+S);
+ except
+   //Ignore any errors here
+ end;
+{P:=Pos('//', S);
+ if P=0 then
+  P:=Length(S)+1;}
+ with CreateMessageDialog({Copy(}S{,1,P-1)}, mtError, Buttons) do
+  try
+   HelpContext := E.HelpContext;
+   B:=FindComponent('Ignore') as TButton;
+   with B do
+    begin
+     if IsPythonInited then
+      Caption:=LoadStr1(4614)
+     else
+      Caption:=Fallback4614;
+     Hint:=E.Message;
+     ModalResult:=mrNone;
+     OnClick:=AppExceptionMore;
+    end;
+  {if P<Length(E.Message) then
+    ActiveControl:=B;}
+   Result:=ShowModal;
+  finally
+   Free;
+  end;
+end;
+
+var
+  OverrideExceptAddr: Pointer;
+
+procedure TCustomExceptionHandler.AppExceptionMore(Sender: TObject);
+const
+ DlgW  = 372;
+ MemoH = 160;
+ Margin = 8;
+ Fallback4616 = '                     *** EXCEPTION REPORT ***'+sLineBreak+sLineBreak+'%s %s'+sLineBreak+'Address in the program: %p (base: %p)'+sLineBreak;
+ Fallback4617 = sLineBreak+sLineBreak+'Please report this error to the QuArK development team, so that they can fix the issue promptly.';
+var
+{E: Exception;}
+ Msg: String;
+ Dlg: TCustomForm;
+ P: Integer;
+ L: TStringList;
+ Delta: Integer;
+ ExceptAddrX: Pointer;
+begin
+ with Sender as TButton do
+  begin
+   Enabled:=False;
+   //{$IFDEF DelphiXE2orNewerCompiler}NativeInt{$ELSE}LongInt{$ENDIF}(Pointer(E)):=Tag;
+   Msg:=Hint;
+  end;
+ L:=TStringList.Create; try
+ if OverrideExceptAddr = nil then
+  ExceptAddrX:=ExceptAddr
+ else
+  ExceptAddrX:=OverrideExceptAddr;
+ if IsPythonInited then
+  L.Add(FmtLoadStr1(4616, [QuArKVersion, QuArKMinorVersion, ExceptAddrX, Pointer(GetModuleHandle(Nil))]))
+ else
+  L.Add(Format(Fallback4616, [QuArKVersion, QuArKMinorVersion, ExceptAddrX, Pointer(GetModuleHandle(Nil))]));
+ P:=Pos('//', Msg);
+ if P<>0 then
+  begin
+   L.Add(Copy(Msg, 1, P-1));
+   L.Add(Copy(Msg, P+2, MaxInt));
+  end;
+ if IsPythonInited then
+  L.Add(LoadStr1(4617))
+ else
+  L.Add(Fallback4617);
+ Dlg:=GetParentForm(TControl(Sender));
+ Delta:=DlgW - Dlg.Width;
+ if Delta<0 then Delta:=0;
+ with TMemo.Create(Dlg) do
+  begin
+   SetBounds(Margin, Dlg.ClientHeight, Dlg.ClientWidth + Delta - (2 * Margin), MemoH - Margin);
+   Parent:=Dlg;
+   Lines.Text:={$IFDEF Debug}'!! DEBUG !!'+{$ENDIF}L.Text;
+   ScrollBars:=ssVertical;
+   ReadOnly:=True;
+   WantReturns:=False;
+   SetFocus;
+  end;
+ Dlg.SetBounds(Dlg.Left - Delta div 2, Dlg.Top, Dlg.Width + Delta, Dlg.Height + MemoH);
+ finally L.Free; end;
+end;
+
+ {------------------------}
+
+var
+  OldExceptProc: Pointer;
+
+procedure InstallExceptProc;
+begin
+  OldExceptProc:=ExceptProc;
+  ExceptProc:=@CustomExceptHandler;
+end;
+
+procedure CustomExceptHandler(ExceptObject: TObject; ExceptAddr: Pointer);
+begin
+ //Restore old ExceptProc to become part of a chain of exception procedures.
+ ExceptProc:=OldExceptProc;
+
+ if ExceptObject is Exception then
+ begin
+   OverrideExceptAddr:=ExceptAddr;
+   CustomExceptionHandler.AppException(nil, Exception(ExceptObject));
+   Halt(1);
+ end;
+
+ //Since we didn't halt, Delphi will raise a runtime error.
+end;
+
+initialization
+  CustomExceptionHandler:=TCustomExceptionHandler.Create();
+finalization
+  CustomExceptionHandler.Free;
 end.

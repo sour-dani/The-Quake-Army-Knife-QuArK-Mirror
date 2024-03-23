@@ -26,7 +26,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  QkGroup, StdCtrls, ExtCtrls, CommCtrl, QkExplorer, QkObjects,
+  QkGroup, ExtCtrls, CommCtrl, QkExplorer, QkObjects,
   QkFileObjects, Menus, TB97, QkFileExplorer, QkForm, ComCtrls;
 
 const
@@ -191,7 +191,6 @@ type
    {procedure AppRestore(Sender: TObject);}
     procedure AppActivate(Sender: TObject);
     procedure AppDeactivate(Sender: TObject);
-    procedure AppExceptionMore(Sender: TObject);
     procedure AppShowHint(var HintStr: string; var CanShow: Boolean; var HintInfo: THintInfo);
     procedure AppHint(Sender: TObject);
    {function AppHelp(Command: Word; Data: LongInt; var CallHelp: Boolean) : Boolean;}
@@ -217,8 +216,6 @@ type
     property NoTempDelete: Boolean write FNoTempDelete;
     procedure OpenAFile(const FileName: String; ReadOnly: Boolean);
     procedure SavePendingFiles(CanCancel: Boolean);
-    function MessageException(const E: Exception; const Info: String; Buttons: TMsgDlgButtons) : TModalResult;
-    procedure AppException(Sender: TObject; E: Exception);
    {function GetEmptyMenu : TPopupMenu;}
     function GetObjMenu(Control: TControl; Extra: Boolean) : TPopupMenu;
     procedure FreeNonUsedObjects;
@@ -234,10 +231,10 @@ var
 implementation
 
 uses {$IFDEF MemTester}MemTester, {$ENDIF}ShellApi, Undo, QkQuakeC, Setup, Config,
-  ToolBox1, Game, QkOwnExplorer, ObjProp, qdraw, qmath, QkInclude,
+  ToolBox1, Game, QkOwnExplorer, ObjProp, qdraw, QkInclude, QkObjectClassList,
   Running, Output1, QkTreeView, PyProcess, Console, Python, Quarkx, About,
-  PyMapView, PyForms, Qk3D, EdSceneObject, QkObjectClassList, ApplPaths, FileAssociations,
-  QkExceptions, QkQuakeCtx, AutoUpdater, QConsts, Toolbar1,
+  PyMapView, PyForms, Qk3D, EdSceneObject, ApplPaths, FileAssociations,
+  QkExceptions, QkQuakeCtx, AutoUpdater, Toolbar1,
   Splash, Logging, SystemDetails, ExtraFunctionality, Platform;
 
 type
@@ -250,9 +247,7 @@ type
 
 var
   OnlyOnceMutex: THandle = 0;
-  OldException: TExceptionEvent;
   OldErrorMode: UInt;
-  LoadingComplete: Boolean = false;
 
 const
   MaxRecentFilesUpperLimit = 20;
@@ -313,12 +308,9 @@ var
  Splash: TSplashScreen;
  MutexError: DWORD;
  LaunchOptions: TCmdLineOptions;
+ Setup: QObject;
  TimerID: {$IFDEF WIN64}UINT_PTR{$ELSE}UINT{$ENDIF};
 begin
- // Set-up exception handling
- OldException:=Application.OnException;
- Application.OnException:=AppException;
-
  // No messageboxes from LoadLibrary; just fail it.
  if DelayFunc_GetErrorMode then
    OldErrorMode := SetErrorMode(GetErrorMode() or SEM_NOOPENFILEERRORBOX)
@@ -381,65 +373,70 @@ begin
  else
    Splash:=nil;
  try
-   // Write system information to the log
-   LogSystemDetails;
+   try
+     // Write system information to the log
+     LogSystemDetails;
 
-   // Set-up the console
-   Log(LOG_VERBOSE, 'Setting up console...');
-   InitConsole;
+     // Set-up the console
+     Log(LOG_VERBOSE, 'Setting up console...');
+     InitConsole;
 
-   // Python initialization
-   Log(LOG_VERBOSE, 'Initializing Python...');
-   InitPython;
+     // Python initialization
+     Log(LOG_VERBOSE, 'Initializing Python...');
+     InitPython;
 
-   // Defaults.qrk and Setup.qrk loading
-   Log(LOG_VERBOSE, 'Loading settings...');
-   InitSetup;
+     // Defaults.qrk and Setup.qrk loading
+     Log(LOG_VERBOSE, 'Loading settings...');
+     InitSetup;
 
-   if LaunchOptions.DoInstance and (SetupSubSet(ssGeneral, 'Startup').Specifics.Strings['SingleInstance']<>'') then
-   begin
-     if MutexError = ERROR_ALREADY_EXISTS then
+     Setup:=SetupSubSet(ssGeneral, 'Startup');
+     if LaunchOptions.DoInstance and (Setup.Specifics.Strings['SingleInstance']<>'') then
      begin
-       S:='An instance of QuArK is already running. This can cause serious problems.';
-       S:=S+' For example, changed configuration settings might not be saved, and QuArK might not update correctly.' + sLineBreak;
-       S:=S+'This check can be disabled (at own risk!) in the configuration settings.' + sLineBreak + sLineBreak;
-       S:=S+'Are you sure you want to start a new instance of QuArK?';
-       if Windows.MessageBox(0, PChar(S), PChar('QuArK'), MB_TASKMODAL or MB_YESNO or MB_ICONWARNING or MB_DEFBUTTON2) = idNo then
+       if MutexError = ERROR_ALREADY_EXISTS then
        begin
-         Application.Terminate;
-         Exit;
+         S:='An instance of QuArK is already running. This can cause serious problems.';
+         S:=S+' For example, changed configuration settings might not be saved, and QuArK might not update correctly.' + sLineBreak;
+         S:=S+'This check can be disabled (at own risk!) in the configuration settings.' + sLineBreak + sLineBreak;
+         S:=S+'Are you sure you want to start a new instance of QuArK?';
+         if Windows.MessageBox(0, PChar(S), PChar('QuArK'), MB_TASKMODAL or MB_YESNO or MB_ICONWARNING or MB_DEFBUTTON2) = idNo then
+         begin
+           Application.Terminate;
+           Abort;
+         end;
        end;
      end;
+
+     { DanielPharos: It's better to do the update-check BEFORE loading Python,
+       but then the option in the Defaults will have to be removed, since it
+       won't be loaded yet, and we couldn't localize the text. }
+     //Check for updates
+     if LaunchOptions.DoUpdate and (Setup.Specifics.Strings['UpdateCheck']<>'') then
+     begin
+       Log(LOG_VERBOSE, 'Checking for updates...');
+       DoUpdate(LaunchOptions.OnlineUpdate, True);
+     end;
+
+     // Warn for bugs
+     if (Setup.Specifics.Strings['BugCheck']<>'') then
+       WarnDriverBugs;
+
+     // Set-up OS specific things
+     InitViewport16;
+
+     // Load the main form fully
+     inherited;
+     ConnectToPython;
+
+     //These need Python to function:
+     Application.OnShowHint:=AppShowHint;
+     Application.OnHint:=AppHint;
+   except
+     //FIXME: Kill the splash-screen.
+     raise;
    end;
-
-   { DanielPharos: It's better to do the update-check BEFORE loading Python,
-     but then the option in the Defaults will have to be removed, since it
-     won't be loaded yet, and we couldn't localize the text. }
-   //Check for updates
-   if LaunchOptions.DoUpdate and (SetupSubSet(ssGeneral, 'Startup').Specifics.Strings['UpdateCheck']<>'') then
-   begin
-     Log(LOG_VERBOSE, 'Checking for updates...');
-     DoUpdate(LaunchOptions.OnlineUpdate, True);
-   end;
-
-   // Warn for bugs
-   if (SetupSubSet(ssGeneral, 'Startup').Specifics.Strings['BugCheck']<>'') then
-     WarnDriverBugs;
-
-   // Set-up OS specific things
-   InitViewport16;
-
-   // Load the main form fully
-   inherited;
-   ConnectToPython;
-
-   //These need Python to function:
-   Application.OnShowHint:=AppShowHint;
-   Application.OnHint:=AppHint;
-
-   LoadingComplete:=True;
  finally
    // Wait for splash screen to close
+   if ExceptObject<> nil then Halt(1);
    if LaunchOptions.DoSplash then
    begin
      Log(LOG_VERBOSE, 'Waiting for splash screen...');
@@ -482,10 +479,6 @@ begin
 
  // Restore original ErrorMode
  SetErrorMode(OldErrorMode);
-
- // Restore original exception handling
- Application.OnException:=OldException;
- OldException:=nil;
 
  // And we're gone!
  g_Form1:=nil;
@@ -753,11 +746,10 @@ begin
       try
        P^.Counter:=P^.Event(P^.Counter);
       except
-       on E: Exception do
-        begin
-         P^.Counter:=-1;
-         AppException(Nil, E);
-        end;
+       begin
+        P^.Counter:=-1;
+        raise
+       end;
       end;
      finally
       P^.Working:=False;
@@ -2138,125 +2130,6 @@ end;
 procedure TForm1.Go1Click(Sender: TObject);
 begin
  NeedExplorerRoot.GO((Sender as TMenuItem).Tag);
-end;
-
-procedure TForm1.AppException(Sender: TObject; E: Exception);
-begin
- try
-   MessageException(E, '%s', [mbOk]);
- except
-   //If anything goes wrong with QuArK's exception handling, use the old one
-   try
-     Log(LOG_ALWAYS, Format('Error: Exception in exception handler: %s', [GetExceptionMessage(E)]));
-   except
-     //Ignore any errors here
-   end;
-   OldException(Sender, E);
- end;
-
- //If loading of Form1 has not been completed, then kill the program
- if not LoadingComplete then
-   try
-     Log(LOG_ALWAYS, 'Error: Unhandled exception during start-up. Program terminated.');
-   finally
-     Application.Terminate;
-   end;
-end;
-
-function TForm1.MessageException(const E: Exception; const Info: String; Buttons: TMsgDlgButtons) : TModalResult;
-var
- B: TButton;
-{P: Integer;}
- S: String;
-begin
-(*if E.HelpContext=0 then
-  Application.ShowException(E)
- else
-  begin
-   PlaySound(SOUND_ERROR);
-   MessageDlg(E.Message+'.', mtError, [mbOk, mbHelp], E.HelpContext);
-  end;*)
- if E is EAbort then
-  begin
-   Result:=mrNone;
-   Exit;   { silent exception }
-  end;
- PlaySound(SOUND_ERROR);
- Include(Buttons, mbIgnore);
- if E.HelpContext<>0 then Include(Buttons, mbHelp);
- S:=Format(Info, [GetExceptionMessage(E)]);
- try
-   Log(LOG_ALWAYS, 'Error: '+S);
- except
-   //Ignore any errors here
- end;
-{P:=Pos('//', S);
- if P=0 then
-  P:=Length(S)+1;}
- with CreateMessageDialog({Copy(}S{,1,P-1)}, mtError, Buttons) do
-  try
-   HelpContext := E.HelpContext;
-   B:=FindComponent('Ignore') as TButton;
-   with B do
-    begin
-     Caption:=LoadStr1(4614);
-     Hint:=E.Message;
-     ModalResult:=mrNone;
-     OnClick:=AppExceptionMore;
-    end;
-  {if P<Length(E.Message) then
-    ActiveControl:=B;}
-   Result:=ShowModal;
-  finally
-   Free;
-  end;
-end;
-
-procedure TForm1.AppExceptionMore(Sender: TObject);
-const
- DlgW  = 372;
- MemoH = 160;
- Margin = 8;
-var
-{E: Exception;}
- Msg: String;
- Dlg: TCustomForm;
- P: Integer;
- L: TStringList;
- Delta: Integer;
-begin
- with Sender as TButton do
-  begin
-   Enabled:=False;
-   //{$IFDEF DelphiXE2orNewerCompiler}NativeInt{$ELSE}LongInt{$ENDIF}(Pointer(E)):=Tag;
-   Msg:=Hint;
-  end;
- L:=TStringList.Create; try
- L.Add(FmtLoadStr1(4616, [QuArKVersion, QuArKMinorVersion, ExceptAddr, Pointer(GetModuleHandle(Nil))]));
- P:=Pos('//', Msg);
- if P=0 then
-  L.Add(Msg+'.')
- else
-  begin
-   L.Add(Copy(Msg, 1, P-1)+'.');
-   L.Add(Copy(Msg, P+2, MaxInt));
-  end;
- L.Add(LoadStr1(4617));
- Dlg:=GetParentForm(TControl(Sender));
- Delta:=DlgW - Dlg.Width;
- if Delta<0 then Delta:=0;
- with TMemo.Create(Dlg) do
-  begin
-   SetBounds(Margin, Dlg.ClientHeight, Dlg.ClientWidth + Delta - (2 * Margin), MemoH - Margin);
-   Parent:=Dlg;
-   Lines.Text:={$IFDEF Debug}'!! DEBUG !!'+{$ENDIF}L.Text;
-   ScrollBars:=ssVertical;
-   ReadOnly:=True;
-   WantReturns:=False;
-   SetFocus;
-  end;
- Dlg.SetBounds(Dlg.Left - Delta div 2, Dlg.Top, Dlg.Width + Delta, Dlg.Height + MemoH);
- finally L.Free; end;
 end;
 
 procedure TForm1.PasteObj1Click(Sender: TObject);
