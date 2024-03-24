@@ -181,8 +181,8 @@ class TAN_Triangle:
 
 class TAN_XyzNormal:
     #Header Structure    #item of data file, size & type,   description.
-    position = [0]*3     # item   0-2    3 ints, a vertex's x,y,z values as unsigned short INTIGERS.
-    normal = 0           # item   3      int, a vertex's normal value, as an unsigned short INTIGER.
+    position = [0]*3     # item   0-2    3 ints, a vertex's x,y,z values as unsigned short INTEGERS.
+    normal = 0           # item   3      int, a vertex's normal value, as an unsigned short INTEGER.
 
     binary_format="<4H" #little-endian (<), 4 unsigned short ints (2 bytes each)
 
