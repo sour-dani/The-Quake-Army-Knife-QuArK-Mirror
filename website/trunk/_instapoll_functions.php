@@ -8,7 +8,7 @@ function GetOldInstaPolls()
 	{
 		return null; //FIXME: Is this right?
 	}
-	$result = $connection->query('SELECT * FROM InstaPolls');
+	$result = $connection->query('SELECT * FROM "InstaPolls";');
 	if ($result === FALSE)
 	{
 		throw new RuntimeException('Failed to retrieve InstaPolls from DB: '.$connection->errorCode());
