@@ -135,15 +135,15 @@ FunctionEnd
 ;  Push 1
 ;FunctionEnd
 
-Function _isInstalledVC2010
-  ClearErrors
-  ReadRegDword $R0 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${VC_2010_SP1_REDIST_X86}" "Version"
-  IfErrors 0 AlreadyInstalled
-  Push 0
-  Return
-AlreadyInstalled:
-  Push 1
-FunctionEnd
+;Function _isInstalledVC2010
+;  ClearErrors
+;  ReadRegDword $R0 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${VC_2010_SP1_REDIST_X86}" "Version"
+;  IfErrors 0 AlreadyInstalled
+;  Push 0
+;  Return
+;AlreadyInstalled:
+;  Push 1
+;FunctionEnd
 
 ;Function _isInstalledVC2013
 ;  ClearErrors

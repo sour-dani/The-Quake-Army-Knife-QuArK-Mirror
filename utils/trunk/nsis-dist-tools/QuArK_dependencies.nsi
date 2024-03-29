@@ -1,30 +1,37 @@
 ; QuArK dependencies installer script for NSIS
 ; HomePage: https://quark.sourceforge.io/
-; Author:  DanielPharos
+; Author: DanielPharos
 
 ; Modern UI 2 ------
 !include MUI2.nsh
 !include LogicLib.nsh
 !include Sections.nsh
 !include WinVer.nsh
-SetCompress off ;To massively speed up starting the installer on older systems
-CRCCheck off ;To massively speed up starting the installer on older systems
-RequestExecutionLevel admin
 
 !define SPLASHDIR "C:\QuArK_installer_splash_image"
 !define DEPENDENCYDIR "C:\QuArK_installer_dependencies"
 !define INSTALLER_EXENAME "quark-dependencies.exe"
 !define PRODUCT_NAME "QuArK dependencies"
 !define PRODUCT_NAME_FULL "Quake Army Knife dependencies"
-!define PRODUCT_COPYRIGHT "Copyright (c) 2023"
+!define PRODUCT_COPYRIGHT "Copyright (c) 2024"
 !define PRODUCT_VERSION_NUMBER "1.0.0.2"
 !define PRODUCT_VERSION_STRING "1.0.0.2"
 !define PRODUCT_WEB_SITE "https://quark.sourceforge.io/"
 !define PRODUCT_PUBLISHER "QuArK Development Team"
 
+; Configure installer
+CRCCheck off ;To massively speed up starting the installer on older systems
+ManifestDPIAware true
+;ManifestLongPathAware true ;Not compatible with CreateShortCut
+ManifestSupportedOS all
+RequestExecutionLevel admin
+SetCompress off ;To massively speed up starting the installer on older systems
+ShowInstDetails show
+Unicode false
+;XPStyle true
+
 Name "${PRODUCT_NAME}"
 OutFile "${INSTALLER_EXENAME}"
-ShowInstDetails show
 
 ; MUI Settings
 !define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\modern-install-blue.ico"
@@ -143,6 +150,32 @@ LangString TEXT_SecWinInstaller2_DESC ${LANG_RUSSIAN} "Windows Installer 2.0."
 LangString TEXT_SecWinInstaller2_DESC ${LANG_POLISH} "Windows Installer 2.0."
 LangString TEXT_SecWinInstaller2_DESC ${LANG_UKRAINIAN} "Windows Installer 2.0."
 LangString TEXT_SecWinInstaller2_DESC ${LANG_ARABIC} "Windows Installer 2.0."
+
+;LangString TEXT_SecWinInstaller31_TITLE ${LANG_ENGLISH} "Windows Installer 3.1"
+;LangString TEXT_SecWinInstaller31_TITLE ${LANG_FRENCH} "Windows Installer 3.1"
+;LangString TEXT_SecWinInstaller31_TITLE ${LANG_GERMAN} "Windows Installer 3.1"
+;LangString TEXT_SecWinInstaller31_TITLE ${LANG_TRADCHINESE} "Windows Installer 3.1"
+;LangString TEXT_SecWinInstaller31_TITLE ${LANG_DUTCH} "Windows Installer 3.1"
+;LangString TEXT_SecWinInstaller31_TITLE ${LANG_NORWEGIAN} "Windows Installer 3.1"
+;LangString TEXT_SecWinInstaller31_TITLE ${LANG_FINNISH} "Windows Installer 3.1"
+;;LangString TEXT_SecWinInstaller31_TITLE ${LANG_GREEK} "Windows Installer 3.1"
+;LangString TEXT_SecWinInstaller31_TITLE ${LANG_RUSSIAN} "Windows Installer 3.1"
+;LangString TEXT_SecWinInstaller31_TITLE ${LANG_POLISH} "Windows Installer 3.1"
+;LangString TEXT_SecWinInstaller31_TITLE ${LANG_UKRAINIAN} "Windows Installer 3.1"
+;LangString TEXT_SecWinInstaller31_TITLE ${LANG_ARABIC} "Windows Installer 3.1"
+;
+;LangString TEXT_SecWinInstaller31_DESC ${LANG_ENGLISH} "Windows Installer 3.1."
+;LangString TEXT_SecWinInstaller31_DESC ${LANG_FRENCH} "Windows Installer 3.1."
+;LangString TEXT_SecWinInstaller31_DESC ${LANG_GERMAN} "Windows Installer 3.1."
+;LangString TEXT_SecWinInstaller31_DESC ${LANG_TRADCHINESE} "Windows Installer 3.1."
+;LangString TEXT_SecWinInstaller31_DESC ${LANG_DUTCH} "Windows Installer 3.1."
+;LangString TEXT_SecWinInstaller31_DESC ${LANG_NORWEGIAN} "Windows Installer 3.1."
+;LangString TEXT_SecWinInstaller31_DESC ${LANG_FINNISH} "Windows Installer 3.1."
+;;LangString TEXT_SecWinInstaller31_DESC ${LANG_GREEK} "Windows Installer 3.1."
+;LangString TEXT_SecWinInstaller31_DESC ${LANG_RUSSIAN} "Windows Installer 3.1."
+;LangString TEXT_SecWinInstaller31_DESC ${LANG_POLISH} "Windows Installer 3.1."
+;LangString TEXT_SecWinInstaller31_DESC ${LANG_UKRAINIAN} "Windows Installer 3.1."
+;LangString TEXT_SecWinInstaller31_DESC ${LANG_ARABIC} "Windows Installer 3.1."
 
 LangString TEXT_SecVC2005Redist_TITLE ${LANG_ENGLISH} "Visual C++ 2005 runtime"
 LangString TEXT_SecVC2005Redist_TITLE ${LANG_FRENCH} "Visual C++ 2005 runtime"
@@ -454,12 +487,11 @@ SectionEnd
 
 
 
-; Windows Installer ------
+; Windows Installer 2 ------
 
 ; https://docs.microsoft.com/en-us/windows/win32/msi/released-versions-of-windows-installer
 ; https://learn.microsoft.com/en-us/windows/win32/msi/instmsi-exe
 
-; Windows Installer 1.x needs SP3 on Windows NT4.
 ; Windows Installer 2.0 needs SP6 on Windows NT4.
 
 Function _isInstalledWinInstaller2
@@ -468,8 +500,13 @@ Function _isInstalledWinInstaller2
   ClearErrors
   GetDllVersion "$SYSDIR\msi.dll" $R0 $R1
   IfErrors NotInstalled
-  IntOp $R1 $R0 / 0x00010000
-  IntCmp $R1 2 0 NeedsUpdate 0
+  IntOp $R2 $R0 >> 16
+  IntOp $R2 $R2 & 0x0000FFFF ; $R2 now contains major version
+  ;IntOp $R3 $R0 & 0x0000FFFF ; $R3 now contains minor version
+  ;IntOp $R4 $R1 >> 16
+  ;IntOp $R4 $R4 & 0x0000FFFF ; $R4 now contains release
+  ;IntOp $R5 $R1 & 0x0000FFFF ; $R5 now contains build
+  IntCmp $R2 2 0 NeedsUpdate 0 ;Check major version
   Push 1
   Return
 NotInstalled:
@@ -498,6 +535,43 @@ Section /o "$(TEXT_SecWinInstaller2_TITLE)" SecWinInstaller2
     ; Reboot
   ${EndIf}
 SectionEnd
+
+
+
+;; Windows Installer 3.1 ------
+;
+;; https://docs.microsoft.com/en-us/windows/win32/msi/released-versions-of-windows-installer
+;
+;; Windows Installer 3.1 needs SP3 on Windows 2000.
+;
+;Function _isInstalledWinInstaller31
+;  ; Inspired by: https://learn.microsoft.com/en-us/windows/win32/msi/determining-the-windows-installer-version
+;
+;  ClearErrors
+;  GetDllVersion "$SYSDIR\msi.dll" $R0 $R1
+;  IfErrors NotInstalled
+;  IntOp $R2 $R0 >> 16
+;  IntOp $R2 $R2 & 0x0000FFFF ; $R2 now contains major version
+;  IntOp $R3 $R0 & 0x0000FFFF ; $R3 now contains minor version
+;  ;IntOp $R4 $R1 >> 16
+;  ;IntOp $R4 $R4 & 0x0000FFFF ; $R4 now contains release
+;  ;IntOp $R5 $R1 & 0x0000FFFF ; $R5 now contains build
+;  IntCmp $R2 3 0 NeedsUpdate +1 ;Check major version
+;  IntCmp $R3 1 0 NeedsUpdate 0 ;Check minor version
+;  Push 1
+;  Return
+;NotInstalled:
+;NeedsUpdate:
+;  Push 0
+;FunctionEnd
+;
+;Section /o "$(TEXT_SecWinInstaller31_TITLE)" SecWinInstaller31
+;  SetOutPath $TEMP
+;  File "${DEPENDENCYDIR}\WindowsInstaller\3.1.4000.2435\WindowsInstaller-KB893803-v2-x86.exe"
+;  ExecWait "$TEMP\WindowsInstaller-KB893803-v2-x86.exe /quiet /norestart"
+;  Delete "$TEMP\WindowsInstaller-KB893803-v2-x86.exe"
+;  ; FIXME: May require a REBOOT...!
+;SectionEnd
 
 
 
@@ -542,6 +616,7 @@ Section /o "$(TEXT_SecIE4SP2_TITLE)" SecIE4SP2
   ExecWait "$TEMP\IE4SETUP.EXE /Q /T:$\"$TEMP\IE4Setup$\""
   Delete "$TEMP\*.*"
   RMDir /r $TEMP\IE4Setup
+  ; FIXME: May require a REBOOT...!
 SectionEnd
 
 
@@ -716,6 +791,7 @@ SectionEnd
   !insertmacro MUI_DESCRIPTION_TEXT ${SecWinNT4SP3} "$(TEXT_SecWinNT4SP3_DESC)"
   !insertmacro MUI_DESCRIPTION_TEXT ${SecWinNT4SP6} "$(TEXT_SecWinNT4SP6_DESC)"
   !insertmacro MUI_DESCRIPTION_TEXT ${SecWinInstaller2} "$(TEXT_SecWinInstaller2_DESC)"
+  ;!insertmacro MUI_DESCRIPTION_TEXT ${SecWinInstaller31} "$(TEXT_SecWinInstaller31_DESC)"
   !insertmacro MUI_DESCRIPTION_TEXT ${SecIE4SP2} "$(TEXT_SecIE4SP2_DESC)"
   !insertmacro MUI_DESCRIPTION_TEXT ${SecVC2005Redist} "$(TEXT_SecVC2005Redist_DESC)"
   ;!insertmacro MUI_DESCRIPTION_TEXT ${SecVC2008Redist} "$(TEXT_SecVC2008Redist_DESC)"
@@ -751,6 +827,8 @@ Function .onInit
     IntOp $0 $0 | ${SF_SELECTED}
     SectionSetFlags ${SecVC2005Redist} $0
 
+    ;FIXME: https://support.microsoft.com/en-gb/topic/description-of-the-security-update-for-microsoft-visual-c-2005-service-pack-1-redistributable-package-july-28-2009-42f08236-49f4-b7bd-e414-416bb0d7438b
+    ;FIXME: Thus maybe needs Windows Installer 3.1?!?
     Call _isInstalledWinInstaller2
     Pop $0
     ${If} $0 == 0
@@ -799,6 +877,7 @@ Function .onInit
     IntOp $0 $0 | ${SF_SELECTED}
     SectionSetFlags ${SecVC2010Redist} $0
 
+    ;FIXME: InitializeCriticalSectionAndSpinCount requires Windows XP SP2 or Windows Server 2003 SP1 or later.
     Call _isInstalledWinInstaller2
     Pop $0
     ${If} $0 == 0

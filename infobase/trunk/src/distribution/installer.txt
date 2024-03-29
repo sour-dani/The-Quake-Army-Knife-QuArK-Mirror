@@ -5,7 +5,7 @@ author: DanielPharos
 
 In preparation for creating the installer, you'll need to carry out a couple of preliminary steps.
 
-<ol><li>Download and install Nullsoft Scriptable Install System (NSIS) 2.0 beta 4 or higher from <a href="http://nsis.sourceforge.net">http://nsis.sourceforge.net</a>.
+<ol><li>Download and install Nullsoft Scriptable Install System (NSIS) 3 from <a href="https://nsis.sourceforge.io/">https://nsis.sourceforge.io</a>.
 </li>
 <li>Checkout the <tt>utils</tt> module from QuArK SVN on SourceForge. This module contains the scripts and other files you'll need to be able to create the distribution.</li>
 </ol>

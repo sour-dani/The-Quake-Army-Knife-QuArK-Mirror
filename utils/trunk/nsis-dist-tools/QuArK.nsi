@@ -1,15 +1,16 @@
 ; QuArK installer script for NSIS
 ; HomePage: https://quark.sourceforge.io/
-; Author:  Fredrick Vamstad, DanielPharos & cdunde
-; Date:     18 Aug. 2005 & 5 January 2007
+; Author: Fredrick Vamstad, DanielPharos & cdunde
+; Date: 18 August 2005 & 5 January 2007 & 29 March 2024
 ; nullsoft NSIS installer program available at:
-;   http://nsis.sourceforge.net
+;   https://nsis.sourceforge.io/
 
 ; Modern UI 2 ------
 !include MUI2.nsh
 !include LogicLib.nsh
-SetCompressor /SOLID lzma   ; We will use LZMA for best compression
-;RequestExecutionLevel admin
+;!include MultiUser.nsh ;FIXME: Implement!
+  ;https://nsis.sourceforge.io/Docs/MultiUser/Readme.html
+  ;https://nsis.sourceforge.io/Add_uninstall_information_to_Add/Remove_Programs#With_a_MultiUser_Installer
 
 !define BUILDDIR "C:\QuArK_installer_files"
 !define SPLASHDIR "C:\QuArK_installer_splash_image"
@@ -28,12 +29,21 @@ SetCompressor /SOLID lzma   ; We will use LZMA for best compression
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 !define PRODUCT_PUBLISHER "QuArK Development Team"
 
+; Configure installer
+ManifestDPIAware true
+;ManifestLongPathAware true ;Not compatible with CreateShortCut
+ManifestSupportedOS all
+RequestExecutionLevel admin
+SetCompressor /SOLID lzma
+ShowInstDetails show
+ShowUnInstDetails show
+Unicode false
+;XPStyle true
+
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
 OutFile "${INSTALLER_EXENAME}"
 InstallDir "$PROGRAMFILES\QuArK 6.6"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
-ShowInstDetails show
-ShowUnInstDetails show
 
 ; MUI Settings
 !define MUI_ABORTWARNING
@@ -475,14 +485,15 @@ Section "!$(TEXT_SEC01_TITLE)" SEC01
   Call _isInstalledVC2005
   Pop $0
 
-  Call _isInstalledVC2010
-  Pop $1
+  ;Not going to check, because the official installer can't handle Windows XP SP1 and earlier.
+  ;Call _isInstalledVC2010
+  ;Pop $1
 
   ;FIXME: Check Windows IE4 SP2
   ;FIXME: Check DirectX9
 
   ${If} $0 == 0
-  ${OrIf} $1 == 0
+  ;${OrIf} $1 == 0
     MessageBox MB_ICONEXCLAMATION|MB_OK "$(TEXT_DEPENDENCIES)" /SD IDOK
   ${EndIf}
 SectionEnd
