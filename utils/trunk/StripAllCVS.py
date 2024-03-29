@@ -64,18 +64,17 @@ def DoFile(filename):
             file.close()
 
 def DoDir(dir):
-    for filename in os.listdir(dir):
-        full_filename = os.path.join(dir, filename)
-        if os.path.isdir(full_filename):
-            if filename == "CVS":
-                shutil.rmtree(full_filename)
+    for entry in os.scandir(dir):
+        if entry.is_dir():
+            if entry.name == "CVS":
+                shutil.rmtree(entry.path)
             else:
-                DoDir(full_filename)
+                DoDir(entry.path)
         else:
-            if filename in (".cvsignore", ".project"):
-                os.remove(full_filename)
+            if entry.name in (".cvsignore", ".project"):
+                os.remove(entry.path)
             else:
-                DoFile(full_filename)
+                DoFile(entry.path)
 
 raw_input("This will modify files and may delete entire directories in the given path! Are you sure? (BREAK the script if not!)")
 DoDir(base_path)
