@@ -366,11 +366,12 @@ $GamesQRKTools["HL2"  ][] = new cQRKTools("BSPSource","https://github.com/ata4/b
 $GamesQRKTools["HL2"  ][] = new cQRKTools("VMEX","http://www.bagthorpe.org/bob/cofrdrbob/vmex.html","VMEX is a simple map decompiler for Half-Life 2 Source engine maps (i.e., for HL2, HL2DM, CS:S, and DoD:S).");
 $GamesQRKTools["HL2"  ][] = new cQRKTools("Entspy","http://www.bagthorpe.org/bob/cofrdrbob/entspy.html","Entspy is a program that lets you view and edit the entity properties of a compiled BSP map file (for Source Engine games such as HL2, CS:S and VtMB).");
 $GamesQRKTools["HL2"  ][] = new cQRKTools("VMTMak0r-Eng.exe",$downloadroot."VMTMak0r-Eng.exe","H-L2 vmt flag setting program-English version"); #http://www.marcel-soehnchen.de/downloads/vmtmak0r.rar
-$GamesQRKTools["HL2"  ][] = new cQRKTools("VMTMak0r-Ger.exe",$downloadroot."VMTMak0r-Ger.exe","H-L2 vmt flag setting program-German version"); #http://www.mapping-tutorials.de/forum/showthread.php?p=20972
+#$GamesQRKTools["HL2"  ][] = new cQRKTools("VMTMak0r-Ger.exe",$downloadroot."VMTMak0r-Ger.exe","H-L2 vmt flag setting program-German version"); #http://www.mapping-tutorials.de/forum/showthread.php?p=20972
 #$GamesQRKTools["HL2"  ][] = new cQRKTools("GCFScape","http://nemesis.thewavelength.net/index.php?p=26","GCFScape is an explorer like utility that enables users to browse Half-Life packages and extract their contents.");
 $GamesQRKTools["HL2"  ][] = new cQRKTools("StudioCompiler","http://www.chaosincarnate.net/cannonfodder/download.php?id=StudioCompilerSetup.V0.4A.exe","A GUI interface to studiomdl and vtex.");
-$GamesQRKTools["HL2"  ][] = new cQRKTools("MDLDecompiler","http://www.chaosincarnate.net/cannonfodder/download.php?id=mdldecompiler.05.rar","A program for decompiling Half-Life 2 and CS:Source models.");
-$GamesQRKTools["HL2"  ][] = new cQRKTools("VTF Explorer",$downloadroot."vtfexplorer13_setup.exe"); #http://www.hl2source.com/?content=projects&id=vtftool
+#$GamesQRKTools["HL2"  ][] = new cQRKTools("MDLDecompiler","http://www.chaosincarnate.net/cannonfodder/download.php?id=mdldecompiler.05.rar","A program for decompiling Half-Life 2 and CS:Source models.");
+#$GamesQRKTools["HL2"  ][] = new cQRKTools("VPKEdit","https://github.com/craftablescience/VPKEdit/releases","A library and CLI/GUI tool to create, read, and write several pack file formats.");
+#$GamesQRKTools["HL2"  ][] = new cQRKTools("VTF Explorer",$downloadroot."vtfexplorer13_setup.exe"); #http://www.hl2source.com/?content=projects&id=vtftool
 
 # Counter-strike: Source
 $GamesQRKTools["CSS"  ][] = new cQRKTools(": : See Half-Life 2 : : :",NULL);
