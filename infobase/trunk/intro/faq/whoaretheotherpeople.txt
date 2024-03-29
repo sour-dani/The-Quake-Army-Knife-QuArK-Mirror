@@ -12,14 +12,12 @@ format: html
   <dt>"Decker"
   <dd>was the third web master of the official QuArK Homepage.
 
-  <dt>Cdunde
-  <dd>is the current web master  of the official QuArK Homepage.
-
   <dt>PuG
-  <dd>is the current administrator of the forum.
-  
+  <dd>was the administrator of the Forum.
 
-  <dt>Tiglari, Seth Galbraith, Tim Smith, Patrick Steel,
+  <dt>DanielPharos
+  <dd>is the current administrator of the official QuArK Homepage and Forum.
+
+  <dt>Tiglari, Seth Galbraith, Tim Smith, Patrick Steel, Cdunde,
   <dd>and others who have contributed valuable time and effort to QuArK and the editing community at large.
-
 </dl>
