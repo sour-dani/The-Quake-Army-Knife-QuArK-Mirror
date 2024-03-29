@@ -1,0 +1,42 @@
+<author>DanielPharos</author>
+<headline>New nightly release</headline>
+
+<p>Tomorrow is a leap day, which I think is a perfect excuse to release a new nightly build.<pic smiley_happy></p>
+
+<p>So, what's new since the last time I wrote a changelog for a nightly release? Well...</p>
+
+<p><b>Game support:</b></p>
+<ul>
+<li>Added Warfork support.</li>
+<li>Added experimental Daikatana support.</li>
+<li>Added Quake 1 Copper v1.30 addon.</li>
+<li>Added Half-Life: MMod addon.</li>
+<li>Added HL2 D.I.P.R.I.P. addon.</li>
+<li>Added Sven Co-op 5 support.</li>
+</ul>
+
+<p><b>New features:</b></p>
+<ul>
+<li>Added 4 view Qoole style map editor layout.</li>
+<li>Added support for KEX Engine archives (.kpf files).</li>
+</ul>
+
+<p><b>Improvements:</b></p>
+<ul>
+<li>Set the font to the user-configured font.</li>
+<li>Enable double buffered GUI drawing everywhere.</li>
+<li>Added support for loading files larger than 2GB.</li>
+</ul>
+
+<p>You can get this latest nightly build from our <a href="https://sourceforge.net/projects/quark/files/QuArK/QuArK%206.6.0%20Beta%208/quark-win32-6.6.0Beta8Nightly10Mrt2024.exe/download">SourceForge download page</a>.</p>
+
+<hr style="height: 2px;">
+
+<p>One of the biggest modifications is (hopefully) not visible, though. There's been a big chance to how QuArK internally stores specifics. This may have broken a few features here and there, so I expect some bug reports from you all!<pic smiley_happy> Why all this effort? Well, there will come a time when 32-bit programs won't run anymore. For example, Windows 11 doesn't support 32-bit processors anymore. Additionally, it turns out that other languages than English exist, and they often use different characters in their writing. This can be handled by using Unicode. However, both these problems cannot be solved easily, because QuArK stores specifics incorrectly, in a way that only works for 32-bit, non-Unicode data. So, that system needed replacing, the first part of which is done in this nightly release. And thus hopefully, in some future release, we can have a 64-bit Unicode-enabled QuArK!</p>
+
+
+<p>Happy QuArK-ing,<br>
+DanielPharos</p>
+
+<p>EDIT 9 March 2024: Point link to a newer nightly release, that contains a fix for a file corrupting bug.</p>
+<p>EDIT 10 March 2024: Point link to a newer nightly release, that contains a fix for the wrong specific's value being modified.</p>
