@@ -193,6 +193,7 @@ $LinksGame[] = new cLinkGroup('Doom 3', 'DM3', array(
           ,new cLink('Opencoop', 'https://www.moddb.com/mods/opencoop', 'OpenCoop is a cooperative multiplayer modification for Doom 3.') #http://www.d3opencoop.com/
           ,new cLink('Endarchy / Industri', 'https://endarchy.com/', 'Being re-built (again) on the Doom 3 engine')
           ,new cLink('Doom 3: Phobos', 'https://www.moddb.com/mods/phobos', 'Phobos: A different kind of old school') #http://www.tfuture.org/phobos
+          ,new cLink('Hexen: Edge of Chaos', 'http://hexenmod.net/', 'A free game based on the id Tech 4 GPL Engine', 'https://web.archive.org/web/20190814192952/http://hexenmod.net/')
            ));
 
 //RBDOOM-3-BFG
@@ -278,9 +279,10 @@ $LinksGame[] = new cLinkGroup('Half-Life 2: Episode 2', 'HL2EP2', array(
 $LinksGame[] = new cLinkGroup('Heretic 2', 'Hr2', array(
            new cLink('HereticII.com', 'http://www.hereticii.com')
 //          ,new cLink('Planet Heretic', 'http://www.planetheretic.com/')
-//          ,new cLink("The Mapper's Shrine", 'http://www.raven-games.com/', "The HUB of Raven Software's Gaming Community!")
-//          ,new cLink('Eye of Horus - Hr2', 'http://www.hereticii.com/tiglari/', 'Your source for tutorials, information and resources on Heretic 2 entities')
+          ,new cLink("The Mapper's Shrine", 'http://www.raven-games.com/', "The HUB of Raven Software's Gaming Community!", 'https://web.archive.org/web/20150123021732/http://www.raven-games.com/')
+          ,new cLink('Eye of Horus - Hr2', 'http://www.hereticii.com/tiglari/', 'Your source for tutorials, information and resources on Heretic 2 entities', 'https://web.archive.org/web/20090322195111/http://www.hereticii.com/tiglari/')
           ,new cLink('Heretic Hides', 'https://sites.google.com/site/heretichides/', 'Skins, Models, Maps & Editing Resources for Heretic II') #http://heretichides.soffiles.com
+          ,new cLink('T-Mod', 'http://www.amberstar.de/h2/t-mod.html', 'A multi-purpose modification for Heretic II', 'https://web.archive.org/web/20090331115437/http://www.amberstar.de/h2/t-mod.html')
            ));
 
 $LinksGame[] = new cLinkGroup('Hexen 2', 'Hx2', array(
