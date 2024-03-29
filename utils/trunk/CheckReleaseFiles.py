@@ -1,41 +1,39 @@
 import os
 
-dir = "Z:\\workspace\\Copy of runtime"
+path = "..\\Copy of runtime"
 
-if os.path.exists(os.path.join(dir, ".svn")):
-	print("WARNING: SVN directory found: %s" % (os.path.join(dir, ".svn"), ))
+if os.path.exists(os.path.join(path, ".svn")):
+	print("WARNING: SVN directory found: %s" % (os.path.join(path, ".svn"), ))
 
-if os.path.exists(os.path.join(dir, "Setup.qrk")):
-	print("WARNING: Setup.qrk file found: %s" % (os.path.join(dir, "Setup.qrk"), ))
+if os.path.exists(os.path.join(path, "Setup.qrk")):
+	print("WARNING: Setup.qrk file found: %s" % (os.path.join(path, "Setup.qrk"), ))
 
-if not os.path.exists(os.path.join(dir, "help")):
-	print("WARNING: Help directory missing: %s" % (os.path.join(dir, "help"), ))
+if not os.path.exists(os.path.join(path, "help")):
+	print("WARNING: Help directory missing: %s" % (os.path.join(path, "help"), ))
 
-if not os.path.exists(os.path.join(dir, "QuArK.exe")):
-	print("WARNING: QuArK executable missing: %s" % (os.path.join(dir, "QuArK.exe"), ))
+if not os.path.exists(os.path.join(path, "QuArK.exe")):
+	print("WARNING: QuArK executable missing: %s" % (os.path.join(path, "QuArK.exe"), ))
 
-for filename in os.listdir(os.path.join(dir, "plugins")):
-	full_filename = os.path.join(dir, "plugins", filename)
-	if os.path.isdir(full_filename):
-		print("WARNING: Unexpected directory: %s" % (full_filename, ))
+for entry in os.scandir(os.path.join(path, "plugins")):
+	if entry.is_dir():
+		print("WARNING: Unexpected directory: %s" % (entry.path, ))
 		continue
-	if filename == ".svn":
-		print("WARNING: SVN directory found: %s" % (full_filename, ))
+	if entry.name == ".svn":
+		print("WARNING: SVN directory found: %s" % (entry.path, ))
 		continue
-	if full_filename.endswith(".pyc"):
-		print("WARNING: Compiled Python file found: %s" % (full_filename, ))
+	if entry.name.endswith(".pyc"):
+		print("WARNING: Compiled Python file found: %s" % (entry.path, ))
 		continue
 	#@
 
-for filename in os.listdir(os.path.join(dir, "quarkpy")):
-	full_filename = os.path.join(dir, "quarkpy", filename)
-	if os.path.isdir(full_filename):
-		print("WARNING: Unexpected directory: %s" % (full_filename, ))
+for entry in os.scandir(os.path.join(path, "quarkpy")):
+	if entry.is_dir():
+		print("WARNING: Unexpected directory: %s" % (entry.path, ))
 		continue
-	if filename == ".svn":
-		print("WARNING: SVN directory found: %s" % (full_filename, ))
+	if entry.name == ".svn":
+		print("WARNING: SVN directory found: %s" % (entry.path, ))
 		continue
-	if full_filename.endswith(".pyc"):
-		print("WARNING: Compiled Python file found: %s" % (full_filename, ))
+	if entry.name.endswith(".pyc"):
+		print("WARNING: Compiled Python file found: %s" % (entry.path, ))
 		continue
 	#@
