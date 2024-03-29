@@ -1,7 +1,7 @@
 title: Quaternion objects
 author: DanielPharos
 
-Quaternions are four values that together represent a rotation in 3D space and a scaling. Use quarkx.quaternion to create quaternion. They are not immutable objects,
+Quaternions are four values that together represent a rotation in 3D space and a scaling. Use quarkx.quaternion to create quaternions. They are not immutable objects,
 because you can change values in individual cases, but in general they should be considered as immutable.
 
 <table border=1 cellspacing=0 cellpadding=4>
@@ -65,9 +65,9 @@ False if zero or almost zero
 </td></tr>
 
 <tr><td class="doccode">
-m[i]
+q[i]
 </td><td>
-The value (i) of the quaternion, where i isin the range 1 to 4.
+The value (i) of the quaternion, where i is in the range 1 to 4.
 </td></tr>
 
 <tr><td class="doccode">
@@ -89,7 +89,7 @@ A normalized copy of norm 1 of the quaternion.
 </td></tr>
 
 <tr><td class="doccode">
-q.tuple
+q.xyzw
 </td><td>
 A tuple of the four values.
 </td></tr>
