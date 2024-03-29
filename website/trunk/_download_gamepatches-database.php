@@ -98,6 +98,10 @@ $GamesQRKGamePatches['FAKK' ][] = new cQRKGamePatch('fakk2_102.exe','http://www.
 #Heretic 2
 $GamesQRKGamePatches['Hr2'  ] = array();
 $GamesQRKGamePatches['Hr2'  ][] = new cQRKGamePatch('Ht2_EP_v1-06.exe','https://www.fileplanet.com/22357/20000/fileinfo/Heretic-II-Enhancement-Pack-v1.06'); #http://www.filefront.com/7777/Heretic-II-Enhancement-Pack-v1.06/
+$GamesQRKGamePatches['Hr2'  ][] = new cQRKGamePatch('ht2_ep_v1-07.7z',$downloadroot.'ht2_ep_v1-07.7z','Community patch'); #http://heretics-hexens.ucoz.com/ht2_ep_v1-07.7z
+#$GamesQRKGamePatches['Hr2'  ][] = new cQRKGamePatch('ht2_ep_v1-07.7z',$downloadroot.'scrnshot.7z','ht2_ep_v1-07 screenshots'); #http://heretics-hexens.ucoz.com/scrnshot.7z
+#$GamesQRKGamePatches['Hr2'  ][] = new cQRKGamePatch('ht2_ep_v1-07.7z',$downloadroot.'log107.txt','ht2_ep_v1-07 changelog'); #http://heretics-hexens.ucoz.com/log107.txt
+$GamesQRKGamePatches['Hr2'  ][] = new cQRKGamePatch('H2_Demo_US_Unlock.exe',$downloadroot.'H2_Demo_US_Unlock.exe','Heretic II Demo unlocker'); #http://www2.ravensoft.com/users/heretic2/H2_Demo_US_Unlock.exe
 
 #Hexen 2
 $GamesQRKGamePatches['Hx2'  ] = array();
