@@ -628,6 +628,10 @@ SectionEnd
 ; The VC++ Runtime SP1 2005 installer lowered the requirements to Windows Installer 2.0.
 ; Note that (at least) the VC2010 installer needs Internet Explorer 3.02 to be installed.
 
+!define VC2005
+;!define VC2008
+!define VC2010
+;!define VC2013
 !include "VisualCRuntimeGUIDs.nsh"
 
 Section /o "$(TEXT_SecVC2005Redist_TITLE)" SecVC2005Redist
@@ -853,6 +857,7 @@ Function .onInit
 ;    IntOp $0 $0 | ${SF_SELECTED}
 ;    SectionSetFlags ${SecVC2008Redist} $0
 ;
+;    ;FIXME: This executable calls "InitializeCriticalSectionAndSpinCount", which requires Windows XP SP2 or Windows Server 2003 SP1 or later.
 ;    Call _isInstalledWinInstaller2
 ;    Pop $0
 ;    ${If} $0 == 0
@@ -877,7 +882,7 @@ Function .onInit
     IntOp $0 $0 | ${SF_SELECTED}
     SectionSetFlags ${SecVC2010Redist} $0
 
-    ;FIXME: InitializeCriticalSectionAndSpinCount requires Windows XP SP2 or Windows Server 2003 SP1 or later.
+    ;FIXME: This executable calls "InitializeCriticalSectionAndSpinCount", which requires Windows XP SP2 or Windows Server 2003 SP1 or later.
     Call _isInstalledWinInstaller2
     Pop $0
     ${If} $0 == 0

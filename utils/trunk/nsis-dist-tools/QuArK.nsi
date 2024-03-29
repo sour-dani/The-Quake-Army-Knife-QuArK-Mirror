@@ -377,6 +377,8 @@ Function GetInstalledSize
 FunctionEnd
 
 
+!define VC2005
+;!define VC2010
 !include "VisualCRuntimeGUIDs.nsh"
 
 

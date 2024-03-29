@@ -1,3 +1,4 @@
+!ifdef VC2005
 ;Microsoft Visual C++ 2005 runtime files
 !define VC_2005_REDIST_X86 "{A49F249F-0C91-497F-86DF-B2585E8E76B7}"
 !define VC_2005_REDIST_X64 "{6E8E85E8-CE4B-4FF5-91F7-04999C9FAE6A}"
@@ -18,6 +19,18 @@
 !define VC_2005_SP1_MFC_SEC_UPD_REDIST_X64 "{AD8A2FA1-06E7-4B0D-927D-6E54B3D31028}"
 !define VC_2005_SP1_MFC_SEC_UPD_REDIST_IA64 "{C2F60BDA-462A-4A72-8E4D-CA431A56E9EA}"
 
+Function _isInstalledVC2005
+  ClearErrors
+  ReadRegDword $R0 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${VC_2005_SP1_MFC_SEC_UPD_REDIST_X86}" "Version"
+  IfErrors 0 AlreadyInstalled
+  Push 0
+  Return
+AlreadyInstalled:
+  Push 1
+FunctionEnd
+!endif
+
+!ifdef VC2008
 ;Microsoft Visual C++ 2008 runtime files
 !define VC_2008_REDIST_X86 "{FF66E9F6-83E7-3A3E-AF14-8DE9A809A6A4}"
 !define VC_2008_REDIST_X64 "{350AA351-21FA-3270-8B7A-835434E766AD}"
@@ -38,6 +51,18 @@
 !define VC_2008_SP1_MFC_SEC_UPD_REDIST_X64 "{5FCE6D76-F5DC-37AB-B2B8-22AB8CEDB1D4}"
 !define VC_2008_SP1_MFC_SEC_UPD_REDIST_IA64 "{515643D1-4E9E-342F-A75A-D1F16448DC04}"
 
+Function _isInstalledVC2008
+  ClearErrors
+  ReadRegDword $R0 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${VC_2008_SP1_MFC_SEC_UPD_REDIST_X86}" "Version"
+  IfErrors 0 AlreadyInstalled
+  Push 0
+  Return
+AlreadyInstalled:
+  Push 1
+FunctionEnd
+!endif
+
+!ifdef VC2010
 ;Microsoft Visual C++ 2010 runtime files
 !define VC_2010_REDIST_X86 "{196BB40D-1578-3D01-B289-BEFC77A11A1E}"
 !define VC_2010_REDIST_X64 "{DA5E371C-6333-3D8A-93A4-6FD5B20BCC6E}"
@@ -48,6 +73,18 @@
 !define VC_2010_SP1_REDIST_X64 "{1D8E6291-B0D5-35EC-8441-6616F567A0F7}"
 !define VC_2010_SP1_REDIST_IA64 "{88C73C1C-2DE5-3B01-AFB8-B46EF4AB41CD}"
 
+Function _isInstalledVC2010
+  ClearErrors
+  ReadRegDword $R0 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${VC_2010_SP1_REDIST_X86}" "Version"
+  IfErrors 0 AlreadyInstalled
+  Push 0
+  Return
+AlreadyInstalled:
+  Push 1
+FunctionEnd
+!endif
+
+!ifdef VC2012
 ;Microsoft Visual C++ 2012 x86 Minimum Runtime - 11.0.61030.0 (Update 4)
 !define VC_2012_REDIST_MIN_UPD4_X86 "{BD95A8CD-1D9F-35AD-981A-3E7925026EBB}"
 !define VC_2012_REDIST_MIN_UPD4_X64 "{CF2BEA3C-26EA-32F8-AA9B-331F7E34BA97}"
@@ -55,7 +92,9 @@
 ;Microsoft Visual C++ 2012 x86 Additional Runtime - 11.0.61030.0 (Update 4)
 !define VC_2012_REDIST_ADD_UPD4_X86 "{B175520C-86A2-35A7-8619-86DC379688B9}"
 !define VC_2012_REDIST_ADD_UPD4_X64 "{37B8F9C7-03FB-3253-8781-2517C99D7C00}"
+!endif
 
+!ifdef VC2013
 ;Microsoft Visual C++ 2013 Redistributable 12.0.21005
 ;!define VC_2013_REDIST_X86_MIN "{13A4EE12-23EA-3371-91EE-EFB36DDFFF3E}"
 ;!define VC_2013_REDIST_X64_MIN "{A749D8E6-B613-3BE3-8F5F-045C84EBA29B}"
@@ -68,12 +107,29 @@
 !define VC_2013_REDIST_X64_MIN "{53CF6934-A98D-3D84-9146-FC4EDF3D5641}"
 !define VC_2013_REDIST_X64_ADD "{010792BA-551A-3AC0-A7EF-0FAB4156C382}"
 
+Function _isInstalledVC2013
+  ClearErrors
+  ReadRegDword $R0 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${VC_2013_REDIST_X86_MIN}" "Version"
+  IfErrors 0 AlreadyInstalled
+  Push 0
+  Return
+AlreadyInstalled:
+  Push 1
+FunctionEnd
+!endif
+
+!ifdef VC2015
 ;Microsoft Visual C++ 2015-2019 Redistributable 14.0.23026
 ;!define VC_2015_REDIST_X86_MIN "{A2563E55-3BEC-3828-8D67-E5E8B9E8B675}"
 ;!define VC_2015_REDIST_X64_MIN "{0D3E9E15-DE7A-300B-96F1-B4AF12B96488}"
 ;!define VC_2015_REDIST_X86_ADD "{BE960C1C-7BAD-3DE6-8B1A-2616FE532845}"
 ;!define VC_2015_REDIST_X64_ADD "{BC958BD2-5DAC-3862-BB1A-C1BE0790438D}"
+!endif
 
+!ifdef VC2017
+!endif
+
+!ifdef VC2019
 ;Microsoft Visual C++ 2015-2019 Redistributable 14.25.28508
 ;!define VC_2019_REDIST_X86_MIN "{2BC3BD4D-FABA-4394-93C7-9AC82A263FE2}"
 ;!define VC_2019_REDIST_X64_MIN "{EEA66967-97E2-4561-A999-5C22E3CDE428}"
@@ -115,52 +171,13 @@
 !define VC_2019_REDIST_X64_ADD "{0025DD72-A959-45B5-A0A3-7EFEB15A8050}"
 !define VC_2019_REDIST_ARM64 "{4153EA6F-71B7-42D6-B81B-55B636781122}"
 
-Function _isInstalledVC2005
+Function _isInstalledVC2019
   ClearErrors
-  ReadRegDword $R0 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${VC_2005_SP1_MFC_SEC_UPD_REDIST_X86}" "Version"
+  ReadRegDword $R0 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${VC_2019_REDIST_X86_MIN}" "Version"
   IfErrors 0 AlreadyInstalled
   Push 0
   Return
 AlreadyInstalled:
   Push 1
 FunctionEnd
-
-;Function _isInstalledVC2008
-;  ClearErrors
-;  ReadRegDword $R0 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${VC_2008_SP1_MFC_SEC_UPD_REDIST_X86}" "Version"
-;  IfErrors 0 AlreadyInstalled
-;  Push 0
-;  Return
-;AlreadyInstalled:
-;  Push 1
-;FunctionEnd
-
-;Function _isInstalledVC2010
-;  ClearErrors
-;  ReadRegDword $R0 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${VC_2010_SP1_REDIST_X86}" "Version"
-;  IfErrors 0 AlreadyInstalled
-;  Push 0
-;  Return
-;AlreadyInstalled:
-;  Push 1
-;FunctionEnd
-
-;Function _isInstalledVC2013
-;  ClearErrors
-;  ReadRegDword $R0 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${VC_2013_REDIST_X86_MIN}" "Version"
-;  IfErrors 0 AlreadyInstalled
-;  Push 0
-;  Return
-;AlreadyInstalled:
-;  Push 1
-;FunctionEnd
-
-;Function _isInstalledVC2019
-;  ClearErrors
-;  ReadRegDword $R0 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${VC_2019_REDIST_X86_MIN}" "Version"
-;  IfErrors 0 AlreadyInstalled
-;  Push 0
-;  Return
-;AlreadyInstalled:
-;  Push 1
-;FunctionEnd
+!endif
