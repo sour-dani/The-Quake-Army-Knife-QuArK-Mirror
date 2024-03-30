@@ -432,6 +432,29 @@ SectionEnd
 ;  Delete "$TEMP\vcredist_x86.exe"
 ;SectionEnd
 
+Function _canInstallVC2008Plus
+  ;VC2008 and later installers call "InitializeCriticalSectionAndSpinCount", which requires Windows XP SP2 or Windows Server 2003 SP1 or later.
+
+  ${If} ${AtMostWin2000}
+    Push 0
+    Return
+  ${EndIf}
+
+  ${If} ${IsWinXP}
+  ${AndIf} ${AtMostServicePack} 1
+    Push 0
+    Return
+  ${EndIf}
+
+  ${If} ${IsWin2003}
+  ${AndIf} ${AtMostServicePack} 0
+    Push 0
+    Return
+  ${EndIf}
+
+  Push 1
+FunctionEnd
+
 
 
 ; DirectX installer ------
@@ -606,6 +629,10 @@ Function .onInit
     ${EndIf}
   ${EndIf}
 
+  Call _canInstallVC2008Plus
+  Pop $0
+  IntCmp $0 0 SkipVC2008Plus
+
 ;  Call _isInstalledVC2008
 ;  Pop $0
 ;  ${If} $0 == 0
@@ -613,7 +640,6 @@ Function .onInit
 ;    IntOp $0 $0 | ${SF_SELECTED}
 ;    SectionSetFlags ${SecVC2008Redist} $0
 ;
-;    ;FIXME: This executable calls "InitializeCriticalSectionAndSpinCount", which requires Windows XP SP2 or Windows Server 2003 SP1 or later.
 ;    Call _isInstalledWinInstaller2
 ;    Pop $0
 ;    ${If} $0 == 0
@@ -638,7 +664,6 @@ Function .onInit
     IntOp $0 $0 | ${SF_SELECTED}
     SectionSetFlags ${SecVC2010Redist} $0
 
-    ;FIXME: This executable calls "InitializeCriticalSectionAndSpinCount", which requires Windows XP SP2 or Windows Server 2003 SP1 or later.
     Call _isInstalledWinInstaller2
     Pop $0
     ${If} $0 == 0
@@ -663,6 +688,7 @@ Function .onInit
 ;      SectionSetFlags ${SecWinInstaller2} $0
 ;    ${EndIf}
 ;  ${EndIf}
+SkipVC2008Plus:
 
   Call _isInstalledDirectX9
   Pop $0
