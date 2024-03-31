@@ -236,16 +236,16 @@ typedef enum tagVTFSharpenFilter    ALL THESE typedef'S STILL NEED TO BE CONVERT
 
 type
   vlBool = Byte;
-  vlChar = Char; //ShortInt;
+  vlChar = AnsiChar;
   vlByte = Byte;
-  vlShort = SmallInt;
-  vlUShort = Word;
+  //vlShort = SmallInt;
+  //vlUShort = Word;
   vlInt = Integer;
   vlUInt = Cardinal;
-  vlLong = LongInt;
-  vlULong = LongWord;
+  //vlLong = LongInt;
+  //vlULong = LongWord;
   vlSingle = Single;
-  vlDouble = Double;
+  //vlDouble = Double;
   vlVoid = Byte;
 
   vlFloat = vlSingle;

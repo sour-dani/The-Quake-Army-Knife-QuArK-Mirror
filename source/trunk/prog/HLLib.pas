@@ -33,8 +33,6 @@ const
   hlFalse = 0;
   hlTrue = 1;
 
-  HL_VERSION_NUMBER = ((2 shl 24) + (3 shl 16) + (0 shl 8) + 0);
-
 //HLOption:
 	HL_VERSION = 0;
 	HL_ERROR = 1;
@@ -63,6 +61,9 @@ const
 	HL_FORCE_DEFRAGMENT = 24;
 	HL_PROC_DEFRAGMENT_PROGRESS = 25;
 	HL_PROC_DEFRAGMENT_PROGRESS_EX = 26;
+	HL_PROC_SEEK_EX = 27;
+	HL_PROC_TELL_EX = 28;
+	HL_PROC_SIZE_EX = 29;
 
 //HLPackageType:
 	HL_PACKAGE_NONE = 0;
@@ -75,6 +76,7 @@ const
 	HL_PACKAGE_ZIP = 7;
 	HL_PACKAGE_NCF = 8;
 	HL_PACKAGE_VPK = 9;
+	HL_PACKAGE_SGA = 10;
 
 //HLFileMode:
 	HL_MODE_INVALID = $00;
@@ -92,18 +94,19 @@ const
 
 type
   hlBool = Byte;
-  hlChar = Char; //ShortInt;
-//typedef unsigned char		hlByte;
-//typedef signed short		hlShort;
-//typedef unsigned short		hlUShort;
-//typedef signed int			hlInt;
+  hlChar = AnsiChar;
+  //hlWChar = WideChar;
+  hlByte = Byte;
+  //hlShort = SmallInt;
+  //hlUShort = Word;
+  //hlInt = Integer;
   hlUInt = Cardinal;
-//typedef signed long			hlLong;
-//typedef unsigned long		hlULong;
-//typedef signed long long	hlLongLong;
-//typedef unsigned long long	hlULongLong;
-//typedef float				hlSingle;
-//typedef double				hlDouble;
+  //hlLong = LongInt;
+  //hlULong = LongWord;
+  //hlLongLong = Int64;
+  //hlULongLong = UInt64;
+  //hlSingle = Single;
+  //hlDouble = Double;
   hlVoid = Byte;
 
   PhlChar = ^hlChar;
@@ -171,11 +174,18 @@ implementation
 
 uses QkExceptions, Logging, ApplPaths, Quarkx;
 
+{$I DelphiVer.inc}
+
 const RequiredGCFAPI = 3;
 
 var
   TimesLoaded: Cardinal;
   HHLLib : HMODULE;
+
+function HL_VERSION_NUMBER(Major, Minor, Patch, Build: Cardinal) : hlUInt;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+begin
+  Result := ((Major shl 24) + (Minor shl 16) + (Patch shl 8) + Build);
+end;
 
 function InitDllPointer(DLLHandle: HINST; const APIFuncname : String) : Pointer;
 begin
@@ -209,7 +219,7 @@ begin
       hlShutdown   := InitDllPointer(HHLLib, 'hlShutdown');
 
       hlGetUnsignedInteger := InitDllPointer(HHLLib, 'hlGetUnsignedInteger');
-      if hlGetUnsignedInteger(HL_VERSION) < HL_VERSION_NUMBER then
+      if hlGetUnsignedInteger(HL_VERSION) < HL_VERSION_NUMBER(2, 2, 0, 0) then
         LogAndRaiseError(FmtLoadStr1(5742, ['HLLib']));
 
       hlGetString := InitDllPointer(HHLLib, 'hlGetString');
