@@ -143,7 +143,7 @@ type
 {$endif}
 
 {$ifdef MSWINDOWS}
-{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 2005, and they exist in Delphi 11.3
+{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 2007, and they exist in Delphi 11.3
   PMemoryStatusEx = ^TMemoryStatusEx;
   _MEMORYSTATUSEX = record
     dwLength: DWORD;
@@ -227,7 +227,7 @@ const
 {$ifndef Delphi2007orNewerCompiler}
   IMAGE_FILE_LARGE_ADDRESS_AWARE = $0020;
 {$endif}
-{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 2005, but existing in Delphi 11.3!
+{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 2007, but existing in Delphi 11.3!
   VER_SUITE_BACKOFFICE = $00000004;
   VER_SUITE_BLADE = $00000400;
   VER_SUITE_COMPUTE_SERVER = $00004000;
@@ -263,7 +263,7 @@ const
   PROCESSOR_ARCHITECTURE_AMD64(*: WORD*) = 9; //x64 (AMD or Intel)
   PROCESSOR_ARCHITECTURE_UNKNOWN(*: WORD*) = $FFFF; //Unknown architecture.
 {$endif}
-{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 2005, but existing in Delphi 11.3!
+{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 2007, but existing in Delphi 11.3!
   {$EXTERNALSYM COLORMGMTCAPS}
   COLORMGMTCAPS = 121;   { Color Management caps                 }
 {$else} //Note: this is a special case! There is a conflicting COLORMGMTCAPS defined by Delphi with an incompatible type, so let's always use this one explicitly
@@ -507,7 +507,7 @@ function DateTimeToWin64(const AValue: TDateTime): QWORD;
 function Win64ToDateTime(const AValue: QWORD): TDateTime;
 
 {$ifdef MSWINDOWS}
-{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 2005, and they exist in Delphi 11.3
+{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 2007, and they exist in Delphi 11.3
 var
   DelayFunc_GlobalMemoryStatusEx: Boolean;
   DelayFunc_GetNativeSystemInfo: Boolean;
@@ -537,13 +537,13 @@ var
   DelayFunc_SHRestricted: Boolean;
 {$endif}
 
-{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 2005, and they exist in Delphi 11.3
+{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 2007, and they exist in Delphi 11.3
 var
   CPUCount: Integer;
 {$endif}
 
 {$ifdef Delphi2010orNewerCompiler} //Use delayed loading
-{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure in which Delphi version these were added, but between Delphi 2005 and 11.3.
+{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure in which Delphi version these were added, but between Delphi 2007 and 11.3.
 function GlobalMemoryStatusEx(var lpBuffer : TMEMORYSTATUSEX): BOOL; stdcall;
 {$EXTERNALSYM GlobalMemoryStatusEx}
 function GlobalMemoryStatusEx; external kernel32 name 'GlobalMemoryStatusEx' delayed;
