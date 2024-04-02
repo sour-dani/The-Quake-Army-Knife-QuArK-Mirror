@@ -143,7 +143,7 @@ type
 {$endif}
 
 {$ifdef MSWINDOWS}
-{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 7, and they exist in Delphi 11.3
+{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 2005, and they exist in Delphi 11.3
   PMemoryStatusEx = ^TMemoryStatusEx;
   _MEMORYSTATUSEX = record
     dwLength: DWORD;
@@ -214,8 +214,7 @@ const
   Win64DateDelta = -109207;
 
 {$ifdef MSWINDOWS}
-{$ifndef Delphi4orNewerCompiler} // FIXME: I'm not sure when this was introduced;
-                                 // but it at least exists in Delphi 4
+{$ifndef Delphi3orNewerCompiler}
   DUPLICATE_CLOSE_SOURCE     = $00000001;
   DUPLICATE_SAME_ACCESS      = $00000002;
   MAILSLOT_NO_MESSAGE                 = LongWord(-1);
@@ -228,7 +227,7 @@ const
 {$ifndef Delphi2007orNewerCompiler}
   IMAGE_FILE_LARGE_ADDRESS_AWARE = $0020;
 {$endif}
-{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 7, but existing in Delphi 11.3!
+{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 2005, but existing in Delphi 11.3!
   VER_SUITE_BACKOFFICE = $00000004;
   VER_SUITE_BLADE = $00000400;
   VER_SUITE_COMPUTE_SERVER = $00004000;
@@ -264,7 +263,7 @@ const
   PROCESSOR_ARCHITECTURE_AMD64(*: WORD*) = 9; //x64 (AMD or Intel)
   PROCESSOR_ARCHITECTURE_UNKNOWN(*: WORD*) = $FFFF; //Unknown architecture.
 {$endif}
-{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 7, but existing in Delphi 11.3!
+{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 2005, but existing in Delphi 11.3!
   {$EXTERNALSYM COLORMGMTCAPS}
   COLORMGMTCAPS = 121;   { Color Management caps                 }
 {$else} //Note: this is a special case! There is a conflicting COLORMGMTCAPS defined by Delphi with an incompatible type, so let's always use this one explicitly
@@ -494,7 +493,7 @@ function UIntToStr(Value: Int64): string; overload;
 {$endif}
 {$endif}
 
-{$ifndef Delphi2010orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 7, and they exist in Delphi 2010
+{$ifndef Delphi2005orNewerCompiler}
 function ContainsText(const AText, ASubText: string): Boolean;
 function StartsText(const ASubText, AText: string): Boolean;
 function EndsText(const ASubText, AText: string): Boolean;
@@ -508,7 +507,7 @@ function DateTimeToWin64(const AValue: TDateTime): QWORD;
 function Win64ToDateTime(const AValue: QWORD): TDateTime;
 
 {$ifdef MSWINDOWS}
-{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 7, and they exist in Delphi 11.3
+{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 2005, and they exist in Delphi 11.3
 var
   DelayFunc_GlobalMemoryStatusEx: Boolean;
   DelayFunc_GetNativeSystemInfo: Boolean;
@@ -538,13 +537,13 @@ var
   DelayFunc_SHRestricted: Boolean;
 {$endif}
 
-{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 7, and they exist in Delphi 11.3
+{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 2005, and they exist in Delphi 11.3
 var
   CPUCount: Integer;
 {$endif}
 
 {$ifdef Delphi2010orNewerCompiler} //Use delayed loading
-{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure in which Delphi version these were added, but between Delphi 7 and 11.3.
+{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure in which Delphi version these were added, but between Delphi 2005 and 11.3.
 function GlobalMemoryStatusEx(var lpBuffer : TMEMORYSTATUSEX): BOOL; stdcall;
 {$EXTERNALSYM GlobalMemoryStatusEx}
 function GlobalMemoryStatusEx; external kernel32 name 'GlobalMemoryStatusEx' delayed;
@@ -625,8 +624,7 @@ type
   TSeekOrigin = (soBeginning, soCurrent, soEnd);
 {$ENDIF}
 
-{$ifndef Delphi4orNewerCompiler} // FIXME: I'm not sure when this was introduced;
-                                 // but it at least exists in Delphi 4
+{$ifndef Delphi2orNewerCompiler}
 { CompareMem performs a binary compare of Length bytes of memory referenced
   by P1 to that of P2.  CompareMem returns True if the memory referenced by
   P1 is identical to that of P2. }
@@ -708,7 +706,7 @@ function CheckWin32Version(AMajor: Integer; AMinor: Integer = 0): Boolean;
 function SplitString(const S, Delimiters: string): TStringDynArray;
 {$endif}
 
-//This function doesn't exist at all in Delphi 7:
+//This function doesn't exist at all in Delphi:
 function LastPos(const SubStr: String; const S: String): Integer;
 
 function CharInSet(C: AnsiChar; const CharSet: TSysCharSet): Boolean; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
@@ -803,7 +801,7 @@ end;
 {$endif}
 {$endif}
 
-{$ifndef Delphi2010orNewerCompiler}
+{$ifndef Delphi2005orNewerCompiler}
 function ContainsText(const AText, ASubText: string): Boolean;
 begin
   Result := AnsiContainsText(AText, ASubText); //Note: Apparently, this function is misnamed, and it handles unicode too!
@@ -845,7 +843,7 @@ begin
   Result := AValue / SecsPerDay / 100000000 + Win64DateDelta;
 end;
 
-{$ifndef Delphi4orNewerCompiler}
+{$ifndef Delphi2orNewerCompiler}
 function CompareMem(P1, P2: Pointer; Length: Integer): Boolean; assembler;
 asm
         PUSH    ESI
