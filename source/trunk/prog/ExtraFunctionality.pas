@@ -48,6 +48,37 @@ type
   PPointer = ^Pointer;
 {$endif}
 
+//NativeInt and NativeUInt are not suitable before Delphi 2009, so let's supply our own.
+//More information:
+//  https://stackoverflow.com/questions/24507704/difference-between-longint-and-integer-longword-and-cardinal
+//  https://stackoverflow.com/questions/7630781/delphi-2007-and-xe2-using-nativeint
+//  https://blog.dummzeuch.de/2018/09/08/nativeint-nativeuint-type-in-various-delphi-versions/
+{$ifndef Delphi2009orNewerCompiler}
+{$IFDEF CPU64BITS}
+  NativeInt = Int64;
+  NativeUInt = UInt64;
+{$ELSE}
+  //This appears to be true in (32-bit) Delphi
+  NativeInt = Integer;
+  NativeUInt = Cardinal;
+{$ENDIF}
+
+  PNativeInt = ^NativeInt;
+  PNativeUInt = ^NativeUInt;
+{$else}
+{$ifndef Delphi2010orNewerCompiler}
+  //Delphi 2009 has a compiler bug with NativeUInt (http://qc.embarcadero.com/wc/qcmain.aspx?d=71292).
+{$IFDEF CPU64BITS}
+  NativeUInt = UInt64;
+{$ELSE}
+  //This appears to be true in (32-bit) Delphi
+  NativeUInt = Cardinal;
+{$ENDIF}
+
+  PNativeUInt = ^NativeUInt;
+{$endif}
+{$endif}
+
 {$ifdef MSWINDOWS}
   QWORD = {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
   {$EXTERNALSYM QWORD}
@@ -97,13 +128,8 @@ type
   PUnicodeChar = ^WideChar;
 {$ENDIF}
 
-{$IFDEF CPU64BITS}
-  size_t = UInt64;
-  ssize_t = Int64;
-{$ELSE}
-  size_t = Cardinal;  //This appears to be true in (32-bit) Delphi
-  ssize_t = Integer;  //This appears to be true in (32-bit) Delphi
-{$ENDIF}
+  size_t = NativeUInt;
+  ssize_t = NativeInt;
 
   //To support pointer arithmetic, we need a custom datatype, because support for it has changed throughout the years.
   //https://helloacm.com/pointer-arithmetic-in-delphi/
