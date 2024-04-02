@@ -87,20 +87,33 @@ type
   LPQWORD = PQWORD;
   {$EXTERNALSYM LPQWORD}
 
+{$ifndef Delphi11orNewerCompiler} //FIXME: Exists in Delphi 11.3, but not in Delphi 2007
   DWORDLONG = {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
   {$EXTERNALSYM DWORDLONG}
+{$endif}
   PDWORDLONG = ^DWORDLONG;
   {$EXTERNALSYM PDWORDLONG}
   LPDWORDLONG = PDWORDLONG;
   {$EXTERNALSYM LPDWORDLONG}
 
+{$ifndef Delphi2orNewerCompiler}
+  LONGLONG = Int64;
+  {$EXTERNALSYM LONGLONG}
+{$endif}
+  PLONGLONG = ^LONGLONG;
+  {$EXTERNALSYM PLONGLONG}
+
+{$ifndef Delphi2007orNewerCompiler}
   ULONGLONG = {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
   {$EXTERNALSYM ULONGLONG}
+{$endif}
   PULONGLONG = ^ULONGLONG;
   {$EXTERNALSYM PULONGLONG}
 
+{$ifndef Delphi11orNewerCompiler} //FIXME: Exists in Delphi 11.3, but not in Delphi 2007
   USHORT = Word;
   {$EXTERNALSYM USHORT}
+{$endif}
   PUSHORT = ^USHORT;
   {$EXTERNALSYM PUSHORT}
 
