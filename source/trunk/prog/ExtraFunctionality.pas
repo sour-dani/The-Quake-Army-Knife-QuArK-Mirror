@@ -109,14 +109,17 @@ type
 
   INT_PTR = Integer;
   {$EXTERNALSYM INT_PTR}
-  UINT_PTR = Cardinal;
-  {$EXTERNALSYM UINT_PTR}
   LONG_PTR = NativeInt;
   {$EXTERNALSYM LONG_PTR}
+  UINT_PTR = Cardinal;
+  {$EXTERNALSYM UINT_PTR}
   ULONG_PTR = NativeUInt;
   {$EXTERNALSYM ULONG_PTR}
+
   DWORD_PTR = ULONG_PTR;
   {$EXTERNALSYM DWORD_PTR}
+{$endif}
+{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 2007, and they exist in Delphi 11.3
   HANDLE_PTR = type NativeUInt;
   {$EXTERNALSYM HANDLE_PTR}
 {$endif}
