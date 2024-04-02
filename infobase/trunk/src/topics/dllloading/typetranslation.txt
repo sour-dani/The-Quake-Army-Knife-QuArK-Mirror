@@ -25,9 +25,10 @@ The Delphi help comes to the rescue, but only partially. For instance, find the 
 <tr><td align=right>  signed char</td><td>==</td><td>Char</td></tr>
 <tr><td align=right>unsigned char</td><td>==</td><td>Byte</td></tr>
 
-<tr><td align=right>?</td><td>==</td><td>int64</td></tr>
+<tr><td align=right> int64_t</td><td>==</td><td>Int64</td></tr>
+<tr><td align=right>uint64_t</td><td>==</td><td>UInt64</td></tr>
 
-<tr><td align=right>void</td><td>==</td><td>? (Byte?)</td></tr>
+<tr><td align=right>void</td><td>==</td><td>Byte?</td></tr>
 </table>
 
 Note: Some of these only apply to a Win32 32-bit application: Cardinal might be different in 64-bit Delphi, and the same goes for the C++ Int. However, since QuArK is 32-bit, and most DLL files are too, we don't need to be too concerned, but it is something to keep in mind.
