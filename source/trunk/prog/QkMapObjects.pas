@@ -615,13 +615,17 @@ begin
 end;*)
 
 function TTreeMap.GetNegative: String;
+const
+ SpecNegative = 'neg';
 begin
- Result:=Specifics.Strings['neg'];
+ Result:=Specifics.Strings[SpecNegative];
 end;
 
 procedure TTreeMap.SetNegative(const Neg: String);
+const
+ SpecNegative = 'neg';
 begin
- Specifics.Strings['neg']:=Neg;
+ Specifics.Strings[SpecNegative]:=Neg;
 end;
 
  {------------------------}
