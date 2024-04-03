@@ -2100,7 +2100,7 @@ var
   MaxDev :DWORD;
   Found: Boolean;
   l_hdc: HDC;
-  ClassKey: string;
+  ClassKey, S: string;
 const
   rkVideoHardware = {HKEY_LOCAL_MACHINE\}'HARDWARE\DEVICEMAP\VIDEO';
   rvVideoKey1 = '\Device\Video';
@@ -2115,6 +2115,7 @@ const
   rvProvider = 'ProviderName';
   rvDriverDate = 'DriverDate';
   rvDriverVersion = 'DriverVersion';
+  rvDevDesc = 'Device Description';
 
   rvVideoClass = 'Display';
 
@@ -2403,7 +2404,10 @@ begin
               rk:=copy(rk,pos('MACHINE\',UpperCase(rk))+8,MaxInt);
               if OpenKey(rk,false) then
               begin
-                FAdapter.Add(GetStringOrBinary(reg, rvHardware+'.'+rvHWVideo, 'HKEY_LOCAL_MACHINE'));
+                S:=GetStringOrBinary(reg, rvHardware+'.'+rvHWVideo, 'HKEY_LOCAL_MACHINE');
+                if S='Unknown' then
+                  TryReadString(rvDevDesc, S);
+                FAdapter.Add(S);
                 FDAC.Add(GetStringOrBinary(reg, rvHardware+'.'+rvHWDAC, 'HKEY_LOCAL_MACHINE'));
                 FChipset.Add(GetStringOrBinary(reg, rvHardware+'.'+rvHWChip, 'HKEY_LOCAL_MACHINE'));
 
