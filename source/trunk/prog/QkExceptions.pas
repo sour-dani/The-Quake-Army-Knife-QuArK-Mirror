@@ -271,7 +271,7 @@ const
  DlgW  = 372;
  MemoH = 160;
  Margin = 8;
- Fallback4616 = '                     *** EXCEPTION REPORT ***'+sLineBreak+sLineBreak+'%s %s'+sLineBreak+'Address in the program: %p (base: %p)'+sLineBreak;
+ Fallback4616 = '                     *** EXCEPTION REPORT ***'+sLineBreak+sLineBreak+'%s %s'+sLineBreak+'Address in the program: 0x%p (base: 0x%p)'+sLineBreak;
  Fallback4617 = sLineBreak+sLineBreak+'Please report this error to the QuArK development team, so that they can fix the issue promptly.';
 var
 {E: Exception;}
