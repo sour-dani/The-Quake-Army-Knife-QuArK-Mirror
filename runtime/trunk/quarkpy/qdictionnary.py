@@ -549,7 +549,7 @@ Strings = {
     4463: "Invalid quaternion operation",
 
     4614: "&More >>",
-    4616: "                     *** EXCEPTION REPORT ***\n\n%s %s\nAddress in the program: %p (base: %p)\n",
+    4616: "                     *** EXCEPTION REPORT ***\n\n%s %s\nAddress in the program: 0x%p (base: 0x%p)\n",
     4617: "\n\nPlease report this error to the QuArK development team, so that they can fix the issue promptly.",
     4618: "//Description of the invalid polygon :",
     4620: "Impossible to create the surface for a polygon//Three aligned points don't define a plane.",
@@ -1074,7 +1074,7 @@ Strings = {
     5801: "Quake 2 Sprite Signature = %d, Should be: %d",
     5802: "Quake 2 Sprite Version = %d, Should be: %d",
     5803: "Invalid Tag! (%d - QSprForm.playClick)",
-    5804: "Exception at address %p: %s",
+    5804: "Exception at address 0x%p: %s",
     5805: "Unable to find file in pak file",
     5806: "Macro %s not found",
     5807: "RDM5-md3s currently not supported",
