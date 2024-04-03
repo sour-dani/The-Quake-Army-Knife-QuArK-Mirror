@@ -482,8 +482,10 @@ begin
   rf_Default: begin  { as stand-alone file }
       ProgressIndicatorStart(5453, FSize div ProgressStep); try
       SetLength(Data, FSize); //FIXME: AnsiString?
+      F.ReadBuffer(Data[1], FSize);  { read the whole file at once }
       Source:=PChar(Data);
-      F.ReadBuffer(Source^, FSize);  { read the whole file at once }
+      //Note: We don't handle byte order marks, because they don't seem to be used by any games.
+
       // cdunde: This is where the material file is read in, line by line as 'Data'.
       // Rowdy: Doom 3 adds some extra things to material files (*.mtr), such as "table"
       // We will ignore these for now, unless and until it become apparent that they are

@@ -562,11 +562,12 @@ var
    repeat
     while CharInSet(Source^, [' ', Chr(vk_Tab)]) do
      Inc(Source);
+     //FIXME: This can go beyond the buffer! //FIXME: De-duplicate with QkD3?
     if Source^=#13 then
      begin
       Inc(LineNumber);
       Inc(Source);
-      if Source^=#10 then Inc(source);
+      if Source^=#10 then Inc(Source);
      end
     else
      if Source^=#10 then
@@ -586,6 +587,7 @@ var
    P1:=Source;
    while not CharInSet(Source^, [#13, #10, #0]) do
     Inc(Source);
+    //FIXME: This can go beyond the buffer! //FIXME: De-duplicate with QkD3? 
    P2:=Source;
    // if the string ends with sp or tab, remove them
    while (P2>P1) and CharInSet(P2[-1], [' ', Chr(vk_Tab)]) do
@@ -641,8 +643,9 @@ begin
   rf_Default: begin  { as stand-alone file }
       ProgressIndicatorStart(5453, FSize div ProgressStep); try
       SetLength(Data, FSize); //FIXME: AnsiString?
+      F.ReadBuffer(Data[1], FSize);  { read the whole file at once }
       Source:=PChar(Data);
-      F.ReadBuffer(Source^, FSize);  { read the whole file at once }
+      //Note: We don't handle byte order marks, because they don't seem to be used by any games.
 
        { preprocess comments }
       Comment:=False;
