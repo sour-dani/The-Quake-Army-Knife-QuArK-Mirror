@@ -23,7 +23,7 @@
   Delphi5_is_not_supported
 {$ENDIF}
 
-{$A8,B-,C+,D-,E-,F-,G+,H+,I+,J-,K-,L+,M-,N-,O+,P+,Q-,R-,S-,T-,U-,V+,W-,X+,Y+,Z1}
+{$A8,B-,D-,E-,F-,G+,H+,I+,J-,K-,L+,M-,N-,O+,P+,Q-,R-,S-,T-,U-,V+,W-,X+,Y+,Z1} //DanielPharos: Removed C+
 
 { If you define VCLFIXPACK_DEBUG the patches are compiled with debug information. }
 {.$DEFINE VCLFIXPACK_DEBUG}
