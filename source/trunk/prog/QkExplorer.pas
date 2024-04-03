@@ -303,7 +303,7 @@ begin
    end;
 end;
 
-function ValidExplorerAndRoot(var Q: QObject) : TQkExplorer;
+(*function ValidExplorerAndRoot(var Q: QObject) : TQkExplorer;
 var
  Q1, Q2: QObject;
 begin
@@ -317,7 +317,7 @@ begin
  if Result=Nil then
   Raise InternalE('ValidExplorerAndRoot');
  Q:=Q1;
-end;
+end;*)
 
 procedure AnnuleUndos;
 begin
