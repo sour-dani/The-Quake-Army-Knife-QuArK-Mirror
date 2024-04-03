@@ -281,18 +281,7 @@ begin
   {$ENDIF}
   *)
 
-{$IFDEF MemCheck}
-  MemChk;
-{$ENDIF}
-  Application.Initialize;
   Application.Title:='Quake Army Knife';
-
-  Application.UpdateFormatSettings:=False;
-  {$IFDEF DelphiXEorNewerCompiler}
-  FormatSettings.DecimalSeparator:='.';
-  {$ELSE}
-  DecimalSeparator:='.';
-  {$ENDIF}
 
   {$IFDEF CompiledWithDelphi6}
   //SysUtils.CheckWin32Version was added in Update Pack 2 of Delphi 6,
@@ -302,6 +291,21 @@ begin
   PatchCheckWin32Version;
   {$IFEND}
   {$ENDIF}
+
+  //Configure localization settings.
+  Application.UpdateFormatSettings:=False;
+  {$IFDEF DelphiXEorNewerCompiler}
+  FormatSettings.DecimalSeparator:='.';
+  {$ELSE}
+  DecimalSeparator:='.';
+  {$ENDIF}
+
+{$IFDEF MemCheck}
+  MemChk;
+{$ENDIF}
+
+  //This calls InitProc (note: this opens the log file).
+  Application.Initialize;
 
   //Install exception hook to catch exceptions during TForm1 creation.
   InstallExceptProc;
