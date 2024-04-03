@@ -276,8 +276,8 @@ begin
       Log(LOG_WARNING, 'Failed to change the DLL search path; QuArK will be vulnerable to DLL hijacking!');
     end;
 
-  //Tell Windows 2000 and higher not to supress exceptions that happen in TimerProc's.
-  if CheckWin32Version(5, 0) then //Windows 2000
+  //Don't supress exceptions that happen in TimerProc's.
+  if CheckWin32Version(6, 3) then //Windows 8.1 and newer? FIXME: Exists in SDK 10.0.18362.0 = 19H1
   begin
     Info:=False;
     if not SetUserObjectInformation(GetCurrentProcess(), UOI_TIMERPROC_EXCEPTION_SUPPRESSION, @Info, SizeOf(Info)) then
