@@ -122,8 +122,7 @@ function GetQPath(const PathToGet : TQPathType) : String;
     Result:=StringReplace(SetupGameSet.Name,' ','_',[rfReplaceAll]);
   end;
 begin
-  if ApplicationPath = '' then
-    raise InternalE('Error: Application path not yet loaded!');
+  Assert(ApplicationPath<>'', 'Application path not yet loaded');
 
   case PathToGet of
   pQuArK: Result:=ApplicationPath;
@@ -146,8 +145,7 @@ function GetQPath(const PathToGet : TQPathType; const GameName: String) : String
     Result:=StringReplace(SetupSubSet(ssGames, GameName).Name,' ','_',[rfReplaceAll]);
   end;
 begin
-  if ApplicationPath = '' then
-    raise InternalE('Error: Application path not yet loaded!');
+  Assert(ApplicationPath<>'', 'Application path not yet loaded');
 
   case PathToGet of
   pQuArK: Result:=ApplicationPath;
