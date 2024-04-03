@@ -70,7 +70,6 @@ uses
   //Init the logging module FIRST, otherwise we'll miss log-calls from other init's!
   Logging in 'prog\Logging.pas',
 
-  DWM in '3dfx\DWM.pas',
   DX9 in '3dfx\DX9.pas',
   EdDirect3D in '3dfx\EdDirect3D.pas',
   EdGlide in '3dfx\EdGlide.pas',
@@ -304,7 +303,7 @@ begin
   {$IFEND}
   {$ENDIF}
 
-  //Install exception hook to catch exception during TForm1 creation.
+  //Install exception hook to catch exceptions during TForm1 creation.
   InstallExceptProc;
 
   Log(LOG_VERBOSE, 'Loading main form...');

@@ -115,7 +115,7 @@ type
    FarDistance: Double;
    FogDensity: Single;
    FInitialized: Boolean;
-   DWMLoaded: Boolean;
+   DWMDisabled: Boolean;
    ShowProgress: Boolean;
    procedure ClearPList;
    procedure ClearSurfaces(Surf: PSurface3D; SurfSize: Integer); virtual;
@@ -222,7 +222,9 @@ procedure GetwhForTexture(const info: GrTexInfo; var w,h: Integer);
 
 implementation
 
-uses SysUtils, Math, DWM, Logging,
+{$I DelphiVer.inc}
+
+uses SysUtils, Math, {$IFDEF Delphi2007orNewerCompiler}DWMAPI, {$ENDIF}Logging,
      Travail, Quarkx, QkExceptions, Setup,
      QkMdlObject, QkTextures, QkImages, QkFileObjects,
      EdSoftware, EdGlide, EdOpenGL, EdDirect3D;
@@ -261,11 +263,9 @@ begin
  MeshInfo.Free;
  SpriteInfo.Free;
  TemporaryStuff.Free;
- if DWMLoaded then
- begin
-  DwmEnableComposition(DWM_EC_ENABLECOMPOSITION);
-  UnloadDWM;
- end;
+ if DWMDisabled then
+  if DelayFunc_DwmEnableComposition then
+   DwmEnableComposition(DWM_EC_ENABLECOMPOSITION);
  inherited;
 end;
 
@@ -1395,14 +1395,13 @@ procedure TSceneObject.DisableDWM;
 begin
   //We may need to disable Desktop Composition,
   //because this causes GDI draw calls to draw incorrectly
-  if not DWMLoaded then
+  if DelayFunc_DwmEnableComposition then
   begin
-    DWMLoaded:=LoadDWM;
-    if not DWMLoaded then
-      Log(LOG_WARNING, LoadStr1(6013));
-  end;
-  if DWMLoaded then
     DwmEnableComposition(DWM_EC_DISABLECOMPOSITION);
+    DWMDisabled:=True;
+  end
+  else
+    Log(LOG_WARNING, LoadStr1(6013));
 end;
 
 procedure TSceneObject.ChangedViewWnd;

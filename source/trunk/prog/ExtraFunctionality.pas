@@ -240,8 +240,15 @@ const
   SM_CXVIRTUALSCREEN = 78;
   SM_CYVIRTUALSCREEN = 79;
 {$endif}
+{$ifndef Delphi2006orNewerCompiler}
+  IMAGE_FILE_LARGE_ADDRESS_AWARE           = $0020;  { App can handle >2gb addresses }
+  {$EXTERNALSYM IMAGE_FILE_LARGE_ADDRESS_AWARE}
+{$endif}
 {$ifndef Delphi2007orNewerCompiler}
-  IMAGE_FILE_LARGE_ADDRESS_AWARE = $0020;
+  {$EXTERNALSYM DWM_EC_DISABLECOMPOSITION}
+  DWM_EC_DISABLECOMPOSITION         = 0;
+  {$EXTERNALSYM DWM_EC_ENABLECOMPOSITION}
+  DWM_EC_ENABLECOMPOSITION          = 1;
 {$endif}
 {$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 2007, but existing in Delphi 11.3!
   VER_SUITE_BACKOFFICE = $00000004;
@@ -523,8 +530,17 @@ function DateTimeToWin64(const AValue: TDateTime): QWORD;
 function Win64ToDateTime(const AValue: QWORD): TDateTime;
 
 {$ifdef MSWINDOWS}
-{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 2007, and they exist in Delphi 11.3
+{$ifndef Delphi2007orNewerCompiler}
 var
+  DelayFunc_DwmEnableComposition: Boolean;
+  //DelayFunc_DwmIsCompositionEnabled: Boolean;
+{$else}
+const
+  DelayFunc_DwmEnableComposition: Boolean = True;
+  //DelayFunc_DwmIsCompositionEnabled: Boolean = True;
+{$endif}
+
+{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 2007, and they exist in Delphi 11.3
   DelayFunc_GlobalMemoryStatusEx: Boolean;
   DelayFunc_GetNativeSystemInfo: Boolean;
   DelayFunc_GetErrorMode: Boolean;
@@ -559,6 +575,16 @@ var
 {$endif}
 
 {$ifdef Delphi2010orNewerCompiler} //Use delayed loading
+{$ifndef Delphi2007orNewerCompiler}
+function DwmEnableComposition(uCompositionAction: UINT): HResult; stdcall;
+{$EXTERNALSYM DwmEnableComposition}
+function DwmEnableComposition(uCompositionAction: UINT): HResult; external 'DWMAPI.DLL' name 'DwmEnableComposition' delayed;
+
+//function DwmIsCompositionEnabled(out pfEnabled: BOOL): HResult; stdcall;
+//{$EXTERNALSYM DwmIsCompositionEnabled}
+//function DwmIsCompositionEnabled(out pfEnabled: BOOL): HResult; external 'DWMAPI.DLL' name 'DwmIsCompositionEnabled' delayed;
+{$endif}
+
 {$ifndef Delphi11orNewerCompiler} //FIXME: Not sure in which Delphi version these were added, but between Delphi 2007 and 11.3.
 function GlobalMemoryStatusEx(var lpBuffer : TMEMORYSTATUSEX): BOOL; stdcall;
 {$EXTERNALSYM GlobalMemoryStatusEx}
@@ -610,6 +636,10 @@ function SHRestricted(rest: RESTRICTIONS): DWORD; stdcall;
 function SHRestricted; external 'shell32.dll' name 'SHRestricted' delayed;
 {$else}
 var
+{$ifndef Delphi2007orNewerCompiler}
+  DwmEnableComposition: function (uCompositionAction: UINT): HResult; stdcall;
+  //DwmIsCompositionEnabled: function (out pfEnabled: BOOL): HResult; stdcall;
+{$endif}
 {$ifndef Delphi11orNewerCompiler}
   GlobalMemoryStatusEx: function (var lpBuffer: TMemoryStatusEx): BOOL; stdcall;
   GetNativeSystemInfo: procedure (var lpSystemInformation: TSystemInfo); stdcall;
@@ -753,9 +783,9 @@ implementation
 
 {$ifdef MSWINDOWS}
 {$ifndef Delphi2010orNewerCompiler}
-//Only used in initialization-section for DelayFunc.
+//Only used for DelayFunc.
 var
-  ShellLib: HMODULE;
+  ShellLib, DWMAPILib: HMODULE;
 {$endif}
 
 function CopyCursor(pcur: HCursor): HCursor;
@@ -1215,6 +1245,10 @@ end;
 initialization
   //Initialized the delay loading functions.
 {$ifdef Delphi2010orNewerCompiler}
+{$ifndef Delphi2007orNewerCompiler}
+  DelayFunc_DwmEnableComposition := CheckWin32Version(6, 0); //Windows Vista
+  //DelayFunc_DwmIsCompositionEnabled := CheckWin32Version(6, 0); //Windows Vista
+{$endif}
 {$ifndef Delphi11orNewerCompiler}
   DelayFunc_GlobalMemoryStatusEx := CheckWin32Version(5, 0); //Windows 2000
   DelayFunc_GetNativeSystemInfo := CheckWin32Version(5, 1); //Windows XP, Windows Server 2003
@@ -1230,6 +1264,19 @@ initialization
   DelayFunc_SHRestricted := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003, although it already existed in Windows 2000 as ordinal 100.
 {$else}
   //Note: The module 'kernel32' is always loaded inside a process.
+{$ifndef Delphi2007orNewerCompiler}
+  DWMAPILib:=SafeLoadLibrary('DWMAPI.DLL');
+  if DWMAPILib = 0 then
+  begin
+    DwmEnableComposition := nil;
+    //DwmIsCompositionEnabled := nil;
+  end
+  else
+  begin
+    DwmEnableComposition := GetProcAddress(DWMAPILib, 'DwmEnableComposition');
+    //DwmIsCompositionEnabled := GetProcAddress(DWMAPILib, 'DwmIsCompositionEnabled');
+  end;
+{$endif}
 {$ifndef Delphi11orNewerCompiler}
   GlobalMemoryStatusEx := GetProcAddress(GetModuleHandle('kernel32'), 'GlobalMemoryStatusEx');
   GetNativeSystemInfo := GetProcAddress(GetModuleHandle('kernel32'), 'GetNativeSystemInfo');
@@ -1244,16 +1291,15 @@ initialization
   GetFirmwareType := GetProcAddress(GetModuleHandle('kernel32'), 'GetFirmwareType');
 
   ShellLib:=SafeLoadLibrary('shell32.dll');
-  try
-    if ShellLib = 0 then
-      SHRestricted := nil
-    else
-      SHRestricted := GetProcAddress(ShellLib, 'SHRestricted');
-  finally
-    FreeLibrary(ShellLib);
-    //ShellLib:=0;
-  end;
+  if ShellLib = 0 then
+    SHRestricted := nil
+  else
+    SHRestricted := GetProcAddress(ShellLib, 'SHRestricted');
 
+{$ifndef Delphi2007orNewerCompiler}
+  DelayFunc_DwmEnableComposition := Assigned(DwmEnableComposition);
+  //DelayFunc_DwmIsCompositionEnabled := Assigned(DwmIsCompositionEnabled);
+{$endif}
 {$ifndef Delphi11orNewerCompiler}
   DelayFunc_GlobalMemoryStatusEx := Assigned(GlobalMemoryStatusEx);
   DelayFunc_GetNativeSystemInfo := Assigned(GetNativeSystemInfo);
@@ -1269,8 +1315,20 @@ initialization
   DelayFunc_SHRestricted := Assigned(SHRestricted);
 {$endif}
 
-  {$ifndef Delphi11orNewerCompiler}
+{$ifndef Delphi11orNewerCompiler}
   CPUCount:=GetCPUCount;
-  {$endif}
+{$endif}
+
+finalization
+  if ShellLib<> 0 then
+  begin
+    FreeLibrary(ShellLib);
+    //ShellLib:=0;
+  end;
+  if DWMAPILib<> 0 then
+  begin
+    FreeLibrary(DWMAPILib);
+    //DWMAPILib:=0;
+  end;
 {$endif}
 end.
