@@ -43,6 +43,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormDestroy(Sender : TObject);
   private
     Disclaimer: TDisclaimerThread;
@@ -155,6 +156,11 @@ procedure TSplashScreen.FormClose(Sender : TObject; var Action : TCloseAction);
 begin
   //We are never going to need to show this again, so let's free it completely.
   Action := caFree;
+end;
+
+procedure TSplashScreen.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+ CanClose:=Disclaimer.Terminated;
 end;
 
 procedure TSplashScreen.FormDestroy(Sender : TObject);

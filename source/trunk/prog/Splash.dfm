@@ -14,6 +14,7 @@ object SplashScreen: TSplashScreen
   Position = poScreenCenter
   OnActivate = FormActivate
   OnClose = FormClose
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   PixelsPerInch = 96
