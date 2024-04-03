@@ -529,51 +529,12 @@ function EndsStr(const ASubText, AText: string): Boolean;
 function DateTimeToWin64(const AValue: TDateTime): QWORD;
 function Win64ToDateTime(const AValue: QWORD): TDateTime;
 
-{$ifdef MSWINDOWS}
-{$ifndef Delphi2007orNewerCompiler}
-var
-  DelayFunc_DwmEnableComposition: Boolean;
-  //DelayFunc_DwmIsCompositionEnabled: Boolean;
-{$else}
-const
-  DelayFunc_DwmEnableComposition: Boolean = True;
-  //DelayFunc_DwmIsCompositionEnabled: Boolean = True;
-{$endif}
-
-{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 2007, and they exist in Delphi 11.3
-  DelayFunc_GlobalMemoryStatusEx: Boolean;
-  DelayFunc_GetNativeSystemInfo: Boolean;
-  DelayFunc_GetErrorMode: Boolean;
-  DelayFunc_SetDllDirectoryA: Boolean;
-  DelayFunc_SetDllDirectoryW: Boolean;
-  DelayFunc_SetDllDirectory: Boolean;
-  DelayFunc_IsWow64Process: Boolean;
-  DelayFunc_IsWow64Process2: Boolean;
-  DelayFunc_GetTickCount64: Boolean;
-{$else}
-const
-  DelayFunc_GlobalMemoryStatusEx: Boolean = True;
-  DelayFunc_GetNativeSystemInfo: Boolean = True;
-  DelayFunc_GetErrorMode: Boolean = True;
-  DelayFunc_SetDllDirectoryA: Boolean = True;
-  DelayFunc_SetDllDirectoryW: Boolean = True;
-  DelayFunc_SetDllDirectory: Boolean = True;
-  DelayFunc_IsWow64Process: Boolean = True;
-  DelayFunc_IsWow64Process2: Boolean = True;
-  DelayFunc_GetTickCount64: Boolean = True;
-{$endif}
-
-var
-  //Doesn't even exist in Delphi 11.3.
-  DelayFunc_GetFirmwareType: Boolean;
-  DelayFunc_SHRestricted: Boolean;
-{$endif}
-
 {$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 2007, and they exist in Delphi 11.3
 var
   CPUCount: Integer;
 {$endif}
 
+{$ifdef MSWINDOWS}
 {$ifdef Delphi2010orNewerCompiler} //Use delayed loading
 {$ifndef Delphi2007orNewerCompiler}
 function DwmEnableComposition(uCompositionAction: UINT): HResult; stdcall;
@@ -653,6 +614,7 @@ var
 {$endif}
   GetFirmwareType: function (var FirmwareType: _FIRMWARE_TYPE): BOOL; stdcall;
   SHRestricted: function (rest: RESTRICTIONS): DWORD; stdcall;
+{$endif}
 {$endif}
 
 type
@@ -779,10 +741,28 @@ function UnicodeCompareFileName(const S1, S2: UnicodeString): Integer;
 function CompareFileName(const S1, S2: string): Integer;
 procedure CleanupFileName(var S: String);
 
+//For delay loading functionality:
+{$ifdef MSWINDOWS}
+var
+  DelayFunc_DwmEnableComposition: Boolean;
+  //DelayFunc_DwmIsCompositionEnabled: Boolean;
+  DelayFunc_GlobalMemoryStatusEx: Boolean;
+  DelayFunc_GetNativeSystemInfo: Boolean;
+  DelayFunc_GetErrorMode: Boolean;
+  DelayFunc_SetDllDirectoryA: Boolean;
+  DelayFunc_SetDllDirectoryW: Boolean;
+  DelayFunc_SetDllDirectory: Boolean;
+  DelayFunc_IsWow64Process: Boolean;
+  DelayFunc_IsWow64Process2: Boolean;
+  DelayFunc_GetTickCount64: Boolean;
+  DelayFunc_GetFirmwareType: Boolean;
+  DelayFunc_SHRestricted: Boolean;
+{$endif}
+
 implementation
 
 {$ifdef MSWINDOWS}
-{$ifndef Delphi2010orNewerCompiler}
+{$ifndef Delphi2010orNewerCompiler} //NOT Use delayed loading
 //Only used for DelayFunc.
 var
   ShellLib, DWMAPILib: HMODULE;
@@ -1241,28 +1221,11 @@ begin
  end;
 end;
 
-{$ifdef MSWINDOWS}
 initialization
-  //Initialized the delay loading functions.
-{$ifdef Delphi2010orNewerCompiler}
-{$ifndef Delphi2007orNewerCompiler}
-  DelayFunc_DwmEnableComposition := CheckWin32Version(6, 0); //Windows Vista
-  //DelayFunc_DwmIsCompositionEnabled := CheckWin32Version(6, 0); //Windows Vista
-{$endif}
-{$ifndef Delphi11orNewerCompiler}
-  DelayFunc_GlobalMemoryStatusEx := CheckWin32Version(5, 0); //Windows 2000
-  DelayFunc_GetNativeSystemInfo := CheckWin32Version(5, 1); //Windows XP, Windows Server 2003
-  DelayFunc_GetErrorMode := CheckWin32Version(6, 0); //Windows Vista
-  DelayFunc_SetDllDirectoryA := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003
-  DelayFunc_SetDllDirectoryW := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003
-  DelayFunc_SetDllDirectory := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003
-  DelayFunc_IsWow64Process := CheckWin32VersionWithServicePack(5, 1, 2); //Windows XP with SP2, Windows Server 2003 with SP1
-  DelayFunc_IsWow64Process2 := CheckWin32VersionWithBuildNumber(10, 0, 16299); //Windows 10, version 1709
-  DelayFunc_GetTickCount64 := CheckWin32Version(6, 0); //Windows Vista, Windows Server 2008
-{$endif}
-  DelayFunc_GetFirmwareType := CheckWin32Version(6, 2); //Windows 8, Server 2012
-  DelayFunc_SHRestricted := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003, although it already existed in Windows 2000 as ordinal 100.
-{$else}
+{$ifdef MSWINDOWS}
+{$ifndef Delphi2010orNewerCompiler} //NOT Use delayed loading
+  //Initialize the delayed loading functions now, because this version of Delphi
+  //doesn't support delayed loading.
   //Note: The module 'kernel32' is always loaded inside a process.
 {$ifndef Delphi2007orNewerCompiler}
   DWMAPILib:=SafeLoadLibrary('DWMAPI.DLL');
@@ -1276,6 +1239,10 @@ initialization
     DwmEnableComposition := GetProcAddress(DWMAPILib, 'DwmEnableComposition');
     //DwmIsCompositionEnabled := GetProcAddress(DWMAPILib, 'DwmIsCompositionEnabled');
   end;
+
+  DelayFunc_DwmEnableComposition := Assigned(DwmEnableComposition);
+  //DelayFunc_DwmIsCompositionEnabled := Assigned(DwmIsCompositionEnabled);
+  {$DEFINE DelayFunc_Delphi2007Done}
 {$endif}
 {$ifndef Delphi11orNewerCompiler}
   GlobalMemoryStatusEx := GetProcAddress(GetModuleHandle('kernel32'), 'GlobalMemoryStatusEx');
@@ -1287,20 +1254,7 @@ initialization
   IsWow64Process := GetProcAddress(GetModuleHandle('kernel32'), 'IsWow64Process');
   IsWow64Process2 := GetProcAddress(GetModuleHandle('kernel32'), 'IsWow64Process2');
   GetTickCount64 := GetProcAddress(GetModuleHandle('kernel32'), 'GetTickCount64');
-{$endif}
-  GetFirmwareType := GetProcAddress(GetModuleHandle('kernel32'), 'GetFirmwareType');
 
-  ShellLib:=SafeLoadLibrary('shell32.dll');
-  if ShellLib = 0 then
-    SHRestricted := nil
-  else
-    SHRestricted := GetProcAddress(ShellLib, 'SHRestricted');
-
-{$ifndef Delphi2007orNewerCompiler}
-  DelayFunc_DwmEnableComposition := Assigned(DwmEnableComposition);
-  //DelayFunc_DwmIsCompositionEnabled := Assigned(DwmIsCompositionEnabled);
-{$endif}
-{$ifndef Delphi11orNewerCompiler}
   DelayFunc_GlobalMemoryStatusEx := Assigned(GlobalMemoryStatusEx);
   DelayFunc_GetNativeSystemInfo := Assigned(GetNativeSystemInfo);
   DelayFunc_GetErrorMode := Assigned(GetErrorMode);
@@ -1310,15 +1264,53 @@ initialization
   DelayFunc_IsWow64Process := Assigned(IsWow64Process);
   DelayFunc_IsWow64Process2 := Assigned(IsWow64Process2);
   DelayFunc_GetTickCount64 := Assigned(GetTickCount64);
+  {$DEFINE DelayFunc_Delphi11Done}
 {$endif}
+{.$ifndef DelphiXXorNewerCompiler}
+  GetFirmwareType := GetProcAddress(GetModuleHandle('kernel32'), 'GetFirmwareType');
+
+  ShellLib:=SafeLoadLibrary('shell32.dll');
+  if ShellLib = 0 then
+    SHRestricted := nil
+  else
+    SHRestricted := GetProcAddress(ShellLib, 'SHRestricted');
+
   DelayFunc_GetFirmwareType := Assigned(GetFirmwareType);
   DelayFunc_SHRestricted := Assigned(SHRestricted);
+  {$DEFINE DelayFunc_DelphiXXDone}
+{.$endif}
 {$endif}
 
+  //Delphi's delayed loading raises an exception if the function cannot be loaded.
+  //To avoid that, don't try to call the function if it's not present.
+  {$ifndef DelayFunc_Delphi2007Done}
+  DelayFunc_DwmEnableComposition := CheckWin32Version(6, 0); //Windows Vista
+  //DelayFunc_DwmIsCompositionEnabled := CheckWin32Version(6, 0); //Windows Vista
+  {$endif}
+  {$ifndef DelayFunc_Delphi11Done}
+  DelayFunc_GlobalMemoryStatusEx := CheckWin32Version(5, 0); //Windows 2000
+  DelayFunc_GetNativeSystemInfo := CheckWin32Version(5, 1); //Windows XP, Windows Server 2003
+  DelayFunc_GetErrorMode := CheckWin32Version(6, 0); //Windows Vista
+  DelayFunc_SetDllDirectoryA := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003
+  DelayFunc_SetDllDirectoryW := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003
+  DelayFunc_SetDllDirectory := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003
+  DelayFunc_IsWow64Process := CheckWin32VersionWithServicePack(5, 1, 2); //Windows XP with SP2, Windows Server 2003 with SP1
+  DelayFunc_IsWow64Process2 := CheckWin32VersionWithBuildNumber(10, 0, 16299); //Windows 10, version 1709
+  DelayFunc_GetTickCount64 := CheckWin32Version(6, 0); //Windows Vista, Windows Server 2008
+  {$endif}
+  {$ifndef DelayFunc_DelphiXXDone}
+  DelayFunc_GetFirmwareType := CheckWin32Version(6, 2); //Windows 8, Server 2012
+  DelayFunc_SHRestricted := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003, although it already existed in Windows 2000 as ordinal 100.
+  {$endif}
+{$endif}
+
+  //Initialize other things too.
 {$ifndef Delphi11orNewerCompiler}
   CPUCount:=GetCPUCount;
 {$endif}
 
+{$ifdef MSWINDOWS}
+{$ifndef Delphi2010orNewerCompiler} //NOT Use delayed loading
 finalization
   if ShellLib<> 0 then
   begin
@@ -1330,5 +1322,6 @@ finalization
     FreeLibrary(DWMAPILib);
     //DWMAPILib:=0;
   end;
+{$endif}
 {$endif}
 end.
