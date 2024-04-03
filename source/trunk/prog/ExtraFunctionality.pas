@@ -87,7 +87,7 @@ type
   LPQWORD = PQWORD;
   {$EXTERNALSYM LPQWORD}
 
-{$ifndef Delphi11orNewerCompiler} //FIXME: Exists in Delphi 11.3, but not in Delphi 2007
+{$ifndef Delphi2009orNewerCompiler}
   DWORDLONG = {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
   {$EXTERNALSYM DWORDLONG}
 {$endif}
@@ -110,7 +110,7 @@ type
   PULONGLONG = ^ULONGLONG;
   {$EXTERNALSYM PULONGLONG}
 
-{$ifndef Delphi11orNewerCompiler} //FIXME: Exists in Delphi 11.3, but not in Delphi 2007
+{$ifndef Delphi11orNewerCompiler} //FIXME: Exists in Delphi 11.3, but not in Delphi 2009
   USHORT = Word;
   {$EXTERNALSYM USHORT}
 {$endif}
@@ -132,7 +132,7 @@ type
   DWORD_PTR = ULONG_PTR;
   {$EXTERNALSYM DWORD_PTR}
 {$endif}
-{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 2007, and they exist in Delphi 11.3
+{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 2009, and they exist in Delphi 11.3
   HANDLE_PTR = type NativeUInt;
   {$EXTERNALSYM HANDLE_PTR}
 {$endif}
@@ -159,7 +159,7 @@ type
 {$endif}
 
 {$ifdef MSWINDOWS}
-{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 2007, and they exist in Delphi 11.3
+{$ifndef Delphi2009orNewerCompiler}
   PMemoryStatusEx = ^TMemoryStatusEx;
   _MEMORYSTATUSEX = record
     dwLength: DWORD;
@@ -250,7 +250,7 @@ const
   {$EXTERNALSYM DWM_EC_ENABLECOMPOSITION}
   DWM_EC_ENABLECOMPOSITION          = 1;
 {$endif}
-{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 2007, but existing in Delphi 11.3!
+{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 2009, but existing in Delphi 11.3!
   VER_SUITE_BACKOFFICE = $00000004;
   VER_SUITE_BLADE = $00000400;
   VER_SUITE_COMPUTE_SERVER = $00004000;
@@ -286,7 +286,7 @@ const
   PROCESSOR_ARCHITECTURE_AMD64(*: WORD*) = 9; //x64 (AMD or Intel)
   PROCESSOR_ARCHITECTURE_UNKNOWN(*: WORD*) = $FFFF; //Unknown architecture.
 {$endif}
-{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 2007, but existing in Delphi 11.3!
+{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 2009, but existing in Delphi 11.3!
   {$EXTERNALSYM COLORMGMTCAPS}
   COLORMGMTCAPS = 121;   { Color Management caps                 }
 {$else} //Note: this is a special case! There is a conflicting COLORMGMTCAPS defined by Delphi with an incompatible type, so let's always use this one explicitly
@@ -529,7 +529,7 @@ function EndsStr(const ASubText, AText: string): Boolean;
 function DateTimeToWin64(const AValue: TDateTime): QWORD;
 function Win64ToDateTime(const AValue: QWORD): TDateTime;
 
-{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 2007, and they exist in Delphi 11.3
+{$ifndef Delphi2009orNewerCompiler}
 var
   CPUCount: Integer;
 {$endif}
@@ -546,7 +546,7 @@ function DwmEnableComposition(uCompositionAction: UINT): HResult; external 'DWMA
 //function DwmIsCompositionEnabled(out pfEnabled: BOOL): HResult; external 'DWMAPI.DLL' name 'DwmIsCompositionEnabled' delayed;
 {$endif}
 
-{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure in which Delphi version these were added, but between Delphi 2007 and 11.3.
+{$ifndef Delphi2009orNewerCompiler}
 function GlobalMemoryStatusEx(var lpBuffer : TMEMORYSTATUSEX): BOOL; stdcall;
 {$EXTERNALSYM GlobalMemoryStatusEx}
 function GlobalMemoryStatusEx; external kernel32 name 'GlobalMemoryStatusEx' delayed;

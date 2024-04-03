@@ -30,7 +30,7 @@ uses Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
 type
   TSplashScreen = class;
 
-  {$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 2007, but existing in Delphi 11.3!
+  {$ifndef Delphi2009orNewerCompiler}
     //We want to be able to check TDisclaimerThread.FFinished, but this member is private in older
     //versions of Delphi. So let's workaround that. As it turns out, DoTerminate is called right
     //before FFinished is set to True, so let's hook in there.
