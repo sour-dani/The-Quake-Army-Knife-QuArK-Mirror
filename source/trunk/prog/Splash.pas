@@ -22,19 +22,39 @@ unit Splash;
 
 interface
 
+{$I DelphiVer.inc}
+
 uses Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   ExtCtrls, Messages;
 
 type
   TSplashScreen = class;
 
+  {$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 2007, but existing in Delphi 11.3!
+    //We want to be able to check TDisclaimerThread.FFinished, but this member is private in older
+    //versions of Delphi. So let's workaround that. As it turns out, DoTerminate is called right
+    //before FFinished is set to True, so let's hook in there.
+    {$DEFINE TThreadFinished}
+  {$endif}
+
   //PDisclaimerThread = ^TDisclaimerThread;
   TDisclaimerThread = class(TThread)
   private
     FlashCount: Cardinal;
     Form: TSplashScreen;
+    {$ifdef TThreadFinished}
+    FFinishedX: Boolean;
+    procedure ThreadTerminated(Sender: TObject);
+    {$endif}
   protected
+    {$ifdef TThreadFinished}
+    constructor Create(CreateSuspended: Boolean);
+    {$endif}
     procedure Execute; override;
+  {$ifdef TThreadFinished}
+  public
+    property Finished: Boolean read FFinishedX;
+  {$endif}
   end;
 
   TSplashScreen = class(TForm)
@@ -73,6 +93,14 @@ const
 
  {-------------------}
 
+{$ifdef TThreadFinished}
+constructor TDisclaimerThread.Create(CreateSuspended: Boolean);
+begin
+  inherited;
+  OnTerminate:=ThreadTerminated;
+end;
+{$endif}
+
 procedure TDisclaimerThread.Execute;
 var
   I, C: Integer;
@@ -97,6 +125,13 @@ begin
       Exit;
   end;
 end;
+
+{$ifdef TThreadFinished}
+procedure TDisclaimerThread.ThreadTerminated(Sender: TObject);
+begin
+  FFinishedX:=True;
+end;
+{$endif}
 
 function OpenSplashScreen : TSplashScreen;
 begin
@@ -160,7 +195,7 @@ end;
 
 procedure TSplashScreen.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
- CanClose:=Disclaimer.Terminated;
+  CanClose:=Disclaimer.Finished;
 end;
 
 procedure TSplashScreen.FormDestroy(Sender : TObject);
