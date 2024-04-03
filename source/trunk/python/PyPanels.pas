@@ -522,9 +522,7 @@ var
  I: Integer;
  Align: TLayoutPos;
 begin
- {$IFDEF Debug}
- if nControl^.ob_refcnt<=0 then Raise InternalE('RemoveControl refcount error');
- {$ENDIF}
+ Assert(nControl^.ob_refcnt>0, 'RemoveControl refcount error');
  PyComponent(nControl)^.Parent:=Nil;
  I:=PyObject_Length(Controls)-1;
  while (I>=0) and (PyList_GetItem(Controls, I)<>nControl) do

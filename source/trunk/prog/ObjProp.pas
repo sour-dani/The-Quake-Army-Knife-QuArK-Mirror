@@ -81,10 +81,7 @@ var
  Sz: TPoint;
  CommonType: QObjectClass;
 begin
- {$IFDEF Debug}
- if QL=nil then
-  Raise InternalE('ObjectProperties');
- {$ENDIF}
+ Assert(QL<>nil, 'ObjectProperties');
  if QL.Count=1 then
   nQ:=QL[0]
  else

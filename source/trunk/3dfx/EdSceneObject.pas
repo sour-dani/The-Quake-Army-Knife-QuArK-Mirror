@@ -1466,10 +1466,7 @@ destructor TTextureManager.Destroy;
 var
  I: Integer;
 begin
- {$IFDEF Debug}
- if not CanFree then
-  raise InternalE('texturemanager.destroy: still in use');
- {$ENDIF}
+ Assert(CanFree, 'TTextureManager.Destroy: still in use');
  for I:=Textures.Count-1 downto 0 do
   FreeTexture(PTexture3(Textures.Objects[I]));
  FTextures.Free;
@@ -1929,9 +1926,7 @@ begin
       end
      else
       begin
-       { $IFDEF Debug
-       if SkinType=stNone then Raise InternalE('Indirect SkinType stNone');
-       { $ENDIF
+       Assert(SkinType<>stNone, 'Indirect SkinType stNone');
        if Q<>Nil then
         ScaleTexture(w,h, PTex^.info, Q)
        else

@@ -170,30 +170,21 @@ end;
 
 procedure TPixelSetDescription.AllocData;
 begin
-{$IFDEF DEBUG}
- if (psaData in Allocated) and (Data <> nil) then {Decker 2002.02.25 - Check for multiple function calls, which don't clean up memory}
-   raise InternalE('TPixelSetDescription.AllocData(). Data is not NIL. Possible Memory Leak?');
-{$ENDIF}
+ Assert((not (psaData in Allocated)) or (Data = nil), 'TPixelSetDescription.AllocData(). Data is not NIL. Possible Memory Leak?'); //Decker: Check for multiple function calls, which don't clean up memory.
  GetMem(Data, Abs(ScanLine)*Size.Y);
  Include(Allocated, psaData);
 end;
 
 procedure TPixelSetDescription.AllocAlpha;
 begin
-{$IFDEF DEBUG}
- if (psaAlpha in Allocated) and (AlphaData <> nil) then {Decker 2002.02.25 - Check for multiple function calls, which don't clean up memory}
-   raise InternalE('TPixelSetDescription.AllocAlpha(). AlphaData is not NIL. Possible Memory Leak?');
-{$ENDIF}
+ Assert((not (psaAlpha in Allocated)) or (AlphaData = nil), 'TPixelSetDescription.AllocAlpha(). AlphaData is not NIL. Possible Memory Leak?'); //Decker: Check for multiple function calls, which don't clean up memory.
  GetMem(AlphaData, Abs(AlphaScanLine)*Size.Y);
  Include(Allocated, psaAlpha);
 end;
 
 procedure TPixelSetDescription.AllocPalette;
 begin
-{$IFDEF DEBUG}
- if (psaPalette in Allocated) and (ColorPalette <> nil) then {Decker 2002.02.25 - Check for multiple function calls, which don't clean up memory}
-   raise InternalE('TPixelSetDescription.AllocPalette(). ColorPalette is not NIL. Possible Memory Leak?');
-{$ENDIF}
+ Assert((not (psaPalette in Allocated)) or (ColorPalette = nil), 'TPixelSetDescription.AllocPalette(). ColorPalette is not NIL. Possible Memory Leak?'); //Decker: Check for multiple function calls, which don't clean up memory.
  New(ColorPalette);
  Include(Allocated, psaPalette);
 end;

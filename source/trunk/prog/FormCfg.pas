@@ -1880,10 +1880,7 @@ begin
         else
          begin
           S:=Strings['Typ'];
-          {$IFDEF Debug}
-          if S='' then
-           Raise InternalE('No Typ');
-          {$ENDIF}
+          Assert(S<>'', 'No Typ');
           Found:=csSomewhere;
           if CharInSet(S[1], ['a'..'z']) then   { pad to left }
            if (Txt<>Nil) and (Txt is TLabel) then

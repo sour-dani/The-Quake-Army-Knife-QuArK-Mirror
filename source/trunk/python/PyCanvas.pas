@@ -304,9 +304,7 @@ begin
             if lgr<0 then ColorT:=-ColorT;
             ColorT := ColorT*ColorT*ColorT;
             ColorT := (ColorT+Base) div Echelle;
-            {$IFDEF Debug}
-            if ColorT>=ColorT1 then Raise InternalE('ColorT>=ColorT1');
-            {$ENDIF}
+            Assert(ColorT<ColorT1, 'ColorT>=ColorT1');
             ColorMap1:=PColorMapQ(PChar(ColorMapData)+IgnoreData);
             Inc(ColorMap1, ColorT);
             for PY:=0 to H-1 do

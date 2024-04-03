@@ -820,10 +820,7 @@ procedure CloseAddonsList;
 begin
  if AddOns=nil then
   Exit;
- {$IFDEF Debug}
- if AddOns.PythonObj.ob_refcnt<>1 then
-   Log(LOG_WARNING, 'CloseAddonsList: ob_refcnt<>1 !');
- {$ENDIF}
+ Assert(AddOns.PythonObj.ob_refcnt=1, 'CloseAddonsList: ob_refcnt<>1');
  AddOns.AddRef(-1);
  AddOns:=Nil;
  UpdateAddOnsContent;

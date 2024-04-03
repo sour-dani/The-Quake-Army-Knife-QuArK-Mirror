@@ -250,10 +250,7 @@ begin
    for I:=FreeGBList.Count-1 downto 0 do
     begin
      B:=PGameBuffer(FreeGBList[I]);
-     {$IFDEF Debug}
-     if B^.RefCount<>0 then
-      Raise InternalE('ClearGBList');
-     {$ENDIF}
+     Assert(B^.RefCount=0, 'ClearGBList');
      DeleteObject(B^.Palette);
      DeleteObject(B^.PaletteReelle);
     {B^.AddOns.AddRef(-1);}
@@ -346,10 +343,7 @@ end;
 
 function DuplicateGameBuffer(Source: PGameBuffer) : PGameBuffer;
 begin
-  {$IFDEF Debug}
-  if Source^.RefCount<=0 then
-    Raise InternalE('DuplicateGameBuffer');
-  {$ENDIF}
+  Assert(Source^.RefCount>0, 'DuplicateGameBuffer');
   Inc(Source^.RefCount);
   Result:=Source;
 end;
@@ -361,10 +355,7 @@ begin
     Dec(B^.RefCount);
     if B^.RefCount<=0 then
     begin
-      {$IFDEF Debug}
-      if B^.RefCount<0 then
-        Raise InternalE('DeleteGameBuffer');
-      {$ENDIF}
+      Assert(B^.RefCount>=0, 'DeleteGameBuffer');
       DeleteObject(B^.Palette);
       DeleteObject(B^.PaletteReelle);
      {B^.AddOns.AddRef(-1);}
@@ -380,10 +371,7 @@ begin
    Dec(B^.RefCount);
    if B^.RefCount<=0 then
     begin
-     {$IFDEF Debug}
-     if B^.RefCount<0 then
-      Raise InternalE('DelayDeleteGameBuffer');
-     {$ENDIF}
+     Assert(B^.RefCount>=0, 'DelayDeleteGameBuffer');
      if FreeGBList=Nil then
       FreeGBList:=TList.Create;
      FreeGBList.Add(B);

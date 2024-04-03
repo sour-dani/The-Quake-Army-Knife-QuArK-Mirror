@@ -520,9 +520,7 @@ begin
  S:=Q.GetSpecArg('Data');
  P:=PChar(S)+Start;
  Result:=Length(S)-Start;
- {$IFDEF Debug}
- if Result<0 then Raise InternalE(Format('No BSP Data for %d', [EntryIndex]));
- {$ENDIF}
+ Assert(Result>=0, Format('No BSP Data for %d', [EntryIndex])); //FIXME: Move to dict!
 end;
 
 function QBsp.GetAltTextureSrc : QObject;

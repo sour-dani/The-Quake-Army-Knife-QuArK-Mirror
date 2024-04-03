@@ -210,10 +210,7 @@ procedure TGlideState.NeedTex(PTex: PTexture3);
 var
  TextureManager: TTextureManager;
 begin
- {$IFDEF Debug}
- if PTex^.info.data=Nil then
-  Raise InternalE(LoadStr1(6010));
- {$ENDIF}
+ Assert(PTex^.info.data<>Nil, LoadStr1(6010));
  TextureManager:=Nil;
 
  if PTex^.GuPalette<>Nil then
@@ -1016,10 +1013,7 @@ var
    else
     begin
      PrevV1.oow:=PrevV1.oow + (PV1.oow-PrevV1.oow)*F;
-     {$IFDEF Debug}
-     if (PrevV1.oow<1/MaxW) or (PrevV1.oow>1/MinW) then
-      Raise InternalE('ScaleInterval');
-     {$ENDIF}
+     Assert((PrevV1.oow>=1/MaxW) and (PrevV1.oow<=1/MinW), 'ScaleInterval');
     end;
    PrevV1.sow:=PrevV1.sow + (PV1.sow-PrevV1.sow)*F;
    PrevV1.tow:=PrevV1.tow + (PV1.tow-PrevV1.tow)*F;

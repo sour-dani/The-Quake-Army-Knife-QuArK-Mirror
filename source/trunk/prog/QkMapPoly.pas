@@ -1267,10 +1267,7 @@ var
 
 begin
   Result:=False;
-  {$IFDEF Debug}
-  if not g_DrawInfo.ConstruirePolyedres then
-   Raise InternalE('Infinite polyhedron build loop');
-  {$ENDIF}
+  Assert(g_DrawInfo.ConstruirePolyedres, 'Infinite polyhedron build loop');
   DestroyVertices;
   FaceList:=TList.Create;
   try // 1
@@ -3724,10 +3721,7 @@ procedure TFace.InvalidateFace;
 begin
  if Specifics.Strings[CannotEditFaceYet]<>'' then
   Raise EError(5640);  { FIXME }
- {$IFDEF Debug}
- if Specifics.Strings[TmpFaceSpec]<>'' then
-  Raise InternalE(TmpFaceSpec);
- {$ENDIF}
+ Assert(Specifics.Strings[TmpFaceSpec]='', TmpFaceSpec);
  DestroyFace;
 end;
 
@@ -3746,10 +3740,7 @@ begin
      if P^.Source=Self then
       FreeMem(P);
     end;
-   {$IFDEF Debug}
-   if FFaceOfPoly=P then
-    Raise InternalE('Broken FaceOfPoly F-list');
-   {$ENDIF}
+   Assert(FFaceOfPoly<>P, 'Broken FaceOfPoly F-list');
   end;
 end;
 

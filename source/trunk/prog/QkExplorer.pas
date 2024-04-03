@@ -624,10 +624,7 @@ begin
    with Q do
     begin
      Info:=El.IsExplorerItem(Q);
-     {$IFDEF Debug}
-     if (ieDisplay in Info) and (Parent<>El) then
-      Raise InternalE('Parent<>El');
-     {$ENDIF}
+     Assert((not (ieDisplay in Info)) or (Parent=El), 'Parent<>El');
      Flags:=Flags and not (ofTreeViewSubElement or ofTreeViewInvisible)
       or Ord(ieDisplay in Info);
      if ieInvisible in Info then

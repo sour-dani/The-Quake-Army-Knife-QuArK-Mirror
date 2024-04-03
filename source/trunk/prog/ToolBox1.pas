@@ -459,10 +459,6 @@ begin
   if Source is QFileObject then
    begin
     Source.Acces;
-  (*{$IFDEF Debug}
-    if source.name='Tool bars' then
-     source.name:='Tool bars';
-    {$ENDIF}*)
     ProgressIndicatorStart(5444, Source.SubElements.Count); try
     for I:=0 to Source.SubElements.Count-1 do
      begin

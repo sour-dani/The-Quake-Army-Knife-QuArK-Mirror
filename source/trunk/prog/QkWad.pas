@@ -985,10 +985,7 @@ begin
       { add the list view item }
       Q:=TexLoop[0];
       Item:=ListView1.Items.Add;
-      {$IFDEF Debug}
-      if BaseImage>=ImageTextures.Count then
-        Raise InternalE('QkWad/BaseImage');
-      {$ENDIF}
+      Assert(BaseImage<ImageTextures.Count, 'QkWad/BaseImage');
       with Item do
       begin
         Data:=Q;
@@ -1110,10 +1107,7 @@ var
      if Q1<>Q2 then
       begin
        ImageIndex:=ImageTextures.IndexOf(Q2);
-       {$IFDEF Debug}
-       if ImageIndex=-1 then
-        raise InternalE('AnimationNextStep broken');
-       {$ENDIF}
+       Assert(ImageIndex>=0, 'AnimationNextStep broken');
        Anime:=True;
       end;
     end;

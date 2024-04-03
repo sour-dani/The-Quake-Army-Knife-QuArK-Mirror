@@ -708,10 +708,7 @@ begin
   Dec(RefCount1);
   if RefCount1<=0 then
   begin
-    {$IFDEF Debug}
-    if RefCount1<0 then
-      Raise InternalE('QStream.RefCount1');
-    {$ENDIF}
+    Assert(RefCount1>=0, 'QStream.RefCount1');
 
     I:=QFileList.IndexOfObject(Self);
     if I<0 then
@@ -1479,10 +1476,7 @@ var
   Info1: TFileObjectClassInfo;
   Name: String; //FIXME: AnsiString?
 begin
-  {$IFDEF Debug}
-  if Flags and ofNotLoadedToMemory = 0 then
-    Raise InternalE('DirectDataAccess');
-  {$ENDIF}
+  Assert(Flags and ofNotLoadedToMemory <> 0, 'DirectDataAccess');
 
   Result:=False;
   Taille:=QStreamAddRef(FNode, F);
@@ -1867,9 +1861,7 @@ end;
 
 procedure QObject.SetNode(nNode, ParentNode: TTreeNode);
 begin
- {$IFDEF Debug}
- if FFlags and ofNotLoadedToMemory <> 0 then Raise InternalE('SetNode');
- {$ENDIF}
+ Assert(FFlags and ofNotLoadedToMemory = 0, 'SetNode');
  FNode:=nNode;
  FFlags:=(FFlags or (ofTreeViewSubElement or ofTvNode)) xor Ord(ParentNode=Nil);
  if FFlags and (ofFileLink or ofTreeViewSubElement) = ofFileLink or ofTreeViewSubElement then
@@ -2060,10 +2052,7 @@ begin
       Result.CopyAllData(Self, CopySel)  { data already loaded }
     else
     begin
-     {$IFDEF Debug}
-     {if FFlags and ofTvNode <> 0 then
-        Raise InternalE('Clone');}
-     {$ENDIF}
+     {Asset(FFlags and ofTvNode = 0, 'Clone');}
       Result.Node:=QStreamClone(FNode);
     end;
     Result.FixupReference;

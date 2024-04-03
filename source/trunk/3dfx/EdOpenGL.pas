@@ -2129,10 +2129,7 @@ begin
 
     if NeedTex then
     begin
-      {$IFDEF Debug}
-      if Texture^.OpenGLName=0 then
-        Raise InternalE(LoadStr1(6010));
-      {$ENDIF}
+      Assert(Texture^.OpenGLName<>0,  LoadStr1(6010));
       glBindTexture(GL_TEXTURE_2D, Texture^.OpenGLName);
       CheckOpenGLError('RenderSurface3D: glBindTexture');
     end;

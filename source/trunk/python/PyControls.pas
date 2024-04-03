@@ -80,10 +80,7 @@ const
 
 function NewControl(var nType: TyTypeObject; nControl: TControl) : PyControlF;
 begin
- {$IFDEF Debug}
- if nType.ob_Type <> PyType_Type then
-  Raise InternalE('PyType_Type missing');
- {$ENDIF}
+ Assert(nType.ob_Type=PyType_Type, 'PyType_Type missing');
  Result:=PyControlF(PyObject_NEW(@nType));
  with Result^ do
   begin
@@ -206,8 +203,8 @@ end;
 
 procedure TyControlF.Close;
 begin
+ Assert(ob_refcnt>=0, 'Control refcount error');
  {$IFDEF Debug}
- if ob_refcnt<0 then Raise InternalE('Control refcount error');
  if DebugCheck=DebugCheckSentinelDestroyed then
   begin
    if ob_refcnt<>0 then Raise InternalE('Control ref''ed after destruction');

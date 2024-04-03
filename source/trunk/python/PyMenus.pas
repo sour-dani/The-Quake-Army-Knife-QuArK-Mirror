@@ -68,13 +68,11 @@ var
  P: PyChar;
  Hourglass: Boolean;
 begin
+ Assert(IsMenu(Menu), 'UpdateMenu: not a menu handle');
+
  Result:=False;
  Count:=PyObject_Length(List);
  if Count<0 then Exit;
- {$IFDEF Debug}
- if not IsMenu(Menu) then
-  Raise InternalE('UpdateMenu: not a menu handle');
- {$ENDIF}
  if MenuBar then
   begin
    if Count>0 then
