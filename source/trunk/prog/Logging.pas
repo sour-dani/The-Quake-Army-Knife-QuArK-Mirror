@@ -68,7 +68,6 @@ var
   LogFilename: string;
   LogPatchname: string;
   LogLevel: cardinal;
-  LogLevelEnv: string;
   LogCache: array of string;
 {$IFDEF PyProfiling}
   LogProfileFile: TextFile;
@@ -299,26 +298,34 @@ begin
 end;
 {$ENDIF}
 
+const
+ EnvVarFound = 'Environmental variable %s found. QuArK will use its value.';
+ EnvVarFoundTitle = 'Environmental variable found';
+
 initialization
   LogOpened:=False;
+
   LogFilename:=GetEnvironmentVariable('QUARK_LOG_FILENAME');
   if LogFilename='' then
     LogFilename:=LOG_FILENAME
   else
-    Windows.MessageBox(0, 'Environmental variable QUARK_LOG_FILENAME found. QuArK will use its value.', 'Environmental variable found', MB_TASKMODAL or MB_ICONINFORMATION or MB_OK);
+    Windows.MessageBox(0, PChar(Format(EnvVarFound, ['QUARK_LOG_FILENAME'])), EnvVarFoundTitle, MB_TASKMODAL or MB_ICONINFORMATION or MB_OK);
+
+  LogPatchname:=GetEnvironmentVariable('QUARK_LOG_LEVEL'); //Note: We abusing variable LogPatchname here, so we don't have to allocate a separate String.
+  if LogPatchname='' then
+    LogLevel:=DefaultLogLevel
+  else
+  begin
+    Windows.MessageBox(0, PChar(Format(EnvVarFound, ['QUARK_LOG_LEVEL'])), EnvVarFoundTitle, MB_TASKMODAL or MB_ICONINFORMATION or MB_OK);
+    LogLevel:=StrToUIntDef(LogPatchname, DefaultLogLevel);
+  end;
+
   LogPatchname:=GetEnvironmentVariable('QUARK_LOG_PATCHNAME');
   if LogPatchname='' then
     LogPatchname:=LOG_PATCHFILE
   else
-    Windows.MessageBox(0, 'Environmental variable QUARK_LOG_PATCHNAME found. QuArK will use its value.', 'Environmental variable found', MB_TASKMODAL or MB_ICONINFORMATION or MB_OK);
-  LogLevelEnv:=GetEnvironmentVariable('QUARK_LOG_LEVEL');
-  if LogLevelEnv='' then
-    LogLevel:=DefaultLogLevel
-  else
-  begin
-    Windows.MessageBox(0, 'Environmental variable QUARK_LOG_LEVEL found. QuArK will use its value.', 'Environmental variable found', MB_TASKMODAL or MB_ICONINFORMATION or MB_OK);
-    LogLevel:=StrToUIntDef(LogLevelEnv, DefaultLogLevel);
-  end;
+    Windows.MessageBox(0, PChar(Format(EnvVarFound, ['QUARK_LOG_PATCHNAME'])), EnvVarFoundTitle, MB_TASKMODAL or MB_ICONINFORMATION or MB_OK);
+
 finalization
   CloseLogFile;
 end.

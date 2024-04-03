@@ -22,11 +22,10 @@ unit SystemDetails;
 
 interface
 
-uses
-  SysUtils, StrUtils, Windows, Classes, ExtraFunctionality;
+uses SysUtils, StrUtils, Windows, Classes, ExtraFunctionality;
 
 {.$DEFINE MeasureCPUFrequency} //This seems like an awful waste of CPU cycles!
-{.$DEFINE LogSensitiveInformation} //DECKER 2001.03.17 - we're not interested in Machine-/Username. We're not Login-Crackers!
+{.$DEFINE LogSensitiveInformation} //Decker: we're not interested in Machine-/Username. We're not Login-Crackers!
 
 {$I DelphiVer.inc}
 
@@ -1049,7 +1048,7 @@ begin
         FFamily:=Family + ExtendedFamily;
       end;
 
-//        Log(LOG_VERBOSE, 'Getting CPU vendor information...');
+      //Log(LOG_VERBOSE, 'Getting CPU vendor information...');
       FVendorNo:=-1;
       for i:=low(CPUVendorIDs) to high(CPUVendorIDs) do
       begin
