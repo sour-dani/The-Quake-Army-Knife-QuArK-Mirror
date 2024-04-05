@@ -637,7 +637,7 @@ def makeqrk(root, filename, gamename, nomessage=0):
                 # We found the correct token type, now remember what new state we're going into
                 newstate = nextstate
                 break
-            expectedtypes = expectedtypes.append(type)
+            expectedtypes.append(type)
         if newstate is None:
             if quarkx.setupsubset(SS_FILES, "DEF")["IgnoreUnknownLines"] is not None:
                 newstate = 'STATE_UNKNOWN'
