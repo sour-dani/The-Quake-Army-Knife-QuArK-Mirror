@@ -523,6 +523,7 @@ $LinksGame[] = new cLinkGroup('Star Wars Jedi Knight: Jedi Academy', 'JA', array
           ,new cLink('OpenJK', 'https://github.com/JACoders/OpenJK', 'OpenJK is a community effort to maintain and improve the game and engine powering Jedi Academy and Jedi Outcast, while maintaining full backwards compatibility with the existing games and mods.')
           ,new cLink('JKMods.com', 'http://www.jkmods.com/', NULL, 'https://web.archive.org/web/20060404181752/http://www.jkmods.com/')
           ,new cLink('The Jedi Academy', 'https://www.thejediacademy.net/', 'THE place for Jedi training.')
+          ,new cLink('Movie Battles II', 'https://www.moviebattles.org/', 'Movie Battles is a fast-paced, action packed mod for the award winning Jedi Knight Jedi Academy game, that lets players play and fight in the most iconic battles seen throughout the entire saga!')
            ));
 
 $LinksGame[] = new cLinkGroup('Sven Co-op', 'SC', array(
