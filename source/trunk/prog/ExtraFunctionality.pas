@@ -110,16 +110,21 @@ type
   PULONGLONG = ^ULONGLONG;
   {$EXTERNALSYM PULONGLONG}
 
-{$ifndef Delphi11orNewerCompiler} //FIXME: Exists in Delphi 11.3, but not in Delphi 2009
+{$ifndef Delphi2010orNewerCompiler}
+  LPBYTE = PByte;
+  {$EXTERNALSYM LPBYTE}
   USHORT = Word;
   {$EXTERNALSYM USHORT}
 {$endif}
   PUSHORT = ^USHORT;
   {$EXTERNALSYM PUSHORT}
 
-{$ifndef Delphi2007orNewerCompiler}
+{$ifndef Delphi2010orNewerCompiler}
   PLPCTSTR = ^LPCTSTR;
+  PLPTSTR = ^LPTSTR;
+{$endif}
 
+{$ifndef Delphi2007orNewerCompiler}
   INT_PTR = Integer;
   {$EXTERNALSYM INT_PTR}
   LONG_PTR = NativeInt;
@@ -132,7 +137,7 @@ type
   DWORD_PTR = ULONG_PTR;
   {$EXTERNALSYM DWORD_PTR}
 {$endif}
-{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure when these were added to Delphi, but it's at least after Delphi 2009, and they exist in Delphi 11.3
+{$ifndef Delphi2010orNewerCompiler}
   HANDLE_PTR = type NativeUInt;
   {$EXTERNALSYM HANDLE_PTR}
 {$endif}
@@ -250,7 +255,7 @@ const
   {$EXTERNALSYM DWM_EC_ENABLECOMPOSITION}
   DWM_EC_ENABLECOMPOSITION          = 1;
 {$endif}
-{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 2009, but existing in Delphi 11.3!
+{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 2010, but existing in Delphi 11.3!
   VER_SUITE_BACKOFFICE = $00000004;
   VER_SUITE_BLADE = $00000400;
   VER_SUITE_COMPUTE_SERVER = $00004000;
@@ -286,7 +291,7 @@ const
   PROCESSOR_ARCHITECTURE_AMD64(*: WORD*) = 9; //x64 (AMD or Intel)
   PROCESSOR_ARCHITECTURE_UNKNOWN(*: WORD*) = $FFFF; //Unknown architecture.
 {$endif}
-{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 2009, but existing in Delphi 11.3!
+{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 2010, but existing in Delphi 11.3!
   {$EXTERNALSYM COLORMGMTCAPS}
   COLORMGMTCAPS = 121;   { Color Management caps                 }
 {$else} //Note: this is a special case! There is a conflicting COLORMGMTCAPS defined by Delphi with an incompatible type, so let's always use this one explicitly
