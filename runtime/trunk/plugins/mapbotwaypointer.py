@@ -91,18 +91,16 @@ class BotWaypointConvertHPB(BotWaypointConverter):
 
         f = open(filename, "rb")
 
-        # Info on the 'struct' object: http://www.python.org/doc/current/lib/module-struct.html
-        # filetype = f.read(8) Fred
         # Read the header
         filetype = f.read(8)
         waypoint_file_version, waypoint_file_flags, number_of_waypoints = struct.unpack("iii", f.read(4*3))
         mapname = f.read(32)
 
         # Check the header
-        if (filetype != "HPB_bot\x00"):
-            raise "Fail in file-header: Not 'HPB_bot', but '" + filetype + "'"
-        if (waypoint_file_version != 4):
-            raise "Fail in file-header: Not version '4', but '" + str(waypoint_file_version) +"'"
+        if filetype != "HPB_bot\x00":
+            raise RuntimeError("Fail in file-header: Not 'HPB_bot', but '" + filetype + "'")
+        if waypoint_file_version != 4:
+            raise RuntimeError("Fail in file-header: Not version '4', but '" + str(waypoint_file_version) +"'")
 
         # Read waypoint-coordinates
         for wp in range(number_of_waypoints):
@@ -133,8 +131,8 @@ class BotWaypointConvertHPB(BotWaypointConverter):
         # Write the header
         f.write("HPB_bot\x00")
         f.write(struct.pack("iii", 4, 0, len(self.m_waypoints)))
-        data = filename.split("\\")[-1]
-        data = data.split(".")[0]
+        data = os.path.split(filename)[-1]
+        data = os.path.splitext(data)[0]
         data = data + "\x00"*(31-len(data))+"\x00"
         f.write(data)
 
@@ -155,9 +153,9 @@ class BotWaypointConvertHPB(BotWaypointConverter):
             wp_idxs = ""
             for i in range(16):
                 arg = obj["target"+str(i)]
-                if ((arg is not None) and (arg != "")):
+                if (arg is not None) and (arg != ""):
                     for o in range(len(self.m_waypoints)):
-                        if (self.m_waypoints[o]["targetname"] == arg):
+                        if self.m_waypoints[o]["targetname"] == arg:
                             wp_idxs = wp_idxs + struct.pack("H", o)
                             p = p + 1
                             break
@@ -182,39 +180,39 @@ class BotWaypointConvertACE(BotWaypointConverter):
         ,(6 ,"GRAPPLE"      ,"" ) \
         ,(7 ,"JUMP"         ,"" ) \
         ,(8 ,"DOOR"         ,"" ) \
-	,(99 ,"ALL"         ,"" ) \
-	,(-1 ,"INVALID"     ,"" ) \
-	,(9 ,"DANGER"       ,"" ) \
+        ,(99 ,"ALL"         ,"" ) \
+        ,(-1 ,"INVALID"     ,"" ) \
+        ,(9 ,"DANGER"       ,"" ) \
         ]
 
 
-	 # This code is not compitable with Aq2 Bot release 0.6 only 0.5.x and any LTK version
-	 #, dont mail the authour about this.
-	 # Info about the DataTypes: 
-	 # about this
-	 #,(6 ,"GRAPPLE"      ,"" ) \ Data Type
-	 #,(99 ,"ALL"         ,"" ) \ Data Type
-	 #,(-1 ,"INVALID"     ,"" ) \ Invalid Link
+         # This code is not compatible with Aq2 Bot release 0.6 only 0.5.x and any LTK version
+         #, don't mail the author about this.
+         # Info about the DataTypes: 
+         # about this
+         #,(6 ,"GRAPPLE"      ,"" ) \ Data Type
+         #,(99 ,"ALL"         ,"" ) \ Data Type
+         #,(-1 ,"INVALID"     ,"" ) \ Invalid Link
          #,(9 ,"DANGER"       ,"" ) \ Danger Zone part of BotRelease a ltk successor.
-	 # "Data Type" is not used in ltk or Bot release versions, but they
-	 # are still a part of it's compressor.
-	 # data should not be ignored.
-	 # Ltk bot and Bot Release 0.5.x and higher "IF" link invalid 
-         # the editor is aware of it and dont compress the data in a invalid
-         # structure. - Fred 
-					  
-					   
+         # "Data Type" is not used in ltk or Bot release versions, but they
+         # are still a part of it's compressor.
+         # data should not be ignored.
+         # Ltk bot and Bot Release 0.5.x and higher "IF" link invalid 
+         # the editor is aware of it and don't compress the data in a invalid
+         # structure. - Fred
+
+
     def TypeToSpec(self, master_type, obj):
         for type, spec, hint in self.m_ACE_types:
-            if (type == master_type):
+            if type == master_type:
                 obj["type"] = spec
                 break
 
     def SpecToType(self, obj):
         for type, spec, hint in self.m_ACE_types:
-            if (obj["type"] == spec):
+            if obj["type"] == spec:
                 return type
-        raise "ACEBot: Unknown spec-for-type: '"+obj["type"]+"'"
+        raise RuntimeError("ACEBot: Unknown spec-for-type: '"+obj["type"]+"'")
 
     def Load(self, filename):
         self.m_waypoints = []
@@ -225,8 +223,8 @@ class BotWaypointConvertACE(BotWaypointConverter):
         version, = struct.unpack("i", f.read(4)) # int
 
         # Check the header
-        if (version != 4):
-            raise "Fail in file-header: Not version '4', but '" + str(version) + "'"
+        if version != 4:
+            raise RuntimeError("Fail in file-header: Not version '4', but '" + str(version) + "'")
 
         num_of_nodes, = struct.unpack("i", f.read(4))    # int
         num_of_items, = struct.unpack("i", f.read(4))    # int
@@ -252,7 +250,7 @@ class BotWaypointConvertACE(BotWaypointConverter):
                 for j in range(12):     # 12 = MAXLINKS
                     target_node, dummy, cost = struct.unpack("hhf", f.read(2+2+4)) # short int (+ 'short int' padded) float
 
-                    if (target_node > 0):
+                    if target_node > 0:
                         obj["target"+str(j)] = "wp"+str(target_node)
                         obj["target"+str(j)+"_cost"] = str(int(cost))
 
@@ -264,7 +262,7 @@ class BotWaypointConvertACE(BotWaypointConverter):
                 obj = self.m_waypoints[i]
                 for j in range(num_of_nodes):
                     path_to_node, = struct.unpack("h", f.read(2)) # short int
-                    if (path_to_node >= 0):
+                    if path_to_node >= 0:
                         try:
                             value = obj["via_wp"+str(path_to_node)+"_to"] + ";" + "wp"+str(j)
                         except:
@@ -312,32 +310,32 @@ class BotWaypointConvertACE(BotWaypointConverter):
                     vecx, vecy, vecz = quarkx.vect(obj["origin"]).tuple
                     f.write(struct.pack("fff", vecx, vecy, vecz))
                 except:
-                    raise "Error writing origin for "+obj["targetname"]
+                    raise RuntimeError("Error writing origin for "+obj["targetname"])
 
                 try:
                     f.write(struct.pack("i", self.SpecToType(obj)))
                 except:
-                    raise "Error writing type for "+obj["targetname"]
+                    raise RuntimeError("Error writing type for "+obj["targetname"])
 
                 try:
                     node_num = targetnames_to_nodenum[obj["targetname"]]
                     dummy = 0
                     f.write(struct.pack("hh", node_num, dummy))
                 except:
-                    raise "Error writing node_num for "+obj["targetname"]
+                    raise RuntimeError("Error writing node_num for "+obj["targetname"])
 
                 cnt = 12
                 for j in range(12):
                     target_node = obj["target"+str(j)]
                     cost = obj["target"+str(j)+"_cost"]
-                    if ((target_node is not None) and (target_node != "")):
+                    if (target_node is not None) and (target_node != ""):
                         try:
                             node_num = targetnames_to_nodenum[target_node]
                             dummy = 0
                             f.write(struct.pack("hhf", node_num, dummy, float(cost))) # short int (+ 'short int' padded) float
                             cnt = cnt - 1
                         except:
-                            raise "Error writing nodelist #"+str(j)+" for "+obj["targetname"]
+                            raise RuntimeError("Error writing nodelist #"+str(j)+" for "+obj["targetname"])
                 for j in range(cnt):
                     f.write(struct.pack("hhf", -1, 0, 0))
 
@@ -351,7 +349,7 @@ class BotWaypointConvertACE(BotWaypointConverter):
                     node_path = node_path + [int(-1)]
 
                 for spec in obj.dictspec.keys():
-                    if (spec[:4] == "via_"):
+                    if spec[:4] == "via_":
                         wp_num = spec.split("_")[1]
                         via_node_num = targetnames_to_nodenum[wp_num]
                         arg = obj[spec]
@@ -372,9 +370,10 @@ class BotWaypointConvertACE(BotWaypointConverter):
 
 #
 # Supported file-extension types
-# added code for the new Bot release 0.6.0 and greater, when it is aviable
-gBotFileExtFilter = ["Supported bot-types|*.wpt;*.ltk", "HPBBot (*.wpt)|*.wpt", "LTKBot/BR 0.5.1 (*.ltk)|*.ltk"]
-#gBotFileExtFilterNew = ["Supported bot-types|*.nav", "Bot Release 0.6.x (*.nav)"]
+gBotFileExtFilter = ["HPBBot (*.wpt)|*.wpt",
+    "LTKBot/BR 0.5.1 (*.ltk)|*.ltk"
+    "Bot Release 0.6.x (*.nav)" # This is for future releases of Bot Release 0.6.0 and newer # Fred www.franva.org
+]
 
 #
 # Load macro
@@ -386,26 +385,23 @@ def macro_botwaypointer_loadfile(self):
     dup = editor.layout.explorer.uniquesel
     if dup is None:
         return
- 
-    files = quarkx.filedialogbox("Load bot waypoint file...", "", gBotFileExtFilter, 0, "*.*")
-    if len(files) == 1:
-        files[0] = files[0].lower()
-        if (files[0][-3:] == "wpt"):
-            aObj = BotWaypointConvertHPB()
-        elif (files[0][-3:] == "ltk"):
-            aObj = BotWaypointConvertACE()
-        else:
-            raise "File-extension not supported '"+files[0][-3:]+"'."
 
-# This is for future releases of Bot Release 0.6.0 and newer
-# Fred www.franva.org
-    #files = quarkx.filedialogbox("Load bot waypoint file...", "", gBotFileExtFilterNew, 0, "*.*")
-    #if len(files) == 1:
-        #files[0] = files[0].lower()
-        #if (files[0][-3:] == "nav"):
-            #aObj = BotWaypointConvertACE()
-        #else:
-            #raise "File-extension not supported '"+files[0][-3:]+"'."
+    SupportedBotFileExtensions = []
+    for BotFileExtFilter in gBotFileExtFilter:
+        SupportedBotFileExtensions.append(BotFileExtFilter.split("|", 1)[1])
+    AllFilters = "Supported bot-types|" + ";".join(SupportedBotFileExtensions)
+
+    files = quarkx.filedialogbox("Load bot waypoint file...", "", [AllFilters, ] + gBotFileExtFilter, 0, "*.*")
+    if len(files) == 1:
+        file_ext = os.path.splitext(files[0])[1].lower()
+        if file_ext == ".wpt":
+            aObj = BotWaypointConvertHPB()
+        elif file_ext == ".ltk":
+            aObj = BotWaypointConvertACE()
+        #elif file_ext == ".nav":
+        #   #aObj = BotWaypointConvertACE()
+        else:
+            raise RuntimeError("File-extension not supported '"+file_ext[1:]+"'.")
 
         aObj.Load(files[0])
 
@@ -445,13 +441,15 @@ def macro_botwaypointer_savefile(self):
 
     files = quarkx.filedialogbox("Save bot waypoint file...", "", gBotFileExtFilter, 1, last_file)
     if len(files) == 1:
-        files[0] = files[0].lower()
-        if (files[0][-3:] == "wpt"):
+        file_ext = os.path.splitext(files[0])[1].lower()
+        if file_ext == ".wpt":
             aObj = BotWaypointConvertHPB()
-        elif (files[0][-3:] == "ltk"):
+        elif file_ext == ".ltk":
             aObj = BotWaypointConvertACE()
+        #elif file_ext == ".nav":
+        #   #aObj = BotWaypointConvertACE()
         else:
-            raise "File-extension not supported '"+files[0][-3:]+"'."
+            raise RuntimeError("File-extension not supported '"+file_ext[1:]+"'.")
 
         dup["last_file"] = files[0]
 
@@ -477,23 +475,23 @@ colors = [0xB00000,
 
 def FindEntityByTargetname(name, list):
     for e in list:
-        if (e["targetname"] == name):
+        if e["targetname"] == name:
             return e
     return None
 
 def ShortestRouteTree(view, cv, obj, waypoints, cnt=0):
-    if (cnt >= 90):
+    if cnt >= 90:
         # a simple test to ensure we don't get into an endless loop
         print "Possible cyclic path:", cnt, obj["targetname"], waypoints
-        if (cnt >= 100):
+        if cnt >= 100:
             # stop traversing
             return 1
 
     pp2 = view.proj(obj.origin)
     for spec in obj.dictspec.keys():
-        if (spec[0:4] == "via_"):
+        if spec[:4] == "via_":
             viaobj = FindEntityByTargetname(spec.split("_")[1], obj.treeparent.subitems)
-            if (viaobj is not None):
+            if viaobj is not None:
                 routes = obj[spec].split(";")
 
                 # Use only those waypoint-names, which exists in both lists ('routes' and 'waypoints').
@@ -512,7 +510,7 @@ def ShortestRouteTree(view, cv, obj, waypoints, cnt=0):
                 waypoints = newwaypoints
 
                 # If there are any waypoint-names in 'theseroutes' list, traverse them too.
-                if (len(theseroutes) > 0):
+                if len(theseroutes) > 0:
                     cv.line(view.proj(viaobj.origin), pp2)
                     if (ShortestRouteTree(view, cv, viaobj, theseroutes, cnt+1) != 0):
                         return 1
@@ -523,7 +521,7 @@ def ShortestRouteTree(view, cv, obj, waypoints, cnt=0):
 #
 def FindSelectedOne(list):
     for e in list:
-        if (e.selected):
+        if e.selected:
             return e
     return None
 
@@ -541,30 +539,30 @@ class BotWaypointerPointHandle(CenterHandle):
     def draw(self, view, cv, draghandle=None):
         myparent = self.centerof.treeparent
         myself = self.centerof
-        if (myself.selected):
+        if myself.selected:
             myparent["lastwaypointorigin"] = myself["origin"]
-        if (myparent["shortestpathdisplay"] == "1"):
+        if myparent["shortestpathdisplay"] == "1":
             if (myself.selected):
                 nextclr = 0
                 for spec in myself.dictspec.keys():
-                    if (spec[0:4] == "via_"):
+                    if spec[:4] == "via_":
                         cv.pencolor = colors[nextclr]
                         nextclr = (nextclr + 1) % 6
                         viaobj = FindEntityByTargetname(spec.split("_")[1], myparent.subitems)
-                        if (viaobj is not None):
+                        if viaobj is not None:
                             pp2 = view.proj(viaobj.origin)
                             cv.penwidth = 3
                             cv.line(view.proj(self.pos), pp2)
                             cv.penwidth = 1
                             via_routes = myself[spec].split(";")
-                            if (ShortestRouteTree(view, cv, viaobj, via_routes) != 0):
-                                raise "Possible cyclic path"
+                            if ShortestRouteTree(view, cv, viaobj, via_routes) != 0:
+                                raise RuntimeError("Possible cyclic path")
                            #for wp in via_routes:
                            #    obj = FindEntityByTargetname(wp, myparent.subitems)
                            #    if (obj is not None):
                            #        cv.line(view.proj(obj.origin), pp2)
         else:
-            if (self.routes_to_list is not None):
+            if self.routes_to_list is not None:
                 cv.penwidth = 3
                 nextclr = 0
                 pp2 = view.proj(self.pos)
@@ -572,7 +570,7 @@ class BotWaypointerPointHandle(CenterHandle):
                     cv.pencolor = colors[nextclr]
                     nextclr = (nextclr + 1) % 6
                     cv.line(view.proj(route_to), pp2)
-        if (self.points_to_list is not None):
+        if self.points_to_list is not None:
             cv.pencolor = 0
             cv.penwidth = 1
             for point_to in self.points_to_list:
@@ -586,40 +584,38 @@ class BotWaypointerPointHandle(CenterHandle):
             myparent = self.centerof.treeparent
             myself   = self.centerof
             theSelected = FindSelectedOne(myparent.subitems)
-            if (theSelected is not None):
+            if theSelected is not None:
                 undo = quarkx.action()
 
-                try:
-                    use_specname = None
-                    use_num = 0
-                    for spec in theSelected.dictspec.keys():
-                        if (spec[:6] == "target" and spec != "targetname"):
-                            if (theSelected[spec] == myself["targetname"]):
-                                raise "already exist"
-                            if (theSelected[spec] is None or theSelected[spec] == ""):
-                                use_specname = spec
-                            use_num = max(use_num, int(spec[6:]))
-                    if (use_specname is None):
+                use_specname = None
+                use_num = 0
+                for spec in theSelected.dictspec.keys():
+                    if (spec[:6] == "target") and (spec != "targetname"):
+                        if theSelected[spec] == myself["targetname"]:
+                            use_num = -1 #Already exists; skip creation
+                            break
+                        if (theSelected[spec] is None) or (theSelected[spec] == ""):
+                            use_specname = spec
+                        use_num = max(use_num, int(spec[6:]))
+                if use_num >= 0:
+                    if use_specname is None:
                         use_specname = "target" + str(use_num + 1)
                     undo.setspec(theSelected, use_specname, myself["targetname"])
-                except:
-                    pass
 
-                try:
-                    use_specname = None
-                    use_num = 0
-                    for spec in myself.dictspec.keys():
-                        if (spec[:6] == "target" and spec != "targetname"):
-                            if (myself[spec] == theSelected["targetname"]):
-                                raise "already exist"
-                            if (myself[spec] is None or myself[spec] == ""):
-                                use_specname = spec
-                            use_num = max(use_num, int(spec[6:]))
-                    if (use_specname is None):
+                use_specname = None
+                use_num = 0
+                for spec in myself.dictspec.keys():
+                    if (spec[:6] == "target") and (spec != "targetname"):
+                        if myself[spec] == theSelected["targetname"]:
+                            use_num = -1 #Already exists; skip creation
+                            break
+                        if (myself[spec] is None) or (myself[spec] == ""):
+                            use_specname = spec
+                        use_num = max(use_num, int(spec[6:]))
+                if use_num >= 0:
+                    if use_specname is None:
                         use_specname = "target" + str(use_num + 1)
                     undo.setspec(myself, use_specname, theSelected["targetname"])
-                except:
-                    pass
 
                 undo.ok(editor.Root, "add two-way target")
                 editor.invalidateviews()
@@ -628,24 +624,23 @@ class BotWaypointerPointHandle(CenterHandle):
             myparent = self.centerof.treeparent
             myself   = self.centerof
             theSelected = FindSelectedOne(myparent.subitems)
-            if (theSelected is not None):
+            if theSelected is not None:
                 undo = quarkx.action()
 
-                try:
-                    use_specname = None
-                    use_num = 0
-                    for spec in theSelected.dictspec.keys():
-                        if (spec[:6] == "target" and spec != "targetname"):
-                            if (theSelected[spec] == myself["targetname"]):
-                                raise "already exist"
-                            if (theSelected[spec] is None or theSelected[spec] == ""):
-                                use_specname = spec
-                            use_num = max(use_num, int(spec[6:]))
-                    if (use_specname is None):
+                use_specname = None
+                use_num = 0
+                for spec in theSelected.dictspec.keys():
+                    if (spec[:6] == "target") and (spec != "targetname"):
+                        if theSelected[spec] == myself["targetname"]:
+                            use_num = -1 #Already exists; skip creation
+                            break
+                        if (theSelected[spec] is None) or (theSelected[spec] == ""):
+                            use_specname = spec
+                        use_num = max(use_num, int(spec[6:]))
+                if use_num >= 0:
+                    if use_specname is None:
                         use_specname = "target" + str(use_num + 1)
                     undo.setspec(theSelected, use_specname, myself["targetname"])
-                except:
-                    pass
 
                 undo.ok(editor.Root, "add two-way target")
                 editor.invalidateviews()
@@ -654,13 +649,13 @@ class BotWaypointerPointHandle(CenterHandle):
             myparent = self.centerof.treeparent
             myself   = self.centerof
             theSelected = FindSelectedOne(myparent.subitems)
-            if (theSelected is not None):
+            if theSelected is not None:
                 undo = quarkx.action()
                 for spec in theSelected.dictspec.keys():
-                    if (theSelected[spec] == myself["targetname"]):
+                    if theSelected[spec] == myself["targetname"]:
                         undo.setspec(theSelected, spec, None)
                 for spec in myself.dictspec.keys():
-                    if (myself[spec] == theSelected["targetname"]):
+                    if myself[spec] == theSelected["targetname"]:
                         undo.setspec(myself, spec, None)
                 undo.ok(editor.Root, "remove two-way target")
                 editor.invalidateviews()
@@ -669,10 +664,10 @@ class BotWaypointerPointHandle(CenterHandle):
             myparent = self.centerof.treeparent
             myself   = self.centerof
             theSelected = FindSelectedOne(myparent.subitems)
-            if (theSelected is not None):
+            if theSelected is not None:
                 undo = quarkx.action()
                 for spec in theSelected.dictspec.keys():
-                    if (theSelected[spec] == myself["targetname"]):
+                    if theSelected[spec] == myself["targetname"]:
                         undo.setspec(theSelected, spec, None)
                 undo.ok(editor.Root, "remove one-way target")
                 editor.invalidateviews()
@@ -686,7 +681,7 @@ class BotWaypointerPointHandle(CenterHandle):
 
         myparent = self.centerof.treeparent
 
-        menu_add_twoway = quarkpy.qmenu.item("Add two-way target",    AddTwoWayClick, "|stuff to type here...")
+        menu_add_twoway = quarkpy.qmenu.item("Add two-way target",    AddTwoWayClick, "|stuff to type here...") #FIXME: Add proper tooltip!
         menu_add_oneway = quarkpy.qmenu.item("Add one-way target",    AddOneWayClick, "|stuff to type here...")
         menu_rem_twoway = quarkpy.qmenu.item("Remove two-way target", RemTwoWayClick, "|stuff to type here...")
         menu_rem_oneway = quarkpy.qmenu.item("Remove one-way target", RemOneWayClick, "|stuff to type here...")
@@ -706,11 +701,11 @@ class BotWaypointerPointHandle(CenterHandle):
             i_target_selected   = 0
             selected_targets_me = 0
             for spec in self.centerof.dictspec.keys():
-                if (spec[:6] == "target" and self.centerof[spec] == theselected_targetname):
+                if (spec[:6] == "target") and (self.centerof[spec] == theselected_targetname):
                     i_target_selected = 1
                     break
             for spec in theSelected.dictspec.keys():
-                if (spec[:6] == "target" and theSelected[spec] == myself_targetname):
+                if (spec[:6] == "target") and (theSelected[spec] == myself_targetname):
                     selected_targets_me = 1
                     break
             menu_add_twoway.state = not (not i_target_selected or not selected_targets_me) and quarkpy.qmenu.disabled
@@ -788,7 +783,7 @@ class BotWaypointer(StandardDuplicator):
 
     def buildimages(self, singleimage=None):
         # Don't allow dissociate images to work
-        if (singleimage is not None):
+        if singleimage is not None:
             return []
         # Local function to create dummy entity, so the waypoints become visible in the 2D-views
         # without the need to have this duplicator selected.
@@ -813,9 +808,9 @@ class BotWaypointer(StandardDuplicator):
 def NewWaypointTargetname(list):
     MaxNum = 0
     for e in list:
-        if (e["targetname"][:2] == "wp"):
+        if e["targetname"][:2] == "wp":
             Num = int(e["targetname"][2:])
-            if (Num > MaxNum):
+            if Num > MaxNum:
                 MaxNum = Num
     MaxNum = MaxNum + 1
     MaxTargetname = "wp" + str(MaxNum)
@@ -831,13 +826,13 @@ def PasteBotWaypointClick(m):
         return
     # Check that the correct object is in the ClipBoard
     clipboard = quarkx.pasteobj(1)
-    if ((len(clipboard) != 1) or (clipboard[0]["macro"] != "dup botwaypointerpoint")):
+    if (len(clipboard) != 1) or (clipboard[0]["macro"] != "dup botwaypointerpoint"):
         quarkx.msgbox("Clipboard does not contain exactly one 'dup botwaypointerpoint' entity.", MT_ERROR, MB_OK)
         return
     # Find our master 'Bot Waypointer' (must be only one named like that)
     masters = editor.Root.findallsubitems("Bot Waypointer", ':d')
-    if (len(masters) != 1):
-        if (len(masters) > 1):
+    if len(masters) != 1:
+        if len(masters) > 1:
             quarkx.msgbox("A single 'Bot Waypointer' entity could not be determined. Please remove or rename the ones you are not editing for to something else.", MT_ERROR, MB_OK)
         else:
             quarkx.msgbox("Could not find a 'Bot Waypointer' entity. May it have been renamed to something else?", MT_ERROR, MB_OK)
@@ -872,8 +867,8 @@ def backmenu(editor, view=None, origin=None, oldbackmenu=quarkpy.mapmenus.Backgr
     menupastebotwaypoint.pos = origin
     menupastebotwaypoint.view = view
     # If there is nothing to paste, disable the menu (note: it could be anything in the clipboard,
-    # but we'll test agains that once the user actully performs the action)
-    if ((quarkx.pasteobj(0) == 0) or (view is None) or (origin is None)):
+    # but we'll test against that once the user actually performs the action)
+    if (quarkx.pasteobj(0) == 0) or (view is None) or (origin is None):
         menupastebotwaypoint.state = quarkpy.qmenu.disabled
     # Create a sub-menu that contains the Bot waypointer special menuitems
     popup = quarkpy.qmenu.popup("&Bot waypointer", [menupastebotwaypoint])
