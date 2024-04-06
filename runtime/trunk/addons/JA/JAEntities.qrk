@@ -22644,7 +22644,7 @@ QQRKSRC1
       {
         Txt = "&"
         Typ = "L"
-        Hint = "color of ambient lightr"
+        Hint = "color of ambient light"
       }
       fog: =
       {
@@ -22692,5 +22692,3 @@ QQRKSRC1
     }
   }
 }
-
-
