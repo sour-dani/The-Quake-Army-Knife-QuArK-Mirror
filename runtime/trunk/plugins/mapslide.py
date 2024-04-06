@@ -44,7 +44,7 @@ from quarkpy.maputils import *
 
 #
 # see the dialogs in quarkpy.qeditor and plugins.mapsearch
-#  for commented basic dilaog code.  LiveEditDlg is a jazzed
+#  for commented basic dialog code.  LiveEditDlg is a jazzed
 #  up descendant of quarkpy.qmacro.dialogbox, adapted for
 #  dialogs that are supposed to drive things around on the
 #  screen While U Watch.
@@ -172,7 +172,7 @@ def EdgeSlideClick(m):
     # And here's the `action' function that gets called
     #  every time you change the data in the dialog box.
     #
-    def action(self, pack=pack, editor=m.editor):
+    def action(self, pack=pack, editor=editor):
         src = self.src
         delta = float(src["along"]) # cumulative displacement from initial position
         if delta != pack.along:
@@ -205,11 +205,11 @@ def EdgeSlideClick(m):
     #  uses (and across sessions).
     #
     SlideDlg(quarkx.clickform, 'axis_slide', editor, setup, action)
-    
+
 
 #
 # And a whole new one for sliding things around over a tagged face
-#  (such as after executing snap object to tagged plane_
+#  (such as after executing snap object to tagged plane)
 #
 
 class PlaneSlideDlg (quarkpy.dlgclasses.LiveEditDlg):
@@ -224,7 +224,7 @@ class PlaneSlideDlg (quarkpy.dlgclasses.LiveEditDlg):
     dlgdef = """
         {
         Style = "9"
-        Caption = "Slide Object above Plane "
+        Caption = "Slide Object above Plane"
 
         away: = 
         {
@@ -295,7 +295,7 @@ def PlaneSlideClick(m):
     # And here's the `action' function that gets called
     #  every time you change the data in the dialog box.
     #
-    def action(self, pack=pack, editor=m.editor):
+    def action(self, pack=pack, editor=editor):
         src = self.src
         away = float(src["away"]) # cumulative displacement from initial position
 
