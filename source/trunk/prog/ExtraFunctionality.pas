@@ -255,6 +255,14 @@ const
   {$EXTERNALSYM DWM_EC_ENABLECOMPOSITION}
   DWM_EC_ENABLECOMPOSITION          = 1;
 {$endif}
+{$ifndef Delphi2010orNewerCompiler}
+  {$EXTERNALSYM GR_GDIOBJECTS_PEAK}
+  GR_GDIOBJECTS_PEAK = 2;
+  {$EXTERNALSYM GR_USEROBJECTS_PEAK}
+  GR_USEROBJECTS_PEAK = 4;
+  {$EXTERNALSYM GR_GLOBAL}
+  GR_GLOBAL = THandle(-2);
+{$endif}
 {$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 2010, but existing in Delphi 11.3!
   VER_SUITE_BACKOFFICE = $00000004;
   VER_SUITE_BLADE = $00000400;
@@ -290,8 +298,7 @@ const
   PROCESSOR_ARCHITECTURE_IA64(*: WORD*) = 6; //Intel Itanium Processor Family (IPF)
   PROCESSOR_ARCHITECTURE_AMD64(*: WORD*) = 9; //x64 (AMD or Intel)
   PROCESSOR_ARCHITECTURE_UNKNOWN(*: WORD*) = $FFFF; //Unknown architecture.
-{$endif}
-{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi 2010, but existing in Delphi 11.3!
+
   {$EXTERNALSYM COLORMGMTCAPS}
   COLORMGMTCAPS = 121;   { Color Management caps                 }
 {$else} //Note: this is a special case! There is a conflicting COLORMGMTCAPS defined by Delphi with an incompatible type, so let's always use this one explicitly

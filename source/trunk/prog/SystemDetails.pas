@@ -99,6 +99,7 @@ type
     FAllocGranularity: DWORD;
     FMinAppAddress, FMaxAppAddress: Cardinal; //Actually, pointer, but can't publish a pointer as a property.
     FPageSize: DWORD;
+    FGlobalGDIObjects, FGlobalUSERObjects: DWORD;
     {$ENDIF}
   public
     procedure GetInfo;
@@ -122,6 +123,8 @@ type
     property MaxAppAddress: Cardinal read FMaxAppAddress stored false;
     property MinAppAddress: Cardinal read FMinAppAddress stored false;
     property PageSize: DWORD read FPageSize stored false;
+    property GlobalGDIObjects: DWORD read FGlobalGDIObjects stored false;
+    property GlobalUSERObjects: DWORD read FGlobalUSERObjects stored false;
     {$ENDIF}
   end;
 
@@ -1760,6 +1763,17 @@ begin
   FMaxAppAddress:=Cardinal(SI.lpMaximumApplicationAddress);
   FMinAppAddress:=Cardinal(SI.lpMinimumApplicationAddress);
   FPageSize:=SI.dwPageSize;
+
+  if CheckWin32Version(6, 2) then //Windows 7
+  begin
+    FGlobalGDIObjects:=GetGuiResources(GR_GLOBAL, GR_GDIOBJECTS);
+    FGlobalUSERObjects:=GetGuiResources(GR_GLOBAL, GR_USEROBJECTS);
+  end
+  else
+  begin
+    FGlobalGDIObjects:=0;
+    FGlobalUSERObjects:=0;
+  end;
   {$ENDIF}
 end;
 
@@ -1768,15 +1782,23 @@ begin
   with sl do
   begin
     {$IFDEF WIN16}
-    add('Available Memory Total: '+FormatBytes(MemAvailable)+' Bytes');
-    add('Maximum Memory Total: '+FormatBytes(MaxAvailable)+' Bytes');
-    add('System Resources Free: '+IntToStr(SystemRes)+'%');
-    add('GDI Resources Free: '+IntToStr(GDIRes)+'%');
-    add('User Resources Free: '+IntToStr(UserRes)+'%');
+    add(format('Available Memory total: %s Bytes', [FormatBytes(MemAvailable)]));
+    add(format('Maximum Memory total: %s Bytes', [FormatBytes(MaxAvailable)]));
+    {$IFDEF DEBUG}
+    add(format('System Resources free: %d%%', [SystemRes]));
+    add(format('GDI Resources free: %d%%', [GDIRes]));
+    add(format('User Resources free: %d%%' , [UserRes]));
+    {$ENDIF}
     {$ELSE}
-    add('Physical Memory Total: '+FormatBytes(PhysicalTotal)+' Bytes');
-    add('Physical Memory Free: '+FormatBytes(PhysicalFree)+' Bytes');
-    add('Virtual Memory Free: '+FormatBytes(VirtualFree)+' Bytes');
+    add(format('Physical Memory total: %s Bytes', [FormatBytes(PhysicalTotal)]));
+    add(format('Physical Memory free: %s Bytes', [FormatBytes(PhysicalFree)]));
+    add(format('Virtual Memory free: %s Bytes', [FormatBytes(VirtualFree)]));
+    {$IFDEF DEBUG}
+    if GlobalGDIObjects<>0 then
+      add(format('Global GDI objects: %d', [GlobalGDIObjects]));
+    if GlobalUSERObjects<>0 then
+      add(format('Global USER objects: %d', [GlobalUSERObjects]));
+    {$ENDIF}
     {$ENDIF}
   end;
 end;
