@@ -1766,8 +1766,8 @@ begin
 
   if CheckWin32Version(6, 2) then //Windows 7
   begin
-    FGlobalGDIObjects:=GetGuiResources(GR_GLOBAL, GR_GDIOBJECTS);
-    FGlobalUSERObjects:=GetGuiResources(GR_GLOBAL, GR_USEROBJECTS);
+    FGlobalGDIObjects:=ExtraFunctionality.GetGuiResources(GR_GLOBAL, GR_GDIOBJECTS);
+    FGlobalUSERObjects:=ExtraFunctionality.GetGuiResources(GR_GLOBAL, GR_USEROBJECTS);
   end
   else
   begin

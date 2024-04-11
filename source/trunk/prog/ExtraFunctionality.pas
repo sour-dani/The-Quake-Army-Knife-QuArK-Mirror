@@ -241,6 +241,12 @@ const
   MAILSLOT_NO_MESSAGE                 = LongWord(-1);
   MAILSLOT_WAIT_FOREVER               = LongWord(-1);
 {$endif}
+{$ifndef Delphi4orNewerCompiler}
+  {$EXTERNALSYM GR_GDIOBJECTS}
+  GR_GDIOBJECTS = 0;    { Count of GDI objects }
+  {$EXTERNALSYM GR_USEROBJECTS}
+  GR_USEROBJECTS = 1;    { Count of USER objects }
+{$endif}
 {$ifndef Delphi7orNewerCompiler}
   SM_CXVIRTUALSCREEN = 78;
   SM_CYVIRTUALSCREEN = 79;
@@ -548,6 +554,12 @@ var
 
 {$ifdef MSWINDOWS}
 {$ifdef Delphi2010orNewerCompiler} //Use delayed loading
+{.$ifndef Delphi4orNewerCompiler}
+//While this exists in Delphi4+, it will be loaded on startup. On systems before Windows 2000 this will crash,
+//because GetGuiResources doesn't exist there. So we HAVE to use our delayed loading implementation!
+{$EXTERNALSYM GetGuiResources}
+function GetGuiResources(hProcess: THandle; uiFlags: DWORD): DWORD; stdcall;
+{.$endif}
 {$ifndef Delphi2007orNewerCompiler}
 function DwmEnableComposition(uCompositionAction: UINT): HResult; stdcall;
 {$EXTERNALSYM DwmEnableComposition}
@@ -609,6 +621,10 @@ function SHRestricted(rest: RESTRICTIONS): DWORD; stdcall;
 function SHRestricted; external 'shell32.dll' name 'SHRestricted' delayed;
 {$else}
 var
+{.$ifndef Delphi4orNewerCompiler}
+  {$EXTERNALSYM GetGuiResources}
+  GetGuiResources: function (hProcess: THandle; uiFlags: DWORD): DWORD; stdcall;
+{.$endif}
 {$ifndef Delphi2007orNewerCompiler}
   DwmEnableComposition: function (uCompositionAction: UINT): HResult; stdcall;
   //DwmIsCompositionEnabled: function (out pfEnabled: BOOL): HResult; stdcall;
@@ -756,6 +772,7 @@ procedure CleanupFileName(var S: String);
 //For delay loading functionality:
 {$ifdef MSWINDOWS}
 var
+  DelayFunc_GetGuiResources: Boolean;
   DelayFunc_DwmEnableComposition: Boolean;
   //DelayFunc_DwmIsCompositionEnabled: Boolean;
   DelayFunc_GlobalMemoryStatusEx: Boolean;
@@ -777,7 +794,7 @@ implementation
 {$ifndef Delphi2010orNewerCompiler} //NOT Use delayed loading
 //Only used for DelayFunc.
 var
-  ShellLib, DWMAPILib: HMODULE;
+  UserLib, ShellLib, DWMAPILib: HMODULE;
 {$endif}
 
 function CopyCursor(pcur: HCursor): HCursor;
@@ -1239,6 +1256,16 @@ initialization
   //Initialize the delayed loading functions now, because this version of Delphi
   //doesn't support delayed loading.
   //Note: The module 'kernel32' is always loaded inside a process.
+{.$ifndef Delphi4orNewerCompiler}
+  UserLib:=SafeLoadLibrary('user32.dll');
+  if UserLib = 0 then
+    GetGuiResources := nil
+  else
+    GetGuiResources := GetProcAddress(UserLib, 'GetGuiResources');
+
+  DelayFunc_GetGuiResources := Assigned(GetGuiResources);
+  {$DEFINE DelayFunc_Delphi4Done}
+{.$endif}
 {$ifndef Delphi2007orNewerCompiler}
   DWMAPILib:=SafeLoadLibrary('DWMAPI.DLL');
   if DWMAPILib = 0 then
@@ -1295,6 +1322,9 @@ initialization
 
   //Delphi's delayed loading raises an exception if the function cannot be loaded.
   //To avoid that, don't try to call the function if it's not present.
+  {$ifndef DelayFunc_Delphi4Done}
+  DelayFunc_GetGuiResources := CheckWin32Version(5, 0); //Windows 2000
+  {$endif}
   {$ifndef DelayFunc_Delphi2007Done}
   DelayFunc_DwmEnableComposition := CheckWin32Version(6, 0); //Windows Vista
   //DelayFunc_DwmIsCompositionEnabled := CheckWin32Version(6, 0); //Windows Vista
@@ -1324,6 +1354,11 @@ initialization
 {$ifdef MSWINDOWS}
 {$ifndef Delphi2010orNewerCompiler} //NOT Use delayed loading
 finalization
+  if UserLib<> 0 then
+  begin
+    FreeLibrary(UserLib);
+    //UserLib:=0;
+  end;
   if ShellLib<> 0 then
   begin
     FreeLibrary(ShellLib);
