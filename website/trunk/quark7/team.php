@@ -1,19 +1,19 @@
 <?php
-require_once ('../_people-database.php');
+require_once ('..'.DIRECTORY_SEPARATOR.'_people-database.php');
 
 function DisplayPerson($PersonID)
 {
-  global $personsdatabase;
-  $CurrentPerson = &$personsdatabase[$PersonID];
-  if ((!$CurrentPerson->AllowRealName) or ($CurrentPerson->Nick != $CurrentPerson->Name))
-  {
-    return "<a href=\"person.php?PersonID=".($PersonID+1)."\">".$CurrentPerson->Nick."</a>";
-  }
-  if ($CurrentPerson->AllowRealName)
-  {
-    return "<a href=\"person.php?PersonID=".($PersonID+1)."\">".$CurrentPerson->Name."</a>";
-  }
-  return "*NONAME*";
+	global $personsdatabase;
+	$CurrentPerson = &$personsdatabase[$PersonID];
+	if ($CurrentPerson->Nick !== '')
+	{
+		return '<a href="person.php?PersonID='.($PersonID+1).'">'.$CurrentPerson->Nick.'</a>';
+	}
+	else if ($CurrentPerson->AllowRealName)
+	{
+		return '<a href="person.php?PersonID='.($PersonID+1).'">'.$CurrentPerson->Name.'</a>';
+	}
+	return '*NONAME*';
 }
 ?>
 

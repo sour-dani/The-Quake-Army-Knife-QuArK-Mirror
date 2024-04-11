@@ -95,7 +95,7 @@ function pageLocalDisplay()
 		pagePanel('community', $curMailingList->Title, '', $bodytext);
 	}
 
-	if (count($SocialMedia) != 0)
+	if (count($SocialMedia) !== 0)
 	{
 		$Table2Rows = array('table2rowA', 'table2rowB');
 		$CurrentRow = 0;
