@@ -23,7 +23,7 @@ unit RedLines;
 interface
 
 uses Windows, SysUtils, Classes, Controls, ExtCtrls, Graphics, Forms,
-     PyToolbars;
+     MouseTracker;
 
 type
   TRedLineButton = class(TMouseTracker)
@@ -49,7 +49,7 @@ procedure RedrawRedLines(nParent: TWinControl);
 
 implementation
 
-uses Quarkx, QkForm, Python, PyImages;
+uses Types, Quarkx, QkForm, Python, PyImages;
 
  {-------------------}
 
@@ -147,7 +147,7 @@ var
 begin
  Icons:=GetQuarkxAttr('redlinesicons');
  if Icons=Nil then Exit;
- if (ActiveButton=Self) or (LineY1>0) then
+ if IsActive() or (LineY1>0) then
   N:=1
  else
   begin
@@ -234,8 +234,11 @@ begin
  Delta:=Parent.Parent.ScreenToClient((Owner as TWinControl).ClientOrigin);
  H:=Parent.Parent.Handle;
  DC:=GetDCEx(H, 0, DCX_PARENTCLIP);
- PatBlt(DC, Delta.X, Delta.Y+Y, (Owner as TWinControl).ClientWidth, 1, dstInvert);
- ReleaseDC(H, DC);
+ try
+   PatBlt(DC, Delta.X, Delta.Y+Y, (Owner as TWinControl).ClientWidth, 1, dstInvert);
+ finally
+   ReleaseDC(H, DC);
+ end;
 end;
 
  {-------------------}

@@ -33,6 +33,7 @@ contains
   TrackBar2 in 'TrackBar2.pas',
   Registry2 in 'Registry2.pas',
   EnterEditCtrl in 'EnterEditCtrl.pas',
+  MouseTracker in 'MouseTracker.pas',
   PaintPanel in 'PaintPanel.pas',
   QSplitter in 'QSplitter.pas',
   SyntaxMemo in 'SyntaxMemo.pas',

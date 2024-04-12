@@ -23,7 +23,7 @@ unit PyToolbars;
 interface
 
 uses Windows, Messages, SysUtils, Classes, Graphics, Forms, TB97, ExtCtrls, Controls,
-     Python, QkForm, PyImages, PyControls, QkObjects, QkGroup, CommCtrl;
+     Python, QkForm, PyImages, PyControls, QkObjects, QkGroup, CommCtrl, MouseTracker;
 
 type
   TQkToolbar = class;
@@ -71,19 +71,6 @@ type
 
   TQkBtnGlyph = array[0..5] of PyImage;
 
-  TMouseTracker = class(TGraphicControl)
-  private
-    procedure CMMouseEnter(var Msg: TMessage); message CM_MOUSEENTER;
-    procedure CMMouseLeave(var Msg: TMessage); message CM_MOUSELEAVE;
-    procedure TimerHandler(Sender: TObject);
-    procedure UpdateMousePos;
-  protected
-    procedure MouseMove(Shift: TShiftState; X, Y: Integer); override;
-    procedure MouseUpdating(const ScreenPos: TPoint); virtual;
-  public
-    procedure BeginDragging(C: TControl); dynamic;
-  end;
-
   TQkToolbarButton = class(TMouseTracker)
   private
     FSelected: Boolean;
@@ -120,7 +107,6 @@ type
   end;
 
 var
- ActiveButton: TMouseTracker = Nil;
  CurrentMenuButton: TQkToolbarButton = Nil;
 
 procedure ToolbarDestructor(o: PyObject); cdecl;
@@ -732,88 +718,6 @@ end;*)
 
  {-------------------}
 
-var
- CheckTimer: TTimer = Nil;
-
-procedure TMouseTracker.CMMouseEnter;
-begin
- UpdateMousePos;
- inherited;
-end;
-
-procedure TMouseTracker.CMMouseLeave;
-begin
- inherited;
- UpdateMousePos;
-end;
-
-procedure TMouseTracker.UpdateMousePos;
-var
- P: TPoint;
- C: TControl;
- OldButton: TMouseTracker;
-begin
- if not Enabled then
-  begin
-   if ActiveButton=Self then
-    begin
-     ActiveButton:=Nil;
-     Repaint;
-    end;
-   Exit;
-  end;
- GetCursorPos(P);
- C:=FindDragTarget(P, True);
- if C <> Self then
-  begin
-   if ActiveButton=Self then
-    begin
-     ActiveButton:=Nil;
-     BeginDragging(C);
-     Repaint;
-    end;
-   Exit;
-  end;
- MouseUpdating(P);
- if ActiveButton=Self then Exit;
- OldButton:=ActiveButton;
- ActiveButton:=Self;
- if CheckTimer=Nil then
-  begin
-   CheckTimer:=TTimer.Create(Nil);
-   CheckTimer.Interval:=125;
-  end;
- CheckTimer.OnTimer:=TimerHandler;
- CheckTimer.Enabled:=True;
- Repaint;
- if OldButton<>Nil then
-  OldButton.Repaint;
-end;
-
-procedure TMouseTracker.BeginDragging;
-begin
-end;
-
-procedure TMouseTracker.MouseUpdating;
-begin
-end;
-
-procedure TMouseTracker.TimerHandler;
-begin
- if ActiveButton=Self then
-  UpdateMousePos;
- if ActiveButton<>Self then
-  CheckTimer.Enabled:=False;
-end;
-
-procedure TMouseTracker.MouseMove(Shift: TShiftState; X, Y: Integer);
-begin
- UpdateMousePos;
- inherited;
-end;
-
- {-------------------}
-
 const
  tbbClicking    = 1;
  tbbMouseOnIcon = 2;
@@ -828,12 +732,12 @@ begin
    GetMouseState:=5
   else
    if csLButtonDown in ControlState then
-    if ActiveButton=Self then
+    if IsActive then
      GetMouseState:=2
     else
      GetMouseState:=1
    else
-    if ActiveButton=Self then
+    if IsActive then
      if Selected then
       GetMouseState:=4
      else
@@ -1052,15 +956,10 @@ destructor TQkToolbarButton.Destroy;
 var
  I: Integer;
 begin
- if ActiveButton=Self then
-  begin
-   ActiveButton:=Nil;
-   CheckTimer.Enabled:=False;
-  end;
+ inherited;
  for I:=High(Glyphs) downto Low(Glyphs) do
   Py_XDECREF(Glyphs[I]);
  Py_XDECREF(BtnObject);
- inherited;
 end;
 
 procedure TQkToolbarButton.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -1075,8 +974,7 @@ begin
  FFlags:=FFlags or tbbClicking;
  if (FMenuShowing>0) or ((CurrentMenuButton=Self) and (FMouseOnIcon or not FullClick)) then
   begin
-   ActiveButton:=Nil;
-   Perform(WM_LBUTTONUP, 0, 0);
+   Deactivate;
    if FMenuShowing=0 then
     FMenuShowing:=-2;
   end
@@ -1116,8 +1014,7 @@ begin
     finally
      Py_DECREF(obj);
     end;
-    ActiveButton:=Nil;
-    Perform(WM_LBUTTONUP, 0, 0);
+    Deactivate;
     UpdateMousePos;
     CurrentMenuButton:=Self;  { to disable immediate re-click on the button }
     PostMessage(F.Handle, wm_InternalMessage, wp_MenuBtnEnd, Ord(drag));
@@ -1140,7 +1037,7 @@ begin
  if LDown then Dec(FFlags, tbbClicking);
  inherited;
  Invalidate;
- if (Button=mbLeft) and LDown and (ActiveButton=Self) and not FMouseOnIcon then
+ if (Button=mbLeft) and LDown and IsActive and not FMouseOnIcon then
   DoClick
  else
   if FFlags and tbbDragging2 <> 0 then
@@ -1211,7 +1108,7 @@ begin
     xor ((Glyphs[1]<>Nil) and (P.X>=MouseOnIconLeft) and (P.X<=MouseOnIconRight+Glyphs[1]^.GetSize.X)) then
      begin
       FMouseOnIcon:=not FMouseOnIcon;
-      if ActiveButton=Self then Repaint;
+      if IsActive then Repaint;
      end;
    end
   else
@@ -1706,10 +1603,5 @@ begin
 end;
 
  {-------------------}
-
-initialization
-
-finalization
- CheckTimer.Free;
 
 end.
