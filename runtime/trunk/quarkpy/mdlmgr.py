@@ -95,6 +95,9 @@ class ModelLayout(BaseLayout):
             newsd['data'] = FlattenModelComponentList(self.editor)
             self.editor.Root.appenditem(newsd)
 
+    def bs_mpp_additionalbuttons(self):
+        return [qtoolbar.button(mdlbtns.texturebrowser, "choose texture||Click this button to open the 'Texture Browser'.", ico_dict['ico_maped'], 0)]
+
     def getskin(self):
         "Use currentskin or find new selected skin."
         global skincount, saveskin, savedskins, startup

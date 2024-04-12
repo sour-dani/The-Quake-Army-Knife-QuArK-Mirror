@@ -446,12 +446,11 @@ class BaseLayout:
         self.mpp.lock = qtoolbar.button(maptogglebtn, "lock the current page||When this button is activated, QuArK no longer automatically switches between the pages when you select or unselect objects.", ico_maped, 9)
         self.mpp.lock.mode = self.MODE
         self.mpp.lock.tag = "PagesLocked"
-        if self.editor.MODE == SS_MAP:
-            self.mpp.btnpanel.buttons = self.mpp.btnpanel.buttons + [qtoolbar.padright, self.mpp.lock]
-        elif self.editor.MODE == SS_MODEL:
-            import mdlbtns
-            TexBtn = qtoolbar.button(mdlbtns.texturebrowser, "choose texture||Click this button to open the 'Texture Browser'.", ico_maped, 0)
-            self.mpp.btnpanel.buttons = self.mpp.btnpanel.buttons + [TexBtn] + [qtoolbar.padright, self.mpp.lock]
+        self.mpp.btnpanel.buttons = self.mpp.btnpanel.buttons + self.bs_mpp_additionalbuttons() + [qtoolbar.padright, self.mpp.lock]
+
+    def bs_mpp_additionalbuttons(self):
+        "Additional buttons to add to the top of the multi-page panel."
+        return []
 
     def bs_leftpanel(self, form, right=0):
         "Default-looking panel at the left or right of the screen."

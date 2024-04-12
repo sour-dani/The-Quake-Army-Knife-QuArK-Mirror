@@ -86,7 +86,6 @@ class MapLayout(BaseLayout):
         readtoolbars(maptools.toolbars, self, self.editor.form, config)
 
 
-
     def bs_dataform(self, panel):
         ico_maped=ico_dict['ico_maped']
         fp = panel.newpanel()
