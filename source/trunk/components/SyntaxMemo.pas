@@ -31,7 +31,7 @@ type
                       Start, Length: Integer;
                       Font: TFont;
                      end;
-  TFormatLineArray = array[0..127] of TFormatLineInfo;
+  TFormatLineArray = array of TFormatLineInfo;
   TFormatLineEvent = procedure(I: Integer; const S: String; var F: TFormatLineArray) of object;
   TSyntaxMemo = class({TRichEdit}TMemo)
                 private
@@ -179,12 +179,12 @@ var
  S: String;
  Font0, Font1: HFont;
  FormatFont: TFormatLineArray;
- FormatInfo: ^TFormatLineInfo;
+ FormatFontIndex: Integer;
  Color1: TColorRef;
  Metrics: TTextMetric;
  TabSpaces: String;
 
-  procedure Ecrire(L: Integer; l_Font: HFont; l_Color: TColorRef);
+  procedure Write(L: Integer; l_Font: HFont; l_Color: TColorRef);
   var
    I: Integer;
    Tabs: String;
@@ -230,7 +230,6 @@ begin
  FormatRect:=DisplayRect;
  while FormatRect.Top<DisplayRect.Bottom do
   begin
-   FillChar(FormatFont, SizeOf(FormatFont), $3F);
    if I<Lines.Count then
     begin
      S:=Lines[I];
@@ -243,15 +242,13 @@ begin
    FormatRect.Left:=DisplayRect.Left;
    J:=0;
    DispPos:=-1;
-   FormatInfo:=@FormatFont[0];
-   while J<Length(S) do
-    with FormatInfo^ do
+   FormatFontIndex:=0;
+   while (J<Length(S)) and (FormatFontIndex<Length(FormatFont)) do
+    with FormatFont[FormatFontIndex] do
      begin
-      Ecrire(Start-J, Font1, Color1);
-      if Start=$3F3F3F3F then
-       Break;
-      Ecrire(Length, Font.Handle, ColorToRGB(Font.Color));
-      Inc(FormatInfo);
+      Write(Start-J, Font1, Color1);
+      Write(Length, Font.Handle, ColorToRGB(Font.Color));
+      Inc(FormatFontIndex);
      end;
    PatBlt(DC, FormatRect.Left, FormatRect.Top,
     DisplayRect.Right-FormatRect.Left, Metrics.tmHeight, Whiteness);

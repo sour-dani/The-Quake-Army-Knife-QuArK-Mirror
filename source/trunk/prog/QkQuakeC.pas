@@ -426,7 +426,7 @@ const
   end;
 
 var
- ii, J, K, P: Integer;
+ J, K, P: Integer;
  S1: String;
  Cmt: Boolean;
  Mode, SourceMode: Integer;
@@ -446,19 +446,22 @@ var
    if Mode0<>nMode0 then
     begin
      if Mode0<>sfNormal then
-      with F[ii] do
-       begin
-        Start:=SourceMode-1;
-        Length:=J-SourceMode;
-        Font:=SyntaxFonts^.Fonts[Mode0];
-        Inc(ii);
-       end;
+      begin
+       SetLength(F, Length(F) + 1);
+       with F[Length(F) - 1] do
+        begin
+         Start:=SourceMode-1;
+         Length:=J-SourceMode;
+         Font:=SyntaxFonts^.Fonts[Mode0];
+        end;
+      end;
      SourceMode:=J;
     end;
    Mode:=nMode;
   end;
 
 begin
+ SetLength(F, 0);
  if (FCommentsOk<>Nil) and (FCommentsOk.Size<CodeEditor.Lines.Count) then
   begin
    FCommentsOk.Free;
@@ -487,7 +490,6 @@ begin
      end;
   end;
  J:=1;
- ii:=0;
  if (I>0) and FCommentsOk[I-1] then
   Mode:=sfComments
  else
