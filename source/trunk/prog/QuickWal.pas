@@ -75,7 +75,7 @@ uses StrUtils, Platform, QkGroup, Game, QkTextures, QkWad, QkExplorer, QkZip2,
 
 function FileNameOnly(const Name: String) : String;
 begin
-  Result:=Copy(Name,0,Length(Name)-Length(ExtractFileExt(Name)))
+  Result:=LeftStr(Name, Length(Name)-Length(ExtractFileExt(Name)));
 end;
 
 function ListPakFiles(const Path: String) : TStringList;
