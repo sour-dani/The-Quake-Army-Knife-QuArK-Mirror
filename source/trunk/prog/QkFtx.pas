@@ -253,7 +253,7 @@ begin
               Inc(pSourceImg, PaddingSource);
             end;
           end;
-          F.WriteBuffer(Pointer(Dest)^,Header.width * Header.height * 4);
+          F.WriteBuffer(Dest^,Header.width * Header.height * 4);
         finally
           FreeMem(Dest);
         end;

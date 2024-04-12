@@ -1787,8 +1787,7 @@ end;
 
 {procedure TQkExplorer.Modified;
 begin
- SendMessage(ValidParentForm(Self).Handle, wm_InternalMessage,
-  wp_SetModify, 1);
+ SendMessage(ValidParentForm(Self).Handle, wm_InternalMessage, wp_SetModify, 1);
 end;}
 
 function TQkExplorer.GetnParent(var nInsererAvant: QObject; FitIntoGroup: QExplorerGroup) : QObject;

@@ -787,7 +787,7 @@ begin
   for I:=0 to 3 do
   begin
     S:=GetTexImage(I);
-    F.WriteBuffer(Pointer(S)^, Length(S));
+    F.WriteBuffer(PChar(S)^, Length(S));
   end;
 end;
 
@@ -1690,7 +1690,7 @@ begin
   end
   else
   begin
-    P:=Pointer(Pal);
+    P:=PChar(Pal);
     Lmp:=PPaletteLmp(P+Length('Pal='));
     Result:=True;
   end;
@@ -1710,7 +1710,7 @@ begin
     Pal:=GetSpecArg(Spec2);
     if (Length(Pal) >= SizeOf(TPaletteLmp) + LenSpec2) then
     begin
-      P:=Pointer(Pal);
+      P:=PChar(Pal);
       Move(P[LenSpec2], Result^.PaletteLmp, SizeOf(TPaletteLmp));
       PaletteFromLmp(Result^.PaletteLmp, Result^.BitmapInfo, @Result^.Palette, @Result^.PaletteReelle);
     end;

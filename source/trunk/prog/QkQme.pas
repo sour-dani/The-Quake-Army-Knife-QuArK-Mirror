@@ -180,7 +180,7 @@ end;
 function SpecAsMemStream(const S: String) : TMemoryStream;
 begin
  Result:=TMemoryStream.Create;
- Result.Write(Pointer(S)^, Length(S));
+ Result.Write(PChar(S)^, Length(S));
  Result.Position:=0;
 end;
 
@@ -256,8 +256,8 @@ var
 begin
  S.ReadBuffer(Taille, SizeOf(Taille));
  SetLength(Tampon, Taille);
- S.ReadBuffer(Pointer(Tampon)^, Taille);
- P := Pointer(Tampon);
+ S.ReadBuffer(PChar(Tampon)^, Taille);
+ P := PChar(Tampon);
  while P^ <> #0 do
  begin
    Start := P;
@@ -290,7 +290,7 @@ begin
  S.ReadBuffer(NbFaces, SizeOf(NbFaces));
  Result.SubElements.Capacity:=NbFaces;
  SetLength(Codes, NbFaces);
- S.ReadBuffer(Pointer(Codes)^, NbFaces);
+ S.ReadBuffer(PChar(Codes)^, NbFaces);
  GetMem(OldFArray, SizeOf(TSurface)*NbFaces); try
  OldF:=OldFArray;
  for I:=1 to NbFaces do
@@ -362,7 +362,7 @@ begin
  if Nombre>0 then
   begin
    SetLength(InfoTypes, Nombre);
-   S.ReadBuffer(Pointer(InfoTypes)^, Nombre);
+   S.ReadBuffer(PChar(InfoTypes)^, Nombre);
    for I:=1 to Nombre do
     begin
      if Ord(InfoTypes[I]) > High(TreeMapObj) then
