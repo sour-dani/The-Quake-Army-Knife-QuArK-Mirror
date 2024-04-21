@@ -1639,6 +1639,13 @@ $Games[] = new cGame(NULL ,'T2' ,'Tribes 2' ,'T2' ,NULL
                     ,array('Sierra Entertainment')
                     ,NULL
                     );
+/*$Games[] = new cGame(NULL ,'TRI' ,'Trinity: The Shatter Effect' ,'TRI' ,NULL
+                    ,NULL ,NULL ,'Quake 3', FALSE
+                    ,NULL
+                    ,array('Gray Matter')
+                    ,NULL //Activision?
+                    ,NULL
+                    );*/ /*Cancelled*/
 $Games[] = new cGame(NULL ,'TURTLE' ,'Turtle Arena' ,'TURTLE' ,'turtlearena.png'
                     ,'https://clover.moe/turtlearena/' ,NULL ,'Spearmint', FALSE #turtlearena.com
                     ,'Turtle Arena is multiplayer oriented with multiple game modes that can be played in splitscreen, over a network, and with bot players.'
