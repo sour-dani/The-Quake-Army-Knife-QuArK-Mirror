@@ -22,14 +22,18 @@ unit MapError;
 
 interface
 
+uses Classes;
+
 type
   TMapError = class
+   protected
+    MapErrorText: TStringList;
    public
+    constructor Create;
+    destructor Destroy; override;
     procedure Clear;
     procedure AddText(const Text: String);
     function Text : String;
-   protected
-    MapErrorText: String;
   end;
 
 var
@@ -37,28 +41,37 @@ var
 
 implementation
 
+constructor TMapError.Create;
+begin
+  MapErrorText:=TStringList.Create;
+end;
+
+destructor TMapError.Destroy;
+begin
+  MapErrorText.Free;
+  inherited;
+end;
+
 procedure TMapError.Clear;
 begin
-  MapErrorText:='';
+  MapErrorText.Clear;
 end;
 
 procedure TMapError.AddText(const Text: String);
 begin
-  MapErrorText:=MapErrorText+Text+'\n';
+  MapErrorText.Add(Text);
 end;
 
 function TMapError.Text: String;
 begin
-  Result:=MapErrorText;
-  MapErrorText:='';
+  Result:=MapErrorText.Text;
+  Clear;
 end;
 
 initialization
   g_MapError:=TMapError.Create;
-  g_MapError.Clear;
 
 finalization
-  g_MapError.free;
+  g_MapError.Free;
 
 end.
-
