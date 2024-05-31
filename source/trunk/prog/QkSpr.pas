@@ -38,7 +38,7 @@ type
     height          :  Longint;
     numframes       :  Longint;
     beamlength      :  Single;
-    synctype        :  Single;
+    synctype        :  Longint;
   end;
   TQ1SprHeader = packed record  // Quake 1 Sprite
     ident           :  Longint;
@@ -49,7 +49,7 @@ type
     height          :  Longint;
     numframes       :  Longint;
     beamlength      :  Single;
-    synctype        :  Single; //FIXME: Single? --> https://github.com/id-Software/Quake/blob/bf4ac424ce754894ac8f1dae6a3981954bc9852d/QW/client/spritegn.h
+    synctype        :  Longint;
   end;
   TQ2SprHeader = packed record  // Quake 2 Sprite
     ident: Longint;
@@ -58,7 +58,7 @@ type
   end;
   TQ2SprFrame = packed record
     x,y,w,h: longint;
-    fn: array[1..64]of char;
+    fn: array[1..64] of char;
   end;
   QSprFile = class(QFileObject)
   public
