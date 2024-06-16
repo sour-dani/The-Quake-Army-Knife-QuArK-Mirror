@@ -277,7 +277,7 @@ begin
     end;
 
   //Don't supress exceptions that happen in TimerProc's.
-  if CheckWin32VersionWithBuildNumber(10, 0, 10586) then //Windows 10 Build 10586 and newer? FIXME: Doesn't exist in build 10240 ("Threshold"), exists in SDK 10.0.18362.0 = 19H1
+  if CheckWin32VersionWithBuildNumber(10, 0, 10586) then //Windows 10 1511
   begin
     Info:=False;
     if not SetUserObjectInformation(GetCurrentProcess(), UOI_TIMERPROC_EXCEPTION_SUPPRESSION, @Info, SizeOf(Info)) then
