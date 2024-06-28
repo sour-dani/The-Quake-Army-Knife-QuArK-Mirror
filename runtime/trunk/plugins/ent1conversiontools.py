@@ -1151,7 +1151,7 @@ class TypeOfConversionDlg(quarkpy.qmacro.dialogbox):
             Hint = "You DO NOT need to extract all of these files."$0D
                    "To insure the proper FULL path and folder name"$0D
                    "Make a DUMMY folder or sub-folder that these"$0D
-                   "files WOULD be in, but they must MEMIC EXACTLY"$0D
+                   "files WOULD be in, but they must MIMIC EXACTLY"$0D
                    "how the folder structure is in the pak files."$0D
                    "Click the '...' button and select the DUMMY folder."$0D
                    "If you enter the path by hand again, DUPLICATE EXACTLY."
@@ -1178,7 +1178,7 @@ class TypeOfConversionDlg(quarkpy.qmacro.dialogbox):
             Hint = "You DO NOT need to extract all of these files."$0D
                    "To insure the proper FULL path and folder name"$0D
                    "Make a DUMMY folder or sub-folder that these"$0D
-                   "files WOULD be in, but they must MEMIC EXACTLY"$0D
+                   "files WOULD be in, but they must MIMIC EXACTLY"$0D
                    "how the folder structure is in the pak files."$0D
                    "Click the '...' button and select the DUMMY folder."$0D
                    "If you enter the path by hand again, DUPLICATE EXACTLY."
@@ -1209,7 +1209,7 @@ class TypeOfConversionDlg(quarkpy.qmacro.dialogbox):
             Hint = "You DO NOT need to extract all of these files."$0D
                    "To insure the proper FULL path and folder name"$0D
                    "Make a DUMMY folder or sub-folder that these"$0D
-                   "files WOULD be in, but they must MEMIC EXACTLY"$0D
+                   "files WOULD be in, but they must MIMIC EXACTLY"$0D
                    "how the folder structure is in the pak files."$0D
                    "Click the '...' button and select the DUMMY folder."$0D
                    "If you enter the path by hand again, DUPLICATE EXACTLY."$0D
@@ -1663,6 +1663,5 @@ def Intro(root):
     conversiondialogform = quarkx.newform("conversiondialogform")
     TypeOfConversionDlg(conversiondialogform, root)
 
-text = "Conversion Tool - use this first"
 import quarkpy.qentbase
-quarkpy.qentbase.RegisterEntityConverter(text, None, None, Intro)
+quarkpy.qentbase.RegisterEntityConverter("Conversion Tool - use this first", None, None, Intro)

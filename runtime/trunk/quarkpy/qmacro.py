@@ -299,26 +299,29 @@ def MACRO_loadmdlimportexportplugins(self):
 
 ### A list, used below, to pass items to for the main QuArK menu Conversion section.
 ### See the plugins files that start with "ent" for its use.
-entfn = {}
+
 
 def MACRO_ent_convertfrom(text):
-    import qeditor
-    a = quarkx.getqctxlist()
-    a.reverse()
     # Decker - Some menuitem-captions contains a '&'-character (you know, the one which tells what mnemonic-key can be used)
     # These '&'-characters has to be removed, for the entfn[text] to work properly.
     text = text.replace("&", "")
-    entf = entfn[text]
-    if entf is not None and entf[0][0] is not None:
-        files = quarkx.filedialogbox("Select File", text, entf[0], 0)
+
+    import qeditor
+    a = quarkx.getqctxlist()
+    a.reverse()
+
+    import qentbase
+    Proc, Ext, Desc = qentbase.entfn[text]
+    if Ext is not None:
+        files = quarkx.filedialogbox("Select File", text, [Ext, Desc])
         if len(files) != 0:
             file = files[0]
             gn = a[0]["GameDir"]
             if (gn is None) or (gn == ""):
                 gn = file
-            entf[1](a[0].parent, file, gn)
-    if entf[0][0] is None and entf[1] is not None:
-        entf[1](a[0].parent) # This calls the function that is stored in the "entfn" list above.
+            Proc(a[0].parent, file, gn)
+    else:
+        Proc(a[0].parent)
 
 ### A list, used below, to pass items to for the main QuArK menu 'Model Importers' section.
 ### See the plugins files that start with "ie_" for its use.
@@ -329,12 +332,14 @@ def MACRO_mdl_pythonimporter(text):
     import qeditor
     a = quarkx.getqctxlist()
     a.reverse()
+
     # Decker - Some menuitem-captions contains a '&'-character (you know, the one which tells what mnemonic-key can be used)
     # These '&'-characters has to be removed, for the entfn[text] to work properly.
     text = text.replace("&", "")
+
     mdlf = mdlimport[text]
     if mdlf is not None and mdlf[0][0] is not None:
-        files = quarkx.filedialogbox("Select File", text, mdlf[0], 0)
+        files = quarkx.filedialogbox("Select File", text, mdlf[0])
         if len(files) != 0:
             filename = files[0]
             gamename = a[0]["GameDir"]
@@ -353,13 +358,15 @@ def MACRO_mdl_pythonexporter(text):
     import qeditor
     a = quarkx.getqctxlist()
     a.reverse()
+
     # Decker - Some menuitem-captions contains a '&'-character (you know, the one which tells what mnemonic-key can be used)
     # These '&'-characters has to be removed, for the entfn[text] to work properly.
     text = text.replace("&", "")
+
     mdlf = mdlexport[text]
     if mdlf is not None and mdlf[0][0] is not None:
         # See plugins\mapbotwaypointer.py file for example of line below for use.
-        files = quarkx.filedialogbox("Save file as...", text, mdlf[0], 1)
+        files = quarkx.filedialogbox("Save file as...", text, mdlf[0], qutils.SAVEDIALOG)
         if len(files) != 0:
             file = files[0]
             gn = a[0]["GameDir"]

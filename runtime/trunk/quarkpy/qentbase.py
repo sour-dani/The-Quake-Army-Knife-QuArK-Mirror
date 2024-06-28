@@ -10,8 +10,11 @@ Entity functions.
 
 import quarkx
 
+entfn = {}
 
 def RegisterEntityConverter(Text, Ext, Desc, Proc):
-    import qmacro
-    qmacro.entfn.update( { Text: ([Ext, Desc], Proc) } )
+    if Proc is None:
+        #squawk("this is not a valid entity converter")
+        return
+    entfn[Text] = (Proc, Ext, Desc)
     quarkx.entitymenuitem(Text)
