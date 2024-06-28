@@ -2418,16 +2418,17 @@ procedure TForm1.ConvertFrom1Item1Click(Sender: TObject);
 var
   s: PyObject;
   Q: QObject;
+  Root: QExplorerGroup;
 begin
  s:=Nil;
  try
   with Sender as TMenuItem do
    s:=PyString_FromString(ToPyChar(Caption));
   if s=Nil then Exit;
-  News1Click(Sender);
-  Q:=QQuakeCtx.Create('Game Directories', NeedExplorerRoot);
+  Root:=NeedExplorerRoot;
+  Q:=QQuakeCtx.Create('Game Directories', Root); //FIXME: This can create duplicates if this function is called multiple times!
   Q.Flags := Q.Flags or ofTreeViewSubElement;
-  NeedExplorerRoot.Subelements.Add(Q);
+  Root.Subelements.Add(Q);
   CallMacro(s, 'ent_convertfrom');
  finally
   Py_XDECREF(s);
