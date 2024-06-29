@@ -102,7 +102,7 @@ class dialogbox:
 
 
 class placepersistent_dialogbox(dialogbox):
-  def __init__(self, form, src, label, **buttons):
+    def __init__(self, form, src, label, **buttons):
         name = self.name or self.__class__.__name__
         self.label = label
         closedialogbox(name)
@@ -131,23 +131,23 @@ class placepersistent_dialogbox(dialogbox):
         df.flags = qeditor.DF_AUTOFOCUS
         dlg.show()
 
-  def windowrect(self):
-    rect = quarkx.setupsubset(self.editor.MODE,"Options")['dlgdim_'+self.label]
-    if rect is not None:
-      return (int(rect[0]), int(rect[1]), int(rect[2]), int(rect[3]))
-    x1,y1,x2,y2 = quarkx.screenrect()
-    dx = x1-x2
-    dy = y1-y2
-    cx = (x1+x2)/2
-    cy = (y1+y2)/2
-    size = self.size
-    return (cx-size[0]/2, cy-size[1]/2, cx+size[0]/2, cy+size[1]/2)
+    def windowrect(self):
+        rect = quarkx.setupsubset(self.editor.MODE,"Options")['dlgdim_'+self.label]
+        if rect is not None:
+            return (int(rect[0]), int(rect[1]), int(rect[2]), int(rect[3]))
+        x1,y1,x2,y2 = quarkx.screenrect()
+        dx = x1-x2
+        dy = y1-y2
+        cx = (x1+x2)/2
+        cy = (y1+y2)/2
+        size = self.size
+        return (cx-size[0]/2, cy-size[1]/2, cx+size[0]/2, cy+size[1]/2)
 
-  def onclose(self, dlg):
-    quarkx.setupsubset(self.editor.MODE,"Options")['dlgdim_'+self.label] = self.dlg.windowrect
-    dialogbox.onclose(self, dlg)
+    def onclose(self, dlg):
+        quarkx.setupsubset(self.editor.MODE,"Options")['dlgdim_'+self.label] = self.dlg.windowrect
+        dialogbox.onclose(self, dlg)
 
-class LiveEditDlg (placepersistent_dialogbox):
+class LiveEditDlg(placepersistent_dialogbox):
 
     def __init__(self, form, label, editor, setup, action, onclosing=None):
 
@@ -216,7 +216,6 @@ class LiveBrowserDlg(LiveButtonDlg):
 
     def __init__(self, label, editor, pack, moresetup=None, moreaction=None, onclosing=None):
 
-
         self.moresetup=moresetup
         self.moreaction=moreaction
 
@@ -264,16 +263,16 @@ class LiveBrowserDlg(LiveButtonDlg):
 #   the location in the initialization.
 #
 class locatable_dialog_box(dialogbox):
-  def __init__(self, form, src, px, py, **buttons):
+    def __init__(self, form, src, px, py, **buttons):
         self.px, self.py = px, py
         dialogbox.__init__(self, form, src, **buttons)
 
-  def windowrect(self):
-    x1,y1,x2,y2 = quarkx.screenrect()
-    dx = x1-x2
-    dy = y1-y2
-    ox, oy = dx/self.px, dy/self.py
-    cx = (x1+x2)/2
-    cy = (y1+y2)/2
-    size = self.size
-    return (ox+cx-size[0]/2, oy+cy-size[1]/2, ox+cx+size[0]/2, oy+cy+size[1]/2)
+    def windowrect(self):
+        x1,y1,x2,y2 = quarkx.screenrect()
+        dx = x1-x2
+        dy = y1-y2
+        ox, oy = dx/self.px, dy/self.py
+        cx = (x1+x2)/2
+        cy = (y1+y2)/2
+        size = self.size
+        return (ox+cx-size[0]/2, oy+cy-size[1]/2, ox+cx+size[0]/2, oy+cy+size[1]/2)
