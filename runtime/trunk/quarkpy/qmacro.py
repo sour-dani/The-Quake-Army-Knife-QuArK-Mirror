@@ -16,7 +16,7 @@ Python macros available for direct call by QuArK
 
 
 import quarkx
-import dialogboxes
+
 
 #
 # Macros called when there is an object to display in a window.
@@ -168,6 +168,7 @@ def MACRO_helpmenu(text):
 
 
 def MACRO_pybutton(pybtn):
+    import dialogboxes
     dlg = dialogboxes.dialogboxes[pybtn["sendto"]]
     return dlg.info.buttons[pybtn.shortname]
 
