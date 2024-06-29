@@ -262,7 +262,7 @@ class NameDialog(SimpleCancelDlgBox):
         self.action(self)
 
 def macro_accept(btn):
-    quarkpy.qmacro.closedialogbox("NameDialog")
+    quarkpy.dialogboxes.closedialogbox("NameDialog")
 
 quarkpy.qmacro.MACRO_accept = macro_accept
 
