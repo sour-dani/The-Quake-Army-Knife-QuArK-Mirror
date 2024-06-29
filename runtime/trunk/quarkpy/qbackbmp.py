@@ -9,11 +9,11 @@
 #
 
 import quarkx
-import qmacro
+import dialogboxes
 import qtoolbar
 from qeditor import *
 
-class BackBmpDlg(qmacro.dialogbox):
+class BackBmpDlg(dialogboxes.dialogbox):
 
     #
     # dialog layout for the Map Editor
@@ -99,7 +99,7 @@ class BackBmpDlg(qmacro.dialogbox):
                 src["multiple"] = "1"
             src["PolySelectNoFill"] = quarkx.setupsubset(SS_MAP, "Options")["PolySelectNoFill"]
             src["NoFillSel"] = quarkx.setupsubset(SS_MAP, "Colors").getint("NoFillSel")
-        qmacro.dialogbox.__init__(self, form, src,
+        dialogboxes.dialogbox.__init__(self, form, src,
             ok = qtoolbar.button(
                 self.ok,
                 "apply and view changes",
@@ -195,7 +195,7 @@ class BackBmpDlg(qmacro.dialogbox):
         self.view.invalidate(1)
         self.close()
 
-class MdlBackBmpDlg(qmacro.dialogbox):
+class MdlBackBmpDlg(dialogboxes.dialogbox):
 
     #
     # dialog layout for the Model Editor
@@ -264,7 +264,7 @@ class MdlBackBmpDlg(qmacro.dialogbox):
                 src["multiple"] = ""
             else:
                 src["multiple"] = "1"
-        qmacro.dialogbox.__init__(self, form, src,
+        dialogboxes.dialogbox.__init__(self, form, src,
             ok = qtoolbar.button(
                 self.ok,
                 "apply and view changes",

@@ -14,7 +14,6 @@ from qeditor import *
 from qdictionnary import Strings
 from mdlutils import *
 import qmenu
-import qmacro
 import qtoolbar
 import dialogboxes
 import mdleditor
@@ -58,7 +57,7 @@ class FindVerticesDlg(dialogboxes.LiveEditDlg):
 
     def cancel(self, dlg):
         # Modified from dialogboxes.py
-        qmacro.dialogbox.close(self, dlg)
+        dialogboxes.dialogbox.close(self, dlg)
         self.src = None
 
 def find_vertices_click(m):
@@ -139,7 +138,7 @@ class FindFacesDlg(dialogboxes.LiveEditDlg):
 
     def cancel(self, dlg):
         # Modified from dialogboxes.py
-        qmacro.dialogbox.close(self, dlg)
+        dialogboxes.dialogbox.close(self, dlg)
         self.src = None
 
 def find_faces_click(m):
@@ -220,7 +219,7 @@ class FindSkinVerticesDlg(dialogboxes.LiveEditDlg):
 
     def cancel(self, dlg):
         # Modified from dialogboxes.py
-        qmacro.dialogbox.close(self, dlg)
+        dialogboxes.dialogbox.close(self, dlg)
         self.src = None
 
 def find_skin_vertices_click(m):
@@ -326,7 +325,7 @@ class FindSkinFacesDlg(dialogboxes.LiveEditDlg):
 
     def cancel(self, dlg):
         # Modified from dialogboxes.py
-        qmacro.dialogbox.close(self, dlg)
+        dialogboxes.dialogbox.close(self, dlg)
         self.src = None
 
 def find_skin_faces_click(m):
@@ -426,7 +425,7 @@ def find_skin_faces_click(m):
     FindSkinFacesDlg(quarkx.clickform, 'find_skin_faces', editor, setup, action, onclosing)
 
 
-class SearchDlg(qmacro.dialogbox):
+class SearchDlg(dialogboxes.dialogbox):
 
     src_backup = {}
 
@@ -459,7 +458,7 @@ class SearchDlg(qmacro.dialogbox):
         for key, value in self.src_backup.items():
             src[key]=value
 
-        qmacro.dialogbox.__init__(self, quarkx.clickform, src,
+        dialogboxes.dialogbox.__init__(self, quarkx.clickform, src,
           ok = qtoolbar.button(self.search, "search for the given selections", ico_dict['ico_editor'], 1, " Search ", 1),
           cancel = qtoolbar.button(self.close, "close this box", ico_dict['ico_editor'], 0, " Cancel ", 1))
         self.editor = editor

@@ -13,7 +13,7 @@ Map editor "Line through hole" displayer
 #
 
 import quarkx
-import qmacro
+import dialogboxes
 import qtoolbar
 from maputils import *
 from qeditor import MapColor
@@ -22,7 +22,7 @@ import mapoptions
 
 
 
-class LinesDlg(qmacro.dialogbox):
+class LinesDlg(dialogboxes.dialogbox):
 
     #
     # dialog layout
@@ -49,7 +49,7 @@ class LinesDlg(qmacro.dialogbox):
     def __init__(self, form, editor):
         self.editor = editor
         src = quarkx.newobj(":")
-        qmacro.dialogbox.__init__(self, form, src,
+        dialogboxes.dialogbox.__init__(self, form, src,
            close = qtoolbar.button(
               self.close,
               "click here to remove the arrow from your map",
@@ -66,7 +66,7 @@ class LinesDlg(qmacro.dialogbox):
             self.editor.invalidateviews()
         except:
             pass
-        qmacro.dialogbox.onclose(self, dlg)
+        dialogboxes.dialogbox.onclose(self, dlg)
 
 
 def LoadLinFile(editor, filename):

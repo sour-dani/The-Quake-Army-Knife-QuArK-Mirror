@@ -17,8 +17,8 @@ Info = {
 
 import time, math, os, sys
 import quarkx
+import quarkpy.dialogboxes
 import quarkpy.qeditor
-import quarkpy.qmacro
 import quarkpy.qtoolbar
 from quarkpy.qutils import *
 from types import *
@@ -1474,7 +1474,7 @@ import quarkpy.qmdlbase
 quarkpy.qmdlbase.RegisterMdlExporter(".ase Exporter", ".ase file", "*.ase", savemodel)
 
 
-class ExportSettingsDlg(quarkpy.qmacro.dialogbox):
+class ExportSettingsDlg(quarkpy.dialogboxes.dialogbox):
     endcolor = AQUA
     size = (200, 300)
     dfsep = 0.6     # sets 80% for labels and the rest for edit boxes
@@ -1634,7 +1634,7 @@ class ExportSettingsDlg(quarkpy.qmacro.dialogbox):
         self.root = root
 
         # Create the dialog form and the buttons.
-        quarkpy.qmacro.dialogbox.__init__(self, form1, src,
+        quarkpy.dialogboxes.dialogbox.__init__(self, form1, src,
             MakeFiles = quarkpy.qtoolbar.button(self.MakeFiles,"DO NOT close this dialog\n ( to retain your settings )\nuntil you check your new files.",ico_dict['ico_editor'], 3, "Export Model"),
             close = quarkpy.qtoolbar.button(self.close, "DO NOT close this dialog\n ( to retain your settings )\nuntil you check your new files.", ico_dict['ico_editor'], 0, "Cancel Export")
             )

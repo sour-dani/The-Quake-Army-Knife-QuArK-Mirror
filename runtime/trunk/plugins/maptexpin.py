@@ -24,7 +24,6 @@ import quarkx
 import quarkpy.dialogboxes
 import quarkpy.mapeditor
 import quarkpy.maphandles
-import quarkpy.qmacro
 import quarkpy.qmenu
 import quarkpy.qtoolbar
 import tagging
@@ -120,10 +119,10 @@ class VtxPinDlg(quarkpy.dialogboxes.placepersistent_dialogbox):
             undo.exchange(face, newface)
             editor.ok(undo, "move texture")
         editor.invalidateviews()
-        quarkpy.qmacro.dialogbox.close(self, dlg)
+        quarkpy.dialogboxes.dialogbox.close(self, dlg)
 
     def cancel(self, dlg):
-        quarkpy.qmacro.dialogbox.close(self, dlg)
+        quarkpy.dialogboxes.dialogbox.close(self, dlg)
 
 
 

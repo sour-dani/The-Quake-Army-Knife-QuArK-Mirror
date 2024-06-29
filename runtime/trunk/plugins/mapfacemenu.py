@@ -20,12 +20,12 @@ Info = {
 import math
 import quarkx
 from quarkpy.maputils import *
+import quarkpy.dialogboxes
 import quarkpy.qmenu
 import quarkpy.qtoolbar
 import quarkpy.qhandles
 import quarkpy.mapcommands
 import quarkpy.mapentities
-import quarkpy.qmacro
 
 
 def ForceAngle(m):
@@ -58,7 +58,7 @@ def ForceAngle(m):
 
 
 
-class Orientation(quarkpy.qmacro.dialogbox):
+class Orientation(quarkpy.dialogboxes.dialogbox):
 
     endcolor = PURPLE
     size = (300,140)
@@ -88,7 +88,7 @@ class Orientation(quarkpy.qmacro.dialogbox):
     def __init__(self, m):
         self.face = None
         src = quarkx.newobj(":")
-        quarkpy.qmacro.dialogbox.__init__(self, quarkx.clickform, src,
+        quarkpy.dialogboxes.dialogbox.__init__(self, quarkx.clickform, src,
           cancel = quarkpy.qtoolbar.button(self.close, "close this box", ico_dict['ico_editor'], 0, "Close"))
         editor = mapeditor()
         if editor is None: return

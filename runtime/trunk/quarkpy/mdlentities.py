@@ -730,7 +730,7 @@ class WeightsDlg(dialogboxes.LiveEditDlg):
 
     def cancel(self, dlg):
         # Modified from dialogboxes.py
-        qmacro.dialogbox.close(self, dlg)
+        dialogboxes.dialogbox.close(self, dlg)
         self.src = None
 
 def WeightsClick(editor):

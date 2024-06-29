@@ -22,13 +22,13 @@ Info = {
 
 
 import quarkx
-import quarkpy.qmacro
+import quarkpy.dialogboxes
 import quarkpy.qmenu
 import quarkpy.qtoolbar
 import quarkpy.mapsearch
 from quarkpy.maputils import *
 
-class SearchReplaceTextureDlg(quarkpy.qmacro.dialogbox):
+class SearchReplaceTextureDlg(quarkpy.dialogboxes.dialogbox):
 
     #
     # dialog layout
@@ -120,7 +120,7 @@ class SearchReplaceTextureDlg(quarkpy.qmacro.dialogbox):
         # Create the dialog form and the buttons
         #
 
-        quarkpy.qmacro.dialogbox.__init__(self, form, src,
+        quarkpy.dialogboxes.dialogbox.__init__(self, form, src,
            close      = quarkpy.qtoolbar.button(self.close, "Close this box", ico_dict['ico_editor'], 0, "Close", 1),
            ReplaceAll = quarkpy.qtoolbar.button(self.ReplaceAll, "Search/replace textures", ico_dict['ico_editor'], 2, "Search/replace", 1)
         )

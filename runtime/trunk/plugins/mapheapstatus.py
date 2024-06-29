@@ -134,7 +134,7 @@ class HeapStatus(quarkpy.dialogboxes.placepersistent_dialogbox):
 
     def cancel(self, dlg):
         self.src = None
-        qmacro.dialogbox.close(self, dlg)
+        quarkpy.dialogboxes.dialogbox.close(self, dlg)
 
 
 def HeapStatusClick(m):

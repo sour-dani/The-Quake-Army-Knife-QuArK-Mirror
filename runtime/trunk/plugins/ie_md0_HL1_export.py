@@ -17,7 +17,7 @@ Info = {
 
 import struct, os, math
 import quarkx
-import quarkpy.qmacro
+import quarkpy.dialogboxes
 import quarkpy.qtoolbar
 from quarkpy.qutils import *
 from types import *
@@ -2541,7 +2541,7 @@ quarkpy.qmdlbase.RegisterMdlExporter(".mdl Half-Life1 Exporter", ".mdl file", "*
 ######################################################
 # DIALOG SECTION (which calls to export an .mdl file)
 ######################################################
-class ExportSettingsDlg(quarkpy.qmacro.dialogbox):
+class ExportSettingsDlg(quarkpy.dialogboxes.dialogbox):
     endcolor = AQUA
     size = (200, 300)
     dfsep = 0.65     # sets 65% for labels and the rest for edit boxes
@@ -2649,7 +2649,7 @@ class ExportSettingsDlg(quarkpy.qmacro.dialogbox):
         self.src = src
 
         # Create the dialog form and the buttons.
-        quarkpy.qmacro.dialogbox.__init__(self, form1, src,
+        quarkpy.dialogboxes.dialogbox.__init__(self, form1, src,
             MakeFiles = quarkpy.qtoolbar.button(self.MakeFiles,"DO NOT close this dialog\n ( to retain your settings )\nuntil you check your new files.",ico_dict['ico_editor'], 3, "Export Model"),
             close = quarkpy.qtoolbar.button(self.close, "DO NOT close this dialog\n ( to retain your settings )\nuntil you check your new files.", ico_dict['ico_editor'], 0, "Cancel Export")
             )

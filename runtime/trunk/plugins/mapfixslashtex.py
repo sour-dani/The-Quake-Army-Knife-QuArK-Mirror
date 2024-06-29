@@ -20,13 +20,13 @@ Info = {
 
 
 import quarkx
-import quarkpy.qmacro
+import quarkpy.dialogboxes
 import quarkpy.qmenu
 import quarkpy.qtoolbar
 import quarkpy.mapsearch
 from quarkpy.maputils import *
 
-class FixSlashTextureDlg(quarkpy.qmacro.dialogbox):
+class FixSlashTextureDlg(quarkpy.dialogboxes.dialogbox):
 
     #
     # dialog layout
@@ -112,7 +112,7 @@ class FixSlashTextureDlg(quarkpy.qmacro.dialogbox):
         # Create the dialog form and the buttons
         #
 
-        quarkpy.qmacro.dialogbox.__init__(self, form, src,
+        quarkpy.dialogboxes.dialogbox.__init__(self, form, src,
            close      = quarkpy.qtoolbar.button(self.close, "Close this box", ico_dict['ico_editor'], 0, "Close", 1),
            ReplaceAll = quarkpy.qtoolbar.button(self.ReplaceAll, "Convert slashes textures", ico_dict['ico_editor'], 2, "Convert slashes", 1)
         )

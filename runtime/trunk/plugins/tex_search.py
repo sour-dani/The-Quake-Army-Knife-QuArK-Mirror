@@ -15,7 +15,7 @@ Info = {
 }
 
 import quarkx
-import quarkpy.qmacro
+import quarkpy.dialogboxes
 import quarkpy.qtoolbar
 from quarkpy import qutils
 from quarkpy.maputils import *
@@ -52,7 +52,7 @@ def tex_doit(s):
         tbx.appenditem(x)
     quarkx.opentoolbox("Texture Browser...", None)
 
-class TextureSearchDlg(quarkpy.qmacro.dialogbox):
+class TextureSearchDlg(quarkpy.dialogboxes.dialogbox):
     # Dialog layout
     size = (290, 120)
     dfsep = 0.4     # separation at 40% between labels and edit boxes
@@ -78,7 +78,7 @@ class TextureSearchDlg(quarkpy.qmacro.dialogbox):
         src["searchfor"] = ""
 
         # Create the dialog form and the buttons
-        quarkpy.qmacro.dialogbox.__init__(self, form, src,
+        quarkpy.dialogboxes.dialogbox.__init__(self, form, src,
             close = quarkpy.qtoolbar.button(self.close,"close this box",ico_dict['ico_editor'], 0, "Close"),
             Search = quarkpy.qtoolbar.button(self.doSearch,"Search",ico_dict['ico_editor'], 3, "Search")
         )

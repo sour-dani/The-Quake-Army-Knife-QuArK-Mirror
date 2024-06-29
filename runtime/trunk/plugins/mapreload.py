@@ -20,14 +20,14 @@ Info = {
 import os
 import quarkx
 import quarkpy.mapcommands
-import quarkpy.qmacro
+import quarkpy.dialogboxes
 import quarkpy.qmenu
 import quarkpy.qtoolbar
 
 from quarkpy.maputils import *
 
 
-class ReloadDlg (quarkpy.qmacro.dialogbox):
+class ReloadDlg (quarkpy.dialogboxes.dialogbox):
     #
     # dialog layout
     #
@@ -86,7 +86,7 @@ class ReloadDlg (quarkpy.qmacro.dialogbox):
     # Create the dialog form and the buttons
     #
 
-        quarkpy.qmacro.dialogbox.__init__(self, form, src,
+        quarkpy.dialogboxes.dialogbox.__init__(self, form, src,
         close = quarkpy.qtoolbar.button(
             self.close,
             "Reload the named module",
@@ -104,15 +104,15 @@ class ReloadDlg (quarkpy.qmacro.dialogbox):
     def onclose(self, dlg):
         if self.src is None:
 #            quarkx.msgbox("Empty string does not name a module, nothing done", MT_ERROR, MB_OK)
-            qmacro.dialogbox.onclose(self, dlg)
+            quarkpy.dialogboxes.dialogbox.onclose(self, dlg)
             return
         quarkx.globalaccept()
         self.action(self)
-        qmacro.dialogbox.onclose(self, dlg)
+        quarkpy.dialogboxes.dialogbox.onclose(self, dlg)
 
     def cancel(self, dlg):
         self.src = None
-        qmacro.dialogbox.close(self, dlg)
+        quarkpy.dialogboxes.dialogbox.close(self, dlg)
 
 
 

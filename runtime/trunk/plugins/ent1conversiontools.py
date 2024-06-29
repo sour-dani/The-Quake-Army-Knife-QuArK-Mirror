@@ -7,7 +7,7 @@ using the actual game files and other .qrk files as templates.
 
 import os
 import quarkx
-import quarkpy.qmacro
+import quarkpy.dialogboxes
 import quarkpy.qtoolbar
 from quarkpy.qutils import *
 
@@ -115,7 +115,7 @@ def MakeShadersFile(QuArKpath, gamename, gameenginetype, gamefileslocation,
 
 
 
-class EntitiesFileDlg(quarkpy.qmacro.dialogbox):
+class EntitiesFileDlg(quarkpy.dialogboxes.dialogbox):
     endcolor = AQUA
     size = (300, 500)
     dfsep = 0.5     # sets 50% for labels and the rest for edit boxes
@@ -402,7 +402,7 @@ class EntitiesFileDlg(quarkpy.qmacro.dialogbox):
         self.listfilefolder = listfilefolder
         self.listfiletype = listfiletype
         # Create the dialog form and the buttons
-        quarkpy.qmacro.dialogbox.__init__(self, entitiesfiledialog, src,
+        quarkpy.dialogboxes.dialogbox.__init__(self, entitiesfiledialog, src,
             UseTheseSelections = quarkpy.qtoolbar.button(self.UseTheseSelections,"Use These Selections",ico_dict['ico_editor'], 3, "Use These Selections")
             )
 
@@ -664,7 +664,7 @@ def MakeUserDataFile(root, QuArKpath, gamename, gameenginetype, gamefileslocatio
 
 
 
-class DataFileDlg(quarkpy.qmacro.dialogbox):
+class DataFileDlg(quarkpy.dialogboxes.dialogbox):
     endcolor = AQUA
     size = (300, 185)
     dfsep = 0.4     # sets 40% for labels and the rest for edit boxes
@@ -763,7 +763,7 @@ class DataFileDlg(quarkpy.qmacro.dialogbox):
         self.listfilefolder = listfilefolder
         self.listfiletype = listfiletype
         # Create the dialog form and the buttons
-        quarkpy.qmacro.dialogbox.__init__(self, datafiledialog, src,
+        quarkpy.dialogboxes.dialogbox.__init__(self, datafiledialog, src,
             ReturnSelections = quarkpy.qtoolbar.button(self.ReturnSelections,"Return Selections",ico_dict['ico_editor'], 3, "Return Selections")
             )
 
@@ -995,7 +995,7 @@ def MakeDataFile(root, QuArKpath, gamename, gameenginetype, gamefileslocation,
         FilesDone(gamename, hadfolder)
 
 
-class TypeOfConversionDlg(quarkpy.qmacro.dialogbox):
+class TypeOfConversionDlg(quarkpy.dialogboxes.dialogbox):
     endcolor = AQUA
     size = (300, 735)
     dfsep = 0.45     # sets 45% for labels and the rest for edit boxes
@@ -1419,7 +1419,7 @@ class TypeOfConversionDlg(quarkpy.qmacro.dialogbox):
         self.root = root
 
         # Create the dialog form and the buttons
-        quarkpy.qmacro.dialogbox.__init__(self, form1, src,
+        quarkpy.dialogboxes.dialogbox.__init__(self, form1, src,
             MakeFiles = quarkpy.qtoolbar.button(self.MakeFiles,"Make .qrk Files",ico_dict['ico_editor'], 3, "Make .qrk Files"),
             close = quarkpy.qtoolbar.button( self.close, "DO NOT close this dialog\n ( to retain your settings )\nuntil you check your new files.", ico_dict['ico_editor'], 0, "Cancel function")
             )

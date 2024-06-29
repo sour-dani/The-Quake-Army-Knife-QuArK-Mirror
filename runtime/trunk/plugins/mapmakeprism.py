@@ -25,7 +25,7 @@ Info = {
 
 import math
 import quarkx
-import quarkpy.qmacro
+import quarkpy.dialogboxes
 import quarkpy.qmenu
 import quarkpy.qtoolbar
 import quarkpy.qutils
@@ -35,7 +35,7 @@ from quarkpy.maputils import *
 import mapsearch1
 
 
-class MakePrismDlg(quarkpy.qmacro.dialogbox):
+class MakePrismDlg(quarkpy.dialogboxes.dialogbox):
     # Dialog layout
     size = (290, 322)
     dfsep = 0.4     # separation at 40% between labels and edit boxes
@@ -201,7 +201,7 @@ class MakePrismDlg(quarkpy.qmacro.dialogbox):
             src["ramp"]        = quarkx.setupsubset(SS_MAP, "Options")["MakePrism_Ramp"]
 
         # Create the dialog form and the buttons
-        quarkpy.qmacro.dialogbox.__init__(self, form, src,
+        quarkpy.dialogboxes.dialogbox.__init__(self, form, src,
             close = quarkpy.qtoolbar.button(
                 self.close,
                 "close this box",

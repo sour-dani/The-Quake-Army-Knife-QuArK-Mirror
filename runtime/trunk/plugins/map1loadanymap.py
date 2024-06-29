@@ -17,13 +17,13 @@ Info = {
    "quark":         "Version 6.4" }
 
 import quarkx
-import quarkpy.qmacro
+import quarkpy.dialogboxes
 import quarkpy.qtoolbar
 import quarkpy.mapbtns
 from quarkpy.maputils import *
 
 
-class LoadMapDlg(quarkpy.qmacro.dialogbox):
+class LoadMapDlg(quarkpy.dialogboxes.dialogbox):
     #
     # dialog layout
     #
@@ -80,7 +80,7 @@ class LoadMapDlg(quarkpy.qmacro.dialogbox):
     # Create the dialog form and the buttons
     #
 
-        quarkpy.qmacro.dialogbox.__init__(self, form, src,
+        quarkpy.dialogboxes.dialogbox.__init__(self, form, src,
         close = quarkpy.qtoolbar.button(
             self.close,
             "Load the selected map file",
@@ -94,15 +94,15 @@ class LoadMapDlg(quarkpy.qmacro.dialogbox):
 
     def onclose(self, dlg):
         if self.src is None:
-            qmacro.dialogbox.onclose(self, dlg)
+            dialogboxes.dialogbox.onclose(self, dlg)
             return
         quarkx.globalaccept()
         self.action(self)
-        qmacro.dialogbox.onclose(self, dlg)
+        dialogboxes.dialogbox.onclose(self, dlg)
 
     def cancel(self, dlg):
         self.src = None
-        qmacro.dialogbox.close(self, dlg)
+        dialogboxes.dialogbox.close(self, dlg)
 
 #        ********** FUNCTION Starts Here **********
 

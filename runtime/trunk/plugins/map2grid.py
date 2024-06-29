@@ -19,13 +19,13 @@ Info = {
 
 import quarkx
 from quarkpy.maputils import *
-import quarkpy.qmenu
+import quarkpy.dialogboxes
 import quarkpy.mapcommands
-import quarkpy.qmacro
+import quarkpy.qmenu
 import quarkpy.qtoolbar
 
 
-class TFTGDlg(quarkpy.qmacro.dialogbox):
+class TFTGDlg(quarkpy.dialogboxes.dialogbox):
 
     #
     # dialog layout
@@ -68,7 +68,7 @@ class TFTGDlg(quarkpy.qmacro.dialogbox):
         src=quarkx.newobj(":")
         src["epsilon"] = 0.01,
         src["nepsilon"] = 0.99,
-        quarkpy.qmacro.dialogbox.__init__(self, form, src,
+        quarkpy.dialogboxes.dialogbox.__init__(self, form, src,
         ok1 = quarkpy.qtoolbar.button(
                 self.TFTG,
                 "force all faces to match the grid",

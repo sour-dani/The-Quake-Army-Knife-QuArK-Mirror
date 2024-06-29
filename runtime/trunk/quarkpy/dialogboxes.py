@@ -9,14 +9,103 @@ Dialog boxes
 #
 
 import quarkx
-import qmacro
 import qutils
 
-class placepersistent_dialogbox(qmacro.dialogbox):
+#
+#    ---- Dialog Boxes ----
+#
+
+dialogboxes = {}
+
+def closedialogbox(name):
+    try:
+        dialogboxes[name].close()
+        del dialogboxes[name]
+    except KeyError:
+        pass
+
+
+#
+# The class "dialogbox" is a base for actual dialog boxes.
+# See qeditor.py and mapfindreptex.py for examples.
+#
+
+class dialogbox:
+
+    dlgdef = None # abstract
+    size = (300,170)
+    begincolor = None
+    endcolor = None
+    name = None
+    dfsep = 0.6
+    dlgflags = qutils.FWF_KEEPFOCUS | qutils.FWF_POPUPCLOSE
+
+    def __init__(self, form, src, **buttons):
+        name = self.name or self.__class__.__name__
+        closedialogbox(name)
+        f = quarkx.newobj("Dlg:form")
+        self.f = f
+        self.src = src
+        self.buttons = buttons
+        if self.dlgdef is not None:
+            f.loadtext(self.dlgdef)
+            for pybtn in f.findallsubitems("", ':py'):
+                pybtn["sendto"] = name
+            if form is not None:
+                dlg = form.newfloating(self.dlgflags, f["Caption"])
+                dlg.windowrect = self.windowrect()
+                if self.begincolor is not None: dlg.begincolor = self.begincolor
+                if self.endcolor is not None: dlg.endcolor = self.endcolor
+                dlg.onclose = self.onclose
+                dlg.info = self
+                self.dlg = dlg
+                dialogboxes[name] = dlg
+                df = dlg.mainpanel.newdataform()
+                self.df = df
+                df.header = 0
+                df.sep = self.dfsep
+                df.setdata(src, f)
+                df.onchange = self.datachange
+                import qeditor
+                df.flags = qeditor.DF_AUTOFOCUS
+                dlg.show()
+            else:
+                self.dlg = None
+                self.df = None
+                quarkx.beep()
+        else:
+            self.df = None
+
+    def windowrect(self):
+        x1,y1,x2,y2 = quarkx.screenrect()
+        cx = (x1+x2)/2
+        cy = (y1+y2)/2
+        size = self.size
+        return (cx-size[0]/2, cy-size[1]/2, cx+size[0]/2, cy+size[1]/2)
+
+    def datachange(self, df):
+        pass   # abstract
+
+    def onclose(self, dlg):
+        self.src = None
+        dlg.info = None
+        dlg.onclose = None
+        if self.df is not None:
+            self.df.onchange = None
+            self.df = None
+        self.dlg = None
+        self.f = None
+        del self.buttons
+
+    def close(self, reserved=None):
+        self.dlg.close()
+
+
+class placepersistent_dialogbox(dialogbox):
   def __init__(self, form, src, label, **buttons):
         name = self.name or self.__class__.__name__
         self.label = label
-        qmacro.closedialogbox(name)
+        closedialogbox(name)
         f = quarkx.newobj("Dlg:form")
         f.loadtext(self.dlgdef)
         self.f = f
@@ -24,7 +113,7 @@ class placepersistent_dialogbox(qmacro.dialogbox):
             pybtn["sendto"] = name
         self.buttons = buttons
         dlg = form.newfloating(self.dlgflags, f["Caption"])
-        qmacro.dialogboxes[name] = dlg
+        dialogboxes[name] = dlg
         dlg.windowrect = self.windowrect()
         if self.begincolor is not None: dlg.begincolor = self.begincolor
         if self.endcolor is not None: dlg.endcolor = self.endcolor
@@ -56,7 +145,7 @@ class placepersistent_dialogbox(qmacro.dialogbox):
 
   def onclose(self, dlg):
     quarkx.setupsubset(self.editor.MODE,"Options")['dlgdim_'+self.label] = self.dlg.windowrect
-    qmacro.dialogbox.onclose(self, dlg)
+    dialogbox.onclose(self, dlg)
 
 class LiveEditDlg (placepersistent_dialogbox):
 
@@ -90,7 +179,7 @@ class LiveEditDlg (placepersistent_dialogbox):
 
     def cancel(self, dlg):
         self.src = None
-        qmacro.dialogbox.close(self, dlg)
+        dialogbox.close(self, dlg)
 
     def datachange(self, dlg):
        quarkx.globalaccept()
@@ -174,10 +263,10 @@ class LiveBrowserDlg(LiveButtonDlg):
 # Like dialog box but with possibility of specifying
 #   the location in the initialization.
 #
-class locatable_dialog_box(qmacro.dialogbox):
+class locatable_dialog_box(dialogbox):
   def __init__(self, form, src, px, py, **buttons):
         self.px, self.py = px, py
-        qmacro.dialogbox.__init__(self, form, src, **buttons)
+        dialogbox.__init__(self, form, src, **buttons)
 
   def windowrect(self):
     x1,y1,x2,y2 = quarkx.screenrect()

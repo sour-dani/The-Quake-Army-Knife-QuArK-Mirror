@@ -13,10 +13,10 @@ Core of the Map and Model editors.
 #
 
 import quarkx
+import dialogboxes
 import qmenu
 import qtoolbar
 import qhandles
-import qmacro
 import time
 
 from qeditor import *
@@ -735,9 +735,9 @@ class BaseEditor:
 
 
     def clearrefs(self, form):
-        for name,dlg in qmacro.dialogboxes.items():
+        for name,dlg in dialogboxes.dialogboxes.items():
             if dlg.owner == form:
-                del qmacro.dialogboxes[name]
+                del dialogboxes.dialogboxes[name]
                 dlg.close()
 
     def setupchanged(self, level):

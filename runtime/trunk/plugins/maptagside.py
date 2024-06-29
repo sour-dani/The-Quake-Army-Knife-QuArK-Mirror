@@ -32,9 +32,9 @@ Info = {
 
 import math
 import quarkx
+import quarkpy.dialogboxes
 import quarkpy.mapmenus
 import quarkpy.mapentities
-import quarkpy.qmacro
 import quarkpy.qmenu
 import quarkpy.mapeditor
 import quarkpy.mapcommands
@@ -78,7 +78,7 @@ def cycleprev(i, len):
 # Texture multiple support (juggernaut's idea)
 #
 
-class MakeTexMultDlg(quarkpy.qmacro.dialogbox):
+class MakeTexMultDlg(quarkpy.dialogboxes.dialogbox):
 
     #
     # dialog layout
@@ -125,7 +125,7 @@ class MakeTexMultDlg(quarkpy.qmacro.dialogbox):
     # Create the dialog form and the buttons
     #
 
-        quarkpy.qmacro.dialogbox.__init__(self, form, src,
+        quarkpy.dialogboxes.dialogbox.__init__(self, form, src,
         close = quarkpy.qtoolbar.button(
             self.close,
             "close this box",
@@ -135,7 +135,7 @@ class MakeTexMultDlg(quarkpy.qmacro.dialogbox):
     def onclose(self, dlg):
       requestmultiplier.state=quarkpy.qmenu.normal
       self.editor.texmult = None
-      quarkpy.qmacro.dialogbox.onclose(self,dlg)
+      quarkpy.dialogboxes.dialogbox.onclose(self,dlg)
 
 
 def WrapMultClick(m):

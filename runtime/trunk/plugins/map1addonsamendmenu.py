@@ -20,8 +20,8 @@ Info = {
 import os
 import quarkx
 from quarkpy.maputils import *
+import quarkpy.dialogboxes
 import quarkpy.mapbtns
-import quarkpy.qmacro
 import quarkpy.qmenu
 import quarkpy.qtoolbar
 
@@ -33,7 +33,7 @@ CategoryMapping = {"1": "ShapesMenu",
                    "3": "OtherMenu",
 }
 
-class AddonsDlg (quarkpy.qmacro.dialogbox):
+class AddonsDlg (quarkpy.dialogboxes.dialogbox):
     #
     # dialog layout
     #
@@ -116,7 +116,7 @@ class AddonsDlg (quarkpy.qmacro.dialogbox):
     # Create the dialog form and the buttons
     #
 
-        quarkpy.qmacro.dialogbox.__init__(self, form, src,
+        quarkpy.dialogboxes.dialogbox.__init__(self, form, src,
         close = quarkpy.qtoolbar.button(
             self.close,
             "Add the selected program",
@@ -130,15 +130,15 @@ class AddonsDlg (quarkpy.qmacro.dialogbox):
 
     def onclose(self, dlg):
         if self.src is None:
-            qmacro.dialogbox.onclose(self, dlg)
+            dialogboxes.dialogbox.onclose(self, dlg)
             return
         quarkx.globalaccept()
         self.action(self)
-        qmacro.dialogbox.onclose(self, dlg)
+        dialogboxes.dialogbox.onclose(self, dlg)
 
     def cancel(self, dlg):
         self.src = None 
-        qmacro.dialogbox.close(self, dlg)
+        dialogboxes.dialogbox.close(self, dlg)
 
 
 #        ********** Addons FUNCTION Starts Here **********
@@ -398,7 +398,7 @@ def AddItemClick(m):
 
 # ******************* Delete Menu Items Dialog ******************
 
-class DeleteDlg(quarkpy.qmacro.dialogbox):
+class DeleteDlg(quarkpy.dialogboxes.dialogbox):
 
 
     def BuildCheckboxesForDialog(self, array):
@@ -568,7 +568,7 @@ class DeleteDlg(quarkpy.qmacro.dialogbox):
     #
     # Create the dialog form and the buttons
     #
-        quarkpy.qmacro.dialogbox.__init__(self, form, src,
+        quarkpy.dialogboxes.dialogbox.__init__(self, form, src,
         close = quarkpy.qtoolbar.button(
             self.close,
             "Remove the selected items\nfrom their Menu Categories",
@@ -582,16 +582,16 @@ class DeleteDlg(quarkpy.qmacro.dialogbox):
 
     def onclose(self, dlg):
         if self.src is None:
-            qmacro.dialogbox.onclose(self, dlg)
+            dialogboxes.dialogbox.onclose(self, dlg)
             return
         quarkx.globalaccept()
         line = self.BuildCheckboxesForDialog(self)
         self.action(self)
-        qmacro.dialogbox.onclose(self, dlg)
+        dialogboxes.dialogbox.onclose(self, dlg)
 
     def cancel(self, dlg):
-        self.src = None 
-        qmacro.dialogbox.close(self, dlg)
+        self.src = None
+        dialogboxes.dialogbox.close(self, dlg)
 
 
 #     ********** Delete Dialog Setup Ends Here **********

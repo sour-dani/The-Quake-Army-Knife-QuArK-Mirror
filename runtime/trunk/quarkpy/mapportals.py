@@ -9,7 +9,7 @@ Map editor portal viewer
 #
 
 import quarkx
-import qmacro
+import dialogboxes
 import qtoolbar
 from qeditor import MapColor
 from maputils import *
@@ -17,7 +17,7 @@ import mapeditor
 import mapoptions
 
 
-class PortalsDlg(qmacro.dialogbox):
+class PortalsDlg(dialogboxes.dialogbox):
 
     #
     # dialog layout
@@ -43,7 +43,7 @@ class PortalsDlg(qmacro.dialogbox):
     def __init__(self, form, editor):
         self.editor = editor
         src = quarkx.newobj(":")
-        qmacro.dialogbox.__init__(self, form, src,
+        dialogboxes.dialogbox.__init__(self, form, src,
            close = qtoolbar.button(
               self.close,
               "click here to remove portals from your map",
@@ -60,7 +60,7 @@ class PortalsDlg(qmacro.dialogbox):
             self.editor.invalidateviews()
         except:
             pass
-        qmacro.dialogbox.onclose(self, dlg)
+        dialogboxes.dialogbox.onclose(self, dlg)
 
 
 def readPortal(pos0, line):

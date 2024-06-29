@@ -18,7 +18,6 @@ Info = {
 import struct, os, math
 import quarkx
 import quarkpy.dialogboxes
-import quarkpy.qmacro
 import quarkpy.qtoolbar
 from quarkpy.qutils import *
 import ie_utils
@@ -5153,7 +5152,7 @@ class ImportDlg(quarkpy.dialogboxes.LiveEditDlg):
 
     def cancel(self, dlg):
         # Modified from dialogboxes.py
-        quarkpy.qmacro.dialogbox.close(self, dlg)
+        quarkpy.dialogboxes.dialogbox.close(self, dlg)
         self.src = None
 
 

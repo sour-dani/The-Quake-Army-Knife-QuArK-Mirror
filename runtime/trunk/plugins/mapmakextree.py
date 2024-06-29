@@ -19,7 +19,7 @@ Info = {
 import math
 import quarkx
 import maptagside
-import quarkpy.qmacro
+import quarkpy.dialogboxes
 import quarkpy.qmenu
 import quarkpy.qtoolbar
 from quarkpy.maputils import *
@@ -27,7 +27,7 @@ import quarkpy.mapbtns
 import quarkpy.mapcommands
 
 #base class for all games
-class MakeXTreeDlg(quarkpy.qmacro.dialogbox):
+class MakeXTreeDlg(quarkpy.dialogboxes.dialogbox):
   size = (300, 180)
   dfsep = 0.4     # separation at 40% between labels and edit boxes
   dlgflags = FWF_KEEPFOCUS + FWF_NORESIZE
@@ -71,7 +71,7 @@ class MakeXTreeDlg(quarkpy.qmacro.dialogbox):
     src["useblue"]     = ""
 
     # Create the dialog form and the buttons
-    quarkpy.qmacro.dialogbox.__init__(self, form, src,
+    quarkpy.dialogboxes.dialogbox.__init__(self, form, src,
       close = quarkpy.qtoolbar.button(
         self.close,
         "close this box",

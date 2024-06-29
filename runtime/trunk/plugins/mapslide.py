@@ -45,7 +45,7 @@ from quarkpy.maputils import *
 #
 # see the dialogs in quarkpy.qeditor and plugins.mapsearch
 #  for commented basic dialog code.  LiveEditDlg is a jazzed
-#  up descendant of quarkpy.qmacro.dialogbox, adapted for
+#  up descendant of quarkpy.dialogboxes.dialogbox, adapted for
 #  dialogs that are supposed to drive things around on the
 #  screen While U Watch.
 #

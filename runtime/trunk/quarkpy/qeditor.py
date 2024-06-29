@@ -9,8 +9,8 @@ Various constants and Screen Controls for editors.
 #
 
 import quarkx
+import dialogboxes
 import qtoolbar
-import qmacro
 import qutils
 from qutils import *
 import math
@@ -438,11 +438,11 @@ def commonscale(views):
 # Dialog boxes
 #
 
-class SimpleCancelDlgBox(qmacro.dialogbox):
+class SimpleCancelDlgBox(dialogboxes.dialogbox):
     "A simple dialog box with only a Cancel button."
 
     def __init__(self, form, src):
-        qmacro.dialogbox.__init__(self, form, src,
+        dialogboxes.dialogbox.__init__(self, form, src,
           cancel = qtoolbar.button(self.cancel, "close this box", qutils.ico_dict['ico_editor'], 0, "Cancel"))
 
     def cancel(self, m):
@@ -455,7 +455,7 @@ class SimpleCancelDlgBox(qmacro.dialogbox):
     def onclose(self, dlg):
         if self.src is not None:
             self.ok()
-        qmacro.dialogbox.onclose(self, dlg)
+        dialogboxes.dialogbox.onclose(self, dlg)
 
 
 

@@ -9,8 +9,8 @@ The Movement Toolbar Palette.
 #
 
 import quarkx
+import dialogboxes
 import qeditor
-import qmacro
 import qtoolbar
 from qutils import *
 from qdictionnary import Strings
@@ -19,7 +19,7 @@ from qdictionnary import Strings
 def readmpvalues(spec, mode):
     quarkx.globalaccept()
     try:
-        setup = qmacro.dialogboxes[ConfigDialog.__name__].info.src
+        setup = dialogboxes.dialogboxes[ConfigDialog.__name__].info.src
     except:
         setup = quarkx.setupsubset(mode, "Building")
     return setup[spec]
@@ -57,7 +57,7 @@ def btnclick(btn, mode=SS_MAP):
 
 
 
-class ConfigDialog(qmacro.dialogbox):
+class ConfigDialog(dialogboxes.dialogbox):
     "The Map Editor's Movement Tool Palette configuration dialog box."
 
     #
@@ -107,7 +107,7 @@ class ConfigDialog(qmacro.dialogbox):
         except:
             self.mode = menu
         setup = quarkx.setupsubset(self.mode, "Building").copy()
-        qmacro.dialogbox.__init__(self, quarkx.clickform, setup,
+        dialogboxes.dialogbox.__init__(self, quarkx.clickform, setup,
           ok = qtoolbar.button(self.close, "close this box", ico_dict['ico_editor'], 3, "Close"),
           cancel = qtoolbar.button(self.cancel, "cancel changes", ico_dict['ico_editor'], 0, "Cancel"))
 
@@ -116,7 +116,7 @@ class ConfigDialog(qmacro.dialogbox):
             quarkx.globalaccept()
             setup = quarkx.setupsubset(self.mode, "Building")
             setup.copyalldata(self.src)
-        qmacro.dialogbox.onclose(self, dlg)
+        dialogboxes.dialogbox.onclose(self, dlg)
 
     def cancel(self, reserved):
         self.src = None
@@ -124,7 +124,7 @@ class ConfigDialog(qmacro.dialogbox):
 
 
 
-class MdlConfigDialog(qmacro.dialogbox):
+class MdlConfigDialog(dialogboxes.dialogbox):
     "The Model Editor's Movement Tool Palette configuration dialog box."
 
     #
@@ -210,7 +210,7 @@ class MdlConfigDialog(qmacro.dialogbox):
         editor = mdleditor.mdleditor
         self.editor = editor
         setup = quarkx.setupsubset(self.mode, "Building").copy()
-        qmacro.dialogbox.__init__(self, quarkx.clickform, setup,
+        dialogboxes.dialogbox.__init__(self, quarkx.clickform, setup,
           applychange = qtoolbar.button(self.apply, "apply the change", ico_dict['ico_editor'], 1, "Apply"),
           ok = qtoolbar.button(self.close, "apply and close", ico_dict['ico_editor'], 3, "Close"),
           cancel = qtoolbar.button(self.cancel, "cancel changes", ico_dict['ico_editor'], 0, "Cancel"))
@@ -252,7 +252,7 @@ class MdlConfigDialog(qmacro.dialogbox):
                     except:
                         skindrawobject = None
                     mdlhandles.buildskinvertices(self.editor, SkinView1, self.editor.layout, self.editor.Root.currentcomponent, skindrawobject)
-        qmacro.dialogbox.onclose(self, dlg)
+        dialogboxes.dialogbox.onclose(self, dlg)
 
     def cancel(self, reserved):
         self.src = None

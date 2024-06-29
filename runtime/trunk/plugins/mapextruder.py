@@ -19,6 +19,7 @@ Info = {
 }
 
 import quarkx
+import quarkpy.dialogboxes
 import quarkpy.qhandles
 import quarkpy.qmacro
 import quarkpy.qmenu
@@ -36,7 +37,6 @@ from quarkpy.qeditor import deg2rad
 from quarkpy.maputils import *
 from tagging import *
 #from faceutils import *
-import quarkpy.dialogboxes
 from quarkpy.qeditor import matrix_rot_z
 from quarkpy.qeditor import matrix_rot_y
 from quarkpy.qeditor import MapColor
@@ -210,7 +210,7 @@ class TextureDlg (quarkpy.dialogboxes.placepersistent_dialogbox):
           dup, editor = info
           editor.layout.explorer.sellist = [dup]
         quarkx.settimer(restore,(dup, editor), 20)
-        quarkpy.qmacro.dialogbox.close(self, dlg)
+        quarkpy.dialogboxes.dialogbox.close(self, dlg)
 
 def tex_pos(self):
   editor = mapeditor()
