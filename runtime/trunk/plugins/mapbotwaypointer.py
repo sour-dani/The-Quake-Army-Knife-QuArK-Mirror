@@ -21,6 +21,7 @@ import quarkx
 import quarkpy.qmacro
 import quarkpy.mapmenus
 import quarkpy.qmenu
+import quarkpy.qutils
 from quarkpy.qeditor import *
 from quarkpy.mapduplicator import *
 from quarkpy.qhandles import *
@@ -439,7 +440,7 @@ def macro_botwaypointer_savefile(self):
 
     last_file = dup["last_file"]
 
-    files = quarkx.filedialogbox("Save bot waypoint file...", "", gBotFileExtFilter, 1, last_file)
+    files = quarkx.filedialogbox("Save bot waypoint file...", "", gBotFileExtFilter, quarkpy.qutils.SAVEDIALOG, last_file)
     if len(files) == 1:
         file_ext = os.path.splitext(files[0])[1].lower()
         if file_ext == ".wpt":

@@ -25,7 +25,7 @@ def ExportLocalTexturesClick(m):
     editor = quarkpy.qeditor.mapeditor()
     if editor is None:
         return
-    files = quarkx.filedialogbox("Export local texture-names to...", "*.txt", ["*.txt", "Text files (*.txt)"], 1, "texturenames.txt")
+    files = quarkx.filedialogbox("Export local texture-names to...", "*.txt", ["*.txt", "Text files (*.txt)"], SAVEDIALOG, "texturenames.txt")
     if len(files) != 0:
         text = ""
         for tex in quarkx.texturesof([editor.Root]):
