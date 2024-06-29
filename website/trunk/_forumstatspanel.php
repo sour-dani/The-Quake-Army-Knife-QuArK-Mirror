@@ -7,7 +7,7 @@ require_once('_settings-database.php');
 global $Settings;
 global $ForumStatsRecentPosts, $ForumStatsRecentTopics, $ForumStatsRecentEvents;
 
-$forumstats = '';
+$bodytext = '';
 
 $WhosOnline = ssi_whosOnline('');
 $RecentPosts = ssi_recentPosts($Settings[$ForumStatsRecentPosts]->GetCurrentValue(), null, null, '');
@@ -23,45 +23,41 @@ $RecentEvents = ssi_recentEvents($Settings[$ForumStatsRecentEvents]->GetCurrentV
 
 if (!empty($WhosOnline))
 {
-	$forumstats .= '<p>';
-	$forumstats .= 'Number of users online: '.count($WhosOnline['users']);
-	$forumstats .= '<br>';
-	$forumstats .= 'Number of guests online: '.$WhosOnline['guests'];
-	$forumstats .= '</p>';
+	$bodytext .= '<p>Number of users online: '.count($WhosOnline['users']).'<br>Number of guests online: '.$WhosOnline['guests'].'</p>';
 }
 
 if (count($RecentPosts) !== 0)
 {
-	$forumstats .= '<p style="margin-bottom: 0px;"><b>Recent posts:</b></p>';
-	$forumstats .= '<ul class="nowhitespace">';
+	$bodytext .= '<p style="margin-bottom: 0px;"><b>Recent posts:</b></p>';
+	$bodytext .= '<ul class="nowhitespace">';
 	foreach ($RecentPosts as $RecentPost => $CurrentRecentPost)
 	{
-		$forumstats .= '<li>'.$CurrentRecentPost['link'].'</li>';
+		$bodytext .= '<li>'.$CurrentRecentPost['link'].'</li>';
 	}
-	$forumstats .= '</ul>';
+	$bodytext .= '</ul>';
 }
 
 if (count($RecentTopics) !== 0)
 {
-	$forumstats .= '<p style="margin-bottom: 0px;"><b>Recent topics:</b></p>';
-	$forumstats .= '<ul class="nowhitespace" style="display: inline;">';
+	$bodytext .= '<p style="margin-bottom: 0px;"><b>Recent topics:</b></p>';
+	$bodytext .= '<ul class="nowhitespace" style="display: inline;">';
 	foreach ($RecentTopics as $CurrentRecentTopic)
 	{
-		$forumstats .= '<li>'.$CurrentRecentTopic['link'].'</li>';
+		$bodytext .= '<li>'.$CurrentRecentTopic['link'].'</li>';
 	}
-	$forumstats .= '</ul>';
+	$bodytext .= '</ul>';
 }
 
 if ((!is_null($RecentEvents)) and (count($RecentEvents) !== 0)) #Note: A bug in SMF: this function can return NULL instead of an empty array if this functionality has been disabled.
 {
-	$forumstats .= '<p style="margin-bottom: 0px;"><b>Recent events:</b></p>';
-	$forumstats .= '<ul class="nowhitespace" style="display: inline;">';
+	$bodytext .= '<p style="margin-bottom: 0px;"><b>Recent events:</b></p>';
+	$bodytext .= '<ul class="nowhitespace" style="display: inline;">';
 	foreach ($RecentEvents as $RecentEvent => $CurrentRecentEvent)
 	{
-		$forumstats .= '<li>'.$CurrentRecentEvent['link'].'</li>';
+		$bodytext .= '<li>'.$CurrentRecentEvent['link'].'</li>';
 	}
-	$forumstats .= '</ul>';
+	$bodytext .= '</ul>';
 }
 
-pageSidePanel('', 'Forum stats...', $forumstats);
+pageSidePanel('', 'Forum stats...', $bodytext);
 ?>

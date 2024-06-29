@@ -6,9 +6,7 @@ require_once('_image_functions.php');
 global $mainroot;
 global $keepinframe;
 
-$donatebutton = '<div class="centered"><a ' . $keepinframe . 'href="'.$mainroot.'donate.php">';
-$donatebutton .= DisplayImage('supportus');
-$donatebutton .= '</a></div>';
+$donatebutton = '<div class="centered"><a ' . $keepinframe . 'href="'.$mainroot.'donate.php">'.DisplayImage('supportus').'</a></div>';
 
 pageSidePanel('', GetLanguageString('Donate'), $donatebutton);
 

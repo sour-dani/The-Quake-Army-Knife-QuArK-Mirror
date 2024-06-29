@@ -14,9 +14,7 @@ $noticetxts = array('Remember the good old days? Look in the <a ' . $keepinframe
 #                   ,'<a rel="noopener" target="_blank" href="http://www.inktank.com/"><img src="'.$picsroot.'smlbanners/angst88_31.gif" width=88 height=31 alt="Angst Technology"></a> comic strip.' # Taken out due to broken link
 );
 
-$bodytext = '<div class="centered">';
-$bodytext .= $noticetxts[array_rand($noticetxts, 1)];
-$bodytext .= '</div>';
+$bodytext = '<div class="centered">'.$noticetxts[array_rand($noticetxts, 1)].'</div>';
 
 pageSidePanel('', 'Notice...', $bodytext);
 ?>
