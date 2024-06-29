@@ -31,7 +31,3 @@ def LoadPlugins(beginning):
                 module = __import__(file[:-3], globals(), locals())
                 if not (module in LoadedPlugins):
                     LoadedPlugins.append(module)
-
-
-LoadPlugins("Q_")   # immediately loads plug-ins whose name
-                    # begins with Q_

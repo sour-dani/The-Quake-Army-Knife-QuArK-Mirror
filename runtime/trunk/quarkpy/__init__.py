@@ -113,6 +113,10 @@ def RunQuArK():
     qmacro.helpfn[s] = "Help6"
     quarkx.helpmenuitem(s)
 
+    # Import the plug-ins
+    import plugins
+    plugins.LoadPlugins("Q_")
+
 # Revert everything we did here
 def QuArK_shutdown():
     import sys
