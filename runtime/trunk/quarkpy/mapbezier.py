@@ -722,16 +722,16 @@ class CPHandle(qhandles.GenericHandle):
         pickAllItem = qmenu.item("Pick All", pickAllClick, "|Selects all control points.|maped.curves.html")
         unPickAllItem = qmenu.item("Unpick All", unPickAllClick, "|Unselects all control points.|maped.curves.html")
 
-        picklist = [qmenu.sep]
+        picklist = []
         found = 0
         if picked is not None:
             for ind in picked:
                 if ind==index:
-                    picklist = picklist + [unPickItem]
+                    picklist.append(unPickItem)
                     found = 1
                     break
         if found == 0:
-            picklist = picklist + [pickItem]
+            picklist.append(pickItem)
 
         found = 0
         if picked is not None:
@@ -743,10 +743,10 @@ class CPHandle(qhandles.GenericHandle):
                         break
 
         if found < self.b2.W:
-            picklist = picklist + [pickRowItem]
+            picklist.append(pickRowItem)
 
         if found > 0:
-            picklist = picklist + [unPickRowItem]
+            picklist.append(unPickRowItem)
 
         found = 0
         if picked is not None:
@@ -758,21 +758,21 @@ class CPHandle(qhandles.GenericHandle):
                         break
 
         if found < self.b2.H:
-            picklist = picklist + [pickColItem]
+            picklist.append(pickColItem)
 
         if found > 0:
-            picklist = picklist + [unPickColItem]
+            picklist.append(unPickColItem)
 
 
         if picked is None or len(picked) < self.b2.W*self.b2.H:
-            picklist = picklist + [pickAllItem]
+            picklist.append(pickAllItem)
 
         if picked is not None:
-            picklist = picklist + [unPickAllItem]
+            picklist.append(unPickAllItem)
 
-        #picklist = [qmenu.sep, pickItem, unPickItem, unPickAllItem]
+        #picklist = [pickItem, unPickItem, unPickAllItem]
 
-        return [mesh, joinitem, knititem, alignrow, aligncol] + picklist+[qmenu.sep] + patchmenu
+        return [mesh, joinitem, knititem, alignrow, aligncol, qmenu.sep] + picklist + [qmenu.sep] + patchmenu
 
     def drawcpnet(self, view, cv, cp=None):
         #
@@ -1130,7 +1130,6 @@ class CenterHandle(maphandles.CenterHandle):
 
     # tiglari
     def menu(self, editor, view):
-
         return mapentities.CallManager("menu", self.centerof, editor)
     # /tiglari
 
