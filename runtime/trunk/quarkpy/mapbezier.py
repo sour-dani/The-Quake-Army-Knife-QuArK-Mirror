@@ -772,7 +772,7 @@ class CPHandle(qhandles.GenericHandle):
 
         #picklist = [pickItem, unPickItem, unPickAllItem]
 
-        return [mesh, joinitem, knititem, alignrow, aligncol, qmenu.sep] + picklist + [qmenu.sep] + patchmenu
+        return qmenu.catmenus([mesh, joinitem, knititem, alignrow, aligncol], picklist, patchmenu)
 
     def drawcpnet(self, view, cv, cp=None):
         #

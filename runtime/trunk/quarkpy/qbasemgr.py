@@ -187,9 +187,7 @@ class BaseLayout:
          #
          # NOTE: this menu is accessed by position in the function "layoutmenuclick"
          #
-        return [Mod1, Mod2, Mod3, New3D, NewFull3D, NewFancyFull3D, qmenu.sep, DrM1, DrM2,
-         DrM3, qmenu.sep, PanelRight], {"Ctrl+1":Mod1, "Ctrl+2":Mod2,
-         "Ctrl+3":Mod3, "Ctrl+4": New3D, "Ctrl+5": NewFull3D, "Ctrl+6": NewFancyFull3D}
+        return qmenu.catmenus([Mod1, Mod2, Mod3, New3D, NewFull3D, NewFancyFull3D], [DrM1, DrM2, DrM3], [PanelRight]), {"Ctrl+1":Mod1, "Ctrl+2":Mod2, "Ctrl+3":Mod3, "Ctrl+4": New3D, "Ctrl+5": NewFull3D, "Ctrl+6": NewFancyFull3D}
 
     def layoutmenuclick(self, menu):
         common = None
@@ -543,13 +541,11 @@ class BaseLayout:
             item.grid = g
             item.state = g==grid and qmenu.radiocheck
             gridmenu.append(item)
-        gridmenu.append(qmenu.sep)
         if grid==0:
             txt = "&Other..."
         else:
             txt = "&Other...\t%s" % quarkx.ftos(grid)
-        gridmenu.append(qmenu.item(txt, self.editor.customgrid))
-        return gridmenu
+        return qmenu.catmenus(gridmenu, [qmenu.item(txt, self.editor.customgrid)])
 
 
     def screencenter(self):

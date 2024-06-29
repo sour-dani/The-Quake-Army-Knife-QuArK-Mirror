@@ -76,13 +76,15 @@ def macroclick(m):
         quarkx.clickform.macro(m.macro)   # returns True (1) or False (0) depending on success or failure
 
 
-def catmenus(list1, list2):
-    "Concat the two lists of menu items, adding a separator if required."
-    if len(list1):
-        if len(list2):
-            return list1 + [sep] + list2
-        return list1
-    return list2
+def catmenus(*menus):
+    "Concat lists of menu items into one list, adding a separator if required."
+    concat = []
+    for menu in menus:
+        if len(menu):
+            if len(concat):
+                concat.append(sep)
+            concat += menu
+    return concat
 
 
 

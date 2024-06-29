@@ -651,21 +651,10 @@ def getzoommenu(zoombtn):
             m.state = qmenu.radiocheck
             otherstate = 0
         items.append(m)
-    items.append(qmenu.sep)
     m = qmenu.item("(%.2f)\tOther..." % scale, customzoom)
     m.state = otherstate
-    items.append(m)
-    return items
+    return qmenu.catmenus(items, [m])
 
-
-#def foreachcontrol(callback):
-#    def test(panel, callback=callback):
-#        for c in panel.controls():
-#            callback(c)
-#            if type(c)==quarkx.panel_type:
-#                test(c)
-#    if quarkx.clickform is not None:
-#        test(quarkx.clickform.mainpanel)
 
 
 #
