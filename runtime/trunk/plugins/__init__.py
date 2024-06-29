@@ -15,8 +15,7 @@ Plug-ins Launcher
 #   mdl*.py    loaded only when a model editor opens
 
 
-import nt     # note: this is not portable, but I want to avoid
-              # to include os.py in the MiniPython distribution.
+import os
 import quarkx
 import quarkpy.qutils
 
@@ -24,7 +23,7 @@ LoadedPlugins = []
 
 def LoadPlugins(beginning):
     for dir in __path__:
-        for file in nt.listdir(dir):
+        for file in os.listdir(dir):
             f = file.upper()
             if (f[-3:]=='.PY') and (f[:len(beginning)]==beginning):
                 quarkx.log("Loading plugin: %s" % (file, ), quarkpy.qutils.LOG_VERBOSE)
