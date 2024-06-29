@@ -131,6 +131,12 @@ $GamesQRKGamePatches['MOHAAS'][] = new cQRKGamePatch('mohaas_patch_20_to_211.exe
 #$GamesQRKGamePatches['MOHAAS'][] = new cQRKGamePatch('mohaas_patch_211_to_215.exe','http://www.fileplanet.com/121172/120000/fileinfo/MOHAA:-Spearhead-v2.11---v2.15-Patch');
 $GamesQRKGamePatches['MOHAAS'][] = new cQRKGamePatch('mohaas_patch_211_to_215.zip','http://www.gamefront.com/files/826704/mohaas_patch_211_to_215.zip');
 
+#Medal of Honor: Pacific Assault
+$GamesQRKGamePatches['MOHPA'] = array();
+#$GamesQRKGamePatches['MOHPA'][] = new cQRKGamePatch('medal_of_honor_pacific_assault_patch.exe','https://www.gamefront.com/games/medal-of-honor-pacific-assault/file/medal-of-honor-pacific-assault-patch');
+$GamesQRKGamePatches['MOHPA'][] = new cQRKGamePatch('mohpa_1_0_to_1_2.exe','https://www.gamefront.com/games/medal-of-honor-pacific-assault/file/mohpa-patch-1-0-to-1-2');
+$GamesQRKGamePatches['MOHPA'][] = new cQRKGamePatch('mohpa_1_1_to_1_2.exe','https://www.gamefront.com/games/medal-of-honor-pacific-assault/file/mohpa-patch-1-1-to-1-2');
+
 #Ominous Horizons: A Paladin's Calling
 $GamesQRKGamePatches['OH'   ] = array();
 $GamesQRKGamePatches['OH'   ][] = new cQRKGamePatch('latest_oh.exe',$downloadroot.'latest_oh.exe','Ominous Horizons Patch 1.1 (932 KB)');

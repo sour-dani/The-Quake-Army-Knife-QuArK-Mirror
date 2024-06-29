@@ -325,8 +325,9 @@ $GamesQRKTools["MOHAAS"][] = new cQRKTools("mohaas_sdk_install.exe","http://www.
 $GamesQRKTools["MOHAAS"][] = new cQRKTools(": : See Medal of Honor: Allied Assault : : :",NULL);
 
 # Medal of Honor: Pacific Assault
-#$GamesQRKTools["MOHPA"] = array();
+$GamesQRKTools["MOHPA"] = array();
 #$GamesQRKTools["MOHPA"][] = new cQRKTools("mdk_final_1.1_broadband.zip","http://www.fileplanet.com/148386/140000/fileinfo/Medal-of-Honor:-Pacific-Assault---Mod-Developer's-Kit-v1.1");
+$GamesQRKTools["MOHPA"][] = new cQRKTools("mdk_final_11.zip","https://www.moddb.com/games/medal-of-honor-pacific-assault/downloads/modification-developers-kit");
 
 # Soldier of Fortune 2
 $GamesQRKTools["SOF2" ] = array();

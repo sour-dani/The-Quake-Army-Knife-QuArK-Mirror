@@ -320,6 +320,10 @@ $LinksGame[] = new cLinkGroup('Medal of Honor - Allied Assault', 'MOHAA', array(
           ,new cLink('OpenMoHAA', 'http://openmohaa.sourceforge.net/', 'a free game engine capable of running Medal of Honor: Allied Assault contents')
            ));
 
+$LinksGame[] = new cLinkGroup('Medal of Honor - Pacific Assault', 'MOHPA', array(
+           new cLink('PAPub.com Pacific Assault Maps', 'http://www.papub.com/', 'Home of the PA Mapper', 'https://web.archive.org/web/20050509080155/http://www.papub.com/')
+           ));
+
 $LinksGame[] = new cLinkGroup('Neverball', 'NB', array(
            new cLink('Neverforum', 'http://forum.nevercorner.net/', 'A nice forum to talk about Neverball and Nevertable', 'https://web.archive.org/web/20160205061230/http://forum.nevercorner.net/')
           ,new cLink('Neverwiki', 'http://wiki.nevercorner.net/', 'Your source for community-driven Neverball/Neverputt information!', 'https://web.archive.org/web/20151122134450/http://wiki.nevercorner.net/doku.php')

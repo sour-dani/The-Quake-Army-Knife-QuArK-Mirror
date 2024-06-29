@@ -331,6 +331,7 @@ $Games[] = new cGame(NULL ,'CoD20' ,'Call of Duty: Modern Warfare III' ,'CoD20' 
                     ,array('Activision')
                     ,NULL
                     );
+//FIXME: 'Call of Duty: Black Ops 6'?
 $Games[] = new cGame(NULL ,'C' ,'Catechumen' ,'C' ,'c.png'
                     ,NULL ,'https://en.wikipedia.org/wiki/Catechumen_(video_game)' ,'G3D', FALSE #http://www.catechumen.com
                     ,'Catechumen is a first person action/adventure Christian game where your goal is to defeat the forces of evil, descending deeper into the depths of the Earth and rescue your captured brethren.'
@@ -472,6 +473,7 @@ $Games[] = new cGame(NULL ,'DDAY' ,'D-Day: Normandy' ,'DDAY' ,'dday.png'
                     ,NULL
                     ,NULL
                     );
+//FIXME: 'Deadlock' (Valve)?
 $Games[] = new cGame(NULL ,'DE' ,'Dear Esther' ,'DE' ,'dearesther.png'
                     ,'http://dear-esther.com/' ,'https://en.wikipedia.org/wiki/Dear_Esther' ,'Source', FALSE
                     ,'A deserted island...a lost man...memories of a fatal crash...a book written by a dying explorer.'
@@ -557,6 +559,7 @@ $Games[] = new cGame(NULL ,'DM5' ,'Doom Eternal' ,'DM5' ,'dm5.png'
                     ,array('Bethesda')
                     ,NULL
                     );
+//FIXME: 'Doom: The Dark Ages'?
 $Games[] = new cGame(NULL ,'DB' ,'Doombringer' ,'DB' ,NULL
                     ,'https://www.doombringer.eu/' ,NULL ,'DarkPlaces', FALSE
                     ,'A high octane FPS cavalcade for the distinguished gamer.'
@@ -1004,13 +1007,13 @@ $Games[] = new cGame('630' ,'MOHAAS' ,'Medal of Honor: Allied Assault: Spearhead
                     ,'MOHAA');
 //https://en.wikipedia.org/wiki/Medal_of_Honor:_Rising_Sun //Other platforms
 //https://en.wikipedia.org/wiki/Medal_of_Honor:_Infiltrator //Other platforms
-/*$Games[] = new cGame(NULL ,'MOHPA' ,'Medal of Honor: Pacific Assault' ,'MOHPA' ,'mohpa.gif'
-                    ,NULL ,'https://en.wikipedia.org/wiki/Medal_of_Honor:_Pacific_Assault' ,'Jupiter', TRUE
+$Games[] = new cGame(NULL ,'MOHPA' ,'Medal of Honor: Pacific Assault' ,'MOHPA' ,'mohpa.gif'
+                    ,NULL ,'https://en.wikipedia.org/wiki/Medal_of_Honor:_Pacific_Assault' ,'Quake 3', TRUE #with Ritual's custom SDK
                     ,'Fight for Victory in the Pacific.'
                     ,array('2015' ,'TKO')
-                    ,array('EA Games')
+                    ,array('EA')
                     ,NULL
-                    );*/ /*Incompatible engine*/
+                    );
 //https://en.wikipedia.org/wiki/Medal_of_Honor:_European_Assault //Other platforms
 //https://en.wikipedia.org/wiki/Medal_of_Honor:_Heroes //Other platforms
 //https://en.wikipedia.org/wiki/Medal_of_Honor:_Vanguard //Other platforms
