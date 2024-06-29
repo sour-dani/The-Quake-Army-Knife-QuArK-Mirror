@@ -24,7 +24,7 @@ import quarkpy.mapduplicator
 import quarkpy.qhandles
 from quarkpy import qutils
 import quarkpy.mapsearch
-from quarkpy import dlgclasses
+import quarkpy.dialogboxes
 import quarkpy.qmacro
 import quarkpy.mapselection
 import quarkpy.mapmenus
@@ -304,7 +304,7 @@ quarkpy.mapmenus.BackgroundMenu = backmenu
 # A Live Edit dialog.  Closely modelled on the Microbrush
 #  H/K dialog, so look at that for enlightenment
 #
-class FindCameraPosDlg(dlgclasses.LiveEditDlg):
+class FindCameraPosDlg(quarkpy.dialogboxes.LiveEditDlg):
     #
     # dialog layout
     #

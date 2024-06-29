@@ -87,7 +87,7 @@ Info = {
 
 import struct, os, math
 import quarkx
-import quarkpy.dlgclasses
+import quarkpy.dialogboxes
 import quarkpy.qmacro
 import quarkpy.qtoolbar
 from quarkpy.qutils import *
@@ -3247,14 +3247,14 @@ def UIExportDialog(root, filename, editor, comp_group):
 ##########################################################
 # DIALOG SECTION (for frames to export to animation files)
 ##########################################################
-class AnimDlg(quarkpy.dlgclasses.LiveEditDlg):
+class AnimDlg(quarkpy.dialogboxes.LiveEditDlg):
     size = (250, 500)
     dlgflags = FWF_KEEPFOCUS
     dfsep = 0.8      # sets 80% for labels and the rest for a check box.
     dlgdef = """ """ # The dialog is created in the setup function to allow self generated items.
 
     def cancel(self, dlg):
-        # Modified from dlgclasses.py
+        # Modified from dialogboxes.py
         quarkpy.qmacro.dialogbox.close(self, dlg)
         self.src = None
 

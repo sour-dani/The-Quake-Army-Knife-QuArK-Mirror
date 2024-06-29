@@ -1,12 +1,12 @@
+"""   QuArK  -  Quake Army Knife
 
-######################################
+Dialog boxes
+"""
 #
-#                  Dialog Classes
+# Copyright (C) 1996-99 Armin Rigo
+# THIS FILE IS PROTECTED BY THE GNU GENERAL PUBLIC LICENCE
+# FOUND IN FILE "COPYING.TXT"
 #
-#              works with quark 5.10
-#          (and probably earlier versions)
-#
-######################################
 
 import quarkx
 import qmacro

@@ -27,7 +27,7 @@ import quarkpy.mapeditor
 import quarkpy.maptools
 import quarkpy.mapbtns
 import mapdragmodes
-import quarkpy.dlgclasses
+import quarkpy.dialogboxes
 # For hollowing Torus
 import plugins.mapcsg
 
@@ -47,7 +47,7 @@ def newfinishdrawing(editor, view, oldfinish=quarkpy.mapeditor.MapEditor.finishd
 
 ########### This section makes the Basic Distortion Dialog input ###############
 
-class DistortionDlg(quarkpy.dlgclasses.LiveEditDlg):
+class DistortionDlg(quarkpy.dialogboxes.LiveEditDlg):
     "The Quick Object Makers Basic Input dialog box."
     #
     # dialog layout
@@ -141,7 +141,7 @@ def DistortionClick(m):
 
 ########### This section makes the  Torus Distortion Dialog input ###############
 
-class TorusDistortionDlg(quarkpy.dlgclasses.LiveEditDlg):
+class TorusDistortionDlg(quarkpy.dialogboxes.LiveEditDlg):
     "The Quick Object Makers Torus Input dialog box."
     #
     # dialog layout

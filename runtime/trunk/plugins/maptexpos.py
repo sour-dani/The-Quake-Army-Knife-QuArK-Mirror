@@ -25,11 +25,11 @@ import math
 import quarkx
 import quarkpy.mapentities
 import quarkpy.qmenu
-import quarkpy.dlgclasses
+import quarkpy.dialogboxes
 from quarkpy.maputils import *
 
 
-class TexPosDlg (quarkpy.dlgclasses.LiveEditDlg):
+class TexPosDlg (quarkpy.dialogboxes.LiveEditDlg):
     #
     # dialog layout
     #

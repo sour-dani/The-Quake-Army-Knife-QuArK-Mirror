@@ -22,7 +22,7 @@ import quarkx
 import quarkpy.qmacro
 import quarkpy.qmenu
 import quarkpy.qtoolbar
-import quarkpy.dlgclasses
+import quarkpy.dialogboxes
 import quarkpy.mdleditor
 import quarkpy.mdlhandles
 import quarkpy.mdlutils
@@ -4580,7 +4580,7 @@ def PaintManager(editor, view, x, y, flagsmouse, modelfacelist):
                 SkinView(editor, view, x, y, flagsmouse, skin, Pal, skinuvlist, pixU, pixV, tb2, Opacity)
 
 
-class SelectColors(quarkpy.dlgclasses.LiveEditDlg):
+class SelectColors(quarkpy.dialogboxes.LiveEditDlg):
     "To open the Color Selection Dialog."
 
     dlgflags = FWF_KEEPFOCUS | FWF_NORESIZE # Keeps dialog box open & a fixed size.

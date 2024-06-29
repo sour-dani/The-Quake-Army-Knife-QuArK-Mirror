@@ -22,7 +22,7 @@ import quarkpy.mdleditor
 import quarkpy.mdlentities
 import quarkpy.mdlduplicator
 from quarkpy import qutils
-import quarkpy.dlgclasses
+import quarkpy.dialogboxes
 import quarkpy.qhandles
 import quarkpy.qmacro
 import quarkpy.qmenu
@@ -328,7 +328,7 @@ quarkpy.qhandles.EyePosition.menu = newEyePosMenu
 
 # A Live Edit dialog.  Closely modelled on the Microbrush
 #  H/K dialog, so look at that for enlightenment.
-class FindCameraPosDlg(quarkpy.dlgclasses.LiveEditDlg):
+class FindCameraPosDlg(quarkpy.dialogboxes.LiveEditDlg):
     editor = mapeditor()
     endcolor = AQUA
     size = (330,160)

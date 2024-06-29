@@ -12,7 +12,7 @@ import quarkx
 from qeditor import MapColor
 from mdlutils import *
 import mdlhandles
-import dlgclasses
+import dialogboxes
 from qeditor import ico_dict # Get the dictionary list of all icon image files available.
 import qmacro
 import qtoolbar              # Get the toolbar functions to make buttons with.
@@ -721,7 +721,7 @@ def AddStuff(editor):
             WeightsDlgPage = 0
 
 
-class WeightsDlg(dlgclasses.LiveEditDlg):
+class WeightsDlg(dialogboxes.LiveEditDlg):
     # Dialog layout
     size = (290, 300)
     dlgflags = qutils.FWF_KEEPFOCUS
@@ -729,7 +729,7 @@ class WeightsDlg(dlgclasses.LiveEditDlg):
     dlgdef = """ """ # The dialog is created in the setup function to allow self generated items.
 
     def cancel(self, dlg):
-        # Modified from dlgclasses.py
+        # Modified from dialogboxes.py
         qmacro.dialogbox.close(self, dlg)
         self.src = None
 

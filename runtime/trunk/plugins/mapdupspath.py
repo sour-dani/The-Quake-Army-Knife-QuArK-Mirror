@@ -22,7 +22,7 @@ import quarkpy.maphandles
 import quarkpy.qhandles
 import quarkpy.qmacro
 import quarkpy.qmenu
-import quarkpy.dlgclasses
+import quarkpy.dialogboxes
 import math
 StandardDuplicator = quarkpy.mapduplicator.StandardDuplicator
 DuplicatorManager = quarkpy.mapduplicator.DuplicatorManager
@@ -112,7 +112,7 @@ def getends(group,x_axis):
 #
 # Position following path points
 #
-class PositionFollowingDlg (quarkpy.dlgclasses.LiveEditDlg):
+class PositionFollowingDlg (quarkpy.dialogboxes.LiveEditDlg):
     #
     # dialog layout
     #

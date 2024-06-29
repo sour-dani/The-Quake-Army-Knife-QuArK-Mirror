@@ -26,7 +26,7 @@ import quarkx
 import quarkpy.qhandles
 import quarkpy.qmenu
 import tagging
-import quarkpy.dlgclasses
+import quarkpy.dialogboxes
 import quarkpy.mapeditor
 import quarkpy.mapentities
 import quarkpy.maphandles
@@ -38,7 +38,7 @@ import math
 #
 # This is a definition of the vertex-movement dialog
 # The `live edit dialog' is a rather fancy critter defined
-#  in quarkpy/dlgclasses.  Don't worry about its innards,
+#  in quarkpy/dialogboxes.  Don't worry about its innards,
 #  but you'll see how it's used further below.
 #
 # Read http://..adv.quarkpy.gui.html#dialogs in the infobase
@@ -52,7 +52,7 @@ import math
 #   different Typ's...
 #
 
-class VtxDragDlg(quarkpy.dlgclasses.LiveEditDlg):
+class VtxDragDlg(quarkpy.dialogboxes.LiveEditDlg):
     #
     # dialog layout
     #

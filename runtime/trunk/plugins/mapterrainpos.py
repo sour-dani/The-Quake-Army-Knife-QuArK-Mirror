@@ -23,7 +23,7 @@ Info = {
 
 import math
 import quarkx
-import quarkpy.dlgclasses
+import quarkpy.dialogboxes
 from quarkpy.maputils import *
 import quarkpy.mapeditor
 import quarkpy.mapcommands
@@ -36,7 +36,7 @@ import plugins.mapterrainmodes
 ### plugins\mapmovetrianglevertex.py in this case.
 scalex, scaley, tilt, shear, flat = None, None, None, None, quarkx.setupsubset(SS_MAP, "Options")["Selector1_force"]
 
-class Selector1Dlg(quarkpy.dlgclasses.LiveEditDlg):
+class Selector1Dlg(quarkpy.dialogboxes.LiveEditDlg):
     "The Terrain Generator Basic Selector dialog box."
     #
     # dialog layout
@@ -158,7 +158,7 @@ def Selector1Click(m):
 ### Globals only used in this Dialog
 facetex = org = sc = sa = None
 
-class PaintBrushDlg(quarkpy.dlgclasses.LiveEditDlg):
+class PaintBrushDlg(quarkpy.dialogboxes.LiveEditDlg):
     "The Terrain Generator Paint Brush dialog box."
     #
     # dialog layout
@@ -505,7 +505,7 @@ def PaintBrushClick(m):
 
 ### Start of 3D views Options Dialog ###
 
-class Options3DviewsDlg(quarkpy.dlgclasses.LiveEditDlg):
+class Options3DviewsDlg(quarkpy.dialogboxes.LiveEditDlg):
     "The Terrain Generator 3D views Options dialog box."
     #
     # dialog layout

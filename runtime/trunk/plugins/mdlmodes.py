@@ -19,7 +19,7 @@ Info = {
 
 
 import quarkx
-import quarkpy.dlgclasses
+import quarkpy.dialogboxes
 import quarkpy.qhandles
 import quarkpy.qmenu
 import quarkpy.qtoolbar
@@ -90,7 +90,7 @@ Lock_Z = quarkpy.qmenu.item("Lock &Z", lockzclick, "lock z axis movement")  # Co
 
 ### Start of 3D views Options Dialog ###
 
-class OptionsViewsDlg(quarkpy.dlgclasses.LiveEditDlg):
+class OptionsViewsDlg(quarkpy.dialogboxes.LiveEditDlg):
     "The Model Editors Views Options dialog box."
     #
     # dialog layout

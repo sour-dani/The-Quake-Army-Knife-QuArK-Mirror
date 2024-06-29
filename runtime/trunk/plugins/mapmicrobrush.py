@@ -18,7 +18,7 @@ Info = {
 
 
 from quarkpy.maputils import *
-import quarkpy.dlgclasses
+import quarkpy.dialogboxes
 import quarkpy.mapsearch
 import quarkpy.qmacro
 import quarkpy.qmenu
@@ -38,7 +38,7 @@ import quarkx
 #   In principle, this could be fixed.
 #
 
-class MicroKillDlg(quarkpy.dlgclasses.LiveEditDlg):
+class MicroKillDlg(quarkpy.dialogboxes.LiveEditDlg):
     #
     # dialog layout
     #

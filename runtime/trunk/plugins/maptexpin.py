@@ -21,7 +21,7 @@ Info = {
    "quark":         "Version 6.x" }
 
 import quarkx
-import quarkpy.dlgclasses
+import quarkpy.dialogboxes
 import quarkpy.mapeditor
 import quarkpy.maphandles
 import quarkpy.qmacro
@@ -35,11 +35,11 @@ from quarkpy.qeditor import MapColor
 #
 # Pinning dialog
 #
-#  ppdb's (quarkpy.dlgclasses) are set up like ordinary ones
+#  ppdb's (quarkpy.dialogboxes) are set up like ordinary ones
 #   except for an additional initialization parameter 'label'
 #   that is used as a key for storing size/position info.
 #
-class VtxPinDlg(quarkpy.dlgclasses.placepersistent_dialogbox):
+class VtxPinDlg(quarkpy.dialogboxes.placepersistent_dialogbox):
     #
     # dialog layout
     #
@@ -79,7 +79,7 @@ class VtxPinDlg(quarkpy.dlgclasses.placepersistent_dialogbox):
        self.face = face
        self.repin = repin
 
-       quarkpy.dlgclasses.placepersistent_dialogbox.__init__(self, form, self.src, label,
+       quarkpy.dialogboxes.placepersistent_dialogbox.__init__(self, form, self.src, label,
           cancel = quarkpy.qtoolbar.button(
             self.cancel,
             "Cancel dialog",

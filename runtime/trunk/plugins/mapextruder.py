@@ -36,7 +36,7 @@ from quarkpy.qeditor import deg2rad
 from quarkpy.maputils import *
 from tagging import *
 #from faceutils import *
-import quarkpy.dlgclasses
+import quarkpy.dialogboxes
 from quarkpy.qeditor import matrix_rot_z
 from quarkpy.qeditor import matrix_rot_y
 from quarkpy.qeditor import MapColor
@@ -133,7 +133,7 @@ def write3tup(vec):
 #
 #  -- Duplicator texturing stuff, currently not used
 #
-class TextureDlg (quarkpy.dlgclasses.placepersistent_dialogbox):
+class TextureDlg (quarkpy.dialogboxes.placepersistent_dialogbox):
     #
     # dialog layout
     #
@@ -158,7 +158,7 @@ class TextureDlg (quarkpy.dlgclasses.placepersistent_dialogbox):
         self.editor = editor
         self.src = quarkx.newobj(":")
 
-        quarkpy.dlgclasses.placepersistent_dialogbox.__init__(self, form, self.src, label,
+        quarkpy.dialogboxes.placepersistent_dialogbox.__init__(self, form, self.src, label,
            exit = quarkpy.qtoolbar.button(
             self.commit,
             "Commit your texture changes and return to regular editing\n (you can't just bail; instead, Undo your changes then commit)\n (if, in spite of my efforts, you find some way to close this box without hitting `commit', you will have made a mess.",
@@ -578,7 +578,7 @@ def set_path_pos(dup, k, pos):
 #   which control the position of the next one (probably
 #   a Bad Idea, but I'm leaving it in for now)
 #
-class SegmentDlg (quarkpy.dlgclasses.LiveEditDlg):
+class SegmentDlg (quarkpy.dialogboxes.LiveEditDlg):
     #
     # dialog layout
     #
@@ -637,7 +637,7 @@ class SegmentDlg (quarkpy.dlgclasses.LiveEditDlg):
 #
 # A dialog for setting properties of a path point
 #
-class KinkDlg (quarkpy.dlgclasses.LiveEditDlg):
+class KinkDlg (quarkpy.dialogboxes.LiveEditDlg):
     #
     # dialog layout
     #
@@ -1514,7 +1514,7 @@ def testpipe(m):
 # -- Circumference Point management
 #
 
-class CoordDlg (quarkpy.dlgclasses.LiveEditDlg):
+class CoordDlg (quarkpy.dialogboxes.LiveEditDlg):
     #
     # dialog layout
     #
@@ -1702,7 +1702,7 @@ def insert_point(dup, k, editor=None):
             undo.ok(editor.Root, "add a point")
             editor.layout.explorer.sellist = [dup]
 
-class TexDlg (quarkpy.dlgclasses.LiveEditDlg):
+class TexDlg (quarkpy.dialogboxes.LiveEditDlg):
     #
     # dialog layout
     #
@@ -2662,7 +2662,7 @@ quarkpy.mapmgr.MapLayout.clearrefs = newclearrefs
 #  Extrusion Dialog stuff
 #
 
-class PathExtrusionDlg(quarkpy.dlgclasses.LiveEditDlg):
+class PathExtrusionDlg(quarkpy.dialogboxes.LiveEditDlg):
 
     endcolor = AQUA
     size = (220,180)
@@ -2687,12 +2687,12 @@ class PathExtrusionDlg(quarkpy.dlgclasses.LiveEditDlg):
         sep: = { Typ="S" Txt = " "}
 
         no update: = {Txt="&" Typ = "X"
-                   Hint = "If this is checked, the duplicator is not actualy updated when new data is entered (uncheck to set changes)." $0D " Useful to speed things up with big ones, or to prevent errors during revisions."}
+                   Hint = "If this is checked, the duplicator is not actually updated when new data is entered (uncheck to set changes)." $0D " Useful to speed things up with big ones, or to prevent errors during revisions."}
 
       }"""
 
 
-class RadialExtrusionDlg(quarkpy.dlgclasses.LiveEditDlg):
+class RadialExtrusionDlg(quarkpy.dialogboxes.LiveEditDlg):
 
     endcolor = AQUA
     size = (220,200)
@@ -2719,7 +2719,7 @@ class RadialExtrusionDlg(quarkpy.dlgclasses.LiveEditDlg):
         sep: = { Typ = "S" Txt = " "}
 
         no update: = {Txt="&" Typ = "X"
-                   Hint = "If this is checked, the duplicator is not actualy updated when new data is entered (uncheck to set changes)." $0D " Useful to speed things up with big ones, or to prevent errors during revisions."}
+                   Hint = "If this is checked, the duplicator is not actually updated when new data is entered (uncheck to set changes)." $0D " Useful to speed things up with big ones, or to prevent errors during revisions."}
       }"""
 
 def PathExtrudeClick(btn):

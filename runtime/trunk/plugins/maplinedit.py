@@ -17,14 +17,14 @@ Info = {
 import quarkx
 from quarkpy.maputils import *
 import quarkpy.qmacro
-import quarkpy.dlgclasses
+import quarkpy.dialogboxes
 from quarkpy.qeditor import matrix_rot_x
 from quarkpy.qeditor import matrix_rot_y
 from quarkpy.qeditor import matrix_rot_z
 import math
 
 
-class LinEditDlg(quarkpy.dlgclasses.LiveEditDlg):
+class LinEditDlg(quarkpy.dialogboxes.LiveEditDlg):
     #
     # dialog layout
     #

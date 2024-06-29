@@ -15,13 +15,13 @@ import qhandles
 import qmenu
 import maphandles
 import mapentities
-import dlgclasses
+import dialogboxes
 from qeditor import MapColor
 from qdictionnary import Strings
 
 from b2utils import *
 
-class CornerTexPos(dlgclasses.LiveEditDlg):
+class CornerTexPos(dialogboxes.LiveEditDlg):
     endcolor = AQUA
     size = (170,190)
     dfsep = 0.4
@@ -71,7 +71,7 @@ class CornerTexPos(dlgclasses.LiveEditDlg):
     }
     """
 
-class CPTexPos(dlgclasses.LiveEditDlg):
+class CPTexPos(dialogboxes.LiveEditDlg):
     endcolor = AQUA
     size = (100,100)
     dfsep = 0.5

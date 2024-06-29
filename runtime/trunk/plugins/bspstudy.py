@@ -11,7 +11,7 @@ import quarkx
 import quarkpy.qbaseeditor
 import quarkpy.bspcommands
 import quarkpy.mapentities
-import quarkpy.dlgclasses
+import quarkpy.dialogboxes
 import mapmadsel
 import quarkpy.qmacro
 import quarkpy.qmenu
@@ -24,7 +24,7 @@ from quarkpy.maputils import *
 #   from each pair.  A 'NearPlanesDlg' below gets the
 #   planes that are close to an already given one.
 #
-class ClosePlanesDlg (quarkpy.dlgclasses.LiveEditDlg):
+class ClosePlanesDlg (quarkpy.dialogboxes.LiveEditDlg):
     #
     # dialog layout
     #
@@ -244,7 +244,7 @@ quarkpy.bspcommands.items.append(planecheckitem)
 #    planes that have others near them.  Uses same
 #    tolerance as that one.
 #
-class NearPlanesDlg (quarkpy.dlgclasses.LiveEditDlg):
+class NearPlanesDlg (quarkpy.dialogboxes.LiveEditDlg):
     #
     # dialog layout
     #

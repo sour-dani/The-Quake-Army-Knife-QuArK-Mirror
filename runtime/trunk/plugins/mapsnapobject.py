@@ -31,7 +31,7 @@ import mapmadsel
 import quarkpy.mapentities
 import quarkpy.qmacro
 import quarkpy.qmenu
-import quarkpy.dlgclasses
+import quarkpy.dialogboxes
 from tagging import *
 from quarkpy.maputils import *
 
@@ -135,7 +135,7 @@ def snapObjectToPlane(face, object, tagged, separation, doswivel=1, dotilt=1, do
 
 # --- The Interface
 #
-class SnapObjectDlg (quarkpy.dlgclasses.LiveButtonDlg):
+class SnapObjectDlg (quarkpy.dialogboxes.LiveButtonDlg):
     #
     # dialog layout
     #

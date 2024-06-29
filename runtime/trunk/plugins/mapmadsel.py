@@ -48,7 +48,7 @@ import quarkpy.mapeditor
 import quarkpy.mapoptions
 import quarkpy.maphandles
 import quarkpy.mapselection
-import quarkpy.dlgclasses
+import quarkpy.dialogboxes
 import faceutils
 from quarkpy.maputils import *
 from quarkpy.qeditor import MapColor
@@ -824,7 +824,7 @@ def ClearMarkClick(m):
 #
 # a dialog for choosing one of a list of selected items
 #
-class BrowseListDlg(quarkpy.dlgclasses.LiveBrowserDlg):
+class BrowseListDlg(quarkpy.dialogboxes.LiveBrowserDlg):
 
     size = (220,140)
 

@@ -21,7 +21,7 @@ import quarkx
 from quarkpy.maputils import *
 import quarkpy.mapmenus
 import quarkpy.mapentities
-import quarkpy.dlgclasses
+import quarkpy.dialogboxes
 import quarkpy.qmacro
 import quarkpy.qmenu
 
@@ -40,7 +40,7 @@ import mapmadsel
 #   In principle, this could be fixed.
 #
 
-class FindTargetDlg (quarkpy.dlgclasses.LiveEditDlg):
+class FindTargetDlg (quarkpy.dialogboxes.LiveEditDlg):
     #
     # dialog layout
     #

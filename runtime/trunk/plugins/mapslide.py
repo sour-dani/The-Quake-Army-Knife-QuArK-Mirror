@@ -29,7 +29,7 @@ Info = {
 import quarkx
 import quarkpy.mapentities
 import quarkpy.qmenu
-import quarkpy.dlgclasses
+import quarkpy.dialogboxes
 from tagging import *
 import mapmadsel   # to make mad selector load first
 from quarkpy.maputils import *
@@ -50,7 +50,7 @@ from quarkpy.maputils import *
 #  screen While U Watch.
 #
 
-class SlideDlg (quarkpy.dlgclasses.LiveEditDlg):
+class SlideDlg (quarkpy.dialogboxes.LiveEditDlg):
     #
     # dialog layout
     #
@@ -151,7 +151,7 @@ def EdgeSlideClick(m):
 
     #
     # this initializes the dialog's values, via code in
-    #  dlgclasses.LiveEdit dialog that runs the function
+    #  dialogboxes.LiveEdit dialog that runs the function
     #  passed as its `setup' parameter
     #
     # pack=pack below is a `closure', which effectively passes
@@ -212,7 +212,7 @@ def EdgeSlideClick(m):
 #  (such as after executing snap object to tagged plane)
 #
 
-class PlaneSlideDlg (quarkpy.dlgclasses.LiveEditDlg):
+class PlaneSlideDlg (quarkpy.dialogboxes.LiveEditDlg):
     #
     # dialog layout
     #

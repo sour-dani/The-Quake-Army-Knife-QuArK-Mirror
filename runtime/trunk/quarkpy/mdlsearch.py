@@ -16,7 +16,7 @@ from mdlutils import *
 import qmenu
 import qmacro
 import qtoolbar
-import dlgclasses
+import dialogboxes
 import mdleditor
 import mdlentities
 import mdlhandles
@@ -48,7 +48,7 @@ def defCompList(root):
     CompList = CompList + """ Hint="Select the component from this list"$0D"or use the current one displayed"$0D"to find the items entered above."}"""
 
 
-class FindVerticesDlg(dlgclasses.LiveEditDlg):
+class FindVerticesDlg(dialogboxes.LiveEditDlg):
 
     endcolor = AQUA
     size = (220,160)
@@ -57,7 +57,7 @@ class FindVerticesDlg(dlgclasses.LiveEditDlg):
     dlgdef = """ """ # The dialog is created in the setup function to allow self generated items.
 
     def cancel(self, dlg):
-        # Modified from dlgclasses.py
+        # Modified from dialogboxes.py
         qmacro.dialogbox.close(self, dlg)
         self.src = None
 
@@ -129,7 +129,7 @@ def find_vertices_click(m):
     FindVerticesDlg(quarkx.clickform, 'find_vertices', editor, setup, action, onclosing)
 
 
-class FindFacesDlg(dlgclasses.LiveEditDlg):
+class FindFacesDlg(dialogboxes.LiveEditDlg):
 
     endcolor = AQUA
     size = (220,160)
@@ -138,7 +138,7 @@ class FindFacesDlg(dlgclasses.LiveEditDlg):
     dlgdef = """ """ # The dialog is created in the setup function to allow self generated items.
 
     def cancel(self, dlg):
-        # Modified from dlgclasses.py
+        # Modified from dialogboxes.py
         qmacro.dialogbox.close(self, dlg)
         self.src = None
 
@@ -210,7 +210,7 @@ def find_faces_click(m):
     FindFacesDlg(quarkx.clickform, 'find_faces', editor, setup, action, onclosing)
 
 
-class FindSkinVerticesDlg(dlgclasses.LiveEditDlg):
+class FindSkinVerticesDlg(dialogboxes.LiveEditDlg):
 
     endcolor = AQUA
     size = (220,160)
@@ -219,7 +219,7 @@ class FindSkinVerticesDlg(dlgclasses.LiveEditDlg):
     dlgdef = """ """ # The dialog is created in the setup function to allow self generated items.
 
     def cancel(self, dlg):
-        # Modified from dlgclasses.py
+        # Modified from dialogboxes.py
         qmacro.dialogbox.close(self, dlg)
         self.src = None
 
@@ -316,7 +316,7 @@ def find_skin_vertices_click(m):
     FindSkinVerticesDlg(quarkx.clickform, 'find_skin_vertices', editor, setup, action, onclosing)
 
 
-class FindSkinFacesDlg(dlgclasses.LiveEditDlg):
+class FindSkinFacesDlg(dialogboxes.LiveEditDlg):
 
     endcolor = AQUA
     size = (220,160)
@@ -325,7 +325,7 @@ class FindSkinFacesDlg(dlgclasses.LiveEditDlg):
     dlgdef = """ """ # The dialog is created in the setup function to allow self generated items.
 
     def cancel(self, dlg):
-        # Modified from dlgclasses.py
+        # Modified from dialogboxes.py
         qmacro.dialogbox.close(self, dlg)
         self.src = None
 

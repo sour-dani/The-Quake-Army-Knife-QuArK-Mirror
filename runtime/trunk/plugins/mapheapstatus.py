@@ -20,7 +20,7 @@ Info = {
 import quarkx
 import quarkpy.mapcommands
 import quarkpy.mapoptions
-import quarkpy.dlgclasses
+import quarkpy.dialogboxes
 import quarkpy.qmenu
 import quarkpy.qtoolbar
 from quarkpy.maputils import *
@@ -61,7 +61,7 @@ from quarkpy.maputils import *
 
 #Note:   TotalAddrSpace, TotalUncommitted and TotalCommitted refer to OS memory used by the program, where as TotalAllocated and TotalFree refer to the heap memory used within the program by dynamic allocations. Therefore, to monitor dynamic memory used in your program use TotalAllocated and TotalFree.
 
-class HeapStatus(quarkpy.dlgclasses.placepersistent_dialogbox):
+class HeapStatus(quarkpy.dialogboxes.placepersistent_dialogbox):
     #
     # dialog layout
     #
@@ -125,7 +125,7 @@ class HeapStatus(quarkpy.dlgclasses.placepersistent_dialogbox):
     # Create the dialog form and the buttons
     #
 
-        quarkpy.dlgclasses.placepersistent_dialogbox.__init__(self, form, src, "heapstatus",
+        quarkpy.dialogboxes.placepersistent_dialogbox.__init__(self, form, src, "heapstatus",
         cancel = quarkpy.qtoolbar.button(
             self.cancel,
             "Close",

@@ -21,7 +21,7 @@ from quarkpy.maputils import *
 import quarkpy.mapmenus
 import quarkpy.qmenu
 import quarkpy.qmacro
-import quarkpy.dlgclasses
+import quarkpy.dialogboxes
 import quarkpy.mapsearch
 from quarkpy import guiutils
 
@@ -41,7 +41,7 @@ import quarkx
 #   In principle, this could be fixed.
 #
 
-class BadTexScaleDlg (quarkpy.dlgclasses.LiveEditDlg):
+class BadTexScaleDlg (quarkpy.dialogboxes.LiveEditDlg):
     #
     # dialog layout
     #
