@@ -19,6 +19,7 @@ Map Duplicator abstract classes.
 import quarkx
 import math
 from maputils import *
+from qutils import *
 from qeditor import MapColor
 import maphandles
 

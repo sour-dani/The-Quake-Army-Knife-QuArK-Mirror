@@ -11,6 +11,7 @@ Model editor pop-up menus.
 import quarkx
 from qdictionnary import Strings
 import qmenu
+import qutils
 from mdlutils import *
 
 ### Setup for future use. See mapmenus.py for examples
