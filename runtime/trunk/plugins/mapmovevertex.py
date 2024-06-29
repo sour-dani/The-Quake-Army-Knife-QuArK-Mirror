@@ -33,6 +33,7 @@ import quarkpy.maphandles
 from quarkpy.maputils import *
 from quarkpy.qeditor import MapColor
 from quarkpy import guiutils
+import math
 
 #
 # This is a definition of the vertex-movement dialog
@@ -439,8 +440,7 @@ def vertexmenu(self, editor, view, oldmenu=quarkpy.maphandles.VertexHandle.menu.
              #  to the callers.
              #
              if newfaces is None:
-                 quarkx.msgbox("Face can't move because of locks",
-                     MT_ERROR, MB_OK)
+                 quarkx.msgbox("Face can't move because of locks", MT_ERROR, MB_OK)
                  return
              #
              # swap them into the map
@@ -464,7 +464,7 @@ def vertexmenu(self, editor, view, oldmenu=quarkpy.maphandles.VertexHandle.menu.
                      #  of this dialog causes the mov
                      #
                      if not src["sloppy"]:
-                         quarkx.msgbox("Moving Vertex Lost",MT_INFORMATION,MB_OK)
+                         quarkx.msgbox("Moving Vertex Lost", MT_INFORMATION, MB_OK)
                  break
 
              #
@@ -613,46 +613,46 @@ quarkpy.maphandles.VertexHandle.menu = vertexmenu
 from tagging import drawredface # misnamed, oh well
 
 def lockfinishdrawing(editor, view, oldmore=quarkpy.mapeditor.MapEditor.finishdrawing):
-      cv = view.canvas()
-      try:
-         locks = editor.lockedVertices
-      except (AttributeError):
-         pass
-      else:
-         cv.pencolor = MapColor("Duplicator")
-         for vtxh in locks: # these are handles
-             p1 = view.proj(vtxh.pos)
-             tagging.drawsquare(cv,p1,8)
-      try:
-         moving = editor.movingvertex
-         p1 = view.proj(moving)
-      except (AttributeError):
-         pass
-      else:
-         if view.info["type"] == "3D":
-             scalefactor = 50
-         else:
-             scalefactor = 30
-         scale = view.scale(moving)
-         for (color, axis) in (MapColor("Tag"), (1,0,0)), (MapColor("Bezier"), (0,1,0)),(MapColor("Duplicator"), (0,0,1)):
-             cv.pencolor = color
-             p0 = view.proj(moving)
-             p1 = view.proj(moving+(scalefactor/scale)*quarkx.vect(axis))
-             cv.line(p0, p1)
+    cv = view.canvas()
+    try:
+        locks = editor.lockedVertices
+    except (AttributeError):
+        pass
+    else:
+        cv.pencolor = MapColor("Duplicator")
+        for vtxh in locks: # these are handles
+            p1 = view.proj(vtxh.pos)
+            tagging.drawsquare(cv,p1,8)
+    try:
+        moving = editor.movingvertex
+        p1 = view.proj(moving)
+    except (AttributeError):
+        pass
+    else:
+        if view.info["type"] == "3D":
+            scalefactor = 50
+        else:
+            scalefactor = 30
+        scale = view.scale(moving)
+        for (color, axis) in (MapColor("Tag"), (1,0,0)), (MapColor("Bezier"), (0,1,0)),(MapColor("Duplicator"), (0,0,1)):
+            cv.pencolor = color
+            p0 = view.proj(moving)
+            p1 = view.proj(moving+(scalefactor/scale)*quarkx.vect(axis))
+            cv.line(p0, p1)
 
-#         else:
-#             cv.pencolor = MapColor("Bezier")
-#             tagging.drawsquare(cv,p1,8)
+#        else:
+#            cv.pencolor = MapColor("Bezier")
+#            tagging.drawsquare(cv,p1,8)
 
 
-      cv.pencolor=MapColor("Duplicator")
-      try:
-          for face in editor.frozenFaces:
-              drawredface(view,cv,face)
-      except (AttributeError):
-          pass
+    cv.pencolor=MapColor("Duplicator")
+    try:
+        for face in editor.frozenFaces:
+            drawredface(view,cv,face)
+    except (AttributeError):
+        pass
 
-      oldmore(editor, view)
+    oldmore(editor, view)
 
 quarkpy.mapeditor.MapEditor.finishdrawing = lockfinishdrawing
 
@@ -660,7 +660,6 @@ quarkpy.mapeditor.MapEditor.finishdrawing = lockfinishdrawing
 def vec2rads(v):
     "returns pitch, yaw, in radians"
     v = v.normalized
-    import math
     pitch = -math.sin(v.z)
     yaw = math.atan2(v.y, v.x)
     return pitch, yaw

@@ -246,44 +246,44 @@ quarkpy.maphandles.VertexHandle.menu = vertexmenu
 # Now for drawing little boxes around pinned vertices
 #
 def pinfinishdrawing(editor, view, oldmore=quarkpy.mapeditor.MapEditor.finishdrawing):
-      cv = view.canvas()
-      try:
-         pins = editor.pinned
-      except (AttributeError):
-         pass
-      else:
-         cv.pencolor = MapColor("Duplicator")
-         for pin in pins:
-             p1 = view.proj(pin[0])
-             tagging.drawsquare(cv,p1,8)
-      try:
-         moving = editor.movingvertex
-         p1 = view.proj(moving)
-      except (AttributeError):
-         pass
-      else:
-         if view.info["type"] == "3D":
-              scalefactor = 50
-         else:
-             scalefactor = 30
-         scale = view.scale(moving)
-         for (color, axis) in (MapColor("Tag"), (1,0,0)), (MapColor("Bezier"), (0,1,0)),(MapColor("Duplicator"), (0,0,1)):
-             cv.pencolor = color
-             p0 = view.proj(moving)
-             p1 = view.proj(moving+(scalefactor/scale)*quarkx.vect(axis))
-             cv.line(p0, p1)
+    cv = view.canvas()
+    try:
+        pins = editor.pinned
+    except (AttributeError):
+        pass
+    else:
+        cv.pencolor = MapColor("Duplicator")
+        for pin in pins:
+            p1 = view.proj(pin[0])
+            tagging.drawsquare(cv,p1,8)
+    try:
+        moving = editor.movingvertex
+        p1 = view.proj(moving)
+    except (AttributeError):
+        pass
+    else:
+        if view.info["type"] == "3D":
+            scalefactor = 50
+        else:
+            scalefactor = 30
+        scale = view.scale(moving)
+        for (color, axis) in (MapColor("Tag"), (1,0,0)), (MapColor("Bezier"), (0,1,0)),(MapColor("Duplicator"), (0,0,1)):
+            cv.pencolor = color
+            p0 = view.proj(moving)
+            p1 = view.proj(moving+(scalefactor/scale)*quarkx.vect(axis))
+            cv.line(p0, p1)
 
-#         else:
-#             cv.pencolor = MapColor("Bezier")
-#             tagging.drawsquare(cv,p1,8)
+#        else:
+#            cv.pencolor = MapColor("Bezier")
+#            tagging.drawsquare(cv,p1,8)
 
-      cv.pencolor=MapColor("Duplicator")
-      try:
-          for face in editor.frozenFaces:
-              tagging.drawredface(view,cv,face)
-      except (AttributeError):
-          pass
+    cv.pencolor=MapColor("Duplicator")
+    try:
+        for face in editor.frozenFaces:
+            tagging.drawredface(view,cv,face)
+    except (AttributeError):
+        pass
 
-      oldmore(editor, view)
+    oldmore(editor, view)
 
 quarkpy.mapeditor.MapEditor.finishdrawing = pinfinishdrawing
