@@ -12,6 +12,7 @@ import quarkx
 import os
 from qdictionnary import Strings
 from maputils import *
+from qutils import *
 import qmenu
 import qquake
 import qutils
