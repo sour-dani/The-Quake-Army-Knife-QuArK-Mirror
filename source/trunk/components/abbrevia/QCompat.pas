@@ -26,6 +26,9 @@ unit QCompat;
 interface
 
 uses
+  {$IF COMPILERVERSION < 31}
+  Classes,
+  {$IFEND}
   Types;
 
 type
@@ -39,6 +42,10 @@ type
   {$ELSE}
   ArithByte = AnsiChar;
   PArithByte = PAnsiChar;
+  {$IFEND}
+
+  {$IF COMPILERVERSION < 31}
+  TBufferedFileStream = TFileStream;
   {$IFEND}
 
 implementation
