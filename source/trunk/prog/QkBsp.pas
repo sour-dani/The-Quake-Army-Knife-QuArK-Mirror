@@ -312,7 +312,9 @@ const
  cVersionBspIG     = $00000030; {Iron Grip .BSP}
  cVersionBspQuetoo = $00000045; {Quetoo .BSP} //Wanna bet the Quetoo developer ALSO didn't talk to id Software about claiming this version number? Also, childish 69 humour detected.
 
-(***********  Ritual/Raven Software .bsp format  ***********) //Erm, can you guys please NOT share BSP signatures?
+//FIXME: Missing: CoD, CoD2, CoD4, ET
+
+(***********  Raven Software/Ritual Entertainment .bsp format  ***********) //Erm, can you guys please NOT share BSP signatures?
 const
  cSignatureBspRaven = $50534252; {"RBSP" 4-letter header}
 
@@ -321,11 +323,19 @@ const
  cVersionBspSof2    = $00000001; {Soldier of Fortune 2 .BSP} //Dear Raven; did you forget about your previous game that used the same version number?
  cVersionBspJA      = $00000001; {Jedi Academy .BSP} //Dear Raven; did you forget about your previous game that used the same version number?
 
+(***********  Ritual Entertainment/Respawn Entertainment .bsp format  ***********) //Erm, can you guys please NOT share BSP signatures?
+const
+ cSignatureBspRitual = $50534272; {"rBSP" 4-letter header} //FIXME: Titanfall? //FIXME: Untested
+
 (***********  2015 .bsp format  ***********)
 const
  cSignatureBsp2015 = $35313032; {"2015" 4-letter header}
 
  cVersionBspMOHAA  = $00000013; {MOHAA .BSP} //FIXME: Untested
+
+(***********  EALA .bsp format  ***********)
+const
+ cSignatureBspEALA = $414C4145; {"EALA" 4-letter header} //FIXME: MOHAA:Breakthrough? //FIXME: Untested
 
 (***********  FAKK .bsp format  ***********)
 const
@@ -338,9 +348,9 @@ const
  Lots more missing here, for FAKK - but it could be a superset of Quake-3:Arena's .BSP structure!
 }
 
-(***********  Warsow .bsp format  ***********)
+(***********  (Q)Fusion-engine .bsp format  ***********)
 const
-  cSignatureBspWarsow = $50534246; {"FBSP" 4-letter header, (Q)Fusion-engine BSP}
+  cSignatureBspQFusion = $50534246; {"FBSP" 4-letter header}
 
   cVersionBspWarsow   = $00000001; {Warsow .BSP}
 
@@ -349,13 +359,16 @@ const
  cSignatureBspValve   = $50534256; {"VBSP" 4-letter header}
 
  cVersionBspHL2       = $00000013; {Half-Life 2}
- cVersionBspHL2HDR    = $00000014; {Half-Life 2 with HDR lighting}
- cVersionBspHL2V21    = $00000015; {Half-Life 2 with various changes}
+ cVersionBspHL2HDR    = $00000014; {Half-Life 2 with HDR lighting; Left 4 Dead}
+ cVersionBspHL2V21    = $00000015; {Half-Life 2 with various changes; Left 4 Dead 2}
+ cVersionBspDMoMM     = $00040014; {Dark Messiah of Might and Magic} //FIXME: Untested
 
 (***********  Other .bsp format  ***********)
 const
+ cSignatureBspEF2     = $21324645; {"EF2!" 4-letter header; Star Trek: Elite Force 2} //FIXME: Untested
  cSignatureBspOther   = $20505342; {"BSP " 4-letter header}
 
+ cVersionBspEF2       = $00000014; {Star Trek: Elite Force 2} //FIXME: Untested
  cVersionBspOverDose  = $00000055; {OverDose} //FIXME: Untested
 
 (*const
@@ -688,7 +701,7 @@ begin
               FFileHandler:=QBsp3FileHandler.Create(Self);
               FFileHandler.LoadBsp(F, StreamSize);
 *)
-              Raise EErrorFmt(5602, [LoadName, Version, cVersionBspDK]);
+              Raise EErrorFmt(5602, [LoadName, 'Daikatana']);
             end;
 
             cVersionKMQuake2: { KMQuake 2 }
@@ -698,7 +711,7 @@ begin
               FFileHandler:=QBsp3FileHandler.Create(Self);
               FFileHandler.LoadBsp(F, StreamSize);
 *)
-              Raise EErrorFmt(5602, [LoadName, Version, cVersionKMQuake2]);
+              Raise EErrorFmt(5602, [LoadName, 'KMQuake 2']);
             end;
 
             cVersionBspQ3: { Quake 3 or Soldier of Fortune }
@@ -728,7 +741,7 @@ begin
               FFileHandler:=QBsp3FileHandler.Create(Self);
               FFileHandler.LoadBsp(F, StreamSize);
 
-              //Raise EErrorFmt(5602, [LoadName, Version, cVersionBspQL]);
+              //Raise EErrorFmt(5602, [LoadName, 'Return to Castle Wolfenstein']);
             end;
 
             cVersionBspIG: { Iron Grip: Warlord }
@@ -738,7 +751,7 @@ begin
               FFileHandler:=QBsp3FileHandler.Create(Self);
               FFileHandler.LoadBsp(F, StreamSize);
 *)
-              Raise EErrorFmt(5602, [LoadName, Version, cVersionBspIG]);
+              Raise EErrorFmt(5602, [LoadName, 'Iron Grip: Warlord']);
             end;
 
             cVersionBspQuetoo: { Quetoo }
@@ -748,11 +761,11 @@ begin
               FFileHandler:=QBsp3FileHandler.Create(Self);
               FFileHandler.LoadBsp(F, StreamSize);
 *)
-              Raise EErrorFmt(5602, [LoadName, Version, cVersionBspQuetoo]);
+              Raise EErrorFmt(5602, [LoadName, 'Quetoo']);
             end;
 
             else {version unknown}
-              Raise EErrorFmt(5572, [LoadName, Version, cVersionBspQ2]);
+              Raise EErrorFmt(5572, [LoadName, 'id Software', Version]);
           end;
         end;
 
@@ -763,13 +776,13 @@ begin
             begin
               if DetermineIfSiN(F, StreamSize) then
               begin
-                Raise EErrorFmt(5602, [LoadName, Version, cVersionBspSin]);
                 //If you dump SiN's qbsp3 strings, you'll find the lump-names. ;)
 (* Non functional
                 ObjectGameCode := mjSin;
                 FFileHandler:=QBsp2FileHandler.Create(Self);
                 FFileHandler.LoadBsp(F, StreamSize);
 *)
+                Raise EErrorFmt(5602, [LoadName, 'SiN']);
               end
               else
               begin
@@ -783,7 +796,7 @@ begin
             end;
 
             else {version unknown}
-              Raise EErrorFmt(5572, [LoadName, Version, cVersionBspJK2]);
+              Raise EErrorFmt(5572, [LoadName, 'Raven Software', Version]);
           end;
         end;
 
@@ -792,16 +805,16 @@ begin
           case Version of
             cVersionBspMOHAA: { Moh:aa }
             begin
-              Raise EErrorFmt(5602, [LoadName, Version, cSignatureBsp2015]);
 (* Non functional
               ObjectGameCode := mjMohaa;
               FFileHandler:=QBsp3FileHandler.Create(Self); {Decker - try using the Q3 .BSP loader}
               FFileHandler.LoadBsp(F, StreamSize);
 *)
+              Raise EErrorFmt(5602, [LoadName, 'Medal of Honor: Allied Assault']);
             end;
 
             else {version unknown}
-              Raise EErrorFmt(5572, [LoadName, Version, cVersionBspMOHAA]);
+              Raise EErrorFmt(5572, [LoadName, '2015', Version]);
             end;
         end;
 
@@ -810,44 +823,44 @@ begin
           case Version of
             cVersionBspFAKK: { Heavy Metal: FAKK2 }
             begin
-              Raise EErrorFmt(5602, [LoadName, Version, cSignatureBspFAKK]);
 (* Currently not supported
               ObjectGameCode := mjFAKK2;
               FFileHandler:=QBsp3FileHandler.Create(Self);
               FFileHandler.LoadBsp(F, StreamSize);
 *)
+              Raise EErrorFmt(5602, [LoadName, 'Heavy Metal: FAKK2']);
             end;
 
             cVersionBspAlice: { American McGee's Alice }
             begin
-              Raise EErrorFmt(5602, [LoadName, Version, cSignatureBspFAKK]);
 (* Currently not supported
               ObjectGameCode := mjAlice;
               FFileHandler:=QBsp3FileHandler.Create(Self);
               FFileHandler.LoadBsp(F, StreamSize);
 *)
+              Raise EErrorFmt(5602, [LoadName, 'American McGee''s Alice']);
             end;
 
             else {version unknown}
-              Raise EErrorFmt(5572, [LoadName, Version, cVersionBspFAKK]);
+              Raise EErrorFmt(5572, [LoadName, 'FAKK', Version]);
             end;
         end;
 
-        cSignatureBspWarsow:
+        cSignatureBspQFusion:
         begin
           case Version of
             cVersionBspWarsow: { Warsow }
             begin
-              Raise EErrorFmt(5602, [LoadName, Version, cSignatureBspWarsow]);
 (* Currently not supported
               ObjectGameCode := mjWarsow;
               FFileHandler:=QBsp3FileHandler.Create(Self);
               FFileHandler.LoadBsp(F, StreamSize);
 *)
+              Raise EErrorFmt(5602, [LoadName, 'Warsow']);
             end;
 
             else {version unknown}
-              Raise EErrorFmt(5572, [LoadName, Version, cVersionBspWarsow]);
+              Raise EErrorFmt(5572, [LoadName, 'QFusion', Version]);
           end;
         end;
 
@@ -856,24 +869,37 @@ begin
           case Version of
             cVersionBspHL2: { Half-Life 2 }
             begin
-              Raise EErrorFmt(5602, [LoadName, Version, cVersionBspHL2]);
 (*              ObjectGameCode := mjHL2;*)
+              Raise EErrorFmt(5602, [LoadName, 'Half-Life 2']);
             end;
 
             cVersionBspHL2HDR: { Half-Life 2 with HDR lighting }
             begin
-              Raise EErrorFmt(5602, [LoadName, Version, cVersionBspHL2HDR]);
 (*              ObjectGameCode := mjHL2;*)
+              Raise EErrorFmt(5602, [LoadName, 'Half-Life 2 HDR']);
             end;
 
             cVersionBspHL2V21: { Half-Life 2 with various changes }
             begin
-              Raise EErrorFmt(5602, [LoadName, Version, cVersionBspHL2V21]);
 (*              ObjectGameCode := mjHL2;*)
+              Raise EErrorFmt(5602, [LoadName, 'Half-Life 2 V21']);
             end;
 
             else {version unknown}
-              Raise EErrorFmt(5572, [LoadName, Version, cVersionBspHL2]);
+              Raise EErrorFmt(5572, [LoadName, 'Valve', Version]);
+          end;
+        end;
+
+        cSignatureBspEF2: { Star Trek: Elite Force 2 }
+        begin
+          case Version of
+            cVersionBspEF2: { Star Trek: Elite Force 2 }
+            begin
+              Raise EErrorFmt(5602, [LoadName, 'Star Trek: Elite Force 2']);
+            end;
+
+            else {version unknown}
+              Raise EErrorFmt(5572, [LoadName, 'EF2', Version]);
           end;
         end;
 
@@ -882,11 +908,11 @@ begin
           case Version of
             cVersionBspOverDose: { OverDose }
             begin
-              Raise EErrorFmt(5602, [LoadName, Version, cSignatureBspWarsow]);
+              Raise EErrorFmt(5602, [LoadName, 'OverDose']);
             end;
 
             else {version unknown}
-              Raise EErrorFmt(5572, [LoadName, Version, cVersionBspHL2]);
+              Raise EErrorFmt(5572, [LoadName, 'generic', Version]);
           end;
         end;
 
