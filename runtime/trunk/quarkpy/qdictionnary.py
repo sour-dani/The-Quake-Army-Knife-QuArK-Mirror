@@ -727,6 +727,7 @@ Strings = {
     5406: "Hull *%d",
     5407: "%d objects",
     5408: "Press on shaded areas, or use keypad arrows",
+    5409: "%s   [ %s ]",
 
     5440: "Loading ToolBox...",
     5441: "ToolBox",

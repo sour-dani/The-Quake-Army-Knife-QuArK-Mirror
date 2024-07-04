@@ -58,7 +58,7 @@ type
 
  {------------------------}
 
-procedure ObjectProperties(QL: TQList; nPasteTo: TQkForm);  { assume QL is non-empty }
+procedure ObjectProperties(const QL: TQList; nPasteTo: TQkForm);  { assume QL is non-empty }
 
  {------------------------}
 
@@ -70,7 +70,7 @@ uses Qk1, QkGroup, Quarkx, QkExceptions, PyImages, Python, Travail, QkPixelSet, 
 
  {------------------------}
 
-procedure ObjectProperties(QL: TQList; nPasteTo: TQkForm);
+procedure ObjectProperties(const QL: TQList; nPasteTo: TQkForm);
 var
  nQ: QObject;
  FormObjProp: TFormObjProp;
@@ -127,7 +127,7 @@ begin
    if (CommonType<>Nil) and CommonType.InheritsFrom(QFileObject) then
     begin
      QFileObjectClass(CommonType).FileObjectClassInfo(Info);
-     Label4.Caption:=Info.DescriptionText + '   ';
+     Label4.Caption:=Info.DescriptionText;
      Chk:=-1;
      I:=1;
      repeat
@@ -144,7 +144,7 @@ begin
    if CommonType=Nil then
     Label4.Caption:=LoadStr1(5391)
    else
-    Label4.Caption:=Label4.Caption+'[ '+CommonType.TypeInfo+' ]';
+    Label4.Caption:=FmtLoadStr1(5409, [Label4.Caption, CommonType.TypeInfo]);
    if ListBox1.Items.Count=0 then
     begin
      Label6.Font.Color:=clGrayText;
