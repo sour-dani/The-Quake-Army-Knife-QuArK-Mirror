@@ -236,11 +236,9 @@ def undistortColumns(cp):
         #
         #  Now do it
         #
-#        squawk('rockin')
         for i in range(1,h-1):
             s, t, x = (texstart + (lengths[i-1]/sum)*texgap).tuple
             ncp[i][j]=quarkx.vect(cp[i][j].xyz+(s, t))
-#    squawk(`nbcp`)
     return ncp
 
 def undistortRows(cp):
@@ -442,11 +440,8 @@ def twistedRows(cp1, cp2):
 
 def joinCp((tp1,X), cp1, (tp2,Y), cp2):
     "returns cp1 extended to include cp2, assumes preconditions"
-#    squawk(`tp1-P_BACK`)
     cp1 = RotateCpCounter(P_BACK-tp1, cp1)
     cp2 = RotateCpCounter(P_FRONT-tp2, cp2)
-#    squawk(`cp1`)
-#    squawk(`cp2`)
     twisted = twistedRows(cp1,cp2)
     if twisted:
        cp1.reverse()
@@ -457,13 +452,9 @@ def joinCp((tp1,X), cp1, (tp2,Y), cp2):
 
 def knitCp((tp1,X), cp1, (tp2,Y), cp2):
     "returns cp1 with edge knitted to cp2, assumes preconditions"
-#    squawk(`tp1-P_BACK`)
     cp1 = RotateCpCounter(P_BACK-tp1, cp1)
     cp2 = RotateCpCounter(P_FRONT-tp2, cp2)
-#    squawk(`cp1`)
-#    squawk(`cp2`)
     last = len(cp1[0])-1
-#    ncp = copyCp(cp1)
     twisted = twistedRows(cp1, cp2)
     if twisted:
       cp1.reverse()
@@ -471,7 +462,6 @@ def knitCp((tp1,X), cp1, (tp2,Y), cp2):
         cp1[i][last]=cp2[i][0]
     if twisted:
       cp1.reverse()
-    squawk('done')
     return RotateCpCounter(tp1-P_BACK, cp1)
 
 def b2Point(u, p0, p1, p2):
@@ -506,13 +496,9 @@ def subdivideRow(n, row, subfunc=None):
     length = len(row)
     result = [row[0]]
     for i in range(0,length-1,2):
-#       squawk(`i`)
-#       squawk(`result`)
        line = subfunc(n, row[i], row[i+1], row[i+2])
-#       squawk(`line`)
        result = result + subfunc(n, row[i], row[i+1], row[i+2])[1:]
-#    squawk(`result`)
-    return  result
+    return result
 
 
 def subdivideRows(n, cp, func=None):
