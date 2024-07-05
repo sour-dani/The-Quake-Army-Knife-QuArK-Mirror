@@ -328,7 +328,7 @@ function ToILstring(const S: String) : ILstring;
 
 implementation
 
-uses Setup, Quarkx, QkExceptions, Logging, ApplPaths;
+uses Setup, Quarkx, QkExceptions, Logging, SystemDetails, ApplPaths;
 
 var
   TimesLoaded: Cardinal;
@@ -353,7 +353,7 @@ begin
     if (HDevIL = 0) then
     begin
       DevILLibraryFilename := ConcatPaths([GetQPath(pQuArKDll), 'DevIL.dll']);
-      Log(LOG_INFO, LoadStr1(5740), ['DevIL', DevILLibraryFilename]);
+      Log(LOG_VERBOSE, LoadStr1(5740), ['DevIL', DevILLibraryFilename]);
 
       HDevIL := LoadLibrary(PChar(DevILLibraryFilename));
       if HDevIL = 0 then
@@ -401,7 +401,8 @@ begin
       ilInit;
       CheckDevILError(ilGetError);
 
-      Log(LOG_VERBOSE, 'DevIL library loaded!');
+      Log(LOG_INFO, LoadStr1(5899), ['DevIL', IntToStr(ilGetInteger(IL_VERSION_NUM))]);
+      Log(LOG_VERBOSE, LoadStr1(5900), ['DevIL', RetrieveModuleFilename(HDevIL)]);
     end;
 
     TimesLoaded := 1;
@@ -420,7 +421,7 @@ begin
   begin
     if HDevIL <> 0 then
     begin
-      Log(LOG_VERBOSE, 'Unloading DevIL...');
+      Log(LOG_VERBOSE, LoadStr1(5901), ['DevIL']);
 
       ilShutdown;
 
@@ -464,7 +465,7 @@ begin
       ilClearImage          := nil;
       ilRegisterPal         := nil;
 
-      Log(LOG_VERBOSE, 'DevIL unloaded!');
+      Log(LOG_VERBOSE, LoadStr1(5902), ['DevIL']);
     end;
 
     TimesLoaded := 0;
@@ -556,7 +557,7 @@ begin
     DevILError:=ilGetError;
   end;
   if S <> '' then
-    Raise EErrorFmt(5731, ['DevIL library', S]);
+    Raise EErrorFmt(5731, ['DevIL', S]);
 end;
 
 function ToILstring(const S: String) : ILstring;

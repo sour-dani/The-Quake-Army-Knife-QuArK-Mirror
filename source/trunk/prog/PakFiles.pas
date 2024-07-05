@@ -165,7 +165,7 @@ var
  S: String;
  sr: TSearchRec;
 begin
- Log(LOG_VERBOSE, 'TGetPakNames.CreatePakList: %s %s %s %s', [Path, CustomFilter, BoolToStr(Backwards), BoolToStr(SearchForTemp)]);
+ Log(LOG_VERBOSE, 'TGetPakNames.CreatePakList: %s, %s, %s, %s', [Path, CustomFilter, BoolToStr(Backwards), BoolToStr(SearchForTemp)]);
  StrList.Clear;
  PakFileExt:=SetupGameSet.Specifics.Strings['PakExt'];
  if SearchForTemp then

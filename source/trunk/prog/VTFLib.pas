@@ -386,7 +386,7 @@ var
 
 implementation
 
-uses Setup, Quarkx, QkExceptions, Logging, ApplPaths;
+uses Setup, Quarkx, QkExceptions, Logging, ApplPaths, SystemDetails, ExtraFunctionality;
 
 var
   TimesLoaded: Cardinal;
@@ -410,9 +410,9 @@ begin
   begin
     if HVTFLib = 0 then
     begin
-      Log(LOG_VERBOSE, 'Loading VTFLib...');
-
       VTFLibLibraryFilename := ConcatPaths([GetQPath(pQuArKDll), 'VTFLib.dll']);
+      Log(LOG_VERBOSE, LoadStr1(5740), ['VTFLib', VTFLibLibraryFilename]);
+
       HVTFLib := LoadLibrary(PChar(VTFLibLibraryFilename));
       if HVTFLib = 0 then
       begin
@@ -495,7 +495,8 @@ begin
       if vlInitialize=vlFalse then
         LogAndRaiseError(FmtLoadStr1(5749, ['VTFLib']));
 
-      Log(LOG_VERBOSE, 'VTFLib loaded!');
+      Log(LOG_INFO, LoadStr1(5899), ['VTFLib', UIntToStr(vlGetVersion())]);
+      Log(LOG_VERBOSE, LoadStr1(5900), ['VTFLib', RetrieveModuleFilename(HVTFLib)]);
     end;
 
     TimesLoaded := 1;
@@ -514,7 +515,7 @@ begin
   begin
     if HVTFLib <> 0 then
     begin
-      Log(LOG_VERBOSE, 'Unloading VTFLib...');
+      Log(LOG_VERBOSE, LoadStr1(5901), ['VTFLib']);
 
       vlShutdown;
 
@@ -595,7 +596,7 @@ begin
       vlMaterialGetParentNode   := nil;
       vlMaterialGetChildNode    := nil;
 
-      Log(LOG_VERBOSE, 'VTFLib unloaded!');
+      Log(LOG_VERBOSE, LoadStr1(5902), ['VTFLib']);
     end;
 
     TimesLoaded := 0;

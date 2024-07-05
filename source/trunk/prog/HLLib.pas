@@ -172,7 +172,7 @@ var
 
 implementation
 
-uses QkExceptions, Logging, ApplPaths, Quarkx;
+uses QkExceptions, Logging, ApplPaths, Quarkx, SystemDetails, ExtraFunctionality;
 
 {$I DelphiVer.inc}
 
@@ -205,9 +205,9 @@ begin
   begin
     if HHLLib = 0 then
     begin
-      Log(LOG_VERBOSE, 'Loading HLLib...');
-
       HLLibLibraryFilename := ConcatPaths([GetQPath(pQuArKDll), 'HLLib.dll']);
+      Log(LOG_VERBOSE, LoadStr1(5740), ['HLLib', HLLibLibraryFilename]);
+
       HHLLib := LoadLibrary(PChar(HLLibLibraryFilename));
       if HHLLib = 0 then
       begin
@@ -249,7 +249,8 @@ begin
 
       hlInitialize;
 
-      Log(LOG_VERBOSE, 'HLLib loaded!');
+      Log(LOG_INFO, LoadStr1(5899), ['HLLib', UIntToStr(hlGetUnsignedInteger(HL_VERSION))]);
+      Log(LOG_VERBOSE, LoadStr1(5900), ['HLLib', RetrieveModuleFilename(HHLLib)]);
     end;
 
     TimesLoaded := 1;
@@ -268,7 +269,7 @@ begin
   begin
     if HHLLib <> 0 then
     begin
-      Log(LOG_VERBOSE, 'Unloading HLLib...');
+      Log(LOG_VERBOSE, LoadStr1(5901), ['HLLib']);
 
       hlShutdown;
 
@@ -309,7 +310,7 @@ begin
       hlPackageClose      := nil;
       hlPackageGetRoot    := nil;
 
-      Log(LOG_VERBOSE, 'HLLib unloaded!');
+      Log(LOG_VERBOSE, LoadStr1(5902), ['HLLib']);
     end;
 
     TimesLoaded := 0;

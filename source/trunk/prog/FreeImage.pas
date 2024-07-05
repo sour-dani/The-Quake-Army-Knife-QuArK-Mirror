@@ -205,7 +205,7 @@ procedure UnloadFreeImage(ForceUnload: boolean = false);
 
 implementation
 
-uses Setup, Quarkx, QkExceptions, Logging, ApplPaths, VersionNumbers;
+uses Setup, Quarkx, QkExceptions, Logging, ApplPaths, VersionNumbers, SystemDetails;
 
 var
   TimesLoaded: Cardinal;
@@ -236,7 +236,7 @@ begin
     if (HFreeImage = 0) then
     begin
       FreeImageLibraryFilename := ConcatPaths([GetQPath(pQuArKDll), 'FreeImage.dll']);
-      Log(LOG_INFO, LoadStr1(5740), ['FreeImage', FreeImageLibraryFilename]);
+      Log(LOG_VERBOSE, LoadStr1(5740), ['FreeImage', FreeImageLibraryFilename]);
 
       HFreeImage := LoadLibrary(PChar(FreeImageLibraryFilename));
       if HFreeImage = 0 then
@@ -288,7 +288,8 @@ begin
 
       FreeImage_SetOutputMessage(FreeImageErrorHandler);
 
-      Log(LOG_VERBOSE, 'FreeImage library loaded!');
+      Log(LOG_INFO, LoadStr1(5899), ['FreeImage', FreeImage_GetVersion()]);
+      Log(LOG_VERBOSE, LoadStr1(5900), ['FreeImage', RetrieveModuleFilename(HFreeImage)]);
     end;
 
     TimesLoaded := 1;
@@ -307,7 +308,7 @@ begin
   begin
     if HFreeImage <> 0 then
     begin
-      Log(LOG_VERBOSE, 'Unloading FreeImage...');
+      Log(LOG_VERBOSE, LoadStr1(5901), ['FreeImage']);
 
       if FreeLibrary(HFreeImage) = false then
       begin
@@ -348,7 +349,7 @@ begin
       FreeImage_IsTransparent         := nil;
       FreeImage_Allocate              := nil;
 
-      Log(LOG_VERBOSE, 'FreeImage unloaded!');
+      Log(LOG_VERBOSE, LoadStr1(5902), ['FreeImage']);
     end;
 
     TimesLoaded := 0;

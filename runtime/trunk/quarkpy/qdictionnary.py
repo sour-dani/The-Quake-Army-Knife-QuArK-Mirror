@@ -999,7 +999,7 @@ Strings = {
     #5729: "reserved for hl2",
 
     5730: "Could not load the %s library//Error code %d",
-    5731: "An error occurred in the %s: %s",
+    5731: "An error occurred in the %s library: %s",
     5732: "VPK file",
     5733: "VPK folder",
     5734: "NCF file",
@@ -1170,6 +1170,10 @@ Strings = {
     5896: "Unable to extract file from Steam. Cannot create cache directory.",
     5897: "Error opening toolbox %s",
     5898: "Cannot merge toolboxes: multiple but different %s",
+    5899: "%s library loaded (version %s)",
+    5900: "Loaded %s library filename: %s",
+    5901: "Unloading library %s...",
+    5902: "Library %s unloaded!",
 
     # DanielPharos would like to reserve 6000 .. 6099 for all renderers
     6000: "Unable to create SceneObject//%s",

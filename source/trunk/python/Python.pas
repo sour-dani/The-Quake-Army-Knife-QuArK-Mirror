@@ -1026,9 +1026,8 @@ begin
   Py_SetProgramName(ToPyChar(Application.Exename));
   Py_Initialize;
   s:=PyStrPas(Py_GetVersion());
-  Log(LOG_PYTHON, 'PYTHON:');
-  Log(LOG_PYTHON, 'Version: %s', [s]);
-  Log(LOG_PYTHON, 'DLL: %s', [RetrieveModuleFilename(PythonLib)]);
+  Log(LOG_PYTHON, LOG_ALWAYS, '%s library loaded (version %s)', ['Python', s]); //LoadStr1(5899)
+  Log(LOG_PYTHON, LOG_VERBOSE, 'Loaded %s library filename: %s', ['Python', RetrieveModuleFilename(PythonLib)]); //LoadStr1(5900)
   Result:=3;
 
   //Process Py_GetVersion to find version number. It is documented to be the version number, followed by a space, and its description.
