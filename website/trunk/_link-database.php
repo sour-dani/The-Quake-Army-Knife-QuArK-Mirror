@@ -318,6 +318,7 @@ $LinksGame[] = new cLinkGroup('Medal of Honor - Allied Assault', 'MOHAA', array(
           ,new cLink('MOH Files', 'http://www.mohfiles.com/', NULL, 'https://web.archive.org/web/20040526161116/http://www.mohfiles.com/')
           ,new cLink('HaZardModding Coop: Medal of Honor', 'https://www.moddb.com/mods/medal-of-honor-coop-hazardmodding', 'This is high quality Coop Mod for Medal of Honor War Chest. It allows you to play Medal of Honor War Chest Singleplayer Campaign cooperatively.')
           ,new cLink('OpenMoHAA', 'http://openmohaa.sourceforge.net/', 'a free game engine capable of running Medal of Honor: Allied Assault contents')
+          ,new cLink('MOHAA Reunited', 'https://www.mohaareunited.com/', 'MOHAA Reunited is a site dedicated to Medal Of Honor: Allied Assault')
            ));
 
 $LinksGame[] = new cLinkGroup('Medal of Honor - Pacific Assault', 'MOHPA', array(
