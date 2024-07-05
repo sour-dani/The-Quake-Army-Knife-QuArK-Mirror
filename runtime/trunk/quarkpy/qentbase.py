@@ -9,12 +9,13 @@ Entity functions.
 #
 
 import quarkx
+import qutils
 
 entfn = {}
 
 def RegisterEntityConverter(Text, Ext, Desc, Proc):
     if Proc is None:
-        #squawk("this is not a valid entity converter")
+        quarkx.log("RegisterEntityConverter: '%s' is not a valid entity converter." % (Text, ), qutils.LOG_WARNING)
         return
     entfn[Text] = (Proc, Ext, Desc)
     quarkx.entitymenuitem(Text)
