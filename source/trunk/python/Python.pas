@@ -420,7 +420,11 @@ Py_GetVersion: function : (*const*) PyChar; cdecl;
 PyRun_SimpleString: function (const P: PyChar) : Integer; cdecl;
 //PyRun_String: function (const str: PyChar; start: Integer; Globals, Locals: PyObject) : PyObject; cdecl;
 //Py_CompileString: function (const str, filename: PyChar; start: Integer) : PyObject; cdecl;
-
+//const
+//  Py_eval_input: Integer = 258;
+//  Py_file_input: Integer = 257;
+//  Py_single_input: Integer = 256;
+//var
 //Py_InitModule: function ({$IFDEF PYTHON25}const {$ENDIF}name: PyChar; MethodDef: PTyMethodDef) : PyObject; cdecl;
 //Py_InitModule3: function ({$IFDEF PYTHON25}const {$ENDIF}name: PyChar; MethodDef: PTyMethodDef; {$IFDEF PYTHON25}const {$ENDIF}doc: PyChar) : PyObject; cdecl;
 Py_InitModule4: function ({$IFDEF PYTHON25}const {$ENDIF}name: PyChar; MethodDef: PTyMethodDef; {$IFDEF PYTHON25}const {$ENDIF}doc: PyChar; self: PyObject; Version: Integer) : PyObject; cdecl;
@@ -430,7 +434,7 @@ PyModule_New: function (const name: PyChar) : PyObject; cdecl;
 
 //PyEval_GetGlobals: function : PyObject; cdecl;
 //PyEval_GetLocals: function : PyObject; cdecl;
-//function PyEval_GetBuiltins : PyObject; cdecl;
+//PyEval_GetBuiltins: function : PyObject; cdecl;
 PyEval_CallObject: function (o, args: PyObject) : PyObject; cdecl;
 {$IFDEF PYTHON27}
 //Python 2.7.x broke backwards compatibility without warning
@@ -445,10 +449,10 @@ PyErr_Fetch: procedure (var o1, o2, o3: PyObject); cdecl;
 PyErr_Restore: procedure (o1, o2, o3: PyObject); cdecl;
 PyErr_NewException: function (name: PyChar; base, dict: PyObject) : PyObject; cdecl;
 PyErr_SetString: procedure (o: PyObject; const c: PyChar); cdecl;
-//function PyErr_BadArgument : Integer; cdecl;
+//PyErr_BadArgument: function : Integer; cdecl;
 PyErr_ExceptionMatches: function (exc: PyObject) : Integer; cdecl;
 
-//function PyObject_Hash(o: PyObject) : LongInt; cdecl;
+//PyObject_Hash: function (o: PyObject) : LongInt; cdecl;
 PyObject_Length: function (o: PyObject) : {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}; cdecl;
 //PyObject_GetItem: function (o, key: PyObject) : PyObject; cdecl;
 PyObject_HasAttrString: function (o: PyObject; const attr_name: PyChar) : Integer; cdecl;
@@ -529,8 +533,6 @@ PyCFunction_New: function (const Def: TyMethodDef; self: PyObject) : PyObject; c
 
 //New in Python 2.3:
 //PyBool_Check: function (o: PyObject) : Integer; cdecl;
-//Py_False: function : PyObject; cdecl;
-//Py_True: function : PyObject; cdecl;
 //PyBool_FromLong: function (Value: LongInt) : PyObject; cdecl;
 PyGC_Collect: function : {$IFDEF PYTHON25} Py_ssize_t {$ELSE} Integer {$ENDIF}; cdecl;
 
@@ -571,16 +573,27 @@ type
     f_locals: PyObject;
     f_valuestack: ^PyObject;
 
+    {$IFDEF PYTHON22}
     f_stacktop: ^PyObject;
+    {$ENDIF}
     f_trace: PyObject;
 
     f_exc_type, f_exc_value, f_exc_traceback: PyObject;
 
     f_tstate: Pointer; //Actually PyThreadState, but Delphi can't handle forward record declarations, so we have to break the cyclical dependency.
-    f_lasti, f_lineno, f_iblock: Integer;
+    f_lasti, f_lineno, f_restricted, f_iblock: Integer;
 
     f_blockstack: packed array[0..CO_MAXBLOCKS-1] of PyTryBlock;
-    f_localsplus: array of PyObject; //dynamically sized
+    {$IFDEF PYTHON21}{$IFNDEF PYTHON22}
+    f_size,
+    {$ENDIF}{$ENDIF}
+    f_nlocals,
+    {$IFDEF PYTHON21}
+    f_ncells, f_nfreevars,
+    {$ENDIF}
+    f_stacksize: Integer;
+
+    f_localsplus: array[0..0] of PyObject; //dynamically sized
   end;
 
 {$IFDEF PYTHON22}
@@ -684,6 +697,10 @@ var
  PyString_Type: PyTypeObject;
  PyFloat_Type:  PyTypeObject;
  PyTuple_Type:  PyTypeObject;
+ {$IFDEF PYTHON23}
+// Py_False:      PyObject;
+// Py_True:       PyObject;
+ {$ENDIF}
 
 function IsPythonLoaded : Boolean;
 function InitializePython : Integer;
@@ -751,6 +768,7 @@ const
 //  (Variable: @@PyImport_ImportModule;      Name: 'PyImport_ImportModule';      MinimalVersion: PythonVersionAny ),
 //  (Variable: @@PyEval_GetGlobals;          Name: 'PyEval_GetGlobals';          MinimalVersion: PythonVersionAny ),
 //  (Variable: @@PyEval_GetLocals;           Name: 'PyEval_GetLocals';           MinimalVersion: PythonVersionAny ),
+//  (Variable: @@PyEval_GetBuiltins;         Name: 'PyEval_GetBuiltins';         MinimalVersion: PythonVersionAny ),
 {$IFDEF PYTHON27}
     (Variable: @@PyEval_CallObjectWithKeywords; Name: 'PyEval_CallObjectWithKeywords'; MinimalVersion: PythonVersionAny ),
 {$ELSE}
@@ -764,9 +782,11 @@ const
     (Variable: @@PyErr_Restore;              Name: 'PyErr_Restore';              MinimalVersion: PythonVersionAny ),
     (Variable: @@PyErr_NewException;         Name: 'PyErr_NewException';         MinimalVersion: PythonVersionAny ),
     (Variable: @@PyErr_SetString;            Name: 'PyErr_SetString';            MinimalVersion: PythonVersionAny ),
+//  (Variable: @@PyErr_BadArgument;          Name: 'PyErr_BadArgument';          MinimalVersion: PythonVersionAny ),
     (Variable: @@PyErr_ExceptionMatches;     Name: 'PyErr_ExceptionMatches';     MinimalVersion: PythonVersionAny ),
+//  (Variable: @@PyObject_Hash;              Name: 'PyObject_Hash';              MinimalVersion: PythonVersionAny ),
     (Variable: @@PyObject_Length;            Name: 'PyObject_Length';            MinimalVersion: PythonVersionAny ),
-//    (Variable: @@PyObject_GetItem;           Name: 'PyObject_GetItem';           MinimalVersion: PythonVersionAny ),
+//  (Variable: @@PyObject_GetItem;           Name: 'PyObject_GetItem';           MinimalVersion: PythonVersionAny ),
     (Variable: @@PyObject_HasAttrString;     Name: 'PyObject_HasAttrString';     MinimalVersion: PythonVersionAny ),
     (Variable: @@PyObject_GetAttrString;     Name: 'PyObject_GetAttrString';     MinimalVersion: PythonVersionAny ),
     (Variable: @@PyObject_IsTrue;            Name: 'PyObject_IsTrue';            MinimalVersion: PythonVersionAny ),
@@ -798,26 +818,26 @@ const
     (Variable: @@PyDict_Next;                Name: 'PyDict_Next';                MinimalVersion: PythonVersionAny ),
     (Variable: @@PyString_FromString;        Name: 'PyString_FromString';        MinimalVersion: PythonVersionAny ),
     (Variable: @@PyString_FromStringAndSize; Name: 'PyString_FromStringAndSize'; MinimalVersion: PythonVersionAny ),
-//    (Variable: @@PyString_Size;              Name: 'PyString_Size';              MinimalVersion: PythonVersionAny ),
+//  (Variable: @@PyString_Size;              Name: 'PyString_Size';              MinimalVersion: PythonVersionAny ),
     (Variable: @@PyString_AsString;          Name: 'PyString_AsString';          MinimalVersion: PythonVersionAny ),
     (Variable: @@PyString_AsStringAndSize;   Name: 'PyString_AsStringAndSize';   MinimalVersion: PythonVersionAny ),
     (Variable: @@PyInt_FromLong;             Name: 'PyInt_FromLong';             MinimalVersion: PythonVersionAny ),
     (Variable: @@PyInt_AsLong;               Name: 'PyInt_AsLong';               MinimalVersion: PythonVersionAny ),
-//    (Variable: @@PyInt_FromSsize_t;          Name: 'PyInt_FromSsize_t';          MinimalVersion: PythonVersion250 ),
-//    (Variable: @@PyInt_FromSize_t;           Name: 'PyInt_FromSize_t';           MinimalVersion: PythonVersion250 ),
-//    (Variable: @@PyInt_AsSsize_t;            Name: 'PyInt_AsSsize_t';            MinimalVersion: PythonVersion250 ),
-//    (Variable: @@PyInt_AsUnsignedLongMask;   Name: 'PyInt_AsUnsignedLongMask';   MinimalVersion: PythonVersion230 ),
-//    (Variable: @@PyLong_FromLong;            Name: 'PyLong_FromLong';            MinimalVersion: PythonVersionAny ),
-//    (Variable: @@PyLong_FromUnsignedLong;    Name: 'PyLong_FromUnsignedLong';    MinimalVersion: PythonVersionAny ),
-//    (Variable: @@PyLong_FromSsize_t;         Name: 'PyLong_FromSsize_t';         MinimalVersion: PythonVersion260 ),
-//    (Variable: @@PyLong_FromSize_t;          Name: 'PyLong_FromSize_t';          MinimalVersion: PythonVersion260 ),
-//    (Variable: @@PyLong_FromDouble;          Name: 'PyLong_FromDouble';          MinimalVersion: PythonVersionAny ),
-//    (Variable: @@PyLong_AsLong;              Name: 'PyLong_AsLong';              MinimalVersion: PythonVersionAny ),
-//    (Variable: @@PyLong_AsLongAndOverflow;   Name: 'PyLong_AsLongAndOverflow';   MinimalVersion: PythonVersion270 ),
-//    (Variable: @@PyLong_AsSsize_t;           Name: 'PyLong_AsSsize_t';           MinimalVersion: PythonVersion260 ),
-//    (Variable: @@PyLong_AsUnsignedLong;      Name: 'PyLong_AsUnsignedLong';      MinimalVersion: PythonVersionAny ),
-//    (Variable: @@PyLong_AsUnsignedLongMask;  Name: 'PyLong_AsUnsignedLongMask';  MinimalVersion: PythonVersion230 ),
-//    (Variable: @@PyLong_AsDouble;            Name: 'PyLong_AsDouble';            MinimalVersion: PythonVersionAny ),
+//  (Variable: @@PyInt_FromSsize_t;          Name: 'PyInt_FromSsize_t';          MinimalVersion: PythonVersion250 ),
+//  (Variable: @@PyInt_FromSize_t;           Name: 'PyInt_FromSize_t';           MinimalVersion: PythonVersion250 ),
+//  (Variable: @@PyInt_AsSsize_t;            Name: 'PyInt_AsSsize_t';            MinimalVersion: PythonVersion250 ),
+//  (Variable: @@PyInt_AsUnsignedLongMask;   Name: 'PyInt_AsUnsignedLongMask';   MinimalVersion: PythonVersion230 ),
+//  (Variable: @@PyLong_FromLong;            Name: 'PyLong_FromLong';            MinimalVersion: PythonVersionAny ),
+//  (Variable: @@PyLong_FromUnsignedLong;    Name: 'PyLong_FromUnsignedLong';    MinimalVersion: PythonVersionAny ),
+//  (Variable: @@PyLong_FromSsize_t;         Name: 'PyLong_FromSsize_t';         MinimalVersion: PythonVersion260 ),
+//  (Variable: @@PyLong_FromSize_t;          Name: 'PyLong_FromSize_t';          MinimalVersion: PythonVersion260 ),
+//  (Variable: @@PyLong_FromDouble;          Name: 'PyLong_FromDouble';          MinimalVersion: PythonVersionAny ),
+//  (Variable: @@PyLong_AsLong;              Name: 'PyLong_AsLong';              MinimalVersion: PythonVersionAny ),
+//  (Variable: @@PyLong_AsLongAndOverflow;   Name: 'PyLong_AsLongAndOverflow';   MinimalVersion: PythonVersion270 ),
+//  (Variable: @@PyLong_AsSsize_t;           Name: 'PyLong_AsSsize_t';           MinimalVersion: PythonVersion260 ),
+//  (Variable: @@PyLong_AsUnsignedLong;      Name: 'PyLong_AsUnsignedLong';      MinimalVersion: PythonVersionAny ),
+//  (Variable: @@PyLong_AsUnsignedLongMask;  Name: 'PyLong_AsUnsignedLongMask';  MinimalVersion: PythonVersion230 ),
+//  (Variable: @@PyLong_AsDouble;            Name: 'PyLong_AsDouble';            MinimalVersion: PythonVersionAny ),
     (Variable: @@PyFloat_FromDouble;         Name: 'PyFloat_FromDouble';         MinimalVersion: PythonVersionAny ),
     (Variable: @@PyFloat_AsDouble;           Name: 'PyFloat_AsDouble';           MinimalVersion: PythonVersionAny ),
     (Variable: @@PyObject_Init;              Name: 'PyObject_Init';              MinimalVersion: PythonVersionAny ),
@@ -902,8 +922,6 @@ var
   VersionNumberString: String;
   FoundGoodVersion: Boolean;
 begin
-  VersionNumber:=nil;
-
   //See ProbableCauseOfFatalError in QuarkX for return value meaning
   Result:=6;
 
@@ -1020,9 +1038,8 @@ begin
   else
     VersionNumberString:=s;
 
+  VersionNumber:=TVersionNumber.Create(VersionNumberString);
   try
-    VersionNumber:=TVersionNumber.Create(VersionNumberString);
-
     if VersionNumber.Count = 0 then
     begin
       Log(LOG_WARNING, 'Cannot parse Python version number %s!', [s]);
@@ -1071,7 +1088,7 @@ begin
     Result:=1;
 
   finally
-    if VersionNumber<>nil then VersionNumber.Free;
+    VersionNumber.Free;
   end;
 
   //Retrieve the values of the basic Python types
@@ -1109,6 +1126,11 @@ begin
   //we can get it through a PyType we already have.
   PyType_Type:=PyList_Type^.ob_type;
 
+  {$IFDEF PYTHON23}
+//  Py_False:=PyBool_FromLong(0);
+//  Py_True:=PyBool_FromLong(1);
+  {$ENDIF}
+
   PythonLoaded:=true;
   Result:=0;
 end;
@@ -1117,6 +1139,19 @@ procedure UnInitializePython;
 var
   I: Integer;
 begin
+  PyInt_Type:=nil;
+  PyType_Type:=nil;
+  PyList_Type:=nil;
+  PyString_Type:=nil;
+  PyFloat_Type:=nil;
+  PyTuple_Type:=nil;
+  {$IFDEF PYTHON23}
+//  Py_DECREF(Py_False);
+//  Py_False:=nil;
+//  Py_DECREF(Py_True);
+//  Py_True:=nil;
+  {$ENDIF}
+
   if PythonLib<>0 then
   begin
     if FreeLibrary(PythonLib)=false then

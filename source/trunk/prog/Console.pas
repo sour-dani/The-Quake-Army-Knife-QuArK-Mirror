@@ -567,11 +567,8 @@ begin
   finally
    Py_DECREF(obj);
   end;
-{S1:='single';
- P:=PChar(S1);}
-{Py_CompileString(PChar(S), 'console', Ord('S'));}
-(*obj:=Py_CompileString(PChar(S), 'console', 0);
- {obj:=PyRun_String(PChar(S), 0, PyEval_GetGlobals, PyEval_GetLocals);}
+(*obj:=Py_CompileString(ToPyChar(S), 'console', Py_single_input);
+ {obj:=PyRun_String(ToPyChar(S), 0, PyEval_GetGlobals, PyEval_GetLocals);}
   if obj<>Nil then
    try
     if obj<>Py_None then
