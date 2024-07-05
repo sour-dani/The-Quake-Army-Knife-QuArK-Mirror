@@ -744,7 +744,7 @@ begin
   end;
   ExplorerFromObject(Parent).Refresh;
 
-  ShowMessage(FmtLoadStr1(5834, [ count,getword(count), Specifics.Strings['GameDir']]));
+  ShowMessage(FmtLoadStr1(5834, [count,getword(count), Specifics.Strings['GameDir']]));
 end;
 
  {------------------------}
