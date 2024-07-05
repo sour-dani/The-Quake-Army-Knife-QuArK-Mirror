@@ -567,13 +567,7 @@ def columnImages(o, editor, inverse=0, open=0, thick=0, stretchtex=0, bulge=(.5,
 
 
 def images(buildfn, args):
-    if quarkx.setupsubset(SS_MAP, "Options")["Developer"]:
-        return apply(buildfn, args)
-    else:
-        try:
-            return apply(buildfn, args)
-        except:
-            return []
+    return apply(buildfn, args)
 
 #
 #  --- Duplicators ---

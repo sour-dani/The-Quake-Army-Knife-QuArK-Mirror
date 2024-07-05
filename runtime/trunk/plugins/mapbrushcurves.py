@@ -434,13 +434,7 @@ def bevelImages(o, editor, inverse=0, left=0, lower=0, rotate=0, grid=0, thick=0
 
 
 def images(buildfn, args):
-    if quarkx.setupsubset(SS_MAP, "Options")["Developer"]:
-        return apply(buildfn, args)
-    else:
-        try:
-            return apply(buildfn, args)
-        except:
-            return []
+    return apply(buildfn, args)
 
 #
 #  --- Duplicators ---
