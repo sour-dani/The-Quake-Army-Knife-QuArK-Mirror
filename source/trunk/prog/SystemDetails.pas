@@ -341,7 +341,7 @@ type
 implementation
 
 uses Math, Graphics, DateUtils, {$IFDEF CompiledWithDelphi2}ShellObj, OLE2, {$ELSE}ShlObj, ActiveX, {$ENDIF}
-  TlHelp32, Psapi, Registry, Registry2, Logging, QkExceptions;
+  TlHelp32, Psapi, Registry, Registry2, Logging, QkExceptions, QConsts;
 
 type
   {$IFDEF Delphi4orNewerCompiler}
@@ -2940,8 +2940,30 @@ end;
 Procedure LogSystemDetails;
 var
   s: TStringlist;
-  i: integer;
+  i: Integer;
+  {$IFDEF Delphi12orNewerCompiler}
+  Version: Word;
+  {$ENDIF}
 begin
+  Log(LOG_VERBOSE, 'Now logging Delphi details...');
+  Log(LOG_VERBOSE, 'Used compiler: %s', [QuArKUsedCompiler]);
+  {$IFDEF Delphi12orNewerCompiler}
+  Version:=GetCompilerVersion();
+  Log(LOG_VERBOSE, 'Compiler version: %d.%d', [Hi(Version), Lo(Version)]);
+  Version:=GetRTLVersion();
+  Log(LOG_VERBOSE, 'RTL version: %d.%d', [Hi(Version), Lo(Version)]);
+  {$ELSE}
+  {$IFDEF Delphi6orNewerCompiler}
+  Log(LOG_VERBOSE, 'Compiler version: %f', [CompilerVersion]);
+  Log(LOG_VERBOSE, 'RTL version: %f', [RTLVersion]);
+  {$IFDEF RTLVersion1041}if RTLVersion1041 then Log(LOG_VERBOSE, 'RTL version 10.4.1: True');{$ENDIF}
+  {$IFDEF RTLVersion1042}if RTLVersion1042 then Log(LOG_VERBOSE, 'RTL version 10.4.2: True');{$ENDIF}
+  {$IFDEF RTLVersion111}if RTLVersion111 then Log(LOG_VERBOSE, 'RTL version 11.1: True');{$ENDIF}
+  {$IFDEF RTLVersion112}if RTLVersion112 then Log(LOG_VERBOSE, 'RTL version 11.2: True');{$ENDIF}
+  {$IFDEF RTLVersion113}if RTLVersion113 then Log(LOG_VERBOSE, 'RTL version 11.3: True');{$ENDIF}
+  {$ENDIF}
+  {$ENDIF}
+
   Log(LOG_INFO, 'Now logging system details...');
   s:=TStringList.Create;
   try
