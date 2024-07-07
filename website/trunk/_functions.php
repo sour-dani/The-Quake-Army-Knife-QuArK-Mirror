@@ -298,14 +298,14 @@ function randomInRange(min, max) {
 
 	# WEBRING HTML
 	#FIXME: Technically, from Derrick McKay's qmap website...
-	/*echo '<table border="7" cellspacing="7">'."\n";
+	/*echo '<table cellspacing="7" style="background-color: black; border-color: gray; border-style: inset; border-width: 7px; color: white; margin-left: auto; margin-right: auto;">'."\n";
 	echo '<tr>'."\n";
-	echo '<td align="middle">'."\n";
+	echo '<td align="middle" style="border-style: inset; border-width: 1px;">'."\n";
 	echo '<a href="http://orbit.simplenet.com/brush/ring/" target="_blank">'."\n";
 	echo '<img width="160" height="160" src="http://orbit.simplenet.com/brush/ring/images/qewr.jpg" align="left" alt="The Quake Editing Web Ring" border="0"></a>'."\n";
 	echo '</td>'."\n";
-	echo '<td align="middle">'."\n";
-	echo '<center>'."\n";
+	echo '<td align="middle" style="border-style: inset; border-width: 1px;">'."\n";
+	echo '<div class="centered">'."\n";
 	echo '<p>This'."\n";
 	echo '<a href="http://orbit.simplenet.com/brush/ring/" target="_blank">Quake Editing Ring</a> site is owned by'."\n";
 	echo '<a href="mailto:dmckay@yknet.yk.ca">Derrick McKay</a>.'."\n";
@@ -317,10 +317,20 @@ function randomInRange(min, max) {
 	echo '| <a href="http://www.webring.org/cgi-bin/webring?ring=quakeedit&amp;id=17&amp;next">Next</a> ]'."\n";
 	echo '</p>'."\n";
 	echo '<p>Want to join the ring?  Get the <a href="http://orbit.simplenet.com/brush/ring/" target="_blank">info</a>.</p>'."\n";
-	echo '</center>'."\n";
+	echo '</div>'."\n";
 	echo '</td>'."\n";
 	echo '</tr>'."\n";
 	echo '</table>'."\n";*/
+
+	# Slipgate search
+	/*echo '<div class="pagepanel"><div class="pagepanelbody"><div class="centered">';
+	echo '<p>Wanna find something Quake related ??</p>';
+	echo '<form action="http://www.slipgatecentral.com/search.cgi" method="GET">
+Search the <a href="http://www.slipgatecentral.com/">Slipgate Central</a> Quake web site directory:
+<input name="term" size="16">
+<input type="submit" value="Go!">
+</form>';
+	echo '</div></div></div>'."\n";*/
 
 	# -- visible page footer --
 	echo '</body>'."\n";
