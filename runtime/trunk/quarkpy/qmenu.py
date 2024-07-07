@@ -10,7 +10,7 @@ Menu Bars and Popup Menus code
 
 import quarkx
 from qdictionnary import Strings
-from qutils import *
+import qutils
 
 
 # menu state (needs to match PyMenus.pas)
@@ -35,7 +35,7 @@ class item:
         self.onclick = onclick
         self.state = normal
         if hint:
-            self.hint = hintPlusInfobaselink(hint,infobaselink)
+            self.hint = qutils.hintPlusInfobaselink(hint, infobaselink)
 
 
 class popup:
@@ -47,7 +47,7 @@ class popup:
         self.items = items       # this lets you modify 'items' to reflect the current menu state
         self.state = normal
         if hint:
-            self.hint = hintPlusInfobaselink(hint,infobaselink)
+            self.hint = qutils.hintPlusInfobaselink(hint, infobaselink)
 
 
 #
@@ -59,18 +59,17 @@ sep = None
 
 
 
-def macroitem(text, macro, hint=None, infobaselink=""):
+class macroitem(item):
     "A menu item that executes a single macro command."
-    if hint:
-        hint = hintPlusInfobaselink(hint,infobaselink)
-    m = item(text, macroclick, hint)
-    m.macro = macro
-    return m
+
+    def __init__(self, text, macro, hint=None, infobaselink=""):
+        item.__init__(self, text, macroclick, hint)
+        self.macro = macro
 
 def macroclick(m):
-    if not (quarkx.clickform is None):
+    if quarkx.clickform is not None:
         editor = quarkx.clickform.info
-        if editor.MODE == SS_MODEL and (m.macro == "UNDO" or m.macro == "REDO" or m.macro == "MURD"):
+        if editor.MODE == qutils.SS_MODEL and (m.macro == "UNDO" or m.macro == "REDO" or m.macro == "MURD"):
             import mdlutils
             mdlutils.SaveTreeView(editor)
         quarkx.clickform.macro(m.macro)   # returns True (1) or False (0) depending on success or failure
@@ -96,7 +95,7 @@ def DefaultFileMenu():
     "The standard File menu, with its shortcuts."
 
     #NewMap1 = item("&New map")  # not implemented yet
-    Open1 = macroitem("&Open...", "FOPN", "|You can open a file of ANY type.", "intro.mapeditor.menu.html#filemenu")
+    Open1 = macroitem("&Open...", "FOPN", "|You can open a file of ANY type.", "intro.mapeditor.menu.html#filemenu") #FIXME: ModelEditor...! Everywhere!
     savehint = "|You have several ways to save your maps :\n\nAs .map files : the .map format is standard among all Quake editors, but you should only use it to exchange data with another editor, because QuArK cannot store its own data in .map files (e.g. groups, duplicators, etc).\n\nAs .qkm files : this is QuArK's own file format for maps.\n\nInside .qrk files : this is the best solution if you want to organize several maps inside a single file. Choose the menu command 'Save in QuArK Explorer'."
     infobaselink = "intro.mapeditor.menu.html#filemenu"
     Save1 = macroitem("&Save", "FSAV", savehint, infobaselink)
@@ -107,9 +106,9 @@ def DefaultFileMenu():
     File1 = popup("&File", [Open1, Save1, SaveQE1,
      SaveAs1, sep, SaveAll1, sep, Close1])
     sc = {}
-    MapHotKeyList("Open", Open1, sc)
-    MapHotKeyList("Save", Save1, sc)
-    MapHotKeyList("Close", Close1, sc)
+    qutils.MapHotKeyList("Open", Open1, sc)
+    qutils.MapHotKeyList("Save", Save1, sc)
+    qutils.MapHotKeyList("Close", Close1, sc)
     return File1, sc
 
 
@@ -121,8 +120,8 @@ def DefaultFileMenuBsp():
     Close1 = macroitem("&Close BSP editor", "EXIT", "close the BSP editor")
     File1 = popup("&File", [Open1, sep, Close1])
     sc = {}
-    MapHotKeyList("Open", Open1, sc)
-    MapHotKeyList("Close", Close1, sc)
+    qutils.MapHotKeyList("Open", Open1, sc)
+    qutils.MapHotKeyList("Close", Close1, sc)
     return File1, sc
 
 
@@ -178,11 +177,11 @@ def DefaultEditMenu(editor):
     Edit1.Delete1 = Delete1
     Edit1.editcmdgray = editor.editcmdgray
     sc = {}
-    MapHotKeyList("Cut", Cut1, sc)
-    MapHotKeyList("Copy", Copy1, sc)
-    MapHotKeyList("Paste", Paste1, sc)
-    MapHotKeyList("Delete", Delete1, sc)
-    MapHotKeyList("Undo", Undo1, sc)
-    MapHotKeyList("Redo", Redo1, sc)
-    MapHotKeyList("Duplicate", Duplicate1, sc)
+    qutils.MapHotKeyList("Cut", Cut1, sc)
+    qutils.MapHotKeyList("Copy", Copy1, sc)
+    qutils.MapHotKeyList("Paste", Paste1, sc)
+    qutils.MapHotKeyList("Delete", Delete1, sc)
+    qutils.MapHotKeyList("Undo", Undo1, sc)
+    qutils.MapHotKeyList("Redo", Redo1, sc)
+    qutils.MapHotKeyList("Duplicate", Duplicate1, sc)
     return Edit1, sc
