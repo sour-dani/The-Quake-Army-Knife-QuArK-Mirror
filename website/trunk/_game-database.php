@@ -899,7 +899,7 @@ $Games[] = new cGame(NULL ,'IRR' ,'Irrlicht 3D' ,'I' ,'irrlicht.png'
                     ,NULL
                     );
 $Games[] = new cGame(NULL ,'JBNF' ,'James Bond 007: Nightfire' ,'JBN' ,'nightfire.gif'
-                    ,NULL ,'https://en.wikipedia.org/wiki/James_Bond_007:_Nightfire' ,'GoldSrc', FALSE
+                    ,NULL ,'https://en.wikipedia.org/wiki/James_Bond_007:_Nightfire' ,'GoldSrc', TRUE
                     ,'Do you have what it takes to be Bond?'
                     ,NULL
                     ,array('EA' ,'MGM')
