@@ -111,6 +111,10 @@ $GamesQRKGamePatches['Hx2'  ][] = new cQRKGamePatch('h2mp_patch_v112a.exe','http
 #$GamesQRKGamePatches['Hx2'  ][] = new cQRKGamePatch('Hexen II Portal of Praevus v1.15 Unofficial Patch (2.1M)','http://pa3pyx.dnsalias.org/stuff/h2popv115.zip');
 #$GamesQRKGamePatches['Hx2'  ][] = new cQRKGamePatch('Hexen II v1.15 Unofficial Patch (Source Code)(1.5M)','http://pa3pyx.dnsalias.org/stuff/h2v115src.zip');
 
+#James Bond 007: Nightfire
+$GamesQRKGamePatches['JBNF' ] = array();
+$GamesQRKGamePatches['JBNF' ][] = new cQRKGamePatch('nightfirepatch11.zip','https://community.pcgamingwiki.com/files/file/308-james-bond-007-nightfire-patch/'); #http://www.fileplanet.com/119999/110000/fileinfo/James-Bond:-Nightfire-v1.1-Patch
+
 #King-pin
 $GamesQRKGamePatches['KP'   ] = array();
 $GamesQRKGamePatches['KP'   ][] = new cQRKGamePatch('kingpin_v121_patch.exe','http://www.fileplanet.com/27679/20000/fileinfo/Kingpin-v1.21');
