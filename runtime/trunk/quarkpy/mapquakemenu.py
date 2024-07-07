@@ -246,6 +246,7 @@ def RebuildAndRun(maplist, editor, runquake, text, forcepak, extracted, cfgfile,
     #
     for i in range(len(extracted)):
         extracted[i] = extracted[i].lower()
+    quarkx.log("mapquakemenu.RebuildAndRun: Found %d extracted items." % (len(extracted), ), qutils.LOG_VERBOSE)
 
     #
     # First, extract all textures and compute .map file names.
@@ -262,7 +263,7 @@ def RebuildAndRun(maplist, editor, runquake, text, forcepak, extracted, cfgfile,
     texwarninglist = ""
     gameneedwad = setup["GameNeedWad"]
 
-
+    quarkx.log("mapquakemenu.RebuildAndRun: Now iterating through %d maps." % (len(maplist), ), qutils.LOG_VERBOSE)
     for mapfileobject, root, buildmode in maplist:
 
         if buildmode["ExportMapFile"]:
@@ -273,6 +274,7 @@ def RebuildAndRun(maplist, editor, runquake, text, forcepak, extracted, cfgfile,
                         return
 
         map = qutils.checkfilename(mapfileobject["FileName"] or mapfileobject.shortname).lower()
+        quarkx.log("mapquakemenu.RebuildAndRun: Building map %s..." % (map, ), qutils.LOG_VERBOSE)
         mapinfo = {"map": map}
         if buildmode["ExportMapFile"] \
         or buildmode["BuildPgm1"] \
@@ -409,15 +411,15 @@ def RebuildAndRun(maplist, editor, runquake, text, forcepak, extracted, cfgfile,
                 # Check first Default build-tool directory
                 if setup["BuildPgmsDir"] is not None:
                     cmdline2 = os.path.join(quarkx.resolvefilename(setup["BuildPgmsDir"], FT_TOOL)[0], cmdline)
-                    if (quarkx.getfileattr(cmdline2)==FA_FILENOTFOUND):
-                        quarkx.log("Missing executable: %s" % (cmdline2, ), LOG_INFO)
+                    if quarkx.getfileattr(cmdline2) == FA_FILENOTFOUND:
+                        quarkx.log(Strings[5867] % (cmdline2, ), qutils.LOG_INFO)
                     else:
                         # Success, use this build-tool!
                         cmdline = cmdline2
 
-                if (not cmdline) or (quarkx.getfileattr(cmdline)==FA_FILENOTFOUND):
+                if (not cmdline) or (quarkx.getfileattr(cmdline) == FA_FILENOTFOUND):
                     desc = setup["BuildDesc%d" % pgrmnbr] or cmdline or pgrmx
-                    quarkx.log(Strings[5867] % (cmdline, ), LOG_INFO)
+                    quarkx.log(Strings[5867] % (cmdline, ), qutils.LOG_INFO)
                     missing = "     %s\n%s" % (desc, missing)
                 else:
                     # Prepare to run this program
@@ -501,9 +503,7 @@ def RebuildAndRun(maplist, editor, runquake, text, forcepak, extracted, cfgfile,
 
     elif texcount is not None:
         target = setup["TextureWad"] or setup["TexturesPath"]
-#        squawk(target)
         target = quarkx.outputfile(target)
-#        squawk(target)
         c1,c2 = texcount
         if c1<c2:
             msg = Strings[5590] % (c2, target, c2-c1)
@@ -512,7 +512,7 @@ def RebuildAndRun(maplist, editor, runquake, text, forcepak, extracted, cfgfile,
         quarkx.msgbox(msg, MT_INFORMATION, MB_OK)
 
     else:
-        quarkx.msgbox(Strings[5653], MT_INFORMATION, MB_OK)
+        quarkx.msgbox(Strings[5653], MT_WARNING, MB_OK)
 
 
 def Customize1Click(mnu):

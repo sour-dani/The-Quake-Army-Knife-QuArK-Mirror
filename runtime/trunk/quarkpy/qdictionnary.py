@@ -918,7 +918,7 @@ Strings = {
     5650: "No .html or .htm key in Registry",
     5651: "No key \"%s\" in Registry",
     5652: "Cannot execute command : %s",
-    5653: "Operation terminated.",
+    5653: "No maps found to put into a .pak file.",
     5654: "To compile the QuakeC or HexenC code in this file, you must first switch to the appropriate game mode",
     5655: "'%s' is not a M8 texture file//%d should be %d",
     5656: "This directory is not valid.\n\nYour path: %s\nRequired path: %s",
