@@ -295,6 +295,10 @@ $LinksGame[] = new cLinkGroup('Hexen 2', 'Hx2', array(
           ,new cLink('Shadows Of Chaos standalone', 'https://www.moddb.com/mods/shadows-of-chaos-whirled', 'A mod for Hexen 2 that adds weapon altfires and various balance tweaks, effects, bugfixes, & new features for mappers.')
            ));
 
+$LinksGame[] = new cLinkGroup('James Bond 007: Nightfire', 'JBNF', array(
+           new cLink('nightfirepc.com', 'http://nightfirepc.com/', 'This website is an initiative to keep the game running and available for download.')
+           ));
+
 $LinksGame[] = new cLinkGroup('Kingpin', 'KP', array(
 //           new cLink('Wastelands', 'http://kingpin.qeradiant.com/')
            new cLink('K.D.C. (Kingpin Development Community)', 'http://www.pigwhistler.co.uk/', "Here you'll find all the resources you need to get started with editing Kingpin.", 'https://web.archive.org/web/20030410052109/http://www.pigwhistler.co.uk/')
