@@ -43,7 +43,7 @@ function pageLocalDisplay()
 
 	pageName('Tutorials');
 
-	$bodytext = "If you seek tutorials about for a specific game, try visiting that game's website/forum/community for them, or ask around there.";
+	$bodytext = "If you seek tutorials for a specific game, try visiting that game's website/forum/community for them, or ask around there.";
 	pagePanel('community', 'Tutorials', '', $bodytext);
 
 	echo '<a name="QuArK"></a>';
