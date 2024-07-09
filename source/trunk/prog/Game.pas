@@ -270,6 +270,7 @@ const
 var
  Lmp: TPaletteLmp;
  PaletteFile: QFileObject;
+ B: String; //FIXME: Switch to bytes!
  S: String;
  I, J: Integer;
  L: TQList;
@@ -287,26 +288,27 @@ begin
      Lmp[I,2]:=I;
    end;
    {PaletteFile:=Nil;}
-   S:=SetupGameSet.Specifics.Bytes['Palette'];
-   if S<>'' then
+   B:=SetupGameSet.Specifics.Bytes['Palette'];
+   if B<>'' then
    begin
-     if S[1]=':' then
+     if B[1]=':' then //FIXME: This is BAD. Make this TWO specifics!
      begin
        L:=GetQuakeContext;
        for J:=0 to L.Count-1 do
        begin
-         S:=L[J].Specifics.Bytes['Palette'];
+         B:=L[J].Specifics.Bytes['Palette'];
          if S<>'' then
          begin
-           I:=Length(S);
+           I:=Length(B);
            if I>SizeOf(Lmp) then
              I:=SizeOf(Lmp);
-           Move(PChar(S)^, Lmp, I);
+           Move(B[1], Lmp, I);
          end;
        end;
      end
      else
      begin
+       S:=Copy(B, 1, MaxInt);
        PaletteFile:=NeedGameFile(S, '');
        PaletteFile.AddRef(+1);
        try
@@ -318,11 +320,11 @@ begin
          end
          else
          begin
-           S:=PaletteFile.Specifics.Bytes['Data'];
-           I:=Length(S);
+           B:=PaletteFile.Specifics.Bytes['Data'];
+           I:=Length(B);
            if I>SizeOf(Lmp) then
              I:=SizeOf(Lmp);
-           Move(PByte(S), Lmp, I);
+           Move(B[1], Lmp, I);
          end;
        finally
          PaletteFile.AddRef(-1);
