@@ -70,45 +70,58 @@ type
             Brush_id, Brush_num: Integer;
            end;
 
- PbSurface = ^TbSurface; //@@@Rename: Q1!
- TbSurface = record
-              Plane_id, Side: SmallInt;
-              LEdge_id: Integer;
-              LEdge_num, TexInfo_id: SmallInt;
-              LightStyles: array[0..MAXLIGHTMAPS-1] of Byte;
-              LightMap: Integer;
-             end;
+ PQ1Surface = ^TQ1Surface;
+ TQ1Surface = record
+               Plane_id, Side: SmallInt;
+               LEdge_id: LongInt;
+               LEdge_num, TexInfo_id: SmallInt;
+               LightStyles: array[0..MAXLIGHTMAPS-1] of Byte;
+               LightMap: LongInt;
+              end;
 
- PbSOFSurface = ^TbSOFSurface;
- TbSOFSurface = record
-              Plane_id: Word;
-              Side: SmallInt;
-              LEdge_id: Integer;
-              LEdge_num, TexInfo_id: SmallInt;
-              Region_id: SmallInt;
-              RegionFace_id: Integer;
-              RegionFace_num: SmallInt;
-              LightStyles: array[0..MAXLIGHTMAPS-1] of Byte;
-              Lightofs: Integer;
-              Lm_Size, Lm_Start : TBytePair;
-              Texturemins: TSmallIntPair;
-              Extents: TSmallIntPair;
-             end;
+ PQ2Surface = ^TQ2Surface; //FIXME: Unused!
+ TQ2Surface = record
+               Plane_id: Word;
+               Side: SmallInt;
+               LEdge_id: LongInt;
+               LEdge_num, TexInfo_id: SmallInt;
+               Region_id: SmallInt;
+               RegionFace_id: Integer;
+               RegionFace_num: SmallInt;
+               LightStyles: array[0..MAXLIGHTMAPS-1] of Byte;
+               Lightofs: LongInt;
+              end;
 
- PbQ3Surface = ^TbQ3Surface;
- TbQ3Surface = record
-                TexInfo_id: Integer;
-                Effect_id: Integer;
-                Face_Type: Integer; { 0=bad, 1=planer (polygon), 2=patch, 3=mesh (triangle soup), 4=billboard (flare) }
-                Vertex_id, Vertex_num, Meshvert_id, Meshvert_num : Integer;
-                Lightmap_id : Integer;
-                Lm_Start, Lm_Size : TIntegerPair;
-                Lm_Origin, Lm_S, Lm_T : vec3_t;
-                Normal: vec3_t;
-                PatchDim: TIntegerPair;
+ PSOFSurface = ^TSOFSurface;
+ TSOFSurface = record
+                Plane_id: Word;
+                Side: SmallInt;
+                LEdge_id: LongInt;
+                LEdge_num, TexInfo_id: SmallInt;
+                Region_id: SmallInt;
+                RegionFace_id: Integer;
+                RegionFace_num: SmallInt;
+                LightStyles: array[0..MAXLIGHTMAPS-1] of Byte;
+                Lightofs: LongInt;
+                Lm_Size, Lm_Start : TBytePair;
+                Texturemins: TSmallIntPair;
+                Extents: TSmallIntPair;
                end;
 
- TLEdge = LongInt;
+ PQ3Surface = ^TQ3Surface;
+ TQ3Surface = record
+               TexInfo_id: Integer;
+               Effect_id: Integer;
+               Face_Type: Integer; { 0=bad, 1=planer (polygon), 2=patch, 3=mesh (triangle soup), 4=billboard (flare) }
+               Vertex_id, Vertex_num, Meshvert_id, Meshvert_num : Integer;
+               Lightmap_id : Integer;
+               Lm_Start, Lm_Size : TIntegerPair;
+               Lm_Origin, Lm_S, Lm_T : vec3_t;
+               Normal: vec3_t;
+               PatchDim: TIntegerPair;
+              end;
+
+ TLEdge = LongInt; //FIXME: Not LongWord?
  PLEdge = ^TLEdge;
  PEdge = ^TEdge;
  TEdge = record
@@ -155,7 +168,6 @@ type
               procedure ObjectState(var E: TEtatObjet); override;
               function IsExplorerItem(Q: QObject) : TIsExplorerItem; override;
               procedure Dessiner; override;
-             {function SingleLevel: Boolean; override;}
              {procedure AjouterRef(Liste: TList; Niveau: Integer) : Integer; override;}
             end;
 
@@ -233,12 +245,11 @@ end;
 
 constructor TBSPHull.Create(nBsp: QBSP; Index: Integer; nParent: QObject; const Origin: TVect);
 var
- HullType: Char;
  Delta, Size1: Integer;
  S: String;
- I, J, NoVert, NoVert2{, TexInfo_id}, SurfaceSize, FaceType: Integer;
- Faces, Faces2: PbSurface;
- Q3Faces, Q3Faces2: PbQ3Surface;
+ I, J, NoVert, NoVert2{, TexInfo_id}: Integer;
+ Faces, Faces2: PQ1Surface;
+ Q3Faces, Q3Faces2: PQ3Surface;
  LEdges, Edges, Vertices, TexInfo, Planes, P: PChar;
  cLEdges, cEdges, cVertices, cTexInfo, cPlanes: Integer;
  LEdge: PLEdge;
@@ -258,7 +269,8 @@ var
  Q3Vertex: TQ3Vertex;
  Q3VertexP: PQ3Vertex;
  TextureList: QTextureList;
- miptex, q12surf: boolean;
+ HullType, SurfType: Char;
+ miptex: boolean;
  Norm2: TVect;
  Facteur: Double;
 
@@ -285,7 +297,7 @@ begin
   InvFaces:=0;
   cTexInfo:=0;
   HullType:=FBsp.FileHandler.GetHullType(FBsp.NeedObjectGameCode);
-  q12surf:=FBsp.FileHandler.GetSurfaceType(HullType)=bspSurfQ12;
+  SurfType:=FBsp.FileHandler.GetSurfaceType(HullType);
   miptex:=SetupSubSet(ssGames, GetGameName(FBsp.NeedObjectGameCode)).Specifics.Strings['UsesMipTex']<>'';
   case HullType of
    HullQ1:  Size1:=SizeOf(THull);
@@ -332,26 +344,21 @@ begin
     TextureList:=FBsp.BspEntry[FBsp.FileHandler.GetLumpTextures()] as QTextureList;
     TextureList.Acces;
    end;
-  if q12surf then
+  if (SurfType=bspSurfQ12) or (SurfType=bspSurfSOF) then
   begin
-    if Fbsp.NeedObjectGameCode=mjSOF then
-      SurfaceSize:=SizeOf(TbSOFSurface)
-    else
-      SurfaceSize:=SizeOf(TbSurface);
     {J:=  FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces(), PChar(Faces));}
-    if FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces(), PChar(Faces)) < (FirstFace+NbFaces)*SurfaceSize then
+    if FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces(), PChar(Faces)) < (FirstFace+NbFaces)*FBsp.SurfaceSize then
        Raise EErrorFmt(5635, [2]);
-    Inc(PChar(Faces), Pred(FirstFace) * SurfaceSize);
+    Inc(PChar(Faces), Pred(FirstFace) * FBsp.SurfaceSize);
     cLEdges  :=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpSurfEdges(), LEdges) div SizeOf(TLEdge);
     cEdges   :=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpEdges(), Edges) div SizeOf(TEdge);
     Log(LOG_INFO, LoadStr1(5468), [cLEdges]);
     Log(LOG_INFO, LoadStr1(5469), [cEdges]);
   end else
   begin
-    SurfaceSize:=Sizeof(TbQ3Surface);
-    if FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces(), PChar(Q3Faces)) < (FirstFace+NbFaces)*SurfaceSize then
+    if FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces(), PChar(Q3Faces)) < (FirstFace+NbFaces)*FBsp.SurfaceSize then
       Raise EErrorFmt(5635, [2]);
-    Inc(PChar(Q3Faces), Pred(FirstFace) * SurfaceSize);
+    Inc(PChar(Q3Faces), Pred(FirstFace) * FBsp.SurfaceSize);
   end;
   cTexInfo :=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpTexInfo(), TexInfo) div cTexInfo;
   { cPlanes  :=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpPlanes(), Planes) div SizeOf(TQ1Plane);
@@ -370,13 +377,15 @@ begin
 
   Size1:=0;
   { for each face in the brush, reserve space for a Surface }
-  if q12surf then
+  if (SurfType=bspSurfQ12) or (SurfType=bspSurfSOF) then
   begin
     Faces2:=Faces;
     for I:=1 to NbFaces do
     begin
-      Inc(PChar(Faces2), SurfaceSize);
-      if Faces2^.ledge_id + Faces2^.ledge_num > cLEdges then
+      Inc(PChar(Faces2), FBsp.SurfaceSize);
+      if Faces2^.ledge_id < 0 then
+        Raise EErrorFmt(5635, [9]);
+      if Faces2^.ledge_id + Faces2^.ledge_num > cLEdges then //FIXME: SOFSurface is different...!
         Raise EErrorFmt(5635, [3]);
       Inc(Size1, TailleBaseSurface+Faces2^.ledge_num*SizeOf(PVertex));
     end;
@@ -386,9 +395,11 @@ begin
     Q3Faces2:=Q3Faces;
     for I:=1 to NbFaces do
     begin
-      Inc(PChar(Q3Faces2), SurfaceSize);
+      Inc(PChar(Q3Faces2), FBsp.SurfaceSize);
       if Q3Faces2^.Face_Type=1 then
       begin
+        if Q3Faces2^.Vertex_num < 0 then
+          Raise EErrorFmt(5635, [10]);
         {FIXME : check for face additions as above}
         Inc(Size1, TailleBaseSurface+Q3Faces2^.Vertex_num*SizeOf(PVertex));
       end
@@ -407,20 +418,20 @@ begin
   for I:=1 to NbFaces do
    begin
     ProgressIndicatorIncrement;
-    if q12surf then
+    if (SurfType=bspSurfQ12) or (SurfType=bspSurfSOF) then
     begin
-      Inc(PChar(Faces), SurfaceSize);
+      Inc(PChar(Faces), FBsp.SurfaceSize);
       PChar(LEdge):=LEdges + Faces^.ledge_id * SizeOf(TLEdge);
     end
     else
     begin
-      Inc(PChar(Q3Faces), SurfaceSize);
+      Inc(PChar(Q3Faces), FBsp.SurfaceSize);
       if Q3Faces^.Face_Type<>1 then
         Continue;
     end;
     Surface1^.Source:=Self;
     Surface1^.NextF:=Nil;
-    if q12surf then
+    if (SurfType=bspSurfQ12) or (SurfType=bspSurfSOF) then
     begin
       Surface1^.prvVertexCount:=Faces^.ledge_num;
       if Faces^.Plane_id >= cPlanes then
@@ -451,7 +462,7 @@ begin
     {TexInfo_id:=Faces^.TexInfo_id;}
 
     PChar(Dest):=PChar(Surface1)+TailleBaseSurface;
-    if q12surf then
+    if (SurfType=bspSurfQ12) or (SurfType=bspSurfSOF) then
     for J:=1 to Faces^.ledge_num do
     begin
       NoEdge:=LEdge^;
@@ -509,7 +520,7 @@ begin
      Raise EErrorFmt(5635, [6]);
 
      { load texture infos }
-    if q12surf then
+    if (SurfType=bspSurfQ12) or (SurfType=bspSurfSOF) then
     begin
       if Faces^.TexInfo_id >= cTexInfo then
       begin
@@ -626,7 +637,7 @@ begin
 
     Face:=TFace.Create(IntToStr(I), Self);
     SubElements.Add(Face);
-    if q12surf then
+    if (SurfType=bspSurfQ12) or (SurfType=bspSurfSOF) then
     begin
       if Faces^.side<>0 then
         with Face do
@@ -689,7 +700,7 @@ begin
       Continue;
     end;
     Face.NomTex:=S;
-    if not q12surf then
+    if SurfType=bspSurfQ3 then
       Face.SetThreePointsUserTex(P1,P2,P3,nil);
     Face.Specifics.Strings[CannotEditFaceYet]:='1';
     Surface1^.F:=Face;
@@ -711,18 +722,13 @@ begin
    GlobalWarning(FmtLoadStr1(5638, [Index, InvFaces, LastError]));
 end;
 
-{function TBSPHull.SingleLevel: Boolean;
-begin
- SingleLevel:=True;
-end;}
-
 procedure TBSPHull.Dessiner;   { optimized (the inherited version would also do the job) }
 type
  PProjVertices = ^TProjVertices;
  TProjVertices = array[0..0] of TPointProj;
 var
  I, J: Integer;
- Faces: PbSurface;
+ Faces: PQ1Surface;
  LEdges, Edges, Vertices, Limit: PChar;
  LEdge: PLEdge;
  NoEdge: LongInt;
@@ -738,22 +744,21 @@ var
  PV0, PV1: PPointProj;
 begin
  if (FBsp=Nil) or (SurfaceList=Nil) then Exit;
- { optimized versions don't work for SOF, even with correct
-   surfacesize }
- if FBsp.NeedObjectGameCode=mjSOF then
- begin
-   inherited;
-   Exit
- end;
 
  if FBsp.FileHandler.GetSurfaceType(FBsp.NeedObjectGameCode)=bspSurfQ12 then
  begin
    FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces(), PChar(Faces));
-   Inc(PChar(Faces), FirstFace * SizeOf(TbSurface));
+   Inc(PChar(Faces), FirstFace * SizeOf(TQ1Surface));
    FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpSurfEdges(), LEdges);
    FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpEdges(), Edges);
    FBsp.VerticesAddRef(+1);
    Vertices:=PChar(FBsp.FVertices);
+ end
+ else if FBsp.FileHandler.GetSurfaceType(FBsp.NeedObjectGameCode)=bspSurfSOF then
+ begin
+   // optimized versions don't work for SOF, even with correct surfacesize
+   inherited;
+   Exit;
  end
  else
  begin
@@ -836,7 +841,7 @@ begin
            CCoord.Line95f(PV0^, PV1^);
           end;
        end;
-       Inc(PChar(Faces), SizeOf(TbSurface));
+       Inc(PChar(Faces), SizeOf(TQ1Surface));
      end
    end
   else
@@ -884,7 +889,7 @@ begin
           CCoord.Line95f(ProjSommets[0], ProjSommets[1]);
          end;
       end;
-      Inc(PChar(Faces), SizeOf(TbSurface));
+      Inc(PChar(Faces), SizeOf(TQ1Surface));
     end;
  finally
  {OutOfView.Free;}

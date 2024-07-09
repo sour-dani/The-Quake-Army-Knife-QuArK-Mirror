@@ -159,7 +159,6 @@ type
                    //procedure ListeMeshes(Entites: TQList; Flags: Integer); override;
                    procedure AddTo3DScene(Scene: TObject); override;
                    procedure AnalyseClic(Liste: PyObject); override;
-                  {function SingleLevel: Boolean; virtual;}
                    function TreeViewColorBoxes : TColorBoxList; override;
                  protected
                    procedure Compute3DDiggers;
@@ -2166,11 +2165,6 @@ begin
  if ViewFlags and vfCantSelect = 0 then
   inherited;
 end;
-
-{function TTreeMapGroup.SingleLevel: Boolean;
-begin
- SingleLevel:=False;
-end;}
 
 function ControleSelection(T: TTreeMap) : Boolean;
 var

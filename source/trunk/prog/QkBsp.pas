@@ -44,6 +44,7 @@ uses
   hullQ3 =     'a';
 
   bspSurfQ12 = '1'; { surface type for Q1/2 engine games }
+  bspSurfSOF = 'E'; { surface type for SOF }
   bspSurfQ3 = 'a';  { surface/type for Q3 engine games }
 
 type
@@ -249,7 +250,7 @@ type
           function GetNodes: QObject;
           function GetBspNode(Node: PChar; const Name: String; Parent: QObject; var Stats: TNodeStats) : TTreeBspNode;
         protected
-          PlaneSize, LeafSize, NodeSize: Integer;
+          PlaneSize, LeafSize, NodeSize, FSurfaceSize: Integer;
           function OpenWindow(nOwner: TComponent) : TQForm1; override;
           procedure SaveFile(Info: TInfoEnreg1); override;
           procedure LoadFile(F: TStream; StreamSize: TStreamPos); override;
@@ -278,6 +279,7 @@ type
           (*Function CreateStringListFromEntities(ExistingAddons: QFileObject; var Found: TStringList): Integer;*)
           function GetEntityLump : String;
           function CreateHull(Index: Integer; nParent: QObject; const Origin: TVect): QObject; //A TBSPHull, but that would create a circular include
+          property SurfaceSize: Integer read FSurfaceSize;
         end;
 
 type
@@ -590,7 +592,7 @@ begin
   { determine map game : Quake 1 or Hexen II }
   FFlags := FFlags and not ofNotLoadedToMemory;  { to prevent infinite loop on "Acces" }
 
-  FaceCount := GetBspEntryData(FFileHandler.GetLumpFaces(), P) div SizeOf(TbSurface);
+  FaceCount := GetBspEntryData(FFileHandler.GetLumpFaces(), P) div SizeOf(TQ1Surface);
   Taille1   := GetBspEntryData(FFileHandler.GetLumpModels(), P);
 
   ModeQ1 := CheckQ1Hulls(PHull(P), Taille1, FaceCount);
@@ -955,10 +957,23 @@ begin
           Raise EErrorFmt(5520, [LoadName, Signature]);
       end;
 
-      if FFileHandler.GetSurfaceType(NeedObjectGameCode)=bspSurfQ12 then
-        PlaneSize:=SizeOf(TQ1Plane)
+      case FFileHandler.GetSurfaceType(NeedObjectGameCode) of
+      bspSurfQ12:
+        begin
+          FSurfaceSize:=SizeOf(TQ1Surface);
+          PlaneSize:=SizeOf(TQ1Plane);
+        end;
+      bspSurfSOF:
+        begin
+          FSurfaceSize:=SizeOf(TSOFSurface);
+          PlaneSize:=SizeOf(TQ1Plane);
+        end;
       else
-        PlaneSize:=SizeOf(TQ3Plane);
+        begin
+          FSurfaceSize:=Sizeof(TQ3Surface);
+          PlaneSize:=SizeOf(TQ3Plane);
+        end;
+      end;
       case FFileHandler.BspType(NeedObjectGameCode) of
       bspTypeQ1:
         begin
@@ -1037,7 +1052,7 @@ begin
       try
         PQ3:=Nil; //Fix for compiler-warning
 
-        if SurfType=bspSurfQ12 then
+        if (SurfType=bspSurfQ12) or (SurfType=bspSurfSOF) then
         begin
           VertexCount:=GetBspEntryData(FFileHandler.GetLumpVertexes(), PChar(P)) div SizeOf(TQ1Vertex);
           PlaneCount:=GetBspEntryData(FFileHandler.GetLumpPlanes(), Planes) div SizeOf(TQ1Plane);
@@ -1052,7 +1067,7 @@ begin
         try
           Dest:=PVect(FVertices);
 
-          if SurfType=bspSurfQ12 then
+          if (SurfType=bspSurfQ12) or (SurfType=bspSurfSOF) then
           begin
             for I:=1 to VertexCount do
             begin
