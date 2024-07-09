@@ -746,7 +746,7 @@ texcoord:=@texbox;
   try
     SetLength(S, Triangle_num*SizeOf(TComponentTris));
     Tris2:=Tris;
-    PChar(CTris):=PChar(S);
+    PArithByte(CTris):=PArithByte(S);
     for I:=1 to Triangle_num do
     begin
       for J:=0 to 2 do
@@ -789,7 +789,7 @@ texcoord:=@texbox;
       //-- PROCESS VERTEXES
       //-----------------------------------------------------------
       SetLength(S, Vertex_num*SizeOf(vec3_t));
-      PChar(CVert):=PChar(S);
+      PArithByte(CVert):=PArithByte(S);
       Vertexes2:=Vertexes;
       for J:=0 to vertex_Num-1 do
       begin
@@ -911,7 +911,7 @@ begin
           begin
             Read1(SkinGroup, SizeOf(SkinGroup));
             SetLength(Times, SkinGroup.count * SizeOf(Single));
-            PChar(NextTime) := PChar(Times);
+            PArithByte(NextTime) := PArithByte(Times);
             Read1(NextTime^, SkinGroup.count * SizeOf(Single));
           end;
           PreviousTime := 0;
@@ -1022,7 +1022,7 @@ begin
             begin
               Read1(FrameGroup, SizeOf(FrameGroup));
               SetLength(Times, FrameGroup.count * SizeOf(Single));
-              PChar(NextTime) := PChar(Times);
+              PArithByte(NextTime) := PArithByte(Times);
               Read1(NextTime^, FrameGroup.count * SizeOf(Single));
             end;
             PreviousTime := 0;
@@ -1191,7 +1191,7 @@ begin
                 F.WriteBuffer(J, SizeOf(LongInt));
                 F.WriteBuffer(SkinGroup, SizeOf(SkinGroup));
                 SetLength(Times, SkinGroup.count * SizeOf(Single));
-                PChar(NextTime) := PChar(Times);
+                PArithByte(NextTime) := PArithByte(Times);
                 PreviousTime := 0;
                 for J := 0 to SkinGroup.count - 1 do
                 begin
@@ -1374,7 +1374,7 @@ begin
                     FrameGroup.max := Compacter(Vert1);
                     F.WriteBuffer(FrameGroup, SizeOf(FrameGroup));
                     SetLength(Times, FrameGroup.count * SizeOf(Single));
-                    PChar(NextTime) := PChar(Times);
+                    PArithByte(NextTime) := PArithByte(Times);
                     PreviousTime := 0;
                     for J := 0 to FrameGroup.count - 1 do begin
                       PreviousTime := PreviousTime + QFrame(FrameList.Items1[I + J]).GetFloatSpec('duration', 0);
