@@ -30,15 +30,6 @@ const
   MAXLIGHTMAPS = 4;
 
 type
- TBytePair = record
-              first, second: Byte;
-             end;
- TSmallIntPair = record
-                  first, second: SmallInt;
-                 end;
- TIntegerPair = record
-                 first, second : Integer;
-                end;
  TBoundBox = record
               Min, Max: vec3_t;
              end;
@@ -103,22 +94,23 @@ type
                 RegionFace_num: SmallInt;
                 LightStyles: array[0..MAXLIGHTMAPS-1] of Byte;
                 Lightofs: LongInt;
-                Lm_Size, Lm_Start : TBytePair;
-                Texturemins: TSmallIntPair;
-                Extents: TSmallIntPair;
+                Lm_Size, Lm_Start : array[0..1] of Byte;
+                Texturemins: array[0..1] of SmallInt;
+                Extents: array[0..1] of SmallInt;
                end;
 
  PQ3Surface = ^TQ3Surface;
  TQ3Surface = record
-               TexInfo_id: Integer;
-               Effect_id: Integer;
-               Face_Type: Integer; { 0=bad, 1=planer (polygon), 2=patch, 3=mesh (triangle soup), 4=billboard (flare) }
-               Vertex_id, Vertex_num, Meshvert_id, Meshvert_num : Integer;
-               Lightmap_id : Integer;
-               Lm_Start, Lm_Size : TIntegerPair;
-               Lm_Origin, Lm_S, Lm_T : vec3_t;
+               TexInfo_id: LongInt;
+               Effect_id: LongInt;
+               Face_Type: LongInt; { 0=bad, 1=planer (polygon), 2=patch, 3=mesh (triangle soup), 4=billboard (flare) }
+               Vertex_id, Vertex_num, Meshvert_id, Meshvert_num: LongInt;
+               Lightmap_id: LongInt;
+               Lm_Start, Lm_Size: array[0..1] of LongInt;
+               Lm_Origin: vec3_t;
+               Lm_S, Lm_T: vec3_t; // for patches, these are lodbounds
                Normal: vec3_t;
-               PatchDim: TIntegerPair;
+               PatchDim: array[0..1] of LongInt;
               end;
 
  TLEdge = LongInt; //FIXME: Not LongWord?
