@@ -241,10 +241,11 @@ end;
 
 procedure QTexture1.LoadFile(F: TStream; FSize: TStreamPos);
 const
-  Spec1 = 'Image#=';
+  Spec1 = 'Image#';
   PosNb = 6;
 var
-  S: String;
+  B: String; //FIXME: Switch to bytes!
+  Spec: String;
   Header: TQ1Miptex;
   V: array[1..2] of Single;
   I: Integer;
@@ -267,12 +268,12 @@ begin
         Taille1:=Header.W*Header.H;
         for I:=0 to 3 do
         begin
-          S:=Spec1;
-          S[PosNb]:=Chr(49+I);  { '1' to '4' }
-          SetLength(S, Length(Spec1)+Taille1);
+          Spec:=Spec1;
+          Spec[PosNb]:=Chr(49+I);  { '1' to '4' }
+          SetLength(B, Taille1);
           F.Position:=Base+Header.Indexes[I];
-          F.ReadBuffer(S[Length(Spec1)+1], Taille1);
-          Specifics.AddStringFull(S);
+          F.ReadBuffer(B[1], Taille1);
+          Specifics.Bytes[Spec]:=B;
           Taille1:=Taille1 div 4;  { next images are scaled-down }
         end;
         F.Position:=Base+Max;
