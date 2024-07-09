@@ -960,7 +960,7 @@ begin
 (* ProgressIndicatorStart(0,0); try
  FStructure.AddRef(-1);
  FStructure:=Nil;
- VerticesAddRef(0);
+ VerticesAddRef(-1);
  finally ProgressIndicatorStop; end; *)
  if FStructure<>Nil then
   begin
@@ -968,103 +968,108 @@ begin
    FStructure.AddRef(-1);
    FStructure:=Nil;
   end;
- VerticesAddRef(0);
+ VerticesAddRef(-1);
 end;
 
 procedure QBsp.VerticesAddRef(Delta: Integer);
+var
+  P: PQ1Vertex;
+  PQ3: PQ3Vertex;
+  I : Integer;
+  Dest: PVect;
+  SurfType: Char;
+  Pozzie: vec3_t;
 begin
- Inc(FVerticesRefCount, Delta);
- if FVerticesRefCount<=0 then
-  ReallocMem(FVertices, 0);
+  Inc(FVerticesRefCount, Delta);
+  if FVerticesRefCount<=0 then
+    ReallocMem(FVertices, 0)
+  else
+  begin
+    if FVertices=nil then
+    begin
+      SurfType:=FFileHandler.GetSurfaceType(NeedObjectGameCode);
+      ProgressIndicatorStart(0,0);
+      try
+        PQ3:=Nil; {Fix for compiler-warning}
+
+        if SurfType=bspSurfQ12 then
+        begin
+          VertexCount:=GetBspEntryData(FFileHandler.GetLumpVertexes(), PChar(P)) div SizeOf(TQ1Vertex);
+          PlaneCount:=GetBspEntryData(FFileHandler.GetLumpPlanes(), Planes) div SizeOf(TQ1Plane);
+          PlaneSize:=SizeOf(TQ1Plane);
+        end
+        else
+        begin
+          VertexCount:=GetBspEntryData(FFileHandler.GetLumpVertexes(), Q3Vertices) div SizeOf(TQ3Vertex);
+          PQ3:=PQ3Vertex(Q3Vertices);
+          PlaneCount:=GetBspEntryData(FFileHandler.GetLumpPlanes(), Planes) div SizeOf(TQ3Plane);
+          PlaneSize:=Sizeof(TQ3Plane);
+        end;
+        GetMem(FVertices, VertexCount*SizeOf(TVect));
+        try
+          Dest:=PVect(FVertices);
+
+          if SurfType=bspSurfQ12 then
+          begin
+            for I:=1 to VertexCount do
+            begin
+              with Dest^ do
+              begin
+                X:=P^[0];
+                Y:=P^[1];
+                Z:=P^[2];
+              end;
+              Inc(P);
+              Inc(Dest);
+            end;
+          end
+          else
+          begin
+            for I:=1 to VertexCount do
+            begin
+              with Dest^ do
+              begin
+                Pozzie:=PQ3^.Position;
+                X:=Pozzie[0];
+                Y:=Pozzie[1];
+                Z:=Pozzie[2];
+              end;
+              Inc(PQ3);
+              Inc(Dest);
+            end;
+          end;
+        except
+          FreeMem(FVertices);
+          FVertices:=nil;
+          raise;
+        end;
+      finally
+        ProgressIndicatorStop;
+      end;
+    end;
+  end;
 end;
 
 function QBsp.GetStructure;
 var
- Q: QObject;
- P: PQ1Vertex;
- PQ3: PQ3Vertex;
- I : Integer;
- Dest: PVect;
- SurfType: Char;
- Pozzie: vec3_t;
+  Q: QObject;
 begin
   if FStructure=Nil then
   begin
-    if FVertices<>Nil then
-      Raise EError(5637);
-    SurfType:=FFileHandler.GetSurfaceType(NeedObjectGameCode);
-    FVerticesRefCount:=0;
-    ProgressIndicatorStart(0,0);
+    VerticesAddRef(+1);
+    FStructure:=TTreeMapBrush.Create('', Self);
+    FStructure.AddRef(+1);
     try
-      PQ3:=Nil; {Fix for compiler-warning}
-
-      if SurfType=bspSurfQ12 then
-      begin
-        VertexCount:=GetBspEntryData(FFileHandler.GetLumpVertexes(), PChar(P)) div SizeOf(TQ1Vertex);
-        PlaneCount:=GetBspEntryData(FFileHandler.GetLumpPlanes(), Planes) div SizeOf(TQ1Plane);
-        PlaneSize:=SizeOf(TQ1Plane);
-      end
-      else
-      begin
-        VertexCount:=GetBspEntryData(FFileHandler.GetLumpVertexes(), Q3Vertices) div SizeOf(TQ3Vertex);
-        PQ3:=PQ3Vertex(Q3Vertices);
-        PlaneCount:=GetBspEntryData(FFileHandler.GetLumpPlanes(), Planes) div SizeOf(TQ3Plane);
-        PlaneSize:=Sizeof(TQ3Plane);
-      end;
-      GetMem(FVertices, VertexCount*SizeOf(TVect));
-      try
-        Dest:=PVect(FVertices);
-
-        if SurfType=bspSurfQ12 then
-        begin
-          for I:=1 to VertexCount do
-          begin
-            with Dest^ do
-            begin
-              X:=P^[0];
-              Y:=P^[1];
-              Z:=P^[2];
-            end;
-            Inc(P);
-            Inc(Dest);
-          end;
-        end
-        else
-        begin
-          for I:=1 to VertexCount do
-          begin
-            with Dest^ do
-            begin
-              Pozzie:=PQ3^.Position;
-              X:=Pozzie[0];
-              Y:=Pozzie[1];
-              Z:=Pozzie[2];
-            end;
-            Inc(PQ3);
-            Inc(Dest);
-          end;
-        end;
-        FStructure:=TTreeMapBrush.Create('', Self);
-        FStructure.AddRef(+1);
-        try
-          Q:=BspEntry[FFileHandler.GetLumpEntities()];
-          Q.Acces;
-          NonFaces:=0;
-          ReadEntityList(FStructure, Q.Specifics.Strings['Data'], Self);
-          if NonFaces>0 then
-            ShowMessage(FmtLoadStr1(5792, [NonFaces]));
-        except
-          FStructure.AddRef(-1);
-          FStructure:=nil;
-          raise;
-        end;
-      except
-        FreeMem(FVertices);
-        FVertices:=nil;
-        raise;
-      end;
-    finally
-      ProgressIndicatorStop;
+      Q:=BspEntry[FFileHandler.GetLumpEntities()];
+      Q.Acces;
+      NonFaces:=0;
+      ReadEntityList(FStructure, Q.Specifics.Strings['Data'], Self);
+      if NonFaces>0 then
+        ShowMessage(FmtLoadStr1(5792, [NonFaces]));
+    except
+      FStructure.AddRef(-1);
+      FStructure:=nil;
+      raise;
     end;
   end;
   Result:=FStructure;

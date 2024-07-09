@@ -270,18 +270,18 @@ var
  end;
 
 begin
- inherited Create(FmtLoadStr1(5406, [Index]), nParent);
- Log(LOG_INFO, LoadStr1(5466), [Index]);
+  inherited Create(FmtLoadStr1(5406, [Index]), nParent);
+  Log(LOG_INFO, LoadStr1(5466), [Index]);
 
- // Initialize variables
- PChar(LEdge) := #0;
- PlaneDist := 0;
- cEdges := 0;
- HullNum:=Index;
- FBsp:=nBsp;
- FBsp.AddRef(+1);
- FBsp.VerticesAddRef(+1);
- try
+  // Initialize variables
+  PChar(LEdge) := #0;
+  PlaneDist := 0;
+  cEdges := 0;
+  HullNum:=Index;
+  FBsp:=nBsp;
+  FBsp.AddRef(+1);
+  //Note: No need for a try-except for cleanup here; the destructor takes care of this.
+
   InvFaces:=0;
   cTexInfo:=0;
   HullType:=FBsp.FileHandler.GetHullType(FBsp.NeedObjectGameCode);
@@ -709,14 +709,6 @@ begin
 
   if InvFaces>0 then
    GlobalWarning(FmtLoadStr1(5638, [Index, InvFaces, LastError]));
- except
-   //DanielPharos: None of this is needed; we're already running through the destructor!
-   //FBsp.VerticesAddRef(-1);
-   //FBsp.AddRef(-1);
-   //FBsp:=Nil;
-   //FreeMem(SurfaceList);
-   raise;
- end;
 end;
 
 {function TBSPHull.SingleLevel: Boolean;
@@ -760,6 +752,7 @@ begin
    Inc(PChar(Faces), FirstFace * SizeOf(TbSurface));
    FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpSurfEdges(), LEdges);
    FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpEdges(), Edges);
+   FBsp.VerticesAddRef(+1);
    Vertices:=PChar(FBsp.FVertices);
  end
  else
@@ -901,6 +894,7 @@ begin
   {SetROP2(g_DrawInfo.DC, OldROP)}
   else
    DeleteObject(NewPen);
+  FBsp.VerticesAddRef(-1);
  end;
 end;
 
@@ -908,10 +902,7 @@ destructor TBSPHull.Destroy;
 begin
  inherited;
  if FBsp<>Nil then
-  begin
-   FBsp.VerticesAddRef(-1);
-   FBsp.AddRef(-1);
-  end;
+  FBsp.AddRef(-1);
  FreeMem(SurfaceList);
 end;
 
