@@ -988,11 +988,11 @@ var
  SurfType: Char;
  Pozzie: vec3_t;
 begin
-  SurfType:=FFileHandler.GetSurfaceType(NeedObjectGameCode);
   if FStructure=Nil then
   begin
     if FVertices<>Nil then
       Raise EError(5637);
+    SurfType:=FFileHandler.GetSurfaceType(NeedObjectGameCode);
     FVerticesRefCount:=0;
     ProgressIndicatorStart(0,0);
     try
@@ -1011,52 +1011,63 @@ begin
         PlaneCount:=GetBspEntryData(FFileHandler.GetLumpPlanes(), Planes) div SizeOf(TQ3Plane);
         PlaneSize:=Sizeof(TQ3Plane);
       end;
-      ReallocMem(FVertices, VertexCount*SizeOf(TVect));
+      GetMem(FVertices, VertexCount*SizeOf(TVect));
+      try
+        Dest:=PVect(FVertices);
 
-      Dest:=PVect(FVertices);
-
-      if SurfType=bspSurfQ12 then
-      begin
-        for I:=1 to VertexCount do
+        if SurfType=bspSurfQ12 then
         begin
-          with Dest^ do
+          for I:=1 to VertexCount do
           begin
-            X:=P^[0];
-            Y:=P^[1];
-            Z:=P^[2];
+            with Dest^ do
+            begin
+              X:=P^[0];
+              Y:=P^[1];
+              Z:=P^[2];
+            end;
+            Inc(P);
+            Inc(Dest);
           end;
-          Inc(P);
-          Inc(Dest);
-        end;
-      end
-      else
-      begin
-        for I:=1 to VertexCount do
+        end
+        else
         begin
-          with Dest^ do
+          for I:=1 to VertexCount do
           begin
-            Pozzie:=PQ3^.Position;
-            X:=Pozzie[0];
-            Y:=Pozzie[1];
-            Z:=Pozzie[2];
+            with Dest^ do
+            begin
+              Pozzie:=PQ3^.Position;
+              X:=Pozzie[0];
+              Y:=Pozzie[1];
+              Z:=Pozzie[2];
+            end;
+            Inc(PQ3);
+            Inc(Dest);
           end;
-          Inc(PQ3);
-          Inc(Dest);
         end;
+        FStructure:=TTreeMapBrush.Create('', Self);
+        FStructure.AddRef(+1);
+        try
+          Q:=BspEntry[FFileHandler.GetLumpEntities()];
+          Q.Acces;
+          NonFaces:=0;
+          ReadEntityList(FStructure, Q.Specifics.Strings['Data'], Self);
+          if NonFaces>0 then
+            ShowMessage(FmtLoadStr1(5792, [NonFaces]));
+        except
+          FStructure.AddRef(-1);
+          FStructure:=nil;
+          raise;
+        end;
+      except
+        FreeMem(FVertices);
+        FVertices:=nil;
+        raise;
       end;
-      FStructure:=TTreeMapBrush.Create('', Self);
-      FStructure.AddRef(+1);
-      Q:=BspEntry[FFileHandler.GetLumpEntities()];
-      Q.Acces;
-      NonFaces:=0;
-      ReadEntityList(FStructure, Q.Specifics.Strings['Data'], Self);
-      if NonFaces>0 then
-        ShowMessage(FmtLoadStr1(5792, [NonFaces]));
     finally
       ProgressIndicatorStop;
     end;
   end;
-  GetStructure:=FStructure;
+  Result:=FStructure;
 end;
 
 //This function gets called if the editor containing this BSP file closes. Update the BSP lump with the modified data.
