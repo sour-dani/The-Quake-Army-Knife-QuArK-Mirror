@@ -821,6 +821,7 @@ var
   Root: QModelRoot;
   Size: array[1..2] of Single;
   I, J, K, Taille1, Delta, SkinCounter, DeltaW: Integer;
+  Position0: TStreamPos;
   SkinGroup: skingroup_t;
   P: PArithByte;
   B: string; //FIXME: Switch to bytes!
@@ -916,11 +917,11 @@ begin
           PreviousTime := 0;
           for K := 1 to SkinGroup.count do
           begin
-            J := F.Position;
+            Position0 := F.Position;
             SkinObj := Loaded_Skin(C, FmtLoadStr1(2372, [SkinCounter]), Size, DeltaW);
             B:=SkinObj.Specifics.Bytes['Image1'];
             P:=PArithByte(B)+Length(B);
-            F.Position := J;
+            F.Position := Position0;
             Inc(SkinCounter);
             if NextTime <> nil then
             begin
