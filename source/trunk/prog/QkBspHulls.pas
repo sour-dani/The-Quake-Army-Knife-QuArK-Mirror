@@ -34,13 +34,13 @@ type
               Min, Max: vec3_t;
              end;
 
- PHull = ^THull; //@@@RENAME: TQ1Hull AND THE OTHERS TOO
- THull = record
-          Bound: TBoundBox;
-          Origin: vec3_t;
-          Node_id: array[0..MAX_MAP_HULLS-1] of Integer; //4@@@
-          NumLeafs, Face_id, Face_num: Integer;
-         end;
+ PHullQ1 = ^THullQ1;
+ THullQ1 = record
+            Bound: TBoundBox;
+            Origin: vec3_t;
+            Node_id: array[0..MAX_MAP_HULLS-1] of Integer;
+            NumLeafs, Face_id, Face_num: Integer;
+           end;
  PHullH2 = ^THullH2;
  THullH2 = record
             Bound: TBoundBox;
@@ -70,15 +70,12 @@ type
                LightMapOffset: LongInt;
               end;
 
- PQ2Surface = ^TQ2Surface; //FIXME: Unused!
+ PQ2Surface = ^TQ2Surface;
  TQ2Surface = record
                Plane_id: Word;
                Side: SmallInt;
                LEdge_id: LongInt;
                LEdge_num, TexInfo_id: SmallInt;
-               Region_id: SmallInt;
-               RegionFace_id: Integer;
-               RegionFace_num: SmallInt;
                LightStyles: array[0..MAXLIGHTMAPS-1] of Byte;
                LightMapOffset: LongInt;
               end;
@@ -137,13 +134,13 @@ type
               end;
 
 const
- MAX_QPATH = 64; //Q3@@@
+ MAX_QPATH = 64; //At least in Quake 2 & Quake 3
 type
  PTexInfoQ3 = ^ TTexInfoQ3;
  TTexInfoQ3 = record
                 texture: array[0..MAX_QPATH-1] of Byte;
-                flags: Integer;
-                content: Integer;
+                flags: LongInt;
+                content: LongInt;
               end;
 
 type
@@ -165,7 +162,7 @@ type
 
  {------------------------}
 
-function CheckQ1Hulls(Hulls: PHull; Size, FaceCount: Integer) : Boolean;
+function CheckQ1Hulls(Hulls: PHullQ1; Size, FaceCount: Integer) : Boolean;
 function CheckH2Hulls(Hulls: PHullH2; Size, FaceCount: Integer) : Boolean;
 
  {------------------------}
@@ -177,14 +174,14 @@ uses qhelper, QkExceptions, QkMapPoly, Setup, qmatrices, QkWad, Quarkx, Coordina
 
  {------------------------}
 
-function CheckQ1Hulls(Hulls: PHull; Size, FaceCount: Integer) : Boolean;
+function CheckQ1Hulls(Hulls: PHullQ1; Size, FaceCount: Integer) : Boolean;
 var
- P, Q: PHull;
+ P, Q: PHullQ1;
  I, J, HullCount: Integer;
 begin
  Result:=False;
- HullCount:=Size div SizeOf(THull);
- if HullCount*SizeOf(THull)<>Size then Exit;
+ HullCount:=Size div SizeOf(THullQ1);
+ if HullCount*SizeOf(THullQ1)<>Size then Exit;
  P:=Hulls;
  for I:=1 to HullCount do
   begin
@@ -237,13 +234,18 @@ end;
 
 constructor TBSPHull.Create(nBsp: QBSP; Index: Integer; nParent: QObject; const Origin: TVect);
 var
- Delta, Size1: Integer;
- S: String;
- I, J, NoVert, NoVert2{, TexInfo_id}: Integer;
- Faces, Faces2: PQ1Surface;
- Q3Faces, Q3Faces2: PQ3Surface;
- LEdges, Edges, Vertices, TexInfo, Planes, P: PArithByte;
+ HullSize, TexInfoSize: Integer;
+ HullOffset, FaceOffset: Integer;
+ Models, Faces, LEdges, Edges, TexInfo, Planes, Q3Vertices: String; //FIXME: Switch to bytes!
  cLEdges, cEdges, cVertices, cTexInfo, cPlanes: Integer;
+ S: String;
+ Size1, I, J, NoVert, NoVert2, TexInfo_id: Integer;
+ Vertices: PVertexList;
+ Q1Faces: PQ1Surface;
+ Q2Faces: PQ2Surface;
+ SOFFaces: PSOFSurface;
+ Q3Faces: PQ3Surface;
+ Q3VertexP: PQ3Vertex;
  LEdge: PLEdge;
  NoEdge: LongInt;
  Face: TFace;
@@ -258,8 +260,6 @@ var
  P5_1, P5_2, P5_3: TVect5;
  PlaneDist: Double;
  texcoord: vec2_t;
- Q3Vertex: TQ3Vertex;
- Q3VertexP: PQ3Vertex;
  TextureList: QTextureList;
  HullType, BSPType: Char;
  miptex: boolean;
@@ -276,57 +276,54 @@ var
 begin
   inherited Create(FmtLoadStr1(5406, [Index]), nParent);
   Log(LOG_INFO, LoadStr1(5466), [Index]);
-
-  // Initialize variables
-  PArithByte(LEdge) := #0;
-  PlaneDist := 0;
-  cEdges := 0;
   HullNum:=Index;
+
+  InvFaces:=0;
+  PlaneDist:=0; //Supress compiler warning
+
   FBsp:=nBsp;
   FBsp.AddRef(+1);
   //Note: No need for a try-except for cleanup here; the destructor takes care of this.
 
-  InvFaces:=0;
-  cTexInfo:=0;
   HullType:=FBsp.FileHandler.GetHullType(FBsp.NeedObjectGameCode);
   BSPType:=FBsp.FileHandler.BSPType(FBsp.NeedObjectGameCode);
-  miptex:=SetupSubSet(ssGames, GetGameName(FBsp.NeedObjectGameCode)).Specifics.Strings['UsesMipTex']<>'';
   case HullType of
-   HullQ1:  Size1:=SizeOf(THull);
-   HullHx:  Size1:=SizeOf(THullH2);
-   HullQ2:  Size1:=SizeOf(THullQ2);
-   HullQ3:  Size1:=SizeOf(THullQ3);
+   HullQ1: HullSize:=SizeOf(THullQ1);
+   HullHx: HullSize:=SizeOf(THullH2);
+   HullQ2: HullSize:=SizeOf(THullQ2);
+   HullQ3: HullSize:=SizeOf(THullQ3);
   else Exit;
   end;
-  I:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpModels(), P);
-  Delta:=Size1*Succ(Index);
-  if I<Delta then
+  miptex:=SetupSubSet(ssGames, GetGameName(FBsp.NeedObjectGameCode)).Specifics.Strings['UsesMipTex']<>'';
+
+  Models:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpModels());
+  HullOffset:=HullSize*Index;
+  if Length(Models)<HullOffset+HullSize then
    Raise EErrorFmt(5635, [1]);
-  Inc(P, Delta-Size1);
   case HullType of
-   HullQ1: with PHull(P)^ do
+   HullQ1: with PHullQ1(PArithByte(Models)+HullOffset)^ do
              begin
               NbFaces:=Face_num;
               FirstFace:=Face_id;
-              cTexInfo:=SizeOf(TTexInfo);
+              TexInfoSize:=SizeOf(TTexInfo);
              end;
-   HullHx: with PHullH2(P)^ do
+   HullHx: with PHullH2(PArithByte(Models)+HullOffset)^ do
              begin
               NbFaces:=Face_num;
               FirstFace:=Face_id;
-              cTexInfo:=SizeOf(TTexInfo);
+              TexInfoSize:=SizeOf(TTexInfo);
              end;
-   HullQ2: with PHullQ2(P)^ do
+   HullQ2: with PHullQ2(PArithByte(Models)+HullOffset)^ do
               begin
                NbFaces:=Face_num;
                FirstFace:=Face_id;
-               cTexInfo:=SizeOf(TTexInfoQ2);
+               TexInfoSize:=SizeOf(TTexInfoQ2);
               end;
-   HullQ3: with PHullQ3(P)^ do
+   HullQ3: with PHullQ3(PArithByte(Models)+HullOffset)^ do
               begin
                NbFaces:=Face_num;
                FirstFace:=Face_id;
-               cTexInfo:=SizeOf(TTexInfoQ3);
+               TexInfoSize:=SizeOf(TTexInfoQ3);
               end;
    end;
   if not miptex then
@@ -336,103 +333,193 @@ begin
     TextureList:=FBsp.BspEntry[FBsp.FileHandler.GetLumpTextures()] as QTextureList;
     TextureList.Acces;
    end;
+
+  Faces:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces());
+  if Length(Faces) < (FirstFace+NbFaces)*FBsp.SurfaceSize then
+    Raise EErrorFmt(5635, [2]); //FIXME: Check for out-of-bound everywhere!
+  FaceOffset := Pred(FirstFace) * FBsp.SurfaceSize; //-1 because we start iterating with Inc-ing.
+
   if (BSPType=bspTypeQ1) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
   begin
-    {J:=  FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces(), PArithByte(Faces));}
-    if FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces(), PArithByte(Faces)) < (FirstFace+NbFaces)*FBsp.SurfaceSize then
-       Raise EErrorFmt(5635, [2]);
-    Inc(PArithByte(Faces), Pred(FirstFace) * FBsp.SurfaceSize);
-    cLEdges  :=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpSurfEdges(), LEdges) div SizeOf(TLEdge);
-    cEdges   :=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpEdges(), Edges) div SizeOf(TEdge);
+    LEdges:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpSurfEdges());
+    cLEdges:=Length(LEdges) div SizeOf(TLEdge);
     Log(LOG_INFO, LoadStr1(5468), [cLEdges]);
+
+    Edges:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpEdges());
+    cEdges:=Length(Edges) div SizeOf(TEdge);
     Log(LOG_INFO, LoadStr1(5469), [cEdges]);
-  end else
+  end
+  else
   begin
-    if FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces(), PArithByte(Q3Faces)) < (FirstFace+NbFaces)*FBsp.SurfaceSize then
-      Raise EErrorFmt(5635, [2]);
-    Inc(PArithByte(Q3Faces), Pred(FirstFace) * FBsp.SurfaceSize);
+    cLEdges:=0; //Supress compiler warning
+    cEdges:=0; //Supress compiler warning
   end;
-  cTexInfo :=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpTexInfo(), TexInfo) div cTexInfo;
-  { cPlanes  :=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpPlanes(), Planes) div SizeOf(TQ1Plane);
-  { FBsp.FVertices, VertexCount are previously computed
-    by FBsp.GetStructure }
 
-  cPlanes := FBsp.PlaneCount;
-  Planes := FBsp.Planes;
-
-  Vertices:=PArithByte(FBsp.FVertices);
-  cVertices:=FBsp.VertexCount;
-
+  TexInfo:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpTexInfo());
+  cTexInfo:=Length(TexInfo) div TexInfoSize;
   Log(LOG_INFO, LoadStr1(5470), [cTexInfo]);
+
+  Planes:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpPlanes());
+  cPlanes := Length(Planes) div FBsp.PlaneSize;
   Log(LOG_INFO, LoadStr1(5471), [cPlanes]);
+
+  //FBsp.FVertices, VertexCount are previously computed through FBsp.GetStructure
+  Vertices:=FBsp.FVertices;
+  cVertices:=FBsp.VertexCount;
   Log(LOG_INFO, LoadStr1(5472), [cVertices]);
+
+  if BSPType=bspTypeQ3 then
+    Q3Vertices:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpVertexes());
 
   Size1:=0;
   { for each face in the brush, reserve space for a Surface }
-  if (BSPType=bspTypeQ1) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
+  if BSPType=bspTypeQ1 then
   begin
-    Faces2:=Faces;
+    Q1Faces:=PQ1Surface(PArithByte(Faces)+FaceOffset);
     for I:=1 to NbFaces do
     begin
-      Inc(PArithByte(Faces2), FBsp.SurfaceSize);
-      if Faces2^.ledge_id < 0 then
+      Inc(PArithByte(Q1Faces), FBsp.SurfaceSize);
+      if Q1Faces^.ledge_id < 0 then
         Raise EErrorFmt(5635, [9]);
-      if Faces2^.ledge_id + Faces2^.ledge_num > cLEdges then //FIXME: SOFSurface is different...!
+      if Q1Faces^.ledge_id + Q1Faces^.ledge_num > cLEdges then
         Raise EErrorFmt(5635, [3]);
-      Inc(Size1, TailleBaseSurface+Faces2^.ledge_num*SizeOf(PVertex));
+      Inc(Size1, TailleBaseSurface+Q1Faces^.ledge_num*SizeOf(PVertex));
+    end;
+  end
+  else if BSPType=bspTypeQ2 then
+  begin
+    Q2Faces:=PQ2Surface(PArithByte(Faces)+FaceOffset);
+    for I:=1 to NbFaces do
+    begin
+      Inc(PArithByte(Q2Faces), FBsp.SurfaceSize);
+      if Q2Faces^.ledge_id < 0 then
+        Raise EErrorFmt(5635, [9]);
+      if Q2Faces^.ledge_id + Q2Faces^.ledge_num > cLEdges then
+        Raise EErrorFmt(5635, [3]);
+      Inc(Size1, TailleBaseSurface+Q2Faces^.ledge_num*SizeOf(PVertex));
+    end;
+  end
+  else if BSPType=bspTypeSOF then
+  begin
+    SOFFaces:=PSOFSurface(PArithByte(Faces)+FaceOffset);
+    for I:=1 to NbFaces do
+    begin
+      Inc(PArithByte(SOFFaces), FBsp.SurfaceSize);
+      if SOFFaces^.ledge_id < 0 then
+        Raise EErrorFmt(5635, [9]);
+      if SOFFaces^.ledge_id + SOFFaces^.ledge_num > cLEdges then
+        Raise EErrorFmt(5635, [3]);
+      Inc(Size1, TailleBaseSurface+SOFFaces^.ledge_num*SizeOf(PVertex));
     end;
   end
   else
   begin
-    Q3Faces2:=Q3Faces;
+    Q3Faces:=PQ3Surface(PArithByte(Faces)+FaceOffset);
     for I:=1 to NbFaces do
     begin
-      Inc(PArithByte(Q3Faces2), FBsp.SurfaceSize);
-      if Q3Faces2^.Face_Type=1 then
+      Inc(PArithByte(Q3Faces), FBsp.SurfaceSize);
+      if Q3Faces^.Face_Type=1 then
       begin
-        if Q3Faces2^.Vertex_num < 0 then
+        if Q3Faces^.Vertex_num < 0 then
           Raise EErrorFmt(5635, [10]);
         {FIXME : check for face additions as above}
-        Inc(Size1, TailleBaseSurface+Q3Faces2^.Vertex_num*SizeOf(PVertex));
+        Inc(Size1, TailleBaseSurface+Q3Faces^.Vertex_num*SizeOf(PVertex));
       end
       else
         Inc(FBsp.NonFaces);
         {FIXME: we'll be wanting to do something smarter with patches etc}
     end;
   end;
-  GetMem(SurfaceList, Size1);
+  GetMem(SurfaceList, Size1); //FIXME: Is this something like prvVertexTable???
   PArithByte(Surface1):=SurfaceList;
 
   SubElements.Capacity:=NbFaces;
+
+  if BSPType=bspTypeQ1 then
+    Q1Faces:=PQ1Surface(PArithByte(Faces)+FaceOffset)
+  else if BSPType=bspTypeQ2 then
+    Q2Faces:=PQ2Surface(PArithByte(Faces)+FaceOffset)
+  else if BSPType=bspTypeSOF then
+    SOFFaces:=PSOFSurface(PArithByte(Faces)+FaceOffset)
+  else if BSPType=bspTypeQ3 then
+    Q3Faces:=PQ3Surface(PArithByte(Faces)+FaceOffset);
+  //bspTypeHL2
+  //bspTypeG3D
 
   OriginCorrection:=TList.Create;
   ProgressIndicatorStart(5463, NbFaces); try
   for I:=1 to NbFaces do
    begin
     ProgressIndicatorIncrement;
-    if (BSPType=bspTypeQ1) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
+    if BSPType=bspTypeQ1 then
     begin
-      Inc(PArithByte(Faces), FBsp.SurfaceSize);
-      PArithByte(LEdge):=LEdges + Faces^.ledge_id * SizeOf(TLEdge);
+      Inc(PArithByte(Q1Faces), FBsp.SurfaceSize);
+      PArithByte(LEdge):=PArithByte(LEdges) + Q1Faces^.ledge_id * SizeOf(TLEdge);
     end
-    else
+    else if BSPType=bspTypeQ2 then
+    begin
+      Inc(PArithByte(Q2Faces), FBsp.SurfaceSize);
+      PArithByte(LEdge):=PArithByte(LEdges) + Q2Faces^.ledge_id * SizeOf(TLEdge);
+    end
+    else if BSPType=bspTypeSOF then
+    begin
+      Inc(PArithByte(SOFFaces), FBsp.SurfaceSize);
+      PArithByte(LEdge):=PArithByte(LEdges) + SOFFaces^.ledge_id * SizeOf(TLEdge);
+    end
+    else if BSPType=bspTypeQ3 then
     begin
       Inc(PArithByte(Q3Faces), FBsp.SurfaceSize);
       if Q3Faces^.Face_Type<>1 then
         Continue;
     end;
+    //bspTypeHL2
+    //bspTypeG3D
     Surface1^.Source:=Self;
     Surface1^.NextF:=Nil;
-    if (BSPType=bspTypeQ1) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
+    if BSPType=bspTypeQ1 then
     begin
-      Surface1^.prvVertexCount:=Faces^.ledge_num;
-      if Faces^.Plane_id >= cPlanes then
+      Surface1^.prvVertexCount:=Q1Faces^.ledge_num;
+      if Q1Faces^.Plane_id >= cPlanes then
       begin
         Inc(InvFaces);
         LastError:='Err Plane_id';
         Continue;
       end;
-      with PQ1Plane(Planes + Faces^.Plane_id * SizeOf(TQ1Plane))^ do
+      with PQ1Plane(PArithByte(Planes) + Q1Faces^.Plane_id * SizeOf(TQ1Plane))^ do
+      begin
+        NN.X:=normal[0];
+        NN.Y:=normal[1];
+        NN.Z:=normal[2];
+        PlaneDist:=dist;
+      end;
+    end
+    else if BSPType=bspTypeQ2 then
+    begin
+      Surface1^.prvVertexCount:=Q2Faces^.ledge_num;
+      if Q2Faces^.Plane_id >= cPlanes then
+      begin
+        Inc(InvFaces);
+        LastError:='Err Plane_id';
+        Continue;
+      end;
+      with PQ1Plane(PArithByte(Planes) + Q2Faces^.Plane_id * SizeOf(TQ1Plane))^ do
+      begin
+        NN.X:=normal[0];
+        NN.Y:=normal[1];
+        NN.Z:=normal[2];
+        PlaneDist:=dist;
+      end;
+    end
+    else if BSPType=bspTypeSOF then
+    begin
+      Surface1^.prvVertexCount:=SOFFaces^.ledge_num;
+      if SOFFaces^.Plane_id >= cPlanes then
+      begin
+        Inc(InvFaces);
+        LastError:='Err Plane_id';
+        Continue;
+      end;
+      with PQ1Plane(PArithByte(Planes) + SOFFaces^.Plane_id * SizeOf(TQ1Plane))^ do
       begin
         NN.X:=normal[0];
         NN.Y:=normal[1];
@@ -451,70 +538,78 @@ begin
         { fill in PlaneDist later }
       end
     end;
-    {TexInfo_id:=Faces^.TexInfo_id;}
 
     PArithByte(Dest):=PArithByte(Surface1)+TailleBaseSurface;
     if (BSPType=bspTypeQ1) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
-    for J:=1 to Faces^.ledge_num do
-    begin
-      NoEdge:=LEdge^;
-      Inc(PArithByte(LEdge), SizeOf(TLEdge));
-      if NoEdge < 0 then
-       begin
-        if -NoEdge>=cEdges then
-         Raise EErrorFmt(5635, [4]);
-        with PEdge(Edges - NoEdge * SizeOf(TEdge))^ do
-         begin
-          NoVert:=Vertex0;
-          NoVert2:=Vertex1;
-         end;
-       end
-      else
-       begin
-        if NoEdge>=cEdges then
-         Raise EErrorFmt(5635, [5]);
-        with PEdge(Edges + NoEdge * SizeOf(TEdge))^ do
-         begin
-          NoVert:=Vertex1;
-          NoVert2:=Vertex0;
-         end;
-       end;
-      if NoVert2>=UsedVertex then
-       UsedVertex:=NoVert2+1;
-      if NoVert>=UsedVertex then
-       UsedVertex:=NoVert+1;
-      Dest^:=PVertex(Vertices + NoVert * SizeOf(TVect));
-      Inc(Dest);
-    end
-    else
-    with Q3Faces^ do
-    begin
-     { the vertexes are stored in the vertex lump in consecutive
-       order as they are used by each face.  Since we need a QuArK
-       Vertex (Sommet) table like that constructed in FBsp.GetStructure,
-       we use it for the vertexes, but use direct access to the bsp
-       structure for the texture position information }
-      for J:=0 to Vertex_num-1 do
+      for J:=1 to Surface1^.prvVertexCount do
       begin
-        //FIXME: Handle meshverts!
-        Dest^:=PVertex(Vertices+(Vertex_id+J)*SizeOf(TVect));
-        Q3VertexP:=PQ3Vertex(FBsp.Q3Vertices+(Vertex_id+J)*SizeOf(TQ3Vertex));
-        //dist:=Q3VertexP^.Normal;
-        if J=1 then
-        begin
-          P1:=MakeVect(vec3_p(Q3VertexP)^);
-          PlaneDist:=Dot(NN,P1);
-        end;
+        NoEdge:=LEdge^;
+        Inc(PArithByte(LEdge), SizeOf(TLEdge));
+        if NoEdge < 0 then
+         begin
+          if -NoEdge>=cEdges then
+           Raise EErrorFmt(5635, [4]);
+          with PEdge(PArithByte(Edges) - NoEdge * SizeOf(TEdge))^ do
+           begin
+            NoVert:=Vertex0;
+            NoVert2:=Vertex1;
+           end;
+         end
+        else
+         begin
+          if NoEdge>=cEdges then
+           Raise EErrorFmt(5635, [5]);
+          with PEdge(PArithByte(Edges) + NoEdge * SizeOf(TEdge))^ do
+           begin
+            NoVert:=Vertex1;
+            NoVert2:=Vertex0;
+           end;
+         end;
+        if NoVert2>=UsedVertex then
+         UsedVertex:=NoVert2+1;
+        if NoVert>=UsedVertex then
+         UsedVertex:=NoVert+1;
+        Dest^:=PVertex(PArithByte(Vertices) + NoVert * SizeOf(TVect));
         Inc(Dest);
+      end
+    else
+      with Q3Faces^ do
+      begin
+       { the vertexes are stored in the vertex lump in consecutive
+         order as they are used by each face.  Since we need a QuArK
+         Vertex (Sommet) table like that constructed in FBsp.GetStructure,
+         we use it for the vertexes, but use direct access to the bsp
+         structure for the texture position information }
+        for J:=0 to Vertex_num-1 do
+        begin
+          //FIXME: Handle meshverts!
+          Dest^:=PVertex(PArithByte(Vertices) + (Vertex_id+J) * SizeOf(TVect));
+          Q3VertexP:=PQ3Vertex(PArithByte(Q3Vertices)+(Vertex_id+J)*SizeOf(TQ3Vertex));
+          //dist:=Q3VertexP^.Normal;
+          if J=1 then
+          begin
+            P1:=MakeVect(vec3_p(Q3VertexP)^);
+            PlaneDist:=Dot(NN,P1);
+          end;
+          Inc(Dest);
+        end;
       end;
-    end;
     if UsedVertex>cVertices then
-     Raise EErrorFmt(5635, [6]);
+      Raise EErrorFmt(5635, [6]);
 
      { load texture infos }
     if (BSPType=bspTypeQ1) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
     begin
-      if Faces^.TexInfo_id >= cTexInfo then
+      if BSPType=bspTypeQ1 then
+        TexInfo_id:=Q1Faces^.TexInfo_id
+      else if BSPType=bspTypeQ2 then
+        TexInfo_id:=Q2Faces^.TexInfo_id
+      else if BSPType=bspTypeSOF then
+        TexInfo_id:=SOFFaces^.TexInfo_id
+      else
+        TexInfo_id:=0; //Supress compiler warning
+
+      if TexInfo_id >= cTexInfo then
       begin
         Inc(InvFaces);
        {if TexInfo_id = MaxInt then
@@ -523,23 +618,15 @@ begin
          LastError:='Err TexInfo_id';
         Continue;
       end;
-(*
-      if BSPType=bspTypeQ3 then
-        with PTexInfoQ3(TexInfo+Q3Faces^.TexInfo_id*SizeOf(TTexInfoQ3))^ do
-        begin
-          S:=CharToPas(texture);
-          { get flags & contents }
-        end
-      else
-*)
-      if HullType=BspTypeQ2 then
-        with PTexInfoQ2(TexInfo + Faces^.TexInfo_id * SizeOf(TTexInfoQ2))^ do
+
+      if (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
+        with PTexInfoQ2(PArithByte(TexInfo) + TexInfo_id * SizeOf(TTexInfoQ2))^ do
         begin
           S:=CharToPas(texture);
           BspVecs:=@vecs;
         end
       else
-        with PTexInfo(TexInfo + Faces^.TexInfo_id * SizeOf(TTexInfo))^ do
+        with PTexInfo(PArithByte(TexInfo) + TexInfo_id * SizeOf(TTexInfo))^ do
         begin
           BspVecs:=@vecs;
           if miptex>=TextureList.SubElements.Count then
@@ -593,7 +680,7 @@ begin
       J:=1;
       while true do
       begin
-        Q3VertexP:=PQ3Vertex(FBsp.Q3Vertices+(Q3Faces^.Vertex_id+J-1)*SizeOf(TQ3Vertex));
+        Q3VertexP:=PQ3Vertex(PArithByte(Q3Vertices) + (Q3Faces^.Vertex_id+J-1) * SizeOf(TQ3Vertex));
         if J=1 then
           { This trick works because the position and tex coords are the
             first 5 fields.  If we want to drag lightmaps into it we'll
@@ -618,7 +705,7 @@ begin
         if J>Q3Faces^.Vertex_num then
           Raise EErrorFmt(5635, [8]);
       end;
-      with PTexInfoQ3(TexInfo+Q3Faces^.TexInfo_id*SizeOf(TTexInfoQ3))^ do
+      with PTexInfoQ3(PArithByte(TexInfo) + Q3Faces^.TexInfo_id * SizeOf(TTexInfoQ3))^ do
       begin
         S:=CharToPas(texture);
         { strip off leading texture/ }
@@ -631,7 +718,9 @@ begin
     SubElements.Add(Face);
     if (BSPType=bspTypeQ1) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
     begin
-      if Faces^.side<>0 then
+      if ((BSPType=bspTypeQ1) and (Q1Faces^.side<>0))
+      or ((BSPType=bspTypeQ2) and (Q2Faces^.side<>0))
+      or ((BSPType=bspTypeSOF) and (SOFFaces^.side<>0)) then
         with Face do
         begin
           Normale.X:=-NN.X;
@@ -648,11 +737,11 @@ begin
     end
     else
     begin
-        with Face do
-        begin
-          Normale:=NN;
-          //Dist:=PlaneDist;
-        end;
+      with Face do
+      begin
+        Normale:=NN;
+        //Dist:=PlaneDist;
+      end;
     end;
 
     { BSP files use an 'origin' specific to offset BSPHulls }
@@ -719,9 +808,11 @@ type
  PProjVertices = ^TProjVertices;
  TProjVertices = array[0..0] of TPointProj;
 var
- I, J: Integer;
- Faces: PQ1Surface;
- LEdges, Edges, Vertices, Limit: PArithByte;
+ I, J, EdgeNum: Integer;
+ Faces, LEdges, Edges: String; //FIXME: Switch to bytes!
+ Q1Faces: PQ1Surface;
+ Q2Faces: PQ2Surface;
+ Vertices, Limit: PArithByte;
  LEdge: PLEdge;
  NoEdge: LongInt;
  ProjVertices: PProjVertices;
@@ -734,25 +825,29 @@ var
 {Pts: array[0..1] of TPoint;}
  OldPen, NewPen: HPen;
  PV0, PV1: PPointProj;
+ BSPType: Char;
 begin
  if (FBsp=Nil) or (SurfaceList=Nil) then Exit;
 
- case FBsp.FileHandler.BSPType(FBsp.NeedObjectGameCode) of
+ BSPType:=FBsp.FileHandler.BSPType(FBsp.NeedObjectGameCode);
+ case BSPType of
  bspTypeQ1:
    begin
-     FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces(), PArithByte(Faces));
-     Inc(PArithByte(Faces), FirstFace * SizeOf(TQ1Surface));
-     FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpSurfEdges(), LEdges);
-     FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpEdges(), Edges);
+     Faces:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces());
+     Q1Faces:=PQ1Surface(Faces);
+     Inc(PArithByte(Q1Faces), FirstFace * SizeOf(TQ1Surface));
+     LEdges:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpSurfEdges());
+     Edges:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpEdges());
      FBsp.VerticesAddRef(+1);
      Vertices:=PArithByte(FBsp.FVertices);
    end;
  bspTypeQ2:
    begin
-     FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces(), PArithByte(Faces));
-     Inc(PArithByte(Faces), FirstFace * SizeOf(TQ2Surface));
-     FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpSurfEdges(), LEdges);
-     FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpEdges(), Edges);
+     Faces:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces());
+     Q2Faces:=PQ2Surface(Faces);
+     Inc(PArithByte(Q2Faces), FirstFace * SizeOf(TQ2Surface));
+     LEdges:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpSurfEdges());
+     Edges:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpEdges());
      FBsp.VerticesAddRef(+1);
      Vertices:=PArithByte(FBsp.FVertices);
    end;
@@ -813,13 +908,33 @@ begin
      end;*)
     for I:=1 to NbFaces do   { fast version }
      begin
-      PArithByte(LEdge):=LEdges + Faces^.ledge_id * SizeOf(TLEdge);
-      for J:=1 to Faces^.ledge_num do
+      EdgeNum:=0; //Supress compiler warning
+      if BSPType=bspTypeQ1 then
+      begin
+        PArithByte(LEdge):=PArithByte(LEdges) + Q1Faces^.ledge_id * SizeOf(TLEdge);
+        EdgeNum:=Q1Faces^.ledge_num;
+      end
+      else if BSPType=bspTypeQ2 then
+      begin
+        PArithByte(LEdge):=PArithByte(LEdges) + Q2Faces^.ledge_id * SizeOf(TLEdge);
+        EdgeNum:=Q2Faces^.ledge_num;
+      end
+      (*else if BSPType=bspTypeSOF then
+      begin
+        PArithByte(LEdge):=PArithByte(LEdges) + SOFFaces^.ledge_id * SizeOf(TLEdge);
+        EdgeNum:=SOFFaces^.ledge_num;
+      end
+      else if BSPType=bspTypeQ3 then
+      begin
+        PArithByte(LEdge):=PArithByte(LEdges) + Q3Faces^.ledge_id * SizeOf(TLEdge);
+        EdgeNum:=Q3Faces^.ledge_num;
+      end*);
+      for J:=1 to EdgeNum do
        begin
         NoEdge:=LEdge^;
         Inc(PArithByte(LEdge), SizeOf(TLEdge));
         if NoEdge > 0 then  { only draws half the edges - the other ones are drawn in the other direction another time anyway }
-         with PEdge(Edges + NoEdge * SizeOf(TEdge))^ do
+         with PEdge(PArithByte(Edges) + NoEdge * SizeOf(TEdge))^ do
           begin
            PV0:=@ProjVertices^[Vertex0];
            PV1:=@ProjVertices^[Vertex1];
@@ -844,19 +959,44 @@ begin
            CCoord.Line95f(PV0^, PV1^);
           end;
        end;
-       Inc(PArithByte(Faces), SizeOf(TQ1Surface));
+       if BSPType=bspTypeQ1 then
+         Inc(PArithByte(Q1Faces), SizeOf(TQ1Surface))
+       else if BSPType=bspTypeQ2 then
+         Inc(PArithByte(Q2Faces), SizeOf(TQ2Surface))
+       (*else if BSPType=bspTypeSOF then
+         Inc(PArithByte(SOFFaces), SizeOf(TSOFSurface))*);
      end
    end
   else
    for I:=1 to NbFaces do   { slow version }
     begin
-     PArithByte(LEdge):=LEdges + Faces^.ledge_id * SizeOf(TLEdge);
-     for J:=1 to Faces^.ledge_num do
+     EdgeNum:=0; //Supress compiler warning
+     if BSPType=bspTypeQ1 then
+     begin
+       PArithByte(LEdge):=PArithByte(LEdges) + Q1Faces^.ledge_id * SizeOf(TLEdge);
+       EdgeNum:=Q1Faces^.ledge_num;
+     end
+     else if BSPType=bspTypeQ2 then
+     begin
+       PArithByte(LEdge):=PArithByte(LEdges) + Q2Faces^.ledge_id * SizeOf(TLEdge);
+       EdgeNum:=Q2Faces^.ledge_num;
+     end
+     (*else if BSPType=bspTypeSOF then
+     begin
+       PArithByte(LEdge):=PArithByte(LEdges) + SOFFaces^.ledge_id * SizeOf(TLEdge);
+       EdgeNum:=SOFFaces^.ledge_num;
+     end
+     else if BSPType=bspTypeQ3 then
+     begin
+       PArithByte(LEdge):=PArithByte(LEdges) + Q3Faces^.ledge_id * SizeOf(TLEdge);
+       EdgeNum:=Q3Faces^.ledge_num;
+     end*);
+     for J:=1 to EdgeNum do
       begin
        NoEdge:=LEdge^;
        Inc(PArithByte(LEdge), SizeOf(TLEdge));
        if NoEdge > 0 then  { only draws half the edges - the other ones are drawn in the other direction another time anyway }
-        with PEdge(Edges + NoEdge * SizeOf(TEdge))^ do
+        with PEdge(PArithByte(Edges) + NoEdge * SizeOf(TEdge))^ do
          begin
           PArithByte(Sommets[0]):=Vertices + Vertex0 * SizeOf(TVect);
           PArithByte(Sommets[1]):=Vertices + Vertex1 * SizeOf(TVect);
@@ -892,7 +1032,14 @@ begin
           CCoord.Line95f(ProjSommets[0], ProjSommets[1]);
          end;
       end;
-      Inc(PArithByte(Faces), SizeOf(TQ1Surface));
+      if BSPType=bspTypeQ1 then
+        Inc(PArithByte(Q1Faces), SizeOf(TQ1Surface))
+      else if BSPType=bspTypeQ2 then
+        Inc(PArithByte(Q2Faces), SizeOf(TQ2Surface))
+      (*else if BSPType=bspTypeSOF then
+        Inc(PArithByte(SOFFaces), SizeOf(TSOFSurface))
+      else if BSPType=bspTypeQ3 then
+        Inc(PArithByte(Q3Faces), SizeOf(TQ3Surface))*);
     end;
  finally
  {OutOfView.Free;}

@@ -902,7 +902,7 @@ Strings = {
     5634: "Error in hull number %d : %s",
     5635: "The BSP file structure seems to be invalid.\nError code %d",
     5636: "Update the BSP file ?\n\nNote that no group information nor any polyhedron added in this map can be saved. You can only change entities and textures in BSPs.",
-    5637: "This BSP or parts of it are still opened. Cannot open the map display again",
+    # 5637: "This BSP or parts of it are still opened. Cannot open the map display again",
     5638: "The hull number %d contains %d invalid face(s).\n%s",
     5639: "No texture number %d",
     5640: "Cannot edit BSP faces (yet).",
@@ -1174,6 +1174,7 @@ Strings = {
     5900: "Loaded %s library filename: %s",
     5901: "Unloading library %s...",
     5902: "Library %s unloaded!",
+    5903: "No BSP Data for %d",
 
     # DanielPharos would like to reserve 6000 .. 6099 for all renderers
     6000: "Unable to create SceneObject//%s",

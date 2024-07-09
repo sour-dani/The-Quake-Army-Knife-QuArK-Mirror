@@ -238,19 +238,17 @@ type
           function GetStructure : TTreeMapBrush;
           function GetBspEntry(const EntryIndex: Integer) : QFileObject;
           function DetermineGameCodeForBsp1() : Char;
-          procedure GetPlanes(var L: TQList);
           function GetNodes: QObject;
           function GetBspNode(Node: PArithByte; const Name: String; Parent: QObject; var Stats: TNodeStats) : TTreeBspNode;
         protected
-          PlaneSize, LeafSize, NodeSize, FSurfaceSize: Integer;
+          FPlaneSize, LeafSize, NodeSize, FSurfaceSize: Integer;
+          FVertexCount: Integer;
           function OpenWindow(nOwner: TComponent) : TQForm1; override;
           procedure SaveFile(Info: TInfoEnreg1); override;
           procedure LoadFile(F: TStream; StreamSize: TStreamPos); override;
         public
          {FSurfaces: PSurfaceList;}
           FVertices: PVertexList;
-          Q3Vertices, Planes, FirstNode, FirstLeaf: PArithByte;
-          VertexCount, PlaneCount, LeafCount, NodeCount: Integer;
           NonFaces: Integer;
           property Structure: TTreeMapBrush read GetStructure;
           destructor Destroy; override;
@@ -260,7 +258,7 @@ type
           function IsExplorerItem(Q: QObject) : TIsExplorerItem; override;
           property FileHandler: QBspFileHandler read FFileHandler;
           property BspEntry[const EntryIndex: Integer] : QFileObject read GetBspEntry;
-          function GetBspEntryData(const EntryIndex: Integer; var P: PArithByte) : Integer;
+          function GetBspEntryData(const EntryIndex: Integer) : String; //FIXME: Switch to bytes!
           procedure ReLoadStructure;
           procedure CloseStructure;
           procedure VerticesAddRef(Delta: Integer);
@@ -271,7 +269,9 @@ type
           (*Function CreateStringListFromEntities(ExistingAddons: QFileObject; var Found: TStringList): Integer;*)
           function GetEntityLump : String;
           function CreateHull(Index: Integer; nParent: QObject; const Origin: TVect): QObject; //A TBSPHull, but that would create a circular include
+          property PlaneSize: Integer read FPlaneSize;
           property SurfaceSize: Integer read FSurfaceSize;
+          property VertexCount: Integer read FVertexCount;
         end;
 
 type
@@ -546,19 +546,21 @@ begin
   Result := QFileObject(Q);
 end;
 
-function QBsp.GetBspEntryData(const EntryIndex: Integer; var P: PArithByte) : Integer;
+function QBsp.GetBspEntryData(const EntryIndex: Integer) : String; //FIXME: Switch to bytes!
 const
- Start = Length('Data=');
+ DataSpec = 'Data';
 var
  Q: QObject;
- S: String;
 begin
  Q:=BspEntry[EntryIndex];
+ if Q = nil then
+ begin
+   Log(LOG_WARNING, LoadStr1(5903), [EntryIndex]);
+   Result:='';
+   Exit;
+ end;
  Q.Acces;
- S:=Q.GetSpecArg('Data');
- P:=PArithByte(S)+Start;
- Result:=Length(S)-Start;
- Assert(Result>=0, Format('No BSP Data for %d', [EntryIndex])); //FIXME: Move to dict!
+ Result:=Q.Specifics.Bytes[DataSpec];
 end;
 
 function QBsp.GetAltTextureSrc : QObject;
@@ -580,18 +582,21 @@ function QBsp.DetermineGameCodeForBsp1() : char;
  game-mode the .BSP file are for; Quake-1 or Hexen-2.
 }
 var
- P: PArithByte;
+ B: String; //FIXME: Switch to bytes!
  FaceCount, Taille1: Integer;
  ModeQ1, ModeH2: Boolean;
 begin
   { determine map game : Quake 1 or Hexen II }
   FFlags := FFlags and not ofNotLoadedToMemory;  { to prevent infinite loop on "Acces" }
 
-  FaceCount := GetBspEntryData(FFileHandler.GetLumpFaces(), P) div SizeOf(TQ1Surface);
-  Taille1   := GetBspEntryData(FFileHandler.GetLumpModels(), P);
+  B := GetBspEntryData(FFileHandler.GetLumpFaces());
+  FaceCount := Length(B) div SizeOf(TQ1Surface);
 
-  ModeQ1 := CheckQ1Hulls(PHull(P), Taille1, FaceCount);
-  ModeH2 := CheckH2Hulls(PHullH2(P), Taille1, FaceCount);
+  B := GetBspEntryData(FFileHandler.GetLumpModels());
+  Taille1 := Length(B);
+
+  ModeQ1 := CheckQ1Hulls(PHullQ1(PArithByte(B)), Taille1, FaceCount);
+  ModeH2 := CheckH2Hulls(PHullH2(PArithByte(B)), Taille1, FaceCount);
 
   if ModeQ1 and ModeH2 then
     case MessageDlg(FmtLoadStr1(5573, [LoadName]), mtConfirmation, mbYesNoCancel, 0) of
@@ -958,28 +963,28 @@ begin
           NodeSize:=SizeOf(TQ1Node);
           LeafSize:=SizeOf(TQ1Leaf);
           FSurfaceSize:=SizeOf(TQ1Surface);
-          PlaneSize:=SizeOf(TQ1Plane);
+          FPlaneSize:=SizeOf(TQ1Plane);
         end;
       bspTypeQ2:
         begin
           NodeSize:=SizeOf(TQ2Node);
           LeafSize:=SizeOf(TQ2Leaf);
           FSurfaceSize:=SizeOf(TQ2Surface);
-          PlaneSize:=SizeOf(TQ1Plane); //Quake 2 plane = Quake 1 plane
+          FPlaneSize:=SizeOf(TQ1Plane); //Quake 2 plane = Quake 1 plane
         end;
       bspTypeSOF:
         begin
           NodeSize:=SizeOf(TQ2Node); //SOF node = Quake 2 node
           LeafSize:=SizeOf(TSOFLeaf);
           FSurfaceSize:=SizeOf(TSOFSurface);
-          PlaneSize:=SizeOf(TQ1Plane); //SOF plane = Quake 2 plane = Quake 1 plane
+          FPlaneSize:=SizeOf(TQ1Plane); //SOF plane = Quake 2 plane = Quake 1 plane
         end;
       bspTypeQ3:
         begin
           NodeSize:=SizeOf(TQ3Node);
           LeafSize:=SizeOf(TQ3Leaf);
           FSurfaceSize:=Sizeof(TQ3Surface);
-          PlaneSize:=SizeOf(TQ3Plane);
+          FPlaneSize:=SizeOf(TQ3Plane);
         end;
       //bspTypeHL2:
       //bspTypeG3D:
@@ -989,7 +994,7 @@ begin
           NodeSize:=0;
           LeafSize:=0;
           FSurfaceSize:=0;
-          PlaneSize:=0;
+          FPlaneSize:=0;
         end;
       end;
     end;
@@ -1034,12 +1039,12 @@ end;
 
 procedure QBsp.VerticesAddRef(Delta: Integer);
 var
-  P: PQ1Vertex;
+  B: String; //FIXME: Switch to bytes!
+  PQ1: PQ1Vertex;
   PQ3: PQ3Vertex;
   I : Integer;
   Dest: PVect;
   BSPType: Char;
-  Pozzie: vec3_t;
 begin
   Inc(FVerticesRefCount, Delta);
   if FVerticesRefCount<=0 then
@@ -1051,18 +1056,15 @@ begin
       BSPType:=FFileHandler.BSPType(NeedObjectGameCode);
       ProgressIndicatorStart(0,0);
       try
-        PQ3:=Nil; //Fix for compiler-warning
-
         if (BSPType=bspTypeQ1) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
         begin
-          VertexCount:=GetBspEntryData(FFileHandler.GetLumpVertexes(), PArithByte(P)) div SizeOf(TQ1Vertex);
-          PlaneCount:=GetBspEntryData(FFileHandler.GetLumpPlanes(), Planes) div SizeOf(TQ1Plane);
+          B:=GetBspEntryData(FFileHandler.GetLumpVertexes());
+          FVertexCount:=Length(B) div SizeOf(TQ1Vertex);
         end
         else
         begin
-          VertexCount:=GetBspEntryData(FFileHandler.GetLumpVertexes(), Q3Vertices) div SizeOf(TQ3Vertex);
-          PQ3:=PQ3Vertex(Q3Vertices);
-          PlaneCount:=GetBspEntryData(FFileHandler.GetLumpPlanes(), Planes) div SizeOf(TQ3Plane);
+          B:=GetBspEntryData(FFileHandler.GetLumpVertexes());
+          FVertexCount:=Length(B) div SizeOf(TQ3Vertex);
         end;
         GetMem(FVertices, VertexCount*SizeOf(TVect));
         try
@@ -1070,28 +1072,29 @@ begin
 
           if (BSPType=bspTypeQ1) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
           begin
+            PQ1:=PQ1Vertex(PArithByte(B));
             for I:=1 to VertexCount do
             begin
               with Dest^ do
               begin
-                X:=P^[0];
-                Y:=P^[1];
-                Z:=P^[2];
+                X:=PQ1^[0];
+                Y:=PQ1^[1];
+                Z:=PQ1^[2];
               end;
-              Inc(P);
+              Inc(PQ1);
               Inc(Dest);
             end;
           end
           else
           begin
+            PQ3:=PQ3Vertex(PArithByte(B));
             for I:=1 to VertexCount do
             begin
               with Dest^ do
               begin
-                Pozzie:=PQ3^.Position;
-                X:=Pozzie[0];
-                Y:=Pozzie[1];
-                Z:=Pozzie[2];
+                X:=PQ3^.Position[0];
+                Y:=PQ3^.Position[1];
+                Z:=PQ3^.Position[2];
               end;
               Inc(PQ3);
               Inc(Dest);
@@ -1235,7 +1238,8 @@ end;
 function qGetClosePlanes(self, args: PyObject) : PyObject; cdecl;
 var
   Close: Single;
-  I, J, PlaneInc, HalfPlaneCount: Integer;
+  I, J, PlaneInc, HalfPlaneCount, PlaneCount: Integer;
+  Planes: String; //FIXME: Switch to bytes!
   Planes2, Planes3: PArithByte;
   BSPType: Char;
   o: PyObject;
@@ -1246,11 +1250,14 @@ begin
       Exit;
     with QkObjFromPyObj(self) as QBsp do
     begin
+      Planes:=GetBspEntryData(FFileHandler.GetLumpPlanes());
+      PlaneCount:=Length(Planes) div PlaneSize;
+
       Result:=PyList_New(0);
       HalfPlaneCount:=(PlaneCount-1) div 2;
       BSPType:=FFileHandler.BSPType(NeedObjectGameCode);
       PlaneInc:=2*PlaneSize;
-      Planes2:=Planes;
+      Planes2:=PArithByte(Planes);
       for I:=0 to HalfPlaneCount do
       begin
         Planes3 := Planes2+PlaneInc;
@@ -1262,7 +1269,7 @@ begin
             try
               PyList_Append(Result, o);
             finally
-              Py_XDECREF(o);
+              Py_DECREF(o);
             end;
             Break;
           end;
@@ -1289,6 +1296,10 @@ function QBsp.PyGetAttr(attr: PyChar) : PyObject;
 var
  I: Integer;
  L: TQlist;
+ Planes: String; //FIXME: Switch to bytes!
+ Planes2: PArithByte;
+ PlaneCount: Integer;
+ Q: QObject;
 begin
  Result:=inherited PyGetAttr(attr);
  if Result<>Nil then Exit;
@@ -1306,10 +1317,23 @@ begin
        end;
   'p': if StrComp(attr, 'planes') = 0 then
        begin
-         L:=TQList.Create; try;
-         GetPlanes(L);
-         Result:=QListToPyList(L);
-         finally L.Free; end;
+         Planes:=GetBspEntryData(FileHandler.GetLumpPlanes());
+         PlaneCount:=Length(Planes) div PlaneSize;
+
+         L:=TQList.Create;
+         try;
+           Planes2:=PArithByte(Planes);
+           for I:=0 to PlaneCount-1 do
+           begin
+             //If the plane is created with Self as parent, it can't be stuck into a subitems list by Python code
+             Q:=TTreeBspPlane.Create('plane '+IntToStr(I), Nil, PQ1Plane(Planes2), I);
+             L.Add(Q);
+             Inc(Planes2, PlaneSize);
+           end;
+           Result:=QListToPyList(L);
+         finally
+           L.Free;
+         end;
          Exit;
        end;
   't': if StrComp(attr, 'texsource') = 0 then
@@ -1596,37 +1620,21 @@ begin
   end;
 end;
 
-procedure Qbsp.GetPlanes(var L: TQList);
-var
-  I: Integer;
-  Planes2: PArithByte;
-  Q: QObject;
-begin
-  Planes2:=Planes;
-  For I:=0 to PlaneCount-1 do
-  begin
-    {if the plane is created with Self as parent, it can't
-      be stuck into a subitems list by Python code }
-    Q:=TTreeBspPlane.Create('plane '+IntToStr(I), Nil, PQ1Plane(Planes2), I);
-    L.Add(Q);
-    Inc(Planes2, PlaneSize);
-  end;
-end;
-
 function QBsp.GetNodes : QObject;
 var
   Stats: TNodeStats;
+  FirstNode: String; //FIXME: Switch to bytes!
 begin
-  NodeCount:= GetBspEntryData(FFileHandler.GetLumpNodes(), FirstNode) div NodeSize;
-  LeafCount:= GetBspEntryData(FFileHandler.GetLumpLeafs(), FirstLeaf) div LeafSize;
-  Result:=GetBspNode(FirstNode, 'Root Node', Nil, Stats);
+  FirstNode:=GetBspEntryData(FFileHandler.GetLumpNodes());
+  Result:=GetBspNode(PArithByte(FirstNode), 'Root Node', Nil, Stats);
 end;
 
-function QBsp.GetBspNode(Node: PArithByte; const Name:String; Parent: QObject; var Stats: TNodeStats) : TTreeBspNode;
+function QBsp.GetBspNode(Node: PArithByte; const Name: String; Parent: QObject; var Stats: TNodeStats) : TTreeBspNode;
 var
   TreePlane: TTreeBspPlane;
   FirstStats, SecStats: TNodeStats; { stats from children }
   NodeWrapper: BspNode;
+  FirstNode, FirstLeaf: String; //FIXME: Switch to bytes!
 
   procedure AddChild(Parent: TTreeBspNode; child: Integer; const Name: String; var Stats: TNodeStats);
   var
@@ -1634,12 +1642,12 @@ var
     PLeaf: PArithByte;
   begin
     if child>0 then
-      TreeNode:=GetBspNode(FirstNode+child*NodeSize,Name, Parent, Stats)
+      TreeNode:=GetBspNode(PArithByte(FirstNode) + child*NodeSize, Name, Parent, Stats)
     else
     begin
       { add 1, so that first child index is 0 (Max McQuires
         Q2 Bsp Format description on www.flipcode.com) }
-      PLeaf:=FirstLeaf-(child+1)*LeafSize;
+      PLeaf:=PArithByte(FirstLeaf) - (child+1)*LeafSize;
       TreeNode:=TTreeBspNode.Create(Name, Parent, BspLeaf.Create(PLeaf, NeedObjectGameCode), Stats);
       TreeNode.Source:=PLeaf;
     end;
@@ -1650,6 +1658,9 @@ var
   end;
 
 begin
+  FirstNode:=GetBspEntryData(FFileHandler.GetLumpNodes());
+  FirstLeaf:=GetBspEntryData(FFileHandler.GetLumpLeafs());
+
   NodeWrapper:=BspNode.Create(Node, NeedObjectGameCode);
   Result:=TTreeBspNode.Create(Name, Parent, NodeWrapper, Stats);
   with NodeWrapper do
@@ -1755,7 +1766,8 @@ end;
 
 function TTreeBspPlane.GetNearPlanes(Close: Double; Bsp: QBsp): PyObject;
 var
-  I, PlaneInc, HalfPlaneCount: Integer;
+  I, PlaneInc, HalfPlaneCount, PlaneCount: Integer;
+  Planes: String; //FIXME: Switch to bytes!
   Planes2: PArithByte;
   BSPType: Char;
   o: PyObject;
@@ -1763,10 +1775,12 @@ begin
   Result:=PyList_New(0);
   with Bsp do
   begin
+    Planes:=GetBspEntryData(FFileHandler.GetLumpPlanes());
+    PlaneCount:=Length(Planes) div PlaneSize;
     HalfPlaneCount:=(PlaneCount-1) div 2;
     BSPType:=FFileHandler.BSPType(NeedObjectGameCode);
     PlaneInc:=2*PlaneSize;
-    Planes2:=Planes;
+    Planes2:=PArithByte(Planes);
     for I:=0 to HalfPlaneCount do
     begin
       if PlanesClose(Source, Planes2, BSPType, Close) then
@@ -1775,7 +1789,7 @@ begin
         try
           PyList_Append(Result, o);
         finally
-          Py_XDECREF(o);
+          Py_DECREF(o);
         end;
       end;
       Inc(Planes2, PlaneInc);
@@ -1999,7 +2013,6 @@ end;
 
 procedure TTreeBspNode.GetFaces(var L : PyObject);
 var
-  FirstLFace: PArithByte;
   LFaceIndex: Integer;
   o: PyObject;
 begin
@@ -2008,19 +2021,49 @@ begin
     ShowMessage('Faces only for leaves');
     Exit;
   end;
-  with PQ3Leaf(Source)^ do
-  begin
-    { leaffaces are integer sized in both Q2/Q3 }
-    Bsp.GetBspEntryData(Bsp.FileHandler.GetLumpLeafFaces(), FirstLFace);
-    for LFaceIndex:=first_leafface to first_leafface+num_leaffaces do
+  case Bsp.FFileHandler.GetHullType(Bsp.NeedObjectGameCode) of
+  //bspTypeQ1:
+  bspTypeQ2:
+    with PQ2Leaf(Source)^ do
     begin
-      o:=PyInt_FromLong(LFaceIndex);
-      try
-        PyList_Append(L, o);
-      finally
-        Py_XDECREF(o);
+      for LFaceIndex:=first_leafface to first_leafface+num_leaffaces do
+      begin
+        o:=PyInt_FromLong(LFaceIndex);
+        try
+          PyList_Append(L, o);
+        finally
+          Py_XDECREF(o);
+       end;
       end;
     end;
+  bspTypeSOF:
+    with PSOFLeaf(Source)^ do
+    begin
+      for LFaceIndex:=first_leafface to first_leafface+num_leaffaces do
+      begin
+        o:=PyInt_FromLong(LFaceIndex);
+        try
+          PyList_Append(L, o);
+        finally
+          Py_XDECREF(o);
+       end;
+      end;
+    end;
+  bspTypeQ3:
+    with PQ3Leaf(Source)^ do
+    begin
+      for LFaceIndex:=first_leafface to first_leafface+num_leaffaces do
+      begin
+        o:=PyInt_FromLong(LFaceIndex);
+        try
+          PyList_Append(L, o);
+        finally
+          Py_XDECREF(o);
+       end;
+      end;
+    end;
+  //bspTypeHL2:
+  //bspTypeG3D:
   end;
 end;
 
