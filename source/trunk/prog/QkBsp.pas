@@ -25,7 +25,7 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls,
   Forms, Dialogs, QkObjects, QkFileObjects, QkForm, QkMapObjects, qmath,
-  StdCtrls, Python, TB97;
+  StdCtrls, Python, TB97, ExtraFunctionality;
 
  const
   { these are the game codes for the default games
@@ -81,12 +81,6 @@ type
             dist: Single;
            end;
 
- { Note: although PbPlane (for Q1/Q2) and  TQ3Plane
-   are different, we can access both as
-   PQ3Plane/PbPlane(PcharPointer)^ because their
-   structure is the same up to flags which we don't
-   yet care about }
-
  PQ1Node = ^TQ1Node;
  TQ1Node = record
              plane: Integer; { plane index (int32) }
@@ -121,12 +115,12 @@ type
 
  BspNode = class
    public
-     Source: PChar;
+     Source: PArithByte;
      Plane: Integer;
      firstchild: Integer; {child indices, neg if leaf }
      secondchild: Integer;
      mins, maxs: array [0..2] of Integer; {bbox}
-     constructor Create(SourcePtr: PChar; GameCode: Char);
+     constructor Create(SourcePtr: PArithByte; GameCode: Char);
     end;
 
  PQ1Leaf = ^TQ1Leaf;
@@ -171,8 +165,8 @@ type
    public
      mins, maxs: array [0..2] of integer; {bbox}
      num_leaffaces: Integer;
-     Source: PChar;
-     constructor Create(SourcePtr: PChar; GameCode: Char);
+     Source: PArithByte;
+     constructor Create(SourcePtr: PArithByte; GameCode: Char);
    end;
 
  TNodeStats = record
@@ -189,7 +183,7 @@ type
   public
    Normal: TVect;
    Dist: Double;
-   Source: PChar;
+   Source: PArithByte;
    Number: Integer;
    constructor Create(const nName: String; nParent: QObject; Source: PQ1Plane; Index: Integer); overload;
 
@@ -200,7 +194,7 @@ type
 
  TTreeBspNode = class(TTreeMapGroup)
   public
-   Source: PChar;
+   Source: PArithByte;
    Bsp: QBsp;
    Plane: TTreeBspPlane;
    Leaf: boolean;
@@ -248,7 +242,7 @@ type
           function DetermineGameCodeForBsp1() : Char;
           procedure GetPlanes(var L: TQList);
           function GetNodes: QObject;
-          function GetBspNode(Node: PChar; const Name: String; Parent: QObject; var Stats: TNodeStats) : TTreeBspNode;
+          function GetBspNode(Node: PArithByte; const Name: String; Parent: QObject; var Stats: TNodeStats) : TTreeBspNode;
         protected
           PlaneSize, LeafSize, NodeSize, FSurfaceSize: Integer;
           function OpenWindow(nOwner: TComponent) : TQForm1; override;
@@ -257,7 +251,7 @@ type
         public
          {FSurfaces: PSurfaceList;}
           FVertices: PVertexList;
-          Q3Vertices, Planes, FirstNode, FirstLeaf: PChar;
+          Q3Vertices, Planes, FirstNode, FirstLeaf: PArithByte;
           VertexCount, PlaneCount, LeafCount, NodeCount: Integer;
           NonFaces: Integer;
           property Structure: TTreeMapBrush read GetStructure;
@@ -268,7 +262,7 @@ type
           function IsExplorerItem(Q: QObject) : TIsExplorerItem; override;
           property FileHandler: QBspFileHandler read FFileHandler;
           property BspEntry[const EntryIndex: Integer] : QFileObject read GetBspEntry;
-          function GetBspEntryData(const EntryIndex: Integer; var P: PChar) : Integer;
+          function GetBspEntryData(const EntryIndex: Integer; var P: PArithByte) : Integer;
           procedure ReLoadStructure;
           procedure CloseStructure;
           procedure VerticesAddRef(Delta: Integer);
@@ -403,13 +397,13 @@ uses Travail, QkWad, Setup, Game, QkMap, QkBspHulls, ApplPaths,
      Undo, Quarkx, QkExceptions, PyForms, PyMath, PyObjects,
      QkObjectClassList, ToolBox1, ToolBoxGroup,
      QkQuakeCtx, FormCfg, Logging, QkTextures, QkFormCfg,
-     QkQ1, QkQ2, QkQ3, QkG3D, ExtraFunctionality;
+     QkQ1, QkQ2, QkQ3, QkG3D;
 
 {$R *.DFM}
 
  {------------------------}
 
-function PlanesClose(const Plane1, Plane2: PChar; const SurfType: Char; const Close: Double): boolean;
+function PlanesClose(const Plane1, Plane2: PArithByte; const SurfType: Char; const Close: Double): boolean;
 var
   PlanePt1, PlanePt2, PlaneNorm1, PlaneNorm2: TVect;
 begin
@@ -551,7 +545,7 @@ begin
   Result := QFileObject(Q);
 end;
 
-function QBsp.GetBspEntryData(const EntryIndex: Integer; var P: PChar) : Integer;
+function QBsp.GetBspEntryData(const EntryIndex: Integer; var P: PArithByte) : Integer;
 const
  Start = Length('Data=');
 var
@@ -561,7 +555,7 @@ begin
  Q:=BspEntry[EntryIndex];
  Q.Acces;
  S:=Q.GetSpecArg('Data');
- P:=PChar(S)+Start;
+ P:=PArithByte(S)+Start;
  Result:=Length(S)-Start;
  Assert(Result>=0, Format('No BSP Data for %d', [EntryIndex])); //FIXME: Move to dict!
 end;
@@ -585,7 +579,7 @@ function QBsp.DetermineGameCodeForBsp1() : char;
  game-mode the .BSP file are for; Quake-1 or Hexen-2.
 }
 var
- P: PChar;
+ P: PArithByte;
  FaceCount, Taille1: Integer;
  ModeQ1, ModeH2: Boolean;
 begin
@@ -1054,7 +1048,7 @@ begin
 
         if (SurfType=bspSurfQ12) or (SurfType=bspSurfSOF) then
         begin
-          VertexCount:=GetBspEntryData(FFileHandler.GetLumpVertexes(), PChar(P)) div SizeOf(TQ1Vertex);
+          VertexCount:=GetBspEntryData(FFileHandler.GetLumpVertexes(), PArithByte(P)) div SizeOf(TQ1Vertex);
           PlaneCount:=GetBspEntryData(FFileHandler.GetLumpPlanes(), Planes) div SizeOf(TQ1Plane);
         end
         else
@@ -1235,7 +1229,7 @@ function qGetClosePlanes(self, args: PyObject) : PyObject; cdecl;
 var
   Close: Single;
   I, J, PlaneInc, HalfPlaneCount: Integer;
-  Planes2, Planes3: PChar;
+  Planes2, Planes3: PArithByte;
   SurfType: Char;
   o: PyObject;
 begin
@@ -1598,7 +1592,7 @@ end;
 procedure Qbsp.GetPlanes(var L: TQList);
 var
   I: Integer;
-  Planes2: PChar;
+  Planes2: PArithByte;
   Q: QObject;
 begin
   Planes2:=Planes;
@@ -1621,7 +1615,7 @@ begin
   Result:=GetBspNode(FirstNode, 'Root Node', Nil, Stats);
 end;
 
-function QBsp.GetBspNode(Node: PChar; const Name:String; Parent: QObject; var Stats: TNodeStats) : TTreeBspNode;
+function QBsp.GetBspNode(Node: PArithByte; const Name:String; Parent: QObject; var Stats: TNodeStats) : TTreeBspNode;
 var
   TreePlane: TTreeBspPlane;
   FirstStats, SecStats: TNodeStats; { stats from children }
@@ -1630,7 +1624,7 @@ var
   procedure AddChild(Parent: TTreeBspNode; child: Integer; const Name: String; var Stats: TNodeStats);
   var
     TreeNode: TTreeBspNode;
-    PLeaf: PChar;
+    PLeaf: PArithByte;
   begin
     if child>0 then
       TreeNode:=GetBspNode(FirstNode+child*NodeSize,Name, Parent, Stats)
@@ -1743,7 +1737,7 @@ begin
   begin
     VectSpec['norm']:=MakeVect(normal);
     SetFloatSpec('dist',dist);
-    Self.Source:=PChar(Source);
+    Self.Source:=PArithByte(Source);
   end;
 end;
 
@@ -1755,7 +1749,7 @@ end;
 function TTreeBspPlane.GetNearPlanes(Close: Double; Bsp: QBsp): PyObject;
 var
   I, PlaneInc, HalfPlaneCount: Integer;
-  Planes2: PChar;
+  Planes2: PArithByte;
   SurfType: Char;
   o: PyObject;
 begin
@@ -1842,7 +1836,7 @@ end;
 
  {------------------------}
 
-constructor BspNode.Create(SourcePtr: PChar; GameCode: Char);
+constructor BspNode.Create(SourcePtr: PArithByte; GameCode: Char);
 var
   SourceQ1: TQ1Node;
   SourceQ2: TQ2Node;
@@ -1894,7 +1888,7 @@ end;
 
  {------------------------}
 
-constructor BspLeaf.Create(SourcePtr: PChar; GameCode: Char);
+constructor BspLeaf.Create(SourcePtr: PArithByte; GameCode: Char);
 var
   SourceQ1: TQ1Leaf;
   SourceQ2: TQ2Leaf;
@@ -1983,7 +1977,7 @@ end;
 
 procedure TTreeBspNode.GetFaces(var L : PyObject);
 var
-  FirstLFace: PChar;
+  FirstLFace: PArithByte;
   LFaceIndex: Integer;
   o: PyObject;
 begin

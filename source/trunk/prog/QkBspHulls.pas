@@ -23,7 +23,7 @@ unit QkBspHulls;
 interface
 
 uses Windows, SysUtils, Classes, QkObjects, QkMapObjects, QkBsp,
-     qmath, QkFileObjects;
+     qmath, QkFileObjects, ExtraFunctionality;
 
 const
   MAX_MAP_HULLS = 4; //8 FOR HEXEN2!!!
@@ -160,7 +160,7 @@ type
               FBsp: QBSP;
               HullNum, UsedVertex: Integer;
               NbFaces, FirstFace: Integer;
-              SurfaceList: PChar;
+              SurfaceList: PArithByte;
             public
               constructor Create(nBsp: QBSP; Index: Integer; nParent: QObject; const Origin: TVect);
               destructor Destroy; override;
@@ -250,7 +250,7 @@ var
  I, J, NoVert, NoVert2{, TexInfo_id}: Integer;
  Faces, Faces2: PQ1Surface;
  Q3Faces, Q3Faces2: PQ3Surface;
- LEdges, Edges, Vertices, TexInfo, Planes, P: PChar;
+ LEdges, Edges, Vertices, TexInfo, Planes, P: PArithByte;
  cLEdges, cEdges, cVertices, cTexInfo, cPlanes: Integer;
  LEdge: PLEdge;
  NoEdge: LongInt;
@@ -286,7 +286,7 @@ begin
   Log(LOG_INFO, LoadStr1(5466), [Index]);
 
   // Initialize variables
-  PChar(LEdge) := #0;
+  PArithByte(LEdge) := #0;
   PlaneDist := 0;
   cEdges := 0;
   HullNum:=Index;
@@ -346,19 +346,19 @@ begin
    end;
   if (SurfType=bspSurfQ12) or (SurfType=bspSurfSOF) then
   begin
-    {J:=  FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces(), PChar(Faces));}
-    if FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces(), PChar(Faces)) < (FirstFace+NbFaces)*FBsp.SurfaceSize then
+    {J:=  FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces(), PArithByte(Faces));}
+    if FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces(), PArithByte(Faces)) < (FirstFace+NbFaces)*FBsp.SurfaceSize then
        Raise EErrorFmt(5635, [2]);
-    Inc(PChar(Faces), Pred(FirstFace) * FBsp.SurfaceSize);
+    Inc(PArithByte(Faces), Pred(FirstFace) * FBsp.SurfaceSize);
     cLEdges  :=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpSurfEdges(), LEdges) div SizeOf(TLEdge);
     cEdges   :=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpEdges(), Edges) div SizeOf(TEdge);
     Log(LOG_INFO, LoadStr1(5468), [cLEdges]);
     Log(LOG_INFO, LoadStr1(5469), [cEdges]);
   end else
   begin
-    if FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces(), PChar(Q3Faces)) < (FirstFace+NbFaces)*FBsp.SurfaceSize then
+    if FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces(), PArithByte(Q3Faces)) < (FirstFace+NbFaces)*FBsp.SurfaceSize then
       Raise EErrorFmt(5635, [2]);
-    Inc(PChar(Q3Faces), Pred(FirstFace) * FBsp.SurfaceSize);
+    Inc(PArithByte(Q3Faces), Pred(FirstFace) * FBsp.SurfaceSize);
   end;
   cTexInfo :=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpTexInfo(), TexInfo) div cTexInfo;
   { cPlanes  :=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpPlanes(), Planes) div SizeOf(TQ1Plane);
@@ -368,7 +368,7 @@ begin
   cPlanes := FBsp.PlaneCount;
   Planes := FBsp.Planes;
 
-  Vertices:=PChar(FBsp.FVertices);
+  Vertices:=PArithByte(FBsp.FVertices);
   cVertices:=FBsp.VertexCount;
 
   Log(LOG_INFO, LoadStr1(5470), [cTexInfo]);
@@ -382,7 +382,7 @@ begin
     Faces2:=Faces;
     for I:=1 to NbFaces do
     begin
-      Inc(PChar(Faces2), FBsp.SurfaceSize);
+      Inc(PArithByte(Faces2), FBsp.SurfaceSize);
       if Faces2^.ledge_id < 0 then
         Raise EErrorFmt(5635, [9]);
       if Faces2^.ledge_id + Faces2^.ledge_num > cLEdges then //FIXME: SOFSurface is different...!
@@ -395,7 +395,7 @@ begin
     Q3Faces2:=Q3Faces;
     for I:=1 to NbFaces do
     begin
-      Inc(PChar(Q3Faces2), FBsp.SurfaceSize);
+      Inc(PArithByte(Q3Faces2), FBsp.SurfaceSize);
       if Q3Faces2^.Face_Type=1 then
       begin
         if Q3Faces2^.Vertex_num < 0 then
@@ -409,7 +409,7 @@ begin
     end;
   end;
   GetMem(SurfaceList, Size1);
-  PChar(Surface1):=SurfaceList;
+  PArithByte(Surface1):=SurfaceList;
 
   SubElements.Capacity:=NbFaces;
 
@@ -420,12 +420,12 @@ begin
     ProgressIndicatorIncrement;
     if (SurfType=bspSurfQ12) or (SurfType=bspSurfSOF) then
     begin
-      Inc(PChar(Faces), FBsp.SurfaceSize);
-      PChar(LEdge):=LEdges + Faces^.ledge_id * SizeOf(TLEdge);
+      Inc(PArithByte(Faces), FBsp.SurfaceSize);
+      PArithByte(LEdge):=LEdges + Faces^.ledge_id * SizeOf(TLEdge);
     end
     else
     begin
-      Inc(PChar(Q3Faces), FBsp.SurfaceSize);
+      Inc(PArithByte(Q3Faces), FBsp.SurfaceSize);
       if Q3Faces^.Face_Type<>1 then
         Continue;
     end;
@@ -461,12 +461,12 @@ begin
     end;
     {TexInfo_id:=Faces^.TexInfo_id;}
 
-    PChar(Dest):=PChar(Surface1)+TailleBaseSurface;
+    PArithByte(Dest):=PArithByte(Surface1)+TailleBaseSurface;
     if (SurfType=bspSurfQ12) or (SurfType=bspSurfSOF) then
     for J:=1 to Faces^.ledge_num do
     begin
       NoEdge:=LEdge^;
-      Inc(PChar(LEdge), SizeOf(TLEdge));
+      Inc(PArithByte(LEdge), SizeOf(TLEdge));
       if NoEdge < 0 then
        begin
         if -NoEdge>=cEdges then
@@ -705,7 +705,7 @@ begin
     Face.Specifics.Strings[CannotEditFaceYet]:='1';
     Surface1^.F:=Face;
     Face.LinkSurface(Surface1);
-    PChar(Surface1):=PChar(Dest);
+    PArithByte(Surface1):=PArithByte(Dest);
    end;
 
    for I:=0 to OriginCorrection.Count-1 do
@@ -729,7 +729,7 @@ type
 var
  I, J: Integer;
  Faces: PQ1Surface;
- LEdges, Edges, Vertices, Limit: PChar;
+ LEdges, Edges, Vertices, Limit: PArithByte;
  LEdge: PLEdge;
  NoEdge: LongInt;
  ProjVertices: PProjVertices;
@@ -747,12 +747,12 @@ begin
 
  if FBsp.FileHandler.GetSurfaceType(FBsp.NeedObjectGameCode)=bspSurfQ12 then
  begin
-   FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces(), PChar(Faces));
-   Inc(PChar(Faces), FirstFace * SizeOf(TQ1Surface));
+   FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces(), PArithByte(Faces));
+   Inc(PArithByte(Faces), FirstFace * SizeOf(TQ1Surface));
    FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpSurfEdges(), LEdges);
    FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpEdges(), Edges);
    FBsp.VerticesAddRef(+1);
-   Vertices:=PChar(FBsp.FVertices);
+   Vertices:=PArithByte(FBsp.FVertices);
  end
  else if FBsp.FileHandler.GetSurfaceType(FBsp.NeedObjectGameCode)=bspSurfSOF then
  begin
@@ -785,10 +785,10 @@ begin
    begin
     J:=UsedVertex*SizeOf(TPointProj);
     GetMem(ProjVertices, J);
-    PChar(Src):=Vertices;
-    PChar(Dest):=PChar(ProjVertices);
-    Limit:=PChar(Dest)+J;
-    while PChar(Dest)<Limit do
+    PArithByte(Src):=Vertices;
+    PArithByte(Dest):=PArithByte(ProjVertices);
+    Limit:=PArithByte(Dest)+J;
+    while PArithByte(Dest)<Limit do
      begin
       Dest^:=CCoord.Proj(Src^);
       CCoord.CheckVisible(Dest^);
@@ -800,7 +800,7 @@ begin
      begin
       OutOfView:=TBits.Create;
       OutOfView.Size:=UsedVertex;
-      PChar(Dest):=PChar(ProjVertices);
+      PArithByte(Dest):=PArithByte(ProjVertices);
       for I:=0 to UsedVertex-1 do
        begin
         if Dest^.OffScreen <> 0 then
@@ -810,11 +810,11 @@ begin
      end;*)
     for I:=1 to NbFaces do   { fast version }
      begin
-      PChar(LEdge):=LEdges + Faces^.ledge_id * SizeOf(TLEdge);
+      PArithByte(LEdge):=LEdges + Faces^.ledge_id * SizeOf(TLEdge);
       for J:=1 to Faces^.ledge_num do
        begin
         NoEdge:=LEdge^;
-        Inc(PChar(LEdge), SizeOf(TLEdge));
+        Inc(PArithByte(LEdge), SizeOf(TLEdge));
         if NoEdge > 0 then  { only draws half the edges - the other ones are drawn in the other direction another time anyway }
          with PEdge(Edges + NoEdge * SizeOf(TEdge))^ do
           begin
@@ -841,22 +841,22 @@ begin
            CCoord.Line95f(PV0^, PV1^);
           end;
        end;
-       Inc(PChar(Faces), SizeOf(TQ1Surface));
+       Inc(PArithByte(Faces), SizeOf(TQ1Surface));
      end
    end
   else
    for I:=1 to NbFaces do   { slow version }
     begin
-     PChar(LEdge):=LEdges + Faces^.ledge_id * SizeOf(TLEdge);
+     PArithByte(LEdge):=LEdges + Faces^.ledge_id * SizeOf(TLEdge);
      for J:=1 to Faces^.ledge_num do
       begin
        NoEdge:=LEdge^;
-       Inc(PChar(LEdge), SizeOf(TLEdge));
+       Inc(PArithByte(LEdge), SizeOf(TLEdge));
        if NoEdge > 0 then  { only draws half the edges - the other ones are drawn in the other direction another time anyway }
         with PEdge(Edges + NoEdge * SizeOf(TEdge))^ do
          begin
-          PChar(Sommets[0]):=Vertices + Vertex0 * SizeOf(TVect);
-          PChar(Sommets[1]):=Vertices + Vertex1 * SizeOf(TVect);
+          PArithByte(Sommets[0]):=Vertices + Vertex0 * SizeOf(TVect);
+          PArithByte(Sommets[1]):=Vertices + Vertex1 * SizeOf(TVect);
           ProjSommets[0]:=CCoord.Proj(Sommets[0]^);
           ProjSommets[1]:=CCoord.Proj(Sommets[1]^);
           CCoord.CheckVisible(ProjSommets[0]);
@@ -889,7 +889,7 @@ begin
           CCoord.Line95f(ProjSommets[0], ProjSommets[1]);
          end;
       end;
-      Inc(PChar(Faces), SizeOf(TQ1Surface));
+      Inc(PArithByte(Faces), SizeOf(TQ1Surface));
     end;
  finally
  {OutOfView.Free;}
