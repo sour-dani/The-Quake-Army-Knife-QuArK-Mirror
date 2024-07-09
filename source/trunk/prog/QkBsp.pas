@@ -249,6 +249,7 @@ type
           function GetNodes: QObject;
           function GetBspNode(Node: PChar; const Name: String; Parent: QObject; var Stats: TNodeStats) : TTreeBspNode;
         protected
+          PlaneSize, LeafSize, NodeSize: Integer;
           function OpenWindow(nOwner: TComponent) : TQForm1; override;
           procedure SaveFile(Info: TInfoEnreg1); override;
           procedure LoadFile(F: TStream; StreamSize: TStreamPos); override;
@@ -257,7 +258,6 @@ type
           FVertices: PVertexList;
           Q3Vertices, Planes, FirstNode, FirstLeaf: PChar;
           VertexCount, PlaneCount, LeafCount, NodeCount: Integer;
-          PlaneSize, LeafSize, NodeSize: Integer;
           NonFaces: Integer;
           property Structure: TTreeMapBrush read GetStructure;
           destructor Destroy; override;
@@ -954,6 +954,28 @@ begin
         else {signature unknown}
           Raise EErrorFmt(5520, [LoadName, Signature]);
       end;
+
+      if FFileHandler.GetSurfaceType(NeedObjectGameCode)=bspSurfQ12 then
+        PlaneSize:=SizeOf(TQ1Plane)
+      else
+        PlaneSize:=SizeOf(TQ3Plane);
+      case FFileHandler.BspType(NeedObjectGameCode) of
+      bspTypeQ1:
+        begin
+          NodeSize:=SizeOf(TQ1Node);
+          LeafSize:=SizeOf(TQ1Leaf);
+        end;
+      bspTypeQ2:
+        begin
+          NodeSize:=SizeOf(TQ2Node);
+          LeafSize:=SizeOf(TQ2Leaf);
+        end;
+      bspTypeQ3:
+        begin
+          NodeSize:=SizeOf(TQ3Node);
+          LeafSize:=SizeOf(TQ3Leaf);
+        end
+      end;
     end;
   else
     inherited;
@@ -1019,14 +1041,12 @@ begin
         begin
           VertexCount:=GetBspEntryData(FFileHandler.GetLumpVertexes(), PChar(P)) div SizeOf(TQ1Vertex);
           PlaneCount:=GetBspEntryData(FFileHandler.GetLumpPlanes(), Planes) div SizeOf(TQ1Plane);
-          PlaneSize:=SizeOf(TQ1Plane);
         end
         else
         begin
           VertexCount:=GetBspEntryData(FFileHandler.GetLumpVertexes(), Q3Vertices) div SizeOf(TQ3Vertex);
           PQ3:=PQ3Vertex(Q3Vertices);
           PlaneCount:=GetBspEntryData(FFileHandler.GetLumpPlanes(), Planes) div SizeOf(TQ3Plane);
-          PlaneSize:=Sizeof(TQ3Plane);
         end;
         GetMem(FVertices, VertexCount*SizeOf(TVect));
         try
@@ -1213,10 +1233,6 @@ begin
       Result:=PyList_New(0);
       HalfPlaneCount:=(PlaneCount-1) div 2;
       SurfType:=FFileHandler.GetSurfaceType(NeedObjectGameCode);
-      if SurfType=bspSurfQ12 then
-        PlaneSize:=SizeOf(TQ1Plane)
-      else
-        PlaneSize:=SizeOf(TQ3Plane);
       PlaneInc:=2*PlaneSize;
       Planes2:=Planes;
       for I:=0 to HalfPlaneCount do
@@ -1566,14 +1582,10 @@ end;
 
 procedure Qbsp.GetPlanes(var L: TQList);
 var
-  I, PlaneSize: Integer;
+  I: Integer;
   Planes2: PChar;
   Q: QObject;
 begin
-  if FFileHandler.GetSurfaceType(NeedObjectGameCode)=bspSurfQ12 then
-    PlaneSize:=SizeOf(TQ1Plane)
-  else
-    PlaneSize:=SizeOf(TQ3Plane);
   Planes2:=Planes;
   For I:=0 to PlaneCount-1 do
   begin
@@ -1588,26 +1600,7 @@ end;
 function QBsp.GetNodes : QObject;
 var
   Stats: TNodeStats;
-  bspkind: Char;
 begin
-  bspkind:=FFileHandler.BspType(NeedObjectGameCode);
-  case bspkind of
-      bspTypeQ1:
-       begin
-         NodeSize:=SizeOf(TQ1Node);
-         LeafSize:=SizeOf(TQ1Leaf);
-       end;
-      bspTypeQ2:
-       begin
-         NodeSize:=SizeOf(TQ2Node);
-         LeafSize:=SizeOf(TQ2Leaf);
-       end;
-     bspTypeQ3:
-       begin
-         NodeSize:=SizeOf(TQ3Node);
-         LeafSize:=SizeOf(TQ3Leaf);
-       end
-  end;
   NodeCount:= GetBspEntryData(FFileHandler.GetLumpNodes(), FirstNode) div NodeSize;
   LeafCount:= GetBspEntryData(FFileHandler.GetLumpLeafs(), FirstLeaf) div LeafSize;
   Result:=GetBspNode(FirstNode, 'Root Node', Nil, Stats);
@@ -1756,10 +1749,6 @@ begin
   begin
     HalfPlaneCount:=(PlaneCount-1) div 2;
     SurfType:=FFileHandler.GetSurfaceType(NeedObjectGameCode);
-    if SurfType=bspSurfQ12 then
-      PlaneSize:=SizeOf(TQ1Plane)
-    else
-      PlaneSize:=SizeOf(TQ3Plane);
     PlaneInc:=2*PlaneSize;
     Planes2:=Planes;
     for I:=0 to HalfPlaneCount do
