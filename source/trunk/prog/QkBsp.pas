@@ -34,6 +34,7 @@ uses
 
   bspTypeQ1 =     '1';
   bspTypeQ2 =     'A';
+  bspTypeSOF =    'E';
   bspTypeQ3 =     'a';
   bspTypeHL2 =    'k';
   bspTypeG3D =    '4';
@@ -42,11 +43,6 @@ uses
   hullHx =     '2';
   hullQ2 =     'A';
   hullQ3 =     'a';
-
-  bspSurfQ1 = '1';  { surface type for Q1 engine games }
-  bspSurfQ2 = 'A';  { surface type for Q2 engine games }
-  bspSurfSOF = 'E'; { surface type for SOF }
-  bspSurfQ3 = 'a';  { surface/type for Q3 engine games }
 
   NUM_AMBIENTS = 4;
 
@@ -219,7 +215,6 @@ type
    function GetHullType(Game: Char) : Char;
    class function BspType : Char; overload;
    class function BspType(mj : Char) : Char; overload;
-   function GetSurfaceType(const GameMode : Char) : Char;
    function GetEntryName(const EntryIndex: Integer) : String; virtual; abstract;
    function GetLumpEdges: Integer; virtual; abstract;
    function GetLumpEntities: Integer; virtual; abstract;
@@ -406,12 +401,12 @@ uses Travail, QkWad, Setup, Game, QkMap, QkBspHulls, ApplPaths,
 
  {------------------------}
 
-function PlanesClose(const Plane1, Plane2: PArithByte; const SurfType: Char; const Close: Double): boolean;
+function PlanesClose(const Plane1, Plane2: PArithByte; const BSPType: Char; const Close: Double): boolean;
 var
   PlanePt1, PlanePt2, PlaneNorm1, PlaneNorm2: TVect;
 begin
   Result:=False;
-  if SurfType=bspSurfQ3 then
+  if BSPType=bspTypeQ3 then
   begin
     with PQ3Plane(Plane1)^ do
     begin
@@ -444,6 +439,8 @@ function QBspFileHandler.GetHullType(Game: Char) : Char;
 begin
   if Game=mjHexen then
     Result:=mjHexen
+  else if Game=mjSOF then
+    Result:=mjSOF
   else
     Result:=bspType(Game)
 end;
@@ -455,34 +452,30 @@ end;
 
 class function QBspFileHandler.BspType(mj : TGameCode) : Char;
 begin
- if (mj>='1') and (mj<='9') then
-   if (mj='4') then
-     Result:=bspTypeG3D
-   else
-     Result:=bspTypeQ1
- else if (mj>='A') and (mj<='E') then
-   Result:=bspTypeQ2
- else if (mj>'a') and (mj<='z') then
-   if (mj='k') then
-     Result:=bspTypeHL2
-   else
-     Result:=bspTypeQ3
- //FIXME: a dubious step for dealing with the 'any' codes
- else
-   Result:=mj
-end;
-
-function QBspFileHandler.GetSurfaceType(const GameMode : TGameCode) : Char;
-begin
-  //FIXME: Handle BspTypeG3D!
-  if GameMode=mjSOF then
-    Result:=bspSurfSOF
-  else if BspType(GameMode)=BspTypeQ3 then
-    Result:=bspSurfQ3
-  else if BspType(GameMode)=BspTypeQ2 then
-    Result:=bspSurfQ2
+  if (mj>='1') and (mj<='9') then
+  begin
+    if (mj='4') then
+      Result:=bspTypeG3D
+    else
+      Result:=bspTypeQ1;
+  end
+  else if (mj>='A') and (mj<='Y') then
+  begin
+    if (mj=mjSOF) then
+      Result:=bspTypeSOF
+    else
+      Result:=bspTypeQ2;
+  end
+  else if (mj>'a') and (mj<='z') then
+  begin
+    if (mj='k') then
+      Result:=bspTypeHL2
+    else
+      Result:=bspTypeQ3;
+  end
+  //FIXME: a dubious step for dealing with the 'any' codes
   else
-    Result:=bspSurfQ1
+    Result:=mj;
 end;
 
  {------------------------}
@@ -959,45 +952,45 @@ begin
           Raise EErrorFmt(5520, [LoadName, Signature]);
       end;
 
-      case FFileHandler.GetSurfaceType(NeedObjectGameCode) of
-      bspSurfQ1:
-        begin
-          FSurfaceSize:=SizeOf(TQ1Surface);
-          PlaneSize:=SizeOf(TQ1Plane);
-        end;
-      bspSurfQ2:
-        begin
-          FSurfaceSize:=SizeOf(TQ2Surface);
-          PlaneSize:=SizeOf(TQ1Plane); //Quake 2 plane = Quake 1 plane
-        end;
-      bspSurfSOF:
-        begin
-          FSurfaceSize:=SizeOf(TSOFSurface);
-          PlaneSize:=SizeOf(TQ1Plane);
-        end;
-      else
-        begin
-          FSurfaceSize:=Sizeof(TQ3Surface);
-          PlaneSize:=SizeOf(TQ3Plane);
-        end;
-      end;
       case FFileHandler.BspType(NeedObjectGameCode) of
       bspTypeQ1:
         begin
           NodeSize:=SizeOf(TQ1Node);
           LeafSize:=SizeOf(TQ1Leaf);
+          FSurfaceSize:=SizeOf(TQ1Surface);
+          PlaneSize:=SizeOf(TQ1Plane);
         end;
       bspTypeQ2:
         begin
           NodeSize:=SizeOf(TQ2Node);
           LeafSize:=SizeOf(TQ2Leaf);
+          FSurfaceSize:=SizeOf(TQ2Surface);
+          PlaneSize:=SizeOf(TQ1Plane); //Quake 2 plane = Quake 1 plane
         end;
-      //FIXME: bspTypeSOF...!   TSOFLeaf, TQ2Node
+      bspTypeSOF:
+        begin
+          NodeSize:=SizeOf(TQ2Node); //SOF node = Quake 2 node
+          LeafSize:=SizeOf(TSOFLeaf);
+          FSurfaceSize:=SizeOf(TSOFSurface);
+          PlaneSize:=SizeOf(TQ1Plane); //SOF plane = Quake 2 plane = Quake 1 plane
+        end;
       bspTypeQ3:
         begin
           NodeSize:=SizeOf(TQ3Node);
           LeafSize:=SizeOf(TQ3Leaf);
-        end
+          FSurfaceSize:=Sizeof(TQ3Surface);
+          PlaneSize:=SizeOf(TQ3Plane);
+        end;
+      //bspTypeHL2:
+      //bspTypeG3D:
+      else
+        begin
+          //Don't try to load these... It won't work!
+          NodeSize:=0;
+          LeafSize:=0;
+          FSurfaceSize:=0;
+          PlaneSize:=0;
+        end;
       end;
     end;
   else
@@ -1045,7 +1038,7 @@ var
   PQ3: PQ3Vertex;
   I : Integer;
   Dest: PVect;
-  SurfType: Char;
+  BSPType: Char;
   Pozzie: vec3_t;
 begin
   Inc(FVerticesRefCount, Delta);
@@ -1055,12 +1048,12 @@ begin
   begin
     if FVertices=nil then
     begin
-      SurfType:=FFileHandler.GetSurfaceType(NeedObjectGameCode);
+      BSPType:=FFileHandler.BSPType(NeedObjectGameCode);
       ProgressIndicatorStart(0,0);
       try
         PQ3:=Nil; //Fix for compiler-warning
 
-        if (SurfType=bspSurfQ1) or (SurfType=bspSurfQ2) or (SurfType=bspSurfSOF) then
+        if (BSPType=bspTypeQ1) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
         begin
           VertexCount:=GetBspEntryData(FFileHandler.GetLumpVertexes(), PArithByte(P)) div SizeOf(TQ1Vertex);
           PlaneCount:=GetBspEntryData(FFileHandler.GetLumpPlanes(), Planes) div SizeOf(TQ1Plane);
@@ -1075,7 +1068,7 @@ begin
         try
           Dest:=PVect(FVertices);
 
-          if (SurfType=bspSurfQ1) or (SurfType=bspSurfQ2) or (SurfType=bspSurfSOF) then
+          if (BSPType=bspTypeQ1) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
           begin
             for I:=1 to VertexCount do
             begin
@@ -1244,7 +1237,7 @@ var
   Close: Single;
   I, J, PlaneInc, HalfPlaneCount: Integer;
   Planes2, Planes3: PArithByte;
-  SurfType: Char;
+  BSPType: Char;
   o: PyObject;
 begin
   Result:=Nil;
@@ -1255,7 +1248,7 @@ begin
     begin
       Result:=PyList_New(0);
       HalfPlaneCount:=(PlaneCount-1) div 2;
-      SurfType:=FFileHandler.GetSurfaceType(NeedObjectGameCode);
+      BSPType:=FFileHandler.BSPType(NeedObjectGameCode);
       PlaneInc:=2*PlaneSize;
       Planes2:=Planes;
       for I:=0 to HalfPlaneCount do
@@ -1263,7 +1256,7 @@ begin
         Planes3 := Planes2+PlaneInc;
         for J:=I+1 to HalfPlaneCount do
         begin
-          if PlanesClose(Planes2, Planes3,SurfType,Close) then
+          if PlanesClose(Planes2, Planes3, BSPType, Close) then
           begin
             o:=PyInt_FromLong(I*2);
             try
@@ -1764,19 +1757,19 @@ function TTreeBspPlane.GetNearPlanes(Close: Double; Bsp: QBsp): PyObject;
 var
   I, PlaneInc, HalfPlaneCount: Integer;
   Planes2: PArithByte;
-  SurfType: Char;
+  BSPType: Char;
   o: PyObject;
 begin
   Result:=PyList_New(0);
   with Bsp do
   begin
     HalfPlaneCount:=(PlaneCount-1) div 2;
-    SurfType:=FFileHandler.GetSurfaceType(NeedObjectGameCode);
+    BSPType:=FFileHandler.BSPType(NeedObjectGameCode);
     PlaneInc:=2*PlaneSize;
     Planes2:=Planes;
     for I:=0 to HalfPlaneCount do
     begin
-      if PlanesClose(Source, Planes2, SurfType, Close) then
+      if PlanesClose(Source, Planes2, BSPType, Close) then
       begin
         o:=PyInt_FromLong(I*2);
         try
@@ -1855,12 +1848,12 @@ var
   SourceQ1: TQ1Node;
   SourceQ2: TQ2Node;
   SourceQ3: TQ3Node;
-  bspkind: Char;
+  BSPType: Char;
   I: Integer;
 begin
   Source:=SourcePtr;
-  bspkind:=QBspFileHandler.BspType(GameCode);
-  case bspkind of
+  BSPType:=QBspFileHandler.BspType(GameCode);
+  case BSPType of
    bspTypeQ1:
      begin
        SourceQ1:=PQ1Node(Source)^;
@@ -1873,7 +1866,7 @@ begin
          maxs[I]:=SourceQ1.maxs[I];
        end
      end;
-   bspTypeQ2:
+   bspTypeQ2, bspTypeSOF:
      begin
        SourceQ2:=PQ2Node(Source)^;
        Plane:=SourceQ2.Plane;
@@ -1897,6 +1890,8 @@ begin
          maxs[I]:=SourceQ3.maxs[I];
        end
      end
+   //bspTypeHL2:
+   //bspTypeG3D:
   end;
 end;
 
@@ -1906,13 +1901,14 @@ constructor BspLeaf.Create(SourcePtr: PArithByte; GameCode: Char);
 var
   SourceQ1: TQ1Leaf;
   SourceQ2: TQ2Leaf;
+  SourceSOF: TSOFLeaf;
   SourceQ3: TQ3Leaf;
-  bspkind: Char;
+  BSPType: Char;
   I: Integer;
 begin
   Source:=SourcePtr;
-  bspkind:=QBspFileHandler.BspType(GameCode);
-  case bspkind of
+  BSPType:=QBspFileHandler.BspType(GameCode);
+  case BSPType of
    bspTypeQ1:
      begin
        SourceQ1:=PQ1Leaf(Source)^;
@@ -1933,6 +1929,16 @@ begin
          maxs[I]:=SourceQ2.maxs[I];
        end
      end;
+   bspTypeSOF:
+     begin
+       SourceSOF:=PSOFLeaf(Source)^;
+       num_leaffaces:=SourceSOF.num_leaffaces;
+       for I:=0 to 2 do
+       begin
+         mins[I]:=SourceSOF.mins[I];
+         maxs[I]:=SourceSOF.maxs[I];
+       end
+     end;
    bspTypeQ3:
      begin
        SourceQ3:=PQ3Leaf(Source)^;
@@ -1943,6 +1949,8 @@ begin
          maxs[I]:=SourceQ3.maxs[I];
        end
      end;
+   //bspTypeHL2:
+   //bspTypeG3D:
   end
 end;
 
