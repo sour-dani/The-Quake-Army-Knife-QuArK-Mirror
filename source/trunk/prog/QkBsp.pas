@@ -248,7 +248,6 @@ type
           procedure GetPlanes(var L: TQList);
           function GetNodes: QObject;
           function GetBspNode(Node: PChar; const Name: String; Parent: QObject; var Stats: TNodeStats) : TTreeBspNode;
-          function GetClosePlanes(Close:Double): PyObject;
         protected
           function OpenWindow(nOwner: TComponent) : TQForm1; override;
           procedure SaveFile(Info: TInfoEnreg1); override;
@@ -405,6 +404,35 @@ uses Travail, QkWad, Setup, Game, QkMap, QkBspHulls, ApplPaths,
      QkQ1, QkQ2, QkQ3, QkG3D, ExtraFunctionality;
 
 {$R *.DFM}
+
+ {------------------------}
+
+function PlanesClose(const Plane1, Plane2: PChar; const SurfType: Char; const Close: Double): boolean;
+var
+  PlanePt1, PlanePt2, PlaneNorm1, PlaneNorm2: TVect;
+begin
+  Result:=False;
+  if SurfType=bspSurfQ3 then
+  begin
+    with PQ3Plane(Plane1)^ do
+    begin
+      PlaneNorm1:=MakeVect(normal);
+      PlanePt1:=VecScale(Dist,MakeVect(normal));
+      with PQ3Plane(Plane2)^ do
+      begin
+        PlaneNorm2:=MakeVect(normal);
+        if (1-Abs(Dot(PlaneNorm1,PlaneNorm2)))/Deg2Rad<Close then
+        begin
+          PlanePt2:=VecScale(Dist,MakeVect(normal));
+          if VecLength(VecDiff(PlanePt1, PlanePt2))<1.0 then
+          begin
+            Result:=true;
+          end;
+        end
+      end;
+    end;
+  end;
+end;
 
  {------------------------}
 
@@ -1170,21 +1198,52 @@ end;
 
 function qGetClosePlanes(self, args: PyObject) : PyObject; cdecl;
 var
- r: Single;
+  Close: Single;
+  I, J, PlaneInc, HalfPlaneCount: Integer;
+  Planes2, Planes3: PChar;
+  SurfType: Char;
+  o: PyObject;
 begin
- Result:=Nil;
- try
-   if PyArg_ParseTupleX(args, 'f', [@r])=0 then
-     Exit;
-   with QkObjFromPyObj(self) as QBsp do
-   begin
-     Result:=GetClosePlanes(r);
-   end;
- except
-  Py_XDECREF(Result);
-  EBackToPython;
   Result:=Nil;
- end;
+  try
+    if PyArg_ParseTupleX(args, 'f', [@Close])=0 then
+      Exit;
+    with QkObjFromPyObj(self) as QBsp do
+    begin
+      Result:=PyList_New(0);
+      HalfPlaneCount:=(PlaneCount-1) div 2;
+      SurfType:=FFileHandler.GetSurfaceType(NeedObjectGameCode);
+      if SurfType=bspSurfQ12 then
+        PlaneSize:=SizeOf(TQ1Plane)
+      else
+        PlaneSize:=SizeOf(TQ3Plane);
+      PlaneInc:=2*PlaneSize;
+      Planes2:=Planes;
+      for I:=0 to HalfPlaneCount do
+      begin
+        Planes3 := Planes2+PlaneInc;
+        for J:=I+1 to HalfPlaneCount do
+        begin
+          if PlanesClose(Planes2, Planes3,SurfType,Close) then
+          begin
+            o:=PyInt_FromLong(I*2);
+            try
+              PyList_Append(Result, o);
+            finally
+              Py_XDECREF(o);
+            end;
+            Break;
+          end;
+          Inc(Planes3, PlaneInc);
+        end;
+        Inc(Planes2, PlaneInc);
+      end;
+    end;
+  except
+    Py_XDECREF(Result);
+    EBackToPython;
+    Result:=Nil;
+  end;
 end;
 
 
@@ -1603,70 +1662,6 @@ begin
         Result.Name:=FmtLoadStr1(5862, [Result.Name]);
       end;
     end;
-  end;
-end;
-
-function PlanesClose(const Plane1, Plane2: PChar; const SurfType: Char; const Close: Double): boolean;
-var
-  PlanePt1, PlanePt2, PlaneNorm1, PlaneNorm2: TVect;
-begin
-  Result:=False;
-  if SurfType=bspSurfQ3 then
-  begin
-    with PQ3Plane(Plane1)^ do
-    begin
-      PlaneNorm1:=MakeVect(normal);
-      PlanePt1:=VecScale(Dist,MakeVect(normal));
-      with PQ3Plane(Plane2)^ do
-      begin
-        PlaneNorm2:=MakeVect(normal);
-        if (1-Abs(Dot(PlaneNorm1,PlaneNorm2)))/Deg2Rad<Close then
-        begin
-          PlanePt2:=VecScale(Dist,MakeVect(normal));
-          if VecLength(VecDiff(PlanePt1, PlanePt2))<1.0 then
-          begin
-            Result:=true;
-          end;
-        end
-      end;
-    end;
-  end;
-end;
-
-function QBsp.GetClosePlanes(Close:Double): PyObject;
-var
-  I, J, PlaneSize, PlaneInc, HalfPlaneCount: Integer;
-  Planes2, Planes3: PChar;
-  SurfType: Char;
-  o: PyObject;
-begin
-  Result:=PyList_New(0);
-  HalfPlaneCount:=(PlaneCount-1) div 2;
-  SurfType:=FFileHandler.GetSurfaceType(NeedObjectGameCode);
-  if SurfType=bspSurfQ12 then
-    PlaneSize:=SizeOf(TQ1Plane)
-  else
-    PlaneSize:=SizeOf(TQ3Plane);
-  PlaneInc:=2*PlaneSize;
-  Planes2:=Planes;
-  for I:=0 to HalfPlaneCount do
-  begin
-    Planes3 := Planes2+PlaneInc;
-    for J:=I+1 to HalfPlaneCount do
-    begin
-      if PlanesClose(Planes2, Planes3,SurfType,Close) then
-      begin
-        o:=PyInt_FromLong(I*2);
-        try
-          PyList_Append(Result, o);
-        finally
-          Py_XDECREF(o);
-        end;
-        Break;
-      end;
-      Inc(Planes3, PlaneInc);
-    end;
-    Inc(Planes2, PlaneInc);
   end;
 end;
 
