@@ -48,6 +48,8 @@ uses
   bspSurfSOF = 'E'; { surface type for SOF }
   bspSurfQ3 = 'a';  { surface/type for Q3 engine games }
 
+  NUM_AMBIENTS = 4;
+
 type
 (*SurfaceList = ^TSurfaceList;
  TSurfaceList = record
@@ -84,25 +86,25 @@ type
 
  PQ1Node = ^TQ1Node;
  TQ1Node = record
-             plane: Integer; { plane index (int32) }
-             firstchild, secondchild: SmallInt; {child indices, neg if leaf }
-             mins, maxs: array [0..2] of SmallInt; {bbox}
+             plane: LongInt; //plane index
+             firstchild, secondchild: SmallInt; //child indices, neg if leaf
+             mins, maxs: array[0..2] of SmallInt; //bbox
              first_face, num_faces: Word;
            end;
 
  PQ2Node = ^TQ2Node;
  TQ2Node = record
-             plane: Integer; { plane index (int32) }
-             firstchild, secondchild: Integer; {child indices, neg if leaf }
-             mins, maxs: array [0..2] of SmallInt; {bbox}
+             plane: LongInt; //plane index
+             firstchild, secondchild: LongInt; //child indices, neg if leaf
+             mins, maxs: array[0..2] of SmallInt; //bbox
              first_face, num_faces: Word;
            end;
 
  PQ3Node = ^TQ3Node;
  TQ3Node = record
-            plane: Integer; { plane index }
-            firstchild, secondchild: Integer; {child indices, neg if leaf }
-            mins, maxs: array [0..2] of Integer; {bbox}
+            plane: LongInt; //plane index
+            firstchild, secondchild: LongInt; //child indices, neg if leaf
+            mins, maxs: array[0..2] of LongInt; //bbox
            end;
 
  { This is an intermediate 'wrapper-like' class
@@ -126,39 +128,39 @@ type
 
  PQ1Leaf = ^TQ1Leaf;
  TQ1Leaf = record
-            contents: Integer; { or of all brush info }
-            visofs: Integer; { cluster index (?) }
-            mins, maxs: array [0..2] of SmallInt; {bbox}
+            contents: LongInt; //or of all brush info
+            visofs: LongInt; //cluster index (?)
+            mins, maxs: array[0..2] of SmallInt; //bbox
             first_marksurface, num_marksurfaces: Word;
-            ambient_level: array[0..3] of Byte; //@@@NUM_AMBIENTS = 4;
+            ambient_level: array[0..NUM_AMBIENTS-1] of Byte;
            end;
-
- PSOFLeaf = ^TSOFLeaf; //FIXME: Unused!
- TSOFLeaf = record
-             contents: Integer; { or of all brush info }
-             cluster, area, region: SmallInt;
-             mins, maxs: array [0..2] of SmallInt; {bbox}
-             first_leafface, num_leaffaces: Word;
-             first_leafbrush, num_leafbrushes: Word;
-            end;
 
  PQ2Leaf = ^TQ2Leaf;
  TQ2Leaf = record
-            contents: Integer; { or of all brush info }
-            cluster: SmallInt; { cluster index }
-            area: SmallInt; { areaportal area }
-            mins, maxs: array [0..2] of SmallInt; {bbox}
+            contents: LongInt; //or of all brush info
+            cluster: SmallInt; //cluster index
+            area: SmallInt; //areaportal area
+            mins, maxs: array[0..2] of SmallInt; //bbox
             first_leafface, num_leaffaces: Word;
             first_leafbrush, num_leafbrushes: Word;
            end;
 
+ PSOFLeaf = ^TSOFLeaf;
+ TSOFLeaf = record
+             contents: LongInt; //or of all brush info
+             cluster, area, region: SmallInt;
+             mins, maxs: array[0..2] of SmallInt; //bbox
+             first_leafface, num_leaffaces: Word;
+             first_leafbrush, num_leafbrushes: Word;
+            end;
+
  PQ3Leaf = ^TQ3Leaf;
  TQ3Leaf = record
-            cluster: Integer; { cluster index }
-            area: Integer; { areaportal area }
-            mins, maxs: array [0..2] of Integer; {bbox}
-            first_leafface, num_leaffaces: Integer;
-            first_leafbrush, num_leafbrushes: Integer;
+            cluster: LongInt; //cluster index
+            area: LongInt; //areaportal area
+            mins, maxs: array[0..2] of LongInt; //bbox
+            first_leafface, num_leaffaces: LongInt;
+            first_leafbrush, num_leafbrushes: LongInt;
            end;
 
  { leaf version of bspnode }
@@ -990,6 +992,7 @@ begin
           NodeSize:=SizeOf(TQ2Node);
           LeafSize:=SizeOf(TQ2Leaf);
         end;
+      //FIXME: bspTypeSOF...!   TSOFLeaf, TQ2Node
       bspTypeQ3:
         begin
           NodeSize:=SizeOf(TQ3Node);
