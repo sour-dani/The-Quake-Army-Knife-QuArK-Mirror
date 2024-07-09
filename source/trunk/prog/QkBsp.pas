@@ -957,11 +957,6 @@ end;
 
 procedure QBsp.CloseStructure;
 begin
-(* ProgressIndicatorStart(0,0); try
- FStructure.AddRef(-1);
- FStructure:=Nil;
- VerticesAddRef(-1);
- finally ProgressIndicatorStop; end; *)
  if FStructure<>Nil then
   begin
    SetPoolObj('', @FStructure.PythonObj);
@@ -990,7 +985,7 @@ begin
       SurfType:=FFileHandler.GetSurfaceType(NeedObjectGameCode);
       ProgressIndicatorStart(0,0);
       try
-        PQ3:=Nil; {Fix for compiler-warning}
+        PQ3:=Nil; //Fix for compiler-warning
 
         if SurfType=bspSurfQ12 then
         begin
@@ -1057,18 +1052,23 @@ begin
   if FStructure=Nil then
   begin
     VerticesAddRef(+1);
-    FStructure:=TTreeMapBrush.Create('', Self);
-    FStructure.AddRef(+1);
     try
-      Q:=BspEntry[FFileHandler.GetLumpEntities()];
-      Q.Acces;
-      NonFaces:=0;
-      ReadEntityList(FStructure, Q.Specifics.Strings['Data'], Self);
-      if NonFaces>0 then
-        ShowMessage(FmtLoadStr1(5792, [NonFaces]));
+      FStructure:=TTreeMapBrush.Create('', Self);
+      FStructure.AddRef(+1);
+      try
+        Q:=BspEntry[FFileHandler.GetLumpEntities()];
+        Q.Acces;
+        NonFaces:=0;
+        ReadEntityList(FStructure, Q.Specifics.Strings['Data'], Self);
+        if NonFaces>0 then
+          ShowMessage(FmtLoadStr1(5792, [NonFaces]));
+      except
+        FStructure.AddRef(-1);
+        FStructure:=nil;
+        raise;
+      end;
     except
-      FStructure.AddRef(-1);
-      FStructure:=nil;
+      VerticesAddRef(-1);
       raise;
     end;
   end;
