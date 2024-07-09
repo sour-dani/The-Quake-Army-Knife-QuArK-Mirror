@@ -99,7 +99,8 @@ type
 
 implementation
 
-uses qhelper, QuarkX, QkExceptions, QkModelRoot, Setup, Travail, QkObjectClassList, QkPcx;
+uses qhelper, QuarkX, QkExceptions, QkModelRoot, Setup, Travail, QkObjectClassList,
+  QkPcx, ExtraFunctionality;
 
 class function QMdlFile.TypeInfo;
 begin
@@ -142,8 +143,8 @@ var
   cmd, aa, bb: smallint;
   CTris: PComponentTris;
   CVert: vec3_p;
-  S: string; //FIXME: Switch to bytes!
-  p: pchar;
+  B: string; //FIXME: Switch to bytes!
+  p: PArithByte;
   dw: integer;
 begin
   f_origin := f.position;
@@ -245,8 +246,8 @@ begin
           if mesh.numtris <> k then
             raise exception.createfmt('QkMdl.pas -> QMdlFile.LoadHLModel: mesh.numtris<>k on mesh no [%d,%d] (%d<>%d)', [i, j, mesh.numtris, k]);
           // Convert atri^ to TComponentTris...
-          SetLength(S, mesh.numtris * Sizeof(TComponentTris));
-          PChar(CTris) := PChar(S);
+          SetLength(B, mesh.numtris * Sizeof(TComponentTris));
+          PArithByte(CTris) := PArithByte(B);
           for ii := 1 to mesh.numtris do
           begin
             for jj := 0 to 2 do
@@ -257,14 +258,14 @@ begin
             end;
             inc(CTris);
           end;
-          Comp.Specifics.Bytes[SpecTris]:=S;
+          Comp.Specifics.Bytes[SpecTris]:=B;
           // Load Dummy Frame (HACK!)
           DFrame := Loaded_Frame(Comp, 'Dummy');
-          SetLength(S, sizeof(vec3_t) * model.numverts));
-          PChar(CVert) := PChar(S);
+          SetLength(B, sizeof(vec3_t) * model.numverts));
+          PArithByte(CVert) := PArithByte(B);
           F.Seek(f_Origin + model.vertindex, soBeginning);
           F.ReadBuffer(CVert^, model.numverts * sizeof(vec3_t));
-          DFrame.Specifics.Bytes[FloatSpecNameOf(SpecVertices)]:=S;
+          DFrame.Specifics.Bytes[FloatSpecNameOf(SpecVertices)]:=B;
 
           // Load Textures
           if (header.numtextures > 0) and (header.textureindex <> 0) and (header.numtextures <= MAXSTUDIOSKINS) then
@@ -273,11 +274,13 @@ begin
             for ii := 1 to header.numtextures do
             begin
               f.readbuffer(tex, sizeof(tex));
-              Skin := Loaded_Skin(Comp, string(tex.name), [tex.width, tex.height], p, dw);
+              Skin := Loaded_Skin(Comp, string(tex.name), [tex.width, tex.height], dw);
+              B := Skin.Specifics.Bytes['Image1'];
+              p := PArithByte(B) + Length(B);
               for jj := 1 to tex.height do
               begin
-                f.ReadBuffer(P^, tex.width);
                 Inc(P, dw);
+                f.ReadBuffer(P^, tex.width);
               end;
             end;
           end;
@@ -819,8 +822,8 @@ var
   Size: array[1..2] of Single;
   I, J, K, Taille1, Delta, SkinCounter, DeltaW: Integer;
   SkinGroup: skingroup_t;
-  P: PChar;
-  S: string; //FIXME: Switch to bytes!
+  P: PArithByte;
+  B: string; //FIXME: Switch to bytes!
   SkinObj: QImage;
   STData: PVertxArray;
   Triangles, Tris: ^itriangle_t;
@@ -914,7 +917,9 @@ begin
           for K := 1 to SkinGroup.count do
           begin
             J := F.Position;
-            SkinObj := Loaded_Skin(C, FmtLoadStr1(2372, [SkinCounter]), Size, P, DeltaW);
+            SkinObj := Loaded_Skin(C, FmtLoadStr1(2372, [SkinCounter]), Size, DeltaW);
+            B:=SkinObj.Specifics.Bytes['Image1'];
+            P:=PArithByte(B)+Length(B);
             F.Position := J;
             Inc(SkinCounter);
             if NextTime <> nil then
@@ -927,8 +932,8 @@ begin
             end;
             for J := 1 to mdl.skinheight do
             begin
-              Read1(P^, mdl.skinwidth);
               Inc(P, DeltaW);
+              Read1(P^, mdl.skinwidth);
             end;
           end;
         end;
@@ -945,11 +950,11 @@ begin
             Read1(Triangles^, Taille1);
 
             J := mdl.numtris * SizeOf(TComponentTris);
-            SetLength(S, J);
+            SetLength(B, J);
 
             Delta := mdl.skinwidth div 2;
             Tris := Triangles;
-            PChar(CTris) := PChar(S);
+            PArithByte(CTris) := PArithByte(B);
             if RA then
             begin
               for I := 1 to mdl.numtris do { PoP Models }
@@ -992,7 +997,7 @@ begin
                 Inc(Tris);
                 Inc(CTris);
               end;
-            C.Specifics.Bytes[SpecTris]:=S;
+            C.Specifics.Bytes[SpecTris]:=B;
           finally
             FreeMem(Triangles);
           end;
@@ -1033,8 +1038,8 @@ begin
                 PreviousTime := NextTime^;
                 Inc(NextTime);
               end;
-              SetLength(S, mdl.numverts * SizeOf(vec3_t));
-              PChar(CVert) := PChar(S);
+              SetLength(B, mdl.numverts * SizeOf(vec3_t));
+              PArithByte(CVert) := PArithByte(B);
               FrSource := FrSourcePts;
               for J := 0 to mdl.numverts - 1 do
               begin
@@ -1046,7 +1051,7 @@ begin
                 Inc(FrSource);
                 Inc(CVert);
               end;
-              FrameObj.Specifics.Bytes[FloatSpecNameOf(SpecVertices)]:=S;
+              FrameObj.Specifics.Bytes[FloatSpecNameOf(SpecVertices)]:=B;
             end;
           end;
         finally

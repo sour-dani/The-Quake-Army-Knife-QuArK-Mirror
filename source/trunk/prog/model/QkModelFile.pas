@@ -31,7 +31,7 @@ type
   protected
     function Loaded_Root : QModelRoot;
     function Saving_Root : QModelRoot;
-    function Loaded_Skin(Component: QComponent; const Name: String; const Size: array of Single; var P: PChar; var DeltaW: Integer) : QImage;
+    function Loaded_Skin(Component: QComponent; const Name: String; const Size: array of Single; var DeltaW: Integer) : QImage;
     function Loaded_Frame(Component: QComponent; const Name: String) : QFrame;
     function Loaded_SkinFile(Component: QComponent; const Name: String; warnifnotfound: Boolean) : QImage;
     function Loaded_Component(Root: QModelRoot; const cname: string): QComponent;
@@ -67,12 +67,12 @@ begin
   end;
 end;
 
-function QModelFile.Loaded_Skin(Component: QComponent; const Name: String; const Size: array of Single; var P: PChar; var DeltaW: Integer) : QImage;
+function QModelFile.Loaded_Skin(Component: QComponent; const Name: String; const Size: array of Single; var DeltaW: Integer) : QImage;
 const
   Spec1 = 'Image1';
   Spec2 = 'Pal';
 var
-  S: String; //FIXME: Switch to bytes!
+  B: String; //FIXME: Switch to bytes!
   Skins: QSkinGroup;
 begin
   if component=nil then
@@ -83,13 +83,13 @@ begin
   if component<>nil then
     Skins.SubElements.Add(Result);
   Result.SetFloatsSpec('Size', Size);
-  SetLength(S, SizeOf(TPaletteLmp));
-  Move(GameBuffer(ObjectGameCode)^.PaletteLmp, S[Length(Spec2)+1], SizeOf(TPaletteLmp));
-  Result.Specifics.Bytes[Spec2]:=S;
+  SetLength(B, SizeOf(TPaletteLmp));
+  Move(GameBuffer(ObjectGameCode)^.PaletteLmp, B[1], SizeOf(TPaletteLmp));
+  Result.Specifics.Bytes[Spec2]:=B;
   DeltaW:=-((Round(Size[0])+3) and not 3);
-  SetLength(S, -DeltaW*Round(Size[1]));
-  P:=PChar(S)+DeltaW;
-  Result.Specifics.Bytes[Spec1]:=S;
+  SetLength(B, -DeltaW*Round(Size[1]));
+  //FillChar(B, Length(B), 0);
+  Result.Specifics.Bytes[Spec1]:=B;
 end;
 
 function QModelFile.Loaded_Frame(Component: QComponent; const Name: String) : QFrame;
