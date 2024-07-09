@@ -43,7 +43,8 @@ uses
   hullQ2 =     'A';
   hullQ3 =     'a';
 
-  bspSurfQ12 = '1'; { surface type for Q1/2 engine games }
+  bspSurfQ1 = '1';  { surface type for Q1 engine games }
+  bspSurfQ2 = 'A';  { surface type for Q2 engine games }
   bspSurfSOF = 'E'; { surface type for SOF }
   bspSurfQ3 = 'a';  { surface/type for Q3 engine games }
 
@@ -72,7 +73,7 @@ type
  TQ1Plane = record
             normal: vec3_t;
             dist: Single;
-            flags: Integer;
+            flags: LongInt;
            end;
 
  PQ3Plane = ^TQ3Plane;
@@ -464,17 +465,22 @@ begin
      Result:=bspTypeHL2
    else
      Result:=bspTypeQ3
- {FIXME: a dubious step for dealing with the 'any' codes}
+ //FIXME: a dubious step for dealing with the 'any' codes
  else
    Result:=mj
 end;
 
-function QBspFileHandler.GetSurfaceType(const GameMode : TGameCode) : Char; //FIXME: Handle BspTypeG3D!
+function QBspFileHandler.GetSurfaceType(const GameMode : TGameCode) : Char;
 begin
-  if BspType(GameMode)=BspTypeQ3 then
-    Result:=BspTypeQ3
+  //FIXME: Handle BspTypeG3D!
+  if GameMode=mjSOF then
+    Result:=bspSurfSOF
+  else if BspType(GameMode)=BspTypeQ3 then
+    Result:=bspSurfQ3
+  else if BspType(GameMode)=BspTypeQ2 then
+    Result:=bspSurfQ2
   else
-    Result:=BspTypeQ1
+    Result:=bspSurfQ1
 end;
 
  {------------------------}
@@ -952,10 +958,15 @@ begin
       end;
 
       case FFileHandler.GetSurfaceType(NeedObjectGameCode) of
-      bspSurfQ12:
+      bspSurfQ1:
         begin
           FSurfaceSize:=SizeOf(TQ1Surface);
           PlaneSize:=SizeOf(TQ1Plane);
+        end;
+      bspSurfQ2:
+        begin
+          FSurfaceSize:=SizeOf(TQ2Surface);
+          PlaneSize:=SizeOf(TQ1Plane); //Quake 2 plane = Quake 1 plane
         end;
       bspSurfSOF:
         begin
@@ -1046,7 +1057,7 @@ begin
       try
         PQ3:=Nil; //Fix for compiler-warning
 
-        if (SurfType=bspSurfQ12) or (SurfType=bspSurfSOF) then
+        if (SurfType=bspSurfQ1) or (SurfType=bspSurfQ2) or (SurfType=bspSurfSOF) then
         begin
           VertexCount:=GetBspEntryData(FFileHandler.GetLumpVertexes(), PArithByte(P)) div SizeOf(TQ1Vertex);
           PlaneCount:=GetBspEntryData(FFileHandler.GetLumpPlanes(), Planes) div SizeOf(TQ1Plane);
@@ -1061,7 +1072,7 @@ begin
         try
           Dest:=PVect(FVertices);
 
-          if (SurfType=bspSurfQ12) or (SurfType=bspSurfSOF) then
+          if (SurfType=bspSurfQ1) or (SurfType=bspSurfQ2) or (SurfType=bspSurfSOF) then
           begin
             for I:=1 to VertexCount do
             begin

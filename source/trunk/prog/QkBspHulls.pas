@@ -67,7 +67,7 @@ type
                LEdge_id: LongInt;
                LEdge_num, TexInfo_id: SmallInt;
                LightStyles: array[0..MAXLIGHTMAPS-1] of Byte;
-               LightMap: LongInt;
+               LightMapOffset: LongInt;
               end;
 
  PQ2Surface = ^TQ2Surface; //FIXME: Unused!
@@ -80,7 +80,7 @@ type
                RegionFace_id: Integer;
                RegionFace_num: SmallInt;
                LightStyles: array[0..MAXLIGHTMAPS-1] of Byte;
-               Lightofs: LongInt;
+               LightMapOffset: LongInt;
               end;
 
  PSOFSurface = ^TSOFSurface;
@@ -93,7 +93,7 @@ type
                 RegionFace_id: Integer;
                 RegionFace_num: SmallInt;
                 LightStyles: array[0..MAXLIGHTMAPS-1] of Byte;
-                Lightofs: LongInt;
+                LightMapOffset: LongInt;
                 Lm_Size, Lm_Start : array[0..1] of Byte;
                 Texturemins: array[0..1] of SmallInt;
                 Extents: array[0..1] of SmallInt;
@@ -336,7 +336,7 @@ begin
     TextureList:=FBsp.BspEntry[FBsp.FileHandler.GetLumpTextures()] as QTextureList;
     TextureList.Acces;
    end;
-  if (SurfType=bspSurfQ12) or (SurfType=bspSurfSOF) then
+  if (SurfType=bspSurfQ1) or (SurfType=bspSurfQ2) or (SurfType=bspSurfSOF) then
   begin
     {J:=  FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces(), PArithByte(Faces));}
     if FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces(), PArithByte(Faces)) < (FirstFace+NbFaces)*FBsp.SurfaceSize then
@@ -369,7 +369,7 @@ begin
 
   Size1:=0;
   { for each face in the brush, reserve space for a Surface }
-  if (SurfType=bspSurfQ12) or (SurfType=bspSurfSOF) then
+  if (SurfType=bspSurfQ1) or (SurfType=bspSurfQ2) or (SurfType=bspSurfSOF) then
   begin
     Faces2:=Faces;
     for I:=1 to NbFaces do
@@ -410,7 +410,7 @@ begin
   for I:=1 to NbFaces do
    begin
     ProgressIndicatorIncrement;
-    if (SurfType=bspSurfQ12) or (SurfType=bspSurfSOF) then
+    if (SurfType=bspSurfQ1) or (SurfType=bspSurfQ2) or (SurfType=bspSurfSOF) then
     begin
       Inc(PArithByte(Faces), FBsp.SurfaceSize);
       PArithByte(LEdge):=LEdges + Faces^.ledge_id * SizeOf(TLEdge);
@@ -423,7 +423,7 @@ begin
     end;
     Surface1^.Source:=Self;
     Surface1^.NextF:=Nil;
-    if (SurfType=bspSurfQ12) or (SurfType=bspSurfSOF) then
+    if (SurfType=bspSurfQ1) or (SurfType=bspSurfQ2) or (SurfType=bspSurfSOF) then
     begin
       Surface1^.prvVertexCount:=Faces^.ledge_num;
       if Faces^.Plane_id >= cPlanes then
@@ -454,7 +454,7 @@ begin
     {TexInfo_id:=Faces^.TexInfo_id;}
 
     PArithByte(Dest):=PArithByte(Surface1)+TailleBaseSurface;
-    if (SurfType=bspSurfQ12) or (SurfType=bspSurfSOF) then
+    if (SurfType=bspSurfQ1) or (SurfType=bspSurfQ2) or (SurfType=bspSurfSOF) then
     for J:=1 to Faces^.ledge_num do
     begin
       NoEdge:=LEdge^;
@@ -512,7 +512,7 @@ begin
      Raise EErrorFmt(5635, [6]);
 
      { load texture infos }
-    if (SurfType=bspSurfQ12) or (SurfType=bspSurfSOF) then
+    if (SurfType=bspSurfQ1) or (SurfType=bspSurfQ2) or (SurfType=bspSurfSOF) then
     begin
       if Faces^.TexInfo_id >= cTexInfo then
       begin
@@ -524,7 +524,7 @@ begin
         Continue;
       end;
 (*
-      if not q12surf then
+      if SurfType=bspSurfQ3 then
         with PTexInfoQ3(TexInfo+Q3Faces^.TexInfo_id*SizeOf(TTexInfoQ3))^ do
         begin
           S:=CharToPas(texture);
@@ -629,7 +629,7 @@ begin
 
     Face:=TFace.Create(IntToStr(I), Self);
     SubElements.Add(Face);
-    if (SurfType=bspSurfQ12) or (SurfType=bspSurfSOF) then
+    if (SurfType=bspSurfQ1) or (SurfType=bspSurfQ2) or (SurfType=bspSurfSOF) then
     begin
       if Faces^.side<>0 then
         with Face do
@@ -737,10 +737,19 @@ var
 begin
  if (FBsp=Nil) or (SurfaceList=Nil) then Exit;
 
- if FBsp.FileHandler.GetSurfaceType(FBsp.NeedObjectGameCode)=bspSurfQ12 then
+ if FBsp.FileHandler.GetSurfaceType(FBsp.NeedObjectGameCode)=bspSurfQ1 then
  begin
    FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces(), PArithByte(Faces));
    Inc(PArithByte(Faces), FirstFace * SizeOf(TQ1Surface));
+   FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpSurfEdges(), LEdges);
+   FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpEdges(), Edges);
+   FBsp.VerticesAddRef(+1);
+   Vertices:=PArithByte(FBsp.FVertices);
+ end
+ else if FBsp.FileHandler.GetSurfaceType(FBsp.NeedObjectGameCode)=bspSurfQ2 then
+ begin
+   FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces(), PArithByte(Faces));
+   Inc(PArithByte(Faces), FirstFace * SizeOf(TQ2Surface));
    FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpSurfEdges(), LEdges);
    FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpEdges(), Edges);
    FBsp.VerticesAddRef(+1);
