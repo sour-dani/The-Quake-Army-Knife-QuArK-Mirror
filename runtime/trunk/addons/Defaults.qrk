@@ -225,6 +225,8 @@ QQRKSRC1
         .md2 = "1"     imd2 = '4'
         .md3 = "1"     imd3 = '4'
         .fm  = "1"     ifm  = '4'
+        .sbm = "1"     isbm = '4'
+        .sam = "1"     isam = '4'
         .pak = "1"     ipak = '5'
         .pk3 = "1"     ipk3 = '5'
         .pk4 = "1"     ipk4 = '5'
@@ -289,6 +291,8 @@ QQRKSRC1
         .md2 = ""
         .md3 = ""
         .fm  = ""
+        .sbm = ""
+        .sam = ""
         .pak = ""
         .pk3 = ""
         .pk4 = ""
@@ -9021,6 +9025,8 @@ QQRKSRC1
       .md2: = { Txt="MD2 models" externaledit = ! }
       .md3: = { Txt="MD3 models" externaledit = ! }
       .fm:  = { Txt="FM models" externaledit = ! }
+      .sbm:  = { Txt="SiN base models" externaledit = ! }
+      .sam:  = { Txt="SiN Anim models" externaledit = ! }
       .pak: = { Txt="PAK archives" externaledit = ! }
       .pk3: = { Txt="PK3 archives" externaledit = ! }
       .pk4: = { Txt="PK4 archives" externaledit = ! }
@@ -9110,6 +9116,8 @@ QQRKSRC1
       .md2: = {Typ="X" Cap=".md2" Txt="Standard Quake 2 Models"}
       .md3: = {Typ="X" Cap=".md3" Txt="Standard Quake 3 Models"}
       .fm:  = {Typ="X" Cap=".fm"  Txt="Heretic II Models"}
+      .sbm: = {Typ="X" Cap=".sbm" Txt="Sin Models"}
+      .sam: = {Typ="X" Cap=".sam" Txt="Sin Model Animations"}
       .pak: = {Typ="X" Cap=".pak" Txt="PACK files"}
       .pk3: = {Typ="X" Cap=".pk3" Txt="PACK files for Quake 3"}
       .pk4: = {Typ="X" Cap=".pk4" Txt="PACK files for Doom 3"}

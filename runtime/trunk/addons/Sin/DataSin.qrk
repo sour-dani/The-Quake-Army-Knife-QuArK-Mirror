@@ -272,6 +272,8 @@ QQRKSRC1
     {
       Texture.wal = { ;incl="EmptyTexture" }
       Sin Pak.sin = { }
+      Sin Model.sbm = { }
+      Sin Model Animation.sam = { }
     }
   }
   walltex:incl =
