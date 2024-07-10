@@ -35,6 +35,7 @@ uses
   bspTypeQ1 =     '1';
   bspTypeH2 =     '2';
   bspTypeQ2 =     'A';
+  bspTypeSin =    'C'; //FIXME: Currently unused!
   bspTypeSOF =    'E';
   bspTypeQ3 =     'a';
   bspTypeHL2 =    'k';
@@ -382,7 +383,7 @@ type
  {------------------------}
 
 Function StringListFromEntityLump(const e_lump: String; ExistingAddons: QFileObject; var Found: TStringList): Integer;
-function DetermineIfSiN(F: TStream; FSize: TStreamPos) : Boolean;
+function DetermineIfSin(F: TStream; FSize: TStreamPos) : Boolean;
 
 implementation
 
@@ -601,7 +602,7 @@ begin
       Raise EErrorFmt(5509, [84]);
 end;
 
-function DetermineIfSiN(F: TStream; FSize: TStreamPos) : Boolean;
+function DetermineIfSin(F: TStream; FSize: TStreamPos) : Boolean;
 type
  TBspEntries = record
                EntryPosition: LongInt;
@@ -613,7 +614,12 @@ var
  LumpAt168: Boolean;
  I: Integer;
 begin
-  { determine if this is a SiN map, which are badly versioned }
+  //Determine if this is a Sin map. //FIXME: Untested if this method doesn't false-positive!
+
+  //If you dump SiN's qbsp3 strings, you'll find the lump-names. From this reverse engineering,
+  //it seems that SiN BSP files have a different number of lumps (20), and this is indeed confirmed by the tool source code.
+
+  //So we're going to try to figure out if this is indeed the number of lumps present. If not, it can't be a Sin map.
 
   //If there no enough space for the right number of lumps, this cannot be a SiN BSP file.
   if FSize < (20 * SizeOf(LumpHeader)) + (2 * SizeOf(LongInt)) then
@@ -628,9 +634,8 @@ begin
     //Jump the signature and version.
     F.Seek(2*SizeOf(LongInt), soCurrent);
 
-    //From reverse engineering, it seems that SiN BSP files have a different number of lumps.
-    //We assume there's no padding between the header and the first lump.
-    LumpAt168:=False; //The SiN BSP header ends at Byte 168, so that's where we expect the first lump.
+    //Note: We assume there's no padding between the header and the first lump.
+    LumpAt168:=False; //The Sin BSP header ends at Byte 168, so that's where we expect the first lump.
     for I:=0 to 19 do
     begin
       F.ReadBuffer(LumpHeader, SizeOf(LumpHeader));
@@ -791,9 +796,8 @@ begin
           case Version of
             cVersionBspSin: { SiN } (*or cVersionBspJK2:*) { Jedi Knight II or Soldier of Fortune 2 or Jedi Academy }
             begin
-              if DetermineIfSiN(F, StreamSize) then
+              if DetermineIfSin(F, StreamSize) then
               begin
-                //If you dump SiN's qbsp3 strings, you'll find the lump-names. ;)
 (* Non functional
                 ObjectGameCode := mjSin;
                 FFileHandler:=QBsp2FileHandler.Create(Self);

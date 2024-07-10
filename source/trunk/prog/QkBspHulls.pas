@@ -26,8 +26,8 @@ uses Windows, SysUtils, Classes, QkObjects, QkMapObjects, QkBsp,
      qmath, QkFileObjects, ExtraFunctionality;
 
 const
-  MAX_MAP_HULLS = 4; //8 FOR HEXEN2!!!
-  MAXLIGHTMAPS = 4;
+  MAX_MAP_HULLS = 4; //8 for Hexen 2!!!
+  MAXLIGHTMAPS = 4; //16 for Sin!
 
 type
  TBoundBox = record
@@ -78,6 +78,17 @@ type
                LEdge_num, TexInfo_id: SmallInt;
                LightStyles: array[0..MAXLIGHTMAPS-1] of Byte;
                LightMapOffset: LongInt;
+              end;
+
+ PSinSurface = ^TSinSurface;
+ TSinSurface = record //FIXME: Currently unused!
+               Plane_id: Word;
+               Side: SmallInt;
+               LEdge_id: LongInt;
+               LEdge_num, TexInfo_id: SmallInt;
+               LightStyles: array[0..15] of Byte;
+               LightMapOffset: LongInt;
+               LightInfo: LongInt;
               end;
 
  PSOFSurface = ^TSOFSurface;
@@ -132,6 +143,22 @@ type
                texture: array[0..31] of Byte;  // texture name (textures/*.wal)
                nexttexinfo: LongInt;           // for animations, -1 = end of chain
               end;
+ PTexInfoSin = ^TTexInfoSin;
+ TTexInfoSin = record //FIXME: Currently unused!
+                vecs: TTexInfoVecs;             // [s/t][xyz offset]
+                flags: LongInt;                 // miptex flags + overrides
+                texture: array[0..63] of Byte;  // texture name (textures/*.wal)
+                nexttexinfo: LongInt;           // for animations, -1 = end of chain
+                trans_mag: Single;
+                trans_angle, base_angle: LongInt;
+                animtime: Single;
+                nonlit: Single;
+                translucence: Single;
+                friction: Single;
+                restitution: Single;
+                color: vec3_t;
+                groupname: array[0..31] of Byte;
+               end;
 
 const
  MAX_QPATH = 64; //At least in Quake 2 & Quake 3
