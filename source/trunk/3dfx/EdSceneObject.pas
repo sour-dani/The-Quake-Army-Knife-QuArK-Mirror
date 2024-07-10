@@ -960,7 +960,7 @@ begin
              DeltaV.Z:=Z-TexPt[1].Z;
            end;
 
-           WriteVertex(PV, prvVertexTable[J], Dot(v2, DeltaV), Dot(v3, DeltaV), True);
+           WriteVertex(PV, prvVertexTable[J], Dot(v2, DeltaV), Dot(v3, DeltaV), True); //FIXME: If something goes wrong here, there can be an invalid pointer operation when calling ClearPList afterwards!
 
            Inc(PV, VertexSize);
          end;
@@ -1724,7 +1724,11 @@ begin
        try
         Q.Acces;
        except
-        Q:=Nil;
+        on E: Exception do
+         begin
+           Log(LOG_WARNING, E.Message);
+           Q:=Nil;
+         end;
        end;
       if Q=Nil then
        GlobalWarning(FmtLoadStr1(5588, [S]));
@@ -1738,7 +1742,11 @@ begin
         if Q is QTextureFile then
          PTex^.DefaultAlpha:=QTextureFile(Q).GetTexOpacity{(TexOpacityInfo)};
        except
-        Q:=Nil;
+        on E: Exception do
+         begin
+           Log(LOG_WARNING, E.Message);
+           Q:=Nil;
+         end;
        end;
       if Q=Nil then
        GlobalWarning(FmtLoadStr1(5588, [S]));

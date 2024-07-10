@@ -554,7 +554,7 @@ function QBsp.GetAltTextureSrc : QObject;
 var
  EntryIndex: Integer;
 begin
- EntryIndex := FFileHandler.GetLumpTexInfo();
+ EntryIndex := FFileHandler.GetLumpTextures();
  if (EntryIndex<0) then
   Result := Nil
  else
@@ -1696,11 +1696,10 @@ var
   Tex: QObject;
 begin
   Acces;
-  e:=nil;
   try
     e:=GetBspEntry(FFileHandler.GetLumpTextures());
   except
-    { nothing }
+    e:=nil;
   end;
 
   TexFolder:=nil;
