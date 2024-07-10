@@ -33,16 +33,12 @@ uses
      lump }
 
   bspTypeQ1 =     '1';
+  bspTypeH2 =     '2';
   bspTypeQ2 =     'A';
   bspTypeSOF =    'E';
   bspTypeQ3 =     'a';
   bspTypeHL2 =    'k';
   bspTypeG3D =    '4';
-
-  hullQ1 =     '1';
-  hullHx =     '2';
-  hullQ2 =     'A';
-  hullQ3 =     'a';
 
   NUM_AMBIENTS = 4;
 
@@ -212,7 +208,6 @@ type
    constructor Create(nBsp: QBsp);
    procedure LoadBsp(F: TStream; StreamSize: TStreamPos); virtual; abstract;
    procedure SaveBsp(Info: TInfoEnreg1); virtual; abstract;
-   function GetHullType(Game: Char) : Char;
    class function BspType : Char; overload;
    class function BspType(mj : Char) : Char; overload;
    function GetEntryName(const EntryIndex: Integer) : String; virtual; abstract;
@@ -435,16 +430,6 @@ begin
  FBSP:=nBsp;
 end;
 
-function QBspFileHandler.GetHullType(Game: Char) : Char;
-begin
-  if Game=mjHexen then
-    Result:=mjHexen
-  else if Game=mjSOF then
-    Result:=mjSOF
-  else
-    Result:=bspType(Game)
-end;
-
 class function QBspFileHandler.BspType : Char;
 begin
   Result:=BspType(CurrentGameMode);
@@ -454,8 +439,10 @@ class function QBspFileHandler.BspType(mj : TGameCode) : Char;
 begin
   if (mj>='1') and (mj<='9') then
   begin
-    if (mj='4') then
+    if (mj=mjGenesis3D) then
       Result:=bspTypeG3D
+    else if (mj=mjHexen2) then
+      Result:=bspTypeH2
     else
       Result:=bspTypeQ1;
   end
@@ -609,7 +596,7 @@ begin
     Result := mjQuake
   else
     if ModeH2 then
-      Result := mjHexen
+      Result := mjHexen2
     else
       Raise EErrorFmt(5509, [84]);
 end;
@@ -958,7 +945,7 @@ begin
       end;
 
       case FFileHandler.BspType(NeedObjectGameCode) of
-      bspTypeQ1:
+      bspTypeQ1, bspTypeH2:
         begin
           NodeSize:=SizeOf(TQ1Node);
           LeafSize:=SizeOf(TQ1Leaf);
@@ -1056,7 +1043,7 @@ begin
       BSPType:=FFileHandler.BSPType(NeedObjectGameCode);
       ProgressIndicatorStart(0,0);
       try
-        if (BSPType=bspTypeQ1) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
+        if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
         begin
           B:=GetBspEntryData(FFileHandler.GetLumpVertexes());
           FVertexCount:=Length(B) div SizeOf(TQ1Vertex);
@@ -1070,7 +1057,7 @@ begin
         try
           Dest:=PVect(FVertices);
 
-          if (BSPType=bspTypeQ1) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
+          if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
           begin
             PQ1:=PQ1Vertex(PArithByte(B));
             for I:=1 to VertexCount do
@@ -1868,7 +1855,7 @@ begin
   Source:=SourcePtr;
   BSPType:=QBspFileHandler.BspType(GameCode);
   case BSPType of
-   bspTypeQ1:
+   bspTypeQ1, bspTypeH2:
      begin
        SourceQ1:=PQ1Node(Source)^;
        Plane:=SourceQ1.Plane;
@@ -1923,7 +1910,7 @@ begin
   Source:=SourcePtr;
   BSPType:=QBspFileHandler.BspType(GameCode);
   case BSPType of
-   bspTypeQ1:
+   bspTypeQ1, bspTypeH2:
      begin
        SourceQ1:=PQ1Leaf(Source)^;
        num_leaffaces:=SourceQ1.num_marksurfaces;
@@ -2021,8 +2008,8 @@ begin
     ShowMessage('Faces only for leaves');
     Exit;
   end;
-  case Bsp.FFileHandler.GetHullType(Bsp.NeedObjectGameCode) of
-  //bspTypeQ1:
+  case Bsp.FFileHandler.BSPType(Bsp.NeedObjectGameCode) of
+  //bspTypeQ1, bspTypeH2:
   bspTypeQ2:
     with PQ2Leaf(Source)^ do
     begin

@@ -33,7 +33,7 @@ without any explicit value. That would allow easier addition
 of new games, and will prevent any 'spooky' weird comparison
 between gamemodes.}
  mjQuake        = '1';
- mjHexen        = '2';
+ mjHexen2       = '2';
  mjHalfLife     = '3';
  mjGenesis3D    = '4';
  mjCoF          = '5';

@@ -156,7 +156,7 @@ begin
  if L.Count=0 then Exit;
  ProgressIndicatorStart(0,0); try
  ModeJeu:=CurrentGameMode;
- if not (ModeJeu in [mjQuake, mjHexen]) then
+ if not (ModeJeu in [mjQuake, mjHexen2]) then
   Raise EError(5654);
  SL:=TStringList.Create; try
  for I:=0 to L.Count-1 do
@@ -164,7 +164,7 @@ begin
    Q:=L[I];
    if Q is QQuakeC then
     begin
-     if (Q is QHexenC) xor (ModeJeu=mjHexen) then
+     if (Q is QHexenC) xor (ModeJeu=mjHexen2) then
       Raise EError(5654);
      Q.Acces;
      SL.Add(#255 + Q.Name);
@@ -174,7 +174,7 @@ begin
      finally SL1.Free; end;
     end;
   end;
- if ModeJeu=mjHexen then
+ if ModeJeu=mjHexen2 then
   tc:=tcHexenC
  else
   tc:=tcQuakeC;
@@ -431,7 +431,7 @@ var
  Cmt: Boolean;
  Mode, SourceMode: Integer;
 
-  procedure ChangeMode(nMode: Integer);
+  procedure ChangeMode(nMode: Integer); //Note: Two highest bytes unused, Hi(nMode) = Flag, Lo(nMode) = sf-enum.
   var
    Mode0, nMode0: Integer;
   begin
@@ -587,7 +587,7 @@ var
 begin
  LabelErreur.Hide;
  if FileObject is QHexenC then
-  ChangeGameMode(mjHexen, True)
+  ChangeGameMode(mjHexen2, True)
  else
   if FileObject is QQuakeC then
    ChangeGameMode(mjQuake, True)

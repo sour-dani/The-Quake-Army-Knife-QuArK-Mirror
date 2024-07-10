@@ -1696,7 +1696,7 @@ expected one.
         ReadSymbol(sNumValueToken);
         if SymbolType<>sNumValueToken then
          begin
-          Result:=mjHexen;
+          Result:=mjHexen2;
           P.Specifics.Integers['H2_light']:=Round(NumericValue);
           //FIXME: Could also be bad Call of Duty 2 file (when the 'iwmap 4' header is missing)
          end
@@ -2537,7 +2537,7 @@ begin
   mjQuake:
     begin
       Result:=CurrentQuake1Mode;
-      if Result=mjHexen then
+      if Result=mjHexen2 then
         Result:=mjQuake
       else if CurrentGameMode=mj6DX then
         Result:=mj6DX
@@ -3975,7 +3975,7 @@ begin
    end;{case MapFormat}
  end; {with f}
 
- if MapSaveSettings.GameCode=mjHexen then
+ if MapSaveSettings.GameCode=mjHexen2 then
   begin
    if (F.Parent<>nil) and (F.Parent is TPolyhedron) and (TPolyhedron(F.Parent).Specifics.Strings['H2_light']<>'') then
     S:=S+' '+TPolyhedron(F.Parent).Specifics.Strings['H2_light']

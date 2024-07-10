@@ -38,27 +38,27 @@ type
  THullQ1 = record
             Bound: TBoundBox;
             Origin: vec3_t;
-            Node_id: array[0..MAX_MAP_HULLS-1] of Integer;
-            NumLeafs, Face_id, Face_num: Integer;
+            Node_id: array[0..MAX_MAP_HULLS-1] of LongInt;
+            NumLeafs, Face_id, Face_num: LongInt;
            end;
  PHullH2 = ^THullH2;
  THullH2 = record
             Bound: TBoundBox;
             Origin: vec3_t;
-            Node_id: array[0..8-1] of Integer; //@@@MAX_MAP_HULLS
-            NumLeafs, Face_id, Face_num: Integer;
+            Node_id: array[0..8-1] of LongInt; //@@@MAX_MAP_HULLS
+            NumLeafs, Face_id, Face_num: LongInt;
            end;
  PHullQ2 = ^THullQ2;
  THullQ2 = record
             Bound: TBoundBox;
             Origin: vec3_t;
-            HeadNode, Face_id, Face_num: Integer;
+            HeadNode, Face_id, Face_num: LongInt;
            end;
  PHullQ3 = ^THullQ3;
  THullQ3 = record
             Bound: TBoundBox;
-            Face_id, Face_num: Integer;
-            Brush_id, Brush_num: Integer;
+            Face_id, Face_num: LongInt;
+            Brush_id, Brush_num: LongInt;
            end;
 
  PQ1Surface = ^TQ1Surface;
@@ -261,7 +261,7 @@ var
  PlaneDist: Double;
  texcoord: vec2_t;
  TextureList: QTextureList;
- HullType, BSPType: Char;
+ BSPType: Char;
  miptex: boolean;
  Norm2: TVect;
  Facteur: Double;
@@ -285,13 +285,12 @@ begin
   FBsp.AddRef(+1);
   //Note: No need for a try-except for cleanup here; the destructor takes care of this.
 
-  HullType:=FBsp.FileHandler.GetHullType(FBsp.NeedObjectGameCode);
   BSPType:=FBsp.FileHandler.BSPType(FBsp.NeedObjectGameCode);
-  case HullType of
-   HullQ1: HullSize:=SizeOf(THullQ1);
-   HullHx: HullSize:=SizeOf(THullH2);
-   HullQ2: HullSize:=SizeOf(THullQ2);
-   HullQ3: HullSize:=SizeOf(THullQ3);
+  case BSPType of
+   bspTypeQ1: HullSize:=SizeOf(THullQ1);
+   bspTypeH2: HullSize:=SizeOf(THullH2);
+   bspTypeQ2, bspTypeSOF: HullSize:=SizeOf(THullQ2);
+   bspTypeQ3: HullSize:=SizeOf(THullQ3);
   else Exit;
   end;
   miptex:=SetupSubSet(ssGames, GetGameName(FBsp.NeedObjectGameCode)).Specifics.Strings['UsesMipTex']<>'';
@@ -300,31 +299,35 @@ begin
   HullOffset:=HullSize*Index;
   if Length(Models)<HullOffset+HullSize then
    Raise EErrorFmt(5635, [1]);
-  case HullType of
-   HullQ1: with PHullQ1(PArithByte(Models)+HullOffset)^ do
-             begin
-              NbFaces:=Face_num;
-              FirstFace:=Face_id;
-              TexInfoSize:=SizeOf(TTexInfo);
-             end;
-   HullHx: with PHullH2(PArithByte(Models)+HullOffset)^ do
-             begin
-              NbFaces:=Face_num;
-              FirstFace:=Face_id;
-              TexInfoSize:=SizeOf(TTexInfo);
-             end;
-   HullQ2: with PHullQ2(PArithByte(Models)+HullOffset)^ do
-              begin
-               NbFaces:=Face_num;
-               FirstFace:=Face_id;
-               TexInfoSize:=SizeOf(TTexInfoQ2);
-              end;
-   HullQ3: with PHullQ3(PArithByte(Models)+HullOffset)^ do
-              begin
-               NbFaces:=Face_num;
-               FirstFace:=Face_id;
-               TexInfoSize:=SizeOf(TTexInfoQ3);
-              end;
+  case BSPType of
+   bspTypeQ1:
+    with PHullQ1(PArithByte(Models)+HullOffset)^ do
+     begin
+      NbFaces:=Face_num;
+      FirstFace:=Face_id;
+      TexInfoSize:=SizeOf(TTexInfo);
+     end;
+   bspTypeH2:
+    with PHullH2(PArithByte(Models)+HullOffset)^ do
+     begin
+      NbFaces:=Face_num;
+      FirstFace:=Face_id;
+      TexInfoSize:=SizeOf(TTexInfo);
+     end;
+   bspTypeQ2, bspTypeSOF:
+    with PHullQ2(PArithByte(Models)+HullOffset)^ do
+     begin
+      NbFaces:=Face_num;
+      FirstFace:=Face_id;
+      TexInfoSize:=SizeOf(TTexInfoQ2);
+     end;
+   bspTypeQ3:
+    with PHullQ3(PArithByte(Models)+HullOffset)^ do
+     begin
+      NbFaces:=Face_num;
+      FirstFace:=Face_id;
+      TexInfoSize:=SizeOf(TTexInfoQ3);
+     end;
    end;
   if not miptex then
    TextureList:=Nil
@@ -339,7 +342,7 @@ begin
     Raise EErrorFmt(5635, [2]); //FIXME: Check for out-of-bound everywhere!
   FaceOffset := Pred(FirstFace) * FBsp.SurfaceSize; //-1 because we start iterating with Inc-ing.
 
-  if (BSPType=bspTypeQ1) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
+  if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
   begin
     LEdges:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpSurfEdges());
     cLEdges:=Length(LEdges) div SizeOf(TLEdge);
@@ -373,7 +376,7 @@ begin
 
   Size1:=0;
   { for each face in the brush, reserve space for a Surface }
-  if BSPType=bspTypeQ1 then
+  if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) then
   begin
     Q1Faces:=PQ1Surface(PArithByte(Faces)+FaceOffset);
     for I:=1 to NbFaces do
@@ -435,7 +438,7 @@ begin
 
   SubElements.Capacity:=NbFaces;
 
-  if BSPType=bspTypeQ1 then
+  if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) then
     Q1Faces:=PQ1Surface(PArithByte(Faces)+FaceOffset)
   else if BSPType=bspTypeQ2 then
     Q2Faces:=PQ2Surface(PArithByte(Faces)+FaceOffset)
@@ -451,7 +454,7 @@ begin
   for I:=1 to NbFaces do
    begin
     ProgressIndicatorIncrement;
-    if BSPType=bspTypeQ1 then
+    if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) then
     begin
       Inc(PArithByte(Q1Faces), FBsp.SurfaceSize);
       PArithByte(LEdge):=PArithByte(LEdges) + Q1Faces^.ledge_id * SizeOf(TLEdge);
@@ -476,7 +479,7 @@ begin
     //bspTypeG3D
     Surface1^.Source:=Self;
     Surface1^.NextF:=Nil;
-    if BSPType=bspTypeQ1 then
+    if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) then
     begin
       Surface1^.prvVertexCount:=Q1Faces^.ledge_num;
       if Q1Faces^.Plane_id >= cPlanes then
@@ -540,7 +543,7 @@ begin
     end;
 
     PArithByte(Dest):=PArithByte(Surface1)+TailleBaseSurface;
-    if (BSPType=bspTypeQ1) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
+    if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
       for J:=1 to Surface1^.prvVertexCount do
       begin
         NoEdge:=LEdge^;
@@ -598,9 +601,9 @@ begin
       Raise EErrorFmt(5635, [6]);
 
      { load texture infos }
-    if (BSPType=bspTypeQ1) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
+    if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
     begin
-      if BSPType=bspTypeQ1 then
+      if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) then
         TexInfo_id:=Q1Faces^.TexInfo_id
       else if BSPType=bspTypeQ2 then
         TexInfo_id:=Q2Faces^.TexInfo_id
@@ -716,9 +719,9 @@ begin
 
     Face:=TFace.Create(IntToStr(I), Self);
     SubElements.Add(Face);
-    if (BSPType=bspTypeQ1) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
+    if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
     begin
-      if ((BSPType=bspTypeQ1) and (Q1Faces^.side<>0))
+      if (((BSPType=bspTypeQ1) or (BSPType=bspTypeH2)) and (Q1Faces^.side<>0))
       or ((BSPType=bspTypeQ2) and (Q2Faces^.side<>0))
       or ((BSPType=bspTypeSOF) and (SOFFaces^.side<>0)) then
         with Face do
@@ -831,7 +834,7 @@ begin
 
  BSPType:=FBsp.FileHandler.BSPType(FBsp.NeedObjectGameCode);
  case BSPType of
- bspTypeQ1:
+ bspTypeQ1, bspTypeH2:
    begin
      Faces:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces());
      Q1Faces:=PQ1Surface(Faces);
@@ -909,7 +912,7 @@ begin
     for I:=1 to NbFaces do   { fast version }
      begin
       EdgeNum:=0; //Supress compiler warning
-      if BSPType=bspTypeQ1 then
+      if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) then
       begin
         PArithByte(LEdge):=PArithByte(LEdges) + Q1Faces^.ledge_id * SizeOf(TLEdge);
         EdgeNum:=Q1Faces^.ledge_num;
@@ -959,7 +962,7 @@ begin
            CCoord.Line95f(PV0^, PV1^);
           end;
        end;
-       if BSPType=bspTypeQ1 then
+       if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) then
          Inc(PArithByte(Q1Faces), SizeOf(TQ1Surface))
        else if BSPType=bspTypeQ2 then
          Inc(PArithByte(Q2Faces), SizeOf(TQ2Surface))
@@ -971,7 +974,7 @@ begin
    for I:=1 to NbFaces do   { slow version }
     begin
      EdgeNum:=0; //Supress compiler warning
-     if BSPType=bspTypeQ1 then
+     if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) then
      begin
        PArithByte(LEdge):=PArithByte(LEdges) + Q1Faces^.ledge_id * SizeOf(TLEdge);
        EdgeNum:=Q1Faces^.ledge_num;
@@ -1032,7 +1035,7 @@ begin
           CCoord.Line95f(ProjSommets[0], ProjSommets[1]);
          end;
       end;
-      if BSPType=bspTypeQ1 then
+      if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) then
         Inc(PArithByte(Q1Faces), SizeOf(TQ1Surface))
       else if BSPType=bspTypeQ2 then
         Inc(PArithByte(Q2Faces), SizeOf(TQ2Surface))
