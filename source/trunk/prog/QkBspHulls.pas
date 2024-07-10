@@ -815,6 +815,8 @@ var
  Faces, LEdges, Edges: String; //FIXME: Switch to bytes!
  Q1Faces: PQ1Surface;
  Q2Faces: PQ2Surface;
+ SOFFaces: PSOFSurface;
+{Q3Faces: PQ3Surface;}
  Vertices, Limit: PArithByte;
  LEdge: PLEdge;
  NoEdge: LongInt;
@@ -856,9 +858,13 @@ begin
    end;
  bspTypeSOF:
    begin
-     // optimized versions don't work for SOF, even with correct surfacesize
-     inherited;
-     Exit;
+     Faces:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces());
+     SOFFaces:=PSOFSurface(Faces);
+     Inc(PArithByte(SOFFaces), FirstFace * SizeOf(TSOFSurface));
+     LEdges:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpSurfEdges());
+     Edges:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpEdges());
+     FBsp.VerticesAddRef(+1);
+     Vertices:=PArithByte(FBsp.FVertices);
    end;
  else
    begin
@@ -922,12 +928,12 @@ begin
         PArithByte(LEdge):=PArithByte(LEdges) + Q2Faces^.ledge_id * SizeOf(TLEdge);
         EdgeNum:=Q2Faces^.ledge_num;
       end
-      (*else if BSPType=bspTypeSOF then
+      else if BSPType=bspTypeSOF then
       begin
         PArithByte(LEdge):=PArithByte(LEdges) + SOFFaces^.ledge_id * SizeOf(TLEdge);
         EdgeNum:=SOFFaces^.ledge_num;
       end
-      else if BSPType=bspTypeQ3 then
+      (*else if BSPType=bspTypeQ3 then
       begin
         PArithByte(LEdge):=PArithByte(LEdges) + Q3Faces^.ledge_id * SizeOf(TLEdge);
         EdgeNum:=Q3Faces^.ledge_num;
@@ -966,8 +972,10 @@ begin
          Inc(PArithByte(Q1Faces), SizeOf(TQ1Surface))
        else if BSPType=bspTypeQ2 then
          Inc(PArithByte(Q2Faces), SizeOf(TQ2Surface))
-       (*else if BSPType=bspTypeSOF then
-         Inc(PArithByte(SOFFaces), SizeOf(TSOFSurface))*);
+       else if BSPType=bspTypeSOF then
+         Inc(PArithByte(SOFFaces), SizeOf(TSOFSurface))
+       (*else if BSPType=bspTypeQ3 then
+         Inc(PArithByte(Q3Faces), SizeOf(TQ3Surface))*);
      end
    end
   else
@@ -984,12 +992,12 @@ begin
        PArithByte(LEdge):=PArithByte(LEdges) + Q2Faces^.ledge_id * SizeOf(TLEdge);
        EdgeNum:=Q2Faces^.ledge_num;
      end
-     (*else if BSPType=bspTypeSOF then
+     else if BSPType=bspTypeSOF then
      begin
        PArithByte(LEdge):=PArithByte(LEdges) + SOFFaces^.ledge_id * SizeOf(TLEdge);
        EdgeNum:=SOFFaces^.ledge_num;
      end
-     else if BSPType=bspTypeQ3 then
+     (*else if BSPType=bspTypeQ3 then
      begin
        PArithByte(LEdge):=PArithByte(LEdges) + Q3Faces^.ledge_id * SizeOf(TLEdge);
        EdgeNum:=Q3Faces^.ledge_num;
@@ -1039,9 +1047,9 @@ begin
         Inc(PArithByte(Q1Faces), SizeOf(TQ1Surface))
       else if BSPType=bspTypeQ2 then
         Inc(PArithByte(Q2Faces), SizeOf(TQ2Surface))
-      (*else if BSPType=bspTypeSOF then
+      else if BSPType=bspTypeSOF then
         Inc(PArithByte(SOFFaces), SizeOf(TSOFSurface))
-      else if BSPType=bspTypeQ3 then
+      (*else if BSPType=bspTypeQ3 then
         Inc(PArithByte(Q3Faces), SizeOf(TQ3Surface))*);
     end;
  finally
