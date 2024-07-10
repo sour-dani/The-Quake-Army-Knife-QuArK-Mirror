@@ -1659,10 +1659,14 @@ begin
 
    { loads mdl }
    MdlBase:=Q.Specifics.Strings['mdlbase'];
-   if MdlBase='' then
-     FileObj1:=NeedGameFile(MdlPath, '')
-   else
-     FileObj1:=NeedGameFileBase(MdlBase, MdlPath, '');
+   try
+     if MdlBase='' then
+       FileObj1:=NeedGameFile(MdlPath, '')
+     else
+       FileObj1:=NeedGameFileBase(MdlBase, MdlPath, '');
+   except
+     FileObj1:=nil;
+   end;
    if (FileObj1 = nil) or not (FileObj1 is QModel) then
    begin
      Log(LOG_INFO, LoadStr1(5775), [MdlPath, MdlBase]);
@@ -1963,10 +1967,14 @@ begin
 
    { loads mdl }
   MdlBase:=Q.Specifics.Values['mdlbase'];
-  if MdlBase='' then
-   FileObj1:=NeedGameFile(MdlPath)
-  else
-   FileObj1:=NeedGameFileBase(MdlBase, MdlPath);
+  try
+   if MdlBase='' then
+    FileObj1:=NeedGameFile(MdlPath)
+   else
+    FileObj1:=NeedGameFileBase(MdlBase, MdlPath);
+  except
+   FileObj1:=nil;
+  end;
   if not (FileObj1 is QModel) then Exit;
   Mdl:=QModel(FileObj1);
 
@@ -1991,10 +1999,14 @@ begin
     g_DrawInfo.SkinDescr:='';
     if (S<>'') and ModeJeuQuake2 then
      begin  { load skin from external file }
-      if MdlBase='' then
-       FileObj1:=NeedGameFile(S)
-      else
-       FileObj1:=NeedGameFileBase(MdlBase, S);
+      try
+       if MdlBase='' then
+        FileObj1:=NeedGameFile(S)
+       else
+        FileObj1:=NeedGameFileBase(MdlBase, S);
+      except
+       FileObj1:=nil;
+      end;
       if FileObj1 is QImage then
        begin
         g_DrawInfo.SkinImage:=QImage(FileObj1);
