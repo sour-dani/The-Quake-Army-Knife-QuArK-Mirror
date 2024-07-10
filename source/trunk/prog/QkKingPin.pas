@@ -132,17 +132,18 @@ end;
 
 procedure QTextureKP.LoadFile(F: TStream; Taille: TStreamPos);
 const
-  Spec1 = 'Image#=';
+  Spec1 = 'Image#';
   PosNb = 6;
 
-  DataSpec = 'Data=';
-  AlphaSpec = 'Alpha=';
+  DataSpec = 'Data';
+  AlphaSpec = 'Alpha';
 var
   tex_size: TPoint;
   SourceStream: TQStream;
   source_image: QImage;
   V: array[1..2] of Single;
-  S,tga_pixeldata,tga_alphadata: String;
+  B: String; //FIXME: Switch to bytes!
+  S, tga_pixeldata, tga_alphadata: String;
   I, bytesize, Flags ,cnt,h,w,sourcewidth: Integer;
 
 
@@ -153,9 +154,9 @@ begin
       Flags:=CustomParams;
 
       {create appropriate image object}
-      s:=GetSpecArg('Image1');
+      B:=Specifics.Bytes['Image1'];
       {is the image there ?}
-      if length(s) = Length(spec1) then
+      if Length(B) = 0 then
       begin
         source_image :=QTGA.Create(self.NomFichier,self); try
         source_image.ReadFormat := ReadFormat;
@@ -199,21 +200,20 @@ begin
           S:=Spec1;
           S[PosNb]:=ImgCodes[I];
           Bytesize:=tex_size.x*tex_size.y;
-          SetLength(S, Length(Spec1) +
-                       Bytesize  ); {}
+          SetLength(B, Bytesize);
           {read and convert the stuff}
-          tga_pixeldata:=source_image.GetSpecArg('Image1');
-          tga_alphadata:=source_image.GetSpecArg('Alpha');
+          tga_pixeldata:=source_image.Specifics.Bytes['Image1'];
+          tga_alphadata:=source_image.Specifics.Bytes['Alpha'];
 
           {for testing only - convert this to palette !}
           if I=0 then
           begin   {make non scaled image}
             for cnt:=0 to bytesize-1 do
             begin
-              S[Length(Spec1)+1 + cnt] := char (
-               ( ord (tga_pixeldata[Length(Spec1)+1 + cnt*3 + 0 ]) +  {r}
-                 ord (tga_pixeldata[Length(Spec1)+1 + cnt*3 + 1 ]) +  {g}
-                 ord (tga_pixeldata[Length(Spec1)+1 + cnt*3 + 2 ]))     {b} div 32 );
+              B[cnt] := char (
+               ( ord (tga_pixeldata[cnt*3 + 0 ]) +  {r}
+                 ord (tga_pixeldata[cnt*3 + 1 ]) +  {g}
+                 ord (tga_pixeldata[cnt*3 + 2 ]))   {b} div 32 );
             end;
           end
           else
@@ -223,16 +223,16 @@ begin
             begin
               for w:=0 to tex_size.x-1 do
               begin
-                S[Length(Spec1)+1 + cnt] := char (
-                  ( ord (tga_pixeldata[Length(Spec1)+1 + (h*(i+1)*sourcewidth +w*(i+1))*3 + 0 ]) +
-                    ord (tga_pixeldata[Length(Spec1)+1 + (h*(i+1)*sourcewidth +w*(i+1))*3 + 1 ]) +
-                    ord (tga_pixeldata[Length(Spec1)+1 + (h*(i+1)*sourcewidth +w*(i+1))*3 + 2 ]) )  div 32 );
+                B[cnt] := char (
+                  ( ord (tga_pixeldata[(h*(i+1)*sourcewidth +w*(i+1))*3 + 0 ]) +
+                    ord (tga_pixeldata[(h*(i+1)*sourcewidth +w*(i+1))*3 + 1 ]) +
+                    ord (tga_pixeldata[(h*(i+1)*sourcewidth +w*(i+1))*3 + 2 ]) ) div 32 );
                 inc(cnt);
               end;
             end;
           end;
 
-          Specifics.Add(S);
+          Specifics.Bytes[S]:=B;
 
           if not ScaleDown(tex_size.x, tex_size.y) then
             Break;
@@ -240,9 +240,9 @@ begin
 
         {too bloody difficult to do this here , it needs the texture link:-)
          and is done in textures.pas
-        Specifics.Add('Contents='+IntToStr(0));
-        Specifics.Add('Flags='+IntToStr(0));
-        Specifics.Add('Value='+IntToStr(0));}
+        Specifics.Integers['Contents']:=0;
+        Specifics.Integers['Flags']:=0;
+        Specifics.Integers['Value']:=0;}
 
         {free the temporary image object}
         finally source_image.destroy; end;

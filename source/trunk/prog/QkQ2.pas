@@ -249,9 +249,10 @@ end;
 
 procedure QTexture2.LoadTextureData(F: TStream; Base, Taille: TStreamPos; const Header: TQ2Miptex; Offsets: PLongInt; NomTex, AnimTex: PChar);
 const
-  Spec1 = 'Image#=';
+  Spec1 = 'Image#';
   PosNb = 6;
 var
+  B: String; //FIXME: Switch to bytes!
   S: String;
   I, Flags: Integer;
   Taille1: TStreamPos;
@@ -284,10 +285,10 @@ begin
     S:=Spec1;
     S[PosNb]:=ImgCodes[I];
     Taille1:=W*H;
-    SetLength(S, Length(Spec1)+Taille1);
+    SetLength(B, Taille1);
     F.Position:=Base+Offsets^;
-    F.ReadBuffer(S[Length(Spec1)+1], Taille1);
-    Specifics.AddStringFull(S);
+    F.ReadBuffer(B[1], Taille1);
+    Specifics.Bytes[S]:=B;
     if not ScaleDown(W,H) then
       Break;
     Inc(Offsets);

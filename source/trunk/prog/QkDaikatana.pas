@@ -69,11 +69,12 @@ end;
 //Based on QkQ2's LoadTextureData
 procedure LoadTextureDataDK(F: TStream; Base, Taille: TStreamPos; var Texture: QTexture2);
 const
-  Spec1 = 'Image#=';
+  Spec1 = 'Image#';
   PosNb = 6;
-  Spec2 = 'Pal=';
+  Spec2 = 'Pal';
 var
   Header: TDKMiptex;
+  B: String; //FIXME: Switch to bytes!
   S: String;
   I: Integer;
   Taille1: TStreamPos;
@@ -123,19 +124,18 @@ begin
         Break;
       end;
     end;
-    SetLength(S, Length(Spec1)+Taille1);
+    SetLength(B, Taille1);
     F.Position:=Base+Header.Indexes[I];
-    F.ReadBuffer(S[Length(Spec1)+1], Taille1);
-    Texture.Specifics.AddStringFull(S);
+    F.ReadBuffer(B[1], Taille1);
+    Texture.Specifics.Bytes[S]:=B;
     if not ScaleDown(W,H) then
       Break;
   end;
 
   //Read palette
-  S:=Spec2;
-  SetLength(S, Length(Spec2)+768);
-  Move(Header.Palette, S[Length(Spec2)+1], 768);
-  Texture.Specifics.AddStringFull(S);
+  SetLength(B, 768);
+  Move(Header.Palette, B[1], 768);
+  Texture.Specifics.Bytes[Spec2]:=B;
 
   if Header.Animation[0]<>0 then
     Texture.Specifics.Strings['Anim']:=CharToPas(Header.Animation);
