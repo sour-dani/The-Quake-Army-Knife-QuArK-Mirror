@@ -1787,7 +1787,7 @@ begin
          except
            on E: EFileNotFound do
            begin
-             GlobalWarning(FmtLoadStr1(5588, [MdlPath]) + '//' + E.Message);
+             GlobalWarning(FmtLoadStr1(5588, [S]) + '//' + E.Message);
              FileObj1:=nil; //file not found, ignore
            end;
          end;
