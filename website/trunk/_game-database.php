@@ -1593,6 +1593,13 @@ $Games[] = new cGame(NULL ,'SP' ,'The Stanley Parable' ,'SP' ,'sp.png'
                     ,array('Crows Crows Crows')
                     ,NULL
                     );*/ /*Incompatible engine*/
+$Games[] = new cGame(NULL ,'TW' ,'The Wastes' ,'TW' ,'tw.png'
+                    ,'https://www.thewastes.net/' ,NULL ,'Quake 1', TRUE //Really: FTEQCC
+                    ,'A Post-Apocalyptic First Person Shooter'
+                    ,array('Vera Visions')
+                    ,array('Vera Visions')
+                    ,NULL
+                    ); /*Not the 2000 mod version, but the 2018 standalone version.*/
 $Games[] = new cGame(NULL ,'TFoL' ,'Thirty Flights of Loving' ,'TFoL' ,'tfol.png'
                     ,'https://blendogames.com/thirtyflightsofloving/' ,'https://en.wikipedia.org/wiki/Thirty_Flights_of_Loving' ,'Quake 2', FALSE
                     ,NULL

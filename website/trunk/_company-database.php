@@ -179,6 +179,7 @@ $Companies['Ubisoft'] = new cCompany('Ubisoft', 'Ubisoft', NULL, 'https://www.ub
 $Companies['UFO: Alien Invasion'] = new cCompany('UFO: Alien Invasion', 'UFO: Alien Invasion Team', NULL);
 $Companies['ValuSoft'] = new cCompany('ValuSoft', 'ValuSoft', NULL, NULL, 'https://en.wikipedia.org/wiki/ValuSoft');
 $Companies['Valve'] = new cCompany('Valve', 'Valve Corporation', NULL, 'https://valvesoftware.com/', 'https://en.wikipedia.org/wiki/Valve_Corporation'); #Was: Valve L.L.C.
+$Companies['Vera Visions'] = new cCompany('Vera Visions', 'Vera Visions LLC', NULL, 'https://vera-visions.com/');
 $Companies['Vipersoft'] = new cCompany('Vipersoft', 'Vipersoft', NULL);
 $Companies['Vivendi'] = new cCompany('Vivendi', 'Vivendi Universal', NULL, 'https://www.vivendi.com/', 'https://en.wikipedia.org/wiki/Vivendi');
 $Companies['Warsow'] = new cCompany('Warsow', 'War§ow team', NULL);
