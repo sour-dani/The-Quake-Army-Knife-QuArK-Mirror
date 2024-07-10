@@ -386,7 +386,11 @@ var
                 try
                   Tex1:=NeedGameFile(Copy(TexName,2,MaxInt), '') as QPixelSet;
                 except
-                  Tex1:=Nil;  { file not found, silently ignore }
+                  on E: EFileNotFound do
+                  begin
+                    Log(LOG_WARNING, E.Message);
+                    Tex1:=nil; //file not found, ignore
+                  end;
                 end;
               end;
 

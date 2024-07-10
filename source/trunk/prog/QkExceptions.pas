@@ -36,12 +36,18 @@ type
     function MessageException(const E: Exception; const Info: String; Buttons: TMsgDlgButtons) : TModalResult;
   end;
 
+  //Used specifically when a game file cannot be found, so these exceptions can be caught separately.
+  EFileNotFound = class(Exception);
+
 function GetExceptionMessage(E: Exception) : String;
 procedure LogAndWarn(const WarnMessage : String);
 procedure LogAndRaiseError(const ErrMessage : String);
 function EError(Res: Integer) : Exception;
 function EErrorFmt(Res: Integer; const Fmt: array of const) : Exception;
 function InternalE(const Hint: String) : Exception;
+
+function QFileNotFound(Res: Integer) : Exception;
+function QFileNotFoundFmt(Res: Integer; const Fmt: array of const) : Exception;
 
 procedure GlobalWarning(const Texte: String);
 procedure GlobalDisplayWarnings;
@@ -63,25 +69,39 @@ uses QConsts, TextBoxForm, Quarkx, Logging, ExtraFunctionality, Platform;
 
  {-------------------}
 
+type
+  ErrorDetails = record
+    Message, Details: String;
+  end;
+
+function SplitErrorMessage(const Err: String) : ErrorDetails;
+var
+  I: Integer;
+begin
+  I:=Pos('//', Err);
+  if I>0 then
+  begin
+    Result.Message:=Copy(Err, 1, I - 1);
+    Result.Details:=Copy(Err, I+2, MaxInt);
+  end
+  else
+  begin
+    Result.Message:=Err;
+    Result.Details:='';
+  end;
+end;
+
 function GetExceptionMessage(E: Exception) : String;
 var
- I: Integer;
- S: String;
+  ErrMsg: ErrorDetails;
 begin
- Result:=E.Message;
-{$IFDEF Debug}
- Exit;
-{$ENDIF}
- I:=Pos('//', Result);
- if I>0 then
-  begin
-   S:=Copy(Result, I+2, MaxInt);
-   Log(LOG_VERBOSE, 'GetExceptionMessage: %s', [S]);
-   SetLength(Result, I);
-   Result[I]:='.';
-  end
- else
-  Result:=Result+'.';
+  ErrMsg:=SplitErrorMessage(E.Message);
+  Log(LOG_VERBOSE, 'GetExceptionMessage: %s', [ErrMsg.Details]);
+  {$IFDEF Debug}
+  Result:=ErrMsg.Message+'.//'+ErrMsg.Details;
+  {$ELSE}
+  Result:=ErrMsg.Message+'.';
+  {$ENDIF}
 end;
 
 procedure LogAndWarn(const WarnMessage : String);
@@ -115,38 +135,61 @@ end;
 
  {------------------------}
 
+function QFileNotFound(Res: Integer) : Exception;
+begin
+ PythonCodeEnd;
+ Result:=EFileNotFound.Create(LoadStr1(Res));
+end;
+
+function QFileNotFoundFmt(Res: Integer; const Fmt: array of const) : Exception;
+begin
+ PythonCodeEnd;
+ Result:=EFileNotFound.Create(FmtLoadStr1(Res, Fmt));
+end;
+
+ {------------------------}
+
 var
- GlobalWarnings: TStringList;
+  GlobalWarnings: TStringList;
 
 procedure GlobalWarning(const Texte: String);
 begin
- if Texte='' then Exit;
- Log(LOG_WARNING, 'Global warning: %s', [Texte]);
- if GlobalWarnings=Nil then
+  if Texte='' then Exit;
+  Log(LOG_WARNING, 'Global warning: %s', [Texte]);
+  if GlobalWarnings=Nil then
   begin
-   GlobalWarnings:=TStringList.Create;
-  {PostMessage(g_Form1.Handle, wm_InternalMessage, wp_Warning, 0);}
+    GlobalWarnings:=TStringList.Create;
+   {PostMessage(g_Form1.Handle, wm_InternalMessage, wp_Warning, 0);}
   end;
- if GlobalWarnings.IndexOf(Texte)<0 then
   GlobalWarnings.Add(Texte);
 end;
 
 procedure GlobalDisplayWarnings;
 var
- //We need to clear GlobalWarnings before going into the Modal loop,
- //because AppIdle will trigger, and call this procedure again,
- //causing an endless loop!
- DummyStringList: TStringList;
+  ProcessedWarnings: TStringList;
+  I: Integer;
+  ErrMsg: ErrorDetails;
 begin
- if GlobalWarnings<>Nil then
-  begin
-   DummyStringList:=GlobalWarnings;
-   try
-     GlobalWarnings:=Nil;
-     ShowTextBox('QuArK', LoadStr1(5835), DummyStringList, mtWarning);
-   finally
-     DummyStringList.Free;
-   end;
+  if GlobalWarnings=Nil then
+    Exit;
+
+ //Note that we need to clear GlobalWarnings before going into the Modal loop,
+ //because AppIdle will trigger, and call this procedure again, causing an endless loop!
+
+  ProcessedWarnings:=TStringList.Create;
+  try
+    for I:=0 to GlobalWarnings.Count-1 do
+    begin
+      ErrMsg:=SplitErrorMessage(GlobalWarnings[I]);
+      if ProcessedWarnings.IndexOf(ErrMsg.Message) < 0 then
+        ProcessedWarnings.Add(ErrMsg.Message);
+    end;
+    GlobalWarnings.Free;
+    GlobalWarnings:=nil;
+
+    ShowTextBox('QuArK', LoadStr1(5835), ProcessedWarnings, mtWarning);
+  finally
+    ProcessedWarnings.Free;
   end;
 end;
 

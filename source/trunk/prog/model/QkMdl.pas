@@ -302,7 +302,11 @@ begin
   try
     tex:=NeedGameFile(tex_name, '');
   except
-    tex:=nil;  { file not found, silently ignore }
+    on E: EFileNotFound do
+    begin
+      Log(LOG_WARNING, E.Message);
+      tex:=nil; //file not found, ignore
+    end;
   end;
   if tex = nil then
     exit;

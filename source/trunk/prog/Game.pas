@@ -885,14 +885,14 @@ begin
   end;
   Result:=GetGameFileBase(GetBaseDir, FileName, PakFile, True);
   if Result=Nil then
-    Raise EErrorFmt(5560, [SetupGameSet.Name, DisplayAllAlias(FileName)]); //FIXME: Make this a subclass exception, so we can catch it specifically! Do that, but always LOG it!
+    Raise QFileNotFoundFmt(5560, [SetupGameSet.Name, DisplayAllAlias(FileName)]);
 end;
 
 function NeedGameFileBase(const BaseDir, FileName, PakFile: String) : QFileObject;
 begin
   Result:=GetGameFileBase(BaseDir, FileName, PakFile, True);
   if Result=Nil then
-    Raise EErrorFmt(5561, [SetupGameSet.Name, DisplayAllAlias(FileName), BaseDir]); //FIXME: Make this a subclass exception, so we can catch it specifically! Do that, but always LOG it!
+    Raise QFileNotFoundFmt(5561, [SetupGameSet.Name, DisplayAllAlias(FileName), BaseDir]);
 end;
 
 //Returns an alternative path (from the QuArK dir) if the given path was a relative path

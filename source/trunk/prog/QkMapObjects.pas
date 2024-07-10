@@ -1665,7 +1665,11 @@ begin
      else
        FileObj1:=NeedGameFileBase(MdlBase, MdlPath, '');
    except
-     FileObj1:=nil;
+     on E: EFileNotFound do
+     begin
+       GlobalWarning(FmtLoadStr1(5904, [MdlPath, E.Message]));
+       FileObj1:=nil; //file not found, ignore
+     end;
    end;
    if (FileObj1 = nil) or not (FileObj1 is QModel) then
    begin
@@ -1769,15 +1773,23 @@ begin
        if (Skin1=Nil) and (S<>'') and ModeJeuQuake2 then
        begin
          { load skin from external file }
-         if MdlBase='' then
-         begin
-           FileObj1:=NeedGameFile(S, '');
-           SkinDescr:=S;
-         end
-         else
-         begin
-           FileObj1:=NeedGameFileBase(MdlBase, S, '');
-           SkinDescr:=MdlBase+':'+S;
+         try
+           if MdlBase='' then
+           begin
+             FileObj1:=NeedGameFile(S, '');
+             SkinDescr:=S;
+           end
+           else
+           begin
+             FileObj1:=NeedGameFileBase(MdlBase, S, '');
+             SkinDescr:=MdlBase+':'+S;
+           end;
+         except
+           on E: EFileNotFound do
+           begin
+             GlobalWarning(FmtLoadStr1(5588, [MdlPath]) + '//' + E.Message);
+             FileObj1:=nil; //file not found, ignore
+           end;
          end;
          if FileObj1 is QImage then
            Skin1:=QImage(FileObj1);
@@ -1973,7 +1985,11 @@ begin
    else
     FileObj1:=NeedGameFileBase(MdlBase, MdlPath);
   except
-   FileObj1:=nil;
+   on E: EFileNotFound do
+    begin
+     Log(LOG_WARNING, E.Message);
+     FileObj1:=nil; //file not found, ignore
+    end;
   end;
   if not (FileObj1 is QModel) then Exit;
   Mdl:=QModel(FileObj1);
@@ -2005,7 +2021,11 @@ begin
        else
         FileObj1:=NeedGameFileBase(MdlBase, S);
       except
-       FileObj1:=nil;
+       on E: EFileNotFound do
+        begin
+         Log(LOG_WARNING, E.Message);
+         FileObj1:=nil; //file not found, ignore
+        end;
       end;
       if FileObj1 is QImage then
        begin

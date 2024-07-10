@@ -278,35 +278,33 @@ begin
     shader_filename:=ConcatPaths([GameShadersPath, shader_filename+'.shader']);
   shader_texturename:=copy(tex_name, 1, pos('.', tex_name)-1);
 
+  Log(LOG_VERBOSE, 'attempting to load %s', [shader_filename]);
   try
-    Log(LOG_VERBOSE, 'attempting to load %s', [shader_filename]);
     shader_file:=NeedGameFile(shader_filename, '');
-    shader_file.Acces;
-    for i:=0 to shader_file.subelements.count-1 do
-    begin
-      shader_texture:=QPixelSet(shader_file.subelements[i]);
-      if (shader_texture is QShader) and (uppercase(shader_texture.name)=uppercase(shader_texturename)) then
-      begin
-        Result:=QPcx.Create(shader_texturename, Comp.SkinGroup);
-        try
-          Result.ConversionFrom(shader_texture);
-        except
-          Result.Free;
-{Decker 2002-06-19. If we can't convert the shader to an image, then return NIL,
- as the caller can take care of that, but not exception-handling for some reason.}
-          Result:=nil;
-          Exit;
-          //Raise;
-{/Decker 2002-06-19}
-        end;
-        Comp.SkinGroup.Subelements.Add(result);
-        exit;
-      end;
-    end;
- // finally
   except
-     // SilverPaladin - 12/01/2003 - As stated above, NIL can be returned but not an exception
-    Result := NIL;
+    on E: EFileNotFound do
+    begin
+      Log(LOG_WARNING, E.Message);
+      Result:=nil;
+      Exit;
+    end;
+  end;
+  shader_file.Acces;
+  for i:=0 to shader_file.subelements.count-1 do
+  begin
+    shader_texture:=QPixelSet(shader_file.subelements[i]);
+    if (shader_texture is QShader) and (uppercase(shader_texture.name)=uppercase(shader_texturename)) then
+    begin
+      Result:=QPcx.Create(shader_texturename, Comp.SkinGroup);
+      try
+        Result.ConversionFrom(shader_texture);
+      except
+        Result.Free;
+        Raise;
+      end;
+      Comp.SkinGroup.Subelements.Add(result);
+      exit;
+    end;
   end;
 end;
 
@@ -374,15 +372,19 @@ begin
     // SilverPaladin - 12/01/2003 - If we have not been able to find a skin file
     // in the current directories (unpure has priority), look for it in the PK3
     // files (pure mode) that have been loaded for the game.
-    if (Skin = NIL) then
+    if Skin = nil then
     begin
       Log(LOG_VERBOSE, 'attempting to load %s', [base_tex_name]);
       try
         ImageFile := NeedGameFile(base_tex_name, '');
       except
-        ImageFile := nil;  { file not found, silently ignore }
+        on E: EFileNotFound do
+        begin
+          Log(LOG_WARNING, E.Message);
+          ImageFile := nil; //file not found, ignore
+        end;
       end;
-      if (ImageFile <> nil) then
+      if ImageFile <> nil then
       begin
         ImageFile.AddRef(+1);
         try
@@ -591,7 +593,11 @@ begin
   try
     FileObj2:=NeedGameFile(filename, '');
   except
-    FileObj2:=nil;
+    on E: EFileNotFound do
+    begin
+      Log(LOG_WARNING, E.Message);
+      FileObj2:=nil; //file not found, ignore
+    end;
   end;
   if FileObj2=nil then
   begin

@@ -1175,6 +1175,7 @@ Strings = {
     5901: "Unloading library %s...",
     5902: "Library %s unloaded!",
     5903: "No BSP Data for %d",
+    5904: "Model '%s' not found.//%s",
 
     # DanielPharos would like to reserve 6000 .. 6099 for all renderers
     6000: "Unable to create SceneObject//%s",

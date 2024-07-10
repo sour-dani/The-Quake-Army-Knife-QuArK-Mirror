@@ -266,7 +266,11 @@ begin
    try
      Result:=NeedGameFile(ImageFileName, '') as QPixelSet
    except
-     Result:=nil;
+     on E: EFileNotFound do
+     begin
+       Log(LOG_WARNING, E.Message);
+       Result:=nil; //file not found, ignore
+     end;
    end;
  end
  else
@@ -287,7 +291,11 @@ begin
          else
            Result:=NeedGameFile(ImageFileName, '') as QPixelSet;
        except
-         Result:=nil;
+         on E: EFileNotFound do
+         begin
+           Log(LOG_WARNING, E.Message);
+           Result:=nil; //file not found, ignore
+         end;
        end;
      end;
      if Result=nil then
@@ -328,7 +336,11 @@ begin
    try
      Result:=NeedGameFile(Name+TexExt, '') as QPixelSet;
    except
-     Result:=nil;
+     on E: EFileNotFound do
+     begin
+       Log(LOG_WARNING, E.Message);
+       Result:=nil; //file not found, ignore
+     end;
    end;
  end;
 
