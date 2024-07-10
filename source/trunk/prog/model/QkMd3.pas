@@ -280,10 +280,8 @@ begin
 
   try
     Log(LOG_VERBOSE, 'attempting to load %s', [shader_filename]);
-    shader_file:=needgamefile(shader_filename, '');
-    if shader_file = nil then
-      exit;
-    shader_file.acces;
+    shader_file:=NeedGameFile(shader_filename, '');
+    shader_file.Acces;
     for i:=0 to shader_file.subelements.count-1 do
     begin
       shader_texture:=QPixelSet(shader_file.subelements[i]);
@@ -384,7 +382,7 @@ begin
       except
         ImageFile := nil;  { file not found, silently ignore }
       end;
-      if (ImageFile <> NIL) then
+      if (ImageFile <> nil) then
       begin
         ImageFile.AddRef(+1);
         try
@@ -590,7 +588,11 @@ var
 begin
   Result:=false;
   Log(LOG_VERBOSE, 'attempting to load %s', [filename]);
-  FileObj2:=NeedGameFile(filename, '');
+  try
+    FileObj2:=NeedGameFile(filename, '');
+  except
+    FileObj2:=nil;
+  end;
   if FileObj2=nil then
   begin
     FileObj2:=ExactFileLink(filename, nil, false);
