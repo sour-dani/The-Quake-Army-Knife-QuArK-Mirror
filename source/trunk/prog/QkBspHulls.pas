@@ -170,7 +170,7 @@ function CheckH2Hulls(Hulls: PHullH2; Size, FaceCount: Integer) : Boolean;
 implementation
 
 uses qhelper, QkExceptions, QkMapPoly, Setup, qmatrices, QkWad, Quarkx, Coordinates, Qk3D,
-     QkObjectClassList, Dialogs, Travail, Logging;
+     QkObjectClassList, PixelSetSizeCache, Dialogs, Travail, Logging;
 
  {------------------------}
 
@@ -253,6 +253,8 @@ var
  Dest: ^PVertex;
  Dest2: PVertex;
  OriginCorrection: TList;
+ TextureSizes: TPixelSetSizeCache;
+ TextureSize: TPoint;
  BspVecs: PTexInfoVecs;
  InvFaces: Integer;
  LastError: String;
@@ -450,6 +452,8 @@ begin
   //bspTypeG3D
 
   OriginCorrection:=TList.Create;
+  if BSPType=bspTypeQ3 then
+    TextureSizes:=TPixelSetSizeCache.Create(nil);
   ProgressIndicatorStart(5463, NbFaces); try
   for I:=1 to NbFaces do
    begin
@@ -785,7 +789,16 @@ begin
     end;
     Face.NomTex:=S;
     if BSPType=bspTypeQ3 then
-      Face.SetThreePointsUserTex(P1,P2,P3,nil);
+    begin
+      TextureSize:=TextureSizes.GetSize(Face.NomTex);
+      if (TextureSize.X=0) and (TextureSize.Y=0) then
+      begin
+        Log(LOG_WARNING, LoadStr1(5467), [Face.NomTex]);
+        TextureSize.X:=EchelleTexture;
+        TextureSize.Y:=EchelleTexture;
+      end;
+      Face.SetThreePointsUserTexWithSize(P1, P2, P3, TextureSize);
+    end;
     Face.Specifics.Strings[CannotEditFaceYet]:='1';
     Surface1^.F:=Face;
     Face.LinkSurface(Surface1);
@@ -800,6 +813,8 @@ begin
   finally
    ProgressIndicatorStop;
    OriginCorrection.Free;
+   if BSPType=bspTypeQ3 then
+     TextureSizes.Free;
   end;
 
   if InvFaces>0 then
