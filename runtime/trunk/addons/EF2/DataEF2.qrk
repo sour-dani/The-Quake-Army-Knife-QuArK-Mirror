@@ -104,6 +104,7 @@ QQRKSRC1
     EF2 file types.qtxfolder =
     {
       Pk3.pk3 = { }
+      Mp3.mp3 = { }
       Configuration file.cfg = { }
     }
   }

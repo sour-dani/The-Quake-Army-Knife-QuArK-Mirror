@@ -104,6 +104,7 @@ QQRKSRC1
     STVEF file types.qtxfolder =
     {
       Pk3.pk3 = { }
+      Mp3.mp3 = { }
     }
   }
   walltex:incl =

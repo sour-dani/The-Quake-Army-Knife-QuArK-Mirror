@@ -263,6 +263,7 @@ QQRKSRC1
         .spr = ""
         .sp2 = ""
         .wav = ""
+        .mp3 = ""
         .cin = "1"     icin = '6'
         .cfg = ""      icfg = '11'
         .rc = ""
@@ -329,6 +330,7 @@ QQRKSRC1
         .spr = ""
         .sp2 = ""
         .wav = "<edit>"
+        .mp3 = ""
         .cin = ""
         .cfg = "Notepad.exe"
         .rc = "Notepad.exe"
@@ -9063,6 +9065,7 @@ QQRKSRC1
       .spr: = { Txt="SPR sprites" externaledit = ! }
       .sp2: = { Txt="SP2 sprites" externaledit = ! }
       .wav: = { Txt="WAV sounds" externaledit = ! }
+      .mp3: = { Txt="MP3 sounds" externaledit = ! }
       .cin: = { Txt="CIN videos" externaledit = ! }
       .cfg: = { Txt="CFG files" externaledit = ! }
       .rc: = { Txt="RC files" externaledit = ! }
@@ -9154,6 +9157,7 @@ QQRKSRC1
       .spr: = {Typ="X" Cap=".spr" Txt="SPR Sprites"}
       .sp2: = {Typ="X" Cap=".sp2" Txt="SP2 Sprites"}
       .wav: = {Typ="X" Cap=".wav" Txt="WAV Sounds"}
+      .mp3: = {Typ="X" Cap=".mp3" Txt="MP3 Sounds"}
       .cin: = {Typ="X" Cap=".cin" Txt="CIN Videos (Quake 2)"}
       .cfg: = {Typ="X" Cap=".cfg" Txt="CFG files"}
       .rc: = {Typ="X" Cap=".rc" Txt="RC files"}
