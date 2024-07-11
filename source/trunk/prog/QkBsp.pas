@@ -354,14 +354,14 @@ const
  cVersionBspHL2     = $00000013; {Half-Life 2}
  cVersionBspHL2HDR  = $00000014; {Half-Life 2 with HDR lighting; Left 4 Dead}
  cVersionBspHL2V21  = $00000015; {Half-Life 2 with various changes; Left 4 Dead 2}
- cVersionBspDMoMM   = $00040014; {Dark Messiah of Might and Magic} //FIXME: Untested
+ cVersionBspDMoMM   = $00040014; {Dark Messiah of Might and Magic}
 
 (***********  Other .bsp format  ***********)
 const
- cSignatureBspEF2    = $21324645; {"EF2!" 4-letter header; Star Trek: Elite Force 2} //FIXME: Untested
+ cSignatureBspEF2    = $21324645; {"EF2!" 4-letter header; Star Trek: Elite Force 2}
  cSignatureBspOther  = $20505342; {"BSP " 4-letter header}
 
- cVersionBspEF2      = $00000014; {Star Trek: Elite Force 2} //FIXME: Untested
+ cVersionBspEF2      = $00000014; {Star Trek: Elite Force 2}
  cVersionBspOverDose = $00000055; {OverDose} //FIXME: Untested
 
 (*const
@@ -964,6 +964,12 @@ begin
             begin
 (*              ObjectGameCode := mjHL2;*)
               Raise EErrorFmt(5602, [LoadName, 'Half-Life 2 V21']);
+            end;
+
+            cVersionBspDMoMM: { Dark Messiah of Might and Magic }
+            begin
+(*              ObjectGameCode := mjHL2;*)
+              Raise EErrorFmt(5602, [LoadName, 'Dark Messiah of Might and Magic']);
             end;
 
             else {version unknown}
