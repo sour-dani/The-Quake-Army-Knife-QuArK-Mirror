@@ -23,7 +23,7 @@ unit QkSin;
 interface
 
 uses SysUtils, Classes, Graphics, Dialogs, Controls,
-     QkObjects, QkFileObjects, QkTextures, QkPak, qmath, QkQ2;
+     QkObjects, QkFileObjects, QkTextures, QkPak, QkQ2, QkBsp;
 
 type
  QTextureSin = class(QTexture2)
@@ -42,30 +42,117 @@ type
              class procedure FileObjectClassInfo(var Info: TFileObjectClassInfo); override;
            end;
 
+ QBspSinFileHandler = class(QBspFileHandler)
+  public
+   procedure LoadBsp(F: TStream; StreamSize: TStreamPos); override;
+   procedure SaveBsp(Info: TInfoEnreg1); override;
+   function GetEntryName(const EntryIndex: Integer) : String; override;
+   function GetLumpEdges: Integer; override;
+   function GetLumpEntities: Integer; override;
+   function GetLumpFaces: Integer; override;
+   function GetLumpLeafs: Integer; override;
+   function GetLumpLeafFaces: Integer; override;
+   function GetLumpModels: Integer; override;
+   function GetLumpNodes: Integer; override;
+   function GetLumpPlanes: Integer; override;
+   function GetLumpSurfEdges: Integer; override;
+   function GetLumpTexInfo: Integer; override;
+   function GetLumpTextures: Integer; override;
+   function GetLumpVertexes: Integer; override;
+ end;
+
  {------------------------}
 
 implementation
 
-uses Game, Setup, Quarkx, QkExceptions, QkObjectClassList;
+uses Travail, Game, Setup, Quarkx, qmath, QkText, QkExceptions, QkObjectClassList;
+
+const
+ LUMP_ENTITIES = 0;
+ LUMP_PLANES = 1;
+ LUMP_VERTEXES = 2;
+ LUMP_VISIBILITY = 3;
+ LUMP_NODES = 4;
+ LUMP_TEXINFO = 5;
+ LUMP_FACES = 6;
+ LUMP_LIGHTING = 7;
+ LUMP_LEAFS = 8;
+ LUMP_LEAFFACES = 9;
+ LUMP_LEAFBRUSHES = 10;
+ LUMP_EDGES = 11;
+ LUMP_SURFEDGES = 12;
+ LUMP_MODELS = 13;
+ LUMP_BRUSHES = 14;
+ LUMP_BRUSHSIDES = 15;
+ LUMP_POP = 16;
+ LUMP_AREAS = 17;
+ LUMP_AREAPORTALS = 18;
+ LUMP_LIGHTINFO = 19;
+
+ HEADER_LUMPS = 20;
+
+type
+ TBspEntries = record
+                EntryPosition: LongInt;
+                EntrySize: LongInt;
+               end;
+
+ TBspSinHeader = record
+                  Signature: LongInt;
+                  Version: LongInt;
+                  Entries: array[0..HEADER_LUMPS-1] of TBspEntries;
+                 end;
+
+const
+ BspSinEntryNames : array[0..HEADER_LUMPS-1] of String =
+   (              {Actually a 'FilenameExtension' - See TypeInfo()}
+    'entities'    + '.a.bspsin'   // lump_entities
+   ,'planes'      + '.b.bspsin'   // lump_planes
+   ,'vertexes'    + '.c.bspsin'   // lump_vertexes
+   ,'visibility'  + '.d.bspsin'   // lump_visibility
+   ,'nodes'       + '.e.bspsin'   // lump_nodes
+   ,'texinfo'     + '.f.bspsin'   // lump_texinfo
+   ,'faces'       + '.g.bspsin'   // lump_faces
+   ,'lighting'    + '.h.bspsin'   // lump_lighting
+   ,'leafs'       + '.i.bspsin'   // lump_leafs
+   ,'leaffaces'   + '.j.bspsin'   // lump_leaffaces
+   ,'leafbrushes' + '.k.bspsin'   // lump_leafbrushes
+   ,'edges'       + '.l.bspsin'   // lump_edges
+   ,'surfedges'   + '.m.bspsin'   // lump_surfedges
+   ,'models'      + '.n.bspsin'   // lump_models
+   ,'brushes'     + '.o.bspsin'   // lump_brushes
+   ,'brushsides'  + '.p.bspsin'   // lump_brushsides
+   ,'pop'         + '.q.bspsin'   // lump_pop
+   ,'areas'       + '.r.bspsin'   // lump_areas
+   ,'areaportals' + '.s.bspsin'   // lump_areaportals
+   ,'lightinfo'   + '.t.bspsin'   // lump_lightinfo
+   );
+
+type
+  QBspSin   = class(QFileObject)  protected class function TypeInfo: String; override; end;
+  QBspSina  = class(QZText)       protected class function TypeInfo: String; override; end;
+
+class function QBspSin .TypeInfo; begin TypeInfo:='.bspsin';                         end;
+class function QBspSina.TypeInfo; begin TypeInfo:='.a.bspsin'; {'entities.a.bspsin'} end;
 
 type
  {tiglari: this stuff is binary data just read into this structure in
     one gulp in QTextureSin.LoadFile}
- TSinHeader = packed record
-               Name: array[0..63] of Char;
-               Width, Height: LongInt;
-               Palette: array[0..255] of record R,G,B,A: Byte; end;
-               PalCrc: Word;
-               Reserved1: Word;
-               Offsets: array[0..3] of LongInt;
-               AnimName: array[0..63] of Char;
-               Flags, Contents: LongInt;
-               Value, direct: Word;
-               animtime, nonlit: Single;
-               directangle, trans_angle: Word;
-               directstyle, translucence, friction, restitution, trans_mag: Single;
-               color: array[0..2] of Single;
-              end;
+ TSinTextureHeader = packed record
+                      Name: array[0..63] of AnsiChar;
+                      Width, Height: LongInt;
+                      Palette: array[0..255] of record R,G,B,A: Byte; end;
+                      PalCrc: Word;
+                      Reserved1: Word;
+                      Offsets: array[0..3] of LongInt;
+                      AnimName: array[0..63] of AnsiChar;
+                      Flags, Contents: LongInt;
+                      Value, direct: Word;
+                      animtime, nonlit: Single;
+                      directangle, trans_angle: Word;
+                      directstyle, translucence, friction, restitution, trans_mag: Single;
+                      color: array[0..2] of Single;
+                     end;
 
  {------------------------}
 
@@ -97,7 +184,7 @@ const
  Spec2 = 'Pal=';
  Spec3 = 'Alpha=';
 var
- Header: TSinHeader;
+ Header: TSinTextureHeader;
  Q2MipTex: TQ2MipTex;
  Base: TStreamPos;
  I: Integer;
@@ -181,7 +268,7 @@ end;
    info in the object-specific format to the header format. }
 procedure QTextureSin.SaveFile;
 var
- Header: TSinHeader;
+ Header: TSinTextureHeader;
  I, Taille: Integer;
  Delta: Integer;
  Lmp: PPaletteLmp;
@@ -268,9 +355,173 @@ begin
  Info.FileExt:=794;
 end;
 
+ { --------------- }
+
+function MakeFileQObject(F: TStream; const FullName: String; nParent: QObject) : QFileObject;
+var
+  i: TStreamPos;
+begin
+  {wraparound for a stupid function OpenFileObjectData having obsolete parameters }
+  {tbd: clean this up in QkFileobjects and at all referencing places}
+ Result:=OpenFileObjectData(F, FullName, i, nParent);
+end;
+
+procedure QBspSinFileHandler.LoadBsp(F: TStream; StreamSize: TStreamPos);
+var
+ Header: TBspSinHeader;
+ Origine: TStreamPos;
+ Q: QObject;
+ I: Integer;
+begin
+  if StreamSize < SizeOf(Header) then
+    Raise EError(5519);
+
+  Origine:=F.Position;
+  F.ReadBuffer(Header, SizeOf(Header));
+
+  for I:=0 to HEADER_LUMPS-1 do
+  begin
+    if Header.Entries[I].EntrySize < 0 then
+      Raise EErrorFmt(5509, [84]);
+
+    if Header.Entries[I].EntrySize = 0 then
+      Header.Entries[I].EntryPosition := SizeOf(Header)
+    else
+    begin
+      if Header.Entries[I].EntryPosition < SizeOf(Header) then
+        Raise EErrorFmt(5509, [85]);
+
+      if Header.Entries[I].EntryPosition+Header.Entries[I].EntrySize > StreamSize then
+      begin
+        Header.Entries[I].EntrySize := StreamSize - Header.Entries[I].EntryPosition;
+        GlobalWarning(LoadStr1(5641));
+      end;
+    end;
+
+    F.Position:=Origine + Header.Entries[I].EntryPosition;
+    Q:=MakeFileQObject(F, BspSinEntryNames[I], FBsp); //FIXME: Used Header.Entries[I].EntrySize as third argument to OpenFileObjectData.
+    FBsp.SubElements.Add(Q);
+    LoadedItem(rf_Default, F, Q, Header.Entries[I].EntrySize);
+  end;
+end;
+
+procedure QBspSinFileHandler.SaveBsp(Info: TInfoEnreg1);
+var
+  Header: TBspSinHeader;
+  Origine, Fin: TStreamPos;
+  Zero: LongInt;
+  Q: QObject;
+  I: Integer;
+begin
+  ProgressIndicatorStart(5450, HEADER_LUMPS);
+  try
+    Origine := Info.F.Position;
+    Info.F.WriteBuffer(Header, SizeOf(Header));  { updated later }
+
+    { write .bsp entries }
+    for I:=0 to HEADER_LUMPS-1 do
+    begin
+      Q := FBsp.BspEntry[I];
+      Header.Entries[I].EntryPosition := Info.F.Position;
+
+      Q.SaveFile1(Info);   { save in non-QuArK file format }
+
+      Header.Entries[I].EntrySize := Info.F.Position - Header.Entries[I].EntryPosition;
+      Dec(Header.Entries[I].EntryPosition, Origine);
+
+      Zero:=0;
+      Info.F.WriteBuffer(Zero, (-Header.Entries[I].EntrySize) and 3);  { align to 4 bytes }
+
+      ProgressIndicatorIncrement;
+    end;
+
+    { update header }
+    Fin := Info.F.Position;
+
+    Info.F.Position := Origine;
+    Header.Signature := cSignatureBspID;
+    Header.Version := cVersionBspQ2;
+    Info.F.WriteBuffer(Header, SizeOf(Header));
+
+    Info.F.Position := Fin;
+  finally
+    ProgressIndicatorStop;
+  end;
+end;
+
+function QBspSinFileHandler.GetEntryName(const EntryIndex: Integer) : String;
+begin
+  if (EntryIndex<0) or (EntryIndex>=HEADER_LUMPS) then
+    raise InternalE('Tried to retrieve name of invalid BSP lump!');
+  Result:=BspSinEntryNames[EntryIndex];
+end;
+
+function QBspSinFileHandler.GetLumpEdges: Integer;
+begin
+  Result:=LUMP_EDGES;
+end;
+
+function QBspSinFileHandler.GetLumpEntities: Integer;
+begin
+  Result:=LUMP_ENTITIES;
+end;
+
+function QBspSinFileHandler.GetLumpFaces: Integer;
+begin
+  Result:=LUMP_FACES;
+end;
+
+function QBspSinFileHandler.GetLumpLeafs: Integer;
+begin
+  Result:=LUMP_LEAFS;
+end;
+
+function QBspSinFileHandler.GetLumpLeafFaces: Integer;
+begin
+  Result:=LUMP_LEAFFACES;
+end;
+
+function QBspSinFileHandler.GetLumpModels: Integer;
+begin
+  Result:=LUMP_MODELS;
+end;
+
+function QBspSinFileHandler.GetLumpNodes: Integer;
+begin
+  Result:=LUMP_NODES;
+end;
+
+function QBspSinFileHandler.GetLumpPlanes: Integer;
+begin
+  Result:=LUMP_PLANES;
+end;
+
+function QBspSinFileHandler.GetLumpSurfEdges: Integer;
+begin
+  Result:=LUMP_SURFEDGES;
+end;
+
+function QBspSinFileHandler.GetLumpTexInfo: Integer;
+begin
+  Result:=LUMP_TEXINFO;
+end;
+
+function QBspSinFileHandler.GetLumpTextures: Integer;
+begin
+  Result:=-1;
+end;
+
+function QBspSinFileHandler.GetLumpVertexes: Integer;
+begin
+  Result:=LUMP_VERTEXES;
+end;
+
  {------------------------}
 
 initialization
   RegisterQObject(QTextureSin, 'k');
   RegisterQObject(QSinPak, 't');
+
+  RegisterQObject(QBspSin,  '!');
+  RegisterQObject(QBspSina, 'a');  
 end.

@@ -81,7 +81,7 @@ type
               end;
 
  PSinSurface = ^TSinSurface;
- TSinSurface = record //FIXME: Currently unused!
+ TSinSurface = record
                Plane_id: Word;
                Side: SmallInt;
                LEdge_id: LongInt;
@@ -144,7 +144,7 @@ type
                nexttexinfo: LongInt;           // for animations, -1 = end of chain
               end;
  PTexInfoSin = ^TTexInfoSin;
- TTexInfoSin = record //FIXME: Currently unused!
+ TTexInfoSin = record
                 vecs: TTexInfoVecs;             // [s/t][xyz offset]
                 flags: LongInt;                 // miptex flags + overrides
                 texture: array[0..63] of Byte;  // texture name (textures/*.wal)
@@ -270,6 +270,7 @@ var
  Vertices: PVertexList;
  Q1Faces: PQ1Surface;
  Q2Faces: PQ2Surface;
+ SinFaces: PSinSurface;
  SOFFaces: PSOFSurface;
  Q3Faces: PQ3Surface;
  Q3VertexP: PQ3Vertex;
@@ -318,7 +319,7 @@ begin
   case BSPType of
    bspTypeQ1: HullSize:=SizeOf(THullQ1);
    bspTypeH2: HullSize:=SizeOf(THullH2);
-   bspTypeQ2, bspTypeSOF: HullSize:=SizeOf(THullQ2);
+   bspTypeQ2, bspTypeSin, bspTypeSOF: HullSize:=SizeOf(THullQ2);
    bspTypeQ3: HullSize:=SizeOf(THullQ3);
   else Exit;
   end;
@@ -343,7 +344,7 @@ begin
       FirstFace:=Face_id;
       TexInfoSize:=SizeOf(TTexInfo);
      end;
-   bspTypeQ2, bspTypeSOF:
+   bspTypeQ2, bspTypeSin, bspTypeSOF:
     with PHullQ2(PArithByte(Models)+HullOffset)^ do
      begin
       NbFaces:=Face_num;
@@ -371,7 +372,7 @@ begin
     Raise EErrorFmt(5635, [2]); //FIXME: Check for out-of-bound everywhere!
   FaceOffset := Pred(FirstFace) * FBsp.SurfaceSize; //-1 because we start iterating with Inc-ing.
 
-  if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
+  if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSin) or (BSPType=bspTypeSOF) then
   begin
     LEdges:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpSurfEdges());
     cLEdges:=Length(LEdges) div SizeOf(TLEdge);
@@ -431,6 +432,19 @@ begin
       Inc(Size1, TailleBaseSurface+Q2Faces^.ledge_num*SizeOf(PVertex));
     end;
   end
+  else if BSPType=bspTypeSin then
+  begin
+    SinFaces:=PSinSurface(PArithByte(Faces)+FaceOffset);
+    for I:=1 to NbFaces do
+    begin
+      Inc(PArithByte(SinFaces), FBsp.SurfaceSize);
+      if SinFaces^.ledge_id < 0 then
+        Raise EErrorFmt(5635, [9]);
+      if SinFaces^.ledge_id + SinFaces^.ledge_num > cLEdges then
+        Raise EErrorFmt(5635, [3]);
+      Inc(Size1, TailleBaseSurface+SinFaces^.ledge_num*SizeOf(PVertex));
+    end;
+  end
   else if BSPType=bspTypeSOF then
   begin
     SOFFaces:=PSOFSurface(PArithByte(Faces)+FaceOffset);
@@ -471,6 +485,8 @@ begin
     Q1Faces:=PQ1Surface(PArithByte(Faces)+FaceOffset)
   else if BSPType=bspTypeQ2 then
     Q2Faces:=PQ2Surface(PArithByte(Faces)+FaceOffset)
+  else if BSPType=bspTypeSin then
+    SinFaces:=PSinSurface(PArithByte(Faces)+FaceOffset)
   else if BSPType=bspTypeSOF then
     SOFFaces:=PSOFSurface(PArithByte(Faces)+FaceOffset)
   else if BSPType=bspTypeQ3 then
@@ -494,6 +510,11 @@ begin
     begin
       Inc(PArithByte(Q2Faces), FBsp.SurfaceSize);
       PArithByte(LEdge):=PArithByte(LEdges) + Q2Faces^.ledge_id * SizeOf(TLEdge);
+    end
+    else if BSPType=bspTypeSin then
+    begin
+      Inc(PArithByte(SinFaces), FBsp.SurfaceSize);
+      PArithByte(LEdge):=PArithByte(LEdges) + SinFaces^.ledge_id * SizeOf(TLEdge);
     end
     else if BSPType=bspTypeSOF then
     begin
@@ -544,6 +565,23 @@ begin
         PlaneDist:=dist;
       end;
     end
+    else if BSPType=bspTypeSin then
+    begin
+      Surface1^.prvVertexCount:=SinFaces^.ledge_num;
+      if SinFaces^.Plane_id >= cPlanes then
+      begin
+        Inc(InvFaces);
+        LastError:='Err Plane_id';
+        Continue;
+      end;
+      with PQ1Plane(PArithByte(Planes) + SinFaces^.Plane_id * SizeOf(TQ1Plane))^ do
+      begin
+        NN.X:=normal[0];
+        NN.Y:=normal[1];
+        NN.Z:=normal[2];
+        PlaneDist:=dist;
+      end;
+    end
     else if BSPType=bspTypeSOF then
     begin
       Surface1^.prvVertexCount:=SOFFaces^.ledge_num;
@@ -574,7 +612,7 @@ begin
     end;
 
     PArithByte(Dest):=PArithByte(Surface1)+TailleBaseSurface;
-    if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
+    if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSin) or (BSPType=bspTypeSOF) then
       for J:=1 to Surface1^.prvVertexCount do
       begin
         NoEdge:=LEdge^;
@@ -632,12 +670,14 @@ begin
       Raise EErrorFmt(5635, [6]);
 
      { load texture infos }
-    if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
+    if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSin) or (BSPType=bspTypeSOF) then
     begin
       if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) then
         TexInfo_id:=Q1Faces^.TexInfo_id
       else if BSPType=bspTypeQ2 then
         TexInfo_id:=Q2Faces^.TexInfo_id
+      else if BSPType=bspTypeSin then
+        TexInfo_id:=SinFaces^.TexInfo_id
       else if BSPType=bspTypeSOF then
         TexInfo_id:=SOFFaces^.TexInfo_id
       else
@@ -655,6 +695,12 @@ begin
 
       if (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
         with PTexInfoQ2(PArithByte(TexInfo) + TexInfo_id * SizeOf(TTexInfoQ2))^ do
+        begin
+          S:=CharToPas(texture);
+          BspVecs:=@vecs;
+        end
+      else if (BSPType=bspTypeSin) then
+        with PTexInfoSin(PArithByte(TexInfo) + TexInfo_id * SizeOf(TTexInfoSin))^ do
         begin
           S:=CharToPas(texture);
           BspVecs:=@vecs;
@@ -750,10 +796,11 @@ begin
 
     Face:=TFace.Create(IntToStr(I), Self);
     SubElements.Add(Face);
-    if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
+    if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSin) or (BSPType=bspTypeSOF) then
     begin
       if (((BSPType=bspTypeQ1) or (BSPType=bspTypeH2)) and (Q1Faces^.side<>0))
       or ((BSPType=bspTypeQ2) and (Q2Faces^.side<>0))
+      or ((BSPType=bspTypeSin) and (SinFaces^.side<>0))
       or ((BSPType=bspTypeSOF) and (SOFFaces^.side<>0)) then
         with Face do
         begin
@@ -857,6 +904,7 @@ var
  Faces, LEdges, Edges: String; //FIXME: Switch to bytes!
  Q1Faces: PQ1Surface;
  Q2Faces: PQ2Surface;
+ SinFaces: PSinSurface;
  SOFFaces: PSOFSurface;
 {Q3Faces: PQ3Surface;}
  Vertices, Limit: PArithByte;
@@ -893,6 +941,16 @@ begin
      Faces:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces());
      Q2Faces:=PQ2Surface(Faces);
      Inc(PArithByte(Q2Faces), FirstFace * SizeOf(TQ2Surface));
+     LEdges:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpSurfEdges());
+     Edges:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpEdges());
+     FBsp.VerticesAddRef(+1);
+     Vertices:=PArithByte(FBsp.FVertices);
+   end;
+ bspTypeSin:
+   begin
+     Faces:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpFaces());
+     SinFaces:=PSinSurface(Faces);
+     Inc(PArithByte(SinFaces), FirstFace * SizeOf(TSinSurface));
      LEdges:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpSurfEdges());
      Edges:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpEdges());
      FBsp.VerticesAddRef(+1);
@@ -970,6 +1028,11 @@ begin
         PArithByte(LEdge):=PArithByte(LEdges) + Q2Faces^.ledge_id * SizeOf(TLEdge);
         EdgeNum:=Q2Faces^.ledge_num;
       end
+      else if BSPType=bspTypeSin then
+      begin
+        PArithByte(LEdge):=PArithByte(LEdges) + SinFaces^.ledge_id * SizeOf(TLEdge);
+        EdgeNum:=SinFaces^.ledge_num;
+      end
       else if BSPType=bspTypeSOF then
       begin
         PArithByte(LEdge):=PArithByte(LEdges) + SOFFaces^.ledge_id * SizeOf(TLEdge);
@@ -1014,6 +1077,8 @@ begin
          Inc(PArithByte(Q1Faces), SizeOf(TQ1Surface))
        else if BSPType=bspTypeQ2 then
          Inc(PArithByte(Q2Faces), SizeOf(TQ2Surface))
+       else if BSPType=bspTypeSin then
+         Inc(PArithByte(SinFaces), SizeOf(TSinSurface))
        else if BSPType=bspTypeSOF then
          Inc(PArithByte(SOFFaces), SizeOf(TSOFSurface))
        (*else if BSPType=bspTypeQ3 then
@@ -1033,6 +1098,11 @@ begin
      begin
        PArithByte(LEdge):=PArithByte(LEdges) + Q2Faces^.ledge_id * SizeOf(TLEdge);
        EdgeNum:=Q2Faces^.ledge_num;
+     end
+     else if BSPType=bspTypeSin then
+     begin
+       PArithByte(LEdge):=PArithByte(LEdges) + SinFaces^.ledge_id * SizeOf(TLEdge);
+       EdgeNum:=SinFaces^.ledge_num;
      end
      else if BSPType=bspTypeSOF then
      begin
@@ -1089,6 +1159,8 @@ begin
         Inc(PArithByte(Q1Faces), SizeOf(TQ1Surface))
       else if BSPType=bspTypeQ2 then
         Inc(PArithByte(Q2Faces), SizeOf(TQ2Surface))
+      else if BSPType=bspTypeSin then
+        Inc(PArithByte(SinFaces), SizeOf(TSinSurface))
       else if BSPType=bspTypeSOF then
         Inc(PArithByte(SOFFaces), SizeOf(TSOFSurface))
       (*else if BSPType=bspTypeQ3 then

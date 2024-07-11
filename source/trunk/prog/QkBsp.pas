@@ -35,7 +35,7 @@ uses
   bspTypeQ1 =     '1';
   bspTypeH2 =     '2';
   bspTypeQ2 =     'A';
-  bspTypeSin =    'C'; //FIXME: Currently unused!
+  bspTypeSin =    'C';
   bspTypeSOF =    'E';
   bspTypeQ3 =     'a';
   bspTypeHL2 =    'k';
@@ -391,7 +391,7 @@ uses Travail, QkWad, Setup, Game, QkMap, QkBspHulls, ApplPaths,
      Undo, Quarkx, QkExceptions, PyForms, PyMath, PyObjects,
      QkObjectClassList, ToolBox1, ToolBoxGroup,
      QkQuakeCtx, FormCfg, Logging, QkTextures, QkFormCfg,
-     QkQ1, QkQ2, QkQ3, QkG3D;
+     QkQ1, QkQ2, QkSin, QkQ3, QkG3D;
 
 {$R *.DFM}
 
@@ -440,30 +440,31 @@ class function QBspFileHandler.BspType(mj : TGameCode) : Char;
 begin
   if (mj>='1') and (mj<='9') then
   begin
-    if (mj=mjGenesis3D) then
+    if mj=mjGenesis3D then
       Result:=bspTypeG3D
-    else if (mj=mjHexen2) then
+    else if mj=mjHexen2 then
       Result:=bspTypeH2
     else
       Result:=bspTypeQ1;
   end
   else if (mj>='A') and (mj<='Y') then
   begin
-    if (mj=mjSOF) then
+    if mj=mjSin then
+      Result:=bspTypeSin
+    else if mj=mjSOF then
       Result:=bspTypeSOF
     else
       Result:=bspTypeQ2;
   end
   else if (mj>'a') and (mj<='z') then
   begin
-    if (mj='k') then
+    if mj=mjHL2 then
       Result:=bspTypeHL2
     else
       Result:=bspTypeQ3;
   end
-  //FIXME: a dubious step for dealing with the 'any' codes
-  else
-    Result:=mj;
+  else //FIXME: actually deal with the 'any' codes
+    Raise InternalE('Unhandled BSP type!');
 end;
 
  {------------------------}
@@ -509,6 +510,8 @@ begin
        (SameText(Copy(S, Length(S)-4, 4), '.bsp' ) and CharInSet(S[Length(S)], ['1'..'9']))
     { or any ".bsp10" to ".bsp15" }
     or (SameText(Copy(S, Length(S)-5, 5), '.bsp1') and CharInSet(S[Length(S)], ['0'..'5']))
+    { or ".bspsin" }
+    or SameText(Copy(S, Length(S)-6, 7), '.bspsin')
     { or ".bspg3d" }
     or SameText(Copy(S, Length(S)-6, 7), '.bspg3d')
   ];
@@ -804,12 +807,9 @@ begin
             begin
               if DetermineIfSin(F, StreamSize) then
               begin
-(* Non functional
                 ObjectGameCode := mjSin;
-                FFileHandler:=QBsp2FileHandler.Create(Self);
+                FFileHandler:=QBspSinFileHandler.Create(Self);
                 FFileHandler.LoadBsp(F, StreamSize);
-*)
-                Raise EErrorFmt(5602, [LoadName, 'SiN']);
               end
               else
               begin
@@ -969,6 +969,13 @@ begin
           FSurfaceSize:=SizeOf(TQ2Surface);
           FPlaneSize:=SizeOf(TQ1Plane); //Quake 2 plane = Quake 1 plane
         end;
+      bspTypeSin:
+        begin
+          NodeSize:=SizeOf(TQ2Node); //Sin node = Quake 2 node
+          LeafSize:=SizeOf(TQ2Leaf); //Sin leaf = Quake 2 leaf
+          FSurfaceSize:=SizeOf(TSinSurface);
+          FPlaneSize:=SizeOf(TQ1Plane); //Sin plane = Quake 2 plane = Quake 1 plane
+        end;
       bspTypeSOF:
         begin
           NodeSize:=SizeOf(TQ2Node); //SOF node = Quake 2 node
@@ -1053,7 +1060,7 @@ begin
       BSPType:=FFileHandler.BSPType(NeedObjectGameCode);
       ProgressIndicatorStart(0,0);
       try
-        if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
+        if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSin) or (BSPType=bspTypeSOF) then
         begin
           B:=GetBspEntryData(FFileHandler.GetLumpVertexes());
           FVertexCount:=Length(B) div SizeOf(TQ1Vertex);
@@ -1067,7 +1074,7 @@ begin
         try
           Dest:=PVect(FVertices);
 
-          if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSOF) then
+          if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) or (BSPType=bspTypeQ2) or (BSPType=bspTypeSin) or (BSPType=bspTypeSOF) then
           begin
             PQ1:=PQ1Vertex(PArithByte(B));
             for I:=1 to VertexCount do
@@ -1876,7 +1883,7 @@ begin
          maxs[I]:=SourceQ1.maxs[I];
        end
      end;
-   bspTypeQ2, bspTypeSOF:
+   bspTypeQ2, bspTypeSin, bspTypeSOF:
      begin
        SourceQ2:=PQ2Node(Source)^;
        Plane:=SourceQ2.Plane;
@@ -1929,7 +1936,7 @@ begin
          maxs[I]:=SourceQ1.maxs[I];
        end
      end;
-   bspTypeQ2:
+   bspTypeQ2, bspTypeSin:
      begin
        SourceQ2:=PQ2Leaf(Source)^;
        num_leaffaces:=SourceQ2.num_leaffaces;
@@ -2019,7 +2026,7 @@ begin
   end;
   case Bsp.FFileHandler.BSPType(Bsp.NeedObjectGameCode) of
   //bspTypeQ1, bspTypeH2:
-  bspTypeQ2:
+  bspTypeQ2, bspTypeSin:
     with PQ2Leaf(Source)^ do
     begin
       for LFaceIndex:=first_leafface to first_leafface+num_leaffaces do
