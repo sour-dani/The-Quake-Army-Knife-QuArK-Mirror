@@ -108,12 +108,12 @@ $GamesQRKOther['MOHAA'][] = new cQRKOther('MoH:AA Source Maps','http://medalofho
 # Return to Castle Wolfenstein
 $GamesQRKOther['RTCW'] = array();
 $GamesQRKOther['RTCW'][] = new cQRKOther('RTCW Mod Source Code 1.41 (Windows)','http://returntocastlewolfenstein.filefront.com/file/RTCW_Mod_Source_Code_141;8507');
-$GamesQRKOther['RTCW'][] = new cQRKOther('RTCW Single Player Source Code','http://www.gamers.org/pub/idgames/idstuff/source/RTCW-SP-GPL.zip'); #ftp://ftp.idsoftware.com/
-$GamesQRKOther['RTCW'][] = new cQRKOther('RTCW Multi Player Source Code','http://www.gamers.org/pub/idgames/idstuff/source/RTCW-MP-GPL.zip'); #ftp://ftp.idsoftware.com/
+$GamesQRKOther['RTCW'][] = new cQRKOther('RTCW Single Player Source Code','http://www.gamers.org/pub/idgames/idstuff/source/RTCW-SP-GPL.zip'); #ftp://ftp.idsoftware.com/idstuff/source/RTCW-SP-GPL.zip
+$GamesQRKOther['RTCW'][] = new cQRKOther('RTCW Multi Player Source Code','http://www.gamers.org/pub/idgames/idstuff/source/RTCW-MP-GPL.zip'); #ftp://ftp.idsoftware.com/idstuff/source/RTCW-MP-GPL.zip
 
 # Return to Castle Wolfenstein - Enemy Territory
 $GamesQRKOther['RTCW-ET'] = array();
-$GamesQRKOther['RTCW-ET'][] = new cQRKOther('RTCW-ET Source Code','http://www.gamers.org/pub/idgames/idstuff/source/ET-GPL.zip'); #ftp://ftp.idsoftware.com/
+$GamesQRKOther['RTCW-ET'][] = new cQRKOther('RTCW-ET Source Code','http://www.gamers.org/pub/idgames/idstuff/source/ET-GPL.zip'); #ftp://ftp.idsoftware.com/idstuff/source/ET-GPL.zip
 
 # Star Trek Voyager: Elite Force
 $GamesQRKOther['STVEF'] = array();
