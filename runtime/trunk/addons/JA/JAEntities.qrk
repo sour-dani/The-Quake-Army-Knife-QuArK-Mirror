@@ -55,7 +55,7 @@ QQRKSRC1
         }
       }
       Weapon and Ammo.qtxfolder =
-      {        
+      {
         weapon_concussion_rifle:e =
         {
           ;desc = ""
@@ -95,7 +95,7 @@ QQRKSRC1
         {
           ;desc = ""
           Origin = "0 0 0"
-        }        
+        }
         weapon_emplaced:e =
         {
           ;desc = ""
@@ -252,7 +252,7 @@ QQRKSRC1
           ;desc = ""
           ;incl = "defpoly"
           Angle = "360"
-        }        
+        }
         func_glass:b =
         {
           ;desc = ""
@@ -315,7 +315,7 @@ QQRKSRC1
         {
           ;desc = "fires if the given entity is within the given distance. Sets itself inactive after one use"
           ;incl = "trigger"
-        }        
+        }
         trigger_hurt:b =
         {
           ;desc = "Any entity that touches this will be hurt. It does dmg points of damage each server frame"
@@ -509,7 +509,7 @@ QQRKSRC1
         {
           ;desc = ""
           Origin = "0 0 0"
-        }        
+        }
       }
       Light.qtxfolder =
       {
@@ -838,7 +838,7 @@ QQRKSRC1
         misc_skyportal:e =
         {
           ;desc = "Put it in the sky room"
-          Origin = "0 0 0"          
+          Origin = "0 0 0"
         }
         misc_trip_mine:e =
         {
@@ -1216,7 +1216,7 @@ QQRKSRC1
           Origin = "0 0 0"
           Angle = "360"
         }
-        } 
+        }
         NPC_Monsters.qtxfolder =
         {
         NPC_MineMonster:e =
@@ -1514,7 +1514,7 @@ QQRKSRC1
   Entity forms.fctx =
   {
     // Definition of "includes"
-    t_modelbrowser:incl = 
+    t_modelbrowser:incl =
     {
       Typ = "EP"
       DefExt = "md3"
@@ -1523,7 +1523,7 @@ QQRKSRC1
       DirSep = "/"
       AugPath = "models"
     }
-    t_efxbrowser:incl = 
+    t_efxbrowser:incl =
     {
       Typ = "EP"
       DefExt = "efx"
@@ -1531,7 +1531,7 @@ QQRKSRC1
       CutPath = "$Game\base\?\"
       DirSep = "/"
     }
-    t_scriptbrowser:incl = 
+    t_scriptbrowser:incl =
     {
       Typ = "EP"
       DefExt = "ibi"
@@ -1539,7 +1539,7 @@ QQRKSRC1
       CutPath = "$Game\base\?\"
       DirSep = "/"
     }
-    t_soundbrowser:incl = 
+    t_soundbrowser:incl =
     {
       Typ = "EP"
       DefExt = "wav; *.mp3"
@@ -1933,7 +1933,7 @@ QQRKSRC1
         items = "models/map_objects/wedge/beacon.md3"
         hint = ".md3 model"
         typ = "C"
-      }      
+      }
       forcevisible: =
       {
         txt = "&"
@@ -2864,7 +2864,7 @@ QQRKSRC1
       }
     }
     misc_weather_zone:form =
-    { 
+    {
 
       bspmodel: =
       {
@@ -2874,7 +2874,7 @@ QQRKSRC1
       }
     }
     misc_bsp:form =
-    { 
+    {
 
       bbox = '-16 -16 -16 16 16 16'
       bspmodel: =
@@ -2885,7 +2885,7 @@ QQRKSRC1
       }
     }
     misc_model:form =
-    { 
+    {
 
       bbox = '-16 -16 -24 16 16 32'
       mdl = "[model]"
@@ -2930,7 +2930,7 @@ QQRKSRC1
       }
     }
     misc_model_static:form =
-    { 
+    {
 
       bbox = '-16 -16 -24 16 16 32'
       mdl = "[model]"
@@ -2967,7 +2967,7 @@ QQRKSRC1
       }
     }
     misc_model_breakable:form =
-    { 
+    {
       mdl = "[model]"
       model: =
       {
@@ -8763,10 +8763,10 @@ QQRKSRC1
       message: =
       {
         txt = "&"
-        hint = "turns on his key surface"$0D 
-             "This is the name of the key you get when you walk over his body"$0D 
-             "This must match the message field of the func_security_panel you want this key to open"$0D  
-             "Set to GOODIE to have him carrying a goodie key that player can use to operate doors with GOODIE spawnflag"$0D 
+        hint = "turns on his key surface"$0D
+             "This is the name of the key you get when you walk over his body"$0D
+             "This must match the message field of the func_security_panel you want this key to open"$0D
+             "Set to GOODIE to have him carrying a goodie key that player can use to operate doors with GOODIE spawnflag"$0D
              "NOTE: this overrides all the weapon spawnflags"
         typ = "E"
       }
@@ -13976,17 +13976,17 @@ QQRKSRC1
         hint = "Fired by spawner if they try to spawn and are blocked and have a wait < 0 (removes them)"
         typ = "E"
       }
-      sep: = 
-      { 
-        typ = "S" 
+      sep: =
+      {
+        typ = "S"
         txt = "Scripts"
         hint = "These strings can be used to activate behaviors instead of scripts - these are checked first and so no scripts should be names with these names:"$0D
          "default - 0: whatever"$0D
-         "idle - 1: Stand around, do abolutely nothing"$0D
+         "idle - 1: Stand around, do absolutely nothing"$0D
          "roam - 2: Roam around, collect stuff"$0D
          "walk - 3: Crouch-Walk toward their goals"$0D
          "run - 4: Run toward their goals"$0D
-         "standshoot - 5: Stay in one spot and shoot- duck when neccesary"$0D
+         "standshoot - 5: Stay in one spot and shoot- duck when necessary"$0D
          "standguard - 6: Wait around for an enemy"$0D
          "patrol - 7: Follow a path, looking for enemies"$0D
          "huntkill - 8: Track down enemies and kill them"$0D
@@ -14004,7 +14004,7 @@ QQRKSRC1
          "wait - 20: do nothing"$0D
          "formation - 21: Maintain a formation"$0D
          "crouch - 22: Crouch-walk toward their goals"
-      }      
+      }
       spawnscript: =
       {
         txt = "&"
@@ -14045,7 +14045,7 @@ QQRKSRC1
       {
         txt = "&"
         hint = "default script to run when killed (none by default)"
-        typ = "E"      
+        typ = "E"
       }
       noBasicSounds: =
       {
@@ -16400,13 +16400,13 @@ QQRKSRC1
         typ = "E"
       }
       SoundSet: =
-      {        
+      {
         txt = "&"
         hint = "Sound set from list of sound.txt"
         typ = "E"
       }
       targetname: =
-      {        
+      {
         txt = "&"
         hint = "Target name for use"
         typ = "E"
@@ -16499,17 +16499,17 @@ QQRKSRC1
         cap = "DROP_TO_FLOOR"
         hint = "will cause the point to auto drop to the floor"
         typ = "X2"
-      }      
+      }
       spawnflags: =
       {
         txt = "&"
         cap = "NO_AUTO_CONNECT"
         hint = "will not automatically connect to any other waypoints, you must then connect it by hand"
         typ = "X4"
-      }      
+      }
     }
     rail_track:form =
-    {       
+    {
       radius: =
       {
         txt = "&"
@@ -16543,7 +16543,7 @@ QQRKSRC1
       }
     }
     rail_lane:form =
-    {       
+    {
       delay: =
       {
         txt = "&"
@@ -16552,7 +16552,7 @@ QQRKSRC1
       }
     }
     rail_mover:form =
-    {       
+    {
       target: =
       {
         txt = "&"
@@ -19350,7 +19350,7 @@ QQRKSRC1
         txt = "&"
         hint = "NPC_types to look for ownername. If any, who to calc the"
         "distance from- default is the trigger_entdist himself. Example:"
-        "target 'biessman telsia' will look for the biessman and telsia NPC" 
+        "target 'biessman telsia' will look for the biessman and telsia NPC"
         "if it finds either of these within distance it will fire."
         typ = "E"
       }
@@ -19893,7 +19893,7 @@ QQRKSRC1
         typ = "C"
         items = "player"$0D"neutral"$0D"enemy"
         values = "player"$0D"neutral"$0D"enemy"
-      }      
+      }
       target: =
       {
         txt = "&"
@@ -22511,7 +22511,7 @@ QQRKSRC1
       {
         Txt = "&"
         Typ = "X1"
-        Cap = "NONLINEAR" 
+        Cap = "NONLINEAR"
         Hint = "gives inverse square falloff instead of linear"
       }
       spawnflags: =
