@@ -271,11 +271,11 @@ var
  Header: TIntroPakEx;
  I, J, K: Integer;
  EntrySize: TStreamPos;
- Entrees1, P1: PChar;
+ Entrees1, P1: PByte;
  TailleNom: Integer;
  Origine: TStreamPos;
  Dossier, nDossier: QObject;
- Chemin, CheminPrec: String;
+ Chemin, CheminPrec: AnsiString;
  Q: QObject;
 begin
  case ReadFormat of
@@ -299,13 +299,13 @@ begin
       if Header.Intro.Signature=SignaturePACK then
        begin
         if Self is QSinPak then Log(LOG_WARNING, LoadStr1(5852));
-        TailleNom:=TailleNomFichPACK
+        TailleNom:=TailleNomFichPACK;
        end
       else
        if Header.Intro.Signature=SignatureSPAK then
         begin
          if not (Self is QSinPak) then Log(LOG_WARNING, LoadStr1(5853));
-         TailleNom:=TailleNomFichSPAK
+         TailleNom:=TailleNomFichSPAK;
         end
        else
         Raise EErrorFmt(5506, [LoadName, Header.Intro.Signature, SignaturePACK]);
@@ -328,8 +328,8 @@ begin
        CheminPrec:='';
        for I:=1 to Header.Intro.TailleRep do
         begin
-         SetString(Chemin, P1, TailleNom);
-         SetLength(Chemin, StrLen(PChar(Chemin)));
+         SetString(Chemin, PAnsiChar(P1), TailleNom);
+         SetLength(Chemin, StrLen(PAnsiChar(Chemin)));
          Inc(P1, TailleNom);
 
          if Copy(Chemin, 1, Length(CheminPrec)) = CheminPrec then
