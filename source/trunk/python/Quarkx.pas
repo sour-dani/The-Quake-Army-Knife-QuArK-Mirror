@@ -65,7 +65,7 @@ procedure SetPoolObj(const nName: String; nObj: PyObject);
 function ClearPool(Full: Boolean) : Boolean;
 procedure ClearTimers;
 function MiddleColor(c1, c2: TColorRef; const f: Single) : TColorRef;
-{procedure GetStdMenus(var HelpMenu: PyObject);}
+{procedure GetStdMenus(out HelpMenu: PyObject);}
 procedure ClickForm(nForm: TForm);
 procedure HTMLDoc(const URL: String);
 
@@ -3903,7 +3903,7 @@ begin
  end;
 end;
 
-procedure GetStdMenus(var HelpMenu: PyObject);
+procedure GetStdMenus(out HelpMenu: PyObject);
 var
  obj, Toolboxes: PyObject;
 begin

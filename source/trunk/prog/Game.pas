@@ -127,9 +127,9 @@ function DuplicateGameBuffer(Source: PGameBuffer) : PGameBuffer;
 procedure DeleteGameBuffer(B: PGameBuffer);
 
 procedure ClearBmpInfo24(var BmpInfo: TBitmapInfo256);
-procedure PaletteFromLmp(const Lmp: TPaletteLmp; var BmpInfo: TBitmapInfo256;
+procedure PaletteFromLmp(const Lmp: TPaletteLmp; out BmpInfo: TBitmapInfo256;
            Palette, PaletteReelle: HPalettePtr);
-procedure ColorsFromLmp(const Lmp: TPaletteLmp; var bmiColors: TBitmapInfoColors);
+procedure ColorsFromLmp(const Lmp: TPaletteLmp; out bmiColors: TBitmapInfoColors);
 {function MakePalettedImageData(NeededGame: Char; DC: HDC; W,H, nW,nH: Integer; Format: TMQIDF) : TByteDynArray;}
 function GetQPaletteColor(const BitmapInfo: TBitmapInfo256; I: Integer) : TColorRef;
 function ColorIsLight(C: TColorRef) : Boolean;
@@ -1157,7 +1157,7 @@ begin
   end;
 end;
 
-procedure ColorsFromLmp(const Lmp: TPaletteLmp; var bmiColors: TBitmapInfoColors);
+procedure ColorsFromLmp(const Lmp: TPaletteLmp; out bmiColors: TBitmapInfoColors);
 var
  I: Integer;
  FG: TGammaBuffer;
@@ -1184,7 +1184,7 @@ begin
   end;
 end;
 
-procedure PaletteFromLmp(const Lmp: TPaletteLmp; var BmpInfo: TBitmapInfo256;
+procedure PaletteFromLmp(const Lmp: TPaletteLmp; out BmpInfo: TBitmapInfo256;
            Palette, PaletteReelle: HPalettePtr);
 var
  Log: PLogPalette;

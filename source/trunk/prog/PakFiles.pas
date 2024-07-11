@@ -34,7 +34,7 @@ type
    destructor Destroy; override;
    procedure ResetIter(Backwards: Boolean);
    procedure CreatePakList(const Path, CustomFilter: String; Backwards: Boolean; SearchForTemp: boolean);
-   function GetNextPakName(MustExist: Boolean; var FileName: String; Backwards: Boolean) : Boolean;
+   function GetNextPakName(MustExist: Boolean; out FileName: String; Backwards: Boolean) : Boolean;
   end;
 
  {------------------------}
@@ -243,7 +243,7 @@ begin
  ResetIter(Backwards);
 end;
 
-function TGetPakNames.GetNextPakName(MustExist: Boolean; var FileName: String; Backwards: Boolean) : Boolean;
+function TGetPakNames.GetNextPakName(MustExist: Boolean; out FileName: String; Backwards: Boolean) : Boolean;
 begin
   Result:=False;
   repeat

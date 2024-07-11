@@ -138,7 +138,7 @@ procedure UpdateForm1Root;
 procedure UpdateAddOnsContent;
 procedure CloseAddonsList;  { don't call this when toolboxes are open }
 procedure AddAddOn(NewAddOn: QObject);
-function GetSetupPath(Path: String; var Spec: String; var Q: QObject) : Boolean;
+function GetSetupPath(Path: String; out Spec: String; out Q: QObject) : Boolean;
 procedure StoreTexExtensions; {--CONVEX--}
 procedure StorePakExtensions; {--CONVEX--}
 
@@ -284,7 +284,7 @@ begin
  SetupGameSet:=SetupSubSet(ssGames, g_SetupSet[ssGames].Specifics.Strings['GameCfg']);
 end;
 
-function GetSetupPath(Path: String; var Spec: String; var Q: QObject) : Boolean;
+function GetSetupPath(Path: String; out Spec: String; out Q: QObject) : Boolean;
 var
  P: Integer;
  S: TSetupSet;
