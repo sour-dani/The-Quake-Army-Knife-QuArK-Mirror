@@ -307,10 +307,10 @@ const
 const
  cSignatureBspRaven = $50534252; {"RBSP" 4-letter header}
 
- cVersionBspSin     = $00000001; {SiN .BSP}
+ cVersionBspSin     = $00000001; {Sin .BSP} //Somebody should be shot; SOF has the same Sig/Vers as Q3 (!!)
  cVersionBspJK2     = $00000001; {Jedi Knight 2 .BSP}
- cVersionBspSof2    = $00000001; {Soldier of Fortune 2 .BSP} //Dear Raven; did you forget about your previous game that used the same version number?
- cVersionBspJA      = $00000001; {Jedi Academy .BSP} //Dear Raven; did you forget about your previous game that used the same version number?
+ cVersionBspSof2    = $00000001; {Soldier of Fortune 2 .BSP}
+ cVersionBspJA      = $00000001; {Jedi Academy .BSP}
 
 (***********  Respawn Entertainment .bsp format  ***********)
 const
@@ -387,7 +387,7 @@ type
  {------------------------}
 
 Function StringListFromEntityLump(const e_lump: String; ExistingAddons: QFileObject; var Found: TStringList): Integer;
-function DetermineIfSin(F: TStream; FSize: TStreamPos) : Boolean;
+function TryNumberOfLumps(F: TStream; FSize: TStreamPos; NumberOfLumps: Integer) : Boolean;
 
 implementation
 
@@ -395,7 +395,7 @@ uses Travail, QkWad, Setup, Game, QkMap, QkBspHulls, ApplPaths,
      Undo, Quarkx, QkExceptions, PyForms, PyMath, PyObjects,
      QkObjectClassList, ToolBox1, ToolBoxGroup,
      QkQuakeCtx, FormCfg, Logging, QkTextures, QkFormCfg,
-     QkQ1, QkQ2, QkSin, QkQ3, QkG3D;
+     QkQ1, QkQ2, QkSin, QkSoF, QkQ3, QkG3D;
 
 {$R *.DFM}
 
@@ -460,7 +460,7 @@ begin
     else
       Result:=bspTypeQ2;
   end
-  else if (mj>'a') and (mj<='z') then
+  else if (mj>='a') and (mj<='z') then
   begin
     if mj=mjHL2 then
       Result:=bspTypeHL2
@@ -516,6 +516,8 @@ begin
     or (SameText(Copy(S, Length(S)-5, 5), '.bsp1') and CharInSet(S[Length(S)], ['0'..'5']))
     { or ".bspsin" }
     or SameText(Copy(S, Length(S)-6, 7), '.bspsin')
+    { or ".bspsof" }
+    or SameText(Copy(S, Length(S)-6, 7), '.bspsof')
     { or ".bspg3d" }
     or SameText(Copy(S, Length(S)-6, 7), '.bspg3d')
   ];
@@ -609,7 +611,7 @@ begin
       Raise EErrorFmt(5509, [84]);
 end;
 
-function DetermineIfSin(F: TStream; FSize: TStreamPos) : Boolean;
+function TryNumberOfLumps(F: TStream; FSize: TStreamPos; NumberOfLumps: Integer) : Boolean;
 type
  TBspEntries = record
                EntryPosition: LongInt;
@@ -618,19 +620,17 @@ type
 var
  Origine: TStreamPos;
  LumpHeader: TBspEntries;
- LumpAt168: Boolean;
+ LumpAfterHeader: Boolean;
+ PositionAfterHeader: TStreamPos;
  I: Integer;
 begin
-  //Determine if this is a Sin map. //FIXME: Untested if this method doesn't false-positive!
-
-  //If you dump Sin's qbsp3 strings, you'll find the lump-names. From this reverse engineering,
-  //it seems that Sin BSP files have a different number of lumps (20), and this is indeed confirmed by the tool source code.
-
-  //So we're going to try to figure out if this is indeed the number of lumps present. If not, it can't be a Sin map.
-
-  //If there no enough space for the right number of lumps, this cannot be a Sin BSP file.
-  if FSize < (20 * SizeOf(LumpHeader)) + (2 * SizeOf(LongInt)) then
+  //A dirty check to see if the given number of lumps is correct. We try to read in that many lumps,
+  //and verify their positions + sizes make sense. Then, we assume there's no padding between the header
+  //and the first lump, and thus that there must be a lump starting right after the list of lumps.
+  PositionAfterHeader:=(2 * SizeOf(LongInt)) + (NumberOfLumps * SizeOf(LumpHeader));
+  if FSize < PositionAfterHeader then
   begin
+    //There isn't even enough room for the list of lumps.
     Result:=False;
     Exit;
   end;
@@ -639,11 +639,10 @@ begin
   Origine:=F.Position;
   try
     //Jump the signature and version.
-    F.Seek(2*SizeOf(LongInt), soCurrent);
+    F.Seek(2 * SizeOf(LongInt), soCurrent);
 
-    //Note: We assume there's no padding between the header and the first lump.
-    LumpAt168:=False; //The Sin BSP header ends at Byte 168, so that's where we expect the first lump.
-    for I:=0 to 19 do
+    LumpAfterHeader:=False;
+    for I:=1 to NumberOfLumps do
     begin
       F.ReadBuffer(LumpHeader, SizeOf(LumpHeader));
       if LumpHeader.EntrySize = 0 then
@@ -651,31 +650,24 @@ begin
         //This lump is empty; skip it.
         Continue;
       end;
-      if LumpHeader.EntryPosition < 168 then
+      if LumpHeader.EntryPosition < PositionAfterHeader then
       begin
-        //This lump would start inside the Sin BSP file header! In other words, this cannot be a valid Sin BSP file.
+        //This lump would start inside the BSP file header.
         Result:=False;
         Exit;
       end
       else if LumpHeader.EntryPosition > FSize then
       begin
-        //This lump would be positioned beyond the end of the file! In other words, this cannot be a valid Sin BSP file.
+        //This lump would be positioned beyond the end of the file.
         Result:=False;
         Exit;
       end
-      else if LumpHeader.EntryPosition = 168 then
-        LumpAt168:=True;
+      else if LumpHeader.EntryPosition = PositionAfterHeader then
+        LumpAfterHeader:=True;
     end;
-    if not LumpAt168 then
-    begin
-      //Didn't find a lump at 168. This could indicate padding, but let's be safe and not assume it's a Sin BSP file...
-      Result:=False;
-    end
-    else
-    begin
-      //This most likely is a Sin BSP file. It would be rare to find a Q3 BSP file with 8 bytes padding between the header and the first lump.
-      Result:=True;
-    end;
+
+    //If we didn't find a lump right after the header, we probably got the number of lumps wrong. This can be a false negative if there's padding, but yeah...
+    Result:=LumpAfterHeader;
   finally
     //Restore the old stream position.
     F.Position:=Origine;
@@ -749,13 +741,17 @@ begin
               Raise EErrorFmt(5602, [LoadName, 'KMQuake 2']);
             end;
 
-            cVersionBspQ3: { Quake 3 or Soldier of Fortune }
+            cVersionBspQ3{, cVersionBspSOF}: { Quake 3 or Soldier of Fortune }
             begin
-              { Somebody should be shot; SOF has the same Sig/Vers as Q3 (!!) }
-              if CurrentGameMode=mjSOF then
+              //Determine if this is a SOF map.
+
+              //SOF has 22 lumps, whilst Quake-3 maps use 17 lumps.
+
+              //If there not enough space for the right number of lumps, this cannot be a SOF BSP file.
+              if TryNumberOfLumps(F, StreamSize, 22) then
               begin
                 ObjectGameCode := mjSOF;
-                FFileHandler:=QBsp2FileHandler.Create(Self);
+                FFileHandler:=QBspSOFFileHandler.Create(Self);
                 FFileHandler.LoadBsp(F, StreamSize);
               end
               else
@@ -771,12 +767,12 @@ begin
 
             cVersionBspQL: { Quake Live or Return to Castle Wolfenstein or Return To Castle Wolfenstein - Enemy Territory }
             begin
-
-              ObjectGameCode := mjRTCW; //mjRTCWET //mjQL
+              if CurrentGameMode=mjRTCWET then
+                ObjectGameCode := mjRTCWET
+              else
+                ObjectGameCode := mjRTCW; //FIXME: mjQL
               FFileHandler:=QBsp3FileHandler.Create(Self);
               FFileHandler.LoadBsp(F, StreamSize);
-
-              //Raise EErrorFmt(5602, [LoadName, 'Return to Castle Wolfenstein']);
             end;
 
             cVersionBspIG: { Iron Grip: Warlord }
@@ -817,9 +813,17 @@ begin
         cSignatureBspRaven:
         begin
           case Version of
-            cVersionBspSin: { SiN } (*or cVersionBspJK2:*) { Jedi Knight II or Soldier of Fortune 2 or Jedi Academy }
+            cVersionBspSin{, cVersionBspJK2, cVersionBspSof2, cVersionBspJA}: { Sin or Jedi Knight II or Soldier of Fortune 2 or Jedi Academy }
             begin
-              if DetermineIfSin(F, StreamSize) then
+              //Determine if this is a Sin map. //FIXME: Untested if this method doesn't false-positive!
+
+              //If you dump Sin's qbsp3 strings, you'll find the lump-names. From this reverse engineering,
+              //it seems that Sin BSP files have a different number of lumps (20), and this is indeed confirmed by the tool source code.
+
+              //So we're going to try to figure out if this is indeed the number of lumps present. If not, it can't be a Sin map.
+
+              //If there not enough space for the right number of lumps, this cannot be a Sin BSP file.
+              if TryNumberOfLumps(F, StreamSize, 20) then
               begin
                 ObjectGameCode := mjSin;
                 FFileHandler:=QBspSinFileHandler.Create(Self);

@@ -105,15 +105,15 @@ const
 
 type
  TBspEntries = record
-               EntryPosition: LongInt;
-               EntrySize: LongInt;
-              end;
+                EntryPosition: LongInt;
+                EntrySize: LongInt;
+               end;
 
  TBsp2Header = record
-           Signature: LongInt;
-           Version: LongInt;
-           Entries: array[0..HEADER_LUMPS-1] of TBspEntries;
-          end;
+                Signature: LongInt;
+                Version: LongInt;
+                Entries: array[0..HEADER_LUMPS-1] of TBspEntries;
+               end;
 
 const
  Bsp2EntryNames : array[0..HEADER_LUMPS-1] of String =

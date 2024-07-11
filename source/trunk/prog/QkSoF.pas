@@ -22,7 +22,7 @@ unit QkSoF;
 
 interface
 
-uses SysUtils, Classes, QkObjects, QkFileObjects, QkImages, Dialogs;
+uses SysUtils, Classes, QkObjects, QkFileObjects, QkBsp, QkImages, Dialogs;
 
 type
  QM32 = class(QImage)
@@ -36,14 +36,108 @@ type
           class procedure FileObjectClassInfo(var Info: TFileObjectClassInfo); override;
         end;
 
+ QBspSofFileHandler = class(QBspFileHandler)
+  public
+   procedure LoadBsp(F: TStream; StreamSize: TStreamPos); override;
+   procedure SaveBsp(Info: TInfoEnreg1); override;
+   function GetEntryName(const EntryIndex: Integer) : String; override;
+   function GetLumpEdges: Integer; override;
+   function GetLumpEntities: Integer; override;
+   function GetLumpFaces: Integer; override;
+   function GetLumpLeafs: Integer; override;
+   function GetLumpLeafFaces: Integer; override;
+   function GetLumpModels: Integer; override;
+   function GetLumpNodes: Integer; override;
+   function GetLumpPlanes: Integer; override;
+   function GetLumpSurfEdges: Integer; override;
+   function GetLumpTexInfo: Integer; override;
+   function GetLumpTextures: Integer; override;
+   function GetLumpVertexes: Integer; override;
+ end;
+
 implementation
 
-uses StrUtils, Setup, Travail, Quarkx, QkExceptions, QkPixelSet, QkObjectClassList, ExtraFunctionality;
+uses StrUtils, Setup, Travail, Quarkx, QkExceptions, QkPixelSet,
+  QkText, QkObjectClassList, ExtraFunctionality;
 
 const
- MIP32_VERSION = 4;
- MIPLEVELS = 16;
- MAX_OSPATH = 128; //max length of a filesystem pathname
+  LUMP_ENTITIES = 0;
+  LUMP_PLANES = 1;
+  LUMP_VERTEXES = 2;
+  LUMP_VISIBILITY = 3;
+  LUMP_NODES = 4;
+  LUMP_TEXINFO = 5;
+  LUMP_FACES = 6;
+  LUMP_LIGHTING = 7;
+  LUMP_LEAFS = 8;
+  LUMP_LEAFFACES = 9;
+  LUMP_LEAFBRUSHES = 10;
+  LUMP_EDGES = 11;
+  LUMP_SURFEDGES = 12;
+  LUMP_MODELS = 13;
+  LUMP_BRUSHES = 14;
+  LUMP_BRUSHSIDES = 15;
+  LUMP_POP = 16;
+  LUMP_AREAS = 17;
+  LUMP_AREAPORTALS = 18;
+  LUMP_REGIONFACES = 19;
+  LUMP_LIGHTS = 20;
+  LUMP_REGIONS = 21;
+
+  HEADER_LUMPS = 22;
+
+type
+ TBspEntries = record
+                EntryPosition: LongInt;
+                EntrySize: LongInt;
+               end;
+
+ TBspSOFHeader = record
+                  Signature: LongInt;
+                  Version: LongInt;
+                  Entries: array[0..HEADER_LUMPS-1] of TBspEntries;
+                 end;
+
+const
+ BspSOFEntryNames : array[0..HEADER_LUMPS-1] of String =
+   (              {Actually a 'FilenameExtension' - See TypeInfo()}
+    'entities'    + '.a.bspsof'   // lump_entities
+   ,'planes'      + '.b.bspsof'   // lump_planes
+   ,'vertexes'    + '.c.bspsof'   // lump_vertexes
+   ,'visibility'  + '.d.bspsof'   // lump_visibility
+   ,'nodes'       + '.e.bspsof'   // lump_nodes
+   ,'texinfo'     + '.f.bspsof'   // lump_texinfo
+   ,'faces'       + '.g.bspsof'   // lump_faces
+   ,'lighting'    + '.h.bspsof'   // lump_lighting
+   ,'leafs'       + '.i.bspsof'   // lump_leafs
+   ,'leaffaces'   + '.j.bspsof'   // lump_leaffaces
+   ,'leafbrushes' + '.k.bspsof'   // lump_leafbrushes
+   ,'edges'       + '.l.bspsof'   // lump_edges
+   ,'surfedges'   + '.m.bspsof'   // lump_surfedges
+   ,'models'      + '.n.bspsof'   // lump_models
+   ,'brushes'     + '.o.bspsof'   // lump_brushes
+   ,'brushsides'  + '.p.bspsof'   // lump_brushsides
+   ,'pop'         + '.q.bspsof'   // lump_pop
+   ,'areas'       + '.r.bspsof'   // lump_areas
+   ,'areaportals' + '.s.bspsof'   // lump_areaportals
+   ,'regionfaces' + '.t.bspsof'   // lump_regionfaces
+   ,'lights'      + '.u.bspsof'   // lump_lights
+   ,'regions'     + '.v.bspsof'   // lump_regions
+   );
+
+type
+  QBspSOF   = class(QFileObject)  protected class function TypeInfo: String; override; end;
+  QBspSOFa  = class(QZText)       protected class function TypeInfo: String; override; end;
+
+class function QBspSOF .TypeInfo; begin TypeInfo:='.bspsof';                         end;
+class function QBspSOFa.TypeInfo; begin TypeInfo:='.a.bspsof'; {'entities.a.bspsof'} end;
+
+ { --------------- }
+
+const
+  MIP32_VERSION = 4;
+  MIPLEVELS = 16;
+  MAX_OSPATH = 128; //max length of a filesystem pathname
 
 type
  TM32Header = packed record
@@ -299,6 +393,171 @@ begin
   Info.WndInfo:=[wiWindow];
 end;
 
+
+ { --------------- }
+
+function MakeFileQObject(F: TStream; const FullName: String; nParent: QObject) : QFileObject;
+var
+  i: TStreamPos;
+begin
+  {wraparound for a stupid function OpenFileObjectData having obsolete parameters }
+  {tbd: clean this up in QkFileobjects and at all referencing places}
+ Result:=OpenFileObjectData(F, FullName, i, nParent);
+end;
+
+procedure QBspSOFFileHandler.LoadBsp(F: TStream; StreamSize: TStreamPos);
+var
+ Header: TBspSOFHeader;
+ Origine: TStreamPos;
+ Q: QObject;
+ I: Integer;
+begin
+  if StreamSize < SizeOf(Header) then
+    Raise EError(5519);
+
+  Origine:=F.Position;
+  F.ReadBuffer(Header, SizeOf(Header));
+
+  for I:=0 to HEADER_LUMPS-1 do
+  begin
+    if Header.Entries[I].EntrySize < 0 then
+      Raise EErrorFmt(5509, [84]);
+
+    if Header.Entries[I].EntrySize = 0 then
+      Header.Entries[I].EntryPosition := SizeOf(Header)
+    else
+    begin
+      if Header.Entries[I].EntryPosition < SizeOf(Header) then
+        Raise EErrorFmt(5509, [85]);
+
+      if Header.Entries[I].EntryPosition+Header.Entries[I].EntrySize > StreamSize then
+      begin
+        Header.Entries[I].EntrySize := StreamSize - Header.Entries[I].EntryPosition;
+        GlobalWarning(LoadStr1(5641));
+      end;
+    end;
+
+    F.Position:=Origine + Header.Entries[I].EntryPosition;
+    Q:=MakeFileQObject(F, BspSOFEntryNames[I], FBsp); //FIXME: Used Header.Entries[I].EntrySize as third argument to OpenFileObjectData.
+    FBsp.SubElements.Add(Q);
+    LoadedItem(rf_Default, F, Q, Header.Entries[I].EntrySize);
+  end;
+end;
+
+procedure QBspSOFFileHandler.SaveBsp(Info: TInfoEnreg1);
+var
+  Header: TBspSOFHeader;
+  Origine, Fin: TStreamPos;
+  Zero: LongInt;
+  Q: QObject;
+  I: Integer;
+begin
+  ProgressIndicatorStart(5450, HEADER_LUMPS);
+  try
+    Origine := Info.F.Position;
+    Info.F.WriteBuffer(Header, SizeOf(Header));  { updated later }
+
+    { write .bsp entries }
+    for I:=0 to HEADER_LUMPS-1 do
+    begin
+      Q := FBsp.BspEntry[I];
+      Header.Entries[I].EntryPosition := Info.F.Position;
+
+      Q.SaveFile1(Info);   { save in non-QuArK file format }
+
+      Header.Entries[I].EntrySize := Info.F.Position - Header.Entries[I].EntryPosition;
+      Dec(Header.Entries[I].EntryPosition, Origine);
+
+      Zero:=0;
+      Info.F.WriteBuffer(Zero, (-Header.Entries[I].EntrySize) and 3);  { align to 4 bytes }
+
+      ProgressIndicatorIncrement;
+    end;
+
+    { update header }
+    Fin := Info.F.Position;
+
+    Info.F.Position := Origine;
+    Header.Signature := cSignatureBspID;
+    Header.Version := cVersionBspSOF;
+    Info.F.WriteBuffer(Header, SizeOf(Header));
+
+    Info.F.Position := Fin;
+  finally
+    ProgressIndicatorStop;
+  end;
+end;
+
+function QBspSOFFileHandler.GetEntryName(const EntryIndex: Integer) : String;
+begin
+  if (EntryIndex<0) or (EntryIndex>=HEADER_LUMPS) then
+    raise InternalE('Tried to retrieve name of invalid BSP lump!');
+  Result:=BspSOFEntryNames[EntryIndex];
+end;
+
+function QBspSOFFileHandler.GetLumpEdges: Integer;
+begin
+  Result:=LUMP_EDGES;
+end;
+
+function QBspSOFFileHandler.GetLumpEntities: Integer;
+begin
+  Result:=LUMP_ENTITIES;
+end;
+
+function QBspSOFFileHandler.GetLumpFaces: Integer;
+begin
+  Result:=LUMP_FACES;
+end;
+
+function QBspSOFFileHandler.GetLumpLeafs: Integer;
+begin
+  Result:=LUMP_LEAFS;
+end;
+
+function QBspSOFFileHandler.GetLumpLeafFaces: Integer;
+begin
+  Result:=LUMP_LEAFFACES;
+end;
+
+function QBspSOFFileHandler.GetLumpModels: Integer;
+begin
+  Result:=LUMP_MODELS;
+end;
+
+function QBspSOFFileHandler.GetLumpNodes: Integer;
+begin
+  Result:=LUMP_NODES;
+end;
+
+function QBspSOFFileHandler.GetLumpPlanes: Integer;
+begin
+  Result:=LUMP_PLANES;
+end;
+
+function QBspSOFFileHandler.GetLumpSurfEdges: Integer;
+begin
+  Result:=LUMP_SURFEDGES;
+end;
+
+function QBspSOFFileHandler.GetLumpTexInfo: Integer;
+begin
+  Result:=LUMP_TEXINFO;
+end;
+
+function QBspSOFFileHandler.GetLumpTextures: Integer;
+begin
+  Result:=-1;
+end;
+
+function QBspSOFFileHandler.GetLumpVertexes: Integer;
+begin
+  Result:=LUMP_VERTEXES;
+end;
+
 initialization
   RegisterQObject(QM32, 'l');
+
+  RegisterQObject(QBspSOF,  '!');
+  RegisterQObject(QBspSOFa, 'a');
 end.
