@@ -1577,6 +1577,26 @@ QQRKSRC1
         txt = "&"
         hint = "After spawned or triggered, how many seconds to wait to spawn the NPC."
       }
+      noBasicSounds: =
+      {
+        txt = "&"
+        hint = "Set to 1 to prevent loading the basic custom sound set."
+      }
+      noExtraSounds: =
+      {
+        txt = "&"
+        hint = "Set to 1 to prevent loading the extra custom sound set."
+      }
+      noCombatSounds: =
+      {
+        txt = "&"
+        hint = "Set to 1 to prevent loading the combat custom sound set."
+      }
+      noScavSounds: =
+      {
+        txt = "&"
+        hint = "Set to 1 to prevent loading the scavenger custom sound set."
+      }
     }
 
     t_models_form:form =
@@ -15473,7 +15493,7 @@ QQRKSRC1
        "ault)"$0D"These strings can be used to activate behaviors instead of s"
        "cripts - these are checked"$0D"first and so no scripts should be names"
        " with these names:"$0D"default - 0: whatever"$0D"idle - 1: Stand aroun"
-       "d, do abolutely nothing"$0D"roam - 2: Roam around, collect stuff"$0D"w"
+       "d, do absolutely nothing"$0D"roam - 2: Roam around, collect stuff"$0D"w"
        "alk - 3: Crouch-Walk toward their goals"$0D"run - 4: Run toward their "
        "goals"$0D"standshoot - 5: Stay in one spot and shoot- duck when necces"
        "ary"$0D"standguard - 6: Wait around for an enemy"$0D"patrol - 7: Follo"
