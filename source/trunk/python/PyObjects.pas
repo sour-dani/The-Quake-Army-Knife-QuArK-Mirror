@@ -20,20 +20,22 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit PyObjects;
 
-interface
-
-uses SysUtils, Classes, Python, QkObjects, Dialogs;
-
 {$IFDEF DEBUG}
 {$DEFINE PyObjDEBUG}
 {$ENDIF}
 
  {-------------------}
 
-function QkObjFromPyObj(o: PyObject) : QObject;
-function GetPyObj(Q: QObject) : PyObject;
-function QListToPyList(L: TQList) : PyObject;
-procedure PyListToQList(list: PyObject; L: TQList; Cls: QObjectClass);
+interface
+
+uses SysUtils, Classes, Python, QkObjects, Dialogs;
+
+{$I DelphiVer.inc}
+
+function QkObjFromPyObj(o: PyObject) : QObject;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+function GetPyObj(Q: QObject) : PyObject;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+function QListToPyList(const L: TQList) : PyObject;
+procedure PyListToQList(list: PyObject; {var }L: TQList; Cls: QObjectClass);
 function GetPySpecArg(var Spec: String; value: PyObject) : String;
 
 procedure PythonObjDestructor(o: PyObject); cdecl;
@@ -110,7 +112,6 @@ implementation
 uses Quarkx, QkExceptions, QkFileObjects, QkObjectClassList, QkExplorer, qhelper;
 
 {$INCLUDE PyVersions.inc}
-{$I DelphiVer.inc}
 
  {-------------------}
 
@@ -145,7 +146,7 @@ begin
  Py_INCREF(Result);
 end;
 
-function QListToPyList(L: TQList) : PyObject;
+function QListToPyList(const L: TQList) : PyObject;
 var
  I: Integer;
 begin
@@ -154,7 +155,7 @@ begin
   PyList_SetItem(Result, I, GetPyObj(L[I]));
 end;
 
-procedure PyListToQList(list: PyObject; L: TQList; Cls: QObjectClass);
+procedure PyListToQList(list: PyObject; {var }L: TQList; Cls: QObjectClass);
 var
  I, Count: Integer;
  Q: QObject;
