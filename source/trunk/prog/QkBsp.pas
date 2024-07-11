@@ -616,12 +616,12 @@ var
 begin
   //Determine if this is a Sin map. //FIXME: Untested if this method doesn't false-positive!
 
-  //If you dump SiN's qbsp3 strings, you'll find the lump-names. From this reverse engineering,
-  //it seems that SiN BSP files have a different number of lumps (20), and this is indeed confirmed by the tool source code.
+  //If you dump Sin's qbsp3 strings, you'll find the lump-names. From this reverse engineering,
+  //it seems that Sin BSP files have a different number of lumps (20), and this is indeed confirmed by the tool source code.
 
   //So we're going to try to figure out if this is indeed the number of lumps present. If not, it can't be a Sin map.
 
-  //If there no enough space for the right number of lumps, this cannot be a SiN BSP file.
+  //If there no enough space for the right number of lumps, this cannot be a Sin BSP file.
   if FSize < (20 * SizeOf(LumpHeader)) + (2 * SizeOf(LongInt)) then
   begin
     Result:=False;
@@ -642,11 +642,17 @@ begin
       if LumpHeader.EntrySize = 0 then
       begin
         //This lump is empty; skip it.
-        continue;
+        Continue;
       end;
       if LumpHeader.EntryPosition < 168 then
       begin
-        //This lump starts in what would be the SiN header! In other words, this cannot be a valid SiN BSP file.
+        //This lump would start inside the Sin BSP file header! In other words, this cannot be a valid Sin BSP file.
+        Result:=False;
+        Exit;
+      end
+      else if LumpHeader.EntryPosition > FSize then
+      begin
+        //This lump would be positioned beyond the end of the file! In other words, this cannot be a valid Sin BSP file.
         Result:=False;
         Exit;
       end
@@ -655,12 +661,12 @@ begin
     end;
     if not LumpAt168 then
     begin
-      //Didn't find a lump at 168. This could indicate padding, but let's be safe and not assume it's a SiN BSP file...
+      //Didn't find a lump at 168. This could indicate padding, but let's be safe and not assume it's a Sin BSP file...
       Result:=False;
     end
     else
     begin
-      //This most likely is a SiN BSP file. It would be rare to find a Q3 BSP file with 8 bytes padding between the header and the first lump.
+      //This most likely is a Sin BSP file. It would be rare to find a Q3 BSP file with 8 bytes padding between the header and the first lump.
       Result:=True;
     end;
   finally
