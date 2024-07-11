@@ -322,13 +322,13 @@ const
 const
  cSignatureBsp2015 = $35313032; {"2015" 4-letter header}
 
- cVersionBspMOHAA  = $00000013; {MOHAA or MOHAA: Spearhead .BSP}
+ cVersionBspMOHAA  = $00000013; {MOHAA}
 
 (***********  EALA .bsp format  ***********)
 const
  cSignatureBspEALA  = $414C4145; {"EALA" 4-letter header}
 
- cVersionBspMOHAABT = $00000015; {MOHAA: Breakthrough .BSP}
+ cVersionBspMOHAAXP = $00000015; {MOHAA: Spearhead or MOHAA: Breakthrough .BSP}
 
 (***********  FAKK .bsp format  ***********)
 const
@@ -862,7 +862,7 @@ begin
         cSignatureBsp2015:
         begin
           case Version of
-            cVersionBspMOHAA: { Moh:aa or Moh:aa:s }
+            cVersionBspMOHAA: { Moh:aa }
             begin
 (* Non functional
               ObjectGameCode := mjMohaa;
@@ -880,14 +880,14 @@ begin
         cSignatureBspEALA:
         begin
           case Version of
-            cVersionBspMOHAABT: { Moh:aa:bt }
+            cVersionBspMOHAAXP: { Moh:aa:s or Moh:aa:bt }
             begin
 (* Non functional
               ObjectGameCode := mjMohaa;
               FFileHandler:=QBsp3FileHandler.Create(Self); {Decker - try using the Q3 .BSP loader}
               FFileHandler.LoadBsp(F, StreamSize);
 *)
-              Raise EErrorFmt(5602, [LoadName, 'Medal of Honor: Allied Assault: Breakthrough']);
+              Raise EErrorFmt(5602, [LoadName, 'Medal of Honor: Allied Assault: Breakthrough/Medal of Honor: Allied Assault: Spearhead']);
             end;
 
             else {version unknown}
