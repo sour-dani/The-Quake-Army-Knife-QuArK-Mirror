@@ -291,17 +291,17 @@ const
 const
  cSignatureBspID   = $50534249; {"IBSP" 4-letter header}
 
+ //cVersionCoD2      = $00000004; {Call of Duty 2 .D3DBSP}
  cVersionBspQ2     = $00000026; {Quake-2 .BSP}
  cVersionBspDK     = $00000029; {Daikatana .BSP}
  cVersionKMQuake2  = $0000002A; {KMQuake2 .BSP}
  cVersionBspQ3     = $0000002E; {Quake-3 or STVEF or Nexuiz .BSP}
  cVersionBspSOF    = $0000002E; {Soldier of Fortune .BSP} //Raven Software didn't talk to id Software about claiming this version number, did they?
  cVersionBspQL     = $0000002F; {Quake Live .BSP}
- cVersionBspRTCW   = $0000002F; {RTCW .BSP} //Gray Matter Interactive didn't talk to id Software about claiming this version number, did they?
+ cVersionBspRTCW   = $0000002F; {RTCW or Wolfenstein: ET .BSP} //Gray Matter Interactive didn't talk to id Software about claiming this version number, did they?
  cVersionBspIG     = $00000030; {Iron Grip .BSP}
+ cVersionBspCoD1   = $0000003B; {Call of Duty 1 .BSP}
  cVersionBspQuetoo = $00000045; {Quetoo .BSP} //Wanna bet the Quetoo developer ALSO didn't talk to id Software about claiming this version number? Also, childish 69 humour detected.
-
-//FIXME: Missing: CoD, CoD2, CoD4, ET
 
 (***********  Raven Software/Ritual Entertainment .bsp format  ***********) //Erm, can you guys please NOT share BSP signatures?
 const
@@ -312,19 +312,23 @@ const
  cVersionBspSof2    = $00000001; {Soldier of Fortune 2 .BSP} //Dear Raven; did you forget about your previous game that used the same version number?
  cVersionBspJA      = $00000001; {Jedi Academy .BSP} //Dear Raven; did you forget about your previous game that used the same version number?
 
-(***********  Ritual Entertainment/Respawn Entertainment .bsp format  ***********) //Erm, can you guys please NOT share BSP signatures?
+(***********  Respawn Entertainment .bsp format  ***********)
 const
- cSignatureBspRitual = $50534272; {"rBSP" 4-letter header} //FIXME: Titanfall? //FIXME: Untested
+ cSignatureBspRespawn = $50534272; {"rBSP" 4-letter header}
+
+ cVersionBspTitanfall = $00000013; {Titanfall .BSP}
 
 (***********  2015 .bsp format  ***********)
 const
  cSignatureBsp2015 = $35313032; {"2015" 4-letter header}
 
- cVersionBspMOHAA  = $00000013; {MOHAA .BSP} //FIXME: Untested
+ cVersionBspMOHAA  = $00000013; {MOHAA or MOHAA: Spearhead .BSP}
 
 (***********  EALA .bsp format  ***********)
 const
- cSignatureBspEALA = $414C4145; {"EALA" 4-letter header} //FIXME: MOHAA:Breakthrough? //FIXME: Untested
+ cSignatureBspEALA  = $414C4145; {"EALA" 4-letter header}
+
+ cVersionBspMOHAABT = $00000015; {MOHAA: Breakthrough .BSP}
 
 (***********  FAKK .bsp format  ***********)
 const
@@ -341,24 +345,24 @@ const
 const
   cSignatureBspQFusion = $50534246; {"FBSP" 4-letter header}
 
-  cVersionBspWarsow   = $00000001; {Warsow .BSP}
+  cVersionBspWarsow    = $00000001; {Warsow .BSP}
 
 (***********  Valve .bsp format  ***********)
 const
- cSignatureBspValve   = $50534256; {"VBSP" 4-letter header}
+ cSignatureBspValve = $50534256; {"VBSP" 4-letter header}
 
- cVersionBspHL2       = $00000013; {Half-Life 2}
- cVersionBspHL2HDR    = $00000014; {Half-Life 2 with HDR lighting; Left 4 Dead}
- cVersionBspHL2V21    = $00000015; {Half-Life 2 with various changes; Left 4 Dead 2}
- cVersionBspDMoMM     = $00040014; {Dark Messiah of Might and Magic} //FIXME: Untested
+ cVersionBspHL2     = $00000013; {Half-Life 2}
+ cVersionBspHL2HDR  = $00000014; {Half-Life 2 with HDR lighting; Left 4 Dead}
+ cVersionBspHL2V21  = $00000015; {Half-Life 2 with various changes; Left 4 Dead 2}
+ cVersionBspDMoMM   = $00040014; {Dark Messiah of Might and Magic} //FIXME: Untested
 
 (***********  Other .bsp format  ***********)
 const
- cSignatureBspEF2     = $21324645; {"EF2!" 4-letter header; Star Trek: Elite Force 2} //FIXME: Untested
- cSignatureBspOther   = $20505342; {"BSP " 4-letter header}
+ cSignatureBspEF2    = $21324645; {"EF2!" 4-letter header; Star Trek: Elite Force 2} //FIXME: Untested
+ cSignatureBspOther  = $20505342; {"BSP " 4-letter header}
 
- cVersionBspEF2       = $00000014; {Star Trek: Elite Force 2} //FIXME: Untested
- cVersionBspOverDose  = $00000055; {OverDose} //FIXME: Untested
+ cVersionBspEF2      = $00000014; {Star Trek: Elite Force 2} //FIXME: Untested
+ cVersionBspOverDose = $00000055; {OverDose} //FIXME: Untested
 
 (*const
   HEADER_LUMPS = 64; //From HL2's bspfile.h
@@ -785,6 +789,16 @@ begin
               Raise EErrorFmt(5602, [LoadName, 'Iron Grip: Warlord']);
             end;
 
+            cVersionBspCoD1: { Call of Duty 1 }
+            begin
+(*
+              ObjectGameCode := mjCoD;
+              FFileHandler:=QBsp3FileHandler.Create(Self);
+              FFileHandler.LoadBsp(F, StreamSize);
+*)
+              Raise EErrorFmt(5602, [LoadName, 'Call of Duty 1']);
+            end;
+
             cVersionBspQuetoo: { Quetoo }
             begin
 (*
@@ -827,10 +841,28 @@ begin
           end;
         end;
 
+        cSignatureBspRespawn:
+        begin
+          case Version of
+            cVersionBspTitanfall: { Titanfall }
+            begin
+(* Non functional
+              ObjectGameCode := ...;
+              FFileHandler:=QBsp3FileHandler.Create(Self); {Decker - try using the Q3 .BSP loader}
+              FFileHandler.LoadBsp(F, StreamSize);
+*)
+              Raise EErrorFmt(5602, [LoadName, 'Titanfall']);
+            end;
+
+            else {version unknown}
+              Raise EErrorFmt(5572, [LoadName, 'Respawn Entertainment', Version]);
+            end;
+        end;
+
         cSignatureBsp2015:
         begin
           case Version of
-            cVersionBspMOHAA: { Moh:aa }
+            cVersionBspMOHAA: { Moh:aa or Moh:aa:s }
             begin
 (* Non functional
               ObjectGameCode := mjMohaa;
@@ -842,6 +874,24 @@ begin
 
             else {version unknown}
               Raise EErrorFmt(5572, [LoadName, '2015', Version]);
+            end;
+        end;
+
+        cSignatureBspEALA:
+        begin
+          case Version of
+            cVersionBspMOHAABT: { Moh:aa:bt }
+            begin
+(* Non functional
+              ObjectGameCode := mjMohaa;
+              FFileHandler:=QBsp3FileHandler.Create(Self); {Decker - try using the Q3 .BSP loader}
+              FFileHandler.LoadBsp(F, StreamSize);
+*)
+              Raise EErrorFmt(5602, [LoadName, 'Medal of Honor: Allied Assault: Breakthrough']);
+            end;
+
+            else {version unknown}
+              Raise EErrorFmt(5572, [LoadName, 'EALA', Version]);
             end;
         end;
 
