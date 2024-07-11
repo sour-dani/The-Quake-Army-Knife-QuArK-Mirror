@@ -439,8 +439,8 @@ begin
     Fin := Info.F.Position;
 
     Info.F.Position := Origine;
-    Header.Signature := cSignatureBspID;
-    Header.Version := cVersionBspQ2;
+    Header.Signature := cSignatureBspRaven;
+    Header.Version := cVersionBspSin;
     Info.F.WriteBuffer(Header, SizeOf(Header));
 
     Info.F.Position := Fin;
