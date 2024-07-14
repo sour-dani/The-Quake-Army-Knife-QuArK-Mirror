@@ -194,12 +194,19 @@ const
  MouseWheelScrollSpeed = 32; //FIXME: Retrieve from system settings?
 
 function GetVKeyName(VkCode: Integer) : String;
+const
+ MaxLengthKeyname = 31;
 var
+ I: Integer;
  J: UINT;
 begin
  J:=MapVirtualKey(VkCode, 0);
- SetLength(Result, 31);
- SetLength(Result, GetKeyNameText((J shl 16) or (1 shl 25), PChar(Result), 32));
+ SetLength(Result, MaxLengthKeyname);
+ I:=GetKeyNameText((J shl 16) or (1 shl 25), PChar(Result), MaxLengthKeyname + 1);
+ if I=0 then
+  Result:='' //FIXME: Log an error!
+ else
+  SetLength(Result, I);
 end;
 
 type
