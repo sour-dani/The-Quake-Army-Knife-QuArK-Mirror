@@ -512,6 +512,7 @@ $LinksGame[] = new cLinkGroup('Star Trek: Voyager - Elite Force', 'STVEF', array
 //           new cLink('EF Files', 'http://www.effiles.com/')
            new cLink('VoyagerEliteForce.com', 'http://www.voyagereliteforce.com/', 'Your first stop for official Star Trek Voyager: Elite Force news, maps, walkthroughs, interviews, files, forums, and more!', 'https://web.archive.org/web/20150218040426/http://www.voyagereliteforce.com/')
           ,new cLink('EliteForce.com', 'http://www.eliteforce.com/')
+          ,new cLink('cMod', 'https://www.stvef.org/cmod', 'cMod is an unofficial Elite Force multiplayer client based on ioEF. It is optimized for modern systems and has various improvements over the original Elite Force client.') #https://github.com/Chomenor/ioef-cmod
 //          ,new cLink('Elite Force Universe', 'http://eliteforce.3dactionplanet.gamespy.com/', 'Your Resource For Elite Force I & II')
 //          ,new cLink('RPG-X Mod', 'http://www.ubergames.net/projects/rpg-x') //http://www.rpg-x.net/
           ,new cLink('TotallyEliteForce', 'https://www.totallyef.net/', 'Set phasers to FRAG!')

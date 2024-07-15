@@ -174,6 +174,7 @@ $Companies['Team Psykskallar'] = new cCompany('Team Psykskallar', 'Team Psykskal
 $Companies['Team Xonotic'] = new cCompany('Team Xonotic', 'Team Xonotic', NULL);
 $Companies['Tencent Games'] = new cCompany('Tencent Games', 'Tencent Games', NULL, NULL, 'https://en.wikipedia.org/wiki/Tencent_Games');
 $Companies['thechineseroom'] = new cCompany('thechineseroom', 'The Chinese Room', NULL, 'http://www.thechineseroom.co.uk/', 'https://en.wikipedia.org/wiki/The_Chinese_Room');
+$Companies['The Last Outpost'] = new cCompany('The Last Outpost', 'The Last Outpost', NULL, 'https://last-outpost.net/');
 $Companies['The Transfusion Project'] = new cCompany('The Transfusion Project', 'The Transfusion Project', NULL);
 $Companies['TKO'] = new cCompany('TKO', 'TKO Software', NULL, NULL, 'https://en.wikipedia.org/wiki/TKO_Software'); #http://www.tko-software.com/
 $Companies['Trainwreck'] = new cCompany('Trainwreck', 'Trainwreck Studios', NULL, NULL, 'https://en.wikipedia.org/wiki/Trainwreck_Studios');

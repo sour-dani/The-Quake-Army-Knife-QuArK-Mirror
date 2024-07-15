@@ -1545,6 +1545,13 @@ $Games[] = new cGame('620a' ,'STVEFXP' ,'Star Trek: Voyager - Elite Force Expans
                     ,array('Activision')
                     ,NULL
                     ,'STVEF');
+$Games[] = new cGame(NULL ,'STVEFHM' ,'Star Trek: Voyager Elite Force: Holomatch' ,'STVEFHM' ,'stvef_tlo.png'
+                    ,'https://holomat.ch/' ,'https://en.wikipedia.org/wiki/Star_Trek:_Voyager_%E2%80%93_Elite_Force#Freeware_release' ,'Quake 3', FALSE
+                    ,'Saddle up, lock and load.'
+                    ,array('Raven', 'The Last Outpost')
+                    ,array('Activision')
+                    ,NULL
+                    );
 $Games[] = new cGame('650b3' ,'EF2' ,'Star Trek: Elite Force 2' ,'STEF2' ,'ef2.png'
                     ,NULL ,'https://en.wikipedia.org/wiki/Star_Trek:_Elite_Force_II' ,'Quake 3', TRUE #with Ritual's UberTools //http://www.st-ef2.com/  OR  http://www.ritual.com/EF2/
                     ,'The alien invaders show no mercy, and neither should you.'
