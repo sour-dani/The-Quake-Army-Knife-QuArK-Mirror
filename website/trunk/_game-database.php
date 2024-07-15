@@ -119,6 +119,13 @@ $Games[] = new cGame(NULL ,'AL' ,'Apex Legends' ,'AL' ,'al.png'
                     ,array('EA')
                     ,NULL
                     );
+$Games[] = new cGame(NULL ,'BGG:GG' ,'Barbie Generation Girl: Gotta Groove' ,'BGG:GG' ,NULL
+                    ,NULL ,NULL ,'G3D', FALSE
+                    ,NULL
+                    ,array('Stunt Puppy Entertainment')
+                    ,array('Vivendi Universal')
+                    ,NULL
+                    );
 $Games[] = new cGame(NULL ,'BM' ,'Black Mesa' ,'BM' ,NULL
                     ,'https://www.crowbarcollective.com/games/black-mesa' ,'https://en.wikipedia.org/wiki/Black_Mesa_(video_game)' ,'Source', FALSE
                     ,'Relive Half-Life, Valve Software\'s revolutionary debut, in this highly acclaimed, fan-made recreation.'
@@ -152,6 +159,13 @@ $Games[] = new cGame(NULL ,'BGT' ,'Bloody Good Time' ,'BGT' ,'bgt.png'
                     ,'Welcome to Hollywood! The home of fame and fortune!'
                     ,array('Outerlight')
                     ,array('Ubisoft')
+                    ,NULL
+                    );
+$Games[] = new cGame(NULL ,'BB2' ,'Boards and Blades 2' ,'BB2' ,NULL
+                    ,NULL ,NULL ,'G3D', FALSE
+                    ,NULL
+                    ,array('Silverfish Studios')
+                    ,array('Activision Value')
                     ,NULL
                     );
 $Games[] = new cGame(NULL ,'BRINK' ,'Brink' ,'B' ,'brink.png'
@@ -833,6 +847,13 @@ $Games[] = new cGame('660b1' ,'FAKK' ,'Heavy Metal: F.A.K.K. 2' ,'FAKK2' ,'fakk2
                     ,'Sacrifice the body, not the heart.' #'In this Universe full of would-be Gods, the machines of man alone cannot change the call of Destiny.'
                     ,array('Ritual')
                     ,array('Gathering of Developers')
+                    ,NULL
+                    );
+$Games[] = new cGame(NULL ,'HM' ,'HenchMan I' ,'HM' ,NULL
+                    ,NULL ,NULL ,'G3D', FALSE
+                    ,NULL
+                    ,array('STS')
+                    ,NULL
                     ,NULL
                     );
 /*$Games[] = new cGame(NULL ,'Hr' ,'Heretic' ,'H' ,NULL
