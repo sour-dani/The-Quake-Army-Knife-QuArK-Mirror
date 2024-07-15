@@ -123,7 +123,7 @@ $Games[] = new cGame(NULL ,'BGG:GG' ,'Barbie Generation Girl: Gotta Groove' ,'BG
                     ,NULL ,NULL ,'G3D', FALSE
                     ,"Where dancing, cool music and friendship are where it's at!"
                     ,array('Stunt Puppy Entertainment')
-                    ,array('Vivendi Universal')
+                    ,array('Vivendi')
                     ,NULL
                     );
 $Games[] = new cGame(NULL ,'BM' ,'Black Mesa' ,'BM' ,NULL
@@ -416,7 +416,7 @@ $Games[] = new cGame('510' ,'CS' ,'Counter-Strike' ,'CS' ,'cs.gif'
                     ,NULL ,'https://en.wikipedia.org/wiki/Counter-Strike_(video_game)' ,'GoldSrc', TRUE
                     ,'The number one online action game, Counter-Strike features strategic teamplay set in terrorist vs. counter-terrorist scenarios.'
                     ,array('Valve')
-                    ,array('Vivendi Universal')
+                    ,array('Vivendi')
                     ,NULL
                     );
 $Games[] = new cGame(NULL ,'CSCZ' ,'Counter-Strike: Condition Zero' ,'CSCZ' ,'cscz.gif'
