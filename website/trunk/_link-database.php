@@ -334,6 +334,10 @@ $LinksGame[] = new cLinkGroup('Neverball', 'NB', array(
           ,new cLink('Neverwiki', 'http://wiki.nevercorner.net/', 'Your source for community-driven Neverball/Neverputt information!', 'https://web.archive.org/web/20151122134450/http://wiki.nevercorner.net/doku.php')
            ));
 
+$LinksGame[] = new cLinkGroup('Nexuiz', 'NEX', array(
+           new cLink('RocketMinsta ', 'https://github.com/dsmit/RocketMinsta', 'A major Nexuiz 2.5.2 mod') #https://nexakari.github.com/RocketMinsta/
+           ));
+
 $LinksGame[] = new cLinkGroup('Portal', 'P', array(
 //           new cLink('L4Y - Portal', 'http://portal.levels4you.com/')
            new cLink('Portal Unofficial Wiki', 'https://theportalwiki.com/wiki/')
@@ -355,7 +359,8 @@ $LinksGame[] = new cLinkGroup('Quake 1', 'Q1', array(
           ,new cLink('Fitzquake', 'https://www.celephais.net/fitzquake/', 'Fitzquake is a modified glquake based on the source code released by id Software.')
           ,new cLink('QuakeSpasm', 'http://quakespasm.sourceforge.net/', 'QuakeSpasm is a *Nix friendly Quake Engine based on the SDL port of the popular FitzQuake.') //https://sourceforge.net/projects/quakespasm/
           ,new cLink('Ironwail', 'https://github.com/andrei-drexler/ironwail', 'High-performance QuakeSpasm fork')
-          ,new cLink('Open Quartz', 'http://openquartz.sourceforge.net/', "Open Quartz is a project to supply GPL'ed artwork in the form of PAK and WAD files to create a fully GPL game based around the GPL'ed quake sourcecode.") //Or: https://sourceforge.net/projects/openquartz/
+          ,new cLink('Open Quartz', 'https://openquartz.sourceforge.net/', "Open Quartz is a project to supply GPL'ed artwork in the form of PAK and WAD files to create a fully GPL game based around the GPL'ed quake sourcecode.") //Or: https://sourceforge.net/projects/openquartz/
+          ,new cLink('LibreQuake', 'https://github.com/MissLavender-LQ/LibreQuake', 'The LibreQuake project aims to create a complete, free content first-person shooter game.')
           ,new cLink('vkQuake', 'https://github.com/Novum/vkQuake', "vkQuake is a port of id Software's Quake using Vulkan instead of OpenGL for rendering.")
           ,new cLink('Quake: Ray Traced', 'https://github.com/sultim-t/vkquake-rt', "Quake: Ray Traced adds a path tracing renderer to id Software's Quake using the RayTracedGL1 library.")
           //,new cLink('OQPlus', 'http://openarena.ws/fsfps/oqplus.html', 'OQPlus is a Free Content project for the Q**k* GPL source licensed under the GNU GPL v2.') //leilei is banned
@@ -370,6 +375,7 @@ $LinksGame[] = new cLinkGroup('Quake 1', 'Q1', array(
           ,new cLink('Signs of Koth', 'https://www.quaddicted.com/webarchive/kell.quaddicted.com/', 'Quoth - Part Two')
           ,new cLink('The Quake Stomping Grounds', 'http://www.stomped.com', "The web's premier Quake site, dedicated to providing the hottest news, the most in demand software, and the biggest hype to Quake players around the world!", 'https://web.archive.org/web/20031013132652/http://www.stomped.com/')
           ,new cLink('FortressOne', 'https://www.fortressone.org/', 'Quake Team Fortress Remastered')
+          ,new cLink("Slayer's Testaments", 'https://www.moddb.com/mods/slayers-testament', 'Recreating the newschool Doom experience in the old quake engine.')
            ));
 
 $LinksGame[] = new cLinkGroup('Quake 2', 'Q2', array(
