@@ -1265,7 +1265,7 @@ $Games[] = new cGame(NULL ,'Q1XP4' ,'Quake: Dimension of the Machine' ,'Q1XP4' ,
                     ,NULL
                     );*/ /*Wrong platform*/
 $Games[] = new cGame(NULL ,'QEX' ,'Quake Enhanced' ,'QEX' ,NULL
-                    ,NULL ,NULL ,'Kex', FALSE
+                    ,NULL ,NULL ,'KEX', FALSE
                     ,NULL
                     ,array('id', 'Nightdive Studios', 'MachineGames')
                     ,array('Bethesda')
@@ -1307,7 +1307,7 @@ $Games[] = new cGame(NULL ,'Q2NP1' ,'Quake 2: Netpack I: Extremities' ,'Q2NP1' ,
                     ,NULL
                     );*/ /*Wrong platform*/
 $Games[] = new cGame(NULL ,'Q2EX' ,'Quake II Enhanced' ,'Q2EX' ,NULL
-                    ,NULL ,NULL ,'Kex', FALSE
+                    ,NULL ,NULL ,'KEX', FALSE
                     ,NULL
                     ,array('id', 'Nightdive Studios', 'MachineGames')
                     ,array('Bethesda')
@@ -1483,7 +1483,7 @@ $Games[] = new cGame(NULL ,'SINEM' ,'SiN: Emergence' ,'SINEM' ,'sinemergence.gif
                     ,NULL
                     );*/ /*Just a re-release*/
 /*$Games[] = new cGame(NULL ,'SINR' ,'SiN: Reloaded' ,'SINR' ,NULL
-                    ,NULL ,'https://en.wikipedia.org/wiki/SiN:_Reloaded' ,'Kex', FALSE
+                    ,NULL ,'https://en.wikipedia.org/wiki/SiN:_Reloaded' ,'KEX', FALSE
                     ,NULL
                     ,array('Nightdive Studios')
                     ,NULL

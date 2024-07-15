@@ -72,6 +72,7 @@ $Engines['IW8'] = new cEngine('IW8', 'IW 8.0', NULL, 'Proprietary', NULL, 'https
 $Engines['IW9'] = new cEngine('IW9', 'IW 9.0', NULL, 'Proprietary', NULL, 'https://en.wikipedia.org/wiki/IW_9.0', 'IW8');
 //$Engines['Jupiter'] = new cEngine('Jupiter', 'LithTech Jupiter', NULL, 'Proprietary', NULL, 'https://en.wikipedia.org/wiki/LithTech_Jupiter', NULL);
 //$Engines['JupiterEX'] = new cEngine('JupiterEX', 'LithTech Jupiter EX', NULL, 'Proprietary', NULL, NULL, 'Jupiter');
+$Engines['KEX'] = new cEngine('KEX', 'KEX Engine', NULL, 'Proprietary', NULL, 'https://en.wikipedia.org/wiki/KEX_Engine', NULL);
 //$Engines['LithTech1'] = new cEngine('LithTech1', 'LithTech 1.0', NULL, 'Proprietary', NULL, NULL, NULL);
 //$Engines['LithTech2'] = new cEngine('LithTech2', 'LithTech 2.0', NULL, 'Proprietary', NULL, NULL, 'LithTech1');
 //$Engines['LithTech3'] = new cEngine('LithTech3', 'LithTech 3.0', NULL, 'Proprietary', NULL, NULL, 'LithTech2');
