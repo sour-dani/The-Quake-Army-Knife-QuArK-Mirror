@@ -140,6 +140,13 @@ $Games[] = new cGame(NULL ,'BL' ,'Blockland' ,'BL' ,'blockland.png'
                     ,NULL
                     ,NULL
                     );
+/*$Games[] = new cGame(NULL ,'BW' ,'Blood West' ,'BW' ,NULL
+                    ,'https://hyperstrange.com/our-games/blood-west/' ,NULL ,'Unity', FALSE
+                    ,'Become the Undead Gunslinger, doomed to roam the barren lands until he manages to purge their curse, freeing his soul.'
+                    ,array('Hyperstrange')
+                    ,array('Hyperstrange')
+                    ,NULL
+                    );*/ /*Totally different engine*/
 $Games[] = new cGame(NULL ,'BGT' ,'Bloody Good Time' ,'BGT' ,'bgt.png'
                     ,NULL ,'https://en.wikipedia.org/wiki/Bloody_Good_Time' ,'Source', FALSE #https://bloody-good-time.ubi.com/
                     ,'Welcome to Hollywood! The home of fame and fortune!'
@@ -154,6 +161,16 @@ $Games[] = new cGame(NULL ,'BRINK' ,'Brink' ,'B' ,'brink.png'
                     ,array('Bethesda')
                     ,NULL
                     );
+$Games[] = new cGame(NULL ,'CEA' ,'Chaos Esque Anthology', 'CEA' ,NULL
+                    ,'https://sourceforge.net/projects/chaosesqueanthology/' ,NULL ,'DarkPlaces', FALSE #Xonotic-fork
+                    ,'A free 3d game for PC that does not limit the player. Fight, Build, Gain.'
+                    ,array('Chaos Esque Team')
+                    ,NULL
+                    ,NULL
+                    );
+#https://sourceforge.net/projects/chaosesqueanthologyvolume2/
+#https://sourceforge.net/projects/chaosesqueanthologyvolume3/
+#https://sourceforge.net/projects/chaoseesquesupplemental/
 $Games[] = new cGame('641a1' ,'CoD' ,'Call of Duty' ,'CoD' ,'cod1.gif'
                     ,NULL ,'https://en.wikipedia.org/wiki/Call_of_Duty_(video_game)' ,'Quake 3', FALSE #http://www.callofduty.com/
                     ,'Experience the cinematic intensity of World War II\'s epic battles.'
@@ -331,7 +348,13 @@ $Games[] = new cGame(NULL ,'CoD20' ,'Call of Duty: Modern Warfare III' ,'CoD20' 
                     ,array('Activision')
                     ,NULL
                     );
-//FIXME: 'Call of Duty: Black Ops 6'?
+/*$Games[] = new cGame(NULL ,'CoD21' ,'Call of Duty: Black Ops 6' ,'CoD21' ,NULL
+                    ,'https://www.callofduty.com/blackops6' ,'https://en.wikipedia.org/wiki/Call_of_Duty:_Black_Ops_6' ,'IW9', FALSE
+                    ,NULL
+                    ,array('Treyarch', 'Raven')
+                    ,array('Activision')
+                    ,NULL
+                    );*/ /*Not released yet*/
 $Games[] = new cGame(NULL ,'C' ,'Catechumen' ,'C' ,'c.png'
                     ,NULL ,'https://en.wikipedia.org/wiki/Catechumen_(video_game)' ,'G3D', FALSE #http://www.catechumen.com
                     ,'Catechumen is a first person action/adventure Christian game where your goal is to defeat the forces of evil, descending deeper into the depths of the Earth and rescue your captured brethren.'
@@ -644,6 +667,13 @@ $Games[] = new cGame(NULL ,'FOF' ,'Fistful of Frags' ,'FOF' ,'fof.png'
                     ,array('Fistful of Frags Team')
                     ,NULL
                     ); /*Was a HL2 mod, but now standalone.*/
+$Games[] = new cGame(NULL ,'FL' ,'Force: Leashed' ,'FL' ,NULL
+                    ,NULL ,NULL ,'DarkPlaces', FALSE #http://www.kepuli.com/force_leashed/
+                    ,'Force: Leashed is a free first person gravity fiddler.'
+                    ,array('Kepuli')
+                    ,NULL
+                    ,NULL
+                    );
 $Games[] = new cGame(NULL ,'GM' ,"Garry's Mod" ,'GM' ,'gm.png'
                     ,'https://gmod.facepunch.com/' ,'https://en.wikipedia.org/wiki/Garry%27s_Mod' ,'Source', FALSE
                     ,"Garry's Mod is a physics sandbox."
@@ -854,6 +884,13 @@ $Games[] = new cGame('54' ,'Hx2XP' ,'Hexen 2: Portal of Praevus' ,'Hx2XP' ,'hexe
                     ,array('Activision')
                     ,NULL
                     ,'Hx2');
+/*$Games[] = new cGame(NULL ,'HoH' ,'Hordes of Hunger' ,'HoH' ,NULL
+                    ,NULL ,NULL ,NULL, FALSE
+                    ,'Hordes of Hunger is a fast-paced arena slasher set in a dark medieval realm.'
+                    ,array('Hyperstrange')
+                    ,array('Kwalee')
+                    ,NULL
+                    );*/ /*Unknown game engine*/
 $Games[] = new cGame(NULL ,'HDTF' ,'Hunt Down The Freeman' ,'HDTF' ,NULL
                     ,NULL ,NULL ,'Source', FALSE
                     ,'Hunt Down The Freeman takes you into a journey like no one has before. Witness the pain of the villain firsthand with over 14 hour gameplay, over 40 levels, immersive gameplay, cinematic cutscenes and an over an hour long, heart touching OST.'
@@ -1332,6 +1369,13 @@ $Games[] = new cGame(NULL ,'REACT' ,'Reaction' ,'REACT' ,'react.png'
                     ,NULL
                     ,NULL
                     );
+$Games[] = new cGame(NULL ,'RB' ,'RetroBlazer' ,'RB' ,NULL
+                    ,NULL ,NULL ,'DarkPlaces', FALSE #http://www.retroblazer.com/
+                    ,'In RetroBlazer you play as trainee warrior Jonas, former member of the ARK City protection unit, the GunBlazers.'
+                    ,array('Hydra Game Works')
+                    ,NULL
+                    ,NULL
+                    );
 $Games[] = new cGame('630' ,'RTCW' ,'Return to Castle Wolfenstein' ,'RTCW' ,'rtcw.gif'
                     ,NULL ,'https://en.wikipedia.org/wiki/Return_to_Castle_Wolfenstein' ,'Quake 3', FALSE
                     ,'Wolfenstein, the legacy lives on!'
@@ -1347,6 +1391,13 @@ $Games[] = new cGame('630' ,'RTCW-ET' ,'Wolfenstein: Enemy Territory' ,'RTCWET' 
                     ,NULL
                     );
 //FIXME: Revelations 2012 (Dark Artz Entertainment)???
+$Games[] = new cGame(NULL ,'REX' ,'Rexuiz' ,'REX' ,NULL
+                    ,'https://rexuiz.com/' ,NULL ,'DarkPlaces', TRUE #https://rexuiz.top/
+                    ,"Don't know how to spend your free time on the computer?"
+                    ,NULL
+                    ,NULL
+                    ,NULL
+                    );
 $Games[] = new cGame('660b7' ,'RICO' ,'Ricochet' ,'RICO' ,'ricochet.png'
                     ,NULL ,'https://en.wikipedia.org/wiki/Ricochet_(2000_video_game)' ,'GoldSrc', FALSE
                     ,NULL
@@ -1487,6 +1538,13 @@ $Games[] = new cGame('641a1' ,'JA' ,'Star Wars Jedi Knight: Jedi Academy' ,'JA' 
                     ,array('LucasArts', 'Activision')
                     ,NULL
                     );
+$Games[] = new cGame(NULL ,'SS' ,'Steel Storm: Burning Retribution' ,'SS' ,NULL
+                    ,'https://www.steel-storm.com/' ,'https://en.wikipedia.org/wiki/Steel_Storm' ,'DarkPlaces', FALSE
+                    ,'Steel Storm: Burning Retribution is a top down action shooter with old school spirit. It marks the return of top-down shooters with new twists.'
+                    ,array('Kot-in-Action')
+                    ,array('Kot-in-Action')
+                    ,NULL
+                    );
 $Games[] = new cGame('61c' ,'SC' ,'Sven Co-op' ,'SC' ,'sc.png'
                     ,'https://www.svencoop.com/' ,'https://en.wikipedia.org/wiki/Sven_Co-op' ,'Svengine', FALSE #Was modified GoldSrc before 5.0
                     ,'Sven Co-op is a co-operative game originally based around Valve Software\'s Half-Life.'
@@ -1572,6 +1630,13 @@ $Games[] = new cGame(NULL ,'TEW2' ,'The Evil Within 2' ,'TEW2' ,NULL
                     ,NULL
                     ,NULL
                     );*/ /*Cannot find proof this was ever released.*/
+$Games[] = new cGame(NULL ,'TH' ,'The Hunted' ,'TH' ,NULL
+                    ,'https://www.moddb.com/games/the-hunted' ,NULL ,'DarkPlaces', FALSE #http://thehunted.ru1337.com/ #http://the-hunted.com/
+                    ,'The Hunted is a series of adventures experienced by a man fighting for his survival.'
+                    ,NULL #Carni (Chris Page) rampaging@ru1337.com & Gunrunner
+                    ,NULL
+                    ,NULL
+                    );
 $Games[] = new cGame(NULL ,'TS' ,'The Ship' ,'TS' ,'ts.png'
                     ,NULL ,'https://en.wikipedia.org/wiki/The_Ship_(video_game)' ,'Source', FALSE
                     ,'Bon voyage... forever!'
@@ -1858,17 +1923,13 @@ $Games[] = new cGame('660b5' ,'Z' ,'Zaero' ,'Z' ,'zaero.png'
 //Game: -darsana runs the game Darsana //https://www.moddb.com/games/darsana/
 //Game: -did2 runs the game Defeat In Detail 2 //https://www.moddb.com/games/defeat-in-detail-2
 //Game: -goodvsbad2 runs the psychadelic RTS FPS game Good Vs Bad 2
-//Game: -hipnotic runs Quake mission pack 1: The Scourge of Armagon
 //Game: -nehahra runs The Seal of Nehahra movie and game
 //Game: -neoteric runs the game Neoteric
 //Game: -netherworld runs the game Netherworld: Dark Master
-//Game: -openquartz runs the game OpenQuartz, a standalone GPL replacement of the quake content
 //Game: -prydon runs the topdown point and click action-RPG Prydon Gate //https://www.moddb.com/mods/prydon-gate
 //Game: -setheral runs the multiplayer game Setheral
 //Game: -som runs the multiplayer game Son Of Man
-//Game: -tenebrae runs the graphics test mod known as Tenebrae (some features not implemented)
 //Game: -teu runs The Evil Unleashed (this option is obsolete as they are not using darkplaces)
-//Game: -thehunted runs the game The Hunted
 //Game: -zymotic runs the singleplayer game Zymotic
 
 //FIXME: Refactor to change into direct dictionary lookup instead of a loop!
