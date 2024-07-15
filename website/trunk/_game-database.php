@@ -1263,7 +1263,14 @@ $Games[] = new cGame(NULL ,'Q1XP4' ,'Quake: Dimension of the Machine' ,'Q1XP4' ,
                     ,NULL
                     ,NULL
                     ,NULL
-                    );*/
+                    );*/ /*Wrong platform*/
+$Games[] = new cGame(NULL ,'QEX' ,'Quake Enhanced' ,'QEX' ,NULL
+                    ,NULL ,NULL ,'Kex', FALSE
+                    ,NULL
+                    ,array('id', 'Nightdive Studios', 'MachineGames')
+                    ,array('Bethesda')
+                    ,NULL
+                    );
 $Games[] = new cGame('406' ,'Q2' ,'Quake 2' ,'Q2' ,'quake2.gif'
                     ,NULL ,'https://en.wikipedia.org/wiki/Quake_II' ,'Quake 2', FALSE
                     ,'Shortly after landing on an alien surface you learn that hundreds of your men have been reduced to just a few.'
@@ -1292,6 +1299,20 @@ $Games[] = new cGame(NULL ,'Q2NP1' ,'Quake 2: Netpack I: Extremities' ,'Q2NP1' ,
                     ,NULL
                     ,NULL
                     ,'Q2');
+/*$Games[] = new cGame(NULL ,'Q2C' ,'Quake II: Colossus' ,'Q2C' ,NULL
+                    ,NULL ,'https://en.wikipedia.org/wiki/Quake_II:_Colossus' ,'Quake 2', FALSE
+                    ,NULL
+                    ,NULL
+                    ,NULL
+                    ,NULL
+                    );*/ /*Wrong platform*/
+$Games[] = new cGame(NULL ,'Q2EX' ,'Quake II Enhanced' ,'Q2EX' ,NULL
+                    ,NULL ,NULL ,'Kex', FALSE
+                    ,NULL
+                    ,array('id', 'Nightdive Studios', 'MachineGames')
+                    ,array('Bethesda')
+                    ,NULL
+                    );
 $Games[] = new cGame('600b1' ,'Q3A' ,'Quake 3: Arena' ,'Q3A' ,'quake3.gif'
                     ,NULL ,'https://en.wikipedia.org/wiki/Quake_III_Arena' ,'Quake 3', FALSE //http://www.quake3arena.com/
                     ,'Your only company, a mantra: Fight or be finished.'
@@ -1433,7 +1454,7 @@ $Games[] = new cGame('53' ,'SIN' ,'SiN' ,'SIN' ,'sin.gif'
                     ,array('Activision')
                     ,NULL
                     );
-$Games[] = new cGame(NULL ,'SINXP' ,'SiN: Wages of Sin' ,'SINXP' ,NULL
+$Games[] = new cGame(NULL ,'SINXP' ,'SiN: Wages of Sin' ,'SINXP' ,'wos.png'
                     ,NULL ,'https://en.wikipedia.org/wiki/SiN:_Wages_of_Sin' ,'Quake 2', TRUE
                     ,'Deadly new ways to SiN: seventeen new missions, twelve new enemies, seven new weapons.'
                     ,array('2015')
@@ -1454,13 +1475,20 @@ $Games[] = new cGame(NULL ,'SINEM' ,'SiN: Emergence' ,'SINEM' ,'sinemergence.gif
                     ,NULL
                     ,NULL
                     );*/ /*Cancelled*/
+/*$Games[] = new cGame(NULL ,'SING' ,'SiN: Gold' ,'SING' ,NULL
+                    ,NULL ,'https://en.wikipedia.org/wiki/SiN:_Gold' ,'Quake 2', TRUE
+                    ,NULL
+                    ,array('id', 'Nightdive Studios', 'MachineGames')
+                    ,array('3D Realms')
+                    ,NULL
+                    );*/ /*Just a re-release*/
 /*$Games[] = new cGame(NULL ,'SINR' ,'SiN: Reloaded' ,'SINR' ,NULL
                     ,NULL ,'https://en.wikipedia.org/wiki/SiN:_Reloaded' ,'Kex', FALSE
                     ,NULL
                     ,array('Nightdive Studios')
-                    ,array('3D Realms')
                     ,NULL
-                    );*/ /*Not enough info yet*/
+                    ,NULL
+                    );*/ /*Cancelled?*/
 $Games[] = new cGame('660b5' ,'SG' ,'Smokin\' Guns' ,'SM' ,'sg.png'
                     ,'https://www.smokin-guns.org/' ,'https://en.wikipedia.org/wiki/Smokin%27_Guns' ,'ioquake3', FALSE #http://www.smokin-guns.net/
                     ,'With cordite in the air, splintered steel, shell casings and powder burns, there\'s only one explanation...., Smokin\' Guns.'
