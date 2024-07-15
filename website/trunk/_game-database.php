@@ -119,9 +119,9 @@ $Games[] = new cGame(NULL ,'AL' ,'Apex Legends' ,'AL' ,'al.png'
                     ,array('EA')
                     ,NULL
                     );
-$Games[] = new cGame(NULL ,'BGG:GG' ,'Barbie Generation Girl: Gotta Groove' ,'BGG:GG' ,NULL
+$Games[] = new cGame(NULL ,'BGG:GG' ,'Barbie Generation Girl: Gotta Groove' ,'BGG:GG' ,'bgg.png'
                     ,NULL ,NULL ,'G3D', FALSE
-                    ,NULL
+                    ,"Where dancing, cool music and friendship are where it's at!"
                     ,array('Stunt Puppy Entertainment')
                     ,array('Vivendi Universal')
                     ,NULL
