@@ -440,9 +440,9 @@ $Games[] = new cGame(NULL ,'CSGO' ,'Counter-Strike: Global Offensive' ,'CSGO' ,'
                     ,array('Valve')
                     ,NULL
                     );
-$Games[] = new cGame(NULL ,'CS2' ,'Counter-Strike 2' ,'CS2' ,NULL
-                    ,NULL ,'https://en.wikipedia.org/wiki/Counter-Strike_2' ,'Source2', FALSE
-                    ,NULL
+$Games[] = new cGame(NULL ,'CS2' ,'Counter-Strike 2' ,'CS2' ,'cs2.png'
+                    ,'https://www.counter-strike.net/cs2' ,'https://en.wikipedia.org/wiki/Counter-Strike_2' ,'Source2', FALSE
+                    ,'The next era of Counter-Strike is here!'
                     ,array('Valve')
                     ,array('Valve')
                     ,NULL
