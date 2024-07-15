@@ -1546,7 +1546,7 @@ $Games[] = new cGame('620a' ,'STVEFXP' ,'Star Trek: Voyager - Elite Force Expans
                     ,NULL
                     ,'STVEF');
 $Games[] = new cGame(NULL ,'STVEFHM' ,'Star Trek: Voyager Elite Force: Holomatch' ,'STVEFHM' ,'stvef_tlo.png'
-                    ,'https://holomat.ch/' ,'https://en.wikipedia.org/wiki/Star_Trek:_Voyager_%E2%80%93_Elite_Force#Freeware_release' ,'Quake 3', FALSE
+                    ,'https://holomat.ch/' ,'https://en.wikipedia.org/wiki/Star_Trek:_Voyager_%E2%80%93_Elite_Force#Freeware_release' ,'ioEF', TRUE
                     ,'Saddle up, lock and load.'
                     ,array('Raven', 'The Last Outpost')
                     ,array('Activision')
