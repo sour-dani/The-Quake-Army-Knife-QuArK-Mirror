@@ -522,7 +522,7 @@ end;
 
 function TCinDataInfo.GetConfigStr1 : String;
 begin
- GetConfigStr1:='Video';
+ Result:='Video';
 end;
 
  {------------------------}

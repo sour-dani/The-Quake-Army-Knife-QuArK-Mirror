@@ -150,7 +150,7 @@ end;
 
 function TWavDataInfo.GetConfigStr1 : String;
 begin
- GetConfigStr1:='Sound';
+ Result:='Sound';
 end;
 
 procedure TWavDataInfo.ReadProc(nPos: Integer);
