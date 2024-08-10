@@ -178,7 +178,7 @@ var
 
 class function QConfig.TypeInfo: String;
 begin
- TypeInfo:=':config';
+ Result:=':config';
 end;
 
 procedure QConfig.ObjectState(var E: TEtatObjet);
