@@ -49,7 +49,7 @@ end;
 
 class function QModelTag.TypeInfo;
 begin
-  TypeInfo:=':tag';
+  Result:=':tag';
 end;
 
 procedure QModelTag.ObjectState(var E: TEtatObjet);

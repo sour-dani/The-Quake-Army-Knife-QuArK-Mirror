@@ -45,7 +45,7 @@ uses EdSceneObject, QkObjectClassList{$IFDEF PyProfiling}, Logging{$ENDIF};
 
 class function QSprite.TypeInfo;
 begin
-  TypeInfo:=':sprite';
+  Result:=':sprite';
 end;
 
 procedure QSprite.ObjectState(var E: TEtatObjet);

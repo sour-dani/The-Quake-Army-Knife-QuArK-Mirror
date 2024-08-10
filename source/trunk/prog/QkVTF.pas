@@ -57,7 +57,7 @@ end;
 
 class function QVTF.TypeInfo: String;
 begin
- TypeInfo:='.vtf';
+ Result:='.vtf';
 end;
 
 class procedure QVTF.FileObjectClassInfo(var Info: TFileObjectClassInfo);

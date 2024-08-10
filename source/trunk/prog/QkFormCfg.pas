@@ -55,7 +55,7 @@ uses Quarkx, QkObjectClassList;
 
 class function QFormCfg.TypeInfo: String;
 begin
- TypeInfo:=':form';
+ Result:=':form';
 end;
 
 function QFormCfg.GetConfigStr1: String;
@@ -96,7 +96,7 @@ end;
 
 class function QFormContext.TypeInfo;
 begin
- TypeInfo:='.fctx';
+ Result:='.fctx';
 end;
 
 function QFormContext.GetConfigStr1: String;

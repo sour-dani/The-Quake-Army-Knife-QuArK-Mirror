@@ -46,7 +46,7 @@ end;
 
 class function QBoneGroup.TypeInfo;
 begin
-  TypeInfo:=':bg';
+  Result:=':bg';
 end;
 
 initialization

@@ -1824,7 +1824,7 @@ end;
 
 class function TTreeBspPlane.TypeInfo: String;
 begin
- TypeInfo:=':bspplane';
+ Result:=':bspplane';
 end;
 
 function TTreeBspPlane.GetNearPlanes(Close: Double; Bsp: QBsp): PyObject;
@@ -2071,7 +2071,7 @@ end;
 
 class function TTreeBspNode.TypeInfo: String;
 begin
- TypeInfo:=':bspnode';
+ Result:=':bspnode';
 end;
 
 procedure TTreeBspNode.GetFaces(var L : PyObject);

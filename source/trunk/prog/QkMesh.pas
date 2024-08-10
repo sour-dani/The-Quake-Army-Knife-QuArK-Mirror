@@ -214,7 +214,7 @@ end;
 
 class function TMesh.TypeInfo: String;
 begin
- TypeInfo:=':mesh';
+ Result:=':mesh';
 end;
 
  { Movement of the patch under translations, inflations, and linear mappings }

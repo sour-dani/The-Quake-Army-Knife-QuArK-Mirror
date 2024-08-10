@@ -226,7 +226,7 @@ end;
 
 class function QTexture1.TypeInfo: String;
 begin
-  TypeInfo:='.wad_D';
+  Result:='.wad_D';
 end;
 
 class procedure QTexture1.FileObjectClassInfo(var Info: TFileObjectClassInfo);

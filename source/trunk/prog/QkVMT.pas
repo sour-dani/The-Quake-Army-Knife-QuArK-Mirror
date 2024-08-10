@@ -59,7 +59,7 @@ var
 
 class function QVMTStage.TypeInfo: String;
 begin
- TypeInfo:='.vmtstage';
+ Result:='.vmtstage';
 end;
 
 function QVMTStage.DumpData : String;
@@ -130,7 +130,7 @@ end;
 
 class function QVMTFile.TypeInfo: String;
 begin
- TypeInfo:='.vmt';
+ Result:='.vmt';
 end;
 
 class procedure QVMTFile.FileObjectClassInfo(var Info: TFileObjectClassInfo);

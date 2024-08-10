@@ -101,7 +101,7 @@ end;
 
 class function QBmp.TypeInfo: String;
 begin
- TypeInfo:='.bmp';
+ Result:='.bmp';
 end;
 
 class procedure QBmp.FileObjectClassInfo(var Info: TFileObjectClassInfo);

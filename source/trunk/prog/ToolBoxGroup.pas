@@ -71,7 +71,7 @@ end;
 
 class function QToolBoxGroup.TypeInfo;
 begin
- TypeInfo:='.qtxfolder';
+ Result:='.qtxfolder';
 end;
 
 class procedure QToolBoxGroup.FileObjectClassInfo(var Info: TFileObjectClassInfo);

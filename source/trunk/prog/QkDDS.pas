@@ -54,7 +54,7 @@ end;
 
 class function QDDS.TypeInfo: String;
 begin
- TypeInfo:='.dds';
+ Result:='.dds';
 end;
 
 class procedure QDDS.FileObjectClassInfo(var Info: TFileObjectClassInfo);

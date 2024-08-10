@@ -151,7 +151,7 @@ end;
 
 class function QBoundFrame.TypeInfo;
 begin
-  TypeInfo:=':bound';
+  Result:=':bound';
 end;
 
 procedure QBoundFrame.ObjectState(var E: TEtatObjet);

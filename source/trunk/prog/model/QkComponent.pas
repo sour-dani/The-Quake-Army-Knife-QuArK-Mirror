@@ -418,7 +418,7 @@ end;
 
 class function QComponent.TypeInfo;
 begin
-  TypeInfo:=':mc';
+  Result:=':mc';
 end;
 
 procedure QComponent.ChercheExtremites(var Min, Max: TVect);

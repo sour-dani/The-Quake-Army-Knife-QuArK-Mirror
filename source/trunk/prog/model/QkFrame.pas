@@ -115,7 +115,7 @@ end;
 
 class function QFrame.TypeInfo;
 begin
-  TypeInfo:=':mf';
+  Result:=':mf';
 end;
 
 procedure QFrame.ObjectState(var E: TEtatObjet);

@@ -90,7 +90,7 @@ end;
 
 class function QModelBone.TypeInfo;
 begin
-  TypeInfo:=':bone';
+  Result:=':bone';
 end;
 
 procedure QModelBone.ObjectState(var E: TEtatObjet);

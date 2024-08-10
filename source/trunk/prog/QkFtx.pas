@@ -55,7 +55,7 @@ end;
 
 class function QFtx.TypeInfo: String;
 begin
- TypeInfo:='.ftx';
+ Result:='.ftx';
 end;
 
 class procedure QFtx.FileObjectClassInfo(var Info: TFileObjectClassInfo);

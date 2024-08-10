@@ -151,7 +151,7 @@ end;
 
 (*class function QInclude.TypeInfo: String;
 begin
- TypeInfo:=':i';
+ Result:=':i';
 end;
 
 function QInclude.RemoveReference : Boolean;
@@ -170,7 +170,7 @@ end;*)
 
 class function QIncluded.TypeInfo: String;
 begin
- TypeInfo:=':incl';
+ Result:=':incl';
 end;
 
  {------------------------}

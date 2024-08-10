@@ -877,7 +877,7 @@ end;
 
 class function QTextureLnk.TypeInfo: String;
 begin
-  TypeInfo:='.wl';
+  Result:='.wl';
 end;
 
 procedure QTextureLnk.ObjectState(var E: TEtatObjet);

@@ -67,7 +67,7 @@ uses QkSkinDrawObject, QkSysData;
 
 class function QMdlObject.TypeInfo;
 begin
-  TypeInfo:=':m';
+  Result:=':m';
 end;
 
 procedure QMdlObject.ObjectState(var E: TEtatObjet);

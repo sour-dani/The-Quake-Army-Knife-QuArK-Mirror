@@ -51,7 +51,7 @@ end;
 
 class function QIwi.TypeInfo: String;
 begin
- TypeInfo:='.iwi';
+ Result:='.iwi';
 end;
 
 class procedure QIwi.FileObjectClassInfo(var Info: TFileObjectClassInfo);

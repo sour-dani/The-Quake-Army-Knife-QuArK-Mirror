@@ -257,7 +257,7 @@ end;
 
 class function QHexenC.TypeInfo;
 begin
- TypeInfo:='.hc';
+ Result:='.hc';
 end;
 
 class procedure QHexenC.FileObjectClassInfo(var Info: TFileObjectClassInfo);

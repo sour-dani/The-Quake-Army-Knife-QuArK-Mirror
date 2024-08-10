@@ -54,7 +54,7 @@ end;
 
 class function QJPeg.TypeInfo: String;
 begin
- TypeInfo:='.jpg';
+ Result:='.jpg';
 end;
 
 class procedure QJPeg.FileObjectClassInfo(var Info: TFileObjectClassInfo);

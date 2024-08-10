@@ -74,7 +74,7 @@ end;
 
 class function TDuplicator.TypeInfo: String;
 begin
- TypeInfo:=':d';
+ Result:=':d';
 end;
 
 procedure TDuplicator.ObjectState(var E: TEtatObjet);

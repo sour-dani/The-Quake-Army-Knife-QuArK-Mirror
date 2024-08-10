@@ -54,7 +54,7 @@ end;
 
 class function QPng.TypeInfo: String;
 begin
- TypeInfo:='.png';
+ Result:='.png';
 end;
 
 class procedure QPng.FileObjectClassInfo(var Info: TFileObjectClassInfo);

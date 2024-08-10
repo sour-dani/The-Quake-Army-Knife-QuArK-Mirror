@@ -1188,7 +1188,7 @@ end;
 
 class function TBSPHull.TypeInfo: String;
 begin
- TypeInfo:=':bsphull';
+ Result:=':bsphull';
 end;
 
 procedure TBSPHull.ObjectState;

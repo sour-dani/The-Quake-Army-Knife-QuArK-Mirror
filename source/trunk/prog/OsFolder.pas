@@ -44,7 +44,7 @@ uses QkObjectClassList, Toolbox1, Game, QkTextures,
 
 class function QOsFolder.TypeInfo;
 begin
- TypeInfo:='.osfolder';
+  Result:='.osfolder';
 end;
 
 procedure QOsFolder.FinalizeFromText;
@@ -61,8 +61,8 @@ end;
 
 procedure QOsFolder.ReadFolder;
 var
- Base : String;
- allshaders : boolean;
+  Base : String;
+  allshaders : boolean;
 begin
   Base:=Specifics.Strings['path'];
   allshaders:=Specifics.Strings['allshaders']='1';

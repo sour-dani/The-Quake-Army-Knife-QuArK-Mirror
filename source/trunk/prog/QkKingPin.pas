@@ -74,7 +74,7 @@ end;
 }
 class function QTextureKP.TypeInfo: String;
 begin
-  TypeInfo:='.tga';
+  Result:='.tga'; //FIXME: !!!
 end;
 
 class procedure QTextureKP.FileObjectClassInfo(var Info: TFileObjectClassInfo);

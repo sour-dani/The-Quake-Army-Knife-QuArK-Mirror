@@ -76,7 +76,7 @@ end;
 
 class function QMiscGroup.TypeInfo;
 begin
-  TypeInfo:=':mg';
+  Result:=':mg';
 end;
 
 initialization

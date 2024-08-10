@@ -46,7 +46,7 @@ end;
 
 class function QSkinGroup.TypeInfo;
 begin
-  TypeInfo:=':sg';
+  Result:=':sg';
 end;
 
 initialization

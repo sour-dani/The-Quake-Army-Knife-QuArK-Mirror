@@ -46,7 +46,7 @@ end;
 
 class function QFrameGroup.TypeInfo;
 begin
-  TypeInfo:=':fg';
+  Result:=':fg';
 end;
 
 initialization

@@ -242,7 +242,7 @@ end;
 
 class function QQuakeCtx.TypeInfo;
 begin
- TypeInfo:='.qctx';
+ Result:='.qctx';
 end;
 
 function QQuakeCtx.GetConfigStr1: String;

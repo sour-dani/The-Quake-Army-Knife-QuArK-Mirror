@@ -54,12 +54,12 @@ uses Game, Setup, Quarkx, QkObjectClassList;
 
 class function QTextureHL.TypeInfo: String;
 begin
- TypeInfo:='.wad3_C';
+ Result:='.wad3_C';
 end;
 
 class function QTextureHL1.TypeInfo: String;
 begin
- TypeInfo:='.wad3_@';
+ Result:='.wad3_@';
 end;
 
 class procedure QTextureHL.FileObjectClassInfo(var Info: TFileObjectClassInfo);

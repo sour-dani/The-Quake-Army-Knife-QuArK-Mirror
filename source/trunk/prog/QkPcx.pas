@@ -78,7 +78,7 @@ end;
 
 class function QPcx.TypeInfo: String;
 begin
- TypeInfo:='.pcx';
+ Result:='.pcx';
 end;
 
 class procedure QPcx.FileObjectClassInfo(var Info: TFileObjectClassInfo);

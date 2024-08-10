@@ -1033,7 +1033,7 @@ end;
 
 class function TPolyhedron.TypeInfo: String;
 begin
- TypeInfo:=':p';
+ Result:=':p';
 end;
 
 procedure TPolyhedron.ObjectState;
@@ -3033,7 +3033,7 @@ end;*)
 
 class function TFace.TypeInfo: String;
 begin
- TypeInfo:=':f';
+ Result:=':f';
 end;
 
 procedure TFace.ObjectState;

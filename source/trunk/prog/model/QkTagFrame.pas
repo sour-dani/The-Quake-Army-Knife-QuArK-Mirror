@@ -108,7 +108,7 @@ end;
 
 class function QTagFrame.TypeInfo;
 begin
-  TypeInfo:=':tagframe';
+  Result:=':tagframe';
 end;
 
 procedure QTagFrame.ObjectState(var E: TEtatObjet);

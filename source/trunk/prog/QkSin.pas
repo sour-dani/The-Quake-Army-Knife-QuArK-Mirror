@@ -158,7 +158,7 @@ type
 
 class function QTextureSin.TypeInfo: String;
 begin
- TypeInfo:='.swl';
+ Result:='.swl';
 end;
 
 class procedure QTextureSin.FileObjectClassInfo(var Info: TFileObjectClassInfo);

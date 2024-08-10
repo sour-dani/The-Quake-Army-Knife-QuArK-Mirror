@@ -54,7 +54,7 @@ end;
 
 class function QTga.TypeInfo: String;
 begin
- TypeInfo:='.tga';
+ Result:='.tga';
 end;
 
 class procedure QTga.FileObjectClassInfo(var Info: TFileObjectClassInfo);

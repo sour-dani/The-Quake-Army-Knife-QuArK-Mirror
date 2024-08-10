@@ -47,7 +47,7 @@ end;
 
 class function QBBoxGroup.TypeInfo;
 begin
-  TypeInfo:=':bbg';
+  Result:=':bbg';
 end;
 
 procedure QBBoxGroup.AnalyseClic;

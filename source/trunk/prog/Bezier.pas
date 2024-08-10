@@ -392,7 +392,7 @@ end;
 
 class function TBezier.TypeInfo: String;
 begin
- TypeInfo:=':b2';  { type extension of Quadratic (degree 2) Bezier patches }
+ Result:=':b2';  { type extension of Quadratic (degree 2) Bezier patches }
 end;
 
 (*procedure TBezier.FixupReference;

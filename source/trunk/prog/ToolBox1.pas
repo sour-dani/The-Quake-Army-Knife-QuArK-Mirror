@@ -216,7 +216,7 @@ end;
 
 class function QToolBox.TypeInfo;
 begin
- TypeInfo:='.qtx';
+ Result:='.qtx';
 end;
 
 function QToolBox.GetConfigStr1;

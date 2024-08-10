@@ -69,7 +69,7 @@ type
 
 class function QM8.TypeInfo: String;
 begin
- TypeInfo:='.m8';
+ Result:='.m8';
 end;
 
 class procedure QM8.FileObjectClassInfo(var Info: TFileObjectClassInfo);

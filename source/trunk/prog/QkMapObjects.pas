@@ -1069,7 +1069,7 @@ end;
 
 class function TTreeMapEntity.TypeInfo: String;
 begin
- TypeInfo:=':e';
+ Result:=':e';
 end;
 
 procedure TTreeMapEntity.ObjectState;
@@ -2077,7 +2077,7 @@ end;
 
 class function TTreeMapGroup.TypeInfo: String;
 begin
- TypeInfo:=':g';
+ Result:=':g';
 end;
 
 procedure TTreeMapGroup.ObjectState;
@@ -2332,7 +2332,7 @@ end;
 
 class function TTreeMapBrush.TypeInfo: String;
 begin
- TypeInfo:=':b';
+ Result:=':b';
 end;
 
 procedure TTreeMapBrush.ObjectState;

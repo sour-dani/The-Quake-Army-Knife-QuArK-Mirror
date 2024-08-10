@@ -196,7 +196,7 @@ end;
 
 class function QModelRoot.TypeInfo;
 begin
-  TypeInfo:=':mr';
+  Result:=':mr';
 end;
 
 function QModelRoot.PyGetAttr(attr: PyChar) : PyObject;

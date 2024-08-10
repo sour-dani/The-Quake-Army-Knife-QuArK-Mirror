@@ -208,7 +208,7 @@ end;
 
 class function QTexture2.TypeInfo: String;
 begin
-  TypeInfo:='.wal';
+  Result:='.wal';
 end;
 
 class procedure QTexture2.FileObjectClassInfo(var Info: TFileObjectClassInfo);
