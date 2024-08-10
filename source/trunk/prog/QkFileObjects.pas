@@ -1195,7 +1195,8 @@ begin
      end;
     finally TargetFile.Free; end;
     finally ProgressIndicatorStop; end;
-  (*FileOp.Wnd:=g_Form1.Handle;
+  (*FillChar(FileOp, SizeOf(FileOp), 0);
+    FileOp.Wnd:=g_Form1.Handle;
     FileOp.wFunc:=FO_COPY;
     FileOp.pFrom:=PChar(TempFile);
     FileOp.pTo:=PChar(AlternateFile);
