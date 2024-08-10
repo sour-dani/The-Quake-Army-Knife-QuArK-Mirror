@@ -420,9 +420,12 @@ If the additional 4 is given, for example Typ="LN4" or Typ="L 4", there will be 
 </td></tr>
 
 <tr><td align=center>
-M
+M<br>
+
+M R
 </td><td valign=top>
-<b>Message button</b>.
+<b>Message button</b>.<br>
+The last "R" (at third position) means Read/Only.
 </td><td>
 <pre>
 extedit:tbbtn = {

@@ -10085,10 +10085,13 @@ QQRKSRC1
                 "E = Edit"$0D
                 "E R = Edit - Read Only"$0D
                 "EF = Edit - Number/Floating Point"$0D
+                "EFR = Edit - Number/Floating Point - Read Only"$0D
                 "ED = Edit - Directory"$0D
+                "EDL = Edit - Directory - Last"$0D
                 "ET = Edit - Texture"$0D
                 "EP = Edit - File"$0D
                 "EN = Edit - Name"$0D
+                "ENR = Edit - Name - Read Only"$0D
                 "EU = Edit - Up/Down Button"$0D
                 "EQ = Edit - Up/Down/Left/Right Button"$0D
                 "X  = Checkbox"$0D
@@ -10096,20 +10099,29 @@ QQRKSRC1
                 "P  = Python Button"$0D
                 "PM = Python Button (Multiple)"$0D
                 "C  = Combobox"$0D
-                "S  = Seperator"$0D
+                "CL = Combobox - List Only"$0D
+                "S  = Separator"$0D
                 "L  = Color"$0D
+                "LI = Color - Single Integer"$0D
                 "LP = Color - Palletized"$0D
                 "LN = Color - Normalized"$0D
                 "I  = Image"$0D
                 "F  = Font"$0D
-                "K  = Key"
+                "K  = Key"$0D
+                "T  = Slider bar"$0D
+                "TF = Slider bar - Floating Point"$0D
+                "M  = Message Button"$0D
+                "M  = Message Button - Read Only"
         Items =   "E"$0D
-                  "ER"$0D
+                  "E R"$0D
                   "EF"$0D
+                  "EFR"$0D
                   "ED"$0D
+                  "EDL"$0D
                   "ET"$0D
                   "EP"$0D
                   "EN"$0D
+                  "ENR"$0D
                   "EU"$0D
                   "EQ"$0D
                   "X"$0D
@@ -10117,13 +10129,19 @@ QQRKSRC1
                   "P"$0D
                   "PM"$0D
                   "C"$0D
+                  "CL"$0D
                   "S"$0D
                   "L"$0D
+                  "LI"$0D
                   "LP"$0D
                   "LN"$0D
                   "I"$0D
                   "F"$0D
-                  "K"
+                  "K"$0D
+                  "T"$0D
+                  "TF"$0D
+                  "M"$0D
+                  "M R"
       }
       Txt: = {
         Txt = "Text"
@@ -10139,26 +10157,26 @@ QQRKSRC1
       Items: = {
         Txt = "Items"
         Typ = "E"
-        Hint = "Items in combobox - seperated by $0D"
+        Hint = "Items in combobox - separated by $0D"
       }
       Values: = {
         Txt = "Values"
         Typ = "E"
-        Hint = "Values for items - seperated by $0D"
+        Hint = "Values for items - separated by $0D"
       }
-      info2: = {Typ="S" Txt=" ---- Button (B) specific ----"}
+      info3: = {Typ="S" Txt=" ---- Button (B) specific ----"}
       Form: = {
         Txt = "Form"
         Typ = "E"
         Hint = "Form to open when button is pressed"
       }
-      info3: = {Typ="S" Txt=" ---- Python Macro Button (P) specific ----"}
+      info4: = {Typ="S" Txt=" ---- Python Macro Button (P) specific ----"}
       Macro: = {
         Txt = "Macro"
         Typ = "E"
         Hint = "Macro to call when pressed"
       }
-      info4: = {Typ="S" Txt=" ---- Python Macro Button (PM) specific ----"}
+      info5: = {Typ="S" Txt=" ---- Python Macro Button (PM) specific ----"}
       Num: = {
         Txt = "Count"
         Typ = "E"
@@ -10179,11 +10197,17 @@ QQRKSRC1
         Typ = "E"
         Hint = "Hint for button 1 (add more if necessary - Hint2....Hintx)"
       }
-      info5: = {Typ="S" Txt=" ---- Checkbox (X) specific ----"}
+      info6: = {Typ="S" Txt=" ---- Checkbox (X) specific ----"}
       Cap: = {
         Txt = "Caption"
         Typ = "E"
         Hint = "Caption of checkbox"
+      }
+      info7: = {Typ="S" Txt=" ---- Message Button (M) specific ----"}
+      Rows: = {
+        Txt = "Rows"
+        Typ = "E"
+        Hint = "Number of rows to display"
       }
     }
     ToolBox:form =      // form that applies when editing .qtx objects
