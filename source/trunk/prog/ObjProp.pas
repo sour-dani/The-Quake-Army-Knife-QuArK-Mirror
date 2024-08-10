@@ -143,7 +143,7 @@ begin
     end;
    if CommonType=Nil then
     Label4.Caption:=LoadStr1(5391)
-   else
+   else if CommonType.TypeInfo<>'' then //QUnknown has no TypeInfo, so don't show it.
     Label4.Caption:=FmtLoadStr1(5409, [Label4.Caption, CommonType.TypeInfo]);
    if ListBox1.Items.Count=0 then
     begin
