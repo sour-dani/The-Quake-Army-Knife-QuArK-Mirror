@@ -73,7 +73,7 @@ type
     Procedure WriteQ1Spr(F:TStream);
     Procedure WriteHLSpr(F:TStream);
     procedure SaveFile(Info: TInfoEnreg1); override;
-    function Loaded_Frame(Root: QObject; const Name: String; const Size: array of Single; var P: PChar; var DeltaW: Integer; pal:TPaletteLmp; var palout:String) : QImage;
+    function Loaded_Frame(Root: QObject; const Name: String; const Size: array of Single; var P: PChar; var DeltaW: Integer; pal:TPaletteLmp) : QImage;
     function Loaded_FrameFile(Root: QObject; const Name: String) : QImage;
     procedure GetWidthHeight(var size:TPoint);
     function GetSprite: QSprite;
@@ -208,7 +208,6 @@ var
   aPalette: TPaletteLmp;
   p: PChar;
   DeltaW:Integer;
-  pout:String;
   times: array[1..1024] of Single; //FIXME: Hardcoded limit...? THERE IS NO LIMIT IN Q1!!! REWRITE!!! Make an ARRAY!!! SetLength!!!
 begin
   aPalette:=PPPalette^.PaletteLmp;
@@ -233,7 +232,7 @@ begin
       fs.ReadBuffer(width,4);
       fs.ReadBuffer(height,4);
       J:=Fs.Position;
-      Loaded_Frame(Sprite, format('Frame %d',[i]), [width,height], p, DeltaW, apalette,pout);
+      Loaded_Frame(Sprite, format('Frame %d',[i]), [width,height], p, DeltaW, apalette);
       Fs.Position:=J;
       for J:=1 to height do begin
         Fs.ReadBuffer(P^, width);
@@ -249,7 +248,7 @@ begin
         fs.ReadBuffer(width,4);
         fs.ReadBuffer(height,4);
         Pos:=Fs.Position;
-        Loaded_Frame(Sprite, format('Frame %d',[i]), [width,height], p, DeltaW, apalette,pout);
+        Loaded_Frame(Sprite, format('Frame %d',[i]), [width,height], p, DeltaW, apalette);
         Fs.Position:=Pos;
         for k:=1 to height do begin
           Fs.ReadBuffer(P^, width);
@@ -268,7 +267,6 @@ var
   fshort:SmallInt;
   aPalette: TPaletteLmp;
   P:PChar;
-  pout:String;
 begin
   ID_SPRHEADER:=(ord('P') shl 24)+(ord('S')shl 16)+(ord('D') shl 8)+ord('I');
   fs.ReadBuffer(dst,sizeof(dst));
@@ -300,7 +298,7 @@ begin
     fs.ReadBuffer(W,4);
     fs.ReadBuffer(H,4);
     J:=Fs.Position;
-    Loaded_Frame(Sprite, format('Frame %d',[i]), [w,h], p, DeltaW, apalette,pout);
+    Loaded_Frame(Sprite, format('Frame %d',[i]), [w,h], p, DeltaW, apalette);
     Fs.Position:=J;
     for J:=1 to h do begin
       Fs.ReadBuffer(P^, w);
@@ -590,7 +588,7 @@ begin
   Info.WndInfo:=[];
 end;
 
-function QSprFile.Loaded_Frame(Root: QObject; const Name: String; const Size: array of Single; var P: PChar; var DeltaW: Integer; pal:TPaletteLmp; var palout:String) : QImage;
+function QSprFile.Loaded_Frame(Root: QObject; const Name: String; const Size: array of Single; var P: PChar; var DeltaW: Integer; pal:TPaletteLmp) : QImage;
 const
   Spec1 = 'Pal=';
   Spec2 = 'Image1=';
@@ -606,7 +604,6 @@ begin
     Move(GameBuffer(ObjectGameCode)^.PaletteLmp, S[Length(Spec1)+1], SizeOf(TPaletteLmp))
   else if ObjectGameCode=mjHalfLife then
     Move(pal,S[Length(Spec1)+1],sizeof(TPaletteLmp));
-  palout:=s;
   Result.Specifics.AddStringFull(S);
   S:=Spec2;
   DeltaW:=-((Round(Size[0])+3) and not 3);
