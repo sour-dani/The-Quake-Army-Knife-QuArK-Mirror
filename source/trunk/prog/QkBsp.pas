@@ -359,10 +359,12 @@ const
 (***********  Other .bsp format  ***********)
 const
  cSignatureBspEF2    = $21324645; {"EF2!" 4-letter header; Star Trek: Elite Force 2}
- cSignatureBspOther  = $20505342; {"BSP " 4-letter header}
+ cSignatureBspSpace  = $20505342; {"BSP " 4-letter header}
+ cSignatureBsp2      = $32505342; {"BSP2" 4-letter header}
 
  cVersionBspEF2      = $00000014; {Star Trek: Elite Force 2}
  cVersionBspOverDose = $00000055; {OverDose} //FIXME: Untested
+ cVersionBspQuakeEX  = $00063C60; {Quake Enhanced}
 
 (*const
   HEADER_LUMPS = 64; //From HL2's bspfile.h
@@ -990,7 +992,7 @@ begin
           end;
         end;
 
-        cSignatureBspOther: { Other BSP format }
+        cSignatureBspSpace: { BSP with a space format }
         begin
           case Version of
             cVersionBspOverDose: { OverDose }
@@ -1000,6 +1002,19 @@ begin
 
             else {version unknown}
               Raise EErrorFmt(5572, [LoadName, 'generic', Version]);
+          end;
+        end;
+
+        cSignatureBsp2: { BSP2 format }
+        begin
+          case Version of
+            cVersionBspQuakeEX: { Quake Enhanced }
+            begin
+              Raise EErrorFmt(5602, [LoadName, 'Quake Enhanced']);
+            end;
+
+            else {version unknown}
+              Raise EErrorFmt(5572, [LoadName, 'Enchanced', Version]);
           end;
         end;
 
