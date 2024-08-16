@@ -260,6 +260,7 @@ QQRKSRC1
         .iwi = ""      iiwi = '7'
         .vtf = ""      ivtf = '7'
         .ftx = ""      iftx = '7'
+        .lmp = ""      ilmp = '7'
         .spr = ""
         .sp2 = ""
         .wav = ""
@@ -327,6 +328,7 @@ QQRKSRC1
         .iwi = ""
         .vtf = ""
         .ftx = ""
+        .lmp = ""
         .spr = ""
         .sp2 = ""
         .wav = "<edit>"
@@ -9062,6 +9064,7 @@ QQRKSRC1
       .iwi: = { Txt="IWI images" externaledit = ! }
       .vtf: = { Txt="VTF images" externaledit = ! }
       .ftx: = { Txt="FTX images" externaledit = ! }
+      .lmp: = { Txt="LMP images" externaledit = ! }
       .spr: = { Txt="SPR sprites" externaledit = ! }
       .sp2: = { Txt="SP2 sprites" externaledit = ! }
       .wav: = { Txt="WAV sounds" externaledit = ! }
@@ -9154,6 +9157,7 @@ QQRKSRC1
       .iwi: = {Typ="X" Cap=".iwi" Txt="IWI Images"}
       .vtf: = {Typ="X" Cap=".vtf" Txt="VTF Images"}
       .ftx: = {Typ="X" Cap=".ftx" Txt="FTX Images"}
+      .lmp: = {Typ="X" Cap=".lmp" Txt="LMP Images"}
       .spr: = {Typ="X" Cap=".spr" Txt="SPR Sprites"}
       .sp2: = {Typ="X" Cap=".sp2" Txt="SP2 Sprites"}
       .wav: = {Typ="X" Cap=".wav" Txt="WAV Sounds"}
@@ -9392,7 +9396,7 @@ QQRKSRC1
     t_ModelEditor_texturebrowser:incl =
     {
       Typ = "EPR"
-      DefExt = "tga; *.dds; *.png; *.jpg; *.pcx; *.bmp; *.ftx; *.vtf; *.iwi"
+      DefExt = "tga; *.dds; *.png; *.jpg; *.pcx; *.bmp; *.ftx; *.vtf; *.iwi; *.lmp"
       BasePath = "?\?\?"
       CutPath = "?\?\?\?\"
       DirSep = "/"
@@ -9401,7 +9405,7 @@ QQRKSRC1
     t_texturebrowser:incl =
     {
       Typ = "EP"
-      DefExt = "tga; *.dds; *.png; *.jpg; *.pcx; *.bmp; *.ftx; *.vtf; *.iwi"
+      DefExt = "tga; *.dds; *.png; *.jpg; *.pcx; *.bmp; *.ftx; *.vtf; *.iwi; *.lmp"
       BasePath = "$Game\?\?"
       CutPath = "$Game\?\"
       DirSep = "/"
@@ -10431,6 +10435,7 @@ QQRKSRC1
         VTF Image.vtf = { ;incl = "EmptyImage" }
         FTX Image.ftx = { ;incl = "EmptyImage" }
         IWI Image.iwi = { ;incl = "EmptyImage" }
+        LMP Image.lmp = { ;incl = "EmptyImagePal" }
       }
       Text.txt = { }
       Sound.wav = { }

@@ -290,6 +290,7 @@ Strings = {
     834: "Source file (*.src)|*.src",
     835: "Squirrel script file (*.nut)|*.nut",
     836: "Stoneless Extended Map File (*.xmp)|*.xmp",
+    837: "LMP image (*.lmp)|*.lmp",
 
     2368: "Skins",
     2369: "Frames",
@@ -677,6 +678,7 @@ Strings = {
     5229: "integer or floating-point value expected - '%s' is not an integer value",
     5230: "Custom Add-on",
     5231: "IWI image",
+    5232: "LMP image",
 
     5248: "Cancel",
     5249: "&Move here",

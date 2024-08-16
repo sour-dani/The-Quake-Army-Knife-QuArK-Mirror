@@ -170,6 +170,7 @@ uses
   QkKEX in 'prog\QkKEX.pas',
   //QkKingPin in 'prog\QkKingPin.pas',
   QkListView in 'prog\QkListView.pas' {QForm2},
+  QkLmp in 'prog\QkLmp.pas',
   QkMacro in 'prog\QkMacro.pas',
   QkMap in 'prog\QkMap.pas' {FQMap},
   QkMapObjects in 'prog\QkMapObjects.pas',

@@ -14,6 +14,8 @@
 
 6.6.0 Beta 8
 ============
+* [DanielPharos]: Added Quake 1 LMP file support.
+
 * [DanielPharos]: Added Sin 1 BSP file support.
 
 * [DanielPharos]: Sped up SOF BSP rendering, and Q3 BSP loading.
