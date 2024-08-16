@@ -39,7 +39,7 @@ type
 
 implementation
 
-uses Quarkx, QkExceptions, QkObjectClassList, ExtraFunctionality;
+uses Quarkx, QkExceptions, QkObjectClassList, Logging, ExtraFunctionality;
 
 type
  TFtxHeader = record
@@ -84,6 +84,7 @@ var
   ImgData, AlphaData: String; //FIXME: TByteDynArray;
   DestImg, DestAlpha: PChar; //FIXME: PArithByte;
 begin
+ Log(LOG_VERBOSE, 'Loading FTX file: %s', [self.name]);
  case ReadFormat of
   rf_Default: begin  { as stand-alone file }
       if FSize<=SizeOf(Header) then
@@ -186,6 +187,7 @@ var
   PaddingSource: Integer;
   I, J: Integer;
 begin
+ Log(LOG_VERBOSE, 'Saving FTX file: %s', [self.name]);
  with Info do case Format of
   rf_Default: begin  { as stand-alone file }
       PSD:=Description;
