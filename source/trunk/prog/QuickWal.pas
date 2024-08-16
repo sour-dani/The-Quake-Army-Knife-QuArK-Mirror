@@ -255,6 +255,9 @@ begin
  if SameText(ExtractFileExt(Name), '.iwi') then
   Link1(ResultFolder, FolderName, Copy(Name, 1, Length(Name)-4), 'a', Base)
  else
+ if SameText(ExtractFileExt(Name), '.lmp') then
+  Link1(ResultFolder, FolderName, Copy(Name, 1, Length(Name)-4), 'a', Base)
+ else
  if SameText(ExtractFileExt(Name), '.shader') then
   begin
    if Loaded=Nil then
@@ -359,6 +362,9 @@ begin
   Link1(ResultFolder, FolderName, Copy(Name, 1, Length(Name)-4), 'a', Base, Index)
  else
  if SameText(ExtractFileExt(Name), '.iwi') then
+  Link1(ResultFolder, FolderName, Copy(Name, 1, Length(Name)-4), 'a', Base, Index)
+ else
+ if SameText(ExtractFileExt(Name), '.lmp') then
   Link1(ResultFolder, FolderName, Copy(Name, 1, Length(Name)-4), 'a', Base, Index)
  else
  if SameText(ExtractFileExt(Name), '.shader') then

@@ -118,7 +118,7 @@ function TestConversionImages(var I: Integer) : QImageClass;
 
 implementation
 
-uses Types, QkPcx, QkBmp, QkTga, QkDDS, QkFTX, QkIwi, QkJpg, QkPng, QkSoF, QkVTF,
+uses Types, QkPcx, QkBmp, QkTga, QkDDS, QkFTX, QkIwi, QkJpg, QkLmp, QkPng, QkSoF, QkVTF,
      TbPalette, qmath, Quarkx, QkExceptions, CCode, Undo, Travail, Setup,
      Logging, ExtraFunctionality;
 
@@ -126,7 +126,7 @@ uses Types, QkPcx, QkBmp, QkTga, QkDDS, QkFTX, QkIwi, QkJpg, QkPng, QkSoF, QkVTF
 
 function TestConversionImages(var I: Integer) : QImageClass;
 const
- IntlImages: array[1..10] of QImageClass = (QPcx, QTga, QDDS, QBmp, QJPeg, QPng, QM32, QFTX, QVTF, QIWI);
+ IntlImages: array[1..11] of QImageClass = (QPcx, QTga, QDDS, QBmp, QJPeg, QPng, QM32, QFTX, QVTF, QIWI, QLMP);
 begin
  if I>High(IntlImages) then
   begin
