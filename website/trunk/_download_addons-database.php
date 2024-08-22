@@ -266,6 +266,7 @@ $GamesQRKAddons["JA"   ][] = new cQRKAddon("Jedi Academy"             ,""       
 $GamesQRKAddons["JA"   ][] = new cQRKAddon("Jedi Academy"             ,""                                           ,"" ,"JAEntities.qrk"   ,"https://sourceforge.net/p/quark/code/HEAD/tree/runtime/trunk/addons/JA/JAEntities.qrk?format=raw"                ,$OfficialQRKAddon);
 $GamesQRKAddons["JA"   ][] = new cQRKAddon("Jedi Academy"             ,""                                           ,"" ,"JATextures.qrk"   ,"https://sourceforge.net/p/quark/code/HEAD/tree/runtime/trunk/addons/JA/JATextures.qrk?format=raw"                ,$OfficialQRKAddon);
 $GamesQRKAddons["JA"   ][] = new cQRKAddon("Jedi Academy"             ,""                                           ,"" ,"UserData JA.qrk"  ,"https://sourceforge.net/p/quark/code/HEAD/tree/runtime/trunk/addons/JA/UserData JA.qrk?format=raw"               ,$OfficialQRKAddon);
+$GamesQRKAddons["JA"   ][] = new cQRKAddon("Movie Battles II"         ,"https://www.moviebattles.org/"              ,"" ,"MBII.qrk"         ,"https://sourceforge.net/p/quark/code/HEAD/tree/runtime/trunk/addons/JA/MBII.qrk?format=raw"                      ,$OfficialQRKAddon);
 
 # Jedi Knight 2:Jedi Outcast
 $GamesQRKAddons["JK2"  ] = array();
