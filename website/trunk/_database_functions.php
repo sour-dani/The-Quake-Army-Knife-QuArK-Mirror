@@ -1,8 +1,5 @@
 <?php
-
-$dbhost = 'mysql-q';
-$dbuser = 'q1181ro'; //@
-$dbpass = 'Cdunde1544'; //@
+require_once('_database_config.php');
 
 function getDB($dbname)
 {
@@ -19,5 +16,4 @@ function getDB($dbname)
 
 	return $connection;
 }
-
 ?>
