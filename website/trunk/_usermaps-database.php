@@ -3282,11 +3282,28 @@ Unfortunately this map is no longer in the Sp package."
 ,"http://cybopat.net/quark.htm"
 ,"http://cybopat.net/quark.htm"
 ,array(136)
-,1822219 
+,1822219
 ,"DM TD" #@?
 ,"KP"
 ,"NO"
 ,"Deathmatch mapa pro duel."
+)
+
+,array(
+ mktime(0, 0, 0, 6, 5, 2024)
+,0
+,"Test Me" #testie
+,"https://archive.org/download/testie/testie.zip"
+,null
+,null
+,array(140)
+,32209
+,"SP"
+,"Q1"
+,"NO"
+,"My first ever 100% finished Quake map. Source included.
+
+To do - Fix lighting bug!"
 )
 
 );
