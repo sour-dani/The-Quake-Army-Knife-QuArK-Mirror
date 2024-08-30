@@ -34,7 +34,7 @@ type
 {$endif}
 
 {$ifndef Delphi4orNewerCompiler}
-  Int64 = TLargeInteger;
+  Int64 = Comp;
   PInt64 = ^Int64;
   LongWord = DWORD;
   PLongWord = ^LongWord;
