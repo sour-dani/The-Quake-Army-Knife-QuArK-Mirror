@@ -30,8 +30,8 @@ uses SysUtils, StrUtils, Windows, Classes, ExtraFunctionality;
 {$I DelphiVer.inc}
 
 procedure LogSystemDetails;
-function CheckWindows98And2000: Boolean; //FIXME: Switch to using CheckWin32Version!
-function CheckWindowsMEAnd2000: Boolean; //FIXME: Switch to using CheckWin32Version!
+function CheckWindows98And2000: Boolean;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+function CheckWindowsMEAnd2000: Boolean;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 function ProcessExists(const exeFileName: String): Boolean;
 function WindowExists(const WindowName: String): Boolean;
 function RetrieveModuleFilename(ModuleHandle: HMODULE): String;
@@ -351,8 +351,6 @@ type
   {$ENDIF}
 
   TPlatformType = (osWin95Comp, osWinNTComp);
-  TPlatform = (osWin95, osWin98, osWin98SE, osWinME, (*osWinNT31, osWinNT35, osWinNT351,*) osWinNT4, osWin2000, osWinXP, osWin2003, osWinVista, osWin7, osWin8, osWin81, osWin2008, osWin2008R2, osWin2012, osWin2012R2, osWin10, osWin2016, osWin2019, osWin2022, osWin11); //Note: Not all are currently detected!
-  //FIXME: See: https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-osversioninfoexa
 
   TVendorStr = array[0..11] of AnsiChar;
   TFeatureFlags = record
@@ -363,7 +361,6 @@ type
 
 var
   WindowsPlatformCompatibility: TPlatformType;
-  WindowsPlatform: TPlatform;
   DriverBugs: TStringList;
 
 function FormatBytes(const Number: Integer) : String; overload;
@@ -1231,6 +1228,8 @@ const
 begin
   Log(LOG_VERBOSE, 'Starting gathering OS information...');
   FDirs.Clear;
+
+  //See: https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-osversioninfoexa
   if CheckWin32Version(5, 0) then //Windows 2000
   begin
     FExtended:=True;
@@ -1314,7 +1313,6 @@ begin
      begin
       FPlatform:='Windows 32s';
       WindowsPlatformCompatibility:=osWin95Comp;
-      WindowsPlatform:=osWin95;
      end;
     VER_PLATFORM_WIN32_WINDOWS:
       case MajorVersion of
@@ -1322,40 +1320,22 @@ begin
        begin
         case MinorVersion of
         0:
-         begin
-          FPlatform:='Windows 95';
-          WindowsPlatform:=osWin95;
-         end;
+         FPlatform:='Windows 95';
         10:
-         begin
-          FPlatform:='Windows 98';
-          WindowsPlatform:=osWin98;
-         end;
+         FPlatform:='Windows 98';
         90:
-         begin
-          FPlatform:='Windows ME';
-          WindowsPlatform:=osWinME;
-         end;
+         FPlatform:='Windows ME';
         else
-         begin
-          FPlatform:='Unknown (Probably OK)';
-          WindowsPlatform:=osWin95;
-         end;
+         FPlatform:='Unknown (Probably OK)';
         end;
         WindowsPlatformCompatibility:=osWin95Comp;
        end;
       else
        begin
         if MajorVersion>4 then
-        begin
-          FPlatform:='Unknown (Probably OK)';
-          WindowsPlatform:=osWinME;
-        end
+          FPlatform:='Unknown (Probably OK)'
         else
-        begin
           FPlatform:='Unknown';
-          WindowsPlatform:=osWin95;
-        end;
        end;
        WindowsPlatformCompatibility:=osWin95Comp;
       end;
@@ -1365,25 +1345,13 @@ begin
        begin
         case MinorVersion of
         1:
-         begin
-          FPlatform:='Windows NT 3.1';
-          WindowsPlatform:=osWinNT31;
-         end;
+         FPlatform:='Windows NT 3.1';
         5:
-         begin
-          FPlatform:='Windows NT 3.5';
-          WindowsPlatform:=osWinNT35;
-         end;
+         FPlatform:='Windows NT 3.5';
         51:
-         begin
-          FPlatform:='Windows NT 3.51';
-          WindowsPlatform:=osWinNT351;
-         end;
+         FPlatform:='Windows NT 3.51';
         else
-         begin
-          FPlatform:='Windows NT 3?';
-          WindowsPlatform:=osWinNT31;
-         end;
+         FPlatform:='Windows NT 3?';
         end;
         WindowsPlatformCompatibility:=osWinNTComp;
        end;*)
@@ -1391,15 +1359,9 @@ begin
        begin
         case MinorVersion of
         0:
-         begin
-          FPlatform:='Windows NT 4';
-          WindowsPlatform:=osWinNT4;
-         end;
+         FPlatform:='Windows NT 4';
         else
-         begin
-          FPlatform:='Windows NT 4?';
-          WindowsPlatform:=osWinNT4;
-         end;
+         FPlatform:='Windows NT 4?';
         end;
         WindowsPlatformCompatibility:=osWinNTComp;
        end;
@@ -1407,25 +1369,13 @@ begin
        begin
         case MinorVersion of
         0:
-         begin
-          FPlatform:='Windows 2000';
-          WindowsPlatform:=osWin2000;
-         end;
+         FPlatform:='Windows 2000';
         1:
-         begin
-          FPlatform:='Windows XP';
-          WindowsPlatform:=osWinXP;
-         end;
+         FPlatform:='Windows XP';
         2:
-         begin
-          FPlatform:='Windows Server 2003 or Windows XP 64-bit';
-          WindowsPlatform:=osWin2003;
-         end;
+         FPlatform:='Windows Server 2003 or Windows XP 64-bit';
         else
-         begin
-          FPlatform:='Windows NT 5?';
-          WindowsPlatform:=osWin2000;
-         end;
+         FPlatform:='Windows NT 5?';
         end;
         WindowsPlatformCompatibility:=osWinNTComp;
        end;
@@ -1433,30 +1383,15 @@ begin
        begin
         case MinorVersion of
         0:
-         begin
-          FPlatform:='Windows Vista or Windows Server 2008';
-          WindowsPlatform:=osWinVista;
-         end;
+         FPlatform:='Windows Vista or Windows Server 2008';
         1:
-         begin
-          FPlatform:='Windows 7 or Windows Server 2008 R2';
-          WindowsPlatform:=osWin7;
-         end;
+         FPlatform:='Windows 7 or Windows Server 2008 R2';
         2:
-         begin
-          FPlatform:='Windows 8 or Windows Server 2012';
-          WindowsPlatform:=osWin8;
-         end;
+         FPlatform:='Windows 8 or Windows Server 2012';
         3:
-         begin
-          FPlatform:='Windows 8.1 or Windows Server 2012 R2';
-          WindowsPlatform:=osWin81;
-         end;
+         FPlatform:='Windows 8.1 or Windows Server 2012 R2';
         else
-         begin
-          FPlatform:='Windows NT 6?';
-          WindowsPlatform:=osWinVista;
-         end;
+         FPlatform:='Windows NT 6?';
         end;
         WindowsPlatformCompatibility:=osWinNTComp;
        end;
@@ -1464,15 +1399,9 @@ begin
        begin
         case MinorVersion of
         0:
-         begin
-          FPlatform:='Windows 10';
-          WindowsPlatform:=osWin10;
-         end;
+         FPlatform:='Windows 10';
         else
-         begin
-          FPlatform:='Windows NT 10?';
-          WindowsPlatform:=osWin10;
-         end;
+         FPlatform:='Windows NT 10?';
         end;
         WindowsPlatformCompatibility:=osWinNTComp;
        end;
@@ -1481,13 +1410,11 @@ begin
         if MajorVersion>6 then
         begin
           FPlatform:='Windows NT?';
-          WindowsPlatform:=osWin11;
           WindowsPlatformCompatibility:=osWinNTComp;
         end
         else
         begin
           FPlatform:='Windows?';
-          WindowsPlatform:=osWin95;
           WindowsPlatformCompatibility:=osWin95Comp;
         end;
        end;
@@ -1516,6 +1443,10 @@ begin
     rvInstallDate:=rvInstallDateNT;
     {$ENDIF}
    end;
+  {$IFDEF DEBUG}
+  else
+    raise Exception.Create('Unsupported Windows platform!');
+  {$ENDIF}
   end;
   FCSD:=StrPas(OS.szCSDVersion);
   (*FVersion:='';
@@ -2908,12 +2839,30 @@ end;
 
 function CheckWindows98And2000: Boolean;
 begin
-  Result:=(WindowsPlatform<>osWin95) and (WindowsPlatform<>osWinNT4);
+  case WindowsPlatformCompatibility of
+  osWin95Comp:
+    Result:=CheckWin32Version(4, 10); //Windows 98
+  osWinNTComp:
+    Result:=CheckWin32Version(5, 0); //Windows 2000
+  {$IFDEF DEBUG}
+  else
+    raise Exception.Create('Unsupported Windows platform!');
+  {$ENDIF}
+  end;
 end;
 
 function CheckWindowsMEAnd2000: Boolean;
 begin
-  Result:=(WindowsPlatform<>osWin95) and (WindowsPlatform<>osWin98) and (WindowsPlatform<>osWin98SE) and (WindowsPlatform<>osWinNT4);
+  case WindowsPlatformCompatibility of
+  osWin95Comp:
+    Result:=CheckWin32Version(4, 90); //Windows ME
+  osWinNTComp:
+    Result:=CheckWin32Version(5, 0); //Windows 2000
+  {$IFDEF DEBUG}
+  else
+    raise Exception.Create('Unsupported Windows platform!');
+  {$ENDIF}
+  end;
 end;
 
 procedure WarnDriverBugs;
