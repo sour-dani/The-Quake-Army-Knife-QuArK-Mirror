@@ -83,6 +83,7 @@ begin
       if FSize<=SizeOf(Header) then
        Raise EError(5519);
       F.ReadBuffer(Header, SizeOf(Header));
+      if FSize<SizeOf(Header)+Header.width*Header.height then Raise EErrorFmt(5186, [LoadName]);
 
       V[1]:=Header.width;
       V[2]:=Header.height;
