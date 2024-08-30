@@ -1399,9 +1399,14 @@ begin
        begin
         case MinorVersion of
         0:
-         FPlatform:='Windows 10';
+         begin
+          if BuildNumber < 22000 then
+           FPlatform:='Windows 10'
+          else
+           FPlatform:='Windows 11';
+         end
         else
-         FPlatform:='Windows NT 10?';
+         FPlatform:='Windows NT 11?';
         end;
         WindowsPlatformCompatibility:=osWinNTComp;
        end;
