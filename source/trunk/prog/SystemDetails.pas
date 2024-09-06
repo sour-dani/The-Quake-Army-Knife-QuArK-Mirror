@@ -40,10 +40,11 @@ procedure WarnDriverBugs;
 type
   TCPU = class(TPersistent)
   private
-    FCPUIDLevel: LongWord;
-    FVendorID,
+    FCPUIDLevel, FCPUIDExtLevel: LongWord;
+    FName,
     FVendor,
-    FSubModel: String;
+    FSubModel,
+    FBrand: String;
     FModel,
     FCount,
     FStepping,
@@ -54,9 +55,9 @@ type
     {$ENDIF}
     FVendorNo: Integer;
     FHasCPUID, FHasRDTSC: Boolean;
-    function GetCPUType: Cardinal;
     function CPUIDExists: Boolean;
-    function GetCPUVendorID: String;
+    function GetCPUName: String;
+    function GetCPUType: Cardinal;
     {$IFDEF MeasureCPUFrequency}
     function GetCPUFreqEx: Extended;
     {$ENDIF}
@@ -70,9 +71,10 @@ type
     property HasCPUID: Boolean read FHasCPUID stored false;
     property HasRDTSC: Boolean read FHasRDTSC stored false;
     property CPUIDLevel: LongWord read FCPUIDLevel stored false;
+    property CPUIDExtLevel: LongWord read FCPUIDExtLevel stored false;
     property Count: Cardinal read FCount stored false;
     property Vendor: String read FVendor stored false;
-    property VendorID: String read FVendorID stored false;
+    property Name: String read FName stored false;
     {$IFDEF MeasureCPUFrequency}
     property Freq: Cardinal read FFreq stored false;
     {$ENDIF}
@@ -81,6 +83,7 @@ type
     property Model: Cardinal read FModel stored false;
     property Typ: Cardinal read FType stored false;
     property SubModel: String read FSubModel stored false;
+    property Brand: String read FBrand stored false;
   end;
 
   TMemory = class(TPersistent)
@@ -358,6 +361,7 @@ type
     ECX: LongWord;
     EDX: LongWord;
   end;
+  TBrandStr = array[0..47] of AnsiChar;
 
 var
   WindowsPlatformCompatibility: TPlatformType;
@@ -523,27 +527,27 @@ asm
 	MOV [rsi], rax  //Store Level
 
 	//Save the first 4 bytes
-	MOV  rax,rbx   //need CPUID EBX-value to be in EAX
-	XCHG rbx,rcx   //save ECX result
+	MOV  rax,rbx   //need CPUID RBX-value to be in RAX
+	XCHG rbx,rcx   //save RCX result
 	MOV  rcx,4     //loop 4 times
 	@1:
-	STOSB          //save 1 byte from EAX
+	STOSB          //save 1 byte from RAX
 	SHR  rax,8     //shift to the next byte
 	LOOP @1
 
 	//Save the middle 4 bytes
-	MOV  rax,rdx   //need CPUID EDX-value to be in EAX
+	MOV  rax,rdx   //need CPUID RDX-value to be in RAX
 	MOV  rcx,4     //loop 4 times
 	@2:
-	STOSB          //save 1 byte from EAX
+	STOSB          //save 1 byte from RAX
 	SHR  rax,8     //shift to the next byte
 	LOOP @2
 
 	//Save the last 4 bytes
-	MOV  rax,rbx   //need CPUID ECX-value to be in EAX
+	MOV  rax,rbx   //need CPUID RCX-value to be in EAX (note: it's stored in RBX now)
 	MOV  rcx,4     //loop 4 times
 	@3:
-	STOSB          //save 1 byte from EAX
+	STOSB          //save 1 byte from RAX
 	SHR  rax,8     //shift to the next byte
 	LOOP @3
 
@@ -615,10 +619,361 @@ asm
 	{$ELSE}
 	DB 0Fh,0a2h     //Execute CPUID
 	{$ENDIF}
-	MOV [rsi], eax  //Store Signature
-	MOV TFeatureFlags(rdi).&EBX, ebx  //Store FeatureFlags RBX
-	MOV TFeatureFlags(rdi).&ECX, ecx  //Store FeatureFlags RCX
-	MOV TFeatureFlags(rdi).&EDX, edx  //Store FeatureFlags RDX
+	MOV [rsi], eax  //Store Signature from lower 32-bit in RAX
+	MOV TFeatureFlags(rdi).&EBX, ebx  //Store FeatureFlags from lower 32-bit in RBX
+	MOV TFeatureFlags(rdi).&ECX, ecx  //Store FeatureFlags from lower 32-bit in RCX
+	MOV TFeatureFlags(rdi).&EDX, edx  //Store FeatureFlags from lower 32-bit in RDX
+
+	//Restore registers
+	//POP rdx
+	//POP rcx
+	POP rbx
+	//POP rax
+	POP rdi
+	POP rsi
+	{$ELSE}
+	{$Message Error 'Unsupported CPU architecture!'}
+	{$ENDIF}
+	{$ENDIF}
+end;
+
+procedure GetCPUIDExtLevelAndVendor(var ExtLevel: LongWord); assembler;
+asm
+	{$IFDEF CPUX86}
+	//Save registers that need to be preserved
+	PUSH esi
+	//PUSH eax //scratch
+	PUSH ebx
+	//PUSH ecx //scratch
+	//PUSH edx //scratch
+
+	//Store output variables in safe places
+	MOV esi, ExtLevel
+
+	//Call the CPUID command
+	MOV eax, 80000000h     //Function 80000000h: Largest Extended Function
+	{$IFDEF Delphi6orNewerCompiler}
+	CPUID
+	{$ELSE}
+	DB 0Fh,0a2h     //Execute CPUID
+	{$ENDIF}
+	MOV [esi], eax  //Store ExtLevel
+
+	//Restore registers
+	//POP edx
+	//POP ecx
+	POP ebx
+	//POP eax
+	POP esi
+	{$ELSE}
+	{$IFDEF CPUX64}
+	//Save registers that need to be preserved
+	PUSH rsi
+	//PUSH rax //scratch
+	PUSH rbx
+	//PUSH rcx //scratch
+	//PUSH rdx //scratch
+
+	//Store output variables in safe places
+	MOV rsi, ExtLevel
+
+	//Call the CPUID command
+	MOV rax, 80000000h     //Function 80000000h: Largest Extended Function
+	{$IFDEF Delphi6orNewerCompiler}
+	CPUID
+	{$ELSE}
+	DB 0Fh,0a2h     //Execute CPUID
+	{$ENDIF}
+	MOV [rsi], rax  //Store ExtLevel
+
+	//Restore registers
+	//POP rdx
+	//POP rcx
+	POP rbx
+	//POP rax
+	POP rsi
+	{$ELSE}
+	{$Message Error 'Unsupported CPU architecture!'}
+	{$ENDIF}
+	{$ENDIF}
+end;
+
+procedure GetCPUIDBrand(var BrandStr: TBrandStr); assembler;
+asm
+	{$IFDEF CPUX86}
+	//Save registers that need to be preserved
+	PUSH esi
+	PUSH edi
+	//PUSH eax //scratch
+	PUSH ebx
+	//PUSH ecx //scratch
+	//PUSH edx //scratch
+
+	//Store output variables in safe places
+	MOV edi, BrandStr //Put this EDI, because we're going to use STOSB to write to it
+
+	//Call the CPUID command
+	MOV eax, 80000002h     //Function 80000002h: Processor Brand String
+	{$IFDEF Delphi6orNewerCompiler}
+	CPUID
+	{$ELSE}
+	DB 0Fh,0a2h     //Execute CPUID
+	{$ENDIF}
+
+	//Save the first 4 bytes
+	XCHG esi,ecx   //save ECX result in ESI
+	MOV  ecx,4     //loop 4 times
+	@1:
+	STOSB          //save 1 byte from EAX
+	SHR  eax,8     //shift to the next byte
+	LOOP @1
+
+	//Save the second 4 bytes
+	MOV  eax,ebx   //need CPUID EBX-value to be in EAX
+	MOV  ecx,4     //loop 4 times
+	@2:
+	STOSB          //save 1 byte from EAX
+	SHR  eax,8     //shift to the next byte
+	LOOP @2
+
+	//Save the third 4 bytes
+	MOV  eax,esi   //need CPUID ESI-value to be in EAX (note: it's stored in ESI now)
+	MOV  ecx,4     //loop 4 times
+	@3:
+	STOSB          //save 1 byte from EAX
+	SHR  eax,8     //shift to the next byte
+	LOOP @3
+
+	//Save the last 4 bytes
+	MOV  eax,edx   //need CPUID EDX-value to be in EAX
+	MOV  ecx,4     //loop 4 times
+	@4:
+	STOSB          //save 1 byte from EAX
+	SHR  eax,8     //shift to the next byte
+	LOOP @4
+
+	//Call the CPUID command
+	MOV eax, 80000003h     //Function 80000003h: Processor Brand String (continued)
+	{$IFDEF Delphi6orNewerCompiler}
+	CPUID
+	{$ELSE}
+	DB 0Fh,0a2h     //Execute CPUID
+	{$ENDIF}
+
+	//Save the first 4 bytes
+	XCHG esi,ecx   //save ECX result in ESI
+	MOV  ecx,4     //loop 4 times
+	@5:
+	STOSB          //save 1 byte from EAX
+	SHR  eax,8     //shift to the next byte
+	LOOP @5
+
+	//Save the second 4 bytes
+	MOV  eax,ebx   //need CPUID EBX-value to be in EAX
+	MOV  ecx,4     //loop 4 times
+	@6:
+	STOSB          //save 1 byte from EAX
+	SHR  eax,8     //shift to the next byte
+	LOOP @6
+
+	//Save the third 4 bytes
+	MOV  eax,esi   //need CPUID ESI-value to be in EAX (note: it's stored in ESI now)
+	MOV  ecx,4     //loop 4 times
+	@7:
+	STOSB          //save 1 byte from EAX
+	SHR  eax,8     //shift to the next byte
+	LOOP @7
+
+	//Save the last 4 bytes
+	MOV  eax,edx   //need CPUID EDX-value to be in EAX
+	MOV  ecx,4     //loop 4 times
+	@8:
+	STOSB          //save 1 byte from EAX
+	SHR  eax,8     //shift to the next byte
+	LOOP @8
+
+	//Call the CPUID command
+	MOV eax, 80000004h     //Function 80000004h: Processor Brand String (continued)
+	{$IFDEF Delphi6orNewerCompiler}
+	CPUID
+	{$ELSE}
+	DB 0Fh,0a2h     //Execute CPUID
+	{$ENDIF}
+
+	//Save the first 4 bytes
+	XCHG esi,ecx   //save ECX result in ESI
+	MOV  ecx,4     //loop 4 times
+	@9:
+	STOSB          //save 1 byte from EAX
+	SHR  eax,8     //shift to the next byte
+	LOOP @9
+
+	//Save the second 4 bytes
+	MOV  eax,ebx   //need CPUID EBX-value to be in EAX
+	MOV  ecx,4     //loop 4 times
+	@10:
+	STOSB          //save 1 byte from EAX
+	SHR  eax,8     //shift to the next byte
+	LOOP @10
+
+	//Save the third 4 bytes
+	MOV  eax,esi   //need CPUID ESI-value to be in EAX (note: it's stored in ESI now)
+	MOV  ecx,4     //loop 4 times
+	@11:
+	STOSB          //save 1 byte from EAX
+	SHR  eax,8     //shift to the next byte
+	LOOP @11
+
+	//Save the last 4 bytes
+	MOV  eax,edx   //need CPUID EDX-value to be in EAX
+	MOV  ecx,4     //loop 4 times
+	@12:
+	STOSB          //save 1 byte from EAX
+	SHR  eax,8     //shift to the next byte
+	LOOP @12
+
+	//Restore registers
+	//POP edx
+	//POP ecx
+	POP ebx
+	//POP eax
+	POP edi
+	POP esi
+	{$ELSE}
+	{$IFDEF CPUX64}
+	//Save registers that need to be preserved
+	PUSH rsi
+	PUSH rdi
+	//PUSH rax //scratch
+	PUSH rbx
+	//PUSH rcx //scratch
+	//PUSH rdx //scratch
+
+	//Store output variables in safe places
+	MOV rdi, VendorStr //Put this RDI, because we're going to use STOSB to write to it
+
+	//Call the CPUID command
+	MOV rax, 80000002h     //Function 80000002h: Processor Brand String
+	{$IFDEF Delphi6orNewerCompiler}
+	CPUID
+	{$ELSE}
+	DB 0Fh,0a2h     //Execute CPUID
+	{$ENDIF}
+	MOV [rsi], rax  //Store Level
+
+	//Save the first 4 bytes
+	XCHG rsi,rcx   //save RCX result in RSI
+	MOV  rcx,4     //loop 4 times
+	@1:
+	STOSB          //save 1 byte from RAX
+	SHR  rax,8     //shift to the next byte
+	LOOP @1
+
+	//Save the second 4 bytes
+	MOV  rax,rbx   //need CPUID RBX-value to be in RAX
+	MOV  rcx,4     //loop 4 times
+	@2:
+	STOSB          //save 1 byte from RAX
+	SHR  rax,8     //shift to the next byte
+	LOOP @2
+
+	//Save the third 4 bytes
+	MOV  rax,rsi   //need CPUID RSI-value to be in RAX (note: it's stored in RSI now)
+	MOV  rcx,4     //loop 4 times
+	@3:
+	STOSB          //save 1 byte from RAX
+	SHR  rax,8     //shift to the next byte
+	LOOP @3
+
+	//Save the last 4 bytes
+	MOV  rax,rdx   //need CPUID RDX-value to be in RAX
+	MOV  rcx,4     //loop 4 times
+	@4:
+	STOSB          //save 1 byte from RAX
+	SHR  rax,8     //shift to the next byte
+	LOOP @4
+
+	//Call the CPUID command
+	MOV rax, 80000003h     //Function 80000003h: Processor Brand String (continued)
+	{$IFDEF Delphi6orNewerCompiler}
+	CPUID
+	{$ELSE}
+	DB 0Fh,0a2h     //Execute CPUID
+	{$ENDIF}
+	MOV [rsi], rax  //Store Level
+
+	//Save the first 4 bytes
+	XCHG rsi,rcx   //save RCX result in RSI
+	MOV  rcx,4     //loop 4 times
+	@1:
+	STOSB          //save 1 byte from RAX
+	SHR  rax,8     //shift to the next byte
+	LOOP @1
+
+	//Save the second 4 bytes
+	MOV  rax,rbx   //need CPUID RBX-value to be in RAX
+	MOV  rcx,4     //loop 4 times
+	@2:
+	STOSB          //save 1 byte from RAX
+	SHR  rax,8     //shift to the next byte
+	LOOP @2
+
+	//Save the third 4 bytes
+	MOV  rax,rsi   //need CPUID RSI-value to be in RAX (note: it's stored in RSI now)
+	MOV  rcx,4     //loop 4 times
+	@3:
+	STOSB          //save 1 byte from RAX
+	SHR  rax,8     //shift to the next byte
+	LOOP @3
+
+	//Save the last 4 bytes
+	MOV  rax,rdx   //need CPUID RDX-value to be in RAX
+	MOV  rcx,4     //loop 4 times
+	@4:
+	STOSB          //save 1 byte from RAX
+	SHR  rax,8     //shift to the next byte
+	LOOP @4
+
+	//Call the CPUID command
+	MOV rax, 80000004h     //Function 80000004h: Processor Brand String (continued)
+	{$IFDEF Delphi6orNewerCompiler}
+	CPUID
+	{$ELSE}
+	DB 0Fh,0a2h     //Execute CPUID
+	{$ENDIF}
+	MOV [rsi], rax  //Store Level
+
+	//Save the first 4 bytes
+	XCHG rsi,rcx   //save RCX result in RSI
+	MOV  rcx,4     //loop 4 times
+	@1:
+	STOSB          //save 1 byte from RAX
+	SHR  rax,8     //shift to the next byte
+	LOOP @1
+
+	//Save the second 4 bytes
+	MOV  rax,rbx   //need CPUID RBX-value to be in RAX
+	MOV  rcx,4     //loop 4 times
+	@2:
+	STOSB          //save 1 byte from RAX
+	SHR  rax,8     //shift to the next byte
+	LOOP @2
+
+	//Save the third 4 bytes
+	MOV  rax,rsi   //need CPUID RSI-value to be in RAX (note: it's stored in RSI now)
+	MOV  rcx,4     //loop 4 times
+	@3:
+	STOSB          //save 1 byte from RAX
+	SHR  rax,8     //shift to the next byte
+	LOOP @3
+
+	//Save the last 4 bytes
+	MOV  rax,rdx   //need CPUID RDX-value to be in RAX
+	MOV  rcx,4     //loop 4 times
+	@4:
+	STOSB          //save 1 byte from RAX
+	SHR  rax,8     //shift to the next byte
+	LOOP @4
 
 	//Restore registers
 	//POP rdx
@@ -754,7 +1109,7 @@ asm
 @exit:
 end;
 
-function TCPU.GetCPUVendorID :string;
+function TCPU.GetCPUName :string;
 begin
   case Family of
      4: case FVendorNo Of
@@ -1010,12 +1365,14 @@ end;
 
 procedure TCPU.GetInfo;
 var
-  I: Integer;
+  I, J: Integer;
   CPUIDVendor: TVendorStr;
   CPUIDSignature: LongWord;
   CPUIDFeatureFlags: TFeatureFlags;
   ExtendedModel: Byte;
   ExtendedFamily: Byte;
+  CPUIDBrand: TBrandStr;
+  CPUIDBrand_TMP: AnsiString;
 begin
   Log(LOG_VERBOSE, 'Starting gathering CPU information...');
   FCount:=CPUCount;
@@ -1048,7 +1405,7 @@ begin
         FFamily:=Family + ExtendedFamily;
       end;
 
-      //Log(LOG_VERBOSE, 'Getting CPU vendor information...');
+      Log(LOG_VERBOSE, 'Getting CPU vendor information...');
       FVendorNo:=-1;
       for i:=low(CPUVendorIDs) to high(CPUVendorIDs) do
       begin
@@ -1059,8 +1416,38 @@ begin
           break;
         end;
       end;
-      FVendorID:=GetCPUVendorID;
+      FName:=GetCPUName;
       FSubModel:=GetSubModel;
+
+      GetCPUIDExtLevelAndVendor(FCPUIDExtLevel);
+      if FCPUIDExtLevel > $80000000 then
+        FCPUIDExtLevel := FCPUIDExtLevel - $80000000
+      else
+        //Not implemented
+        FCPUIDExtLevel := 0;
+      if FCPUIDExtLevel > 4 then
+      begin
+        Log(LOG_VERBOSE, 'Getting CPU brand information...');
+        GetCPUIDBrand(CPUIDBrand);
+        i:=Low(CPUIDBrand);
+        while i <= High(CPUIDBrand) do
+        begin
+          if CPUIDBrand[i] <> ' ' then
+            break;
+          Inc(i);
+        end;
+        j:=High(CPUIDBrand);
+        if CPUIDBrand[j] = #0 then
+          Dec(j);
+        while j >= Low(CPUIDBrand) do
+        begin
+          if CPUIDBrand[j] <> ' ' then
+            break;
+          Dec(j);
+        end;
+        SetString(CPUIDBrand_TMP, PAnsiChar(@(CPUIDBrand[i])), j-i+1);
+        FBrand:=CPUIDBrand_TMP;
+      end;
     end;
   end
   else
@@ -1068,9 +1455,9 @@ begin
     FFamily:=GetCPUType;
     FVendor:='Intel';
     if Family=$f then
-      FVendorID:='compatible'
+      FName:='compatible'
     else
-      FVendorID:=Format('80%d86 or compatible', [Family]);
+      FName:=Format('80%d86 or compatible', [Family]);
   end;
   {$IFDEF MeasureCPUFrequency}
   if HasRDTSC then
@@ -1085,15 +1472,18 @@ begin
   with sl do
   begin
     {$IFDEF MeasureCPUFrequency}
-    add(format('%d x %s %s - %d MHz',[self.Count,Vendor,VendorID,Freq]));
+    add(format('%d x %s %s - %d MHz',[self.Count,Vendor,Name,Freq]));
     {$ELSE}
-    add(format('%d x %s %s',[self.Count,Vendor,VendorID]));
+    add(format('%d x %s %s',[self.Count,Vendor,Name]));
     {$ENDIF}
     if HasCPUID then
     begin
       add(format('Submodel: %s',[Submodel]));
       add(format('Model ID: Family %d  Model %d  Stepping %d',[Family,Model,Stepping]));
       add(format('CPUID Level: Level %d',[CPUIDLevel]));
+      add(format('CPUID Extended Level: Level %d',[CPUIDExtLevel]));
+      if CPUIDExtLevel > 4 then
+        add(format('Brand: %s',[Brand]));
     end
     else
       add(format('Model ID: Family %d',[Family]));
