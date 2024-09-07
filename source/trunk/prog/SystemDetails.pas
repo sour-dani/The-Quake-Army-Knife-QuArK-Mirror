@@ -26,6 +26,7 @@ uses SysUtils, StrUtils, Windows, Classes, ExtraFunctionality;
 
 {.$DEFINE MeasureCPUFrequency} //This seems like an awful waste of CPU cycles!
 {.$DEFINE LogSensitiveInformation} //Decker: we're not interested in Machine-/Username. We're not Login-Crackers!
+{$DEFINE CPUNameLookup}
 
 {$I DelphiVer.inc}
 
@@ -56,7 +57,6 @@ type
     FVendorNo: Integer;
     FHasCPUID, FHasRDTSC: Boolean;
     function CPUIDExists: Boolean;
-    function GetCPUName: String;
     function GetCPUType: Cardinal;
     {$IFDEF MeasureCPUFrequency}
     function GetCPUFreqEx: Extended;
@@ -366,6 +366,10 @@ type
 var
   WindowsPlatformCompatibility: TPlatformType;
   DriverBugs: TStringList;
+
+{$IFDEF CPUNameLookup}
+{$INCLUDE GetCPUName.inc}
+{$ENDIF}
 
 function FormatBytes(const Number: Integer) : String; overload;
 begin
@@ -1109,152 +1113,6 @@ asm
 @exit:
 end;
 
-function TCPU.GetCPUName :string;
-begin
-  case Family of
-     4: case FVendorNo Of
-          0: case Model of
-               $0: result:='i80486DX-25/33';
-               $1: result:='i80486DX-50';
-               $2: result:='i80486SX';
-               $3: result:='i80486DX2';
-               $4: result:='i80486SL';
-               $5: result:='i80486SX2';
-               $7: result:='i80486DX2WB';
-               $8: result:='i80486DX4';
-               $9: result:='i80486DX4WB';
-               else result:='Unknown';
-             end;
-          1: case Model of
-               $1: result:='U5D(486DX)';
-               $2: result:='U5S(486SX)';
-               else result:='Unknown';
-             end;
-          2: case Model of
-               $3: result:='80486DX2WT';
-               $7: result:='80486DX2WB';
-               $8: result:='80486DX4';
-               $9: result:='80486DX4WB';
-               $E: result:='5x86';
-               $F: result:='5x86WB';
-               else result:='Unknown';
-             end;
-          3: case Model of
-               $4: result:='Cyrix Media GX';
-               $9: result:='Cyrix 5x86';
-               else result:='Unknown';
-             end;
-          else result:='Unknown';
-        end;
-     5: case FVendorNo of
-          0: case Model of
-               $0: result:='P5 A-step';
-               $1: result:='P5';
-               $2: result:='P54C';
-               $3: result:='P24T OverDrive';
-               $4: result:='P55C';
-               $5: result:='DX4 OverDrive?';
-               $6: result:='P5 OverDrive?';
-               $7: result:='P54C';
-               $8: result:='P55C(0,25µm)MMX';
-               else result:='Unknown';
-             end;
-          2: case Model of
-               $0: result:='SSA5';
-               $1: result:='5k86';
-               $2: result:='5k86';
-               $3: result:='5k86';
-               $6: result:='K6';
-               $7: result:='K6';
-               $8: result:='K6-3D';
-               $9: result:='K6PLUS-3D';
-               else result:='Unknown';
-             end;
-          3: case Model of
-               $0: result:='Pentium Cx6X86 GXm';
-               $2: result:='Std. Cx6x86';
-               $4: result:='Cx6x86 GXm';
-               else result:='Unknown';
-             end;
-          else
-             if FVendorNo=4 then
-               result:='Nx586'
-             else if FVendorNo=5 then
-               result:='IDT C6 (WinChip)'
-             else result:='Unknown';
-          end;
-     6: case FVendorNo of
-          0: case Model of
-               $0: result:='PentiumPro A-step';
-               $1: result:='Pentium Pro';
-               $3: result:='Pentium II';
-               $4: result:='P55CT (P54 overdrive)';
-               $5: result:='Pentium II 0,25µm';
-               $6: result:='Celeron, model 06';
-               $7: result:='Pentium III, model 07';
-               $8: result:='Pentium/Celeron III, model 08';
-               $9: result:='Pentium M/Celeron M, model 09';
-               $A: result:='Pentium Xeon III, model 0Ah';
-               $B: result:='Pentium III, model 0Bh';
-               $D: result:='Pentium M/Celeron M, model 0Dh';
-               $E: result:='Core';
-               $F: result:='Core 2';
-               $15: result:='Pentium M';
-               $16: result:='Core 2';
-               $17: result:='Core 2, model Penryn';
-               $1A: result:='Nehalem';
-               $1C: result:='Bonnell';
-               $1D: result:='Core 2, model Penryn';
-               $1E: result:='Nehalem';
-               $25: result:='Westmere';
-               $26: result:='Bonnell';
-               $27: result:='Saltwell';
-               $2A: result:='Sandy Bridge';
-               $2C: result:='Westmere';
-               $2D: result:='Sandy Bridge';
-               $2E: result:='Nehalem';
-               $2F: result:='Westmere';
-               $35: result:='Saltwell';
-               $36: result:='Saltwell';
-               $37: result:='Silvermont';
-               $3A: result:='Ivy Bridge';
-               $3C: result:='Haswell';
-               $3D: result:='Broadwell';
-               $3E: result:='Ivy Bridge';
-               $3F: result:='Haswell';
-               $45: result:='Haswell';
-               $46: result:='Haswell';
-               $47: result:='Broadwell';
-               $4A: result:='Silvermont';
-               $4C: result:='Airmont';
-               $4D: result:='Silvermont';
-               $4E: result:='Skylake';
-               $4F: result:='Broadwell';
-               $55: result:='Skylake/Cascade Lake/Cooper Lake';
-               $56: result:='Broadwell';
-               $5A: result:='Silvermont';
-               $5C: result:='Goldmont';
-               $5D: result:='Silvermont';
-               $5E: result:='Skylake';
-               $5F: result:='Goldmont';
-               else result:='Unknown';
-             end;
-          2: case Model of
-               $6: result:='K6';
-               $7: result:='K6';
-               $8: result:='K6-3D';
-               $9: result:='K6PLUS-3D';
-               else result:='Unknown';
-             end;
-          3: if Model=0 then
-               result:='Cx6x86 MX/MII'
-             else result:='Unknown';
-          else result:='Unknown';
-        end;
-     else result:='Unknown';
-  end;
-end;
-
 {$IFDEF MeasureCPUFrequency}
 //FIXME: On multi-core machines, it may cause weird issues due to time differences between cores.
 //FIXME: Also, the RDTSC is not a SERIALIZING instruction, meaning it may get shifted around due to out-of-order execution!
@@ -1416,7 +1274,11 @@ begin
           break;
         end;
       end;
-      FName:=GetCPUName;
+      {$IFDEF CPUNameLookup}
+      FName:=GetCPUName(FFamily, FVendorNo, FModel);
+      {$ELSE}
+      FName:='';
+      {$ENDIF}
       FSubModel:=GetSubModel;
 
       GetCPUIDExtLevelAndVendor(FCPUIDExtLevel);
@@ -1471,22 +1333,25 @@ procedure TCPU.Report(var sl: TStringList);
 begin
   with sl do
   begin
-    {$IFDEF MeasureCPUFrequency}
-    add(format('%d x %s %s - %d MHz',[self.Count,Vendor,Name,Freq]));
-    {$ELSE}
+    {$IFDEF CPUNameLookup}
     add(format('%d x %s %s',[self.Count,Vendor,Name]));
+    {$ELSE}
+    add(format('%d x %s CPU',[self.Count,Vendor]));
     {$ENDIF}
     if HasCPUID then
     begin
+      if CPUIDExtLevel > 4 then
+        add(format('Brand: %s',[Brand]));
       add(format('Submodel: %s',[Submodel]));
       add(format('Model ID: Family %d  Model %d  Stepping %d',[Family,Model,Stepping]));
       add(format('CPUID Level: Level %d',[CPUIDLevel]));
       add(format('CPUID Extended Level: Level %d',[CPUIDExtLevel]));
-      if CPUIDExtLevel > 4 then
-        add(format('Brand: %s',[Brand]));
     end
     else
       add(format('Model ID: Family %d',[Family]));
+    {$IFDEF MeasureCPUFrequency}
+    add(format('Clock: %d MHz',[Freq]));
+    {$ENDIF}
   end;
 end;
 
