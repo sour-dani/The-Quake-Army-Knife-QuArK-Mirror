@@ -76,8 +76,9 @@ begin
                $3: result:='5k86';
                $6: result:='K6';
                $7: result:='K6';
-               $8: result:='K6-3D';
-               $9: result:='K6PLUS-3D';
+               $8: result:='K6-2';
+               $9: result:='K6-III';
+               $D: result:='K6-2+';
                else result:='Unknown';
              end;
           3: case Model of
@@ -150,10 +151,14 @@ begin
                else result:='Unknown';
              end;
           2: case Model of
-               $6: result:='K6';
-               $7: result:='K6';
-               $8: result:='K6-3D';
-               $9: result:='K6PLUS-3D';
+               $1: result:='Athlon';
+               $2: result:='Athlon';
+               $3: result:='Duron';
+               $4: result:='Athlon';
+               $6: result:='Athlon / Athlon MP / Duron / Athlon XP';
+               $7: result:='Duron';
+               $8: result:='Athlon XP / Duron / Sempron / Athlon MP / Mobile Athlon';
+               $A: result:='Athlon XP / Sempron / Mobile Athlon';
                else result:='Unknown';
              end;
           3: if Model=0 then
