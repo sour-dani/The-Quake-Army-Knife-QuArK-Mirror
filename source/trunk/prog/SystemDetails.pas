@@ -1381,6 +1381,7 @@ begin
   Log(LOG_VERBOSE, 'Gathering environment information...');
   FEnv.Clear;
   b:=GetEnvironmentStrings;
+  if b=nil then Exit;
   try
     s:=b;
     while True do
