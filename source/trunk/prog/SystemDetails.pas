@@ -421,7 +421,7 @@ const
   ID_Bit = $200000;   // EFLAGS ID bit
   TSC_Bit = $10;      // TimeStamp Counter EDX Feature Flag bit
 
-  CPUVendorIDs :array[0..13] of string = ('GenuineIntel',
+  CPUVendorIDs :array[0..14] of string = ('GenuineIntel',
                                           'UMC UMC UMC',
                                           'AuthenticAMD',
                                           'CyrixInstead',
@@ -434,9 +434,10 @@ const
                                           'VIA VIA VIA ',
                                           'AMDisbetter!',
                                           'TransmetaCPU',
-                                          'Vortex86 SoC');
+                                          'Vortex86 SoC',
+                                          'HygonGenuine');
 
-  CPUVendors :array[0..13] of string = ('Intel',
+  CPUVendors :array[0..14] of string = ('Intel',
                                         'UMC',
                                         'AMD',
                                         'Cyrix',
@@ -449,7 +450,8 @@ const
                                         'VIA',
                                         'AMD',
                                         'Transmeta',
-                                        'Vortex');
+                                        'Vortex',
+                                        'Hygon');
 
 procedure GetCPUIDLevelAndVendor(var Level: LongWord; var VendorStr: TVendorStr); assembler;
 asm
