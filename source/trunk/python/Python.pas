@@ -1986,7 +1986,7 @@ end;
 procedure TestPythonObjectDump;
 begin
   if g_PythonObjects.Count>0 then
-    if Windows.MessageBox(0, PChar(Format('Some Python objects were not correctly freed. This is a bug. Do you want to write a data report (%s.txt) ?', [PythonObjectDumpFile])), 'QuArK - DEBUGGING', MB_YESNO) = IDYES then
+    if Application.MessageBox(PChar(Format('Some Python objects were not correctly freed. This is a bug. Do you want to write a data report (%s.txt) ?', [PythonObjectDumpFile])), 'QuArK - DEBUGGING', MB_YESNO) = IDYES then
       PythonObjectDump;
 end;
 {$ENDIF}

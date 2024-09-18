@@ -343,7 +343,7 @@ type
 
 implementation
 
-uses Math, Graphics, DateUtils, {$IFDEF CompiledWithDelphi2}ShellObj, OLE2, {$ELSE}ShlObj, ActiveX, {$ENDIF}
+uses Math, Forms, Graphics, DateUtils, {$IFDEF CompiledWithDelphi2}ShellObj, OLE2, {$ELSE}ShlObj, ActiveX, {$ENDIF}
   TlHelp32, Psapi, Registry, Registry2, Logging, QkExceptions, QConsts;
 
 type
@@ -1267,7 +1267,7 @@ begin
 
       Log(LOG_VERBOSE, 'Getting CPU vendor information...');
       FVendorNo:=-1;
-      for i:=low(CPUVendorIDs) to high(CPUVendorIDs) do
+      for i:=Low(CPUVendorIDs) to High(CPUVendorIDs) do
       begin
         if CPUVendorIDs[i]=CPUIDVendor then
         begin
@@ -1389,7 +1389,7 @@ begin
       if StrLen(s)=0 then
         break;
       FEnv.Add(s);
-      inc(s, StrLen(s) + 1);
+      Inc(s, StrLen(s) + 1);
     end;
   finally
     FreeEnvironmentStrings(b);
@@ -1494,7 +1494,7 @@ begin
     ZeroMemory(@OS,SizeOf(OS));
     OS.dwOSVersionInfoSize:=SizeOf(TOSVersionInfoEx);
     if not GetVersionEx(POSVersionInfo(@OS)^) then
-      raise exception.create('Unable to retrieve system details. Call to GetVersionEx failed!');
+      raise Exception.Create('Unable to retrieve system details. Call to GetVersionEx failed!');
   end
   else
   begin
@@ -1502,7 +1502,7 @@ begin
     ZeroMemory(@OS,SizeOf(OS));
     OS.dwOSVersionInfoSize:=SizeOf(TOSVersionInfo);
     if not GetVersionEx(POSVersionInfo(@OS)^) then
-      raise exception.create('Unable to retrieve system details. Call to GetVersionEx failed!');
+      raise Exception.Create('Unable to retrieve system details. Call to GetVersionEx failed!');
   end;
   FMajorVersion:=OS.dwMajorVersion;
   FMinorVersion:=OS.dwMinorVersion;
@@ -1683,7 +1683,7 @@ begin
        end;
       end;
     else
-      raise exception.create('Unknown Windows platform detected!');
+      raise Exception.Create('Unknown Windows platform detected!');
   end;
   case WindowsPlatformCompatibility of
   osWin95Comp:
@@ -2198,8 +2198,8 @@ const
         j:=0;
       end
       else
-        inc(j);
-      inc(i);
+        Inc(j);
+      Inc(i);
     until j>1;
   end;
 begin
@@ -2348,7 +2348,7 @@ begin
   Log(LOG_VERBOSE, 'Starting gathering of DISPLAY system information...');
   l_hdc := GetDC(0); //FIXME: This only retrieves the primary monitor!
   if l_hdc = 0 then
-    raise exception.Create('Unable to get DC of entire screen');
+    raise Exception.Create('Unable to get DC of entire screen');
   try
 
     FHorzRes:=GetDeviceCaps(l_hdc,windows.HORZRES);
@@ -2556,7 +2556,7 @@ begin
     Exit;
 
   Log(LOG_VERBOSE, 'Enumerating of display driver information...');
-  sl:=TStringList.create;
+  sl:=TStringList.Create;
   try
     reg:=TRegistry2.Create(KEY_READ);
     with reg do
@@ -2800,8 +2800,8 @@ begin
 end;
 
 procedure TDirectX.GetInfo;
-  //Taken from: https://www.oreilly.com/library/view/delphi-in-a/1565926595/re314.html
-  function Swap32(const Value: Cardinal): Cardinal;
+  //Based on: https://www.oreilly.com/library/view/delphi-in-a/1565926595/re314.html
+  function Swap32(const Value: LongWord): LongWord;
   begin
     Result := Swap(Value shr 16) or (Swap(Value) shl 16);
   end;
@@ -2845,7 +2845,7 @@ begin
       CloseKey;
     end;
     FDirect3D.Clear;
-    sl:=TStringList.create;
+    sl:=TStringList.Create;
     try
       if OpenKey(rkDirect3D,false) then
       begin
@@ -3029,7 +3029,7 @@ begin
         BytesReturned := 0;
         ProcessSize := ProcessNumber * SizeOf(DWORD);
         if EnumProcesses(ProcessList, ProcessSize, BytesReturned) = false then
-          raise exception.Create('Unable to enumerate processes!');
+          raise Exception.Create('Unable to enumerate processes!');
       until BytesReturned < ProcessSize;
       ProcessNumber := BytesReturned div SizeOf(DWORD);
       ProcessList2 := ProcessList;
@@ -3093,7 +3093,7 @@ begin
   try
     Path[MAX_PATH]:=#0; //GetModuleFileName might return a not null-terminated, truncated string
     if GetModuleFileName(ModuleHandle, Path, MAX_PATH) = 0 then
-      raise exception.create('Unable to retrieve filename of a module!');
+      raise Exception.Create('Unable to retrieve filename of a module!');
     Result := StrPas(Path);
   finally
     StrDispose(Path);
@@ -3145,7 +3145,7 @@ begin
     S:=S+'There are also Intel HD graphics and VMWare drivers that contain the same bug, but with the "HardwareInformation" keys.'+sLineBreak;
     S:=S+'For more information, see: https://quark.sourceforge.io/forums/index.php?topic=1064'+sLineBreak+sLineBreak;
     S:=S+'You can disable this check by unchecking Configuration > Startup > Check for bugs.';
-    Windows.MessageBox(0, PChar(S), 'QuArK', MB_ICONWARNING or MB_OK);
+    Application.MessageBox(PChar(S), 'QuArK', MB_ICONWARNING or MB_OK);
   end;
 end;
 

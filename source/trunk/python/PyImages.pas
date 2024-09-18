@@ -25,7 +25,7 @@ interface
 {$INCLUDE PyVersions.inc}
 
 uses Windows, Messages, SysUtils, Classes, Graphics, CommCtrl, Python,
-     QkObjects, Controls, Forms, ComCtrls, PyControls, QkForm, qmath;
+     QkObjects, Controls, ComCtrls, PyControls, QkForm;
 
 type
  PyImage = ^TyImage;
@@ -128,7 +128,7 @@ procedure FinalizeInternalImages;
 
 implementation
 
-uses Types, Quarkx, QkExceptions, PyCanvas, Dialogs;
+uses Types, Forms, Quarkx, QkExceptions, PyCanvas, Dialogs;
 
 {$I DelphiVer.inc}
 

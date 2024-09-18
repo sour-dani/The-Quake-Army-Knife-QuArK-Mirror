@@ -330,7 +330,7 @@ begin
  begin
   S := UpperCase(ParamStr(I));
   if S = '/?' then
-   MessageBox(0, 'Available parameters:' + sLineBreak
+   Application.MessageBox('Available parameters:' + sLineBreak
    + sLineBreak
    + '/?: Displays this window' + sLineBreak
    + '/NOINSTANCE: Skips the single-instance check (use at own risk!)' + sLineBreak
@@ -358,7 +358,7 @@ begin
  begin
    //Something went terribly wrong!
    LogWindowsError(GetLastError(), 'CreateMutex(Nil, True, "QuArK_Mutex")');
-   Windows.MessageBox(0, PChar('Unable to check if there already is an instance of QuArK running! If this is the case, this can cause serious problems. For example, changed configuration settings might not be saved, and QuArK might not update correctly.'), PChar('QuArK'), MB_TASKMODAL or MB_OK or MB_ICONWARNING);
+   Application.MessageBox(PChar('Unable to check if there already is an instance of QuArK running! If this is the case, this can cause serious problems. For example, changed configuration settings might not be saved, and QuArK might not update correctly.'), 'QuArK', MB_TASKMODAL or MB_OK or MB_ICONWARNING);
    MutexError := 0;
  end
  else
@@ -398,7 +398,7 @@ begin
          S:=S+' For example, changed configuration settings might not be saved, and QuArK might not update correctly.' + sLineBreak;
          S:=S+'This check can be disabled (at own risk!) in the configuration settings.' + sLineBreak + sLineBreak;
          S:=S+'Are you sure you want to start a new instance of QuArK?';
-         if Windows.MessageBox(0, PChar(S), PChar('QuArK'), MB_TASKMODAL or MB_YESNO or MB_ICONWARNING or MB_DEFBUTTON2) = idNo then
+         if Application.MessageBox(PChar(S), 'QuArK', MB_TASKMODAL or MB_YESNO or MB_ICONWARNING or MB_DEFBUTTON2) = idNo then
          begin
            Application.Terminate;
            Abort;
@@ -1689,7 +1689,7 @@ begin
     SaveSetupNow;
    except
     on E: Exception do
-     MessageBox(0, PChar(FmtLoadStr1(5658, [GetExceptionMessage(E)])), PChar(LoadStr1(5657)), MB_OK or MB_ICONHAND or MB_TASKMODAL);
+     Application.MessageBox(PChar(FmtLoadStr1(5658, [GetExceptionMessage(E)])), PChar(LoadStr1(5657)), MB_OK or MB_ICONHAND or MB_TASKMODAL);
    end;
   end;
  ClearGameBuffers(False);

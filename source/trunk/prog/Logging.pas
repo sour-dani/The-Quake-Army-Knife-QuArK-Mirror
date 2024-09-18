@@ -60,7 +60,7 @@ const
 
 implementation
 
-uses Windows, Sysutils, QConsts, ApplPaths, ExtraFunctionality;
+uses Windows, Forms, Sysutils, QConsts, ApplPaths, ExtraFunctionality;
 
 var
   LogFile: TextFile;
@@ -301,30 +301,33 @@ end;
 const
  EnvVarFound = 'Environmental variable %s found. QuArK will use its value.';
  EnvVarFoundTitle = 'Environmental variable found';
+ EnvVarLogFilename = 'QUARK_LOG_FILENAME';
+ EnvVarLogLevel = 'QUARK_LOG_LEVEL';
+ EnvVarLogPatchname = 'QUARK_LOG_PATCHNAME';
 
 initialization
   LogOpened:=False;
 
-  LogFilename:=GetEnvironmentVariable('QUARK_LOG_FILENAME');
+  LogFilename:=GetEnvironmentVariable(EnvVarLogFilename);
   if LogFilename='' then
     LogFilename:=LOG_FILENAME
   else
-    Windows.MessageBox(0, PChar(Format(EnvVarFound, ['QUARK_LOG_FILENAME'])), EnvVarFoundTitle, MB_TASKMODAL or MB_ICONINFORMATION or MB_OK);
+    Application.MessageBox(PChar(Format(EnvVarFound, [EnvVarLogFilename])), EnvVarFoundTitle, MB_TASKMODAL or MB_ICONINFORMATION or MB_OK);
 
-  LogPatchname:=GetEnvironmentVariable('QUARK_LOG_LEVEL'); //Note: We abusing variable LogPatchname here, so we don't have to allocate a separate String.
+  LogPatchname:=GetEnvironmentVariable(EnvVarLogLevel); //Note: We abusing variable LogPatchname here, so we don't have to allocate a separate String.
   if LogPatchname='' then
     LogLevel:=DefaultLogLevel
   else
   begin
-    Windows.MessageBox(0, PChar(Format(EnvVarFound, ['QUARK_LOG_LEVEL'])), EnvVarFoundTitle, MB_TASKMODAL or MB_ICONINFORMATION or MB_OK);
+    Application.MessageBox(PChar(Format(EnvVarFound, [EnvVarLogLevel])), EnvVarFoundTitle, MB_TASKMODAL or MB_ICONINFORMATION or MB_OK);
     LogLevel:=StrToUIntDef(LogPatchname, DefaultLogLevel);
   end;
 
-  LogPatchname:=GetEnvironmentVariable('QUARK_LOG_PATCHNAME');
+  LogPatchname:=GetEnvironmentVariable(EnvVarLogPatchname);
   if LogPatchname='' then
     LogPatchname:=LOG_PATCHFILE
   else
-    Windows.MessageBox(0, PChar(Format(EnvVarFound, ['QUARK_LOG_PATCHNAME'])), EnvVarFoundTitle, MB_TASKMODAL or MB_ICONINFORMATION or MB_OK);
+    Application.MessageBox(PChar(Format(EnvVarFound, [EnvVarLogPatchname])), EnvVarFoundTitle, MB_TASKMODAL or MB_ICONINFORMATION or MB_OK);
 
 finalization
   CloseLogFile;
