@@ -1,0 +1,10 @@
+<author>DanielPharos</author>
+<headline>Quake on an Arduino</headline>
+
+<p>It's long been a challenge to run DOOM on as many low-powered devices as possible. However, Quake deserves some of this love too! And in fact, somebody has managed just that, as written about <a href="https://community.silabs.com/s/share/a5UVm000000Vi1ZMAS/quake-ported-to-arduino-nano-matter-and-sparkfun-thing-plus-matter-boards">here</a>.</p>
+
+<p>This is the shareware Quake running on an Arduino, using less than 300 kB of RAM. Quite impressive!</p>
+
+
+<p>Happy Quake-ing,<br>
+DanielPharos</p>
