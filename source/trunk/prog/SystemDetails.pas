@@ -99,9 +99,9 @@ type
     FPhysicalTotal, FPhysicalFree: DWORDLONG;
     FPageFileTotal, FPageFileFree: DWORDLONG;
     FVirtualTotal, FVirtualFree: DWORDLONG;
-    FAllocGranularity: DWORD;
-    FMinAppAddress, FMaxAppAddress: Cardinal; //Actually, pointer, but can't publish a pointer as a property.
     FPageSize: DWORD;
+    FMinAppAddress, FMaxAppAddress: Cardinal; //Actually, pointer, but can't publish a pointer as a property.
+    FAllocGranularity: DWORD;
     FGlobalGDIObjects, FGlobalUSERObjects: DWORD;
     {$ENDIF}
   public
@@ -122,10 +122,10 @@ type
     property PageFileFree: DWORDLONG read FPageFileFree stored false;
     property VirtualTotal: DWORDLONG read FVirtualTotal stored false;
     property VirtualFree: DWORDLONG read FVirtualFree stored false;
-    property AllocGranularity: DWORD read FAllocGranularity stored false;
-    property MaxAppAddress: Cardinal read FMaxAppAddress stored false;
-    property MinAppAddress: Cardinal read FMinAppAddress stored false;
     property PageSize: DWORD read FPageSize stored false;
+    property MinAppAddress: Cardinal read FMinAppAddress stored false;
+    property MaxAppAddress: Cardinal read FMaxAppAddress stored false;
+    property AllocGranularity: DWORD read FAllocGranularity stored false;
     property GlobalGDIObjects: DWORD read FGlobalGDIObjects stored false;
     property GlobalUSERObjects: DWORD read FGlobalUSERObjects stored false;
     {$ENDIF}
@@ -1953,10 +1953,10 @@ begin
     GetNativeSystemInfo(SI)
   else
     GetSystemInfo(SI);
-  FAllocGranularity:=SI.dwAllocationGranularity;
-  FMaxAppAddress:=Cardinal(SI.lpMaximumApplicationAddress);
-  FMinAppAddress:=Cardinal(SI.lpMinimumApplicationAddress);
   FPageSize:=SI.dwPageSize;
+  FMinAppAddress:=Cardinal(SI.lpMinimumApplicationAddress);
+  FMaxAppAddress:=Cardinal(SI.lpMaximumApplicationAddress);
+  FAllocGranularity:=SI.dwAllocationGranularity;
 
   if CheckWin32Version(6, 2) then //Windows 7
   begin
@@ -1979,19 +1979,31 @@ begin
     add(format('Available Memory total: %s Bytes', [FormatBytes(MemAvailable)]));
     add(format('Maximum Memory total: %s Bytes', [FormatBytes(MaxAvailable)]));
     {$IFDEF DEBUG}
-    add(format('System Resources free: %d%%', [SystemRes]));
-    add(format('GDI Resources free: %d%%', [GDIRes]));
-    add(format('User Resources free: %d%%' , [UserRes]));
+    add(format('System Resources free: %u%%', [SystemRes]));
+    add(format('GDI Resources free: %u%%', [GDIRes]));
+    add(format('User Resources free: %u%%' , [UserRes]));
     {$ENDIF}
     {$ELSE}
+    //add(format('Memory load: %u%%', [MemoryLoad]));
     add(format('Physical Memory total: %s Bytes', [FormatBytes(PhysicalTotal)]));
     add(format('Physical Memory free: %s Bytes', [FormatBytes(PhysicalFree)]));
+    {$IFDEF DEBUG}
+    add(format('Virtual Memory total: %s Bytes', [FormatBytes(VirtualTotal)]));
+    {$ENDIF}
     add(format('Virtual Memory free: %s Bytes', [FormatBytes(VirtualFree)]));
     {$IFDEF DEBUG}
+    add(format('Page File total: %s Bytes', [FormatBytes(PageFileTotal)]));
+    add(format('Page File free: %s Bytes', [FormatBytes(PageFileFree)]));
+    {$ENDIF}
+    //add(format('Memory Page size: %u Bytes', [PageSize]));
+    //add(format('Lowest memory address: 0x%x', [MinAppAddress]));
+    //add(format('Highest memory address: 0x%x', [MaxAppAddress]));
+    //add(format('Allocation granularity: %u Bytes', [AllocGranularity]));
+    {$IFDEF DEBUG}
     if GlobalGDIObjects<>0 then
-      add(format('Global GDI objects: %d', [GlobalGDIObjects]));
+      add(format('Global GDI objects: %u', [GlobalGDIObjects]));
     if GlobalUSERObjects<>0 then
-      add(format('Global USER objects: %d', [GlobalUSERObjects]));
+      add(format('Global USER objects: %u', [GlobalUSERObjects]));
     {$ENDIF}
     {$ENDIF}
   end;
