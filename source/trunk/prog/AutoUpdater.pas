@@ -320,7 +320,6 @@ var
   FileData: TMemoryStream;
   I: Cardinal;
   K: Integer;
-  Dummy: String;
   AddThisNotification, AddThisPackage: Boolean;
   ProgressIndicatorMax: Integer;
   Notifications: TStringList;
@@ -362,15 +361,7 @@ begin
             begin
               with UpdateIndexFile.Notifications[I] do
               begin
-                Dummy := Setup.Specifics.Strings['Notification_'+InternalName];
-                if Dummy <> '' then
-                  try
-                    InternalBuildNumber := StrToUInt(Dummy);
-                  except
-                    InternalBuildNumber := 0;
-                  end
-                else
-                  InternalBuildNumber := 0;
+                InternalBuildNumber := StrToUIntDef(Setup.Specifics.Strings['Notification_'+InternalName], 0);
                 if BuildNumber = 0 then
                   AddThisNotification := False
                 else
@@ -412,22 +403,14 @@ begin
             begin
               with UpdateIndexFile.Packages[I] do
               begin
-                Dummy := Setup.Specifics.Strings['Package_'+InternalName];
-                if Dummy <> '' then
-                  try
-                    InternalBuildNumber := StrToUInt(Dummy);
-                  except
-                    InternalBuildNumber := 0;
-                  end
-                else
-                  InternalBuildNumber := 0;
+                InternalBuildNumber := StrToUIntDef(Setup.Specifics.Strings['Package_'+InternalName], 0);
                 if BuildNumber = 0 then
                   AddThisPackage := False
                 else
                   if InternalBuildNumber < BuildNumber then
                     AddThisPackage := True
                   else
-                    AddThisPackage := False
+                    AddThisPackage := False;
               end;
 
               if AddThisPackage then
@@ -482,7 +465,7 @@ begin
               Notifications.Free;
             end;
           end;
-          Setup.Specifics.Strings['Notification_'+UpdateIndexFile.Notifications[NotificationIndex].InternalName] := Format('%u', [BuildNumber]);
+          Setup.Specifics.Strings['Notification_'+UpdateIndexFile.Notifications[NotificationIndex].InternalName] := UIntToStr(BuildNumber);
         end;
 
       //Process packages
