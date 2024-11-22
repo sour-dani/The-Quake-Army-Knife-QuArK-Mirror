@@ -29,25 +29,17 @@ function pageLocalDisplay()
 			$bodytext .= '<hr class="bigbreak">';
 		}
 
-		$bodytext .= '<p><b>';
-		$bodytext .= $CurrentInstapoll->Question;
-		$bodytext .= '</b><br>';
+		$bodytext .= '<p><b>' . $CurrentInstapoll->Question . '</b><br>';
 		if (!is_null($CurrentInstapoll->Picture))
 		{
-			$bodytext .= DisplayRawImage($CurrentInstapoll->Picture);
-			$bodytext .= '<br>';
+			$bodytext .= DisplayRawImage($CurrentInstapoll->Picture) . '<br>';
 		}
-		$bodytext .= 'Date of poll: ';
-		$bodytext .= DisplayDate($CurrentInstapoll->StartDate);
+		$bodytext .= 'Date of poll: ' . DisplayDate($CurrentInstapoll->StartDate);
 		if ($CurrentInstapoll->EndDate !== 0)
 		{
-			$bodytext .= ' - ';
-			$bodytext .= DisplayDate($CurrentInstapoll->EndDate);
+			$bodytext .= ' - ' . DisplayDate($CurrentInstapoll->EndDate);
 		}
-		$bodytext .= '<br>';
-		$bodytext .= 'Total votes: ';
-		$bodytext .= $CurrentInstapoll->TotalVotes;
-		$bodytext .= '</p>';
+		$bodytext .= '<br>Total votes: ' . $CurrentInstapoll->TotalVotes . '</p>';
 
 		if (is_array($CurrentInstapoll->Options))
 		{
@@ -56,18 +48,15 @@ function pageLocalDisplay()
 			for ($Option = 0; $Option < count($CurrentInstapoll->Options); $Option++)
 			{
 				$CurrentOption = &$CurrentInstapoll->Options[$Option];
-				$bodytext .= '<tr><td>';
-				$bodytext .= $CurrentOption->Text;
+				$bodytext .= '<tr><td>' . $CurrentOption->Text;
 				if (!is_null($CurrentOption->Picture))
 				{
-					$bodytext .= '<br>';
-					$bodytext .= DisplayRawImage($CurrentOption->Picture);
+					$bodytext .= '<br>' . DisplayRawImage($CurrentOption->Picture);
 				}
-				$bodytext .= '</td><td><div align=right>';
-				$bodytext .= $CurrentOption->Votes;
+				$bodytext .= '</td><td><div align=right>' . $CurrentOption->Votes . '</div></td>';
 				$percentage = 100.0 * ($CurrentOption->Votes / $CurrentInstapoll->TotalVotes);
 				// FIXME: Maybe do the *4.0 differently? --> Scale of the percentage-bars
-				$bodytext .= '</div></td><td width=20>&nbsp;</td><td>'.DisplayImage('instapoll', sprintf('%.0f', $percentage*4.0), null, null, sprintf('%.1f', $percentage).'%').'&nbsp;'.sprintf('%.1f', $percentage).'%</td></tr>';
+				$bodytext .= '<td width=20>&nbsp;</td><td>'.DisplayImage('instapoll', sprintf('%.0f', $percentage*4.0), null, null, sprintf('%.1f', $percentage).'%').'&nbsp;'.sprintf('%.1f', $percentage).'%</td></tr>';
 			}
 			$bodytext .= '</table>';
 		}

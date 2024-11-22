@@ -10,8 +10,8 @@ function getDB($dbname)
 	}
 	catch (PDOException $e)
 	{
-		trigger_error('Failed to access database: '.$e->getMessage(), E_USER_ERROR);
-		return null;
+		trigger_error('Failed to access database: '.$e->getMessage(), E_USER_WARNING);
+		throw $e;
 	}
 
 	return $connection;
