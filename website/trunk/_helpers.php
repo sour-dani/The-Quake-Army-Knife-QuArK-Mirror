@@ -35,4 +35,9 @@ if (version_compare(phpversion(), '8.0.0', '<'))
 		return substr_compare($string, $needle, -strlen($needle)) === 0;
 	}
 }
+
+function in_cidrv4($needle, $haystack_first, $haystack_last)
+{
+	return (ip2long($haystack_first) <= ip2long($needle)) and (ip2long($needle) <= ip2long($haystack_last));
+}
 ?>
