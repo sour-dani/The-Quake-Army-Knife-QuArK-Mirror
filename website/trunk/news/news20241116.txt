@@ -1,0 +1,10 @@
+<author>DanielPharos</author>
+<headline>Half-Life 2: 20 years anniversary</headline>
+
+<p>As Valve proudly states <a href="https://www.half-life.com/en/halflife2/20th">here</a>, Half-Life 2 was released 20 years ago! For the occasion, Valve has gone through the trouble of fixing a bunch of 20 year old bugs, and various things they broke over the years and neglected to fix at that time. Better late than never, I guess!</p>
+
+<p>So grab that update, and perhaps a temporarily free copy of Half-Life 2 and its expansions, and replay the classic!</p>
+
+
+<p>Happy Half-Life-ing,<br>
+DanielPharos</p>

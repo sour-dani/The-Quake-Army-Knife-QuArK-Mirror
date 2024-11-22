@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Steam: Goodbye Windows 7 and 8</headline>
+
+<p>In the latest update to Steam, Valve has dropped Windows 7 and 8 support. Which means games that run solely through Steam can no longer be played on those Windows versions. Now, you might think that this means your old computer can no longer play these games. However, just as with the retail versions of Half-life 1, this actually means that all older editions of Valve games that don't support Windows 10 or higher, are abandonware.</p>
+
+
+<p>Happy Steam-ing,<br>
+DanielPharos</p>
