@@ -120,6 +120,7 @@ $Companies['Kot-in-Action'] = new cCompany('Kot-in-Action', 'Kot-in-Action Creat
 $Companies['Kuju'] = new cCompany('Kuju', 'Kuju Entertainment', NULL, 'https://www.kuju.com/', 'https://en.wikipedia.org/wiki/Kuju_Entertainment');
 $Companies['Kuma Reality Games'] = new cCompany('Kuma Reality Games', 'Kuma Reality Games', NULL, NULL, 'https://en.wikipedia.org/wiki/Kuma_Reality_Games'); #https://kumacommunity.net/
 $Companies['Lever Games'] = new cCompany('Lever Games', 'Lever Games', NULL, 'https://www.levergames.com/');
+$Companies['Loiste'] = new cCompany('Loiste', 'Loiste Interactive', NULL, 'https://loisteinteractive.com/');
 $Companies['LucasArts'] = new cCompany('LucasArts', 'LucasArts', NULL, NULL, 'https://en.wikipedia.org/wiki/LucasArts'); #http://www.lucasarts.com/
 $Companies['LunchHouse'] = new cCompany('LunchHouse', 'LunchHouse Software', NULL, 'https://lunchhouse.software/');
 $Companies['MachineGames'] = new cCompany('MachineGames', 'MachineGames', NULL, 'https://www.machinegames.com/', 'https://en.wikipedia.org/wiki/MachineGames');

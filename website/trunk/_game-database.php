@@ -920,7 +920,20 @@ $Games[] = new cGame(NULL ,'HDTF' ,'Hunt Down The Freeman' ,'HDTF' ,NULL
                     ,NULL
                     );
 //https://en.wikipedia.org/wiki/Hybrid_(video_game) //Other platforms
-//FIXME: https://en.wikipedia.org/wiki/Infra_(video_game)
+$Games[] = new cGame(NULL ,'IJGC' ,'Indiana Jones and the Great Circle' ,'IJGC' ,NULL
+                    ,'https://indianajones.bethesda.net/' ,'https://en.wikipedia.org/wiki/Indiana_Jones_and_the_Great_Circle' ,'id Tech 7', FALSE
+                    ,NULL
+                    ,array('MachineGames')
+                    ,array('Bethesda')
+                    ,NULL
+                    );
+$Games[] = new cGame(NULL ,'INFRA' ,'INFRA' ,'INFRA' ,NULL
+                    ,'https://infragame.net/' ,'https://en.wikipedia.org/wiki/Infra_(video_game)' ,'Source', FALSE
+                    ,NULL
+                    ,array('Loiste')
+                    ,array('Loiste')
+                    ,NULL
+                    );
 /*$Games[] = new cGame(NULL ,'INSUR1' ,'Insurgency: Modern Infantry Combat' ,'INSUR1' ,NULL
                     ,NULL ,'https://en.wikipedia.org/wiki/Insurgency:_Modern_Infantry_Combat' ,'Source', FALSE
                     ,NULL
