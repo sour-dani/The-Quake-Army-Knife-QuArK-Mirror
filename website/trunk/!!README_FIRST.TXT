@@ -46,7 +46,7 @@ image-files on the ftp.planetquake.com FTP-server/web-server, so do that.
 
 Note! Don't upload the 'CVS' directory to the dynamic.gamespy.com FTP-server.
 It is of no use there. Only CVS (WinCVS) uses the 'CVS' directory on your
-local machine, and it does not contain anyrelevant information for others.
+local machine, and it does not contain any relevant information for others.
 
 
 /Decker (2003-02-25)
