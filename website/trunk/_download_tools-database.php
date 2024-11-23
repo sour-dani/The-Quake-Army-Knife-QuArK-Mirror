@@ -155,26 +155,28 @@ $GamesQRKTools["Hr2"  ][] = new cQRKTools("h2tku104.zip",$downloadroot."build_to
 $GamesQRKTools["Hr2"  ][] = new cQRKTools("Ht2Toolkit_v1.06.exe","https://www.quaddicted.com/files/idgames2/planetquake/hereticii/files/Ht2Toolkit_v1.06.exe"); #http://www.filefront.com/7930/Heretic-II-Toolkit-Update/
 
 # Half-life
-$GamesQRKTools["HL"   ] = array();
+$GamesQRKTools['HL'   ] = array();
 #$GamesQRKTools['HL'   ][] = new cQRKTools('Official SDKs','http://www.fileplanet.com/32334/0/0/0/1/section/SDKs_/_Source_Code');
 #$GamesQRKTools['HL'   ][] = new cQRKTools('HLStandardSDK.zip','http://www.fileplanet.com/10361/10000/fileinfo/HL-Standard-SDK');
 #$GamesQRKTools['HL'   ][] = new cQRKTools('fullsdk.EXE','http://www.fileplanet.com/44991/40000/fileinfo/Half-Life-SDK-v2.1-(Full)');
 #$GamesQRKTools['HL'   ][] = new cQRKTools('standardsdk.EXE','http://www.fileplanet.com/44992/40000/fileinfo/Half-Life-SDK-v2.1-(Standard)');
 #$GamesQRKTools['HL'   ][] = new cQRKTools('HL_Standard_SDK_2_2.exe','http://www.fileplanet.com/81536/80000/fileinfo/Standard-Half-Life-SDK-2.2');
 $GamesQRKTools['HL'   ][] = new cQRKTools('hl_sdk_v23.exe','https://www.moddb.com/games/half-life/downloads/half-life-sdk-23'); #http://www.fileplanet.com/81535/80000/fileinfo/Full-Half-Life-SDK-2.3
-#$GamesQRKTools["HL"   ][] = new cQRKTools("zhlt_1.7p15.zip","http://www.trepid.net/files/");
-#$GamesQRKTools["HL"   ][] = new cQRKTools("zhlt1.7 Custom Build","http://collective.valve-erc.com/index.php?go=mhlt");
-$GamesQRKTools["HL"   ][] = new cQRKTools("Zoner's Half-Life Tools","https://www.ammahls.com/zhlt/zhlt.htm"); #http://www.zhlt.info/
-$GamesQRKTools["HL"   ][] = new cQRKTools("Vluzacn's Map Compile Tools","https://gamebanana.com/tools/5391","Vluzacn's Map Compile Tools is derived from ZHLT 3.4 and massive amount of modification have been made during its development."); #https://forums.svencoop.com/showthread.php/40983-Downloads-amp-Changelogs
-$GamesQRKTools["HL"   ][] = new cQRKTools("seedee's Half-Life Compilation Tools","https://github.com/seedee/SDHLT","Based on code modifications by Sean 'Zoner' Cavanaugh. Based on Valve's version, modified with permission.", true);
-$GamesQRKTools["HL"   ][] = new cQRKTools("BSPTwoMap version 1.4b",$downloadroot."BSP2Map.zip","The purpose of BSPTwoMap is to decompile a Half-Life BSP file into a MAP file viewable in Valve's Hammer editor.");
-#$GamesQRKTools["HL"   ][] = new cQRKTools("Half-Life Model Viewer v1.25",$downloadroot."hlmv125.zip"); #http://chumbalum.swissquake.ch/hlmv/index.html
-$GamesQRKTools["HL"   ][] = new cQRKTools("Jed's Half-Life Model Viewer v1.36",$downloadroot."hlmv136_setup.zip");
-$GamesQRKTools["HL"   ][] = new cQRKTools("Sprite Explorer v2.12",$downloadroot."spritexplo212.zip"); #http://www.hl2source.com/?content=projects&id=sprexplorer
-$GamesQRKTools["HL"   ][] = new cQRKTools("Half-Life Sprite Viewer v1.05 Beta",$downloadroot."sprview.zip"); #http://www.planethalflife.com/mach3/sprites/sprview.html
-$GamesQRKTools["HL"   ][] = new cQRKTools("Half-Life Sprite Maker v1.00 Beta",$downloadroot."sprmake.zip"); #http://www.planethalflife.com/mach3/sprites/sprmake.html
-$GamesQRKTools["HL"   ][] = new cQRKTools("Half-Life Sprite Wizard v1.1",$downloadroot."sprwiz.zip","A Half-Life sprite compiler with a Windows interface.");
-$GamesQRKTools["HL"   ][] = new cQRKTools("Darkulator - Version 2.0",$downloadroot."darkulator_2_0.zip","A utility for Half-Life BSP map files that will allow you to adjust the light levels in the map.");
+$GamesQRKTools['HL'   ][] = new cQRKTools('Half-Life Unified SDK', 'https://github.com/twhl-community/halflife-unified-sdk', 'The Half-Life Unified SDK is a project that provides an updated version of the Half-Life SDK, with full support for the expansion packs Opposing Force and Blue Shift as well as new features.');
+#$GamesQRKTools['HL'   ][] = new cQRKTools("zhlt_1.7p15.zip","http://www.trepid.net/files/");
+#$GamesQRKTools['HL'   ][] = new cQRKTools("zhlt1.7 Custom Build","http://collective.valve-erc.com/index.php?go=mhlt");
+$GamesQRKTools['HL'   ][] = new cQRKTools("Zoner's Half-Life Tools","https://www.ammahls.com/zhlt/zhlt.htm"); #http://www.zhlt.info/
+$GamesQRKTools['HL'   ][] = new cQRKTools("Vluzacn's Map Compile Tools","https://gamebanana.com/tools/5391","Vluzacn's Map Compile Tools is derived from ZHLT 3.4 and massive amount of modification have been made during its development."); #https://forums.svencoop.com/showthread.php/40983-Downloads-amp-Changelogs
+$GamesQRKTools['HL'   ][] = new cQRKTools("seedee's Half-Life Compilation Tools","https://github.com/seedee/SDHLT","Based on code modifications by Sean 'Zoner' Cavanaugh. Based on Valve's version, modified with permission.", true);
+$GamesQRKTools['HL'   ][] = new cQRKTools("BSPTwoMap version 1.4b",$downloadroot."BSP2Map.zip","The purpose of BSPTwoMap is to decompile a Half-Life BSP file into a MAP file viewable in Valve's Hammer editor.");
+$GamesQRKTools['HL'   ][] = new cQRKTools('Half-Life Unified SDK Map Decompiler', 'https://github.com/twhl-community/HalfLife.UnifiedSdk.MapDecompiler', 'The Half-Life Unified SDK Map Decompiler is a cross-platform map decompiler for Half-Life 1 BSP version 29 (Half-Life Alpha 0.52) and 30 files.<!-- Quake 1/2/3 and Source maps, as well as engine offshoots like Svengine and Paranoia 2 are not supported.-->');
+#$GamesQRKTools['HL'   ][] = new cQRKTools("Half-Life Model Viewer v1.25",$downloadroot."hlmv125.zip"); #http://chumbalum.swissquake.ch/hlmv/index.html
+$GamesQRKTools['HL'   ][] = new cQRKTools("Jed's Half-Life Model Viewer v1.36",$downloadroot."hlmv136_setup.zip");
+$GamesQRKTools['HL'   ][] = new cQRKTools("Sprite Explorer v2.12",$downloadroot."spritexplo212.zip"); #http://www.hl2source.com/?content=projects&id=sprexplorer
+$GamesQRKTools['HL'   ][] = new cQRKTools("Half-Life Sprite Viewer v1.05 Beta",$downloadroot."sprview.zip"); #http://www.planethalflife.com/mach3/sprites/sprview.html
+$GamesQRKTools['HL'   ][] = new cQRKTools("Half-Life Sprite Maker v1.00 Beta",$downloadroot."sprmake.zip"); #http://www.planethalflife.com/mach3/sprites/sprmake.html
+$GamesQRKTools['HL'   ][] = new cQRKTools("Half-Life Sprite Wizard v1.1",$downloadroot."sprwiz.zip","A Half-Life sprite compiler with a Windows interface.");
+$GamesQRKTools['HL'   ][] = new cQRKTools("Darkulator - Version 2.0",$downloadroot."darkulator_2_0.zip","A utility for Half-Life BSP map files that will allow you to adjust the light levels in the map.");
 
 # Half-Life: Opposing Force
 $GamesQRKTools["HLOF" ] = array();
