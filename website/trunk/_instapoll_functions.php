@@ -3,11 +3,12 @@ require_once('_database_functions.php');
 
 class cInstapoll
 {
-	var $Question;  # Text question of this poll
-	var $StartDate; # Date this instapoll opened
-	var $EndDate;   # Date this instapoll closed
-	var $Picture;   # Picture that goes with the question (if any)
-	var $Options;   # Array of instapoll options/choices
+	var $Question;   # Text question of this poll
+	var $StartDate;  # Date this instapoll opened
+	var $EndDate;    # Date this instapoll closed
+	var $Picture;    # Picture that goes with the question (if any)
+	var $Options;    # Array of instapoll options/choices
+	var $TotalVotes; # Total number of votes (calculated)
 
 	function __construct($aQuestion, $aStartDate, $aEndDate=0, $aPicture=NULL, $aOptions=NULL)
 	{
@@ -17,14 +18,13 @@ class cInstapoll
 		$this->Picture   = $aPicture;
 		$this->Options   = $aOptions;
 
-		# Calculate total number of votes:
+		# Calculate total number of votes.
 		$this->TotalVotes = 0;
 		if (is_array($this->Options))
 		{
-			for ($Option = 0; $Option < count($this->Options); $Option++)
+			foreach ($this->Options as &$Option)
 			{
-				$CurrentOption = &$this->Options[$Option];
-				$this->TotalVotes += $CurrentOption->Votes;
+				$this->TotalVotes += $Option->Votes;
 			}
 		}
 	}
