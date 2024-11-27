@@ -33,6 +33,7 @@ implementation
 
 uses Math;
 
+//Note: Perhaps should be called AnsiCharToPas!
 function CharToPas(const C: array of Byte) : String;
 var
   N{$IFDEF UNICODE}, I{$ENDIF}: Integer;
@@ -51,6 +52,7 @@ begin
   {$ENDIF}
 end;
 
+//Note: Perhaps should be called PasToAnsiChar!
 procedure PasToChar(var C: array of Byte; const S: String);
 {$IFDEF UNICODE}
 var
