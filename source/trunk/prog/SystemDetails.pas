@@ -690,7 +690,7 @@ asm
 	{$ELSE}
 	DB 0Fh,0a2h     //Execute CPUID
 	{$ENDIF}
-	MOV [rsi], rax  //Store ExtLevel
+	MOV [rsi], eax  //Store ExtLevel (zeroing out the high 32-bits)
 
 	//Restore registers
 	//POP rdx
@@ -727,35 +727,35 @@ asm
 	{$ENDIF}
 
 	//Save the first 4 bytes
-	XCHG esi,ecx   //save ECX result in ESI
-	MOV  ecx,4     //loop 4 times
+	MOV esi,ecx   //save ECX result in ESI
+	MOV ecx,4     //loop 4 times
 	@1:
-	STOSB          //save 1 byte from EAX
-	SHR  eax,8     //shift to the next byte
+	STOSB         //save 1 byte from EAX
+	SHR eax,8     //shift to the next byte
 	LOOP @1
 
 	//Save the second 4 bytes
-	MOV  eax,ebx   //need CPUID EBX-value to be in EAX
-	MOV  ecx,4     //loop 4 times
+	MOV eax,ebx   //need CPUID EBX-value to be in EAX
+	MOV ecx,4     //loop 4 times
 	@2:
-	STOSB          //save 1 byte from EAX
-	SHR  eax,8     //shift to the next byte
+	STOSB         //save 1 byte from EAX
+	SHR eax,8     //shift to the next byte
 	LOOP @2
 
 	//Save the third 4 bytes
-	MOV  eax,esi   //need CPUID ESI-value to be in EAX (note: it's stored in ESI now)
-	MOV  ecx,4     //loop 4 times
+	MOV eax,esi   //need CPUID ESI-value to be in EAX (note: it's stored in ESI now)
+	MOV ecx,4     //loop 4 times
 	@3:
-	STOSB          //save 1 byte from EAX
-	SHR  eax,8     //shift to the next byte
+	STOSB         //save 1 byte from EAX
+	SHR eax,8     //shift to the next byte
 	LOOP @3
 
 	//Save the last 4 bytes
-	MOV  eax,edx   //need CPUID EDX-value to be in EAX
-	MOV  ecx,4     //loop 4 times
+	MOV eax,edx   //need CPUID EDX-value to be in EAX
+	MOV ecx,4     //loop 4 times
 	@4:
-	STOSB          //save 1 byte from EAX
-	SHR  eax,8     //shift to the next byte
+	STOSB         //save 1 byte from EAX
+	SHR eax,8     //shift to the next byte
 	LOOP @4
 
 	//Call the CPUID command
@@ -767,35 +767,35 @@ asm
 	{$ENDIF}
 
 	//Save the first 4 bytes
-	XCHG esi,ecx   //save ECX result in ESI
-	MOV  ecx,4     //loop 4 times
+	MOV esi,ecx   //save ECX result in ESI
+	MOV ecx,4     //loop 4 times
 	@5:
-	STOSB          //save 1 byte from EAX
-	SHR  eax,8     //shift to the next byte
+	STOSB         //save 1 byte from EAX
+	SHR eax,8     //shift to the next byte
 	LOOP @5
 
 	//Save the second 4 bytes
-	MOV  eax,ebx   //need CPUID EBX-value to be in EAX
-	MOV  ecx,4     //loop 4 times
+	MOV eax,ebx   //need CPUID EBX-value to be in EAX
+	MOV ecx,4     //loop 4 times
 	@6:
-	STOSB          //save 1 byte from EAX
-	SHR  eax,8     //shift to the next byte
+	STOSB         //save 1 byte from EAX
+	SHR eax,8     //shift to the next byte
 	LOOP @6
 
 	//Save the third 4 bytes
-	MOV  eax,esi   //need CPUID ESI-value to be in EAX (note: it's stored in ESI now)
-	MOV  ecx,4     //loop 4 times
+	MOV eax,esi   //need CPUID ESI-value to be in EAX (note: it's stored in ESI now)
+	MOV ecx,4     //loop 4 times
 	@7:
-	STOSB          //save 1 byte from EAX
-	SHR  eax,8     //shift to the next byte
+	STOSB         //save 1 byte from EAX
+	SHR eax,8     //shift to the next byte
 	LOOP @7
 
 	//Save the last 4 bytes
-	MOV  eax,edx   //need CPUID EDX-value to be in EAX
-	MOV  ecx,4     //loop 4 times
+	MOV eax,edx   //need CPUID EDX-value to be in EAX
+	MOV ecx,4     //loop 4 times
 	@8:
-	STOSB          //save 1 byte from EAX
-	SHR  eax,8     //shift to the next byte
+	STOSB         //save 1 byte from EAX
+	SHR eax,8     //shift to the next byte
 	LOOP @8
 
 	//Call the CPUID command
@@ -807,35 +807,35 @@ asm
 	{$ENDIF}
 
 	//Save the first 4 bytes
-	XCHG esi,ecx   //save ECX result in ESI
-	MOV  ecx,4     //loop 4 times
+	MOV esi,ecx   //save ECX result in ESI
+	MOV ecx,4     //loop 4 times
 	@9:
-	STOSB          //save 1 byte from EAX
-	SHR  eax,8     //shift to the next byte
+	STOSB         //save 1 byte from EAX
+	SHR eax,8     //shift to the next byte
 	LOOP @9
 
 	//Save the second 4 bytes
-	MOV  eax,ebx   //need CPUID EBX-value to be in EAX
-	MOV  ecx,4     //loop 4 times
+	MOV eax,ebx   //need CPUID EBX-value to be in EAX
+	MOV ecx,4     //loop 4 times
 	@10:
-	STOSB          //save 1 byte from EAX
-	SHR  eax,8     //shift to the next byte
+	STOSB         //save 1 byte from EAX
+	SHR eax,8     //shift to the next byte
 	LOOP @10
 
 	//Save the third 4 bytes
-	MOV  eax,esi   //need CPUID ESI-value to be in EAX (note: it's stored in ESI now)
-	MOV  ecx,4     //loop 4 times
+	MOV eax,esi   //need CPUID ESI-value to be in EAX (note: it's stored in ESI now)
+	MOV ecx,4     //loop 4 times
 	@11:
-	STOSB          //save 1 byte from EAX
-	SHR  eax,8     //shift to the next byte
+	STOSB         //save 1 byte from EAX
+	SHR eax,8     //shift to the next byte
 	LOOP @11
 
 	//Save the last 4 bytes
-	MOV  eax,edx   //need CPUID EDX-value to be in EAX
-	MOV  ecx,4     //loop 4 times
+	MOV eax,edx   //need CPUID EDX-value to be in EAX
+	MOV ecx,4     //loop 4 times
 	@12:
-	STOSB          //save 1 byte from EAX
-	SHR  eax,8     //shift to the next byte
+	STOSB         //save 1 byte from EAX
+	SHR eax,8     //shift to the next byte
 	LOOP @12
 
 	//Restore registers
@@ -865,38 +865,37 @@ asm
 	{$ELSE}
 	DB 0Fh,0a2h     //Execute CPUID
 	{$ENDIF}
-	MOV [rsi], rax  //Store Level
 
 	//Save the first 4 bytes
-	XCHG rsi,rcx   //save RCX result in RSI
-	MOV  rcx,4     //loop 4 times
+	MOV rsi,rcx   //save RCX result in RSI
+	MOV rcx,4     //loop 4 times
 	@1:
-	STOSB          //save 1 byte from RAX
-	SHR  rax,8     //shift to the next byte
+	STOSB         //save 1 byte from RAX
+	SHR rax,8     //shift to the next byte
 	LOOP @1
 
 	//Save the second 4 bytes
-	MOV  rax,rbx   //need CPUID RBX-value to be in RAX
-	MOV  rcx,4     //loop 4 times
+	MOV rax,rbx   //need CPUID RBX-value to be in RAX
+	MOV rcx,4     //loop 4 times
 	@2:
-	STOSB          //save 1 byte from RAX
-	SHR  rax,8     //shift to the next byte
+	STOSB         //save 1 byte from RAX
+	SHR rax,8     //shift to the next byte
 	LOOP @2
 
 	//Save the third 4 bytes
-	MOV  rax,rsi   //need CPUID RSI-value to be in RAX (note: it's stored in RSI now)
-	MOV  rcx,4     //loop 4 times
+	MOV rax,rsi   //need CPUID RSI-value to be in RAX (note: it's stored in RSI now)
+	MOV rcx,4     //loop 4 times
 	@3:
-	STOSB          //save 1 byte from RAX
-	SHR  rax,8     //shift to the next byte
+	STOSB         //save 1 byte from RAX
+	SHR rax,8     //shift to the next byte
 	LOOP @3
 
 	//Save the last 4 bytes
-	MOV  rax,rdx   //need CPUID RDX-value to be in RAX
-	MOV  rcx,4     //loop 4 times
+	MOV rax,rdx   //need CPUID RDX-value to be in RAX
+	MOV rcx,4     //loop 4 times
 	@4:
-	STOSB          //save 1 byte from RAX
-	SHR  rax,8     //shift to the next byte
+	STOSB         //save 1 byte from RAX
+	SHR rax,8     //shift to the next byte
 	LOOP @4
 
 	//Call the CPUID command
@@ -906,38 +905,37 @@ asm
 	{$ELSE}
 	DB 0Fh,0a2h     //Execute CPUID
 	{$ENDIF}
-	MOV [rsi], rax  //Store Level
 
 	//Save the first 4 bytes
-	XCHG rsi,rcx   //save RCX result in RSI
-	MOV  rcx,4     //loop 4 times
+	MOV rsi,rcx   //save RCX result in RSI
+	MOV rcx,4     //loop 4 times
 	@5:
-	STOSB          //save 1 byte from RAX
-	SHR  rax,8     //shift to the next byte
+	STOSB         //save 1 byte from RAX
+	SHR rax,8     //shift to the next byte
 	LOOP @5
 
 	//Save the second 4 bytes
-	MOV  rax,rbx   //need CPUID RBX-value to be in RAX
-	MOV  rcx,4     //loop 4 times
+	MOV rax,rbx   //need CPUID RBX-value to be in RAX
+	MOV rcx,4     //loop 4 times
 	@6:
-	STOSB          //save 1 byte from RAX
-	SHR  rax,8     //shift to the next byte
+	STOSB         //save 1 byte from RAX
+	SHR rax,8     //shift to the next byte
 	LOOP @6
 
 	//Save the third 4 bytes
-	MOV  rax,rsi   //need CPUID RSI-value to be in RAX (note: it's stored in RSI now)
-	MOV  rcx,4     //loop 4 times
+	MOV rax,rsi   //need CPUID RSI-value to be in RAX (note: it's stored in RSI now)
+	MOV rcx,4     //loop 4 times
 	@7:
-	STOSB          //save 1 byte from RAX
-	SHR  rax,8     //shift to the next byte
+	STOSB         //save 1 byte from RAX
+	SHR rax,8     //shift to the next byte
 	LOOP @7
 
 	//Save the last 4 bytes
-	MOV  rax,rdx   //need CPUID RDX-value to be in RAX
-	MOV  rcx,4     //loop 4 times
+	MOV rax,rdx   //need CPUID RDX-value to be in RAX
+	MOV rcx,4     //loop 4 times
 	@8:
-	STOSB          //save 1 byte from RAX
-	SHR  rax,8     //shift to the next byte
+	STOSB         //save 1 byte from RAX
+	SHR rax,8     //shift to the next byte
 	LOOP @8
 
 	//Call the CPUID command
@@ -947,38 +945,37 @@ asm
 	{$ELSE}
 	DB 0Fh,0a2h     //Execute CPUID
 	{$ENDIF}
-	MOV [rsi], rax  //Store Level
 
 	//Save the first 4 bytes
-	XCHG rsi,rcx   //save RCX result in RSI
-	MOV  rcx,4     //loop 4 times
+	MOV rsi,rcx   //save RCX result in RSI
+	MOV rcx,4     //loop 4 times
 	@9:
-	STOSB          //save 1 byte from RAX
-	SHR  rax,8     //shift to the next byte
+	STOSB         //save 1 byte from RAX
+	SHR rax,8     //shift to the next byte
 	LOOP @9
 
 	//Save the second 4 bytes
-	MOV  rax,rbx   //need CPUID RBX-value to be in RAX
-	MOV  rcx,4     //loop 4 times
+	MOV rax,rbx   //need CPUID RBX-value to be in RAX
+	MOV rcx,4     //loop 4 times
 	@10:
-	STOSB          //save 1 byte from RAX
-	SHR  rax,8     //shift to the next byte
+	STOSB         //save 1 byte from RAX
+	SHR rax,8     //shift to the next byte
 	LOOP @10
 
 	//Save the third 4 bytes
-	MOV  rax,rsi   //need CPUID RSI-value to be in RAX (note: it's stored in RSI now)
-	MOV  rcx,4     //loop 4 times
+	MOV rax,rsi   //need CPUID RSI-value to be in RAX (note: it's stored in RSI now)
+	MOV rcx,4     //loop 4 times
 	@11:
-	STOSB          //save 1 byte from RAX
-	SHR  rax,8     //shift to the next byte
+	STOSB         //save 1 byte from RAX
+	SHR rax,8     //shift to the next byte
 	LOOP @11
 
 	//Save the last 4 bytes
-	MOV  rax,rdx   //need CPUID RDX-value to be in RAX
-	MOV  rcx,4     //loop 4 times
+	MOV rax,rdx   //need CPUID RDX-value to be in RAX
+	MOV rcx,4     //loop 4 times
 	@12:
-	STOSB          //save 1 byte from RAX
-	SHR  rax,8     //shift to the next byte
+	STOSB         //save 1 byte from RAX
+	SHR rax,8     //shift to the next byte
 	LOOP @12
 
 	//Restore registers
