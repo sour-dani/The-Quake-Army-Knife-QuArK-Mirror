@@ -829,8 +829,9 @@ var
 {.$ifndef Delphi4orNewerCompiler}
 //While this exists in Delphi4+, it will be loaded on startup. On systems before Windows 2000 this will crash,
 //because GetGuiResources doesn't exist there. So we HAVE to use our delayed loading implementation!
-{$EXTERNALSYM GetGuiResources}
 function GetGuiResources(hProcess: THandle; uiFlags: DWORD): DWORD; stdcall;
+{$EXTERNALSYM GetGuiResources}
+function GetGuiResources(hProcess: THandle; uiFlags: DWORD): DWORD; stdcall; external 'user32.DLL' name 'GetGuiResources' delayed;
 {.$endif}
 {$ifndef Delphi2007orNewerCompiler}
 function DwmEnableComposition(uCompositionAction: UINT): HResult; stdcall;
@@ -882,15 +883,17 @@ function GetTickCount64: ULONGLONG; stdcall;
 function GetTickCount64; external kernel32 name 'GetTickCount64' delayed;
 {$endif}
 
+{$ifndef Delphi2010orNewerCompiler}
+function SHRestricted(rest: RESTRICTIONS): DWORD; stdcall;
+{$EXTERNALSYM SHRestricted}
+function SHRestricted; external 'shell32.dll' name 'SHRestricted' delayed;
+{$endif}
+
 function GetFirmwareType(FirmwareType: PFIRMWARE_TYPE): BOOL; overload; stdcall;
 function GetFirmwareType(var FirmwareType: _FIRMWARE_TYPE): BOOL; overload; stdcall;
 {$EXTERNALSYM GetFirmwareType}
 function GetFirmwareType(FirmwareType: PFIRMWARE_TYPE): BOOL; external kernel32 name 'GetFirmwareType' delayed;
 function GetFirmwareType(var FirmwareType: _FIRMWARE_TYPE): BOOL; external kernel32 name 'GetFirmwareType' delayed;
-
-function SHRestricted(rest: RESTRICTIONS): DWORD; stdcall;
-{$EXTERNALSYM SHRestricted}
-function SHRestricted; external 'shell32.dll' name 'SHRestricted' delayed;
 {$else}
 var
 {.$ifndef Delphi4orNewerCompiler}
@@ -901,7 +904,7 @@ var
   DwmEnableComposition: function (uCompositionAction: UINT): HResult; stdcall;
   //DwmIsCompositionEnabled: function (out pfEnabled: BOOL): HResult; stdcall;
 {$endif}
-{$ifndef Delphi11orNewerCompiler}
+{$ifndef Delphi2010orNewerCompiler}
   GlobalMemoryStatusEx: function (var lpBuffer: TMemoryStatusEx): BOOL; stdcall;
   GetNativeSystemInfo: procedure (var lpSystemInformation: TSystemInfo); stdcall;
   GetErrorMode: function : UINT; stdcall;
@@ -912,8 +915,10 @@ var
   IsWow64Process2: function (hProcess: THandle; var pProcessMachine: USHORT; var pNativeMachine: USHORT): BOOL; stdcall;
   GetTickCount64: function: ULONGLONG; stdcall;
 {$endif}
-  GetFirmwareType: function (var FirmwareType: _FIRMWARE_TYPE): BOOL; stdcall;
+{$ifndef Delphi2010orNewerCompiler}
   SHRestricted: function (rest: RESTRICTIONS): DWORD; stdcall;
+{$endif}
+  GetFirmwareType: function (var FirmwareType: _FIRMWARE_TYPE): BOOL; stdcall;
 {$endif}
 {$endif}
 
@@ -1555,7 +1560,7 @@ initialization
   //DelayFunc_DwmIsCompositionEnabled := Assigned(DwmIsCompositionEnabled);
   {$DEFINE DelayFunc_Delphi2007Done}
 {$endif}
-{$ifndef Delphi11orNewerCompiler}
+{$ifndef Delphi2009orNewerCompiler}
   GlobalMemoryStatusEx := GetProcAddress(GetModuleHandle('kernel32'), 'GlobalMemoryStatusEx');
   GetNativeSystemInfo := GetProcAddress(GetModuleHandle('kernel32'), 'GetNativeSystemInfo');
   GetErrorMode := GetProcAddress(GetModuleHandle('kernel32'), 'GetErrorMode');
@@ -1575,7 +1580,11 @@ initialization
   DelayFunc_IsWow64Process := Assigned(IsWow64Process);
   DelayFunc_IsWow64Process2 := Assigned(IsWow64Process2);
   DelayFunc_GetTickCount64 := Assigned(GetTickCount64);
-  {$DEFINE DelayFunc_Delphi11Done}
+  {$DEFINE DelayFunc_Delphi2009Done}
+{$endif}
+{$ifndef Delphi2010orNewerCompiler}
+  DelayFunc_SHRestricted := Assigned(SHRestricted);
+  {$DEFINE DelayFunc_Delphi2010Done}
 {$endif}
 {.$ifndef DelphiXXorNewerCompiler}
   GetFirmwareType := GetProcAddress(GetModuleHandle('kernel32'), 'GetFirmwareType');
@@ -1587,7 +1596,6 @@ initialization
     SHRestricted := GetProcAddress(ShellLib, 'SHRestricted');
 
   DelayFunc_GetFirmwareType := Assigned(GetFirmwareType);
-  DelayFunc_SHRestricted := Assigned(SHRestricted);
   {$DEFINE DelayFunc_DelphiXXDone}
 {.$endif}
 {$endif}
@@ -1601,7 +1609,7 @@ initialization
   DelayFunc_DwmEnableComposition := CheckWin32Version(6, 0); //Windows Vista
   //DelayFunc_DwmIsCompositionEnabled := CheckWin32Version(6, 0); //Windows Vista
   {$endif}
-  {$ifndef DelayFunc_Delphi11Done}
+  {$ifndef DelayFunc_Delphi2009Done}
   DelayFunc_GlobalMemoryStatusEx := CheckWin32Version(5, 0); //Windows 2000
   DelayFunc_GetNativeSystemInfo := CheckWin32Version(5, 1); //Windows XP, Windows Server 2003
   DelayFunc_GetErrorMode := CheckWin32Version(6, 0); //Windows Vista
@@ -1612,9 +1620,11 @@ initialization
   DelayFunc_IsWow64Process2 := CheckWin32VersionWithBuildNumber(10, 0, 16299); //Windows 10, version 1709
   DelayFunc_GetTickCount64 := CheckWin32Version(6, 0); //Windows Vista, Windows Server 2008
   {$endif}
+  {$ifndef DelayFunc_Delphi2010Done}
+  DelayFunc_SHRestricted := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003, although it already existed in Windows 2000 as ordinal 100.
+  {$endif}
   {$ifndef DelayFunc_DelphiXXDone}
   DelayFunc_GetFirmwareType := CheckWin32Version(6, 2); //Windows 8, Server 2012
-  DelayFunc_SHRestricted := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003, although it already existed in Windows 2000 as ordinal 100.
   {$endif}
 {$endif}
 

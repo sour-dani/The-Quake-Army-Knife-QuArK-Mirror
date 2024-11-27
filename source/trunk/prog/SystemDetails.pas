@@ -31,8 +31,8 @@ uses SysUtils, StrUtils, Windows, Classes, ExtraFunctionality;
 {$I DelphiVer.inc}
 
 procedure LogSystemDetails;
-function CheckWindows98And2000: Boolean;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
-function CheckWindowsMEAnd2000: Boolean;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+function CheckWindows98And2000: Boolean;
+function CheckWindowsMEAnd2000: Boolean;
 function ProcessExists(const exeFileName: String): Boolean;
 function WindowExists(const WindowName: String): Boolean;
 function RetrieveModuleFilename(ModuleHandle: HMODULE): String;
@@ -856,7 +856,7 @@ asm
 	//PUSH rdx //scratch
 
 	//Store output variables in safe places
-	MOV rdi, VendorStr //Put this RDI, because we're going to use STOSB to write to it
+	MOV rdi, BrandStr //Put this RDI, because we're going to use STOSB to write to it
 
 	//Call the CPUID command
 	MOV rax, 80000002h     //Function 80000002h: Processor Brand String
@@ -911,34 +911,34 @@ asm
 	//Save the first 4 bytes
 	XCHG rsi,rcx   //save RCX result in RSI
 	MOV  rcx,4     //loop 4 times
-	@1:
+	@5:
 	STOSB          //save 1 byte from RAX
 	SHR  rax,8     //shift to the next byte
-	LOOP @1
+	LOOP @5
 
 	//Save the second 4 bytes
 	MOV  rax,rbx   //need CPUID RBX-value to be in RAX
 	MOV  rcx,4     //loop 4 times
-	@2:
+	@6:
 	STOSB          //save 1 byte from RAX
 	SHR  rax,8     //shift to the next byte
-	LOOP @2
+	LOOP @6
 
 	//Save the third 4 bytes
 	MOV  rax,rsi   //need CPUID RSI-value to be in RAX (note: it's stored in RSI now)
 	MOV  rcx,4     //loop 4 times
-	@3:
+	@7:
 	STOSB          //save 1 byte from RAX
 	SHR  rax,8     //shift to the next byte
-	LOOP @3
+	LOOP @7
 
 	//Save the last 4 bytes
 	MOV  rax,rdx   //need CPUID RDX-value to be in RAX
 	MOV  rcx,4     //loop 4 times
-	@4:
+	@8:
 	STOSB          //save 1 byte from RAX
 	SHR  rax,8     //shift to the next byte
-	LOOP @4
+	LOOP @8
 
 	//Call the CPUID command
 	MOV rax, 80000004h     //Function 80000004h: Processor Brand String (continued)
@@ -952,34 +952,34 @@ asm
 	//Save the first 4 bytes
 	XCHG rsi,rcx   //save RCX result in RSI
 	MOV  rcx,4     //loop 4 times
-	@1:
+	@9:
 	STOSB          //save 1 byte from RAX
 	SHR  rax,8     //shift to the next byte
-	LOOP @1
+	LOOP @9
 
 	//Save the second 4 bytes
 	MOV  rax,rbx   //need CPUID RBX-value to be in RAX
 	MOV  rcx,4     //loop 4 times
-	@2:
+	@10:
 	STOSB          //save 1 byte from RAX
 	SHR  rax,8     //shift to the next byte
-	LOOP @2
+	LOOP @10
 
 	//Save the third 4 bytes
 	MOV  rax,rsi   //need CPUID RSI-value to be in RAX (note: it's stored in RSI now)
 	MOV  rcx,4     //loop 4 times
-	@3:
+	@11:
 	STOSB          //save 1 byte from RAX
 	SHR  rax,8     //shift to the next byte
-	LOOP @3
+	LOOP @11
 
 	//Save the last 4 bytes
 	MOV  rax,rdx   //need CPUID RDX-value to be in RAX
 	MOV  rcx,4     //loop 4 times
-	@4:
+	@12:
 	STOSB          //save 1 byte from RAX
 	SHR  rax,8     //shift to the next byte
-	LOOP @4
+	LOOP @12
 
 	//Restore registers
 	//POP rdx

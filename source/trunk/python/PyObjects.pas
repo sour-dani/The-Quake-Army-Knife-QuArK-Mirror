@@ -32,7 +32,7 @@ uses SysUtils, Classes, Python, QkObjects, Dialogs;
 
 {$I DelphiVer.inc}
 
-function QkObjFromPyObj(o: PyObject) : QObject;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+function QkObjFromPyObj(o: PyObject) : QObject;{$IFDEF Delphi2005orNewerCompiler}{ inline;}{$ENDIF} //Delphi cannot inline functions with ASM-blocks, at least on 64-bit.
 function GetPyObj(Q: QObject) : PyObject;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 function QListToPyList(const L: TQList) : PyObject;
 procedure PyListToQList(list: PyObject; {var }L: TQList; Cls: QObjectClass);

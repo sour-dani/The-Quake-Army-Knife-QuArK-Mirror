@@ -31,7 +31,7 @@ function SaveWindowPositions: Boolean;
 
 implementation
 
-uses {$IFDEF LINUX}SysUtils{$ELSE}Windows{$ENDIF}, QkExceptions, ExtraFunctionality;
+uses {$IFDEF LINUX}SysUtils{$ELSE}Windows, ShlObj{$ENDIF}, QkExceptions, ExtraFunctionality;
 
 function PlaySound(const SoundType: TSoundType): Boolean;
 {$IFNDEF LINUX}
