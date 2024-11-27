@@ -29,7 +29,7 @@ requires
   vcl;
 
 contains
-  TB97 in 'Tb97.pas',
+  TB97 in 'TB97.pas',
   TrackBar2 in 'TrackBar2.pas',
   Registry2 in 'Registry2.pas',
   EnterEditCtrl in 'EnterEditCtrl.pas',
@@ -38,7 +38,7 @@ contains
   QSplitter in 'QSplitter.pas',
   SyntaxMemo in 'SyntaxMemo.pas',
   CursorScrollBox in 'CursorScrollBox.pas',
-  marsCap in 'Marscap.pas',
+  marsCap in 'MarsCap.pas',
   SmArrowBtn in 'SmArrowBtn.pas';
 
 end.
