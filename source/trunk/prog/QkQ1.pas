@@ -194,7 +194,7 @@ const
   Spec1 = 'Image1';
   Spec2 = 'Pal';
 var
-  S: String;
+  S: String; //FIXME: Switch to Bytes!
   WriteTo: String;
   Q: QFileObject;
 begin
@@ -204,10 +204,9 @@ begin
     Q:=QPcx.Create('', Nil);
     Q.AddRef(+1);
     try
-      S:=Spec2+'=';
-      SetLength(S, Length(Spec2)+1+SizeOf(TPaletteLmp));
-      Move(GameBuffer(mjAny)^.PaletteLmp, PChar(S)[Length(Spec2)+1], SizeOf(TPaletteLmp));
-      Q.Specifics.AddStringFull(S);
+      SetLength(S, SizeOf(TPaletteLmp));
+      Move(GameBuffer(mjAny)^.PaletteLmp, PChar(S)[1], SizeOf(TPaletteLmp)); //FIXME: PByte!
+      Q.Specifics.Bytes[Spec2]:=S;
       Q.SetFloatsSpec('Size', cDummySize);
       Q.Specifics.Bytes[Spec1]:=#0#0#0#0;
       Q.SaveInFile(rf_Default, OutputFile(Copy(WriteTo, 2, MaxInt)));

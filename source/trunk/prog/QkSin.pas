@@ -180,18 +180,18 @@ end;
 
 procedure QTextureSin.LoadFile(F: TStream; FSize: TStreamPos);
 const
- Spec1 = 'Image1=';
- Spec2 = 'Pal=';
- Spec3 = 'Alpha=';
+ //Spec1 = 'Image1';
+ Spec2 = 'Pal';
+ Spec3 = 'Alpha';
 var
  Header: TSinTextureHeader;
  Q2MipTex: TQ2MipTex;
  Base: TStreamPos;
  I: Integer;
  Lmp: PPaletteLmp;
- Data: String;
+ Data: String; //FIXME: Bytes!
  HasAlpha: Boolean;
- P: PChar;
+ P: PChar; //FIXME: PByte?
 begin
  case ReadFormat of
   rf_Default: begin  { as stand-alone file }
@@ -201,9 +201,8 @@ begin
       F.ReadBuffer(Header, SizeOf(Header));
 
        { reads the palette }
-      Data:=Spec2;
-      SetLength(Data, Length(Spec2)+SizeOf(TPaletteLmp));
-      Lmp:=PPaletteLmp(@Data[Length(Spec2)+1]);
+      SetLength(Data, SizeOf(TPaletteLmp));
+      Lmp:=PPaletteLmp(@Data[1]);
       HasAlpha:=False;
       for I:=Low(Lmp^) to High(Lmp^) do
        with Header.Palette[I] do
@@ -214,16 +213,15 @@ begin
          if A<>0 then
           HasAlpha:=True;
         end;
-      Specifics.AddStringFull(Data);  { "Pal=xxxxx" }
+      Specifics.Bytes[Spec2]:=Data;
 
       if HasAlpha then
        begin
-        Data:=Spec3;
-        SetLength(Data, Length(Spec3)+256);
-        P:=@Data[Length(Spec3)+1];
+        SetLength(Data, 256);
+        P:=@Data[1];
         for I:=0 to 255 do
          P[I]:=Chr(Header.Palette[I].A);
-        Specifics.AddStringFull(Data);  { "Alpha=xxxx" }
+        Specifics.Bytes[Spec3]:=Data;
        end;
 
        { reads misc flags }
@@ -248,9 +246,9 @@ begin
 	  the three floats (2 dec places)
 	  SetFloatsSpec('color', Header.color); }
 
-      Specifics.AddStringFull('color='+FloatToStrF(Header.color[0],ffFixed,7,2)+' '+
-                                       FloatToStrF(Header.color[1],ffFixed,7,2)+ ' '+
-                                       FloatToStrF(Header.color[2],ffFixed,7,2));
+      Specifics.Strings['color']:=FloatToStrF(Header.color[0],ffFixed,7,2)+' '+
+                                  FloatToStrF(Header.color[1],ffFixed,7,2)+' '+
+                                  FloatToStrF(Header.color[2],ffFixed,7,2);
 
        { reads the image data }
       Q2MipTex.W:=Header.Width;

@@ -133,9 +133,9 @@ end;
 
 procedure QVTF.LoadFile(F: TStream; FSize: TStreamPos);
 const
-  Spec1 = 'Image1=';
-//  Spec2 = 'Pal=';
-  Spec3 = 'Alpha=';
+  Spec1 = 'Image1';
+//  Spec2 = 'Pal';
+  Spec3 = 'Alpha';
 type
   PRGB = ^TRGB;
   TRGB = array[0..2] of Byte;
@@ -146,7 +146,7 @@ var
 
   RawBuffer: PByte;
   Source, DestAlpha, DestImg, pSource, pDestAlpha, pDestImg: PChar;
-  AlphaData, ImgData: String;
+  AlphaData, ImgData: String; //FIXME: TByteDynArray;
   I, J: Integer;
 
   VTFImage: Cardinal;
@@ -227,16 +227,14 @@ begin
             if HasAlpha then
             begin
               //Allocate quarks image buffers
-              ImgData:=Spec1;
-              AlphaData:=Spec3;
-              SetLength(ImgData , Length(Spec1) + NumberOfPixels * 3); {RGB buffer}
-              Setlength(AlphaData,Length(Spec3) + NumberOfPixels);     {alpha buffer}
+              SetLength(ImgData,   NumberOfPixels * 3); {RGB buffer}
+              Setlength(AlphaData, NumberOfPixels);     {alpha buffer}
 
               {copy and reverse the upside down RGBA image to quarks internal format}
               {also the alpha channel is split}
-              Source:=PChar(RawData) + NumberOfPixels * 4;
-              DestImg:=PChar(ImgData) + Length(Spec1);
-              DestAlpha:=PChar(AlphaData)+Length(Spec3);
+              Source:=PChar(RawData) + NumberOfPixels * 4; //FIXME: PByte
+              DestImg:=PChar(ImgData); //FIXME: PByte
+              DestAlpha:=PChar(AlphaData); //FIXME: PByte
               for J:=1 to Height do
               begin
                 Dec(Source, 4 * Width);
@@ -257,18 +255,17 @@ begin
                 Inc(DestAlpha, Width);
               end;
 
-              Specifics.AddStringFull(AlphaData);
-              Specifics.AddStringFull(ImgData);
+              Specifics.Bytes[Spec3]:=AlphaData;
+              Specifics.Bytes[Spec1]:=ImgData;
             end
             else
             begin
               //Allocate quarks image buffers
-              ImgData:=Spec1;
-              SetLength(ImgData, Length(Spec1) + NumberOfPixels * 3); {RGB buffer}
+              SetLength(ImgData, NumberOfPixels * 3); {RGB buffer}
 
               {copy and reverse the upside down RGB image to quarks internal format}
-              Source:=PChar(RawData) + NumberOfPixels * 3;
-              DestImg:=PChar(ImgData) + Length(Spec1);
+              Source:=PChar(RawData) + NumberOfPixels * 3; //FIXME: PByte
+              DestImg:=PChar(ImgData); //FIXME: PByte
               for J:=1 to Height do
               begin
                 Dec(Source, 3 * Width);
@@ -285,7 +282,7 @@ begin
                 Inc(DestImg, 3 * Width);
               end;
 
-              Specifics.AddStringFull(ImgData);
+              Specifics.Bytes[Spec1]:=ImgData;
             end;
           finally
             FreeMem(RawData);

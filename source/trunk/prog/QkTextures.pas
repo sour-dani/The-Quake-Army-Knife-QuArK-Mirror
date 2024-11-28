@@ -898,6 +898,7 @@ const
   Spec2 = 'Pal';
 var
   S, Arg, TexName, Ext, DefaultImageName, ShaderType: String;
+  B: String; //FIXME: Switch to Bytes!
   Bsp: QBsp;
   TexList: QWad;
   I: Integer;
@@ -957,10 +958,9 @@ begin
         else if CurrentGameMode=mjDK then
         begin
           //FIXME: Doesn't work?
-          S:=Spec2;
-          SetLength(S, Length(Spec2) + SizeOf(TPaletteLmp));
-          Move(GameBuffer(ObjectGameCode)^.PaletteLmp, S[Length(Spec2)+1], SizeOf(TPaletteLmp));
-          Link.Specifics.AddStringFull(S);
+          SetLength(B, SizeOf(TPaletteLmp));
+          Move(GameBuffer(ObjectGameCode)^.PaletteLmp, B[1], SizeOf(TPaletteLmp));
+          Link.Specifics.Bytes[Spec2]:=B;
         end;
         Break;
       end;

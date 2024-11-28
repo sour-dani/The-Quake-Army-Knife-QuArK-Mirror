@@ -136,7 +136,7 @@ function ReadAsQmeEntry(Q: QFileObject; SourceFile: TStream; Taille: TStreamPos)
 var
  I, Compte, TailleIds: Integer;
  Entetes, P: PEnteteNXF;
- Ids, S: String; //FIXME: AnsiString?
+ Ids, Spec, S: String; //FIXME: AnsiString?
 begin
  Result:=Q.ReadFormat=rf_Default;
  if Result then
@@ -159,10 +159,10 @@ begin
    P:=Entetes;
    for I:=1 to Compte do
     begin
-     S:=Copy(Ids, TailleIds, P^.TailleId)+'=';
-     SetLength(S, Length(S)+P^.Taille);
-     SourceFile.ReadBuffer(S[P^.TailleId+2], P^.Taille);
-     Q.Specifics.AddStringFull(S);
+     Spec:=Copy(Ids, TailleIds, P^.TailleId);
+     SetLength(S, P^.Taille);
+     SourceFile.ReadBuffer(S[1], P^.Taille);
+     Q.Specifics.Strings[Spec]:=S;
      Inc(TailleIds, P^.TailleId);
      Inc(P);
     end;
@@ -251,8 +251,8 @@ procedure TTreeMapSpecCharger(Q: TTreeMap; S: TStream);
 var
  Taille: Word;
  Tampon: String;
- P, Start: PChar;
- TMP: string;
+ P, Start: PChar; //FIXME: PAnsiChar? PByte?
+ Spec, Data: String; //FIXME: AnsiString? Bytes?
 begin
  S.ReadBuffer(Taille, SizeOf(Taille));
  SetLength(Tampon, Taille);
@@ -260,10 +260,23 @@ begin
  P := PChar(Tampon);
  while P^ <> #0 do
  begin
+   //Read the name of the specific
+   Start := P;
+   while not CharInSet(P^, [#0, #10, #13, '=']) do Inc(P);
+   if P^ <> '=' then raise Exception.Create('Invalid string!');
+   SetString(Spec, Start, P - Start);
+
+   //Eat the '='
+   Inc(P);
+
+   //Read the value of the specific
    Start := P;
    while not CharInSet(P^, [#0, #10, #13]) do Inc(P);
-   SetString(TMP, Start, P - Start);
-   Q.Specifics.AddStringFull(TMP);
+   SetString(Data, Start, P - Start);
+
+   //Store the specific
+   Q.Specifics.Strings[Spec]:=Data;
+
    if P^ = #13 then Inc(P);
    if P^ = #10 then Inc(P);
  end;

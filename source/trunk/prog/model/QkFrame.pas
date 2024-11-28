@@ -347,7 +347,7 @@ const
 var
   I, Count: Integer;
   P: PyVect;
-  S, S0: String;
+  B: String; //FIXME: Bytes!
   Dest: vec3_p;
   comp: QObject;
 begin
@@ -376,10 +376,8 @@ begin
         Count:=PyObject_Length(value);
         if Count<0 then
           Exit;
-        S0:=FloatSpecNameOf(VertSpec);
-        S:=S0+'=';
-        SetLength(S, Length(VertSpec+'=')+SizeOf(vec3_t)*Count);
-        PChar(Dest):=PChar(S)+Length(VertSpec+'=');
+        SetLength(B, SizeOf(vec3_t)*Count);
+        PChar(Dest):=PChar(B); //FIXME: PByte!
         for I:=0 to Count-1 do begin
           P:=PyVect(PyList_GetItem(value, I));
           if P=Nil then
@@ -393,8 +391,7 @@ begin
           end;
           Inc(Dest);
         end;
-        Specifics.Delete(S0);
-        Specifics.AddStringFull(S);
+        Specifics.Strings[FloatSpecNameOf(VertSpec)]:=B; //FIXME: Bytes!
         Result:=True;
         Exit;
       end;

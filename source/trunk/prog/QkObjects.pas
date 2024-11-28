@@ -1304,7 +1304,7 @@ end;
 
 procedure QObject.LoadFile(F: TStream; FSize: TStreamPos);
 var
-  Name, Names, ExtraSizes: String; //FIXME: AnsiString?
+  Name, Names, ExtraSizes, Value: String; //FIXME: AnsiString?
   DeltaPos: TStreamPos;
   I, J, FileItemCount, Size, ExtraSize: Integer;
   NamePtr: PChar;
@@ -1442,10 +1442,9 @@ begin
       if Info^.Code and qsBitSubObject = 0 then
       begin
         { a Specific/Arg pair }
-        SetLength(Name, Info^.NameSize+1+Size);
-        Name[Info^.NameSize+1]:='=';
-        F.ReadBuffer(Name[Info^.NameSize+2], Size);
-        Specifics.AddStringFull(Name);
+        SetLength(Value, Size);
+        F.ReadBuffer(Value[1], Size);
+        Specifics.Strings[Name]:=Value; //FIXME: Bytes?
       end
       else
       begin

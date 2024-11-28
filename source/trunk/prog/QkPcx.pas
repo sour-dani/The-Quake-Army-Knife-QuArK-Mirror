@@ -111,8 +111,8 @@ end;
 
 procedure QPcx.LoadFile(F: TStream; FSize: TStreamPos);
 const
- Spec1 = 'Image1=';
- Spec2 = 'Pal=';
+ Spec1 = 'Image1';
+ Spec2 = 'Pal';
 var
  Header: TPcxHeader;
  XSize, YSize, ScanW, I, J, K, L: Integer;
@@ -165,9 +165,7 @@ begin
       ScanW:=(XSize+3) and not 3;
       if Header.BytesPerLine > ScanW then
        Raise EErrorFmt(5509, [34]);
-      Data:=Spec1;
-      I:=ScanW*YSize;   { 'Image1' byte count }
-      SetLength(Data, Length(Spec1)+I);
+      SetLength(Data, ScanW*YSize);
       ScanLine:=PArithByte(Data)+Length(Data);
       BufMin:=Header.BytesPerLine*2;  { one input line may need up to this count of bytes }
       SetLength(InBuffer, BufMin*8);
@@ -226,14 +224,13 @@ begin
          end;
         ProgressIndicatorIncrement;
        end;
-      Specifics.AddStringFull(Data);  { "Data=xxxxx" }
+      Specifics.Bytes[Spec1]:=Data;
 
        { reads the palette }
       F.Seek(FSize+1, soCurrent);  { skips remaining data if any (should not) }
-      Data:=Spec2;
-      SetLength(Data, Length(Spec2)+pcxTaillePalette);
-      F.ReadBuffer(Data[Length(Spec2)+1], pcxTaillePalette);
-      Specifics.AddStringFull(Data);  { "Pal=xxxxx" }
+      SetLength(Data, pcxTaillePalette);
+      F.ReadBuffer(Data[1], pcxTaillePalette);
+      Specifics.Bytes[Spec2]:=Data;
       finally ProgressIndicatorStop; end;
     end
     else

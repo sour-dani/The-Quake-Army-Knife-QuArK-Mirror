@@ -68,14 +68,14 @@ end;
 procedure QLmp.LoadFile(F: TStream; FSize: TStreamPos);
 const
   Spec1 = 'Image1';
-  Spec2 = 'Pal=';
+  Spec2 = 'Pal';
 var
   Header: TLmpHeader;
   V: array[1..2] of Single;
   ImgData: String; //FIXME: TByteDynArray;
   ScanW, I: Integer;
   ScanLine: PArithByte;
-  S: String;
+  B: String; //FIXME: Switch to Bytes!
 begin
  Log(LOG_VERBOSE, 'Loading LMP file: %s', [self.name]);
  case ReadFormat of
@@ -103,10 +103,9 @@ begin
       Specifics.Bytes[Spec1]:=ImgData;
 
       //Use the game palette
-      S:=Spec2;
-      SetLength(S, Length(Spec2) + SizeOf(TPaletteLmp));
-      Move(GameBuffer(ObjectGameCode)^.PaletteLmp, S[Length(Spec2)+1], SizeOf(TPaletteLmp));
-      Specifics.AddStringFull(S);  { "Pal=xxxxx" }
+      SetLength(B, SizeOf(TPaletteLmp));
+      Move(GameBuffer(ObjectGameCode)^.PaletteLmp, B[1], SizeOf(TPaletteLmp));
+      Specifics.Bytes[Spec2]:=B;
     end;
  else inherited;
  end;

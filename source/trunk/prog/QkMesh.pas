@@ -195,21 +195,20 @@ end;
 
  { Changes the control points and invalidates the cache }
 procedure TMesh.SetControlPoints;
+const
+ Spec = 'v';
 var
- S: String;
+ B: String; //FIXME: Bytes!
  L: Integer;
 begin
  if (Buf.W<1) or (Buf.H<1) then
   raise InternalE('SetControlPoints: invalid mesh size');
  Acces;
- SetMeshSize(Point(Buf.W, Buf.H));  { set mesh size }
- S:=FloatSpecNameOf('v');
- Specifics.Delete(S);   { delete old 'v' Specific }
+ SetMeshSize(Point(Buf.W, Buf.H));
  L:=Buf.W*Buf.H*SizeOf(TMeshControlPoints5);
- SetLength(S, Length('v=') + L);   { make room for 'v=....' in S }
- S[2]:='=';
- Move(Buf.CP^, S[3], L);    { copy the data over the '....' in S }
- Specifics.AddStringFull(S);          { add this as new Specific }
+ SetLength(B, L);
+ Move(Buf.CP^, B[1], L);
+ Specifics.Bytes[FloatSpecNameOf(Spec)]:=B;
 end;
 
 class function TMesh.TypeInfo: String;

@@ -80,17 +80,16 @@ end;
 
 procedure QTextureHL.SaveFileEnd(F: TStream; TailleRestante: TStreamPos);
 const
- Spec2 = 'Pal=';
+ Spec2 = 'Pal';
  MAXPAL = SizeOf(TPaletteLmp) div SizeOf(TPaletteLmp1);
 var
- Data: String;
+ Data: String; //FIXME: Bytes!
  P: PPaletteLmp;
  PalSize: SmallInt;
 begin
   { reads the palette }
- Data:=Spec2;
- SetLength(Data, Length(Spec2)+SizeOf(TPaletteLmp));
- P:=PPaletteLmp(@Data[Length(Spec2)+1]);
+ SetLength(Data, SizeOf(TPaletteLmp));
+ P:=PPaletteLmp(@Data[1]);
  FillChar(P^, SizeOf(TPaletteLmp), 0);
 
  if TailleRestante>SizeOf(PalSize) then
@@ -105,7 +104,7 @@ begin
      F.ReadBuffer(P^, PalSize*SizeOf(TPaletteLmp1));
   end;
 
- Specifics.AddStringFull(Data);  { "Pal=xxxxx" }
+ Specifics.Bytes[Spec2]:=Data;
 end;
 
 procedure QTextureHL.SaveFile(Info: TInfoEnreg1);

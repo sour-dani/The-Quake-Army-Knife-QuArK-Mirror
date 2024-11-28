@@ -50,7 +50,7 @@ type
                   protected
                     procedure SaveFile(Info: TInfoEnreg1); override;
                     procedure LoadFile(F: TStream; FSize: TStreamPos); override;
-                    procedure SetWriteString(const WriteString: String);
+                    (*procedure SetWriteString(const SpecName, WriteString: String);*)
                     function GetDataInfo : TRawDataInfo; virtual; abstract;
                     function OpenWindow(nOwner: TComponent) : TQForm1; override;
                   public
@@ -201,7 +201,7 @@ begin
  end;
 end;
 
-procedure QRawFileObject.SetWriteString(const WriteString: String);
+(*procedure QRawFileObject.SetWriteString(const SpecName, WriteString: String);
 var
  Q: QObject;
  I: Integer;
@@ -218,8 +218,8 @@ begin
    if I>=0 then
     Q.Specifics.Delete(I);
   end;
- Q.Specifics.AddStringFull(WriteString);
-end;
+ Q.Specifics.Strings[SpecName]:=WriteString;
+end;*)
 
 function QRawFileObject.GetReadStream(var S: TStream) : TStreamPos;
 const

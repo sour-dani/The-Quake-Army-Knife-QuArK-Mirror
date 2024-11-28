@@ -111,7 +111,7 @@ begin
         f:=QFrame(CurrentFrame.Clone(fg, true))
       else begin
         f:=QFrame.Create('new frame', fg);
-        f.specifics.addstringfull(FloatSpecNameOf('Vertices='));
+        f.Specifics.Strings[FloatSpecNameOf('Vertices')]:='';
       end;
       fg.subelements.add(f);
 
