@@ -690,7 +690,7 @@ asm
 	{$ELSE}
 	DB 0Fh,0a2h     //Execute CPUID
 	{$ENDIF}
-	MOV [rsi], eax  //Store ExtLevel (zeroing out the high 32-bits)
+	MOV [rsi], eax  //Store ExtLevel (only copy lower 32 bits)
 
 	//Restore registers
 	//POP rdx
