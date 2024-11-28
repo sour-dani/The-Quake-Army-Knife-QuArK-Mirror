@@ -258,14 +258,14 @@ begin
             end;
             inc(CTris);
           end;
-          Comp.Specifics.Bytes[SpecTris]:=B;
+          Comp.Specifics.ByteArray[SpecTris]:=B;
           // Load Dummy Frame (HACK!)
           DFrame := Loaded_Frame(Comp, 'Dummy');
           SetLength(B, sizeof(vec3_t) * model.numverts));
           PArithByte(CVert) := PArithByte(B);
           F.Seek(f_Origin + model.vertindex, soBeginning);
           F.ReadBuffer(CVert^, model.numverts * sizeof(vec3_t));
-          DFrame.Specifics.Bytes[FloatSpecNameOf(SpecVertices)]:=B;
+          DFrame.Specifics.ByteArray[FloatSpecNameOf(SpecVertices)]:=B;
 
           // Load Textures
           if (header.numtextures > 0) and (header.textureindex <> 0) and (header.numtextures <= MAXSTUDIOSKINS) then
@@ -275,7 +275,7 @@ begin
             begin
               f.readbuffer(tex, sizeof(tex));
               Skin := Loaded_Skin(Comp, string(tex.name), [tex.width, tex.height], dw);
-              B := Skin.Specifics.Bytes['Image1'];
+              B := Skin.Specifics.ByteArray['Image1'];
               p := PArithByte(B) + Length(B);
               for jj := 1 to tex.height do
               begin
@@ -768,7 +768,7 @@ texcoord:=@texbox;
       Inc(CTris);
       Inc(Tris2);
     end;
-    Comp.Specifics.Bytes[SpecTris]:=S;
+    Comp.Specifics.ByteArray[SpecTris]:=S;
   finally
 //    freemem(Tris);
 //    freemem(texcoord);
@@ -805,7 +805,7 @@ texcoord:=@texbox;
         Inc(Vertexes2);
         Inc(CVert);
       end;
-      Frame.Specifics.Bytes[FloatSpecNameOf(SpecVtx)]:=S;
+      Frame.Specifics.ByteArray[FloatSpecNameOf(SpecVtx)]:=S;
     finally
 //      FreeMem(Vertexes);
     end;
@@ -923,7 +923,7 @@ begin
           begin
             Position0 := F.Position;
             SkinObj := Loaded_Skin(C, FmtLoadStr1(2372, [SkinCounter]), Size, DeltaW);
-            B:=SkinObj.Specifics.Bytes['Image1'];
+            B:=SkinObj.Specifics.ByteArray['Image1'];
             P:=PArithByte(B)+Length(B);
             F.Position := Position0;
             Inc(SkinCounter);
@@ -1002,7 +1002,7 @@ begin
                 Inc(Tris);
                 Inc(CTris);
               end;
-            C.Specifics.Bytes[SpecTris]:=B;
+            C.Specifics.ByteArray[SpecTris]:=B;
           finally
             FreeMem(Triangles);
           end;
@@ -1056,7 +1056,7 @@ begin
                 Inc(FrSource);
                 Inc(CVert);
               end;
-              FrameObj.Specifics.Bytes[FloatSpecNameOf(SpecVertices)]:=B;
+              FrameObj.Specifics.ByteArray[FloatSpecNameOf(SpecVertices)]:=B;
             end;
           end;
         finally

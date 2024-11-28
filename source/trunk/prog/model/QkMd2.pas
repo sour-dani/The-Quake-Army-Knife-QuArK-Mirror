@@ -192,7 +192,7 @@ begin
         Inc(Tris);
         Inc(CTris);
        end;
-      Comp.Specifics.Bytes[SpecTris]:=S;
+      Comp.Specifics.ByteArray[SpecTris]:=S;
     finally
       FreeMem(STData);
     end;
@@ -230,7 +230,7 @@ begin
             CVert^[K]:=v[K]*FrameData^.scale[K]+FrameData^.translate[K];
         Inc(CVert);
        end;
-      Frame.Specifics.Bytes[FloatSpecNameOf(SpecVertices)]:=S;
+      Frame.Specifics.ByteArray[FloatSpecNameOf(SpecVertices)]:=S;
      end;
   finally
     FreeMem(FrameData);

@@ -469,7 +469,7 @@ begin
       Inc(CTris);
       Inc(Tris2);
     end;
-    Comp.Specifics.Bytes[SpecTris]:=S;
+    Comp.Specifics.ByteArray[SpecTris]:=S;
   finally
     freemem(Tris);
     freemem(texcoord);
@@ -501,7 +501,7 @@ begin
         Inc(Vertexes2);
         Inc(CVert);
       end;
-      Frame.Specifics.Bytes[FloatSpecNameOf(SpecVertices)]:=S;
+      Frame.Specifics.ByteArray[FloatSpecNameOf(SpecVertices)]:=S;
     finally
       FreeMem(Vertexes);
     end;

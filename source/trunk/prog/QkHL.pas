@@ -104,7 +104,7 @@ begin
      F.ReadBuffer(P^, PalSize*SizeOf(TPaletteLmp1));
   end;
 
- Specifics.Bytes[Spec2]:=Data;
+ Specifics.ByteArray[Spec2]:=Data;
 end;
 
 procedure QTextureHL.SaveFile(Info: TInfoEnreg1);

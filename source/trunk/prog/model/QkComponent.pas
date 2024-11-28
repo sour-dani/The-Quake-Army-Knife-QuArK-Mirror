@@ -182,7 +182,7 @@ begin
         end;
         inc(tris);
       end;
-      Specifics.Bytes[SpecTris]:=S;
+      Specifics.ByteArray[SpecTris]:=S;
 
     end;
     Result:=PyNoResult;
@@ -376,7 +376,7 @@ begin
     P:=nil;
     Exit;
   end;
-  Result:=Specifics.Bytes[SpecTris];
+  Result:=Specifics.ByteArray[SpecTris];
   PChar(P):=PChar(Result); //FIXME: PArithByte
   N:=Length(Result) div SizeOf(TComponentTris);
 end;
@@ -385,7 +385,7 @@ end;
 const
   SpecVertexLinks = 'VertexLinks';
 begin
-  Result:=Specifics.Bytes[SpecVertexLinks];
+  Result:=Specifics.ByteArray[SpecVertexLinks];
   PChar(P):=PChar(Result); //FIXME: PArithByte
   N:=Length(Result) div SizeOf(TBoneVertexLink);
 end;}
@@ -620,7 +620,7 @@ begin
           end;
           Inc(CTris);
         end;
-        Specifics.Bytes[SpecTris]:=S;
+        Specifics.ByteArray[SpecTris]:=S;
         for I:=0 to VertexCount-1 do
           VertexMap^[VertexMap^[I]]:=I;
         ProgressIndicatorIncrement;
@@ -637,7 +637,7 @@ begin
             FrSourcePts^:=CVertJ^;
             Inc(FrSourcePts);
           end;
-          FrameObj.Specifics.Bytes[FloatSpecNameOf(SpecVertices)]:=S;
+          FrameObj.Specifics.ByteArray[FloatSpecNameOf(SpecVertices)]:=S;
         end;
         ProgressIndicatorIncrement;
       finally
@@ -1279,7 +1279,7 @@ begin
         end;
         Inc(Dest);
       end;
-      Specifics.Bytes[SpecTris]:=S;
+      Specifics.ByteArray[SpecTris]:=S;
       Result:=True;
       Exit;
     end;

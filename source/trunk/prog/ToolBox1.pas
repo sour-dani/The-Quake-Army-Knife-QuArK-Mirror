@@ -544,7 +544,7 @@ begin
         if K < 0 then
          SetupInfo.Specifics.Insert(SetupInfo.Specifics.Count, Q.Specifics.Items[J])
         else
-          if SetupInfo.Specifics.BytesFromIndex[K]<>Q.Specifics.BytesFromIndex[J] then
+          if SetupInfo.Specifics.ByteArrayFromIndex[K]<>Q.Specifics.ByteArrayFromIndex[J] then
            ; {Raise EErrorFmt(5898, [Q.Specifics.Names[J]]);}
        end;
       Root:=Explorer.FindRootFromSpec(Q);

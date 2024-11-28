@@ -86,7 +86,7 @@ begin
     inc(p);
     inc(Dest);
   end;
-  Specifics.Bytes[FloatSpecNameOf(VertSpec)]:=S;
+  Specifics.ByteArray[FloatSpecNameOf(VertSpec)]:=S;
 end;
 
 procedure QFrame.TranslateFrame(vec: vec3_t);
@@ -104,7 +104,7 @@ begin
 
   TranslateVecs(vec, Dest, C);
 
-  Specifics.Bytes[FloatSpecNameOf(VertSpec)]:=S;
+  Specifics.ByteArray[FloatSpecNameOf(VertSpec)]:=S;
 end;
 
 destructor QFrame.Destroy;
@@ -130,7 +130,7 @@ const
 var
   s: String;
 begin
-  S:=Specifics.Bytes[BoneSpec]; //FIXME: FloatSpec?
+  S:=Specifics.ByteArray[BoneSpec]; //FIXME: FloatSpec?
   Result:=0;
   if S='' then
     Exit;
@@ -160,7 +160,7 @@ var
   New: vec3_p;
 //  sc: double;
 begin
-  S:=Specifics.Bytes[FloatSpecNameOf(VertSpec)];
+  S:=Specifics.ByteArray[FloatSpecNameOf(VertSpec)];
   if S='' then
   begin
     Result:=0;
@@ -236,7 +236,7 @@ begin
 //    ScaleVecs(P, Result, sc-bf.GetQ3A_Scale);
 
     //Store the new vertices and return them
-    Specifics.Bytes[FloatSpecNameOf(NewVertSpec)]:=S2;
+    Specifics.ByteArray[FloatSpecNameOf(NewVertSpec)]:=S2;
     PChar(P):=PChar(S2);
   end;
 end;
@@ -267,7 +267,7 @@ begin
     end;
     inc(vtxs);
   end;
-  Specifics.Bytes[FloatSpecNameOf(VertSpec)]:=S;
+  Specifics.ByteArray[FloatSpecNameOf(VertSpec)]:=S;
 end;
 
 procedure QFrame.ChercheExtremites(var Min, Max: TVect);

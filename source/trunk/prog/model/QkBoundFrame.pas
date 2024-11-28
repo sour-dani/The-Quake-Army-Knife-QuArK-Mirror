@@ -121,19 +121,19 @@ begin
   PChar(Dest):=PChar(F); //FIXME: PArithByte
   for i:=0 to 2 do
     Dest^[i]:=pos[i];
-  Specifics.Bytes[FloatSpecNameOf(SpecPosition)]:=F; //FIXME: Floats!
+  Specifics.ByteArray[FloatSpecNameOf(SpecPosition)]:=F; //FIXME: Floats!
 
   SetLength(F, SizeOf(vec3_t));
   PChar(Dest):=PChar(F); //FIXME: PArithByte
   for i:=0 to 2 do
     Dest^[i]:=pos[i];
-  Specifics.Bytes[FloatSpecNameOf(SpecMins)]:=F; //FIXME: Floats!
+  Specifics.ByteArray[FloatSpecNameOf(SpecMins)]:=F; //FIXME: Floats!
 
   SetLength(F, SizeOf(vec3_t));
   PChar(Dest):=PChar(F); //FIXME: PArithByte
   for i:=0 to 2 do
     Dest^[i]:=pos[i];
-  Specifics.Bytes[FloatSpecNameOf(SpecMaxs)]:=F; //FIXME: Floats!
+  Specifics.ByteArray[FloatSpecNameOf(SpecMaxs)]:=F; //FIXME: Floats!
 
   SetFloatSpec(SpecScale, scale);
 end;
@@ -326,7 +326,7 @@ begin
           Dest^[1]:=Y;
           Dest^[2]:=Z;
         end;
-        Specifics.Bytes[FloatSpecNameOf(StartSpec)]:=F; //FIXME: Floats!
+        Specifics.ByteArray[FloatSpecNameOf(StartSpec)]:=F; //FIXME: Floats!
         Result:=True;
         Exit;
       end;
@@ -343,7 +343,7 @@ begin
           Dest^[1]:=Y;
           Dest^[2]:=Z;
         end;
-        Specifics.Bytes[FloatSpecNameOf(EndSpec)]:=F; //FIXME: Floats!
+        Specifics.ByteArray[FloatSpecNameOf(EndSpec)]:=F; //FIXME: Floats!
         Result:=True;
         Exit;
       end;

@@ -1287,7 +1287,7 @@ begin
    SpecName:=Level.Specifics.Names[J];
    if IsFloatSpec(SpecName) then
     begin  { float Specific }
-     S:=Level.Specifics.BytesFromIndex[J];
+     S:=Level.Specifics.ByteArrayFromIndex[J];
      if (Length(S) and 3 <> 0) then
       raise InternalE('Corrupt float specific!');
      Arg:=Indent + NormalSpecOfFloatSpec(SpecName) + ' = ';
@@ -1309,7 +1309,7 @@ begin
    else
 (*    if IsIntSpec(SpecName) then
      begin  { integer Specific }
-      S:=Level.Specifics.BytesFromIndex[J];
+      S:=Level.Specifics.ByteArrayFromIndex[J];
       if (Length(S) and 3 <> 0) then
        raise InternalE('Corrupt integer specific!');
       Arg:=Indent + NormalSpecOfIntSpec(S) + ' = ';

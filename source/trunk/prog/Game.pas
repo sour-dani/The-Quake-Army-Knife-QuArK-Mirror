@@ -288,7 +288,7 @@ begin
      Lmp[I,2]:=I;
    end;
    {PaletteFile:=Nil;}
-   B:=SetupGameSet.Specifics.Bytes['Palette'];
+   B:=SetupGameSet.Specifics.ByteArray['Palette'];
    if B<>'' then
    begin
      if B[1]=':' then //FIXME: This is BAD. Make this TWO specifics!
@@ -296,7 +296,7 @@ begin
        L:=GetQuakeContext;
        for J:=0 to L.Count-1 do
        begin
-         B:=L[J].Specifics.Bytes['Palette'];
+         B:=L[J].Specifics.ByteArray['Palette'];
          if S<>'' then
          begin
            I:=Length(B);
@@ -320,7 +320,7 @@ begin
          end
          else
          begin
-           B:=PaletteFile.Specifics.Bytes['Data'];
+           B:=PaletteFile.Specifics.ByteArray['Data'];
            I:=Length(B);
            if I>SizeOf(Lmp) then
              I:=SizeOf(Lmp);

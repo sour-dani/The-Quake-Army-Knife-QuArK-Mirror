@@ -60,7 +60,7 @@ begin
   CVert^[0]:=P[0];
   CVert^[1]:=P[1];
   CVert^[2]:=P[2];
-  Specifics.Bytes[FloatSpecNameOf(SpecOrigin)]:=S;
+  Specifics.ByteArray[FloatSpecNameOf(SpecOrigin)]:=S;
 end;
 
 function QTagFrame.GetPosition: vec3_p;
@@ -69,7 +69,7 @@ const
 var
   S: string;
 begin
-  S:=Specifics.Bytes[FloatSpecNameOf(SpecOrigin)];
+  S:=Specifics.ByteArray[FloatSpecNameOf(SpecOrigin)];
   if S='' then
   begin
     Result:=nil;
@@ -88,7 +88,7 @@ begin
   SetLength(S, SizeOf(TMatrixTransformation));
   PChar(CVert):=PChar(S);
   Move(P, CVert^, Sizeof(TMatrixTransformation));
-  Specifics.Bytes[FloatSpecNameOf(SpecRotMatrix)]:=S;
+  Specifics.ByteArray[FloatSpecNameOf(SpecRotMatrix)]:=S;
 end;
 
 procedure QTagFrame.GetRotMatrix(var P: PMatrixTransformation);
@@ -97,7 +97,7 @@ const
 var
   s: string;
 begin
-  S:=Specifics.Bytes[FloatSpecNameOf(SpecRotMatrix)];
+  S:=Specifics.ByteArray[FloatSpecNameOf(SpecRotMatrix)];
   if S='' then
   begin
     P:=nil;

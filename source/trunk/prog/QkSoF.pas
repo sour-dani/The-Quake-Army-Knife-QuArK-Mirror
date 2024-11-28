@@ -361,8 +361,8 @@ begin
      F.Position:=org+m32header.Offsets[0];
      ReadRGBA(f, rgb, a, m32header.Width[0], m32header.Height[0]);
 
-     Specifics.Bytes[Spec1]:=rgb;
-     Specifics.Bytes[Spec2]:=a;
+     Specifics.ByteArray[Spec1]:=rgb;
+     Specifics.ByteArray[Spec2]:=a;
   end;
  else inherited;
  end;

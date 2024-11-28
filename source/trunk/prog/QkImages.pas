@@ -366,8 +366,8 @@ begin
         end;
       end;
 
-      Specifics.Bytes[Spec1]:=ImgData;
-      Specifics.Bytes[Spec2]:=PalData;
+      Specifics.ByteArray[Spec1]:=ImgData;
+      Specifics.ByteArray[Spec2]:=PalData;
     end
     else
     begin
@@ -408,8 +408,8 @@ begin
           end;
         end;
 
-        Specifics.Bytes[Spec3]:=AlphaData;
-        Specifics.Bytes[Spec1]:=ImgData;
+        Specifics.ByteArray[Spec3]:=AlphaData;
+        Specifics.ByteArray[Spec1]:=ImgData;
       end
       else
       begin
@@ -441,7 +441,7 @@ begin
           end;
         end;
 
-        Specifics.Bytes[Spec1]:=ImgData;
+        Specifics.ByteArray[Spec1]:=ImgData;
       end;
     end;
 
@@ -759,8 +759,8 @@ begin
         end;
       end;
 
-      Specifics.Bytes[Spec1]:=ImgData;
-      Specifics.Bytes[Spec2]:=PalData;
+      Specifics.ByteArray[Spec1]:=ImgData;
+      Specifics.ByteArray[Spec2]:=PalData;
     end
     else
     begin
@@ -800,8 +800,8 @@ begin
           end;
         end;
 
-        Specifics.Bytes[Spec3]:=AlphaData;
-        Specifics.Bytes[Spec1]:=ImgData;
+        Specifics.ByteArray[Spec3]:=AlphaData;
+        Specifics.ByteArray[Spec1]:=ImgData;
       end
       else
       begin
@@ -832,7 +832,7 @@ begin
           end;
         end;
 
-        Specifics.Bytes[Spec1]:=ImgData;
+        Specifics.ByteArray[Spec1]:=ImgData;
       end;
     end;
 
@@ -1072,7 +1072,7 @@ var
  Size: TPoint;
  ScanW: Integer;
 begin
- Result:=Specifics.Bytes[Spec1];
+ Result:=Specifics.ByteArray[Spec1];
  if Check then
  begin
    Size:=GetSize;
@@ -1111,7 +1111,7 @@ function QImage.GetPalette(var P: PPaletteLmp; Check: Boolean) : String;
 const
  Spec2 = 'Pal';
 begin
- Result:=Specifics.Bytes[Spec2];
+ Result:=Specifics.ByteArray[Spec2];
  if Check then
  begin
    if Length(Result) < SizeOf(TPaletteLmp) then
@@ -1126,7 +1126,7 @@ const
 var
  S: String;
 begin
- S:=Specifics.Bytes[Spec2];
+ S:=Specifics.ByteArray[Spec2];
  if Check then
  begin
    if Length(S) < SizeOf(TPaletteLmp) then
@@ -1144,7 +1144,7 @@ var
  Size: TPoint;
  ScanW: Integer;
 begin
- Result:=Specifics.Bytes[Spec3];
+ Result:=Specifics.ByteArray[Spec3];
  if Check then
  begin
    Size:=GetSize;
@@ -1171,7 +1171,7 @@ begin
  I:=Specifics.IndexOfName('Image1');
  if I<0 then
   Raise EErrorFmt(5534, ['Image1']);
- P.BitsSource:=Specifics.BytesFromIndex[I];
+ P.BitsSource:=Specifics.ByteArrayFromIndex[I];
 end;}
 
 function QImage.Description : TPixelSetDescription;
@@ -1196,7 +1196,7 @@ begin
    GetPalette(Result.ColorPalette);
    Result.ScanLine:=-((Result.Size.X+3) and not 3);
   end;
- B:=Specifics.Bytes[AlphaSpec];
+ B:=Specifics.ByteArray[AlphaSpec];
  if Length(B) = Result.Size.X*Result.Size.Y then
   begin
    Result.AlphaBits:=psa8bpp;
@@ -1254,9 +1254,9 @@ begin
 
  { store the new data }
  SetSize(NewPSD.Size);
- Specifics.Bytes[ImageSpec]:=ImageData;
- if PaletteData<>'' then Specifics.Bytes[PaletteSpec]:=PaletteData;
- if AlphaData<>'' then Specifics.Bytes[AlphaSpec]:=AlphaData;
+ Specifics.ByteArray[ImageSpec]:=ImageData;
+ if PaletteData<>'' then Specifics.ByteArray[PaletteSpec]:=PaletteData;
+ if AlphaData<>'' then Specifics.ByteArray[AlphaSpec]:=AlphaData;
 
  finally NewPSD.Done; end;
 end;
@@ -1299,7 +1299,7 @@ begin
      Inc(Src, PSD.ScanLine);
     end;
   end;
- Specifics.Bytes[Spec1]:=S;
+ Specifics.ByteArray[Spec1]:=S;
 end;*)
 
 {function QImage.GetBitmapImage : TBitmap;
@@ -1327,9 +1327,9 @@ var
  PalStr: String; //FIXME: TByteDynArray;
 begin
  SetSize(Point(W,H));
- Specifics.Bytes[Spec1]:=Data;
+ Specifics.ByteArray[Spec1]:=Data;
  SetString(PalStr, PChar(@Lmp), SizeOf(TPaletteLmp));
- Specifics.Bytes[Spec2]:=PalStr;
+ Specifics.ByteArray[Spec2]:=PalStr;
 end;
 
 (*procedure QImage.PasteImageDC(NeededGame: Char; DC: HDC; W,H: Integer);
@@ -1622,7 +1622,7 @@ begin
    Inc(DestScanLine, DestScanW);
   end;
  Result:=QImage(QObjectClass(ClassType).Create(Name, Nil));
- Result.Specifics.Bytes[Spec1]:=Data;
+ Result.Specifics.ByteArray[Spec1]:=Data;
  Result.Specifics.Strings[FloatSpecNameOf('Size')]:=Specifics.Strings[FloatSpecNameOf('Size')]; //FIXME: Convert to float
 end;
 

@@ -1827,7 +1827,7 @@ begin
   //Read as unformatted data
   SetLength(B, Size);
   F.ReadBuffer(B[1], Size);
-  Specifics.Bytes[SpecUnformatted]:=B;
+  Specifics.ByteArray[SpecUnformatted]:=B;
 end;
 
 procedure QObject.SaveUnformatted(F: TStream);

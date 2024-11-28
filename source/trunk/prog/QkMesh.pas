@@ -208,7 +208,7 @@ begin
  L:=Buf.W*Buf.H*SizeOf(TMeshControlPoints5);
  SetLength(B, L);
  Move(Buf.CP^, B[1], L);
- Specifics.Bytes[FloatSpecNameOf(Spec)]:=B;
+ Specifics.ByteArray[FloatSpecNameOf(Spec)]:=B;
 end;
 
 class function TMesh.TypeInfo: String;

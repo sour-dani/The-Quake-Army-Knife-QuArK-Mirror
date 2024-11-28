@@ -603,12 +603,12 @@ begin
     Move(GameBuffer(ObjectGameCode)^.PaletteLmp, B[1], SizeOf(TPaletteLmp))
   else if ObjectGameCode=mjHalfLife then
     Move(pal, B[1], SizeOf(TPaletteLmp));
-  Result.Specifics.Bytes[Spec1]:=B;
+  Result.Specifics.ByteArray[Spec1]:=B;
 
   DeltaW:=-((Round(Size[0])+3) and not 3);
   SetLength(B, DeltaW*Round(Size[1]));
   P:=PChar(B)+Length(B)+DeltaW; //FIXME: PArithByte
-  Result.Specifics.Bytes[Spec2]:=B;
+  Result.Specifics.ByteArray[Spec2]:=B;
 end;
 
 function QSprFile.Loaded_FrameFile(Root: QObject; const Name: String) : QImage;

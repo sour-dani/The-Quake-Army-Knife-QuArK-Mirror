@@ -2191,7 +2191,7 @@ begin
                   end;
                  if Ctrl=Nil then
                   begin
-                   Spec:=Bytes['Icon'];
+                   Spec:=ByteArray['Icon'];
                    if Spec<>'' then
                     begin
                      J:=Round(Form.SubElements[I].GetFloatSpec('IconW', 16));

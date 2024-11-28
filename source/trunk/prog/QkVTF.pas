@@ -255,8 +255,8 @@ begin
                 Inc(DestAlpha, Width);
               end;
 
-              Specifics.Bytes[Spec3]:=AlphaData;
-              Specifics.Bytes[Spec1]:=ImgData;
+              Specifics.ByteArray[Spec3]:=AlphaData;
+              Specifics.ByteArray[Spec1]:=ImgData;
             end
             else
             begin
@@ -282,7 +282,7 @@ begin
                 Inc(DestImg, 3 * Width);
               end;
 
-              Specifics.Bytes[Spec1]:=ImgData;
+              Specifics.ByteArray[Spec1]:=ImgData;
             end;
           finally
             FreeMem(RawData);

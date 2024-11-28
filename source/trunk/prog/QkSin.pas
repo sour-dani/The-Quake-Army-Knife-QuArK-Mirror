@@ -213,7 +213,7 @@ begin
          if A<>0 then
           HasAlpha:=True;
         end;
-      Specifics.Bytes[Spec2]:=Data;
+      Specifics.ByteArray[Spec2]:=Data;
 
       if HasAlpha then
        begin
@@ -221,7 +221,7 @@ begin
         P:=@Data[1];
         for I:=0 to 255 do
          P[I]:=Chr(Header.Palette[I].A);
-        Specifics.Bytes[Spec3]:=Data;
+        Specifics.ByteArray[Spec3]:=Data;
        end;
 
        { reads misc flags }
@@ -290,7 +290,7 @@ var
          G:=Lmp^[I,1];
          B:=Lmp^[I,2];
         end;
-      S:=Specifics.Bytes['Alpha'];
+      S:=Specifics.ByteArray['Alpha'];
       for I:=1 to Length(S) do
        Header.Palette[I-1].A:=Ord(S[I]);
 

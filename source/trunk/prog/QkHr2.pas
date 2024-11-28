@@ -122,7 +122,7 @@ begin
        { reads the palette }
       SetLength(Data, SizeOf(TPaletteLmp));
       Move(Header.Palette, Data[1], SizeOf(TPaletteLmp));
-      Specifics.Bytes[Spec2]:=Data;
+      Specifics.ByteArray[Spec2]:=Data;
 
        { reads the image data }
       Q2MipTex.W:=Header.Width[0];

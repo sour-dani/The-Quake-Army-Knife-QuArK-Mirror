@@ -154,7 +154,7 @@ begin
       Flags:=CustomParams;
 
       {create appropriate image object}
-      B:=Specifics.Bytes['Image1'];
+      B:=Specifics.ByteArray['Image1'];
       {is the image there ?}
       if Length(B) = 0 then
       begin
@@ -202,8 +202,8 @@ begin
           Bytesize:=tex_size.x*tex_size.y;
           SetLength(B, Bytesize);
           {read and convert the stuff}
-          tga_pixeldata:=source_image.Specifics.Bytes['Image1'];
-          tga_alphadata:=source_image.Specifics.Bytes['Alpha'];
+          tga_pixeldata:=source_image.Specifics.ByteArray['Image1'];
+          tga_alphadata:=source_image.Specifics.ByteArray['Alpha'];
 
           {for testing only - convert this to palette !}
           if I=0 then
@@ -232,7 +232,7 @@ begin
             end;
           end;
 
-          Specifics.Bytes[S]:=B;
+          Specifics.ByteArray[S]:=B;
 
           if not ScaleDown(tex_size.x, tex_size.y) then
             Break;

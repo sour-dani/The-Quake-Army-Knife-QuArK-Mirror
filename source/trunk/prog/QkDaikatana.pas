@@ -127,7 +127,7 @@ begin
     SetLength(B, Taille1);
     F.Position:=Base+Header.Indexes[I];
     F.ReadBuffer(B[1], Taille1);
-    Texture.Specifics.Bytes[S]:=B;
+    Texture.Specifics.ByteArray[S]:=B;
     if not ScaleDown(W,H) then
       Break;
   end;
@@ -135,7 +135,7 @@ begin
   //Read palette
   SetLength(B, 768);
   Move(Header.Palette, B[1], 768);
-  Texture.Specifics.Bytes[Spec2]:=B;
+  Texture.Specifics.ByteArray[Spec2]:=B;
 
   if Header.Animation[0]<>0 then
     Texture.Specifics.Strings['Anim']:=CharToPas(Header.Animation);

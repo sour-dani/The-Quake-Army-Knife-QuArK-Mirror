@@ -100,12 +100,12 @@ begin
         F.ReadBuffer(ScanLine^, Header.width);
         FillChar(ScanLine^, ScanW-Header.width, 0);
        end;
-      Specifics.Bytes[Spec1]:=ImgData;
+      Specifics.ByteArray[Spec1]:=ImgData;
 
       //Use the game palette
       SetLength(B, SizeOf(TPaletteLmp));
       Move(GameBuffer(ObjectGameCode)^.PaletteLmp, B[1], SizeOf(TPaletteLmp));
-      Specifics.Bytes[Spec2]:=B;
+      Specifics.ByteArray[Spec2]:=B;
     end;
  else inherited;
  end;
@@ -133,7 +133,7 @@ begin
       F.WriteBuffer(Header, SizeOf(Header));
 
       //Write image data
-      Data:=Specifics.Bytes[Spec1];
+      Data:=Specifics.ByteArray[Spec1];
       ScanW:=(Size.X+3) and not 3;
       if Length(Data) <> ScanW*Size.Y then
        Raise EErrorFmt(5534, [Spec1]);

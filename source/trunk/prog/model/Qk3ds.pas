@@ -251,7 +251,7 @@ begin
       end;
       inc(CTris);
     end;
-    comp.Specifics.Bytes[SpecTris]:=s;
+    comp.Specifics.ByteArray[SpecTris]:=s;
   finally
     freemem(texvert, num_texvert * sizeof(ttexvert))
   end;
@@ -274,7 +274,7 @@ begin
       CVert^[k]:=V[k];
     Inc(CVert);
   end;
-  FrameObj.Specifics.Bytes[FloatSpecNameOf(SpecVertices)]:=S;
+  FrameObj.Specifics.ByteArray[FloatSpecNameOf(SpecVertices)]:=S;
 end;
 
 procedure Q3DSFile.LoadFile(F: TStream; FSize: TStreamPos);

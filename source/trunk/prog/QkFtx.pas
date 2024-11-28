@@ -133,8 +133,8 @@ begin
             Dec(Source2, Header.Width * 4);
           end;
 
-          Specifics.Bytes[Spec3]:=AlphaData;
-          Specifics.Bytes[Spec1]:=ImgData;
+          Specifics.ByteArray[Spec3]:=AlphaData;
+          Specifics.ByteArray[Spec1]:=ImgData;
         end
         else
         begin
@@ -163,7 +163,7 @@ begin
             Dec(Source2, Header.Width * 4);
           end;
 
-          Specifics.Bytes[Spec1]:=ImgData;
+          Specifics.ByteArray[Spec1]:=ImgData;
         end;
       finally
         FreeMem(Source);

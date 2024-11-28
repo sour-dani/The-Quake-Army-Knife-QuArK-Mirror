@@ -85,11 +85,11 @@ begin
   Result.SetFloatsSpec('Size', Size);
   SetLength(B, SizeOf(TPaletteLmp));
   Move(GameBuffer(ObjectGameCode)^.PaletteLmp, B[1], SizeOf(TPaletteLmp));
-  Result.Specifics.Bytes[Spec2]:=B;
+  Result.Specifics.ByteArray[Spec2]:=B;
   DeltaW:=-((Round(Size[0])+3) and not 3);
   SetLength(B, -DeltaW*Round(Size[1]));
   //FillChar(B, Length(B), 0);
-  Result.Specifics.Bytes[Spec1]:=B;
+  Result.Specifics.ByteArray[Spec1]:=B;
 end;
 
 function QModelFile.Loaded_Frame(Component: QComponent; const Name: String) : QFrame;

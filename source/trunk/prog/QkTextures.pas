@@ -960,7 +960,7 @@ begin
           //FIXME: Doesn't work?
           SetLength(B, SizeOf(TPaletteLmp));
           Move(GameBuffer(ObjectGameCode)^.PaletteLmp, B[1], SizeOf(TPaletteLmp));
-          Link.Specifics.Bytes[Spec2]:=B;
+          Link.Specifics.ByteArray[Spec2]:=B;
         end;
         Break;
       end;
@@ -1185,7 +1185,7 @@ begin
   else
   begin
     Result.Palette:=pspVariable;
-    Pal:=Specifics.Bytes[Spec2];
+    Pal:=Specifics.ByteArray[Spec2];
     if Length(Pal) < SizeOf(TPaletteLmp) then
       Result.ColorPalette:=@GameBuffer(BaseGame)^.PaletteLmp
     else
@@ -1211,7 +1211,7 @@ begin
 
   Result.Size.X:=W;
   Result.Size.Y:=H;
-  S:=Specifics.Bytes[Spec];
+  S:=Specifics.ByteArray[Spec];
 
   if Length(S) < Result.Size.X*Result.Size.Y then
     Raise EErrorFmt(5534, [Spec]);
@@ -1324,9 +1324,9 @@ begin
       Specifics.Delete(Spec2);
 
       SetSize(NewPSD.Size);
-      Specifics.Bytes[Spec1]:=Data;
+      Specifics.ByteArray[Spec1]:=Data;
       if Pal<>'' then
-        Specifics.Bytes[Spec2]:=Pal;
+        Specifics.ByteArray[Spec2]:=Pal;
 
       W:=NewPSD.Size.X;
       H:=NewPSD.Size.Y;
@@ -1343,7 +1343,7 @@ begin
                  NewPSD.ColorPalette, PByte(Data1),
                  NewPSD.Size.X, NewPSD.Size.Y, NewPSD.ScanLine,
                  W, H, W);
-        Specifics.Bytes['Image' + ImgCodes[I]]:=Data1;
+        Specifics.ByteArray['Image' + ImgCodes[I]]:=Data1;
       end;
 
       if NewPSD.AlphaBits=psaGlobalAlpha then
@@ -1623,7 +1623,7 @@ begin
       Raise EErrorFmt(5504, ['image #'+IntToStr(I)]);
 
   Spec:='Image'+ImgCodes[I];  { '1' to '4' }
-  Result:=Specifics.Bytes[Spec];
+  Result:=Specifics.ByteArray[Spec];
 
   if Length(Result) <> W*H then
     Raise EErrorFmt(5504, [Spec]);

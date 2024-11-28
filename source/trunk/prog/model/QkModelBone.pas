@@ -119,7 +119,7 @@ begin
   CVert^[0]:=P[0];
   CVert^[1]:=P[1];
   CVert^[2]:=P[2];
-  Specifics.Bytes[PosSpec]:=B; //FIXME: Floats!
+  Specifics.ByteArray[PosSpec]:=B; //FIXME: Floats!
 end;
 
 function QModelBone.GetPosition: vec3_p;
@@ -143,7 +143,7 @@ begin
   SetLength(B, SizeOf(TMatrixTransformation));
   PChar(CVert):=PChar(B); //FIXME: PArithByte
   Move(P, CVert^, Sizeof(TMatrixTransformation));
-  Specifics.Bytes[RotSpec]:=B; //FIXME: Floats!
+  Specifics.ByteArray[RotSpec]:=B; //FIXME: Floats!
 end;
 
 procedure QModelBone.GetRotMatrix(var P: PMatrixTransformation);
@@ -334,7 +334,7 @@ begin
           DestP^[1]:=Y;
           DestP^[2]:=Z;
         end;
-        Specifics.Bytes[PosSpec]:=B; //FIXME: Floats!
+        Specifics.ByteArray[PosSpec]:=B; //FIXME: Floats!
         Result:=True;
         Exit;
       end;
@@ -357,7 +357,7 @@ begin
           DestM^[3][2]:=M[3][2];
           DestM^[3][3]:=M[3][3];
         end;
-        Specifics.Bytes[RotSpec]:=B; //FIXME: Floats!
+        Specifics.ByteArray[RotSpec]:=B; //FIXME: Floats!
         Result:=True;
         Exit;
       end;
@@ -390,7 +390,7 @@ begin
             I:=I+SizeOf(Integer);
           end;
         end;
-        Specifics.Bytes[VertSpec]:=B; //FIXME: Floats!
+        Specifics.ByteArray[VertSpec]:=B; //FIXME: Floats!
         Result:=True;
         Exit;
       end
@@ -423,7 +423,7 @@ begin
             I:=I+SizeOf(Integer);
           end;
         end;
-        Specifics.Bytes[VertPosSpec]:=B; //FIXME: Floats!
+        Specifics.ByteArray[VertPosSpec]:=B; //FIXME: Floats!
         Result:=True;
         Exit;
       end;

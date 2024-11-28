@@ -361,7 +361,7 @@ begin
     begin
      SrcObj:=Self;
      Caption:=Specifics.Strings['Cap'];
-     S:=Specifics.Bytes['Icon'];
+     S:=Specifics.ByteArray['Icon'];
      if S<>'' then
       begin
        IconW:=Round(GetFloatSpec('IconW', 16));
@@ -371,7 +371,7 @@ begin
        if Bmp<>0 then
         begin
          Glyph.Handle:=Bmp;
-         S:=Specifics.Bytes['IconDown'];
+         S:=Specifics.ByteArray['IconDown'];
          if S<>'' then
           begin
            Bmp:=DataToBmp16(S, IconW);

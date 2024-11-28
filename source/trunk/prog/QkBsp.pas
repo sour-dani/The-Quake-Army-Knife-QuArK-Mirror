@@ -559,7 +559,7 @@ begin
    Exit;
  end;
  Q.Acces;
- Result:=Q.Specifics.Bytes[DataSpec];
+ Result:=Q.Specifics.ByteArray[DataSpec];
 end;
 
 function QBsp.GetAltTextureSrc : QObject;

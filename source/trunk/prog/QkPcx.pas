@@ -224,13 +224,13 @@ begin
          end;
         ProgressIndicatorIncrement;
        end;
-      Specifics.Bytes[Spec1]:=Data;
+      Specifics.ByteArray[Spec1]:=Data;
 
        { reads the palette }
       F.Seek(FSize+1, soCurrent);  { skips remaining data if any (should not) }
       SetLength(Data, pcxTaillePalette);
       F.ReadBuffer(Data[1], pcxTaillePalette);
-      Specifics.Bytes[Spec2]:=Data;
+      Specifics.ByteArray[Spec2]:=Data;
       finally ProgressIndicatorStop; end;
     end
     else

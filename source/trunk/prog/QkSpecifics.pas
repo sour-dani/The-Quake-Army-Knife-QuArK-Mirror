@@ -94,22 +94,26 @@ type
     function GetSize(Index: Integer) : Integer;
     function IndexOfName(const Name: string): Integer;
     procedure Insert(Index: Integer; const Item: TSpecificsItem);
+    procedure InsertBytes(Index: Integer; const Name: string; const B: string);
     procedure InsertFloat(Index: Integer; const Name: string; const F: Single);
     procedure InsertInteger(Index: Integer; const Name: string; const I: Integer);
-    procedure InsertString(Index: Integer; const Name: string; const S: string);
+    procedure InsertString(Index: Integer; const Name: string; const S: string); overload;
+    procedure InsertString(Index: Integer; const Name: string; const S: PChar; Len: Integer); overload;
     function TryGetBytes(const Name: string; var B: string): TTryGetResult;
     function TryGetFloats(const Name: string; var F: Single): TTryGetResult;
     function TryGetIntegers(const Name: string; var I: Integer): TTryGetResult;
     function TryGetStrings(const Name: string; var S: string): TTryGetResult;
-    property Bytes[const Name: string]: string read GetBytes write SetBytes;
-    property BytesFromIndex[Index: Integer]: string read GetBytesFromIndex write SetBytesFromIndex;
+
     property Count: Integer read FCount;
+    property Items[Index: Integer]: TSpecificsItem read Get write Put; (*default;*)
+    property Names[Index: Integer]: string read GetName;
+
+    property ByteArray[const Name: string]: string read GetBytes write SetBytes;
+    property ByteArrayFromIndex[Index: Integer]: string read GetBytesFromIndex write SetBytesFromIndex;
     property Floats[const Name: string]: Single read GetFloat write SetFloat;
     property FloatsFromIndex[Index: Integer]: Single read GetFloatFromIndex write SetFloatFromIndex;
     property Integers[const Name: string]: Integer read GetInteger write SetInteger;
     property IntegersFromIndex[Index: Integer]: Integer read GetIntegerFromIndex write SetIntegerFromIndex;
-    property Items[Index: Integer]: TSpecificsItem read Get write Put; (*default;*)
-    property Names[Index: Integer]: string read GetName;
     property Strings[const Name: string]: string read GetString write SetString;
     property StringsFromIndex[Index: Integer]: string read GetStringFromIndex write SetStringFromIndex;
   end;
@@ -259,11 +263,6 @@ begin
   Result := StrToInt(FList^[Index].Value);
 end;
 
-function TSpecificsList.GetName(Index: Integer): string;
-begin
-  Result := Get(Index).Key;
-end;
-
 function TSpecificsList.GetString(const Name: string): string;
 var
   Index: Integer;
@@ -280,9 +279,15 @@ begin
   Result := FList^[Index].Value;
 end;
 
+function TSpecificsList.GetName(Index: Integer): string;
+begin
+  Result := Get(Index).Key;
+end;
+
 function TSpecificsList.GetSize(Index: Integer) : Integer;
 begin
-  Result := SizeOf(String)+Length(Names[Index])+SizeOf(String)+Length(BytesFromIndex[Index]); //FIXME: Or SizeOf(Bytes), ...
+  Result := SizeOf(String)+Length(Names[Index])*SizeOf(Char) //Key
+           +SizeOf(String)+Length(ByteArrayFromIndex[Index])*SizeOf(Char); //Value
   //FIXME: This doesn't take into account possible string sharing/pooling between objects!
 end;
 
@@ -318,6 +323,12 @@ begin
   end;
   FList^[Index]:=Item;
   Inc(FCount);
+end;
+
+procedure TSpecificsList.InsertBytes(Index: Integer; const Name: String; const B: string);
+begin
+  //FIXME: For now, store the bytes in a string
+  InsertString(Index, Name, B);
 end;
 
 procedure TSpecificsList.InsertFloat(Index: Integer; const Name: String; const F: Single);
@@ -371,6 +382,24 @@ begin
     Pointer(Value) := nil;
   end;
   FList^[Index].Value := S;
+  Inc(FCount);
+end;
+
+procedure TSpecificsList.InsertString(Index: Integer; const Name: String; const S: PChar; Len: Integer);
+begin
+  if (Index < 0) or (Index > FCount) then Error(@SListIndexError, Index); //Note: Index = FCount is allowed!
+  if (IndexOfName(Name) >= 0) then Error(@SDuplicateSpecific, Name);
+  if FCount = FCapacity then Grow;
+  if Index < FCount then
+    System.Move(FList^[Index], FList^[Index + 1],
+      (FCount - Index) * SizeOf(TSpecificsItem));
+  with FList^[Index] do
+  begin
+    Pointer(Key) := nil;
+    Key := Name;
+    Pointer(Value) := nil;
+  end;
+  System.SetString(FList^[Index].Value, S, Len);
   Inc(FCount);
 end;
 

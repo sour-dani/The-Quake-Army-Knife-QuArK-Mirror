@@ -288,7 +288,7 @@ begin
     SetLength(B, Taille1);
     F.Position:=Base+Offsets^;
     F.ReadBuffer(B[1], Taille1);
-    Specifics.Bytes[S]:=B;
+    Specifics.ByteArray[S]:=B;
     if not ScaleDown(W,H) then
       Break;
     Inc(Offsets);
