@@ -265,24 +265,19 @@ begin
   end;
 end;
 
-Procedure ReadRGBA(F: TStream; var rgb, a: string; width, height: integer);
+Procedure ReadRGBA(F: TStream; var rgb, a: string; width, height: integer); //FIXME: Bytes!
 type
   PRGB = ^TRGB;
   TRGB = array[0..2] of Byte;
-const
-  spec1='Image1=';
-  spec2='Alpha=';
 var
-  RawData, Image_Buffer, Alpha_Buffer: String;
+  RawData, Image_Buffer, Alpha_Buffer: String; //FIXME: Bytes!
   ScanLine, Dest, Source, AlphaBuf: PChar;
   I, J, ScanW, sScanW: Integer;
 begin
   {read into rawdata string}
   I:=Width*(32 div 8);    { bytes per line in the .m32 file }
   ScanW:=(I+3) and not 3; { the same but rounded up, for storing the data }
-  RawData:=Spec1;
-  J:=ScanW*Height;       { total byte count for storage }
-  SetLength(RawData, Length(Spec1)+J);
+  SetLength(RawData, ScanW*Height);
   ScanLine:=PChar(RawData)+Length(RawData)-ScanW;
   sScanW:=-ScanW;
   for J:=1 to Height do
@@ -293,23 +288,18 @@ begin
     Inc(ScanLine, sScanW);
   end;
 
-  {prepare alpha buffer
-   It is assumed to be one byte per pixel if available.
+  {It is assumed to be one byte per pixel if available.
    It was loaded together with the image data into 'RawData',
    but 'RawData' must now be split into two buffers : one for the image colors
    and one for the alpha channel.}
-  alpha_buffer:=Spec2;
   J:=Width*Height;       { pixel count }
-  Setlength(alpha_buffer,Length(Spec2)+ J);
-
-  {prepare image buffer}
-  Image_Buffer:=Spec1;
-  SetLength(Image_Buffer, Length(Spec1)+ 3*J);
+  Setlength(alpha_buffer, J);
+  SetLength(Image_Buffer, 3*J);
 
   {split ABGR into RGB and Alpha}
-  Source:=PChar(RawData)+Length(Spec1);
-  Dest:=PChar(Image_Buffer)+Length(Spec1);
-  AlphaBuf:=PChar(alpha_buffer)+Length(Spec2);
+  Source:=PChar(RawData); //FIXME: PArithByte
+  Dest:=PChar(Image_Buffer); //FIXME: PArithByte
+  AlphaBuf:=PChar(alpha_buffer); //FIXME: PArithByte
   for I:=1 to J do
   begin
     PRGB(Dest)^[2]:=PRGB(Source)^[0];  {bgr -> rgb  }
@@ -325,12 +315,15 @@ begin
 end;
 
 Procedure QM32.LoadFile(F: TStream; FSize: TStreamPos);
+const
+  Spec1='Image1';
+  Spec2='Alpha';
 var
   m32header: TM32Header;
   org: TStreamPos;
   S: string;
   I: Integer;
-  rgb, a: string;
+  rgb, a: string; //FIXME: Bytes!
   V: array[1..2] of Single;
 begin
  case ReadFormat of
@@ -368,8 +361,8 @@ begin
      F.Position:=org+m32header.Offsets[0];
      ReadRGBA(f, rgb, a, m32header.Width[0], m32header.Height[0]);
 
-     specifics.AddStringFull(rgb);
-     specifics.AddStringFull(a);
+     Specifics.Bytes[Spec1]:=rgb;
+     Specifics.Bytes[Spec2]:=a;
   end;
  else inherited;
  end;

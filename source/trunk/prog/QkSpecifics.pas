@@ -49,10 +49,10 @@ const
   MaxSpecificsListSize = MaxInt div SizeOf(TSpecificsItem);
 
 type
+  TTryGetResult = (tgrSuccess, tgrNotFound, tgrWrongType);
+
   PSpecificsItemList = ^TSpecificsItemList;
   TSpecificsItemList = array[0..MaxSpecificsListSize-1] of TSpecificsItem;
-
-  TTryGetResult = (tgrSuccess, tgrNotFound, tgrWrongType);
 
   TSpecificsList = class(TPersistent)
   private
@@ -87,7 +87,6 @@ type
     procedure SetCapacity(NewCapacity: Integer);
   public
     destructor Destroy; override;
-    procedure AddStringFull(const Data: string); //FIXME: This function needs to be removed in the future
     procedure Assign(Source: TPersistent); override;
     procedure Clear;
     procedure Delete(const Name: string; raiseError: Boolean = false); overload;
@@ -124,18 +123,7 @@ uses RTLConsts, SysUtils;
 destructor TSpecificsList.Destroy;
 begin
   inherited Destroy;
-  if FCount <> 0 then Finalize(FList^[0], FCount);
-  FCount := 0;
-  SetCapacity(0);
-end;
-
-procedure TSpecificsList.AddStringFull(const Data: string);
-var
-  P: Integer;
-begin
-  P := Pos('=', Data);
-  if P = 0 then raise Exception.Create('Invalid string!');
-  SetString(Copy(Data, 0, P-1), Copy(Data, P+1, MaxInt));
+  Clear();
 end;
 
 procedure TSpecificsList.Assign(Source: TPersistent);
@@ -158,8 +146,8 @@ begin
   begin
     Finalize(FList^[0], FCount);
     FCount := 0;
-    SetCapacity(0);
   end;
+  SetCapacity(0);
 end;
 
 procedure TSpecificsList.Delete(const Name: string; raiseError: Boolean);
@@ -239,16 +227,6 @@ begin
   //FIXME: For now, store the bytes in a string
   Result := GetStringFromIndex(Index);
 end;
-
-(*function TSpecificsList.GetCapacity: Integer;
-begin
-  Result := FCapacity;
-end;*)
-
-(*function TSpecificsList.GetCount: Integer;
-begin
-  Result := FCount;
-end;*)
 
 function TSpecificsList.GetFloat(const Name: string): Single;
 var
@@ -562,7 +540,5 @@ begin
   end;
   Result := tgrSuccess;
 end;
-
- {------------------------}
 
 end.

@@ -49,7 +49,7 @@ type
     height          :  Longint;
     numframes       :  Longint;
     beamlength      :  Single;
-    synctype        :  Longint;
+    synctype        :  Longint; //ST_SYNC=0, ST_RAND=1
   end;
   TQ2SprHeader = packed record  // Quake 2 Sprite
     ident: Longint;
@@ -73,7 +73,7 @@ type
     Procedure WriteQ1Spr(F:TStream);
     Procedure WriteHLSpr(F:TStream);
     procedure SaveFile(Info: TInfoEnreg1); override;
-    function Loaded_Frame(Root: QObject; const Name: String; const Size: array of Single; var P: PChar; var DeltaW: Integer; pal:TPaletteLmp) : QImage;
+    function Loaded_Frame(Root: QObject; const Name: String; const Size: array of Single; var P: PChar; var DeltaW: Integer; pal: TPaletteLmp) : QImage;
     function Loaded_FrameFile(Root: QObject; const Name: String) : QImage;
     procedure GetWidthHeight(var size:TPoint);
     function GetSprite: QSprite;
@@ -588,28 +588,27 @@ begin
   Info.WndInfo:=[];
 end;
 
-function QSprFile.Loaded_Frame(Root: QObject; const Name: String; const Size: array of Single; var P: PChar; var DeltaW: Integer; pal:TPaletteLmp) : QImage;
+function QSprFile.Loaded_Frame(Root: QObject; const Name: String; const Size: array of Single; var P: PChar; var DeltaW: Integer; pal: TPaletteLmp) : QImage;
 const
-  Spec1 = 'Pal=';
-  Spec2 = 'Image1=';
+  Spec1 = 'Pal';
+  Spec2 = 'Image1';
 var
-  S: String;
+  B: String; //FIXME: Bytes!
 begin
   Result:=QPcx.Create(Name, Root);
   Root.SubElements.Add(Result);
   Result.SetFloatsSpec('Size', Size);
-  S:=Spec1;
-  SetLength(S, Length(Spec1) + SizeOf(TPaletteLmp));
+  SetLength(B, SizeOf(TPaletteLmp));
   if ObjectGameCode=mjQuake then
-    Move(GameBuffer(ObjectGameCode)^.PaletteLmp, S[Length(Spec1)+1], SizeOf(TPaletteLmp))
+    Move(GameBuffer(ObjectGameCode)^.PaletteLmp, B[1], SizeOf(TPaletteLmp))
   else if ObjectGameCode=mjHalfLife then
-    Move(pal,S[Length(Spec1)+1],sizeof(TPaletteLmp));
-  Result.Specifics.AddStringFull(S);
-  S:=Spec2;
+    Move(pal, B[1], SizeOf(TPaletteLmp));
+  Result.Specifics.Bytes[Spec1]:=B;
+
   DeltaW:=-((Round(Size[0])+3) and not 3);
-  SetLength(S, Length(Spec2) - DeltaW*Round(Size[1]));
-  P:=PChar(S)+Length(S)+DeltaW;
-  Result.Specifics.AddStringFull(S);
+  SetLength(B, DeltaW*Round(Size[1]));
+  P:=PChar(B)+Length(B)+DeltaW; //FIXME: PArithByte
+  Result.Specifics.Bytes[Spec2]:=B;
 end;
 
 function QSprFile.Loaded_FrameFile(Root: QObject; const Name: String) : QImage;

@@ -107,36 +107,35 @@ begin
 end;
 
 procedure QBoundFrame.SetQ3AData(pos,mins,maxs: vec3_t; scale: single);
+const
+  SpecPosition = 'position';
+  SpecMins = 'mins';
+  SpecMaxs = 'maxs';
+  SpecScale = 'scale';
 var
-  S, S0: String;
+  F: String; //FIXME: Floats!
   Dest: vec3_p;
   i: integer;
 begin
-  S0:=FloatSpecNameOf('position');
-  S:=S0+'=';
-  SetLength(S, length(S0+'=')+SizeOf(vec3_t));
-  PChar(Dest):=PChar(S)+length(S0+'=');
+  SetLength(F, SizeOf(vec3_t));
+  PChar(Dest):=PChar(F); //FIXME: PArithByte
   for i:=0 to 2 do
     Dest^[i]:=pos[i];
-  Specifics.AddStringFull(S);
+  Specifics.Bytes[FloatSpecNameOf(SpecPosition)]:=F; //FIXME: Floats!
 
-  S0:=FloatSpecNameOf('mins');
-  S:=S0+'=';
-  SetLength(S, length(S0+'=')+SizeOf(vec3_t));
-  PChar(Dest):=PChar(S)+length(S0+'=');
+  SetLength(F, SizeOf(vec3_t));
+  PChar(Dest):=PChar(F); //FIXME: PArithByte
   for i:=0 to 2 do
     Dest^[i]:=pos[i];
-  Specifics.AddStringFull(S);
+  Specifics.Bytes[FloatSpecNameOf(SpecMins)]:=F; //FIXME: Floats!
 
-  S0:=FloatSpecNameOf('maxs');
-  S:=S0+'=';
-  SetLength(S, length(S0+'=')+SizeOf(vec3_t));
-  PChar(Dest):=PChar(S)+length(S0+'=');
+  SetLength(F, SizeOf(vec3_t));
+  PChar(Dest):=PChar(F); //FIXME: PArithByte
   for i:=0 to 2 do
     Dest^[i]:=pos[i];
-  Specifics.AddStringFull(S);
+  Specifics.Bytes[FloatSpecNameOf(SpecMaxs)]:=F; //FIXME: Floats!
 
-  SetFloatSpec('scale',scale);
+  SetFloatSpec(SpecScale, scale);
 end;
 
 procedure QBoundFrame.SetBoneRadius(rad: Single);
@@ -308,17 +307,15 @@ end;
 function QBoundFrame.PySetAttr(attr: PyChar; value: PyObject) : Boolean;
 var
   P: PyVect;
-  S, S0: String;
+  F: String; //FIXME: Floats!
   Dest: vec3_p;
 begin
   Result:=inherited PySetAttr(attr, value);
   if not Result then begin
     case attr[0] of
       's': if StrComp(attr, 'start_point')=0 then begin
-        S0:=FloatSpecNameOf('start_point');
-        S:=S0+'=';
-        SetLength(S, StartSpecLen+SizeOf(vec3_t));
-        PChar(Dest):=PChar(S)+StartSpecLen;
+        SetLength(F, SizeOf(vec3_t));
+        PChar(Dest):=PChar(F); //FIXME: PArithByte
         P:=PyVect(value);
         if P=Nil then
           Exit;
@@ -329,16 +326,13 @@ begin
           Dest^[1]:=Y;
           Dest^[2]:=Z;
         end;
-        Specifics.Delete(S0);
-        Specifics.AddStringFull(S);
+        Specifics.Bytes[FloatSpecNameOf(StartSpec)]:=F; //FIXME: Floats!
         Result:=True;
         Exit;
       end;
       'e': if StrComp(attr, 'end_offset')=0 then begin
-        S0:=FloatSpecNameOf('end_offset');
-        S:=S0+'=';
-        SetLength(S, EndSpecLen+SizeOf(vec3_t));
-        PChar(Dest):=PChar(S)+EndSpecLen;
+        SetLength(F, SizeOf(vec3_t));
+        PChar(Dest):=PChar(F); //FIXME: PArithByte
         P:=PyVect(value);
         if P=Nil then
           Exit;
@@ -349,8 +343,7 @@ begin
           Dest^[1]:=Y;
           Dest^[2]:=Z;
         end;
-        Specifics.Delete(S0);
-        Specifics.AddStringFull(S);
+        Specifics.Bytes[FloatSpecNameOf(EndSpec)]:=F; //FIXME: Floats!
         Result:=True;
         Exit;
       end;

@@ -112,16 +112,14 @@ const
 procedure QModelBone.SetPosition(P: vec3_t);
 var
   CVert: vec3_p;
-  s: string;
+  B: string; //FIXME: Bytes!
 begin
-  S:=PosSpec;
-  SetLength(S, PosSpecLen+SizeOf(vec3_t));
-  PChar(CVert):=PChar(S)+PosSpecLen;
+  SetLength(B, SizeOf(vec3_t));
+  PChar(CVert):=PChar(B); //FIXME: PArithByte
   CVert^[0]:=P[0];
   CVert^[1]:=P[1];
   CVert^[2]:=P[2];
-  Specifics.Delete(PosSpec);
-  Specifics.AddStringFull(s);
+  Specifics.Bytes[PosSpec]:=B; //FIXME: Floats!
 end;
 
 function QModelBone.GetPosition: vec3_p;
@@ -140,14 +138,12 @@ end;
 procedure QModelBone.SetRotMatrix(P: TMatrixTransformation);
 var
   CVert: vec3_p;
-  s: string;
+  B: string; //FIXME: Bytes!
 begin
-  S:=RotSpec;
-  SetLength(S, RotSpecLen+SizeOf(TMatrixTransformation));
-  PChar(CVert):=PChar(S)+RotSpecLen;
+  SetLength(B, SizeOf(TMatrixTransformation));
+  PChar(CVert):=PChar(B); //FIXME: PArithByte
   Move(P, CVert^, Sizeof(TMatrixTransformation));
-  Specifics.Delete(RotSpec);
-  Specifics.AddStringFull(s);
+  Specifics.Bytes[RotSpec]:=B; //FIXME: Floats!
 end;
 
 procedure QModelBone.GetRotMatrix(var P: PMatrixTransformation);
@@ -310,7 +306,7 @@ function QModelBone.PySetAttr(attr: PyChar; value: PyObject) : Boolean;
 var
   P: PyVect;
   M: PyMatrix;
-  S, S0: String;
+  B: String; //FIXME: Bytes!
   DictLen: {$IFDEF PYTHON25}Py_ssize_t{$ELSE}Integer{$ENDIF};
   DestP: vec3_p;
   DestM: PMatrixTransformation;
@@ -319,17 +315,15 @@ var
   N, I: Integer;
   o2: PyObject;
   N2, I2: Integer;
-  S2: String;
+  S: String;
   I3: Integer;
 begin
   Result:=inherited PySetAttr(attr, value);
   if not Result then begin
     case attr[0] of
       'p': if StrComp(attr, 'position')=0 then begin
-        S0:=PosSpec;
-        S:=S0+'=';
-        SetLength(S, PosSpecLen+SizeOf(vec3_t));
-        PChar(DestP):=PChar(S)+PosSpecLen;
+        SetLength(B, SizeOf(vec3_t));
+        PChar(DestP):=PChar(B); //FIXME: PArithByte
         P:=PyVect(value);
         if P=Nil then
           Exit;
@@ -340,16 +334,13 @@ begin
           DestP^[1]:=Y;
           DestP^[2]:=Z;
         end;
-        Specifics.Delete(PosSpec);
-        Specifics.AddStringFull(S);
+        Specifics.Bytes[PosSpec]:=B; //FIXME: Floats!
         Result:=True;
         Exit;
       end;
       'r': if StrComp(attr, 'rotmatrix')=0 then begin
-        S0:=RotSpec;
-        S:=S0+'=';
-        SetLength(S, RotSpecLen+SizeOf(TMatrixTransformation));
-        PChar(DestM):=PChar(S)+RotSpecLen;
+        SetLength(B, SizeOf(TMatrixTransformation));
+        PChar(DestM):=PChar(B); //FIXME: PArithByte
         M:=PyMatrix(value);
         if M=Nil then
           Exit;
@@ -366,84 +357,73 @@ begin
           DestM^[3][2]:=M[3][2];
           DestM^[3][3]:=M[3][3];
         end;
-        Specifics.Delete(RotSpec);
-        Specifics.AddStringFull(S);
+        Specifics.Bytes[RotSpec]:=B; //FIXME: Floats!
         Result:=True;
         Exit;
       end;
       'v': if StrComp(attr, 'vtxlist')=0 then begin
-        S0:=VertSpec;
-        S:=S0+'=';
-        I:=VertSpecLen;
         N:=PyObject_Length(value);
-        SetLength(S, I+SizeOf(Integer));
-        PChar(DestV):=PChar(S)+I;
+        SetLength(B, SizeOf(Integer));
+        PChar(DestV):=PChar(S);
         Move(N, DestV^, SizeOf(Integer));
-        I:=I+SizeOf(Integer);
+        I:=SizeOf(Integer);
         DictLen:=0;
         while (PyDict_Next(value, @DictLen, @DictKey, @DictValue)<>0) do
         begin
-          S2:=PyStrPas(PyString_AsString(DictKey));
-          SetLength(S, I+Length(S2)+1);
-          PChar(DestV):=PChar(S)+I;
-          StrCopy(DestV, PChar(S2));
-          I:=I+Length(S2)+1;
+          S:=PyStrPas(PyString_AsString(DictKey));
+          SetLength(B, I+Length(S)+1);
+          PChar(DestV):=PChar(B)+I;
+          StrCopy(DestV, PChar(S));
+          I:=I+Length(S)+1;
           N2:=PyObject_Length(DictValue);
-          SetLength(S, I+SizeOf(Integer));
-          PChar(DestV):=PChar(S)+I;
+          SetLength(B, I+SizeOf(Integer));
+          PChar(DestV):=PChar(B)+I;
           Move(N2, DestV^, SizeOf(Integer));
           I:=I+SizeOf(Integer);
           for I2:=0 to N2-1 do
           begin
             o2:=PyList_GetItem(DictValue, I2);
             I3:=PyInt_AsLong(o2);
-            SetLength(S, I+SizeOf(Integer));
-            PChar(DestV):=PChar(S)+I;
+            SetLength(B, I+SizeOf(Integer));
+            PChar(DestV):=PChar(B)+I;
             Move(I3, DestV^, SizeOf(Integer));
             I:=I+SizeOf(Integer);
           end;
         end;
-        //FIXME: Check for ref counters bugs!
-        Specifics.Delete(VertSpec);
-        Specifics.AddStringFull(S);
+        Specifics.Bytes[VertSpec]:=B; //FIXME: Floats!
         Result:=True;
         Exit;
       end
       else if StrComp(attr, 'vtx_pos')=0 then begin
-        S0:=VertPosSpec;
-        S:=S0+'=';
-        I:=VertPosSpecLen;
         N:=PyObject_Length(value);
-        SetLength(S, I+SizeOf(Integer));
-        PChar(DestV):=PChar(S)+I;
+        SetLength(B, SizeOf(Integer));
+        PChar(DestV):=PChar(B);
         Move(N, DestV^, SizeOf(Integer));
-        I:=I+SizeOf(Integer);
+        I:=SizeOf(Integer);
         DictLen:=0;
         while (PyDict_Next(value, @DictLen, @DictKey, @DictValue)<>0) do
         begin
-          S2:=PyStrPas(PyString_AsString(DictKey));
-          SetLength(S, I+Length(S2)+1);
-          PChar(DestV):=PChar(S)+I;
-          StrCopy(DestV, PChar(S2));
-          I:=I+Length(S2)+1;
+          S:=PyStrPas(PyString_AsString(DictKey));
+          SetLength(B, I+Length(S)+1);
+          PChar(DestV):=PChar(B)+I;
+          StrCopy(DestV, PChar(S));
+          I:=I+Length(S)+1;
           N2:=PyObject_Length(DictValue);
-          SetLength(S, I+SizeOf(Integer));
-          PChar(DestV):=PChar(S)+I;
+          SetLength(B, I+SizeOf(Integer));
+          PChar(DestV):=PChar(B)+I;
           Move(N2, DestV^, SizeOf(Integer));
           I:=I+SizeOf(Integer);
           for I2:=0 to N2-1 do
           begin
             o2:=PyList_GetItem(DictValue, I2);
             I3:=PyInt_AsLong(o2);
-            SetLength(S, I+SizeOf(Integer));
-            PChar(DestV):=PChar(S)+I;
+            SetLength(B, I+SizeOf(Integer));
+            PChar(DestV):=PChar(B)+I;
             Move(I3, DestV^, SizeOf(Integer));
             I:=I+SizeOf(Integer);
           end;
         end;
-        //FIXME: Check for ref counters bugs!
-        Specifics.Delete(VertPosSpec);
-        Specifics.AddStringFull(S);
+        Specifics.Bytes[VertPosSpec]:=B; //FIXME: Floats!
         Result:=True;
         Exit;
       end;
