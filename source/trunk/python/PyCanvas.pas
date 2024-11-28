@@ -195,6 +195,7 @@ var
  Tex1: QObject;
 const
  Q2ColorMapCount = 64;
+ DataSpec = 'Data';
 type
  PColorMapQ = ^TColorMapQ;
  TColorMapQ = array[0..255] of Byte;
@@ -256,8 +257,8 @@ begin
           end
          else
           begin
-           ColorMapData:=ColorMap.GetSpecArg('Data');
-           IgnoreData:=Length('Data=');
+           ColorMapData:=ColorMap.GetSpecArg(DataSpec);
+           IgnoreData:=Length(DataSpec+'=');
            lgr:=-lgr;
           end;
          ColorT1:=(Length(ColorMapData)-IgnoreData) div SizeOf(TColorMapQ);

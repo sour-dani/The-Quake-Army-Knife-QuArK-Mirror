@@ -202,6 +202,8 @@ begin
 end;
 
 (*procedure QRawFileObject.SetWriteString(const SpecName, WriteString: String);
+const
+ DataSpec = 'Data';
 var
  Q: QObject;
  I: Integer;
@@ -214,7 +216,7 @@ begin
   end
  else
   begin
-   I:=Q.Specifics.IndexOfName('Data');
+   I:=Q.Specifics.IndexOfName(DataSpec);
    if I>=0 then
     Q.Specifics.Delete(I);
   end;
@@ -223,7 +225,7 @@ end;*)
 
 function QRawFileObject.GetReadStream(var S: TStream) : TStreamPos;
 const
- Base = Length('Data=');
+ DataSpec = 'Data';
 var
  Q: QObject;
  Data: String;
@@ -239,18 +241,18 @@ begin
       Exit;
      Q.Acces;
     end;
-   I:=Q.Specifics.IndexOfName('Data'); //FIXME: This can be done more efficiently now, with TryGetString! Also, BYTES!
+   I:=Q.Specifics.IndexOfName(DataSpec); //FIXME: This can be done more efficiently now, with TryGetString! Also, BYTES!
    if I>=0 then
     Data:=Q.Specifics.StringsFromIndex[I];
   end;
- Result:=Length(Data)-Base;
+ Result:=Length(Data)-Length(DataSpec+'=');
  if Result<=0 then
   begin
    Result:=0;
    S:=Nil;
   end
  else
-  S:=TRawDataStream.Create(PChar(Data)+Base, Result);
+  S:=TRawDataStream.Create(PChar(Data)+Length(DataSpec+'='), Result);
 end;
 
  {------------------------}

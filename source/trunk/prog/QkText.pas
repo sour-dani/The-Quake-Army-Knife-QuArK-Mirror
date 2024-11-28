@@ -194,7 +194,7 @@ end;
 
 procedure QZText.SaveFile(Info: TInfoEnreg1);
 const
- Start = Length('Data=X');
+ DataSpec = 'Data';
 var
  S: String;
  I: Integer;
@@ -202,10 +202,10 @@ begin  { write as unformatted data }
  with Info do case Format of
   rf_Default:            { as stand-alone file }
     begin
-     S:=GetSpecArg('Data');
-     I:=Length(S)-Start+1;
+     S:=GetSpecArg(DataSpec);
+     I:=Length(S)-Length(DataSpec+'=');
      if S[Length(S)]<>#0 then Inc(I);  { append a null character if not already present }
-     F.WriteBuffer(S[Start], I);
+     F.WriteBuffer(S[Length(DataSpec+'=')+1], I);
     end;
   else
    inherited;
