@@ -41,38 +41,38 @@ uses qhelper, QuarkX, QkObjectClassList, QkExceptions, Logging, Setup,
   QkMapObjects, QkMapPoly, MapError, qmath {//FIXME};
 
 type
-  RMFVisGroup = packed record //@ UNTESTED
-    m_szName: array[0..127] of Char;
-    m_rgbColor: array[0..3] of Byte;
+  RMFVisGroup = packed record
+    m_szName: packed array[0..127] of AnsiChar;
+    m_rgbColor: packed array[0..3] of Byte;
     m_dwID: DWORD;
     m_bVisible: Bool;
   end;
 
   RMFTexture_21 = packed record
-    texture: array[0..MAX_PATH-1] of Byte;
+    texture: array[0..MAX_PATH-1] of AnsiChar;
     rotate: Single;
     shift: array[0..1] of Single;
     scale: array[0..1] of Single;
     smooth: Byte;
     material: Byte;
-    PADDING1: array[0..1] of Byte;
+    PADDING: array[0..1] of Byte;
     q2surface: DWORD;
     q2contents: DWORD;
     q2value: DWORD;
   end;
 
-  RMFTexture_33 = packed record //@ UNTESTED
-    texture: array[0..MAX_PATH-1] of Byte;
+  RMFTexture_33 = packed record
+    texture: array[0..MAX_PATH-1] of AnsiChar;
     UAxis: array[0..3] of Single;
     VAxis: array[0..3] of Single;
     rotate: Single;
     scale: array[0..1] of Single;
     smooth: Byte;
     material: Byte;
-    PADDING1: array[0..1] of Byte;
+    PADDING: array[0..1] of Byte;
     q2surface: DWORD;
     q2contents: DWORD;
-    nLightmapScale: Integer;
+    nLightmapScale: LongInt;
   end;
 
 const
@@ -118,26 +118,19 @@ procedure QRmfMapFile.LoadFile(F: TStream; FSize: TStreamPos);
     end;
   end;
 
+  function ReadRMFBoolean : Boolean;
+  var
+    RawValue: LongInt;
+  begin
+    F.ReadBuffer(RawValue, SizeOf(LongInt));
+    Result:=(RawValue<>0);
+  end;
+
 var
  Racine: TTreeMapBrush;
  MapStructure : TTreeMapGroup;
- ModeJeu: Char;
-
  BrushNum, FaceNum: Integer;
-
- RMFVersion, CameraToolVersion: Single;
- RMFHeader: array[0..2] of AnsiChar;
- DocInfo: array[0..7] of AnsiChar;
- VisGroup: RMFVisGroup;
- DummyByte: Byte;
- DummyInteger: Integer;
- DummySingle: Single;
- DummyString: String;
- DummyVector: array[0..2] of Single;
- DummyBOOL: BOOL;
- DummyWORD: WORD;
- DummyDWORD: DWORD;
- i: Integer;
+ RMFVersion: Single;
 
  procedure LoadMapClass(var obj : TTreeMap); forward;
  procedure LoadEditGameClass(var obj : TTreeMap); forward;
@@ -145,22 +138,29 @@ var
  procedure LoadMapEntity(parent: TTreeMap);
  var
    Entite: TTreeMapSpec;
-   Origin: array[0..2] of Single;
+   Origin: packed array[0..2] of Single;
    OldPos: TStreamPos;
    IsBrush: Boolean;
+   GroupID: DWORD;
+   GroupColor: packed array[0..2] of Byte;
+   NumberOfChildren: LongInt;
+   Flags: WORD;
+   GroupInformationSize: LongInt;
+   Complex: LongInt;
  begin
    //Ugly hack; we need to know if there's children for this entity
    OldPos:=F.Position;
    if RMFVersion < 1.0 then
    begin
-     F.ReadBuffer(DummyInteger, SizeOf(Integer));
-     F.Seek(DummyInteger + 3 * SizeOf(Byte), soCurrent);
+     F.ReadBuffer(GroupInformationSize, SizeOf(LongInt));
+     F.Seek(GroupInformationSize, soCurrent); //Skipped
    end
    else
-     F.Seek(SizeOf(DWORD) + 3 * SizeOf(Byte), soCurrent);
-   F.ReadBuffer(DummyInteger, SizeOf(Integer));
-   F.Seek(OldPos, soBeginning);
-   IsBrush:=(DummyInteger<>0);
+     F.ReadBuffer(GroupID, SizeOf(GroupID)); //Unused
+   F.ReadBuffer(GroupColor, SizeOf(GroupColor));
+   F.ReadBuffer(NumberOfChildren, SizeOf(LongInt));
+   F.Seek(OldPos, soBeginning); //Rewind
+   IsBrush:=(NumberOfChildren<>0);
    if IsBrush then
      Entite:=TTreeMapBrush.Create('CMapEntity', parent) //Temp name
    else
@@ -170,15 +170,15 @@ var
    LoadMapClass(TTreeMap(Entite));
    LoadEditGameClass(TTreeMap(Entite));
 
-   F.ReadBuffer(DummyWORD, SizeOf(WORD)); //flags
-   F.ReadBuffer(Origin[0], 3*SizeOf(Single));
+   F.ReadBuffer(Flags, SizeOf(WORD));
+   F.ReadBuffer(Origin[0], SizeOf(Origin));
    if not IsBrush then
      TTreeMapEntity(Entite).Origin:=MakeVect(Origin[0], Origin[1], Origin[2]);
 
    if RMFVersion < 0.5 then
-     DummyVector[2]:=-DummyVector[2];
+     Origin[2]:=-Origin[2];
 
-   F.ReadBuffer(DummyInteger, SizeOf(Integer)); //complex (unused)
+   F.ReadBuffer(Complex, SizeOf(Integer)); //Unused
  end;
 
  procedure LoadMapGroup(parent: TTreeMap);
@@ -212,6 +212,10 @@ var
    Params: TFaceParams;
    UAxis, VAxis : TVect;
    UShift, VShift: Double;
+   Light: Single;
+   Size: LongInt;
+   LoadHasMapDisp: LongInt;
+   HasMapDisp: Boolean;
  begin
    Surface:=TFace.Create(LoadStr1(139), P);
    P.SubElements.Add(Surface);
@@ -226,7 +230,7 @@ var
      F.ReadBuffer(OldTex.texture[0], 16);
 
      // Ensure name is ASCIIZ
-     OldTex.texture[16]:=0;
+     OldTex.texture[16]:=#0;
 
      // Read the rest - skip the name
      F.ReadBuffer(OldTex.rotate, SizeOf(OldTex.rotate));
@@ -250,7 +254,7 @@ var
      F.ReadBuffer(OldTex.scale, SizeOf(OldTex.scale));
      F.ReadBuffer(OldTex.smooth, SizeOf(OldTex.smooth));
      F.ReadBuffer(OldTex.material, SizeOf(OldTex.material));
-     F.ReadBuffer(OldTex.PADDING1, SizeOf(OldTex.PADDING1));
+     F.ReadBuffer(OldTex.PADDING, SizeOf(OldTex.PADDING));
    end
    else if RMFVersion < 1.8 then
    begin
@@ -261,7 +265,7 @@ var
      F.ReadBuffer(OldTex.scale, SizeOf(OldTex.scale));
      F.ReadBuffer(OldTex.smooth, SizeOf(OldTex.smooth));
      F.ReadBuffer(OldTex.material, SizeOf(OldTex.material));
-     F.ReadBuffer(OldTex.PADDING1, SizeOf(OldTex.PADDING1));
+     F.ReadBuffer(OldTex.PADDING, SizeOf(OldTex.PADDING));
    end
    else if RMFVersion < 2.2 then
    begin
@@ -279,22 +283,22 @@ var
 
    if RMFVersion < 1.8 then
    begin
-     OldTex.texture[40]:=0;
+     OldTex.texture[40]:=#0;
    end;
 
    if RMFVersion < 0.6 then
    begin
-     F.ReadBuffer(DummySingle, SizeOf(DummySingle)); //light
+     F.ReadBuffer(Light, SizeOf(Single));
      //@
    end;
-   F.ReadBuffer(DummyInteger, SizeOf(Integer)); //size
-   if DummyInteger>256 then
+   F.ReadBuffer(Size, SizeOf(LongInt));
+   if Size>256 then
      Raise EErrorFmt(5779, [LoadStr1(5783)]);
-   F.ReadBuffer(LoadPoints[0][0], DummyInteger*3*SizeOf(Single));
+   F.ReadBuffer(LoadPoints[0][0], Size * 3 * SizeOf(Single));
 
    // Negate Z for older RMF files.
    if RMFVersion < 0.5 then
-     for i := 0 to DummyInteger-1 do
+     for i := 0 to Size-1 do
        LoadPoints[i][2]:=-LoadPoints[i][2];
 
    Surface.SetThreePoints(MakeVect(LoadPoints[0][0], LoadPoints[0][1], LoadPoints[0][2]), MakeVect(LoadPoints[2][0], LoadPoints[2][1], LoadPoints[2][2]), MakeVect(LoadPoints[1][0], LoadPoints[1][1], LoadPoints[1][2]));  //FIXME
@@ -304,7 +308,7 @@ var
    // If reading from a pre-2.2 RMF file, copy the texture info from the old format.
    if RMFVersion < 2.2 then
    begin
-     Surface.NomTex:=CharToPas(OldTex.texture);
+     Surface.NomTex:=OldTex.texture;
 
       //FIXME: OldTex.smooth
       //FIXME: OldTex.material
@@ -321,7 +325,7 @@ var
    end
    else
    begin
-     Surface.NomTex:=CharToPas(OldTex33.texture);
+     Surface.NomTex:=OldTex33.texture;
 
      //FIXME: OldTex33.smooth
      //FIXME: OldTex33.material
@@ -357,13 +361,13 @@ var
    begin
      if RMFVersion >= 3.5 then
      begin
-       F.ReadBuffer(DummyInteger, SizeOf(Integer)); //nLoadHasMapDisp;
-       DummyBool:=(DummyInteger<>0);
+       F.ReadBuffer(LoadHasMapDisp, SizeOf(LongInt));
+       HasMapDisp:=(LoadHasMapDisp<>0);
      end
      else
-       F.ReadBuffer(DummyBOOL, SizeOf(DummyBOOL)); //bHasMapDisp;
+       HasMapDisp:=ReadRMFBoolean();
 
-     if DummyBool then
+     if HasMapDisp then
        LoadMapDisp();
    end;
    //@
@@ -373,6 +377,7 @@ var
  var
    i: Integer;
    P: TPolyhedron;
+   NumberOfFaces: LongInt;
  begin
    P:=TPolyhedron.Create(LoadStr1(138), parent);
    parent.SubElements.Add(P);
@@ -380,8 +385,8 @@ var
    LoadMapClass(TTreeMap(P));
    FaceNum:=0;
 
-   F.ReadBuffer(DummyInteger, SizeOf(Integer)); //Number of faces
-   for i := 0 to DummyInteger-1 do
+   F.ReadBuffer(NumberOfFaces, SizeOf(LongInt));
+   for i := 0 to NumberOfFaces-1 do
    begin
      LoadMapFace(P);
      FaceNum:=FaceNum+1;
@@ -393,24 +398,25 @@ var
  var
    i: Integer;
    obj2: TTreeMap;
+   GroupInformationSize: LongInt;
+   GroupID: DWORD;
+   ObjectColor: array[0..2] of Byte;
+   NumberOfChildren: LongInt;
+   ChildName: AnsiString;
  begin
    BrushNum:=0;
    if RMFVersion < 1.0 then
    begin
-     // kill group information .. unfortunate
-     F.ReadBuffer(DummyInteger, SizeOf(Integer));
-     F.Seek(DummyInteger, soCurrent);
+     F.ReadBuffer(GroupInformationSize, SizeOf(LongInt));
+     F.Seek(GroupInformationSize, soCurrent); //Skipped
    end
    else
    begin
-     F.ReadBuffer(DummyDWORD, SizeOf(DWORD)); //ID
+     F.ReadBuffer(GroupID, SizeOf(DWORD));
      //@
    end;
 
-   //Object color
-   F.ReadBuffer(DummyByte, SizeOf(Byte));
-   F.ReadBuffer(DummyByte, SizeOf(Byte));
-   F.ReadBuffer(DummyByte, SizeOf(Byte));
+   F.ReadBuffer(ObjectColor[0], SizeOf(ObjectColor));
 
    //We want to load all the geometry into a separate group
    if obj=Racine then
@@ -419,29 +425,29 @@ var
      obj2:=obj;
 
    //Load children
-   F.ReadBuffer(DummyInteger, SizeOf(Integer));
-   for i := 0 to DummyInteger-1 do
+   F.ReadBuffer(NumberOfChildren, SizeOf(LongInt));
+   for i := 0 to NumberOfChildren-1 do
    begin
-     DummyString:=ReadRMFString(); //Name of pChild
-     if DummyString = 'CMapEntity' then
+     ChildName:=ReadRMFString();
+     if ChildName = 'CMapEntity' then
        LoadMapEntity(obj2)
-     else if DummyString = 'CMapGroup' then
+     else if ChildName = 'CMapGroup' then
        LoadMapGroup(obj2)
-     else if DummyString = 'CMapHelper' then //used?
+     else if ChildName = 'CMapHelper' then //used?
        LoadMapHelper(obj2)
-     else if DummyString = 'CMapSolid' then
+     else if ChildName = 'CMapSolid' then
      begin
        LoadMapSolid(obj2);
        BrushNum:=BrushNum+1;
      end
      else
-       Raise EErrorFmt(5779, [FmtLoadStr1(5784, [DummyString])]);
+       Raise EErrorFmt(5779, [FmtLoadStr1(5784, [ChildName])]);
    end;
  end;
 
  procedure LoadKeyValue(var obj : TTreeMap);
  var
-   Key, Value: String;
+   Key, Value: AnsiString;
  begin
    Key:=ReadRMFString();
    Value:=ReadRMFString();
@@ -450,60 +456,81 @@ var
 
  procedure LoadEditGameClass(var obj : TTreeMap);
  var
-   ClassName: String;
-   i: Integer;
+   ClassName: AnsiString;
+   Angle, SpawnFlags: LongInt;
+   NumberOfSpecifics: LongInt;
+   I: Integer;
+   HasTimeline: Boolean;
+   TimelineStart, TimelineEnd: LongInt;
  begin
    ClassName:=ReadRMFString();
-   F.ReadBuffer(DummyInteger, SizeOf(Integer)); //Angle
-   F.ReadBuffer(DummyInteger, SizeOf(Integer)); //Spawnflags
-   if ClassName[1] = #0 then
+   if ClassName = '' then
      Log(LOG_INFO, 'RMF: Invalid EditGameClass name.'); //@
    obj.Name:=ClassName;
-   F.ReadBuffer(DummyInteger, SizeOf(Integer)); //Size
-   for i := 0 to DummyInteger-1 do
-   begin
+
+   F.ReadBuffer(Angle, SizeOf(LongInt));
+   obj.Specifics.Strings['angle'] := IntToStr(Angle);
+
+   F.ReadBuffer(SpawnFlags, SizeOf(LongInt));
+   obj.Specifics.Strings['spawnflags'] := IntToStr(SpawnFlags);
+
+   F.ReadBuffer(NumberOfSpecifics, SizeOf(LongInt));
+   for I := 0 to NumberOfSpecifics-1 do
      LoadKeyValue(obj);
-     //@
-   end;
-   //@ OLD angle...?
+
    if RMFVersion >= 1.5 then
    begin
-     //Dummy timeline information (unused)
-     F.ReadBuffer(DummyBOOL, SizeOf(DummyBOOL));
-     F.ReadBuffer(DummyInteger, SizeOf(DummyInteger));
-     F.ReadBuffer(DummyInteger, SizeOf(DummyInteger));
+     HasTimeline:=ReadRMFBoolean(); //Unused
+     F.ReadBuffer(TimelineStart, SizeOf(LongInt)); //Unused
+     F.ReadBuffer(TimelineEnd, SizeOf(LongInt)); //Unused
    end;
  end;
 
  procedure LoadMapPath(parent : TTreeMap);
  var
    Entite: TTreeMapSpec;
-   DummyBuffer: array[0..127] of Char;
-   DummyInteger2: Integer;
-   i, k: Integer;
+   PathName, PathClass: packed array[0..127] of AnsiChar;
+   Direction, NumberOfNodes: LongInt;
+   Position: array[0..2] of Single;
+   ChildID: DWORD;
+   NodeName: packed array[0..127] of AnsiChar;
+   NodeSize: LongInt;
+   I, J: Integer;
  begin
    Entite:=TTreeMapEntity.Create('CMapPath', parent); //Temp name
    parent.SubElements.Add(Entite);
 
-   F.ReadBuffer(DummyBuffer, 128); //128 = SizeOf(DummyBuffer) //Name
-   F.ReadBuffer(DummyBuffer, 128); //128 = SizeOf(DummyBuffer) //Class
-   F.ReadBuffer(DummyInteger, SizeOf(DummyInteger)); //Direction
+   F.ReadBuffer(PathName, SizeOf(PathName)); //FIXME: Apply
+   F.ReadBuffer(PathClass, SizeOf(PathClass)); //FIXME: Apply
+   F.ReadBuffer(Direction, SizeOf(LongInt)); //FIXME: Apply
 
-   F.ReadBuffer(DummyInteger, SizeOf(DummyInteger)); //Number of nodes
-   for i := 0 to DummyInteger-1 do
+   F.ReadBuffer(NumberOfNodes, SizeOf(LongInt));
+   for I := 0 to NumberOfNodes-1 do
    begin
-     F.ReadBuffer(DummyVector[0], 3*SizeOf(Single)); //position
-     F.ReadBuffer(DummyDWORD, SizeOf(DWORD)); //ID
+     F.ReadBuffer(Position[0], SizeOf(Position)); //FIXME: Apply
+     F.ReadBuffer(ChildID, SizeOf(DWORD)); //FIXME: Apply
      if RMFVersion >= 1.6 then
      begin
-       F.ReadBuffer(DummyBuffer, 128); //128 = SizeOf(DummyBuffer) //Name
-       F.ReadBuffer(DummyInteger2, SizeOf(DummyInteger2)); //size
-       for k := 0 to DummyInteger2-1 do
-         LoadKeyValue(TTreeMap(Entite));
+       F.ReadBuffer(NodeName, SizeOf(NodeName)); //FIXME: Apply
+       F.ReadBuffer(NodeSize, SizeOf(LongInt)); //FIXME: Apply
+       for J := 0 to NodeSize-1 do
+         LoadKeyValue(TTreeMap(Entite)); //FIXME: Save on NODE
      end;
    end;
  end;
 
+var
+ ModeJeu: Char;
+ RMFHeader: packed array[0..2] of AnsiChar;
+ NumberOfVisGroups: LongInt;
+ VisGroup: RMFVisGroup;
+ ObjType: AnsiString;
+ OldGroupSize, NumberOfPaths: LongInt;
+ Position, Direction: array[0..2] of Single;
+ DocInfo: packed array[0..7] of AnsiChar;
+ CameraToolVersion: Single;
+ NumberOfActiveCamera, NumberOfCamera: LongInt;
+ I: Integer;
 begin
  case ReadFormat of
   rf_Default: begin  { as stand-alone file }
@@ -538,19 +565,16 @@ begin
         // load groups
         if RMFVersion >= 1.0 then
         begin
-          F.ReadBuffer(DummyInteger, SizeOf(Integer));
-          for i := 0 to DummyInteger-1 do
-          begin
-            F.ReadBuffer(VisGroup, SizeOf(VisGroup));
-            //@ Read in "visgroups"
-          end;
+          F.ReadBuffer(NumberOfVisGroups, SizeOf(LongInt));
+          for I := 0 to NumberOfVisGroups-1 do
+            F.ReadBuffer(VisGroup, SizeOf(VisGroup)); //Skipped
         end;
 
         // make sure it's a CMapWorld
-        DummyString:=ReadRMFString();
-        if DummyString<>'CMapWorld' then
-          Raise EErrorFmt(5779, [FmtLoadStr1(5782, [DummyString, 'CMapWorld'])]);
-        Racine.Name:=DummyString;
+        ObjType:=ReadRMFString();
+        if ObjType<>'CMapWorld' then
+          Raise EErrorFmt(5779, [FmtLoadStr1(5782, [ObjType, 'CMapWorld'])]);
+        Racine.Name:=ObjType;
 
         // load children & local data
         LoadMapClass(TTreeMap(Racine));
@@ -560,24 +584,23 @@ begin
 
         if RMFVersion < 1.0 then
         begin
-          //Not supported at all; skip this data
-          F.ReadBuffer(DummyInteger, SizeOf(Integer));
-          F.Seek(old_group_bytes * DummyInteger, soCurrent);
+          F.ReadBuffer(OldGroupSize, SizeOf(LongInt));
+          F.Seek(old_group_bytes * OldGroupSize, soCurrent); //Skipped
         end;
 
         // load paths
         if RMFVersion >= 1.1 then
         begin
-          F.ReadBuffer(DummyInteger, SizeOf(Integer));
-          for i := 0 to DummyInteger-1 do
+          F.ReadBuffer(NumberOfPaths, SizeOf(LongInt));
+          for i := 0 to NumberOfPaths-1 do
             LoadMapPath(TTreeMap(Racine)); //FIXME: Make a separate group!
         end;
 
         // read camera
-        if (RMFVersion >= 0.9) and (RMFVersion < 1.4) then
+        if (RMFVersion >= 1.0) and (RMFVersion < 1.4) then //FIXME: Not clear in what version of RMF camera's were first added; v0.9 doesn't have them.
         begin
-          F.ReadBuffer(DummyVector[0], 3*SizeOf(Single)); //Position
-          F.ReadBuffer(DummyVector[0], 3*SizeOf(Single)); //Direction
+          F.ReadBuffer(Position[0], 3*SizeOf(Single));
+          F.ReadBuffer(Direction[0], 3*SizeOf(Single));
         end
         else if RMFVersion >= 1.4 then
         begin
@@ -589,13 +612,13 @@ begin
           CameraToolVersion:=CameraToolVersion+0.001;
 
           if CameraToolVersion>=0.2 then
-            F.ReadBuffer(DummyInteger, SizeOf(Integer)); //Active camera
+            F.ReadBuffer(NumberOfActiveCamera, SizeOf(LongInt));
 
-          F.ReadBuffer(DummyInteger, SizeOf(Integer)); //Number of camera's
-          for i := 0 to DummyInteger-1 do
+          F.ReadBuffer(NumberOfCamera, SizeOf(LongInt));
+          for i := 0 to NumberOfCamera-1 do
           begin
-            F.ReadBuffer(DummyVector[0], 3*SizeOf(Single)); //Position
-            F.ReadBuffer(DummyVector[0], 3*SizeOf(Single)); //Direction
+            F.ReadBuffer(Position[0], 3*SizeOf(Single));
+            F.ReadBuffer(Direction[0], 3*SizeOf(Single));
           end;
           //@ Do something with the camera's
         end;
