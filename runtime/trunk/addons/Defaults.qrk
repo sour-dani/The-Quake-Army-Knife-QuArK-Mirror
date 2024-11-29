@@ -3049,6 +3049,11 @@ QQRKSRC1
         SaveProgressiveFreeImage = ""
         Form = "FilesJPG"
       }
+      LMP:config = 
+      {
+        WorkaroundLMP = "1"
+        Form = "FilesLMP"
+      }
       MAP:config =
       {
         SaveMapVersion = "2"
@@ -7941,6 +7946,12 @@ QQRKSRC1
         Hint = "The quality the JPG texture will be saved in when using the FreeImage library"
       }
       SaveProgressiveFreeImage: = { Typ="X" Txt="Save Progressive" Cap="Enabled" Hint="Save the JPG texture as a progressive image."}
+    }
+    FilesLMP:form =
+    {
+      Style = "7"
+      sep: = {Typ="S" Txt="---- Advanced LMP Settings ----"}
+      WorkaroundLMP: = {Typ="X" Txt="Workaround broken Palette and Colormap files" Cap="Enabled" Hint="Workaround for palette and colormap files with an incorrect .lmp file extension, shipped by various games."}
     }
     FilesMAP:form = 
     {

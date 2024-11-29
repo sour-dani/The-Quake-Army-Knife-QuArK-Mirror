@@ -36,8 +36,7 @@ procedure BuildFileExt(L: TStrings);
 implementation
 
 uses
- SysUtils,
- QkFileObjects, Quarkx, QkExceptions, Logging;
+ SysUtils, QkFileObjects, QkLmp, QkUnknown, Quarkx, QkExceptions, Logging;
 
 var
  QObjectClassList: TStringList = Nil;
@@ -82,26 +81,27 @@ var
   I: Integer;
   S: String;
 begin
-  //Workaround for file without file extensions (I'm looking at you, CoD2!)
-  if (ExtractFileExt(Name)='') and (Pos(':', Name)=0) then
-  begin
-    I := QObjectClassList.Count;
-    repeat
-      if (I=0) then
-        break;
-      Dec(I);
-      S := QObjectClassList[I];
-    until (QObjectClass(QObjectClassList.Objects[I]).TypeInfo = '')
-      and (QFileObjectClass(QObjectClassList.Objects[I]).CanLoadBlankFileExt(Name, nParent));
-    Result := QObjectClass(QObjectClassList.Objects[I]).Create(Name, nParent);
-    Exit;
-  end;
-
   I := QObjectClassList.Count;
   repeat
     if (I=0) then
-      break;
+      Break;
     Dec(I);
+
+    //Workaround for file without file extensions (I'm looking at you, CoD2!).
+    if (ExtractFileExt(Name)='') and (Pos(':', Name)=0) then
+    begin
+      if (QObjectClass(QObjectClassList.Objects[I]).TypeInfo = '')
+      and (QFileObjectClass(QObjectClassList.Objects[I]).CanLoadBlankFileExt(Name, nParent)) then
+        Break;
+    end;
+
+    //Workaround for some files that carry the .lmp extension, but really aren't.
+    if QObjectClass(QObjectClassList.Objects[I]) = QLmp then
+    begin
+      if QLmp.NotALmpFile(Name, nParent) then
+        Continue;
+    end;
+
     S := QObjectClassList[I];
   until (Length(S)-1 <= Length(Name)) and (Length(S)>1)
     and (StrIComp(@Name[Length(Name)-Length(S)+2], PChar(S)+1) = 0);

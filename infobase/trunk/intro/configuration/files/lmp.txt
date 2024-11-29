@@ -1,0 +1,6 @@
+title: LMP
+author: DanielPharos
+
+<img align=right>lmp.png</img>
+
+<i>Workaround broken Palette and Colormap files</i>. Workaround for palette and colormap files with an incorrect .lmp file extension, shipped by various games

@@ -5,6 +5,7 @@ desc: bmp
 desc: dds
 desc: def
 desc: jpg
+desc: lmp
 desc: map
 desc: pcx
 desc: png

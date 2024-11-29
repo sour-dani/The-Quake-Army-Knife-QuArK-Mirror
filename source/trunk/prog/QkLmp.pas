@@ -31,6 +31,7 @@ type
           procedure SaveFile(Info: TInfoEnreg1); override;
           procedure LoadFile(F: TStream; FSize: TStreamPos); override;
         public
+          class function NotALmpFile(const Name: String; nParent: QObject): Boolean;
           class function TypeInfo: String; override;
           class procedure FileObjectClassInfo(var Info: TFileObjectClassInfo); override;
         end;
@@ -39,7 +40,7 @@ type
 
 implementation
 
-uses Quarkx, Game, QkExceptions, QkObjectClassList, Logging, ExtraFunctionality;
+uses SysUtils, Quarkx, Game, QkExceptions, QkObjectClassList, Logging, ExtraFunctionality;
 
 type
  TLmpHeader = record
@@ -50,6 +51,23 @@ type
 class function QLmp.FormatName : String;
 begin
  Result:='LMP';
+end;
+
+class function QLmp.NotALmpFile(const Name: String; nParent: QObject): Boolean;
+begin
+  //Some specific files carry the .lmp file extension, but really aren't LMP files.
+  //Don't try to load these.
+  if SameFileName(Name, 'palette.lmp') then
+  begin
+    Result:=True;
+    Exit;
+  end;
+  if SameFileName(Name, 'colormap.lmp') then
+  begin
+    Result:=True;
+    Exit;
+  end;
+  Result:=False;
 end;
 
 class function QLmp.TypeInfo: String;
