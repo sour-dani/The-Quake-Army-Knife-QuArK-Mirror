@@ -41,7 +41,7 @@ import math
 #  in quarkpy/dialogboxes.  Don't worry about its innards,
 #  but you'll see how it's used further below.
 #
-# Read http://..adv.quarkpy.gui.html#dialogs in the infobase
+# Read https://quark.sourceforge.io/infobase/adv.quarkpy.gui.html#dialogs
 #  for details on how this stuff defines the appearance of
 #  dialog and the data-entry forms in it.
 #
