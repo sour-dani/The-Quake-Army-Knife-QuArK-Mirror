@@ -268,7 +268,7 @@ begin
   if DecodeEnregistrement(S) then
   begin
     MessageDlg(FmtLoadStr1(226, [S]), mtInformation, [mbOk], 0);
-    Reg := TRegistry2.Create;
+    Reg := TRegistry2.Create(KEY_WRITE);
     try
       Reg.RootKey := HKEY_CURRENT_USER;
       if not Reg.OpenKey(RegistrationKey, True) then Exit;
