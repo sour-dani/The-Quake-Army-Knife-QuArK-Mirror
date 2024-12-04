@@ -122,6 +122,7 @@ asm
  sub eax, offset QObject.PythonObj
 {$ELSE}
  {$IFDEF CPUX64}
+  .NOFRAME
   mov rax, rcx
   sub rax, offset QObject.PythonObj
  {$ELSE}

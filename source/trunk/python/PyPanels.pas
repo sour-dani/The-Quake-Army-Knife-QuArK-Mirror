@@ -152,6 +152,7 @@ asm
  sub eax, offset TLayoutMgr.PanelObject
 {$ELSE}
  {$IFDEF CPUX64}
+  .NOFRAME
   mov rax, rcx
   sub rax, offset TLayoutMgr.PanelObject
  {$ELSE}
