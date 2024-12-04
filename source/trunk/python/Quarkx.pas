@@ -125,6 +125,7 @@ asm
  inc dword ptr [eax]
 {$ELSE}
  {$IFDEF CPUX64}
+  .NOFRAME
   mov rax, [Py_None]
   inc qword ptr [rax]
  {$ELSE}
@@ -2341,7 +2342,7 @@ begin
     Log(LOG_WARNING, LoadStr1(5875), [FullFile, 'ShellExecute', GetSystemErrorMessage(GetLastError)]);
 
     //Fall back to opening the associated program directly.
-    Reg:=TRegistry2.Create;
+    Reg:=TRegistry2.Create(KEY_READ);
     try
       Reg.RootKey:=HKEY_CLASSES_ROOT;
       if (not Reg.ReadOpenKey('.html') and not Reg.ReadOpenKey('.htm'))
