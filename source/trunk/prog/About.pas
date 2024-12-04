@@ -113,7 +113,7 @@ var
 begin
   if RegisteredTo<>'' then
     Exit;
-  Reg := TRegistry2.Create;
+  Reg := TRegistry2.Create(KEY_READ);
   try
     Reg.RootKey := HKEY_CURRENT_USER;
     if not Reg.OpenKey(RegistrationKey, False) then Exit;
