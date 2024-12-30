@@ -26,17 +26,36 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 //QuArK MemTester unit
 {.$DEFINE MemTester}
 
-//FastMM memory manager
-{$IF COMPILERVERSION >= 20} //FastMM5 only supports Delphi XE3 and higher, so fall back to FastMM4 below that.
-{.$DEFINE FastMM_FullDebugMode}
-{.$DEFINE FastMM_ClearLogFileOnStartup}
-{.$DEFINE FastMM_EnableMemoryLeakReporting}
-{$DEFINE FastMM_NoMessageBoxes}
-{$DEFINE FastMM_NoDebugInfo}
-{$DEFINE FastMM5}     (*Enable for FastMM5, copy the debug DLL to the runtime directory when debugging*)
-{$ELSE}
-{$DEFINE FastMM4}     (*Enable for FastMM4, copy the debug DLL to the runtime directory when debugging*)
-{$IFEND}
+//FastMM/RecyclerMM memory manager
+//Note: copy the debug DLL to the runtime directory when debugging
+{$IFDEF CONDITIONALEXPRESSIONS}
+	{$IF COMPILERVERSION >= 24} //Supported Compilers: Delphi XE3 and later.
+		{.$DEFINE FastMM_FullDebugMode}
+		{.$DEFINE FastMM_ClearLogFileOnStartup}
+		{.$DEFINE FastMM_EnableMemoryLeakReporting}
+		{$DEFINE FastMM_NoMessageBoxes}
+		{$DEFINE FastMM_NoDebugInfo}
+		{$DEFINE FastMM5}
+	{$IFEND}
+{$ENDIF}
+{$IFNDEF FastMM5} //Fall back to FastMM4 or RecyclerMM.
+	{$IFDEF VER80}
+		{$DEFINE Delphi1or2or3}
+	{$ENDIF}
+	{$IFDEF VER90}
+		{$DEFINE Delphi1or2or3}
+	{$ENDIF}
+	{$IFDEF VER100}
+		{$DEFINE Delphi1or2or3}
+	{$ENDIF}
+	{$IFDEF Delphi1or2or3}
+		{$DEFINE RecyclerMM}
+	{$ELSE}
+		{$DEFINE FastMM4} //Supports Delphi 4 (or later), C++ Builder 4 (or later), Kylix 3.
+		{.$DEFINE FastMM3} //Requires Delphi 7 or later (Win32) compiler. May compile under Delphi 5/6 with NoMMX defined (not tested).
+		{.$DEFINE FastMM} //Requires Delphi 7 or later (Win32) compiler. May compile under Delphi 5/6 with NoMMX defined (not tested).
+	{$ENDIF}
+{$ENDIF}
 
 //Enable for MemCheck
 {.$DEFINE MemCheck}

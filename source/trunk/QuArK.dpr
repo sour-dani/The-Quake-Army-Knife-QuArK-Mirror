@@ -31,6 +31,15 @@ uses
 {$IFDEF MemTester}
   MemTester in 'prog\MemTester.pas',
 {$ENDIF}
+{$IFDEF RecyclerMM}
+  RecyclerMM in 'prog\RecyclerMM.pas',
+{$ENDIF}
+{$IFDEF FastMM}
+  FastMM in 'prog\FastMM.pas',
+{$ENDIF}
+{$IFDEF FastMM3}
+  FastMM3 in 'prog\FastMM3.pas',
+{$ENDIF}
 {$IFDEF FastMM4}
   FastMM4 in 'prog\FastMM4.pas',
 {$ENDIF}
@@ -59,7 +68,13 @@ uses
   //
   // Runtime optimization
   //
+{$IFNDEF DelphiXE2orNewerCompiler}
+  //System.Move changed signature in Delphi XE2, and FastMove was never updated for that.
+  //And even though some code was licensed into Delphi, FastMove is still useful on Delphi 2006+
+  //because only the CPU-generic Assembly version was integrated:
+  //https://borland.public.delphi.language.basm.narkive.com/gmmCDU4z/rad-studio-delphi-2007-and-fastobj-fastmove#post4
   FastMove in 'prog\FastMove.pas',
+{$ENDIF}
 {$IFNDEF Delphi2009orNewerCompiler}
   FastCode in 'prog\FastCode\FastCode.pas',
 {$ENDIF}
@@ -266,7 +281,7 @@ uses
 {$IFNDEF LINUX}
   //Set the support-for-larger-than-2GB-flag, so we can use up to 4 GB!
   {$IFDEF Delphi6orNewerCompiler}
-    {.$SetPEFlags IMAGE_FILE_LARGE_ADDRESS_AWARE}
+    {$SetPEFlags IMAGE_FILE_LARGE_ADDRESS_AWARE}
     {$IFNDEF Delphi2007orNewerCompiler} //Became an option in Delphi 2007
       {$SetPEOptFlags IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE}
     {$ENDIF}
