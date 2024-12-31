@@ -28,6 +28,7 @@ uses Classes, Types, Windows, SysUtils{$IFDEF Delphi6orNewerCompiler}, StrUtils{
 
 type
 {$ifndef Delphi2orNewerCompiler}
+  Cardinal = Word;
   AnsiChar = Char;
   PAnsiChar = PChar;
   AnsiString = String;
