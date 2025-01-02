@@ -3,8 +3,6 @@ require_once('_main_paths.php');
 require_once('_image_functions.php');
 require_once('_settings_functions.php');
 require_once('_settings-database.php');
-require_once('_theme_functions.php');
-require_once('_theme-database.php');
 
 function DisplayEncodedEmail($address, $subject=NULL, $body=NULL)
 {
@@ -193,6 +191,8 @@ function DisplayByteSize($numberofbytes)
 
 function RefreshCookies()
 {
+	require_once('_theme_functions.php');
+	require_once('_theme-database.php');
 	global $Themes;
 	global $CurrentTheme;
 	$Themes[$CurrentTheme]->SaveSettings();
@@ -213,12 +213,14 @@ function RefreshCookies()
 
 function pageBegin($title=NULL)
 {
+	require_once('_theme_functions.php');
+	require_once('_theme-database.php');
+
 	global $mainroot;
 	global $Themes;
 	global $CurrentTheme;
 
 	require_once('_language_functions.php');
-
 	echo '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  "http://www.w3.org/TR/html4/loose.dtd">'."\n";
 	echo '<html lang="'.GetLanguageObj()->Tag.'">';
 	if (!is_null($title))

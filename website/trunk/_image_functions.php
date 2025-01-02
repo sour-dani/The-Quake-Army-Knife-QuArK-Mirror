@@ -43,6 +43,7 @@ function DisplayRawImage($imgobj, $imgwidth=null, $imgheight=null, $imgextra=nul
 
 function DisplayImage($imgname, $imgwidth=null, $imgheight=null, $imgextra=null, $imgalt=null)
 {
+	require_once('_theme-database.php');
 	global $imgs;
 	global $CurrentTheme;
 	global $Themes;

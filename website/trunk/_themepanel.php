@@ -2,6 +2,7 @@
 require_once('_server_vars.php');
 require_once('_functions.php');
 require_once('_language_functions.php');
+require_once('_theme-database.php');
 
 global $Request_URI;
 
