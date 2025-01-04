@@ -1485,22 +1485,19 @@ begin
   FDirs.Clear;
 
   //See: https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-osversioninfoexa
+  ZeroMemory(@OS,SizeOf(OS));
   if CheckWin32Version(5, 0) then //Windows 2000
   begin
     FExtended:=True;
-    ZeroMemory(@OS,SizeOf(OS));
     OS.dwOSVersionInfoSize:=SizeOf(TOSVersionInfoEx);
-    if not GetVersionEx(POSVersionInfo(@OS)^) then
-      raise Exception.Create('Unable to retrieve system details. Call to GetVersionEx failed!');
   end
   else
   begin
     FExtended:=False;
-    ZeroMemory(@OS,SizeOf(OS));
     OS.dwOSVersionInfoSize:=SizeOf(TOSVersionInfo);
-    if not GetVersionEx(POSVersionInfo(@OS)^) then
-      raise Exception.Create('Unable to retrieve system details. Call to GetVersionEx failed!');
   end;
+  if not GetVersionEx(POSVersionInfo(@OS)^) then
+    raise Exception.Create('Unable to retrieve system details. Call to GetVersionEx failed!');
   FMajorVersion:=OS.dwMajorVersion;
   FMinorVersion:=OS.dwMinorVersion;
   FBuildNumber:=OS.dwBuildNumber;
@@ -1628,7 +1625,14 @@ begin
         1:
          FPlatform:='Windows XP';
         2:
-         FPlatform:='Windows Server 2003 or Windows XP 64-bit';
+         begin
+          if GetSystemMetrics(SM_SERVERR2) <> 0 then
+           FPlatform:='Windows Server 2003 R2'
+          else if OS.wProductType = VER_NT_WORKSTATION then
+           FPlatform:='Windows XP 64-bit'
+          else
+           FPlatform:='Windows Server 2003';
+         end;
         else
          FPlatform:='Windows NT 5?';
         end;
@@ -1638,13 +1642,33 @@ begin
        begin
         case MinorVersion of
         0:
-         FPlatform:='Windows Vista or Windows Server 2008';
+         begin
+          if OS.wProductType = VER_NT_WORKSTATION then
+           FPlatform:='Windows Vista'
+          else
+           FPlatform:='Windows Server 2008'; //or Windows Longhorn
+         end;
         1:
-         FPlatform:='Windows 7 or Windows Server 2008 R2';
+         begin
+          if OS.wProductType = VER_NT_WORKSTATION then
+           FPlatform:='Windows 7'
+          else
+           FPlatform:='Windows Server 2008 R2';
+         end;
         2:
-         FPlatform:='Windows 8 or Windows Server 2012';
+         begin
+          if OS.wProductType = VER_NT_WORKSTATION then
+           FPlatform:='Windows 8'
+          else
+           FPlatform:='Windows Server 2012';
+         end;
         3:
-         FPlatform:='Windows 8.1 or Windows Server 2012 R2';
+         begin
+          if OS.wProductType = VER_NT_WORKSTATION then
+           FPlatform:='Windows 8.1'
+          else
+           FPlatform:='Windows Server 2012 R2';
+         end;
         else
          FPlatform:='Windows NT 6?';
         end;
