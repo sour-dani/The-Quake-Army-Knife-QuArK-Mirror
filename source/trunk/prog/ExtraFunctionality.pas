@@ -1377,7 +1377,7 @@ begin
 end;
 {$endif}
 
-{$ifndef Delphi11orNewerCompiler}
+{$ifndef Delphi2009orNewerCompiler}
 function GetCPUCount: Integer;
 {$IFDEF MSWINDOWS}
 var
@@ -1646,7 +1646,7 @@ initialization
 {$endif}
 
   //Initialize other things too.
-{$ifndef Delphi11orNewerCompiler}
+{$ifndef Delphi2009orNewerCompiler}
   CPUCount:=GetCPUCount;
 {$endif}
 
