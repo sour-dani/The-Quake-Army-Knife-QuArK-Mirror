@@ -19,5 +19,3 @@ QuArK.exe: QuArK.dpr
 
 vclar40.bpl: components\vclar40.dpk
   $(DCC)
-
-
