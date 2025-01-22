@@ -416,6 +416,9 @@ begin
        DoUpdate(LaunchOptions.OnlineUpdate, True);
      end;
 
+     // Repair any broken file associations
+     RefreshAssociations;
+
      // Warn for bugs
      if (Setup.Specifics.Strings['BugCheck']<>'') then
        WarnDriverBugs;
@@ -2026,7 +2029,6 @@ begin
   begin
    //Done loading all (if any) files from the commandline. Now process the last remaining things to-do...
    SetLength(FilesToOpen, 0);
-   RefreshAssociations(False);
    RestoreAutoSaved('.qkm');
    RestoreAutoSaved('.qkl'); //FIXME: This never runs! AutoRestoreEvent is made! --> Right, dump that CreateEvent. We're already using the CreateMutex above. Just put a tip in the documentation about this!!!
    Counter:=-1;
