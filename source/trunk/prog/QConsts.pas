@@ -29,28 +29,28 @@ const
   QuArKMinorVersion       = 'Beta 8';
   QuArKCopyright          = 'Copyright (C) 1996-2024 Armin Rigo and others';
 {$IFDEF CompiledWithDelphi1}
-  QuArKUsedCompiler       = 'Delphi 1.0';
+  QuArKUsedCompiler       = 'Delphi 1';
 {$ELSE}
 {$IFDEF CompiledWithDelphi2}
-  QuArKUsedCompiler       = 'Delphi 2.0';
+  QuArKUsedCompiler       = 'Delphi 2';
 {$ELSE}
 {$IFDEF CompiledWithDelphi3}
-  QuArKUsedCompiler       = 'Delphi 3.0';
+  QuArKUsedCompiler       = 'Delphi 3';
 {$ELSE}
 {$IFDEF CompiledWithDelphi4}
-  QuArKUsedCompiler       = 'Delphi 4.0';
+  QuArKUsedCompiler       = 'Delphi 4';
 {$ELSE}
 {$IFDEF CompiledWithDelphi5}
-  QuArKUsedCompiler       = 'Delphi 5.0';
+  QuArKUsedCompiler       = 'Delphi 5';
 {$ELSE}
 {$IFDEF CompiledWithDelphi6}
-  QuArKUsedCompiler       = 'Delphi 6.0';
+  QuArKUsedCompiler       = 'Delphi 6';
 {$ELSE}
 {$IFDEF CompiledWithDelphi7}
-  QuArKUsedCompiler       = 'Delphi 7.0';
+  QuArKUsedCompiler       = 'Delphi 7';
 {$ELSE}
 {$IFDEF CompiledWithDelphi8}
-  QuArKUsedCompiler       = 'Delphi 8.0';
+  QuArKUsedCompiler       = 'Delphi 8';
 {$ELSE}
 {$IFDEF CompiledWithDelphi2005}
   QuArKUsedCompiler       = 'Delphi 2005';
