@@ -149,8 +149,6 @@ class MakePrismDlg(quarkpy.dialogboxes.dialogbox):
                 Cap = "Yes, make me a ramp."
             }
 
-
-
             sep: = { Typ ="S" Txt=""}
 
             MakePrism:py = {Txt="" }
@@ -188,6 +186,11 @@ class MakePrismDlg(quarkpy.dialogboxes.dialogbox):
             src["stair"]       = ""
             src["ramp"]        = ""
         else:
+            def ConvertBool(value):
+                if (value is None):
+                    return ""
+                else:
+                    return value
             src["vertex"]      = quarkx.setupsubset(SS_MAP, "Options")["MakePrism_Vertex"]
             src["sides"]       = quarkx.setupsubset(SS_MAP, "Options")["MakePrism_Sides"]
             src["radius"]      = quarkx.setupsubset(SS_MAP, "Options")["MakePrism_Radius"]
@@ -195,10 +198,10 @@ class MakePrismDlg(quarkpy.dialogboxes.dialogbox):
             src["height"]      = quarkx.setupsubset(SS_MAP, "Options")["MakePrism_Height"]
             src["offset"]      = quarkx.setupsubset(SS_MAP, "Options")["MakePrism_Offset"]
             src["gridsize"]    = quarkx.setupsubset(SS_MAP, "Options")["MakePrism_Gridsize"]
-            src["slice"]       = quarkx.setupsubset(SS_MAP, "Options")["MakePrism_Slice"]
-            src["shareface"]   = quarkx.setupsubset(SS_MAP, "Options")["MakePrism_Shareface"]
-            src["stair"]       = quarkx.setupsubset(SS_MAP, "Options")["MakePrism_Stair"]
-            src["ramp"]        = quarkx.setupsubset(SS_MAP, "Options")["MakePrism_Ramp"]
+            src["slice"]       = ConvertBool(quarkx.setupsubset(SS_MAP, "Options")["MakePrism_Slice"])
+            src["shareface"]   = ConvertBool(quarkx.setupsubset(SS_MAP, "Options")["MakePrism_Shareface"])
+            src["stair"]       = ConvertBool(quarkx.setupsubset(SS_MAP, "Options")["MakePrism_Stair"])
+            src["ramp"]        = ConvertBool(quarkx.setupsubset(SS_MAP, "Options")["MakePrism_Ramp"])
 
         # Create the dialog form and the buttons
         quarkpy.dialogboxes.dialogbox.__init__(self, form, src,
@@ -234,9 +237,9 @@ class MakePrismDlg(quarkpy.dialogboxes.dialogbox):
             if len(value) > 3:
                 uory = value[3]
         except:
-            raise "Failure in 'Radius of prism' values"
+            raise ValueError("Failure in 'Radius of prism' values")
         if (dorx < 0 or dory < 0 or uorx < 0 or uory < 0):
-            raise "Negative values in 'Radius of prism' not allowed"
+            raise ValueError("Negative values in 'Radius of prism' not allowed")
 
         try:
             # Set; Down-Inner-Radius-X, Down-Inner-Radius-Y, Up-Inner-Radius-X, Up-Inner-Radius-Y
@@ -258,9 +261,9 @@ class MakePrismDlg(quarkpy.dialogboxes.dialogbox):
             if (uiry < 0):
                 uiry = uory + uiry
         except:
-            raise "Failure in 'Hollow of prism' values"
+            raise ValueError("Failure in 'Hollow of prism' values")
         if (dirx < 0 or diry < 0 or uirx < 0 or uiry < 0):
-            raise "Negative values in 'Hollow of prism' will result in illegal brushes"
+            raise ValueError("Negative values in 'Hollow of prism' will result in illegal brushes")
 
         value   = self.src["height"]
         height  = value[0] / 2
@@ -271,13 +274,13 @@ class MakePrismDlg(quarkpy.dialogboxes.dialogbox):
             if len(value) > 1:
                 offsetY = value[1]
         except:
-            raise "Failure in 'Offset of prism' values"
+            raise ValueError("Failure in 'Offset of prism' values")
 
         gridsize    = (self.src["gridsize"])[0]
-        slice       = self.src["slice"] is not None
-        shareface   = self.src["shareface"] is not None
-        stair       = self.src["stair"] is not None
-        ramp        = self.src["ramp"] is not None
+        slice       = self.src["slice"] != ""
+        shareface   = self.src["shareface"] != ""
+        stair       = self.src["stair"] != ""
+        ramp        = self.src["ramp"] != ""
 
         # Save the settings...
         quarkx.setupsubset(SS_MAP, "Options")["MakePrism_Vertex"]       = self.src["vertex"]
