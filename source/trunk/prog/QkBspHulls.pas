@@ -25,6 +25,8 @@ interface
 uses Windows, SysUtils, Classes, QkObjects, QkMapObjects, QkBsp,
      qmath, QkFileObjects, ExtraFunctionality;
 
+{$I DelphiVer.inc}
+
 const
   MAX_MAP_HULLS = 4; //8 for Hexen 2!!!
   MAXLIGHTMAPS = 4; //16 for Sin!
@@ -309,7 +311,9 @@ begin
   HullNum:=Index;
 
   InvFaces:=0;
-  PlaneDist:=0; //Supress compiler warning
+  {$IFNDEF Delphi10_1orNewerCompiler}
+  PlaneDist:=0;
+  {$ENDIF}
 
   FBsp:=nBsp;
   FBsp.AddRef(+1);
@@ -382,11 +386,12 @@ begin
     cEdges:=Length(Edges) div SizeOf(TEdge);
     Log(LOG_INFO, LoadStr1(5469), [cEdges]);
   end
+  {$IFNDEF Delphi10_1orNewerCompiler}
   else
   begin
-    cLEdges:=0; //Supress compiler warning
-    cEdges:=0; //Supress compiler warning
-  end;
+    cLEdges:=0;
+    cEdges:=0;
+  end{$ENDIF};
 
   TexInfo:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpTexInfo());
   cTexInfo:=Length(TexInfo) div TexInfoSize;
@@ -680,8 +685,9 @@ begin
         TexInfo_id:=SinFaces^.TexInfo_id
       else if BSPType=bspTypeSOF then
         TexInfo_id:=SOFFaces^.TexInfo_id
+      {$IFNDEF Delphi10_1orNewerCompiler}
       else
-        TexInfo_id:=0; //Supress compiler warning
+        TexInfo_id:=0{$ENDIF};
 
       if TexInfo_id >= cTexInfo then
       begin
@@ -1017,7 +1023,9 @@ begin
      end;*)
     for I:=1 to NbFaces do   { fast version }
      begin
-      EdgeNum:=0; //Supress compiler warning
+      {$IFNDEF Delphi10_1orNewerCompiler}
+      EdgeNum:=0;
+      {$ENDIF}
       if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) then
       begin
         PArithByte(LEdge):=PArithByte(LEdges) + Q1Faces^.ledge_id * SizeOf(TLEdge);
@@ -1088,7 +1096,9 @@ begin
   else
    for I:=1 to NbFaces do   { slow version }
     begin
-     EdgeNum:=0; //Supress compiler warning
+     {$IFNDEF Delphi10_1orNewerCompiler}
+     EdgeNum:=0;
+     {$ENDIF}
      if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) then
      begin
        PArithByte(LEdge):=PArithByte(LEdges) + Q1Faces^.ledge_id * SizeOf(TLEdge);
