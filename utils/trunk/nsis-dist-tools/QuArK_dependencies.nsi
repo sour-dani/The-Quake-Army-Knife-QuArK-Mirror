@@ -14,9 +14,9 @@
 !define INSTALLER_EXENAME "quark-dependencies.exe"
 !define PRODUCT_NAME "QuArK dependencies"
 !define PRODUCT_NAME_FULL "Quake Army Knife dependencies"
-!define PRODUCT_COPYRIGHT "Copyright (c) 2024"
-!define PRODUCT_VERSION_NUMBER "1.0.0.2"
-!define PRODUCT_VERSION_STRING "1.0.0.2"
+!define PRODUCT_COPYRIGHT "Copyright (c) 2025"
+!define PRODUCT_VERSION_NUMBER "1.0.0.3"
+!define PRODUCT_VERSION_STRING "1.0.0.3"
 !define PRODUCT_WEB_SITE "https://quark.sourceforge.io/"
 !define PRODUCT_PUBLISHER "QuArK Development Team"
 
@@ -380,6 +380,7 @@ SectionEnd
 ; Visual C++ redistributable installers ------
 
 ; See: https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
+; And: https://learn.microsoft.com/en-US/previous-versions/troubleshoot/visualstudio/cpp/libraries/redistribution-shared-c-runtime-component
 
 ; The VC++ Runtime SP1 2005 installer lowered the requirements to Windows Installer 2.0.
 ; Note that (at least) the VC2010 installer needs Internet Explorer 3.02 to be installed.

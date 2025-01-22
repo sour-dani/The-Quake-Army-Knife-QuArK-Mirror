@@ -18,7 +18,7 @@
 !define INSTALLER_EXENAME "quark-win32-6.6.0Beta8.exe"
 !define PRODUCT_NAME "QuArK"
 !define PRODUCT_NAME_FULL "Quake Army Knife"
-!define PRODUCT_COPYRIGHT "Copyright (c) 2024"
+!define PRODUCT_COPYRIGHT "Copyright (c) 2025"
 !define PRODUCT_VERSION "6.6.0 Beta 8"
 !define PRODUCT_VERSION_NUMBER "6.6.8.0"
 !define PRODUCT_VERSION_STRING "6.6 (Beta-Release)"
