@@ -204,7 +204,6 @@ begin
         Exit;
       end;
 
-      //FIXME: Are the first two parameters always 0?
       l_Res:=D3DDevice.GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, OrigBackBuffer);
       if (l_Res <> D3D_OK) then
       begin
@@ -212,7 +211,7 @@ begin
         Exit;
       end;
 
-      l_Res:=D3DDevice.SetRenderState(D3DRS_ZENABLE, 1);  //D3DZB_TRUE := 1
+      l_Res:=D3DDevice.SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
       if (l_Res <> D3D_OK) then
       begin
         Log(LOG_WARNING, LoadStr1(6403), ['SetRenderState(D3DRS_ZENABLE)', DXGetErrorString9(l_Res)]);
@@ -244,14 +243,14 @@ begin
 
     TDirect3DSceneObject.ReleaseAllResources;
 
-    if not (OrigBackBuffer=nil) then
-      OrigBackBuffer:=nil;
+    if OrigBackBuffer <> nil then
+      OrigBackBuffer := nil;
 
     DeleteDummyWindow(DummyWindow);
     DummyWindow := 0;
 
-    if not (D3DDevice=nil) then
-      D3DDevice:=nil;
+    if D3DDevice <> nil then
+      D3DDevice := nil;
 
     //Clear retrieved settings
     FillChar(D3DCaps, SizeOf(D3DCaps), 0);
@@ -259,8 +258,8 @@ begin
     BehaviorFlags := 0;
     FillChar(PresParm, SizeOf(PresParm), 0);
 
-    if not (D3D=nil) then
-      D3D:=nil;
+    if D3D <> nil then
+      D3D := nil;
 
     UnloadD3D9_31; //Ignoring failure to free
     UnLoadDirect3D9; //Ignoring failure to free
