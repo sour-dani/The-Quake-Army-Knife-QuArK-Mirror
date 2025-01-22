@@ -3135,6 +3135,9 @@ end;
 
 function CheckWindows98And2000: Boolean;
 begin
+  {$IFNDEF Delphi10_1orNewerCompiler}
+  Result:=False;
+  {$ENDIF}
   case WindowsPlatformCompatibility of
   osWin95Comp:
     Result:=CheckWin32Version(4, 10); //Windows 98
@@ -3149,6 +3152,9 @@ end;
 
 function CheckWindowsMEAnd2000: Boolean;
 begin
+  {$IFNDEF Delphi10_1orNewerCompiler}
+  Result:=False;
+  {$ENDIF}
   case WindowsPlatformCompatibility of
   osWin95Comp:
     Result:=CheckWin32Version(4, 90); //Windows ME

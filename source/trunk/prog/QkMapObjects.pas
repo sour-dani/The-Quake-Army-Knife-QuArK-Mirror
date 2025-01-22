@@ -26,6 +26,8 @@ uses Windows, SysUtils, Classes, Menus, Controls, Graphics, CommCtrl,
      QkObjects, qmath, QkExplorer, QkFileObjects, QkForm, qmatrices,
      Qk3D, Python;
 
+{$I DelphiVer.inc}
+
 const
  vfGrayedout        = 1;
  vfHidden           = 2;
@@ -1659,6 +1661,9 @@ begin
 
    { loads mdl }
    MdlBase:=Q.Specifics.Strings['mdlbase'];
+   {$IFNDEF Delphi10_1orNewerCompiler}
+   FileObj1:=nil;
+   {$ENDIF}
    try
      if MdlBase='' then
        FileObj1:=NeedGameFile(MdlPath, '')
@@ -1668,7 +1673,9 @@ begin
      on E: EFileNotFound do
      begin
        GlobalWarning(FmtLoadStr1(5904, [MdlPath, E.Message]));
+       {$IFDEF Delphi10_1orNewerCompiler}
        FileObj1:=nil; //file not found, ignore
+       {$ENDIF}
      end;
    end;
    if (FileObj1 = nil) or not (FileObj1 is QModel) then

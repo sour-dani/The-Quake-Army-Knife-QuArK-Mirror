@@ -26,6 +26,8 @@ uses Types, SysUtils, Classes, QkObjects, QkImages, QkTextures, QkFileObjects,
      QkModelFile, QkModelRoot, QkFrame, QkComponent, QkMdlObject, QkModelTag,
      QkTagFrame, QkBoundFrame, QkMiscGroup{, QkFrameGroup};
 
+{$I DelphiVer.inc}
+
 type
   QMd3File = class(QModelFile)
     protected
@@ -375,13 +377,18 @@ begin
     if Skin = nil then
     begin
       Log(LOG_VERBOSE, 'attempting to load %s', [base_tex_name]);
+      {$IFNDEF Delphi10_1orNewerCompiler}
+      ImageFile := nil;
+      {$ENDIF}
       try
         ImageFile := NeedGameFile(base_tex_name, '');
       except
         on E: EFileNotFound do
         begin
           Log(LOG_WARNING, E.Message);
+          {$IFDEF Delphi10_1orNewerCompiler}
           ImageFile := nil; //file not found, ignore
+          {$ENDIF}
         end;
       end;
       if ImageFile <> nil then

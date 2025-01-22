@@ -27,6 +27,8 @@ uses
   QkObjects, QkFileObjects, TB97, StdCtrls, ExtCtrls, PaintPanel, Game,
   EnterEditCtrl, QkForm, Python, QkPixelSet;
 
+{$I DelphiVer.inc}
+
 const
   cp4MipIndexes  = 4;    { 4 images scaled down. 1/1, 1/2, 1/4 and 1/8 }
   cp16MipIndexes = 16;   { 16 images? - Heretic II .M8 texture-format }
@@ -379,6 +381,9 @@ var
 
             if (TexName<>'') and (AlreadyProcessedTextureNames.IndexOf(TexName)<0) then   { if texture not already registered }
             begin
+              {$IFNDEF Delphi10_1orNewerCompiler}
+              Tex1:=nil;
+              {$ENDIF}
               if TexName[1]<>#255 then
                 Tex1:=GlobalFindTexture(TexName, AltTexSrc)
               else   { #255 means direct file name }
@@ -389,7 +394,9 @@ var
                   on E: EFileNotFound do
                   begin
                     Log(LOG_WARNING, E.Message);
+                    {$IFDEF Delphi10_1orNewerCompiler}
                     Tex1:=nil; //file not found, ignore
+                    {$ENDIF}
                   end;
                 end;
               end;
