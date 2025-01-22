@@ -96,12 +96,17 @@ var
   ErrMsg: ErrorDetails;
 begin
   ErrMsg:=SplitErrorMessage(E.Message);
-  Log(LOG_VERBOSE, 'GetExceptionMessage: %s', [ErrMsg.Details]);
-  {$IFDEF Debug}
-  Result:=ErrMsg.Message+'.//'+ErrMsg.Details;
-  {$ELSE}
-  Result:=ErrMsg.Message+'.';
-  {$ENDIF}
+  if ErrMsg.Details<>'' then
+  begin
+    Log(LOG_VERBOSE, 'GetExceptionMessage: %s', [ErrMsg.Details]);
+    {$IFDEF Debug}
+    Result:=ErrMsg.Message+'.//'+ErrMsg.Details;
+    {$ELSE}
+    Result:=ErrMsg.Message+'.';
+    {$ENDIF}
+  end
+  else
+    Result:=ErrMsg.Message+'.';
 end;
 
 procedure LogAndWarn(const WarnMessage : String);
