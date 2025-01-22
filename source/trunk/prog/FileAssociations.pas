@@ -135,7 +135,8 @@ begin
         end;
         if not Reg.OpenKey('\'+ClassKey, True) then
         begin
-          Log(LOG_WARNING, FmtLoadStr1(5616, [Ext, LoadStr1(5849)]));
+          if Specifics.StringsFromIndex[I]<>'' then
+            Log(LOG_WARNING, FmtLoadStr1(5616, [Ext, LoadStr1(5849)]));
           continue;
         end;
         try
