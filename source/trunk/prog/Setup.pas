@@ -463,7 +463,7 @@ begin
  end;
 
  if g_SetupSet[ssGeneral].GetFloatSpec('RunVersion', 5.901)<5.9005 then
-  RefreshAssociations(True);
+  RefreshAssociations;
  g_SetupSet[ssGeneral].SetFloatSpec('RunVersion', Version);
  g_SetupSet[ssGeneral].Specifics.Strings['Date']:=DateToStr(Date);
  if SetupGameSet.Specifics.Strings['Game'] = '' then
