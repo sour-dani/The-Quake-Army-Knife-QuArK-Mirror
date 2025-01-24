@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Anti-cheat from CoD: BOCW explained</headline>
+
+<p>Somebody has spend some time reverse engineering the anti-cheat functionality implemented in Call of Duty: Black Ops Cold War. It's really technical, but if you like such a thing, it's <a target="_blank" href="https://ssno.cc/posts/reversing-tac-1-4-2025/">a good read</a>!</p>
+
+
+<p>Happy anti-cheating,<br>
+DanielPharos</p>
