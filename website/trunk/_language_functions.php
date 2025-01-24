@@ -22,43 +22,6 @@ class cLanguage
 	}
 }
 
-//PHP (still) doesn't have a function to parse the HTTP_ACCEPT_LANGUAGE header, so let's do it ourselves.
-function parseAcceptedLanguages($langstr)
-{
-	$acceptedLanguages = array();
-	while (strlen($langstr) !== 0)
-	{
-		$index = strpos($langstr, ';q=');
-		if ($index === false)
-		{
-			$foundLanguage = $langstr;
-			$foundWeight = 1.0;
-			$langstr = '';
-		}
-		else
-		{
-			$foundLanguage = StringLeft($langstr, $index);
-			$langstr = substr($langstr, $index + strlen(';q='));
-			$index = strpos($langstr, ',');
-			if ($index === false)
-			{
-				$foundWeight = floatval(trim($langstr));
-				$langstr = '';
-			}
-			else
-			{
-				$foundWeight = floatval(trim(StringLeft($langstr, $index)));
-				$langstr = substr($langstr, $index + strlen(','));
-			}
-		}
-		foreach (explode(',', $foundLanguage) as $foundLanguageX)
-		{
-			$acceptedLanguages[trim($foundLanguageX)] = $foundWeight;
-		}
-	}
-	return $acceptedLanguages;
-}
-
 $LanguageNR = 0;
 $SelectedLanguage = NULL;
 
@@ -92,7 +55,7 @@ function InitializeLanguage()
 	if ($SelectedLanguage === $LanguageAutomatic)
 	{
 		$foundLanguage = false;
-		$acceptedLanguages = parseAcceptedLanguages($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+		$acceptedLanguages = parseAcceptHeader($_SERVER['HTTP_ACCEPT_LANGUAGE']);
 		arsort($acceptedLanguages, SORT_NUMERIC);
 		foreach (array_keys($acceptedLanguages) as $acceptedLanguage)
 		{
