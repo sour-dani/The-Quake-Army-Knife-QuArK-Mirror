@@ -59,6 +59,7 @@ $Engines['GLQuake'] = new cEngine('GLQuake', 'GLQuake', NULL, 'Open source (GPL)
 $Engines['id Tech 5'] = new cEngine('id Tech 5', 'id Tech 5', NULL, 'Proprietary', NULL, 'https://en.wikipedia.org/wiki/Id_Tech_5', 'Doom 3');
 $Engines['id Tech 6'] = new cEngine('id Tech 6', 'id Tech 6', NULL, 'Proprietary', NULL, 'https://en.wikipedia.org/wiki/Id_Tech_6', 'id Tech 5');
 $Engines['id Tech 7'] = new cEngine('id Tech 7', 'id Tech 7', NULL, 'Proprietary', NULL, 'https://en.wikipedia.org/wiki/Id_Tech_7', 'id Tech 6');
+$Engines['id Tech 8'] = new cEngine('id Tech 8', 'id Tech 8', NULL, 'Proprietary', NULL, 'https://en.wikipedia.org/wiki/Id_Tech_8', 'id Tech 7');
 $Engines['ioEF'] = new cEngine('ioEF', 'ioEF', NULL, 'Open source (GPL)', 'https://www.moddb.com/mods/ioef', NULL, 'ioquake3'); #http://thilo.kickchat.com/efport-progress
 $Engines['ioquake3'] = new cEngine('ioquake3', 'ioquake3', NULL, 'Open source (GPL)', 'https://ioquake3.org/', 'https://en.wikipedia.org/wiki/Ioquake3', 'Quake 3');
 $Engines['IRR'] = new cEngine('IRR', 'Irrlicht 3D', NULL, 'Open source', 'http://irrlicht.sourceforge.net/' ,'https://en.wikipedia.org/wiki/Irrlicht_Engine', NULL);

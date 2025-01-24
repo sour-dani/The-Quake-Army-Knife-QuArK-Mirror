@@ -576,7 +576,7 @@ $Games[] = new cGame(NULL ,'DM3ROE' ,'Doom 3: Resurrection of Evil' ,'DM3RoE' ,'
                     ,NULL
                     );*/ /*Cancelled*/
 $Games[] = new cGame(NULL ,'DM4' ,'Doom (2016)' ,'DM4' ,'dm4.png'
-                    ,NULL ,'https://en.wikipedia.org/wiki/Doom_(2016_video_game)' ,'id Tech 6', FALSE #https://doom.com/
+                    ,'http://bethesda.net/game/doom-2016' ,'https://en.wikipedia.org/wiki/Doom_(2016_video_game)' ,'id Tech 6', FALSE #https://doom.com/
                     ,'Fight like hell.'
                     ,array('id')
                     ,array('Bethesda')
@@ -596,7 +596,13 @@ $Games[] = new cGame(NULL ,'DM5' ,'Doom Eternal' ,'DM5' ,'dm5.png'
                     ,array('Bethesda')
                     ,NULL
                     );
-//FIXME: 'Doom: The Dark Ages'?
+$Games[] = new cGame(NULL ,'DM6' ,'Doom: The Dark Ages' ,'DM6' ,NULL
+                    ,'https://doom.bethesda.net/the-dark-ages' ,'https://en.wikipedia.org/wiki/Doom:_The_Dark_Ages' ,'id Tech 8', FALSE
+                    ,NULL
+                    ,array('id')
+                    ,array('Bethesda')
+                    ,NULL
+                    );
 $Games[] = new cGame(NULL ,'DB' ,'Doombringer' ,'DB' ,NULL
                     ,'https://www.doombringer.eu/' ,NULL ,'DarkPlaces', FALSE
                     ,'A high octane FPS cavalcade for the distinguished gamer.'
@@ -1099,6 +1105,13 @@ $Games[] = new cGame(NULL ,'MOHPA' ,'Medal of Honor: Pacific Assault' ,'MOHPA' ,
 //https://en.wikipedia.org/wiki/Medal_of_Honor_(2010_video_game) //Unreal Engine 3 (Frostbite 1.5 for multiplayer)
 //https://en.wikipedia.org/wiki/Medal_of_Honor:_Warfighter //Frostbite 2
 //https://en.wikipedia.org/wiki/Medal_of_Honor%3A_Above_and_Beyond //Unreal Engine
+$Games[] = new cGame(NULL ,'NZP' ,'Nazi Zombies: Portable' ,'NZP' ,'nzp.png'
+                    ,'https://github.com/nzp-team/nzportable' ,NULL ,'Quake 1', TRUE
+                    ,NULL
+                    ,NULL
+                    ,NULL
+                    ,NULL
+                    );
 $Games[] = new cGame(NULL ,'NC' ,'Neocron' ,'NC' ,NULL
                     ,NULL ,'https://en.wikipedia.org/wiki/Neocron' ,'G3D', FALSE
                     ,NULL
