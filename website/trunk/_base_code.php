@@ -19,32 +19,29 @@ $CurrentTheme = NULL;
 
 if (isset($_POST['theme']))
 {
-	$ThemeToUse = $_POST['theme'];
+	$ThemeToUse = &$_POST['theme'];
 }
 else if (isset($_COOKIE['theme']))
 {
-	$ThemeToUse = $_COOKIE['theme'];
+	$ThemeToUse = &$_COOKIE['theme'];
 }
 else
 {
 	$ThemeToUse = NULL;
 }
-
 if (!is_null($ThemeToUse))
 {
-	$ThemeFound = false;
-
 	foreach ($Themes as $ThemeName => $Theme)
 	{
 		if ($Theme->CookieName === $ThemeToUse)
 		{
-			$ThemeFound = true;
 			$CurrentTheme = $ThemeName;
 			break;
 		}
 	}
 
-	if (!$ThemeFound)
+	//If we haven't found this theme, set the default theme.
+	if (is_null($CurrentTheme))
 	{
 		$CurrentTheme = $DefaultTheme;
 	}
@@ -53,6 +50,7 @@ else
 {
 	$CurrentTheme = $DefaultTheme;
 }
+unset($ThemeToUse);
 
 require_once('_panels-database.php');
 global $Panels;
