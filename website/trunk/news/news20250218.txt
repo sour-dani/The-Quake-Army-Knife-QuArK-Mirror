@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>TF2 SDK with client and server game code released</headline>
+
+<p>Valve has just updated the Source SDK to include the client and server game code. With this, it's much more easy to make mods that change how the weapons, entities, enemies, work. You can find more information about it <a target="_blank" href="https://www.teamfortress.com/post.php?id=238809">here</a>.</p>
+
+
+<p>Happy modding,<br>
+DanielPharos</p>
