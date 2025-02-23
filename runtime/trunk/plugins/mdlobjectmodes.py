@@ -470,8 +470,8 @@ def objectruler(editor, view, poly):
         # Prints right of top marker line the distance, on the Z axis
            x = view.proj(yrendt).tuple[0]+8
            y = view.proj(yrendt).tuple[1]-2
-           higth = abs(z2-z1)
-           cv.textout(int(x),int(y),quarkx.ftos(higth))
+           height = abs(z2-z1)
+           cv.textout(int(x),int(y),quarkx.ftos(height))
 
 
 # ===============
@@ -542,8 +542,8 @@ def objectruler(editor, view, poly):
         # Prints right of top marker line the distance, on the Y axis
            x = view.proj(yrendt).tuple[0]+8
            y = view.proj(yrendt).tuple[1]-2
-           higth = abs(z2-z1)
-           cv.textout(int(x),int(y),quarkx.ftos(higth))
+           height = abs(z2-z1)
+           cv.textout(int(x),int(y),quarkx.ftos(height))
 
 
 # ===============
@@ -613,8 +613,8 @@ def objectruler(editor, view, poly):
         # Prints right of top marker line the distance, on the Y axis
            x = view.proj(yrendt).tuple[0]+8
            y = view.proj(yrendt).tuple[1]-2
-           higth = abs(y2-y1)
-           cv.textout(int(x),int(y),quarkx.ftos(higth))
+           height = abs(y2-y1)
+           cv.textout(int(x),int(y),quarkx.ftos(height))
 
     else:
        return
@@ -4601,7 +4601,7 @@ def select1(btn, toolbar, editor):
             view.cursor = CR_ARROW
             view.handlecursor = CR_CROSS
 
-##### Below makes the toolbar and arainges its buttons #####
+##### Below makes the toolbar and arranges its buttons #####
 
 class ObjectModesBar(quarkpy.qeditor.ToolBar):
     "The new toolbar with ObjectModes buttons."

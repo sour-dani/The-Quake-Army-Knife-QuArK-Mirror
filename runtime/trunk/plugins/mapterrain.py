@@ -67,7 +67,7 @@ class TerrainDuplicator2(quarkpy.mapduplicator.StandardDuplicator):
           rightnormal = faces['r'].normal
           leftdist = faces['l'].dist
           rightdist = faces['r'].dist
-          leftrightlength = abs((leftnormal*leftdist) - (rightnormal*rightdist)) #total length of strech box
+          leftrightlength = abs((leftnormal*leftdist) - (rightnormal*rightdist)) #total length of stretch box
           leftrightinterval = wedgeunits
           frontnormal = faces['f'].normal
           backnormal = faces['b'].normal
@@ -115,7 +115,7 @@ class TerrainDuplicator2(quarkpy.mapduplicator.StandardDuplicator):
               for wedge in range(wedges):
                   poly = quarkx.newobj("terrain wedge %d:p" % wedge)
 
-                  face = faces['u'].copy()  #draws top face at higth of each brush
+                  face = faces['u'].copy()  #draws top face at height of each brush
                   poly.appenditem(face)
 
                   face = faces['d'].copy()  #draws bottom face of each brush
@@ -142,7 +142,7 @@ class TerrainDuplicator2(quarkpy.mapduplicator.StandardDuplicator):
                   face = faces['f'].copy()  #draws the slice face of each brush
                   poly.appenditem(face)
                   front = face
-                  front.setthreepoints((topfront, points["tlf"] + rightnormal * leftrightinterval * (wedges-wedge-1) + (backnormal * (frontbackinterval*(loops-loop-1))), points["blf"] + rightnormal * leftrightinterval * (wedges-wedge-1) + (backnormal * (frontbackinterval*(loops-loop-1)))),0) #beleave down face prob is here
+                  front.setthreepoints((topfront, points["tlf"] + rightnormal * leftrightinterval * (wedges-wedge-1) + (backnormal * (frontbackinterval*(loops-loop-1))), points["blf"] + rightnormal * leftrightinterval * (wedges-wedge-1) + (backnormal * (frontbackinterval*(loops-loop-1)))),0) #believe down face prob is here
                   face.shortname = "back"
 
                   result.append(poly)
@@ -150,7 +150,7 @@ class TerrainDuplicator2(quarkpy.mapduplicator.StandardDuplicator):
               for wedge in range(wedges):
                   poly = quarkx.newobj("terrain wedge %d:p" % wedge)
 
-                  face = faces['u'].copy()  #draws top face at higth of each brush
+                  face = faces['u'].copy()  #draws top face at height of each brush
                   poly.appenditem(face)
 
                   face = faces['d'].copy()  #draws bottom face of each brush
@@ -176,7 +176,7 @@ class TerrainDuplicator2(quarkpy.mapduplicator.StandardDuplicator):
                   back = face
                   lowerback = points["brf"] - rightnormal * (leftrightinterval * wedge) + (backnormal * (frontbackinterval*(-loops+loop+1)))
                   bottomfront = points["brf"] - rightnormal * (leftrightinterval * (wedge + 1)) + (backnormal * (frontbackinterval*(loops-loop-1)))
-                  back.setthreepoints((bottomfront, points["trb"] - rightnormal * leftrightinterval * wedge + (backnormal * (frontbackinterval*(-loop))), points["brb"] - rightnormal * leftrightinterval * wedge + (backnormal * (frontbackinterval*(-loop)))),0) #beleave down face prob is here
+                  back.setthreepoints((bottomfront, points["trb"] - rightnormal * leftrightinterval * wedge + (backnormal * (frontbackinterval*(-loop))), points["brb"] - rightnormal * leftrightinterval * wedge + (backnormal * (frontbackinterval*(-loop)))),0) #believe down face prob is here
 
                   result.append(poly)
           return result
@@ -214,7 +214,7 @@ class TerrainDuplicator2X(quarkpy.mapduplicator.StandardDuplicator):
 
   def makeTerrain2X(self, loops, wedges, o, wedgeunits=32, sameheight="", detailmesh=""):
 
-      global replygiven  # new Rowdys suggestion stops repeted error msgs
+      global replygiven  # new Rowdys suggestion stops repeated error msgs
 
       def newfinishdrawing(editor, view, oldfinish=quarkpy.mapeditor.MapEditor.finishdrawing):
           oldfinish(editor, view)
@@ -236,13 +236,13 @@ class TerrainDuplicator2X(quarkpy.mapduplicator.StandardDuplicator):
           rightnormal = faces['r'].normal
           leftdist = faces['l'].dist
           rightdist = faces['r'].dist
-          leftrightlength = abs((leftnormal*leftdist) - (rightnormal*rightdist)) #total length of strech box
+          leftrightlength = abs((leftnormal*leftdist) - (rightnormal*rightdist)) #total length of stretch box
           leftrightinterval = wedgeunits
           frontnormal = faces['f'].normal
           backnormal = faces['b'].normal
           frontdist = faces['f'].dist
           backdist = faces['b'].dist
-          frontbacklength = abs((frontnormal*frontdist) - (backnormal*backdist)) #total length of strech box
+          frontbacklength = abs((frontnormal*frontdist) - (backnormal*backdist)) #total length of stretch box
           frontbackinterval = wedgeunits
           wedges = leftrightlength/(wedgeunits*2)
           upnormal = faces['u'].normal
@@ -284,7 +284,7 @@ class TerrainDuplicator2X(quarkpy.mapduplicator.StandardDuplicator):
               for wedge in range(wedges):
                   poly = quarkx.newobj("terrain wedge %d:p" % wedge)
 
-                  face = faces['u'].copy()  #draws top face at higth of each brush
+                  face = faces['u'].copy()  #draws top face at height of each brush
                   poly.appenditem(face)
 
                   face = faces['d'].copy()  #draws bottom face of each brush
@@ -308,7 +308,7 @@ class TerrainDuplicator2X(quarkpy.mapduplicator.StandardDuplicator):
                   poly.appenditem(face)
                   right = face
                   topfront = points["brb"] + rightnormal * (leftrightinterval * (-wedge*2-1)) + (backnormal * (frontbackinterval * ((-loop*2-1))))
-                  right.setthreepoints((topfront, points["trb"] + rightnormal * leftrightinterval * (-wedge*2) + (backnormal * (frontbackinterval * (-loop*2))), points["brb"] + rightnormal * leftrightinterval * (-wedge*2) + (backnormal * (frontbackinterval * (-loop*2)))),0) #beleave down face prob is here
+                  right.setthreepoints((topfront, points["trb"] + rightnormal * leftrightinterval * (-wedge*2) + (backnormal * (frontbackinterval * (-loop*2))), points["brb"] + rightnormal * leftrightinterval * (-wedge*2) + (backnormal * (frontbackinterval * (-loop*2)))),0) #believe down face prob is here
                   face.swapsides()
                   face.shortname = "back"
                   result.append(poly)
@@ -317,7 +317,7 @@ class TerrainDuplicator2X(quarkpy.mapduplicator.StandardDuplicator):
               for wedge in range(wedges):
                   poly = quarkx.newobj("terrain wedge %d:p" % wedge)
 
-                  face = faces['u'].copy()  #draws top face at higth of each brush
+                  face = faces['u'].copy()  #draws top face at height of each brush
                   poly.appenditem(face)
 
                   face = faces['d'].copy()  #draws bottom face of each brush
@@ -343,7 +343,7 @@ class TerrainDuplicator2X(quarkpy.mapduplicator.StandardDuplicator):
                   poly.appenditem(face)
                   right = face
                   topfront = points["brb"] + rightnormal * (leftrightinterval * (-wedge*2-1)) + (backnormal * (frontbackinterval * ((-loop*2-1))))
-                  right.setthreepoints((topfront, points["trb"] + rightnormal * leftrightinterval * (-wedge*2) + (backnormal * (frontbackinterval * (-loop*2))), points["brb"] + rightnormal * leftrightinterval * (-wedge*2) + (backnormal * (frontbackinterval * (-loop*2)))),0) #beleave down face prob is here
+                  right.setthreepoints((topfront, points["trb"] + rightnormal * leftrightinterval * (-wedge*2) + (backnormal * (frontbackinterval * (-loop*2))), points["brb"] + rightnormal * leftrightinterval * (-wedge*2) + (backnormal * (frontbackinterval * (-loop*2)))),0) #believe down face prob is here
                   face.shortname = "back"
                   result.append(poly)
 
@@ -351,7 +351,7 @@ class TerrainDuplicator2X(quarkpy.mapduplicator.StandardDuplicator):
               for wedge in range(wedges):
                   poly = quarkx.newobj("terrain wedge %d:p" % wedge)
 
-                  face = faces['u'].copy()  #draws top face at higth of each brush
+                  face = faces['u'].copy()  #draws top face at height of each brush
                   poly.appenditem(face)
 
                   face = faces['d'].copy()  #draws bottom face of each brush
@@ -376,7 +376,7 @@ class TerrainDuplicator2X(quarkpy.mapduplicator.StandardDuplicator):
                   poly.appenditem(face)
                   left = face
                   topfront = points["brb"] + rightnormal * (leftrightinterval * (-wedge*2-1)) + (backnormal * (frontbackinterval * ((-loop*2-1))))
-                  left.setthreepoints((topfront, points["trb"] + rightnormal * leftrightinterval * (-wedge*2-2) + (backnormal * (frontbackinterval * (-loop*2))), points["brb"] + rightnormal * leftrightinterval * (-wedge*2-2) + (backnormal * (frontbackinterval * (-loop*2)))),0) #beleave down face prob is here
+                  left.setthreepoints((topfront, points["trb"] + rightnormal * leftrightinterval * (-wedge*2-2) + (backnormal * (frontbackinterval * (-loop*2))), points["brb"] + rightnormal * leftrightinterval * (-wedge*2-2) + (backnormal * (frontbackinterval * (-loop*2)))),0) #believe down face prob is here
                   face.shortname = "back"
                   result.append(poly)
 
@@ -384,7 +384,7 @@ class TerrainDuplicator2X(quarkpy.mapduplicator.StandardDuplicator):
               for wedge in range(wedges):
                   poly = quarkx.newobj("terrain wedge %d:p" % wedge)
 
-                  face = faces['u'].copy()  #draws top face at higth of each brush
+                  face = faces['u'].copy()  #draws top face at height of each brush
                   poly.appenditem(face)
 
                   face = faces['d'].copy()  #draws bottom face of each brush
@@ -412,7 +412,7 @@ class TerrainDuplicator2X(quarkpy.mapduplicator.StandardDuplicator):
                   poly.appenditem(face)
                   right = face
                   topfront = points["brb"] + rightnormal * (leftrightinterval * (-wedge*2-1)) + (backnormal * (frontbackinterval * ((-loop*2-1))))
-                  right.setthreepoints((topfront, points["trb"] + rightnormal * leftrightinterval * (-wedge*2-2) + (backnormal * (frontbackinterval * (-loop*2))), points["brb"] + rightnormal * leftrightinterval * (-wedge*2-2) + (backnormal * (frontbackinterval * (-loop*2)))),0) #beleave down face prob is here
+                  right.setthreepoints((topfront, points["trb"] + rightnormal * leftrightinterval * (-wedge*2-2) + (backnormal * (frontbackinterval * (-loop*2))), points["brb"] + rightnormal * leftrightinterval * (-wedge*2-2) + (backnormal * (frontbackinterval * (-loop*2)))),0) #believe down face prob is here
                   face.swapsides()
                   face.shortname = "back"
                   result.append(poly)
@@ -421,7 +421,7 @@ class TerrainDuplicator2X(quarkpy.mapduplicator.StandardDuplicator):
               for wedge in range(wedges):
                   poly = quarkx.newobj("terrain wedge %d:p" % wedge)
 
-                  face = faces['u'].copy()  #draws top face at higth of each brush
+                  face = faces['u'].copy()  #draws top face at height of each brush
                   poly.appenditem(face)
 
                   face = faces['d'].copy()  #draws bottom face of each brush
@@ -446,7 +446,7 @@ class TerrainDuplicator2X(quarkpy.mapduplicator.StandardDuplicator):
                   poly.appenditem(face)
                   left = face
                   topfront = points["brb"] + rightnormal * (leftrightinterval * (-wedge*2)) + (backnormal * (frontbackinterval * ((-loop*2-2))))
-                  left.setthreepoints((topfront, points["trb"] + rightnormal * leftrightinterval * (-wedge*2-1) + (backnormal * (frontbackinterval * (-loop*2-1))), points["brb"] + rightnormal * leftrightinterval * (-wedge*2-1) + (backnormal * (frontbackinterval * (-loop*2-1)))),0) #beleave down face prob is here
+                  left.setthreepoints((topfront, points["trb"] + rightnormal * leftrightinterval * (-wedge*2-1) + (backnormal * (frontbackinterval * (-loop*2-1))), points["brb"] + rightnormal * leftrightinterval * (-wedge*2-1) + (backnormal * (frontbackinterval * (-loop*2-1)))),0) #believe down face prob is here
                   face.shortname = "back"
                   result.append(poly)
 
@@ -454,7 +454,7 @@ class TerrainDuplicator2X(quarkpy.mapduplicator.StandardDuplicator):
               for wedge in range(wedges):
                   poly = quarkx.newobj("terrain wedge %d:p" % wedge)
 
-                  face = faces['u'].copy()  #draws top face at higth of each brush
+                  face = faces['u'].copy()  #draws top face at height of each brush
                   poly.appenditem(face)
 
                   face = faces['d'].copy()  #draws bottom face of each brush
@@ -482,7 +482,7 @@ class TerrainDuplicator2X(quarkpy.mapduplicator.StandardDuplicator):
                   poly.appenditem(face)
                   right = face
                   topfront = points["brb"] + rightnormal * (leftrightinterval * (-wedge*2)) + (backnormal * (frontbackinterval * ((-loop*2-2))))
-                  right.setthreepoints((topfront, points["trb"] + rightnormal * leftrightinterval * (-wedge*2-1) + (backnormal * (frontbackinterval * (-loop*2-1))), points["brb"] + rightnormal * leftrightinterval * (-wedge*2-1) + (backnormal * (frontbackinterval * (-loop*2-1)))),0) #beleave down face prob is here
+                  right.setthreepoints((topfront, points["trb"] + rightnormal * leftrightinterval * (-wedge*2-1) + (backnormal * (frontbackinterval * (-loop*2-1))), points["brb"] + rightnormal * leftrightinterval * (-wedge*2-1) + (backnormal * (frontbackinterval * (-loop*2-1)))),0) #believe down face prob is here
                   face.swapsides()
                   face.shortname = "back"
                   result.append(poly)
@@ -491,7 +491,7 @@ class TerrainDuplicator2X(quarkpy.mapduplicator.StandardDuplicator):
               for wedge in range(wedges):
                   poly = quarkx.newobj("terrain wedge %d:p" % wedge)
 
-                  face = faces['u'].copy()  #draws top face at higth of each brush
+                  face = faces['u'].copy()  #draws top face at height of each brush
                   poly.appenditem(face)
 
                   face = faces['d'].copy()  #draws bottom face of each brush
@@ -517,7 +517,7 @@ class TerrainDuplicator2X(quarkpy.mapduplicator.StandardDuplicator):
                   poly.appenditem(face)
                   right = face
                   topfront = points["brb"] + rightnormal * (leftrightinterval * (-wedge*2-2)) + (backnormal * (frontbackinterval * ((-loop*2-2))))
-                  right.setthreepoints((topfront, points["trb"] + rightnormal * leftrightinterval * (-wedge*2-1) + (backnormal * (frontbackinterval * (-loop*2-1))), points["brb"] + rightnormal * leftrightinterval * (-wedge*2-1) + (backnormal * (frontbackinterval * (-loop*2-1)))),0) #beleave down face prob is here
+                  right.setthreepoints((topfront, points["trb"] + rightnormal * leftrightinterval * (-wedge*2-1) + (backnormal * (frontbackinterval * (-loop*2-1))), points["brb"] + rightnormal * leftrightinterval * (-wedge*2-1) + (backnormal * (frontbackinterval * (-loop*2-1)))),0) #believe down face prob is here
                   face.swapsides()
                   face.shortname = "back"
                   result.append(poly)
@@ -526,7 +526,7 @@ class TerrainDuplicator2X(quarkpy.mapduplicator.StandardDuplicator):
               for wedge in range(wedges):
                   poly = quarkx.newobj("terrain wedge %d:p" % wedge)
 
-                  face = faces['u'].copy()  #draws top face at higth of each brush
+                  face = faces['u'].copy()  #draws top face at height of each brush
                   poly.appenditem(face)
 
                   face = faces['d'].copy()  #draws bottom face of each brush
@@ -552,7 +552,7 @@ class TerrainDuplicator2X(quarkpy.mapduplicator.StandardDuplicator):
                   poly.appenditem(face)
                   right = face
                   topfront = points["brb"] + rightnormal * (leftrightinterval * (-wedge*2-2)) + (backnormal * (frontbackinterval * ((-loop*2-2))))
-                  right.setthreepoints((topfront, points["trb"] + rightnormal * leftrightinterval * (-wedge*2-1) + (backnormal * (frontbackinterval * (-loop*2-1))), points["brb"] + rightnormal * leftrightinterval * (-wedge*2-1) + (backnormal * (frontbackinterval * (-loop*2-1)))),0) #beleave down face prob is here
+                  right.setthreepoints((topfront, points["trb"] + rightnormal * leftrightinterval * (-wedge*2-1) + (backnormal * (frontbackinterval * (-loop*2-1))), points["brb"] + rightnormal * leftrightinterval * (-wedge*2-1) + (backnormal * (frontbackinterval * (-loop*2-1)))),0) #believe down face prob is here
                   face.shortname = "back"
                   result.append(poly)
 
@@ -592,7 +592,7 @@ class TerrainDuplicator4(quarkpy.mapduplicator.StandardDuplicator):
 
   def makeTerrain4(self, loops, wedges, o, wedgeunits=32, sameheight="", detailmesh=""):
 
-      global replygiven  # new Rowdys suggestion stops repeted error msgs
+      global replygiven  # new Rowdys suggestion stops repeated error msgs
 
       def newfinishdrawing(editor, view, oldfinish=quarkpy.mapeditor.MapEditor.finishdrawing):
           oldfinish(editor, view)
@@ -614,13 +614,13 @@ class TerrainDuplicator4(quarkpy.mapduplicator.StandardDuplicator):
           rightnormal = faces['r'].normal
           leftdist = faces['l'].dist
           rightdist = faces['r'].dist
-          leftrightlength = abs((leftnormal*leftdist) - (rightnormal*rightdist)) #total length of strech box
+          leftrightlength = abs((leftnormal*leftdist) - (rightnormal*rightdist)) #total length of stretch box
           leftrightinterval = wedgeunits
           frontnormal = faces['f'].normal
           backnormal = faces['b'].normal
           frontdist = faces['f'].dist
           backdist = faces['b'].dist
-          frontbacklength = abs((frontnormal*frontdist) - (backnormal*backdist)) #total length of strech box
+          frontbacklength = abs((frontnormal*frontdist) - (backnormal*backdist)) #total length of stretch box
           frontbackinterval = wedgeunits
           wedges = int(leftrightlength/wedgeunits)
           upnormal = faces['u'].normal
@@ -699,7 +699,7 @@ class TerrainDuplicator4(quarkpy.mapduplicator.StandardDuplicator):
               for wedge in range(wedges):  #draws left quarter
                   poly = quarkx.newobj("terrain wedge %d:p" % wedge)
 
-                  face = faces['u'].copy()  #draws top face at higth of each brush
+                  face = faces['u'].copy()  #draws top face at height of each brush
 
                   poly.appenditem(face)
 
@@ -771,7 +771,7 @@ class TerrainDuplicator4(quarkpy.mapduplicator.StandardDuplicator):
               for wedge in range(wedges):  #draws right quarter
                   poly = quarkx.newobj("terrain wedge %d:p" % wedge)
 
-                  face = faces['u'].copy()  #draws top face at higth of each brush
+                  face = faces['u'].copy()  #draws top face at height of each brush
                   poly.appenditem(face)
 
                   face = faces['d'].copy()  #draws bottom face of each brush
@@ -880,7 +880,7 @@ def newpolymenu2(o, editor, oldmenu=quarkpy.mapentities.PolyhedronType.menu.im_f
         view = editor.layout.clickedview
     except:
         view = None
-    return  [curvemenu4(o, editor, view)]+oldmenu(o, editor)
+    return [curvemenu4(o, editor, view)]+oldmenu(o, editor)
 
 #
 # This trick of redefining things in modules you're based
@@ -938,7 +938,7 @@ def newpolymenu2X(o, editor, oldmenu=quarkpy.mapentities.PolyhedronType.menu.im_
         view = editor.layout.clickedview
     except:
         view = None
-    return  [curvemenu2X(o, editor, view)]+oldmenu(o, editor)
+    return [curvemenu2X(o, editor, view)]+oldmenu(o, editor)
 
 
 quarkpy.mapentities.PolyhedronType.menu = newpolymenu2X
@@ -986,7 +986,7 @@ def newpolymenu(o, editor, oldmenu=quarkpy.mapentities.PolyhedronType.menu.im_fu
         view = editor.layout.clickedview
     except:
         view = None
-    return  [curvemenu(o, editor, view)]+oldmenu(o, editor)
+    return [curvemenu(o, editor, view)]+oldmenu(o, editor)
 
 
 quarkpy.mapentities.PolyhedronType.menu = newpolymenu

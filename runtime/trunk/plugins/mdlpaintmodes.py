@@ -5564,7 +5564,7 @@ def select1(btn, toolbar, editor):
             view.handlecursor = CR_CROSS
 
 
-##### Below makes the toolbar and arainges its buttons #####
+##### Below makes the toolbar and arranges its buttons #####
 
 class PaintModesBar(ToolBar):
     "The Paint modes toolbar buttons."

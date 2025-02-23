@@ -176,8 +176,8 @@ def gridfinishdrawing(editor, view, gridoldfinish=quarkpy.mapeditor.MapEditor.fi
         # Prints right of top marker line the distance, on the Z axis
            x = int(view.proj(yrendt).tuple[0])+8
            y = int(view.proj(yrendt).tuple[1])-2
-           higth = abs(z2-z1)
-           cv.textout(x,y,quarkx.ftos(higth))
+           heigth = abs(z2-z1)
+           cv.textout(x,y,quarkx.ftos(heigth))
 
 
 # ===============
@@ -248,8 +248,8 @@ def gridfinishdrawing(editor, view, gridoldfinish=quarkpy.mapeditor.MapEditor.fi
         # Prints right of top marker line the distance, on the Y axis
            x = int(view.proj(yrendt).tuple[0])+8
            y = int(view.proj(yrendt).tuple[1])-2
-           higth = abs(z2-z1)
-           cv.textout(x,y,quarkx.ftos(higth))
+           heigth = abs(z2-z1)
+           cv.textout(x,y,quarkx.ftos(heigth))
 
 
 # ===============
@@ -319,8 +319,8 @@ def gridfinishdrawing(editor, view, gridoldfinish=quarkpy.mapeditor.MapEditor.fi
         # Prints right of top marker line the distance, on the Y axis
            x = int(view.proj(yrendt).tuple[0])+8
            y = int(view.proj(yrendt).tuple[1])-2
-           higth = abs(y2-y1)
-           cv.textout(x,y,quarkx.ftos(higth))
+           heigth = abs(y2-y1)
+           cv.textout(x,y,quarkx.ftos(heigth))
 
     else:
        return

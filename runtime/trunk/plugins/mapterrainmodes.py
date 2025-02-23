@@ -2207,7 +2207,7 @@ def select1(btn, toolbar, editor):
     except:
         pass
 
-##### Below makes the toolbar and arainges its buttons #####
+##### Below makes the toolbar and arranges its buttons #####
 
 class TerrModesBar(ToolBar):
     "The new toolbar with TerrModes buttons. Created from plugins\mapdragmodes.py"
@@ -2220,11 +2220,11 @@ class TerrModesBar(ToolBar):
         ico_dict['ico_terrmodes'] = LoadIconSet1("maptrm", 1.0)
         ico_terrmodes = ico_dict['ico_terrmodes']
 
-        Builderbtn = quarkpy.qtoolbar.button(MakeTerrain2Click, "Terrain Maker 2\n(makes the 2 triangle grig)||Terrain Maker 2:\n\nThis will drop a prefab size of terrain into the editor that you can resize and start working with.\n\nIt can also be found on the ' New Polyhedrons ' > ' Shape Builders ' menu. \n\nAlso, if you create a new rectangular brush and RMB click on it, you will see 'Make Terrain 2' on that menu. This will make a terrain section out of that particular brush. ", ico_terrmodes, 0, infobaselink="intro.terraingenerator.setup.html")
+        Builderbtn = quarkpy.qtoolbar.button(MakeTerrain2Click, "Terrain Maker 2\n(makes the 2 triangle grid)||Terrain Maker 2:\n\nThis will drop a prefab size of terrain into the editor that you can resize and start working with.\n\nIt can also be found on the ' New Polyhedrons ' > ' Shape Builders ' menu. \n\nAlso, if you create a new rectangular brush and RMB click on it, you will see 'Make Terrain 2' on that menu. This will make a terrain section out of that particular brush. ", ico_terrmodes, 0, infobaselink="intro.terraingenerator.setup.html")
 
-        Builderbtn2X = quarkpy.qtoolbar.button(MakeTerrain2XClick, "Terrain Maker 2X\n(makes the 2 triangle X grig)||Terrain Maker 2X:\n\nThis will drop a prefab size of terrain into the editor that you can resize and start working with.\n\nIt can also be found on the ' New Polyhedrons ' > ' Shape Builders ' menu. \n\nAlso, if you create a new rectangular brush and RMB click on it, you will see 'Make Terrain 2X' on that menu. This will make a terrain section out of that particular brush. ", ico_terrmodes, 1, infobaselink="intro.terraingenerator.setup.html")
+        Builderbtn2X = quarkpy.qtoolbar.button(MakeTerrain2XClick, "Terrain Maker 2X\n(makes the 2 triangle X grid)||Terrain Maker 2X:\n\nThis will drop a prefab size of terrain into the editor that you can resize and start working with.\n\nIt can also be found on the ' New Polyhedrons ' > ' Shape Builders ' menu. \n\nAlso, if you create a new rectangular brush and RMB click on it, you will see 'Make Terrain 2X' on that menu. This will make a terrain section out of that particular brush. ", ico_terrmodes, 1, infobaselink="intro.terraingenerator.setup.html")
 
-        Builderbtn2 = quarkpy.qtoolbar.button(MakeTerrain4Click, "Terrain Maker 4\n(makes the 4 triangle grig)||Terrain Maker 4:\n\nThis will drop a prefab size of terrain into the editor that you can resize and start working with.\n\nIt can also be found on the ' New Polyhedrons ' > ' Shape Builders ' menu. \n\nAlso, if you create a new rectangular brush and RMB click on it, you will see 'Make Terrain 4' on that menu. This will make a terrain section out of that particular brush. ", ico_terrmodes, 2, infobaselink="intro.terraingenerator.setup.html")
+        Builderbtn2 = quarkpy.qtoolbar.button(MakeTerrain4Click, "Terrain Maker 4\n(makes the 4 triangle grid)||Terrain Maker 4:\n\nThis will drop a prefab size of terrain into the editor that you can resize and start working with.\n\nIt can also be found on the ' New Polyhedrons ' > ' Shape Builders ' menu. \n\nAlso, if you create a new rectangular brush and RMB click on it, you will see 'Make Terrain 4' on that menu. This will make a terrain section out of that particular brush. ", ico_terrmodes, 2, infobaselink="intro.terraingenerator.setup.html")
 
         Convert2Terrain = quarkpy.qtoolbar.button(Convert2TerrainClick, "Convert Imported Terrains||Convert Imported Terrains:\n\nThis will convert other Imported terrains into the proper format to use with the QuArK Terrain Generator.\n\nUse a 'STANDARD' selection method to select the Imported Terrain poly or group of polys you wish to convert.\n\nThey must be of a triangular shape to convert and edit properly.", ico_terrmodes, 3, infobaselink="intro.terraingenerator.selection.html#importconverter")
 

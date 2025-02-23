@@ -516,8 +516,8 @@ def objectruler(editor, view, poly):
         # Prints right of top marker line the distance, on the Z axis
            x = view.proj(yrendt).tuple[0]+8
            y = view.proj(yrendt).tuple[1]-2
-           higth = abs(z2-z1)
-           cv.textout(x,y,quarkx.ftos(higth))
+           heigth = abs(z2-z1)
+           cv.textout(x,y,quarkx.ftos(heigth))
 
 
 # ===============
@@ -588,8 +588,8 @@ def objectruler(editor, view, poly):
         # Prints right of top marker line the distance, on the Y axis
            x = view.proj(yrendt).tuple[0]+8
            y = view.proj(yrendt).tuple[1]-2
-           higth = abs(z2-z1)
-           cv.textout(x,y,quarkx.ftos(higth))
+           heigth = abs(z2-z1)
+           cv.textout(x,y,quarkx.ftos(heigth))
 
 
 # ===============
@@ -659,8 +659,8 @@ def objectruler(editor, view, poly):
         # Prints right of top marker line the distance, on the Y axis
            x = view.proj(yrendt).tuple[0]+8
            y = view.proj(yrendt).tuple[1]-2
-           higth = abs(y2-y1)
-           cv.textout(x,y,quarkx.ftos(higth))
+           heigth = abs(y2-y1)
+           cv.textout(x,y,quarkx.ftos(heigth))
 
     else:
        return
@@ -4700,7 +4700,7 @@ def select1(btn, toolbar, editor):
             view.cursor = CR_ARROW
             view.handlecursor = CR_CROSS
 
-##### Below makes the toolbar and arainges its buttons #####
+##### Below makes the toolbar and arranges its buttons #####
 
 class ObjectModesBar(ToolBar):
     "The new toolbar with ObjectModes buttons."
