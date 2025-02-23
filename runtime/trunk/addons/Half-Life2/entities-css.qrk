@@ -5,6 +5,7 @@ QQRKSRC1
 // CS Source Entities. updated july/11/2005 by cbxpm.
 
 {
+  QuArKProtected = "1"
   Description = "CS Source Entities"
   Toolbox Folders.qtx =
   {

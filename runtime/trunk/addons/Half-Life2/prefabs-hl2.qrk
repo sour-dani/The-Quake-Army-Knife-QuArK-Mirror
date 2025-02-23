@@ -3,6 +3,7 @@ QQRKSRC1
 // It's the text version of file: prefabs_hl2.qrk
 
 {
+  QuArKProtected = "1"
   Description = "Custom Add-on"
   Toolbox Folders.qtx =
   {

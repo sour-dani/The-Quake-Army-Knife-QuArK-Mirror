@@ -3,6 +3,7 @@ QQRKSRC1
 // It's the text version of file: prefabsTFChl.qrk
 
 {
+  QuArKProtected = "1"
   Description = "TeamFortressClassic Prefab Entities"
   Toolbox Folders.qtx =
   {

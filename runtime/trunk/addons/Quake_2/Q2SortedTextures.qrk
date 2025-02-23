@@ -8,9 +8,8 @@ QQRKSRC1
 //      By: OmnificienT
 
 {
-  QuArKProtected = "1"       // Additional user warnings to prevents accidental change of this file
+  QuArKProtected = "1"
   Description = "Base Quake 2 textures sorted by level"
-
 
   Quake 2 setup.qctx =
   {

@@ -5,6 +5,7 @@ QQRKSRC1
 // Portal Entities 2008/09/20 Who Gives A Dam
 
 {
+  QuArKProtected = "1"
   Description = "Portal Entities"
   Toolbox Folders.qtx =
   {

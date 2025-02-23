@@ -5,6 +5,7 @@ QQRKSRC1
 // 26*1*00, 9.46
 
 {
+  QuArKProtected = "1"
   Description = "Quake 3: Team Arena data"
   Game Context.qctx =
   {

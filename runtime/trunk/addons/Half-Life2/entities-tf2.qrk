@@ -3,6 +3,7 @@ QQRKSRC1
 // It's the text version of file: tf2.qrk
 
 {
+  QuArKProtected = "1"
   Description = "TF2 Entities"
   Toolbox Folders.qtx =
   {

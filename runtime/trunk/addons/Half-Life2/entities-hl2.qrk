@@ -3,6 +3,7 @@ QQRKSRC1
 // It's the text version of file: halflife2.fgd
 
 {
+  QuArKProtected = "1"
   Description = "HL2 Entities"
   Toolbox Folders.qtx =
   {

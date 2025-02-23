@@ -3,6 +3,7 @@ QQRKSRC1
 // It's the text version of file: ctfq1.qrk
 
 {
+  QuArKProtected = "1"
   Description = "Quake-1 Threewave CTF"
   Toolbox Folders.qtx =
   {

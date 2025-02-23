@@ -1,5 +1,6 @@
 QQRKSRC1
 {
+  QuArKProtected = "1"
   Description = "Actor definitions for Sylphis"
   SylphisEntities.qtx =
   {

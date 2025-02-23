@@ -5,6 +5,7 @@ QQRKSRC1
 // Configuration file for Quake3Fortress
 
 {
+  QuArKProtected = "1"
   Description = "Q3Fortress Data Add-on"
 
   Q3Fortress directory infos.qctx =

@@ -5,6 +5,7 @@ QQRKSRC1
 // Day of Defeat Entities 2008/09/20 Who Gives A Dam
 
 {
+  QuArKProtected = "1"
   Description = "DOD Entities"
   Toolbox Folders.qtx =
   {

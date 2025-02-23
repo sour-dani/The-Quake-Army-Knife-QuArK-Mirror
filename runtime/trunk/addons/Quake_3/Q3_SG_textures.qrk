@@ -6,6 +6,7 @@ QQRKSRC1
 // This stand alone game site is http://forum.smokin-guns.org/
 
 {
+  QuArKProtected = "1"
   Description = "Quake 3 - SmokinGuns textures"
   Game Context.qctx =
   {

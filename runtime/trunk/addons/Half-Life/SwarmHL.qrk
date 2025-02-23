@@ -2,6 +2,7 @@ QQRKSRC1
 // http://www.planethalflife.com/swarm
 
 {
+  QuArKProtected = "1"
   Description = "Swarm - Half-Life"
 
   SWM Entities.qtx =

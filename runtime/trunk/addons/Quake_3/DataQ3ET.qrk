@@ -3,6 +3,7 @@ QQRKSRC1
 // It's the text version of file: DataQ3ET.qrk
 
 {
+  QuArKProtected = "1"
   Description = "Enemy Terror Add-on"
   Game Context.qctx =
   {

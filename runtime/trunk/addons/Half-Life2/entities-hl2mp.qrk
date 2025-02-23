@@ -5,6 +5,7 @@ QQRKSRC1
 // HL2 MP (multiplayer) Entities. last changes july/09/2005 by cbxpm.
 
 {
+  QuArKProtected = "1"
   Description = "HL2 MP Entities"
   Toolbox Folders.qtx =
   {

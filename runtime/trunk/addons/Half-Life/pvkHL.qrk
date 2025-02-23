@@ -1,6 +1,7 @@
 QQRKSRC1
 
 {
+  QuArKProtected = "1"
   Description = "Pirates and Vikings and Knights - Half-Life"
 
   PVK Entities.qtx =

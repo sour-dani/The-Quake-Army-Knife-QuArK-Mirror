@@ -3,6 +3,7 @@ QQRKSRC1
 // It's the text version of file: entities-hl1s.qrk
 
 {
+  QuArKProtected = "1"
   Description = "HL1:Source Entities"
   Toolbox Folders.qtx =
   {

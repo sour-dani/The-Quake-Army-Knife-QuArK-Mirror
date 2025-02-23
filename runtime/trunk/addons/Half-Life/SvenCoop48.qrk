@@ -1,6 +1,7 @@
 QQRKSRC1
 
 {
+  QuArKProtected = "1"
   Description = "Sven Co-op 4.8 Data Add-on"
 
   SvenCoop directory infos.qctx =

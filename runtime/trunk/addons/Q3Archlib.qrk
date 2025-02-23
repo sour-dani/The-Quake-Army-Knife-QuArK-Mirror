@@ -3,6 +3,7 @@ QQRKSRC1
 // It's the text version of file: Q3Archlib.qrk
 
 {
+  QuArKProtected = "1"
   Description = "Arch Library for Quake-3 engines"
 
   // Includes for Textures

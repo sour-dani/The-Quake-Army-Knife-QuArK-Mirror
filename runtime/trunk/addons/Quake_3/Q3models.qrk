@@ -3,6 +3,7 @@ QQRKSRC1
 // It's the text version of file: Q3Amodels.qrk
 
 {
+  QuArKProtected = "1"
   Description = "Map model prefabs"
   Toolbox Folders.qtx =
   {

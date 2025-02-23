@@ -3,6 +3,7 @@ QQRKSRC1
 // It's the text version of file: Q3ut3.qrk
 
 {
+  QuArKProtected = "1"
   Description = "Urban Terror additional data"
   Toolbox Folders.qtx =
   {
