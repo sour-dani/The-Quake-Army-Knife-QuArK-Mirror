@@ -227,13 +227,15 @@ $LinksGame[] = new cLinkGroup('Half-Life', 'HL', array(
           ,new cLink('Metamod', 'http://metamod.org/', 'Metamod is a plugin/DLL manager that sits between the Half-Life Engine and an HL Game mod, allowing the dynamic loading/unloading of mod-like DLL plugins to add functionality to the HL server or game mod.')
           ,new cLink('Metamod-P', 'http://metamod-p.sourceforge.net/', 'Metamod-P is enhanced version of Metamod.')
           ,new cLink('AMX Mod X', 'https://www.amxmodx.org/', 'AMX Mod X is a versatile Half-Life metamod plugin which is targetted toward server administration.')
-          ,new cLink('Rho-Bot', 'http://rhobot.sourceforge.net/')
+          ,new cLink('Rho-Bot', 'http://rhobot.sourceforge.net/', 'Rho-Bot is a computer-generated opponent for the Sierra/Valve game Half-Life.')
 //          ,new cLink('Half-Life Portal', 'http://www.halflifeportal.com/', 'an extensive Half-Life fansite')
           ,new cLink('The Whole Half-Life', 'https://twhl.info/', 'Level design resources for GoldSource, Source, and beyond') #http://www.twhl.co.za/ #'Half-Life/2 Mapping Tutorials and Resources'
           ,new cLink('Combine OverWiki', 'https://combineoverwiki.net/wiki/Main_Page', 'The original ad-free and independent Half-Life and Portal wiki')
+          ,new cLink('Vampire Slayer', 'https://vsmod.co.uk/', 'Vampire Slayer is a multiplayer, team-play modification for Half-Life.')
+          ,new cLink('VSUnion.com', 'http://www.vsunion.com/', 'This is a forum about the mod so called Vampire Slayer', 'https://web.archive.org/web/20090124090021/http://www.vsunion.com/')
+          ,new cLink('Firearms', 'http://www.firearmsmod.com/', 'Firearms is a realistic modification of the game, that focuses on teamplay with Half-Life gameplay altered to the extreme.', 'https://web.archive.org/web/20090625182731/http://www.firearmsmod.com/')
           ,new cLink('Adrenaline Gamer v6.6', 'https://www.moddb.com/mods/adrenaline-gamer/downloads/adrenaline-gamer-v66', 'Adrenaline Gamer is a full Half-Life Deathmatch replacement mod and is considered to be the OSP mod for Half-Life.')
           ,new cLink('Poke646', 'http://www.poke646.com/', "Poke646 and its sequel Poke646: Vendetta are two of the most ambitious and critically acclaimed singleplayer modifications for Valve's award-winning game Half-Life.")
-          ,new cLink('Firearms: Source', 'http://www.firearms-source.com/', 'Firearms: Source is a high adrenaline First Person Shooter that emphasizes precision aiming, high mobility, and team-based strategy.')
           ,new cLink('RUN. THINK. SHOOT. LIVE.', 'https://www.runthinkshootlive.com/', 'RUN. THINK. SHOOT. LIVE. lists and reviews single player maps and mods for the Half-Life series of games.')
           ,new cLink('LambdaGeneration', 'http://lambdageneration.com/', 'The Ultimate Half-Life Community')
           ,new cLink('Half-Life Creations', 'http://half-lifecreations.com/', 'Building on 10 years of creativity.')
@@ -265,6 +267,8 @@ $LinksGame[] = new cLinkGroup('Half-Life 2', 'HL2', array(
           ,new cLink('RCBot2', 'https://sourceforge.net/projects/rcbot2/', 'An open source GPL bot framework for HL2 Orange Box Mods ONLY')
 #          ,new cLink('Black Mesa', 'https://www.blackmesasource.com/', "Black Mesa is a re-envisioning of Valve Software's classic science fiction first person shooter, Half-Life.")
           ,new cLink('Eclipse', 'https://www.moddb.com/mods/eclipse', "Eclipse is a third-person total conversion of Valve's Half-Life 2.") #http://students.guildhall.smu.edu/~eclipse/
+          ,new cLink('Firearms: Source', 'http://firearms-source.com/', 'Firearms: Source is a high adrenaline First Person Shooter that emphasizes precision aiming, high mobility, and team-based strategy.', 'https://web.archive.org/web/20190627215154/http://www.firearms-source.com/')
+          ,new cLink('World at War', 'http://www.worldatwarmod.com/', 'A tactical first-person shooter modification, brought to you by the team responsible for Firearms Half-Life',  'https://web.archive.org/web/20090506095252/http://www.worldatwarmod.com/')
           ,new cLink('GoldenEye: Source', 'https://geshl2.com/', "GoldenEye: Source is an online multiplayer arena first-person shooter that aims to provide a faithful recreation of the classic N64 title GoldenEye 007's multiplayer with refined gameplay, high definition graphics and sound.") #http://goldeneyesource.net/
           ,new cLink('MINERVA', 'http://www.hylobatidae.org/minerva/', 'MINERVA, by Adam Foster, takes you to a remote island under the control of Combine forces.')
           ,new cLink('Operation Lambda', 'https://www.moddb.com/mods/operation-lambda') #http://operationlambda.com/
