@@ -1,7 +1,7 @@
 ; QuArK installer script for NSIS
 ; HomePage: https://quark.sourceforge.io/
 ; Author: Fredrick Vamstad, DanielPharos & cdunde
-; Date: 18 August 2005 & 5 January 2007 & 29 March 2024
+; Date: 18 August 2005 and onwards
 ; nullsoft NSIS installer program available at:
 ;   https://nsis.sourceforge.io/
 
@@ -405,9 +405,9 @@ Section "$(TEXT_SEC03_TITLE)" SEC03
   SetOutPath $INSTDIR ;To set the working directory for the shortcuts
   CreateDirectory "$SMPROGRAMS\QuArK"
   CreateShortCut "$SMPROGRAMS\QuArK\QuArK.lnk" "$INSTDIR\QuArK.exe"
-  CreateShortCut "$SMPROGRAMS\QuArK\Website.lnk" "$INSTDIR\${PRODUCT_NAME}.url"
-  CreateShortCut "$SMPROGRAMS\QuArK\Forum.lnk" "${PRODUCT_WEB_FORUM}"
-  CreateShortCut "$SMPROGRAMS\QuArK\Online Infobase.lnk" "${PRODUCT_INFOBASE}"
+  CreateShortCut /NoWorkingDir "$SMPROGRAMS\QuArK\Website.lnk" "$INSTDIR\${PRODUCT_NAME}.url"
+  CreateShortCut /NoWorkingDir "$SMPROGRAMS\QuArK\Forum.lnk" "${PRODUCT_WEB_FORUM}"
+  CreateShortCut /NoWorkingDir "$SMPROGRAMS\QuArK\Online Infobase.lnk" "${PRODUCT_INFOBASE}"
   CreateShortCut "$SMPROGRAMS\QuArK\Readme.lnk" "$INSTDIR\README.txt"
   ;CreateShortCut "$SMPROGRAMS\QuArK\Uninstall.lnk" "$INSTDIR\uninst.exe"   ;Against Windows 95+ Guidelines; can be done through the Add/Remove Programs configuration screen panel.
 SectionEnd
