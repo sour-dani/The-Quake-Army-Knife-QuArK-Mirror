@@ -92,6 +92,16 @@ FunctionEnd
 ;Microsoft Visual C++ 2012 x86 Additional Runtime - 11.0.61030.0 (Update 4)
 !define VC_2012_REDIST_ADD_UPD4_X86 "{B175520C-86A2-35A7-8619-86DC379688B9}"
 !define VC_2012_REDIST_ADD_UPD4_X64 "{37B8F9C7-03FB-3253-8781-2517C99D7C00}"
+
+Function _isInstalledVC2012
+  ClearErrors
+  ReadRegDword $R0 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${VC_2012_REDIST_MIN_UPD4_X86}" "Version"
+  IfErrors 0 AlreadyInstalled
+  Push 0
+  Return
+AlreadyInstalled:
+  Push 1
+FunctionEnd
 !endif
 
 !ifdef VC2013
@@ -119,61 +129,141 @@ FunctionEnd
 !endif
 
 !ifdef VC2015
-;Microsoft Visual C++ 2015-2019 Redistributable 14.0.23026
+;Microsoft Visual C++ 2015 Redistributable 14.0.23026
 ;!define VC_2015_REDIST_X86_MIN "{A2563E55-3BEC-3828-8D67-E5E8B9E8B675}"
 ;!define VC_2015_REDIST_X64_MIN "{0D3E9E15-DE7A-300B-96F1-B4AF12B96488}"
 ;!define VC_2015_REDIST_X86_ADD "{BE960C1C-7BAD-3DE6-8B1A-2616FE532845}"
 ;!define VC_2015_REDIST_X64_ADD "{BC958BD2-5DAC-3862-BB1A-C1BE0790438D}"
+
+;Microsoft Visual C++ 2015 Redistributable 14.0.23506
+;Microsoft Visual C++ 2015 Redistributable 14.0.23918
+;Microsoft Visual C++ 2015 Redistributable 14.0.24212
+;Microsoft Visual C++ 2015 Redistributable 14.0.24215
+
+Function _isInstalledVC2015
+  ClearErrors
+  ReadRegDword $R0 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${VC_2015_REDIST_X86_MIN}" "Version"
+  IfErrors 0 AlreadyInstalled
+  Push 0
+  Return
+AlreadyInstalled:
+  Push 1
+FunctionEnd
 !endif
 
 !ifdef VC2017
+;Microsoft Visual C++ 2015-2017 Redistributable 14.10.25008
+;Microsoft Visual C++ 2015-2017 Redistributable 14.10.25017
+;Microsoft Visual C++ 2015-2017 Redistributable 14.11.25325
+;Microsoft Visual C++ 2015-2017 Redistributable 14.12.25810
+;Microsoft Visual C++ 2015-2017 Redistributable 14.15.26706
+;Microsoft Visual C++ 2015-2017 Redistributable 14.16.27012
+;Microsoft Visual C++ 2015-2017 Redistributable 14.16.27024
+;Microsoft Visual C++ 2015-2017 Redistributable 14.16.27027
+;Microsoft Visual C++ 2015-2017 Redistributable 14.16.27033
+;Microsoft Visual C++ 2015-2017 Redistributable 14.16.27052
+
+Function _isInstalledVC2017
+  ClearErrors
+  ReadRegDword $R0 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${VC_2017_REDIST_X86_MIN}" "Version"
+  IfErrors 0 AlreadyInstalled
+  Push 0
+  Return
+AlreadyInstalled:
+  Push 1
+FunctionEnd
 !endif
 
 !ifdef VC2019
+;Microsoft Visual C++ 2015-2019 Redistributable 14.20.27508
+;Microsoft Visual C++ 2015-2019 Redistributable 14.21.27702
+;Microsoft Visual C++ 2015-2019 Redistributable 14.22.27821
+;Microsoft Visual C++ 2015-2019 Redistributable 14.23.27820
+;Microsoft Visual C++ 2015-2019 Redistributable 14.24.28127
+
 ;Microsoft Visual C++ 2015-2019 Redistributable 14.25.28508
 ;!define VC_2019_REDIST_X86_MIN "{2BC3BD4D-FABA-4394-93C7-9AC82A263FE2}"
 ;!define VC_2019_REDIST_X64_MIN "{EEA66967-97E2-4561-A999-5C22E3CDE428}"
 ;!define VC_2019_REDIST_X86_ADD "{0FA68574-690B-4B00-89AA-B28946231449}"
 ;!define VC_2019_REDIST_X64_ADD "{7D0B74C2-C3F8-4AF1-940F-CD79AB4B2DCE}"
 
-;Microsoft Visual C++ 2015-2019 Redistributable 14.30.30708.0
-;!define VC_2019_REDIST_X86_MIN "{D436A6E9-EC92-40C9-BF09-1EF1D0ED8BCB}"
-;!define VC_2019_REDIST_X86_ADD "{C27CC672-3095-4DA8-9805-9BB2A4065704}"
-;!define VC_2019_REDIST_X64_MIN "{AE043016-3897-41D4-870B-1DAEE62CF152}"
-;!define VC_2019_REDIST_X64_ADD "{12A2980B-E47B-491B-92F5-0BC703841ED4}"
-;!define VC_2019_REDIST_ARM64 "{976D2A0F-2F0A-4BC0-B407-DF1BDBCD819B}"
-
-;Microsoft Visual C++ 2015-2019 Redistributable 14.31.31103.0
-;!define VC_2019_REDIST_X86_MIN "{799E3FFF-705C-461F-B400-6DE27398B3E5}"
-;!define VC_2019_REDIST_X86_ADD "{5720EC03-F26F-40B7-980C-50B5D420B5DE}"
-;!define VC_2019_REDIST_X64_MIN "{A181A302-3F6D-4BAD-97A8-A426A6499D78}"
-;!define VC_2019_REDIST_X64_ADD "{A977984B-9244-49E3-BD24-43F0A8009667}"
-;!define VC_2019_REDIST_ARM64 "{E3460F0E-F4E0-4713-9A46-C6FE86339A03}"
-
-;Microsoft Visual C++ 2015-2019 Redistributable 14.32.31332.0
-;!define VC_2019_REDIST_X86_MIN "{AEAA18F7-9C96-4A43-BC07-8B88A4913EEB}"
-;!define VC_2019_REDIST_X86_ADD "{8972AC25-452E-4FFE-945A-EB9E28C20322}"
-;!define VC_2019_REDIST_X64_MIN "{3407B900-37F5-4CC2-B612-5CD5D580A163}"
-;!define VC_2019_REDIST_X64_ADD "{F4499EE3-A166-496C-81BB-51D1BCDC70A9}"
-;!define VC_2019_REDIST_ARM64 "{EE5559EA-B1C8-4E40-80C7-C562B7E685F7}"
-
-;Microsoft Visual C++ 2015-2019 Redistributable 14.34.31938.0
-;!define VC_2019_REDIST_X86_MIN "{8DE5B0D4-A6D8-4F72-B8EF-28776A2EE5D5}"
-;!define VC_2019_REDIST_X86_ADD "{080D8397-60F4-44B3-BB95-FBB950CB0B4E}"
-;!define VC_2019_REDIST_X64_MIN "{0AE39060-F209-4D05-ABC7-54B8F9CFA32E}"
-;!define VC_2019_REDIST_X64_ADD "{7DA37AE3-D8AE-49B1-9BDC-23CA0AB9FF22}"
-;!define VC_2019_REDIST_ARM64 "{CA54B57A-BF45-43AF-8351-474612AA0470}"
-
-;Microsoft Visual C++ 2015-2019 Redistributable 14.36.32532.0
-!define VC_2019_REDIST_X86_MIN "{73F77E4E-5A17-46E5-A5FC-8A061047725F}"
-!define VC_2019_REDIST_X86_ADD "{C2C59CAB-8766-4ABD-A8EF-1151A36C41E5}"
-!define VC_2019_REDIST_X64_MIN "{D5D19E2F-7189-42FE-8103-92CD1FA457C2}"
-!define VC_2019_REDIST_X64_ADD "{0025DD72-A959-45B5-A0A3-7EFEB15A8050}"
-!define VC_2019_REDIST_ARM64 "{4153EA6F-71B7-42D6-B81B-55B636781122}"
+;Microsoft Visual C++ 2015-2019 Redistributable 14.26.28720
+;Microsoft Visual C++ 2015-2019 Redistributable 14.27.29112
+;Microsoft Visual C++ 2015-2019 Redistributable 14.28.29325
+;Microsoft Visual C++ 2015-2019 Redistributable 14.28.29910
+;Microsoft Visual C++ 2015-2019 Redistributable 14.28.29913
+;Microsoft Visual C++ 2015-2019 Redistributable 14.28.29914
+;Microsoft Visual C++ 2015-2019 Redistributable 14.29.30037
+;Microsoft Visual C++ 2015-2019 Redistributable 14.29.30040
+;Microsoft Visual C++ 2015-2019 Redistributable 14.29.30133
+;Microsoft Visual C++ 2015-2019 Redistributable 14.29.30135
+;Microsoft Visual C++ 2015-2019 Redistributable 14.29.30139
+;Microsoft Visual C++ 2015-2019 Redistributable 14.29.30153
+;Microsoft Visual C++ 2015-2019 Redistributable 14.29.30156
 
 Function _isInstalledVC2019
   ClearErrors
   ReadRegDword $R0 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${VC_2019_REDIST_X86_MIN}" "Version"
+  IfErrors 0 AlreadyInstalled
+  Push 0
+  Return
+AlreadyInstalled:
+  Push 1
+FunctionEnd
+!endif
+
+!ifdef VC2022
+;Microsoft Visual C++ 2015-2019 Redistributable 14.30.30704
+
+;Microsoft Visual C++ 2015-2019 Redistributable 14.30.30708.0
+;!define VC_2022_REDIST_X86_MIN "{D436A6E9-EC92-40C9-BF09-1EF1D0ED8BCB}"
+;!define VC_2022_REDIST_X86_ADD "{C27CC672-3095-4DA8-9805-9BB2A4065704}"
+;!define VC_2022_REDIST_X64_MIN "{AE043016-3897-41D4-870B-1DAEE62CF152}"
+;!define VC_2022_REDIST_X64_ADD "{12A2980B-E47B-491B-92F5-0BC703841ED4}"
+;!define VC_2022_REDIST_ARM64 "{976D2A0F-2F0A-4BC0-B407-DF1BDBCD819B}"
+
+;Microsoft Visual C++ 2015-2019 Redistributable 14.31.31103.0
+;!define VC_2022_REDIST_X86_MIN "{799E3FFF-705C-461F-B400-6DE27398B3E5}"
+;!define VC_2022_REDIST_X86_ADD "{5720EC03-F26F-40B7-980C-50B5D420B5DE}"
+;!define VC_2022_REDIST_X64_MIN "{A181A302-3F6D-4BAD-97A8-A426A6499D78}"
+;!define VC_2022_REDIST_X64_ADD "{A977984B-9244-49E3-BD24-43F0A8009667}"
+;!define VC_2022_REDIST_ARM64 "{E3460F0E-F4E0-4713-9A46-C6FE86339A03}"
+
+;Microsoft Visual C++ 2015-2019 Redistributable 14.32.31326
+
+;Microsoft Visual C++ 2015-2019 Redistributable 14.32.31332.0
+;!define VC_2022_REDIST_X86_MIN "{AEAA18F7-9C96-4A43-BC07-8B88A4913EEB}"
+;!define VC_2022_REDIST_X86_ADD "{8972AC25-452E-4FFE-945A-EB9E28C20322}"
+;!define VC_2022_REDIST_X64_MIN "{3407B900-37F5-4CC2-B612-5CD5D580A163}"
+;!define VC_2022_REDIST_X64_ADD "{F4499EE3-A166-496C-81BB-51D1BCDC70A9}"
+;!define VC_2022_REDIST_ARM64 "{EE5559EA-B1C8-4E40-80C7-C562B7E685F7}"
+
+;Microsoft Visual C++ 2015-2019 Redistributable 14.34.31931
+
+;Microsoft Visual C++ 2015-2019 Redistributable 14.34.31938.0
+;!define VC_2022_REDIST_X86_MIN "{8DE5B0D4-A6D8-4F72-B8EF-28776A2EE5D5}"
+;!define VC_2022_REDIST_X86_ADD "{080D8397-60F4-44B3-BB95-FBB950CB0B4E}"
+;!define VC_2022_REDIST_X64_MIN "{0AE39060-F209-4D05-ABC7-54B8F9CFA32E}"
+;!define VC_2022_REDIST_X64_ADD "{7DA37AE3-D8AE-49B1-9BDC-23CA0AB9FF22}"
+;!define VC_2022_REDIST_ARM64 "{CA54B57A-BF45-43AF-8351-474612AA0470}"
+
+;Microsoft Visual C++ 2015-2019 Redistributable 14.36.32532.0
+!define VC_2022_REDIST_X86_MIN "{73F77E4E-5A17-46E5-A5FC-8A061047725F}"
+!define VC_2022_REDIST_X86_ADD "{C2C59CAB-8766-4ABD-A8EF-1151A36C41E5}"
+!define VC_2022_REDIST_X64_MIN "{D5D19E2F-7189-42FE-8103-92CD1FA457C2}"
+!define VC_2022_REDIST_X64_ADD "{0025DD72-A959-45B5-A0A3-7EFEB15A8050}"
+!define VC_2022_REDIST_ARM64 "{4153EA6F-71B7-42D6-B81B-55B636781122}"
+
+;Microsoft Visual C++ 2015-2019 Redistributable 14.38.33130
+;Microsoft Visual C++ 2015-2019 Redistributable 14.38.33135
+;Microsoft Visual C++ 2015-2019 Redistributable 14.40.33810
+;Microsoft Visual C++ 2015-2019 Redistributable 14.40.33816
+;Microsoft Visual C++ 2015-2019 Redistributable 14.42.34433
+;Microsoft Visual C++ 2015-2019 Redistributable 14.42.34438
+
+Function _isInstalledVC2022
+  ClearErrors
+  ReadRegDword $R0 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${VC_2022_REDIST_X86_MIN}" "Version"
   IfErrors 0 AlreadyInstalled
   Push 0
   Return
