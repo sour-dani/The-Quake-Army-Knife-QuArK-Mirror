@@ -53,7 +53,7 @@ $LinksGeneric[] = new cLinkGroup('Maps', NULL, array(
 //          ,new cLink('Single Player Quake', 'http://hosted.planetquake.gamespy.com/spq/')
 //          ,new cLink('Single Player Quake 2', 'http://hosted.planetquake.gamespy.com/spq2/', 'Level Heaven')
           ,new cLink('Quakelevels', 'http://www.quakelevels.com/', NULL, 'https://web.archive.org/web/20070125002013/http://www.quakelevels.com/')
-          ,new cLink('Cyber-Rat.com', 'http://www.cyber-rat.com/', 'Half-Life maps and more')
+          ,new cLink('Cyber-Rat.com', 'http://www.cyber-rat.com/', 'Half-Life maps and more', 'https://web.archive.org/web/20230930092430/http://cyber-rat.com/')
           ,new cLink('Call of Duty Maps', 'https://callofdutymaps.com/')
           ,new cLink('Call of Duty Repo', 'https://callofdutyrepo.com/')
           ,new cLink('3d Mappers', 'https://www.3dmappers.com/', 'The 3d mappers Website is a resource for the Call of Duty community.')
