@@ -2,6 +2,7 @@
 require_once('_base_code.php');
 require_once('_language_functions.php');
 require_once('_image_functions.php');
+require_once('_people-database.php');
 require_once('_tutorial-database.php');
 
 # Load language file
@@ -15,6 +16,7 @@ function tutorialListPanel($TutorialList)
 		$bodytext .= '<p>'.$TutorialList->Description.'</p>';
 	}
 
+	global $personsdatabase;
 	$bodytext .= '<table cellpadding=2 cellspacing=0 width="100%">';
 	for ($Tutorial = 0; $Tutorial < count($TutorialList->Tutorials); $Tutorial++)
 	{
@@ -28,7 +30,7 @@ function tutorialListPanel($TutorialList)
 		$bodytext .= '<td width="50%" valign=top class="text1">'.$CurrentTutorial->Description;
 		if (!is_null($CurrentTutorial->Author))
 		{
-			$bodytext .= '<br>Author: '.$CurrentTutorial->Author; #FIXME: Make a person link!
+			$bodytext .= '<br>Author: <a class="personlink" target="_blank" href="'.$mainroot.'person.php?PersonID='.($CurrentTutorial->Author+1).'">'.$personsdatabase[$CurrentTutorial->Author]->getDisplayName().'</a>';
 		}
 		$bodytext .= '</td></tr>';
 	}

@@ -47,11 +47,6 @@ $LinksGeneric[] = new cLinkGroup('Community', NULL, array(
           ,new cLink('Frag dot Com', 'http://frag.com/', 'Your 3D Action Gaming Center', 'https://web.archive.org/web/20000302033138/http://frag.com/')
            ));
 
-//$LinksGeneric[] = new cLinkGroup('Hints &amp; Tips', NULL, array(
-//           new cLink('Rust tutorials', 'http://www.gamedesign.net/tutorials', NULL)
-//          ,new cLink('Rizenet tutorials', 'http://www.rizenet.com/games/quark/page1.php', NULL)
-//           ));
-
 $LinksGeneric[] = new cLinkGroup('Maps', NULL, array(
            new cLink('Map Factory', 'http://www.map-factory.org/', 'The game map database', 'https://web.archive.org/web/20111229224613/http://www.map-factory.org/')
           ,new cLink('The Snarkpit', 'https://www.snarkpit.net/index.php?s=maps', 'The original mapping resource')
