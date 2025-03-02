@@ -1,9 +1,9 @@
 <?php
-require_once('../_base_code.php');
-require_once('../_functions.php');
-require_once('../_language_functions.php');
-require_once('../_people-database.php');
-require_once('./_news_database.php');
+require_once('..'.DIRECTORY_SEPARATOR.'_base_code.php');
+require_once('..'.DIRECTORY_SEPARATOR.'_functions.php');
+require_once('..'.DIRECTORY_SEPARATOR.'_language_functions.php');
+require_once('..'.DIRECTORY_SEPARATOR.'_people-database.php');
+require_once('.'.DIRECTORY_SEPARATOR.'_news_database.php');
 
 # Load language file
 LoadLanguageFile('quark7.php');
