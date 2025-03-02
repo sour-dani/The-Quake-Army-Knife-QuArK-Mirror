@@ -39,6 +39,14 @@ class cLink
 
 global $LinksGeneric;
 $LinksGeneric = array();
+$LinksGeneric[] = new cLinkGroup('Community', NULL, array(
+           new cLink('The Quake ClanRing', 'http://www.mpog.com/clanring/', NULL, 'https://web.archive.org/web/20021004011401/http://www.mpog.com/clanring/')
+          ,new cLink('ClanRing Xtended Mod', 'https://crxquake.com/', 'CRx can be considered an extended version of CRMod.')
+          ,new cLink('Clanring CRMod', 'http://crmod.com/', 'ClanRing Mod')
+          ,new cLink('Quake Domain', 'http://www.gameaholic.com/', 'Complete source of information about computer games.  News, cheats, help, FAQs, thousands of downloadaable files: demos, extra levels and patches, skins and much more.', 'https://web.archive.org/web/20180729013744/http://www.gameaholic.com/')
+          ,new cLink('Frag dot Com', 'http://frag.com/', 'Your 3D Action Gaming Center', 'https://web.archive.org/web/20000302033138/http://frag.com/')
+           ));
+
 //$LinksGeneric[] = new cLinkGroup('Hints &amp; Tips', NULL, array(
 //           new cLink('Rust tutorials', 'http://www.gamedesign.net/tutorials', NULL)
 //          ,new cLink('Rizenet tutorials', 'http://www.rizenet.com/games/quark/page1.php', NULL)
