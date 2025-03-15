@@ -62,14 +62,14 @@ $Games[] = new cGame('630' ,'6DX' ,'6DX engine' ,'6DX' ,'6dx.gif'
                     ,NULL
                     ,NULL
                     ,NULL
-                    );*/ /*Not yet confirmed*/
+                    );*/ //Not yet confirmed
 /*$Games[] = new cGame(NULL ,'Alice: Madness Returns' ,'Alice: Asylum' ,'ALICE2' ,NULL
                     ,'https://www.ea.com/games/alice' ,'https://en.wikipedia.org/wiki/Alice:_Madness_Returns' ,'Unreal3', FALSE
                     ,'Return to Victorian London in Alice: Madness Returns as Alice once again seeks refuge in Wonderland only to find it more dangerous than ever.'
-                    ,array('Spicy Horse') //FIXME: Not yet added!
+                    ,array('Spicy Horse')
                     ,array('Electronic Arts')
                     ,NULL
-                    );*/ /*Totally different engine*/
+                    );*/ //Incompatible engine
 $Games[] = new cGame(NULL ,'ALIEN' ,'Alien Arena' ,'AA' ,'aa.png' #CodeRED: Alien Arena
                     ,'http://red.planetarena.org/' ,'https://en.wikipedia.org/wiki/Alien_Arena_(video_game)' ,'CRX', FALSE #http://icculus.org/alienarena/rpa/ #https://en.wikipedia.org/wiki/CodeRED:_Alien_Arena
                     ,'A fast paced, fun FREE FPS!'
@@ -111,7 +111,7 @@ $Games[] = new cGame(NULL ,'AN' ,'Anachronox' ,'AN' ,'anachronox.gif'
                     ,array('Aperture Tag Team')
                     ,array('Aperture Tag Team')
                     ,NULL
-                    );*/ /*Mod for Portal 2*/
+                    );*/ //Mod for Portal 2
 $Games[] = new cGame(NULL ,'AL' ,'Apex Legends' ,'AL' ,'al.png'
                     ,'https://www.ea.com/games/apex-legends' ,'https://en.wikipedia.org/wiki/Apex_Legends' ,'Source', TRUE
                     ,NULL
@@ -153,7 +153,7 @@ $Games[] = new cGame(NULL ,'BL' ,'Blockland' ,'BL' ,'blockland.png'
                     ,array('Hyperstrange')
                     ,array('Hyperstrange')
                     ,NULL
-                    );*/ /*Totally different engine*/
+                    );*/ //Incompatible engine
 $Games[] = new cGame(NULL ,'BGT' ,'Bloody Good Time' ,'BGT' ,'bgt.png'
                     ,NULL ,'https://en.wikipedia.org/wiki/Bloody_Good_Time' ,'Source', FALSE #https://bloody-good-time.ubi.com/
                     ,'Welcome to Hollywood! The home of fame and fortune!'
@@ -220,7 +220,7 @@ $Games[] = new cGame('660b7' ,'CoD2' ,'Call of Duty 2' ,'CoD2' ,'cod2.gif'
                     ,array('Treyarch')
                     ,array('Activision')
                     ,NULL
-                    );*/ /*Incompatible platform*/
+                    );*/ //Incompatible platform
 $Games[] = new cGame(NULL ,'CoD4' ,'Call of Duty 4: Modern Warfare' ,'CoD4' ,'cod4.gif'
                     ,NULL ,'https://en.wikipedia.org/wiki/Call_of_Duty_4:_Modern_Warfare' ,'IW3', FALSE #http://www.callofduty.com/
                     ,'Fight as a member of U.S. forces and British spec ops in global hotspots to eliminate a well-armed, ruthless force of international separatists.'
@@ -368,7 +368,7 @@ $Games[] = new cGame(NULL ,'CoD20' ,'Call of Duty: Modern Warfare III' ,'CoD20' 
                     ,array('Treyarch', 'Raven')
                     ,array('Activision')
                     ,NULL
-                    );*/ /*Not released yet*/
+                    );*/ //Not released yet
 $Games[] = new cGame(NULL ,'C' ,'Catechumen' ,'C' ,'c.png'
                     ,NULL ,'https://en.wikipedia.org/wiki/Catechumen_(video_game)' ,'G3D', FALSE #http://www.catechumen.com
                     ,'Catechumen is a first person action/adventure Christian game where your goal is to defeat the forces of evil, descending deeper into the depths of the Earth and rescue your captured brethren.'
@@ -386,10 +386,10 @@ $Games[] = new cGame(NULL ,'CD' , 'Cocaine Diesel' ,'CD' ,'cd.png'
 /*$Games[] = new cGame(NULL ,'CG' , 'Codename Gordon' ,'CG' ,NULL #Note: the game itself gives the trademark as without the colon, but even their own website was inconsistent at the time!
                     ,NULL ,'https://en.wikipedia.org/wiki/Codename_Gordon' ,'Flash', FALSE #FIXME: Add engine to website!
                     ,NULL
-                    ,array('Nuclearvision Entertainment') #FIXME: Nuclearvision Entertainment GmbH
+                    ,array('Nuclearvision')
                     ,array('Valve')
                     ,NULL
-                    );*/ /*Totally different engine*/
+                    );*/ //Incompatible engine
 $Games[] = new cGame(NULL ,'CIA' ,'CIA Operative: Solo Missions' ,'CIA' ,'cia.png'
                     ,NULL ,NULL ,'GLQuake', FALSE
                     ,'Eliminate the Enemies of the State.'
@@ -510,7 +510,13 @@ $Games[] = new cGame(NULL ,'DDAY' ,'D-Day: Normandy' ,'DDAY' ,'dday.png'
                     ,NULL
                     ,NULL
                     );
-//FIXME: 'Deadlock' (Valve)?
+/*$Games[] = new cGame(NULL ,'DDL' ,'Deadlock' ,'DDL' ,NULL
+                    ,NULL ,'https://en.wikipedia.org/wiki/Deadlock_(video_game)' ,'Source 2', FALSE
+                    ,NULL
+                    ,array('Valve')
+                    ,array('Valve')
+                    ,NULL
+                    );*/ //Not released yet
 $Games[] = new cGame(NULL ,'DE' ,'Dear Esther' ,'DE' ,'dearesther.png'
                     ,'http://dear-esther.com/' ,'https://en.wikipedia.org/wiki/Dear_Esther' ,'Source', FALSE
                     ,'A deserted island...a lost man...memories of a fatal crash...a book written by a dying explorer.'
@@ -574,7 +580,7 @@ $Games[] = new cGame(NULL ,'DM3ROE' ,'Doom 3: Resurrection of Evil' ,'DM3RoE' ,'
                     ,array('id')
                     ,array('Bethesda')
                     ,NULL
-                    );*/ /*Cancelled*/
+                    );*/ //Cancelled
 $Games[] = new cGame(NULL ,'DM4' ,'Doom (2016)' ,'DM4' ,'dm4.png'
                     ,'http://bethesda.net/game/doom-2016' ,'https://en.wikipedia.org/wiki/Doom_(2016_video_game)' ,'id Tech 6', FALSE #https://doom.com/
                     ,'Fight like hell.'
@@ -637,7 +643,7 @@ $Games[] = new cGame(NULL ,'DL3D' ,'Dragon\'s Lair 3D: Return to the Lair' ,'DL3
                     ,NULL
                     ,NULL
                     ,NULL
-                    );*/ /*Mod for Half-Life 2*/
+                    );*/ //Mod for Half-Life 2
 $Games[] = new cGame(NULL ,'EWSOL' ,'Eternal War: Shadows of Light' ,'EWSOL' ,NULL
                     ,NULL ,NULL ,'Quake 1', TRUE
                     ,'Eternal War: Shadows of Light is a first person shooter released in 2002 for Windows PC by Two Guys Software.'
@@ -686,7 +692,7 @@ $Games[] = new cGame(NULL ,'FOF' ,'Fistful of Frags' ,'FOF' ,'fof.png'
                     ,array('Fistful of Frags Team')
                     ,array('Fistful of Frags Team')
                     ,NULL
-                    ); /*Was a HL2 mod, but now standalone.*/
+                    ); //Was a HL2 mod, but now standalone.
 $Games[] = new cGame(NULL ,'FL' ,'Force: Leashed' ,'FL' ,NULL
                     ,NULL ,NULL ,'DarkPlaces', FALSE #http://www.kepuli.com/force_leashed/
                     ,'Force: Leashed is a free first person gravity fiddler.'
@@ -763,14 +769,14 @@ $Games[] = new cGame('630','HLBS' ,'Half-Life: Blue Shift' ,'HLBS' ,'halflifebs.
                     ,array('2015')
                     ,NULL
                     ,NULL
-                    );*/ /*Cancelled*/
+                    );*/ //Cancelled
 /*$Games[] = new cGame(NULL ,'HLD' ,'Half-Life: Decay' ,'HLD' ,NULL
                     ,NULL ,'https://en.wikipedia.org/wiki/Half-Life:_Decay' ,'GoldSrc', FALSE
                     ,NULL
                     ,array('Gearbox')
                     ,array('Sierra Entertainment') #Sierra On-Line
                     ,NULL
-                    ,'HL');*/ /*Incompatible platform*/
+                    ,'HL');*/ //Incompatible platform
 $Games[] = new cGame('660b8' ,'HLS' ,'Half-Life: Source' ,'HLS' ,'halflife2.gif'
                     ,NULL ,'https://en.wikipedia.org/wiki/Half-Life:_Source' ,'Source', FALSE
                     ,NULL
@@ -812,7 +818,7 @@ $Games[] = new cGame('660b5' ,'HL2EP2' ,'Half-Life 2: Episode 2' ,'HL2EP2' ,'hal
                     ,array('Valve')
                     ,array('Valve')
                     ,NULL
-                    );*/ /*Cancelled*/
+                    );*/ //Cancelled
 $Games[] = new cGame('641a1' ,'HL2DM' ,'Half-Life 2: Deathmatch' ,'HL2DM' ,'halflife2.gif'
                     ,NULL ,'https://en.wikipedia.org/wiki/Half-Life_2:_Deathmatch' ,'Source', FALSE
                     ,NULL
@@ -833,14 +839,14 @@ $Games[] = new cGame(NULL ,'HL2LC' ,'Half-Life 2: Lost Coast' ,'HL2LC' ,'halflif
                     ,array('Valve')
                     ,array('Valve')
                     ,NULL
-                    );*/ /*Cancelled*/
+                    );*/ //Cancelled
 /*$Games[] = new cGame(NULL ,'HLB' ,'Borealis' ,'HLB' ,NULL
                     ,NULL ,NULL ,'Source Engine 2', FALSE   https://en.wikipedia.org/wiki/Unreleased_Half-Life_games#Borealis
                     ,NULL
                     ,array('Valve')
                     ,NULL
                     ,NULL
-                    );*/ /*Cancelled*/
+                    );*/ //Cancelled
 $Games[] = new cGame(NULL ,'HLVR' ,'Half-Life: Alyx' ,'HLVR' ,NULL
                     ,'https://www.half-life.com/alyx' ,'https://en.wikipedia.org/wiki/Half-Life:_Alyx' ,'Source2', FALSE
                     ,'A VR Return To Half-Life.'
@@ -917,15 +923,21 @@ $Games[] = new cGame('54' ,'Hx2XP' ,'Hexen 2: Portal of Praevus' ,'Hx2XP' ,'hexe
                     ,array('Hyperstrange')
                     ,array('Kwalee')
                     ,NULL
-                    );*/ /*Unknown game engine*/
+                    );*/ //Unknown game engine
 $Games[] = new cGame(NULL ,'HDTF' ,'Hunt Down The Freeman' ,'HDTF' ,NULL
-                    ,NULL ,NULL ,'Source', FALSE
+                    ,NULL ,'https://en.wikipedia.org/wiki/Hunt_Down_the_Freeman' ,'Source', FALSE
                     ,'Hunt Down The Freeman takes you into a journey like no one has before. Witness the pain of the villain firsthand with over 14 hour gameplay, over 40 levels, immersive gameplay, cinematic cutscenes and an over an hour long, heart touching OST.'
                     ,array('Royal Rudius Entertainment')
                     ,array('Royal Rudius Entertainment')
                     ,NULL
                     );
-//https://en.wikipedia.org/wiki/Hybrid_(video_game) //Other platforms
+/*$Games[] = new cGame(NULL ,'HB' ,'Hybrid' ,'HB' ,NULL
+                    ,NULL ,'https://en.wikipedia.org/wiki/Hybrid_(video_game)' ,'Source', FALSE #http://www.whatishybrid.com/
+                    ,NULL
+                    ,array('5th Cell')
+                    ,array('Microsoft Studios')
+                    ,NULL
+                    );*/ //Incompatible platform
 $Games[] = new cGame(NULL ,'IJGC' ,'Indiana Jones and the Great Circle' ,'IJGC' ,NULL
                     ,'https://indianajones.bethesda.net/' ,'https://en.wikipedia.org/wiki/Indiana_Jones_and_the_Great_Circle' ,'id Tech 7', FALSE
                     ,NULL
@@ -946,7 +958,7 @@ $Games[] = new cGame(NULL ,'INFRA' ,'INFRA' ,'INFRA' ,NULL
                     ,array('Insurgency Development Team')
                     ,array('New World Interactive')
                     ,NULL
-                    );* /*Mod for Half-Life 2*/
+                    );* //Mod for Half-Life 2
 $Games[] = new cGame(NULL ,'INSUR2' ,'Insurgency' ,'INSUR2' ,'insur2.png'
                     ,NULL ,'https://en.wikipedia.org/wiki/Insurgency_(video_game)' ,'Source', FALSE //http://www.playinsurgency.com/
                     ,'New World\'s debut game Insurgency is leading a revival of the tactical shooter genre.'
@@ -960,7 +972,7 @@ $Games[] = new cGame(NULL ,'INSUR2' ,'Insurgency' ,'INSUR2' ,'insur2.png'
                     ,array('New World Interactive')
                     ,array('Focus Home Interactive')
                     ,NULL
-                    );*/ /*Totally different engine*/
+                    );*/ //Incompatible engine
 $Games[] = new cGame(NULL ,'IGW' ,'Iron Grip: Warlord' ,'IGW' ,'igw.png'
                     ,'http://www.igwarlord.com/' ,'https://en.wikipedia.org/wiki/Iron_Grip:_Warlord' ,'Quake 3', FALSE
                     ,'Grab your weapons and head to the battlefield in the debut commercial game from Isotx, Iron Grip: Warlord!'
@@ -1002,7 +1014,7 @@ $Games[] = new cGame('600b1' ,'KP' ,'Kingpin: Life of Crime' ,'KP' ,'kingpin.gif
                     ,array('Slipgate Ironworks')
                     ,array('3D Realms')
                     ,NULL
-                    );*/ /*Incompatible engine*/
+                    );*/ //Incompatible engine
 $Games[] = new cGame(NULL ,'KB' ,'Kingsborn' ,'KB' ,NULL
                     ,NULL ,NULL ,'G3D', FALSE
                     ,NULL
@@ -1044,7 +1056,7 @@ $Games[] = new cGame(NULL ,'L4D2' ,'Left 4 Dead 2' ,'L4D2' ,'l4d2.png'
                     ,array('Valve')
                     ,array('Valve')
                     ,NULL
-                    );*/ /*Cancelled*/
+                    );*/ //Cancelled
 $Games[] = new cGame(NULL ,'MAL' ,'Malice' ,'MAL' ,NULL
                     ,NULL ,'https://en.wikipedia.org/wiki/Malice_(1997_video_game)' ,'Quake 1', FALSE #http://www.qamalice.com
                     ,'23rd century ultraconversion for Quake.'
@@ -1059,8 +1071,8 @@ $Games[] = new cGame(NULL ,'MB' ,'Marble Blast' ,'MB' ,'mb.png' #Was renamed to 
                     ,array('Monster')
                     ,NULL
                     );
-//https://en.wikipedia.org/wiki/Medal_of_Honor_(1999_video_game) //Other platforms
-//https://en.wikipedia.org/wiki/Medal_of_Honor:_Underground //Other platforms
+//https://en.wikipedia.org/wiki/Medal_of_Honor_(1999_video_game) //Incompatible platform
+//https://en.wikipedia.org/wiki/Medal_of_Honor:_Underground //Incompatible platform
 $Games[] = new cGame('630' ,'MOHAA' ,'Medal of Honor: Allied Assault' ,'MOHAA' ,'mohaa.gif'
                     ,NULL ,'https://en.wikipedia.org/wiki/Medal_of_Honor:_Allied_Assault' ,'Quake 3', TRUE #with Ritual's custom SDK
                     ,'You don\'t play, you volunteer.'
@@ -1082,8 +1094,8 @@ $Games[] = new cGame('630' ,'MOHAAS' ,'Medal of Honor: Allied Assault: Spearhead
                     ,array('EA')
                     ,NULL
                     ,'MOHAA');
-//https://en.wikipedia.org/wiki/Medal_of_Honor:_Rising_Sun //Other platforms
-//https://en.wikipedia.org/wiki/Medal_of_Honor:_Infiltrator //Other platforms
+//https://en.wikipedia.org/wiki/Medal_of_Honor:_Rising_Sun //Incompatible platform
+//https://en.wikipedia.org/wiki/Medal_of_Honor:_Infiltrator //Incompatible platform
 $Games[] = new cGame(NULL ,'MOHPA' ,'Medal of Honor: Pacific Assault' ,'MOHPA' ,'mohpa.gif'
                     ,NULL ,'https://en.wikipedia.org/wiki/Medal_of_Honor:_Pacific_Assault' ,'Quake 3', TRUE #with Ritual's custom SDK
                     ,'Fight for Victory in the Pacific.'
@@ -1091,9 +1103,9 @@ $Games[] = new cGame(NULL ,'MOHPA' ,'Medal of Honor: Pacific Assault' ,'MOHPA' ,
                     ,array('EA')
                     ,NULL
                     );
-//https://en.wikipedia.org/wiki/Medal_of_Honor:_European_Assault //Other platforms
-//https://en.wikipedia.org/wiki/Medal_of_Honor:_Heroes //Other platforms
-//https://en.wikipedia.org/wiki/Medal_of_Honor:_Vanguard //Other platforms
+//https://en.wikipedia.org/wiki/Medal_of_Honor:_European_Assault //Incompatible platform
+//https://en.wikipedia.org/wiki/Medal_of_Honor:_Heroes //Incompatible platform
+//https://en.wikipedia.org/wiki/Medal_of_Honor:_Vanguard //Incompatible platform
 /*$Games[] = new cGame(NULL ,'MOHA' ,'Medal of Honor: Airborne' ,'MOHA' ,'moha.gif'
                     ,NULL ,'https://en.wikipedia.org/wiki/Medal_of_Honor:_Airborne' ,'Unreal Engine 3', FALSE
                     ,'Heroes jump. Enemies fall.'
@@ -1101,7 +1113,7 @@ $Games[] = new cGame(NULL ,'MOHPA' ,'Medal of Honor: Pacific Assault' ,'MOHPA' ,
                     ,array('EA')
                     ,NULL
                     );*/
-//https://en.wikipedia.org/wiki/Medal_of_Honor:_Heroes_2 //Other platforms
+//https://en.wikipedia.org/wiki/Medal_of_Honor:_Heroes_2 //Incompatible platform
 //https://en.wikipedia.org/wiki/Medal_of_Honor_(2010_video_game) //Unreal Engine 3 (Frostbite 1.5 for multiplayer)
 //https://en.wikipedia.org/wiki/Medal_of_Honor:_Warfighter //Frostbite 2
 //https://en.wikipedia.org/wiki/Medal_of_Honor%3A_Above_and_Beyond //Unreal Engine
@@ -1125,7 +1137,7 @@ $Games[] = new cGame(NULL ,'NC' ,'Neocron' ,'NC' ,NULL
                     ,array('reakktor.com')
                     ,array('10tacle Studios')
                     ,NULL
-                    );*/ /*FIXME: Probably same engine as 1*/
+                    );*/ //FIXME: Probably same engine as 1
 //https://en.wikipedia.org/wiki/NeoTokyo_(video_game) HL2mod
 $Games[] = new cGame(NULL ,'NB' ,'Neverball' ,'NB' ,'neverball.png'
                     ,'https://neverball.org/' ,'https://en.wikipedia.org/wiki/Neverball' ,NULL, FALSE
@@ -1154,14 +1166,14 @@ $Games[] = new cGame(NULL ,'NMRIH' ,'No More Room in Hell' ,'NMRIH' ,'nmrih.png'
                     ,array('No More Room in Hell Team')
                     ,array('Lever Games')
                     ,NULL
-                    ); /*Was a HL2 mod, but now standalone.*/
+                    ); //Was a HL2 mod, but now standalone.
 /*$Games[] = new cGame(NULL ,'NMRIH2' ,'No More Room In Hell 2' ,'NMRIH2' ,NULL
                     ,'https://www.nmrih2.com' ,'https://en.wikipedia.org/wiki/No_More_Room_in_Hell_2' ,'Unreal4', FALSE
                     ,'Survive together or die alone.'
                     ,array('Lever Games')
                     ,array('Lever Games')
                     ,NULL
-                    );*/ /*Incompatible engine*/
+                    );*/ //Incompatible engine
 $Games[] = new cGame(NULL ,'NOS' ,'Nosferatu' ,'NOS' ,'nos.png'
                     ,NULL ,NULL ,'Qfusion', FALSE #http://www.nosferatuthegame.com/ #https://web.archive.org/web/20190119160909/http://www.nosferatuthegame.com/ #https://www.moddb.com/games/nosferatu/ ?
                     ,'Nosferatu is a teambased multiplayer first person shooter.'
@@ -1175,7 +1187,7 @@ $Games[] = new cGame(NULL ,'ND' ,'Nuclear Dawn' ,'ND' ,'nd.png'
                     ,array('InterWave')
                     ,array('Iceberg')
                     ,NULL
-                    ); /*Was a HL2(?) mod, but now standalone.*/
+                    ); //Was a HL2(?) mod, but now standalone.
 $Games[] = new cGame(NULL ,'OH' ,'Ominous Horizons: A Paladin\'s Calling' ,'OH' ,'oh.png'
                     ,NULL ,'https://en.wikipedia.org/wiki/Ominous_Horizons:_A_Paladin%27s_Calling' ,'G3D', FALSE #http://www.catechumen.com/ominoushorizons.htm ???
                     ,'Ominous Horizons is a fast-paced action adventure Christian computer game that takes you on a fantastic journey across ancient landscapes in an effort to recover Gutenberg\'s first printed Bible.'
@@ -1203,7 +1215,7 @@ $Games[] = new cGame(NULL ,'OSI' ,'Project::OSiRiON' ,'OSI' ,'osi.png'
                     ,NULL
                     ,NULL
                     ,NULL
-                    );*/ /*Incompatible engine*/
+                    );*/ //Incompatible engine
 $Games[] = new cGame(NULL ,'OD' ,'OverDose' ,'OD' ,'od.png'
                     ,'https://overdose-game.com/' ,NULL ,'Quake 2', TRUE //Creator: "We essentially have a mixture of our own engine that has roots in id tech. I mean it IS id tech, but we have changed so much."
                     ,'The Fight For Survival Is On!'
@@ -1224,7 +1236,7 @@ $Games[] = new cGame(NULL ,'PB2' ,'Paintball 2' ,'PB2' ,'pb2.png'
                     ,array('Crystice')
                     ,array('Crystice')
                     ,NULL
-                    );*/ /*Incompatible engine*/
+                    );*/ //Incompatible engine
 $Games[] = new cGame('660b4' ,'P' ,'Portal' ,'P' ,'portal.png'
                     ,NULL ,'https://en.wikipedia.org/wiki/Portal_(video_game)' ,'Source', FALSE
                     ,'The new single player game from Valve blends adventure, puzzle and action gaming.'
@@ -1254,14 +1266,14 @@ $Games[] = new cGame('660b1' ,'PREY' ,'Prey' ,'PREY' ,'prey.png'
                     ,array('Human Head')
                     ,NULL
                     ,NULL
-                    );*/ /*Cancelled*/
+                    );*/ //Cancelled
 /*$Games[] = new cGame(NULL ,'PREY2' ,'Prey' ,'PREY2' ,NULL
                     ,'https://prey.bethesda.net/' ,'https://en.wikipedia.org/wiki/Prey_(2017_video_game)' ,NULL, FALSE
                     ,NULL
                     ,array('Arkane')
                     ,array('Bethesda')
                     ,NULL
-                    );*/ /*CryEngine*/
+                    );*/ //CryEngine
 $Games[] = new cGame(NULL ,'PP' ,'Prospekt' ,'PP' ,NULL
                     ,'http://prospektgame.com/' ,'https://en.wikipedia.org/wiki/Prospekt_(video_game)' ,'Source', FALSE
                     ,'Gordon Freeman is slowly being overrun by soldiers in the prison, however unknown to him, his Vortigaunt allies manage to find some help from a forgotten hero.'
@@ -1317,7 +1329,7 @@ $Games[] = new cGame(NULL ,'Q1XP4' ,'Quake: Dimension of the Machine' ,'Q1XP4' ,
                     ,NULL
                     ,NULL
                     ,NULL
-                    );*/ /*Wrong platform*/
+                    );*/ //Incompatible platform
 $Games[] = new cGame(NULL ,'QEX' ,'Quake Enhanced' ,'QEX' ,NULL
                     ,NULL ,NULL ,'KEX', FALSE
                     ,NULL
@@ -1359,7 +1371,7 @@ $Games[] = new cGame(NULL ,'Q2NP1' ,'Quake 2: Netpack I: Extremities' ,'Q2NP1' ,
                     ,NULL
                     ,NULL
                     ,NULL
-                    );*/ /*Wrong platform*/
+                    );*/ //Incompatible platform
 $Games[] = new cGame(NULL ,'Q2EX' ,'Quake II Enhanced' ,'Q2EX' ,NULL
                     ,NULL ,NULL ,'KEX', FALSE
                     ,NULL
@@ -1429,14 +1441,14 @@ $Games[] = new cGame(NULL ,'RAGE' ,'Rage' ,'R' ,'rage.png'
                     ,array('Avalanche Studios', 'id')
                     ,array('Bethesda')
                     ,NULL
-                    );*/ /*Incompatible engine*/
+                    );*/ //Incompatible engine
 /*$Games[] = new cGame(NULL ,'RTR' ,'Return to Ravenholm' ,'RTR' ,NULL
                     ,NULL ,NULL ,'Source', FALSE    https://en.wikipedia.org/wiki/Unreleased_Half-Life_games#Junction_Point_Studios_episode   https://en.wikipedia.org/wiki/Ravenholm#Cancelled_projects
                     ,NULL
                     ,array('Junction Point', 'Arkane')   Junction Point Studios
                     ,NULL
                     ,NULL
-                    );*/ /*Cancelled*/
+                    );*/ //Cancelled
 $Games[] = new cGame(NULL ,'REACT' ,'Reaction' ,'REACT' ,'react.png'
                     ,'https://www.rq3.com/' ,NULL ,'ioquake3', TRUE
                     ,'Reaction is a free online shooter and a remake of the legendary Quake 2 modification AQ2.'
@@ -1486,7 +1498,7 @@ $Games[] = new cGame('660b7' ,'RICO' ,'Ricochet' ,'RICO' ,'ricochet.png'
                     ,array('Escalation')
                     ,NULL
                     ,NULL
-                    );*/ /*Cancelled*/
+                    );*/ //Cancelled
 $Games[] = new cGame(NULL ,'SHRAK' ,'SHRAK' ,'SHRAK' ,NULL
                     ,NULL ,'https://en.wikipedia.org/wiki/Shrak' ,'Quake 1', FALSE #http://www.shrak.com/shrak.html
                     ,'the first TOTAL conversion of QUAKE'
@@ -1528,21 +1540,21 @@ $Games[] = new cGame(NULL ,'SINEM' ,'SiN: Emergence' ,'SINEM' ,'sinemergence.gif
                     ,array('Ritual')
                     ,NULL
                     ,NULL
-                    );*/ /*Cancelled*/
+                    );*/ //Cancelled
 /*$Games[] = new cGame(NULL ,'SING' ,'SiN: Gold' ,'SING' ,NULL
                     ,NULL ,'https://en.wikipedia.org/wiki/SiN:_Gold' ,'Quake 2', TRUE
                     ,NULL
                     ,array('id', 'Nightdive Studios', 'MachineGames')
                     ,array('3D Realms')
                     ,NULL
-                    );*/ /*Just a re-release*/
+                    );*/ //Just a re-release
 /*$Games[] = new cGame(NULL ,'SINR' ,'SiN: Reloaded' ,'SINR' ,NULL
                     ,NULL ,'https://en.wikipedia.org/wiki/SiN:_Reloaded' ,'KEX', FALSE
                     ,NULL
                     ,array('Nightdive Studios')
                     ,NULL
                     ,NULL
-                    );*/ /*Cancelled?*/
+                    );*/ //Cancelled?
 $Games[] = new cGame('660b5' ,'SG' ,'Smokin\' Guns' ,'SM' ,'sg.png'
                     ,'https://www.smokin-guns.org/' ,'https://en.wikipedia.org/wiki/Smokin%27_Guns' ,'ioquake3', FALSE #http://www.smokin-guns.net/
                     ,'With cordite in the air, splintered steel, shell casings and powder burns, there\'s only one explanation...., Smokin\' Guns.'
@@ -1570,7 +1582,7 @@ $Games[] = new cGame('630' ,'SOF2' ,'Soldier of Fortune 2: Double Helix' ,'SoF2'
                     ,array('Cauldron HQ')
                     ,array('Activision Value')
                     ,NULL
-                    );*/ /*Incompatible engine*/
+                    );*/ //Incompatible engine
 $Games[] = new cGame(NULL ,'ST' ,'Space Trader' ,'ST' ,'spacetrader.png'
                     ,NULL ,'https://en.wikipedia.org/wiki/Space_Trader' ,'Quake 3', TRUE //http://www.playspacetrader.com/
                     ,NULL
@@ -1648,14 +1660,34 @@ $Games[] = new cGame('641a1' ,'S' ,'Sylphis engine' ,'S' ,'sylphis.gif'
                     ,NULL
                     ,NULL
                     );
-//FIXME: https://en.wikipedia.org/wiki/Tactical_Intervention
+$Games[] = new cGame(NULL ,'TI' ,'Tactical Intervention' ,'TI' ,NULL
+                    ,NULL ,'https://en.wikipedia.org/wiki/Tactical_Intervention' ,'Source', TRUE #http://www.tactical-intervention.com/
+                    ,'Drive, bomb, rappel and shoot your way through eleven high octane levels.'
+                    ,array('FIX Korea')
+                    ,array('OGPlanet')
+                    ,NULL
+                    );
+/*$Games[] = new cGame(NULL ,'TIR' ,'Tactical Intervention Reloaded' ,'TIR' ,NULL
+                    ,NULL ,NULL ,'Source', TRUE #https://www.kickstarter.com/projects/1837299704/tactical-intervention-reloaded
+                    ,'Car chases. K9-Dogs. Tactical Gameplay.'
+                    ,NULL
+                    ,NULL
+                    ,NULL
+                    );*/ //Cancelled
+/*$Games[] = new cGame(NULL ,'TIR2' ,'Tactical Intervention Revived' ,'TIR2' ,NULL
+                    ,'https://github.com/vingard/Tactical-Intervention-Revived' ,NULL ,NULL, FALSE //FIXME: Unknown game engine
+                    ,'Tactical Intervention Revived is a fan project to restore the abadonware game Tactical Intervention.' //Typo theirs/
+                    ,NULL
+                    ,NULL
+                    ,NULL
+                    );*/ //Might be copyright infringement?
 /*$Games[] = new cGame(NULL ,'TF2BOA' ,'Team Fortress 2: Brotherhood of Arms' ,'TF2BOA' ,NULL
                     ,NULL ,'https://en.wikipedia.org/wiki/Team_Fortress_2:_Brotherhood_of_Arms' ,NULL, FALSE
                     ,NULL
                     ,array('Valve')
                     ,NULL
                     ,NULL
-                    );*/ /*Cancelled*/
+                    );*/ //Cancelled
 $Games[] = new cGame('510' ,'TFC' ,'Team Fortress Classic' ,'TFC' ,'tfc.png'
                     ,NULL ,'https://en.wikipedia.org/wiki/Team_Fortress_Classic' ,'GoldSrc', FALSE
                     ,'One of the most popular online action games of all time, Team Fortress Classic features over nine character classes -- from Medic to Spy to Demolition Man -- enlisted in a unique style of online team warfare.'
@@ -1683,7 +1715,7 @@ $Games[] = new cGame(NULL ,'TBG' ,"The Beginner's Guide" ,'TBG' ,'tbg.png'
                     ,array('Arkane')
                     ,NULL
                     ,NULL
-                    );*/ /*Cancelled*/
+                    );*/ //Cancelled
 $Games[] = new cGame(NULL ,'TDH' ,'The DinoHunters' ,'TDH' ,NULL
                     ,NULL ,'https://en.wikipedia.org/wiki/The_DinoHunters' ,'Source', FALSE #http://www.thedinohunters.com/ #https://web.archive.org/web/20170930161349/http://www.thedinohunters.com/
                     ,'Dinosaurs, babes, guns and an RV.' //DinoHunters is a free game (all evidence to the contrary notwithstanding.)
@@ -1718,7 +1750,7 @@ $Games[] = new cGame(NULL ,'TEW2' ,'The Evil Within 2' ,'TEW2' ,NULL
                     ,NULL //Hass Tech Interactive Entertainment
                     ,NULL
                     ,NULL
-                    );*/ /*Cannot find proof this was ever released.*/
+                    );*/ //Cannot find proof this was ever released.
 $Games[] = new cGame(NULL ,'TH' ,'The Hunted' ,'TH' ,NULL
                     ,'https://www.moddb.com/games/the-hunted' ,NULL ,'DarkPlaces', FALSE #http://thehunted.ru1337.com/ #http://the-hunted.com/
                     ,'The Hunted is a series of adventures experienced by a man fighting for his survival.'
@@ -1746,7 +1778,7 @@ $Games[] = new cGame(NULL ,'SP' ,'The Stanley Parable' ,'SP' ,'sp.png'
                     ,array('Crows Crows Crows')
                     ,array('Crows Crows Crows')
                     ,NULL
-                    );*/ /*Incompatible engine*/
+                    );*/ //Incompatible engine
 $Games[] = new cGame(NULL ,'TW' ,'The Wastes' ,'TW' ,'tw.png'
                     ,'https://www.thewastes.net/' ,NULL ,'Quake 1', TRUE //Really: FTEQCC
                     ,'A Post-Apocalyptic First Person Shooter'
@@ -1809,7 +1841,7 @@ $Games[] = new cGame(NULL ,'T2' ,'Tribes 2' ,'T2' ,NULL
                     ,array('Gray Matter')
                     ,NULL //Activision?
                     ,NULL
-                    );*/ /*Cancelled*/
+                    );*/ //Cancelled
 $Games[] = new cGame(NULL ,'TURTLE' ,'Turtle Arena' ,'TURTLE' ,'turtlearena.png'
                     ,'https://clover.moe/turtlearena/' ,NULL ,'Spearmint', FALSE #turtlearena.com
                     ,'Turtle Arena is multiplayer oriented with multiple game modes that can be played in splitscreen, over a network, and with bot players.'
@@ -1971,7 +2003,20 @@ $Games[] = new cGame('660b5' ,'Z' ,'Zaero' ,'Z' ,'zaero.png'
                     ,array('Macmillan Digital Publishing')
                     ,NULL
                     ,'Q2');
-//FIXME: https://en.wikipedia.org/wiki/Zeno_Clash
+$Games[] = new cGame(NULL ,'ZC' ,'Zeno Clash' ,'ZC' ,'zc.png'
+                    ,NULL ,'https://en.wikipedia.org/wiki/Zeno_Clash' ,'Source', FALSE
+                    ,'Zeno Clash is an action fighting game set in a punk fantasy world.'
+                    ,array('ACE Team')
+                    ,array('Iceberg', 'Tripwire')
+                    ,NULL
+                    );
+/*$Games[] = new cGame(NULL ,'ZC 2' ,'Zeno Clash 2' ,'ZC2' ,'zc2.png'
+                    ,NULL ,'https://en.wikipedia.org/wiki/Zeno_Clash_2' ,'Unreal3', FALSE
+                    ,'Ghat\'s story is far from over: Zeno Clash 2 picks up where the deliciously brazen first game left off.'
+                    ,array('ACE Team')
+                    ,array('Atlus')
+                    ,NULL
+                    );*/ //Incompatible engine
 
 /*$Games[] = new cGame(NULL ,'???' ,'Secret Service: In Harm's Way' ,'???' ,NULL
                     ,NULL ,'https://en.wikipedia.org/wiki/Secret_Service_(2001_video_game)' ,'???', FALSE
@@ -1979,28 +2024,28 @@ $Games[] = new cGame('660b5' ,'Z' ,'Zaero' ,'Z' ,'zaero.png'
                     ,array('FunLabs')
                     ,array('Activision Value')
                     ,NULL
-                    );*/ /*Incompatible engine*/
+                    );*/ //Incompatible engine
 /*$Games[] = new cGame(NULL ,'???' ,'Shadow Force: Razor Unit' ,'???' ,NULL #A.k.a. Delta Ops: Army Special Forces
                     ,NULL ,NULL ,'???', FALSE
                     ,'Rid the world of terrorism!'
                     ,array('FunLabs')
                     ,array('Activision Value')
                     ,NULL
-                    );*/ /*Incompatible engine*/
+                    );*/ //Incompatible engine
 /*$Games[] = new cGame(NULL ,'???' ,'U.S. Most Wanted: Nowhere to Hide' ,'???' ,NULL
                     ,NULL ,NULL ,'???', FALSE
                     ,'They Can Run - But They Can\'t Hide'
                     ,array('FunLabs')
                     ,array('Activision Value')
                     ,NULL
-                    );*/ /*Incompatible engine*/
+                    );*/ //Incompatible engine
 /*$Games[] = new cGame(NULL ,'???' ,'Revolution' ,'???' ,NULL
                     ,NULL ,NULL ,'???', FALSE
                     ,'Evolution has begun the next r3volution'
                     ,array('FunLabs')
                     ,array('Activision Value')
                     ,NULL
-                    );*/ /*Incompatible engine*/
+                    );*/ //Incompatible engine
 
 //FIXME: https://en.wikipedia.org/wiki/Source_(game_engine)#Games_using_Source
 
