@@ -1,3 +1,5 @@
+#This script checks that there are no unexpected file present, or expected files missing in the release.
+
 import os
 import sys
 

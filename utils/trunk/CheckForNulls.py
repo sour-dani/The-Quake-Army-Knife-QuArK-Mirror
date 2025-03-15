@@ -1,12 +1,18 @@
-import os
+#This script checks that there are no blocks of NULL-bytes in any of the files.
+#This can happen when file transfers go wrong, or randomly when sharing folders between VMs.
+#Note: In rare cases, a file may validly have such blocks, so carefully check whether all files reported are really corrupt!
 
-path = "..\\Copy of runtime"
-path = "C:\\Program Files (x86)\\QuArK 6.6"
+import os
+import sys
+
+if len(sys.argv) != 2:
+	raise RuntimeError("Usage: python %s <runtime path>" % (sys.argv[0], ))
+path = sys.argv[1]
 
 block_size = 1024
 search_pattern = b"\x00" * 16
 
-BinaryFiles = set({".exe", ".dll", ".bmp", ".png", ".jpg"})
+BinaryFiles = set({".exe", ".dll", ".bmp", ".png", ".jpg", ".gif"})
 
 def checkFile(filename):
 	global search_pattern

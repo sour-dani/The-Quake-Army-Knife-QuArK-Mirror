@@ -1,7 +1,12 @@
-import os
+#This script checks that all links to the Infobase actually link to existing Infobase pages.
 
-infobase_dir = "..\\infobase\\output"
-base_dir = "..\\runtime"
+import os
+import sys
+
+if len(sys.argv) != 3:
+	raise RuntimeError("Usage: python %s <infobase path> <runtime path>" % (sys.argv[0], ))
+pathInfobase = sys.argv[1]
+pathRuntime = sys.argv[2]
 
 def checkFile(filename):
 	if not filename.endswith(".py"):
@@ -27,7 +32,7 @@ def checkFile(filename):
 			if index2 == -1:
 				raise RuntimeError("Unable to extract infobase link for \"%s\" on line %i!" % (filename, lineNR + 1))
 			infobase_link = line[index2 + len("|"):index + len(".html")] #FIXME: len("|") OR len("\"")
-			if not os.path.exists(os.path.join(infobase_dir, infobase_link)):
+			if not os.path.exists(os.path.join(pathInfobase, "output", infobase_link)):
 				print("Possible bad infobase link in \"%s\" on line %i to \"%s\"!" % (filename, lineNR + 1, infobase_link))
 
 def checkDir(path):
@@ -37,4 +42,5 @@ def checkDir(path):
 		else:
 			checkFile(entry.path)
 
-checkDir(base_dir)
+checkDir(pathRuntime)
+#FIXME: How to check links from "source"?

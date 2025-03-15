@@ -1,6 +1,11 @@
-import os
+#This script checks that the QuArKProtected-flag is set on all official QuArK addon files.
 
-base_path = "..\\runtime\\addons\\"
+import os
+import sys
+
+if len(sys.argv) != 2:
+	raise RuntimeError("Usage: python %s <runtime path>" % (sys.argv[0], ))
+path = sys.argv[1]
 
 def doDir(path):
 	for entry in os.scandir(path):
@@ -34,4 +39,4 @@ def doFile(path):
 	if not FoundIt:
 		print("WARNING: File %s is not protected!" % (path, ))
 
-doDir(base_path)
+doDir(os.path.join(path, "addons"))
