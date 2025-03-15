@@ -1,3 +1,6 @@
 cvs
 .svn
 #
+*.pyc
+*.pyo
+Setup.qrk
