@@ -8,12 +8,11 @@ classes = {}
 classExt = {}
 
 def doDir(dir):
-	for item in os.listdir(dir):
-		full_itemname = os.path.join(dir, item)
-		if os.path.isdir(full_itemname):
-			doDir(full_itemname)
+	for item in os.scandir(dir):
+		if item.is_dir():
+			doDir(item.path)
 		else:
-			doFile(full_itemname)
+			doFile(item.path)
 
 def doFile(filename):
 	if not filename.endswith(".pas"):
