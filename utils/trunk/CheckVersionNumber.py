@@ -93,7 +93,26 @@ if not FoundProductVersion:
 del FoundFileVersion
 del FoundProductVersion
 
-#Check defaults.qrk
+#Check QuArK.manifest
+FoundVersion = False
+with open(os.path.join(pathSource, "QuArK.manifest"), mode="r") as inFile:
+	for line in inFile.readlines():
+		lineX = line.strip()
+		if lineX.startswith("<assemblyIdentity type=\"win32\" name=\"QuArK\" version=\""):
+			if FoundVersion:
+				raise RuntimeError("Duplicated assemblyIdentity in QuArK.manifest!")
+			if not lineX.endswith("\" processorArchitecture=\"x86\"/>"):
+				raise RuntimeError("Parse failure in QuArK.manifest!")
+			version = lineX[len("<assemblyIdentity type=\"win32\" name=\"QuArK\" version=\""):-len("\" processorArchitecture=\"x86\"/>")]
+			version_expected = "%s.%s.%s.%s" % (version_major, version_minor, version_patch, "0")
+			if version != version_expected:
+				raise RuntimeError("QuArK.manifest Version is different. Got '%s', expected '%s'!" % (version, version_expected))
+			FoundVersion = True
+if not FoundVersion:
+	raise RuntimeError("QuArK.manifest Version not found!")
+del FoundVersion
+
+#Check Defaults.qrk
 FoundVersion = False
 FoundInternalVersion = False
 with open(os.path.join(pathRuntime, "addons", "Defaults.qrk"), mode="r") as inFile:
