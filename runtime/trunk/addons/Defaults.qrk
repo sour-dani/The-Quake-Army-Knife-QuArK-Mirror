@@ -10346,9 +10346,7 @@ QQRKSRC1
         Typ = "E R"
         Txt = "File"
       }
-      sep: = {
-        Typ="S" Txt = ""
-      }
+      sep: = {Typ="S"Txt = ""}
       plug-in: = {
         Typ = "E R"    // Edit Read-only
         Txt = "Plug-in name"
