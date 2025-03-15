@@ -23,7 +23,7 @@ with open(os.path.join(pathSource, "prog", "QConsts.pas"), mode="r") as inFile:
 				raise RuntimeError("Parse failure in QConsts.pas!")
 			if not parts[1].endswith(";"):
 				raise RuntimeError("Parse failure in QConsts.pas!")
-			version = parts[1][:-len(";")]
+			version = parts[1][:-len(";")].lstrip()
 			if not (version.startswith("'") and version.endswith("'")):
 				raise RuntimeError("Parse failure in QConsts.pas!")
 			version = version[len("'"):-len("'")]
@@ -39,7 +39,7 @@ with open(os.path.join(pathSource, "prog", "QConsts.pas"), mode="r") as inFile:
 				raise RuntimeError("Parse failure in QConsts.pas!")
 			if not parts[1].endswith(";"):
 				raise RuntimeError("Parse failure in QConsts.pas!")
-			version = parts[1][:-len(";")]
+			version = parts[1][:-len(";")].lstrip()
 			if not (version.startswith("'") and version.endswith("'")):
 				raise RuntimeError("Parse failure in QConsts.pas!")
 			version = version[len("'"):-len("'")]
@@ -105,7 +105,7 @@ with open(os.path.join(pathRuntime, "addons", "Defaults.qrk"), mode="r") as inFi
 			parts = lineX.split("=")
 			if len(parts) != 2:
 				raise RuntimeError("Parse failure in Defaults.qrk!")
-			version = parts[1]
+			version = parts[1].lstrip()
 			if not (version.startswith("\"") and version.endswith("\"")):
 				raise RuntimeError("Parse failure in Defaults.qrk!")
 			version = version[len("\""):-len("\"")]
@@ -119,7 +119,7 @@ with open(os.path.join(pathRuntime, "addons", "Defaults.qrk"), mode="r") as inFi
 			parts = lineX.split("=")
 			if len(parts) != 2:
 				raise RuntimeError("Parse failure in Defaults.qrk!")
-			version = parts[1]
+			version = parts[1].lstrip()
 			if not (version.startswith("'") and version.endswith("'")):
 				raise RuntimeError("Parse failure in Defaults.qrk!")
 			version = version[len("'"):-len("'")]
@@ -151,7 +151,7 @@ with open(os.path.join(pathRuntime, "quarkpy", "qdictionnary.py"), mode="r") as 
 				raise RuntimeError("Parse failure in qdictionnary.py!")
 			if not parts[1].endswith(","):
 				raise RuntimeError("Parse failure in qdictionnary.py!")
-			version = parts[1][:-len(",")]
+			version = parts[1][:-len(",")].lstrip()
 			if not (version.startswith("\"") and version.endswith("\"")):
 				raise RuntimeError("Parse failure in qdictionnary.py!")
 			version = version[len("\""):-len("\"")]
@@ -162,4 +162,3 @@ with open(os.path.join(pathRuntime, "quarkpy", "qdictionnary.py"), mode="r") as 
 if not FoundVersion:
 	raise RuntimeError("qdictionnary.py Version not found!")
 del FoundVersion
-del FoundInternalVersion
