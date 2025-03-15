@@ -1,15 +1,15 @@
 program addmaker;
 
 uses
-  Classes, Sysutils, Windows;
+  Classes, SysUtils;
 
 procedure main;
 var
-  out_file,cap,mess,defe: String;
-  fl,mess_s,pyver,pyfl: integer;
+  out_file, caption, messag, defaultdir: String;
+  flags, message_style, pyver, pyflags: integer;
   local: integer;
   fs: TFilestream;
-  a: string;
+  tmp: string;
   i: integer;
 begin
   i:=1;
@@ -55,22 +55,22 @@ begin
       writeln('param: '+copy(paramstr(i),2,length(paramstr(i))-1)+'='+paramstr(i+1));
       if paramstr(i)='-caption' then
       begin
-        cap:=paramstr(i+1);
+        caption:=paramstr(i+1);
         inc(i);
       end
       else if paramstr(i)='-message' then
       begin
-        mess:=paramstr(i+1);
+        messag:=paramstr(i+1);
         inc(i);
       end
       else if paramstr(i)='-defaultdir' then
       begin
-        defe:=paramstr(i+1);
+        defaultdir:=paramstr(i+1);
         inc(i);
       end
       else if paramstr(i)='-flags' then
       begin
-        fl:=strtoint(paramstr(i+1));
+        flags:=strtoint(paramstr(i+1));
         inc(i);
       end
       else if paramstr(i)='-pyver' then
@@ -80,12 +80,12 @@ begin
       end
       else if paramstr(i)='-pyflags' then
       begin
-        pyfl:=strtoint(paramstr(i+1));
+        pyflags:=strtoint(paramstr(i+1));
         inc(i);
       end
       else if paramstr(i)='-messagestyle' then
       begin
-        mess_s:=strtoint(paramstr(i+1));
+        message_style:=strtoint(paramstr(i+1));
         inc(i);
       end
       else if paramstr(i)='-output' then
@@ -98,30 +98,31 @@ begin
   end;
   if out_file='' then exit;
   fs:=TFileStream.Create(out_file, fmCreate);
-  a:='MPV';
-  fs.WriteBuffer(a[1],3);
-  fs.WriteBuffer(fl,1);
-  fl:=0; fs.WriteBuffer(fl,1);
-  fl:=1; fs.WriteBuffer(fl,1);
+  tmp:='MPV';
+  fs.WriteBuffer(tmp[1], length(tmp));
+  fs.WriteBuffer(flags,1);
+  flags:=0; fs.WriteBuffer(flags,1);
+  flags:=1; fs.WriteBuffer(flags,1);
   local:=fs.position;
-  fl:=0; fs.WriteBuffer(fl,2);
-  fl:=length(cap); fs.WriteBuffer(fl,1);
-  if fl>0 then
-    fs.writebuffer(cap[1], length(cap));
-    fl:=length(defe); fs.WriteBuffer(fl,1);
-  if fl>0 then
-    fs.writebuffer(defe[1], length(defe));
-  fl:=0; fs.WriteBuffer(fl,1);
-  fl:=length(mess)+1; fs.WriteBuffer(fl,1);
-  if fl-1>0 then begin
-    fs.WriteBuffer(mess_s,1);
-    fs.writebuffer(mess[1], length(mess));
+  flags:=0; fs.WriteBuffer(flags,2);
+  flags:=length(caption); fs.WriteBuffer(flags,1);
+  if flags>0 then
+    fs.writebuffer(caption[1], length(caption));
+  flags:=length(defaultdir); fs.WriteBuffer(flags,1);
+  if flags>0 then
+    fs.writebuffer(defaultdir[1], length(defaultdir));
+  flags:=0; fs.WriteBuffer(flags,1);
+  flags:=length(messag)+1; fs.WriteBuffer(flags,1);
+  if flags-1>0 then
+  begin
+    fs.WriteBuffer(message_style,1);
+    fs.writebuffer(messag[1], length(messag));
   end;
   fs.WriteBuffer(pyver,1);
-  fs.WriteBuffer(pyfl,1);
-  fl:=fs.position;
+  fs.WriteBuffer(pyflags,1);
+  flags:=fs.position;
   fs.position:=local;
-  fs.writebuffer(fl,2);
+  fs.writebuffer(flags,2);
   fs.free;
 end;
 
