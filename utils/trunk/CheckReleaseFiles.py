@@ -1,6 +1,9 @@
 import os
+import sys
 
-path = "..\\Copy of runtime"
+if len(sys.argv) != 2:
+	raise RuntimeError("Usage: python %s <runtime path>" % (sys.argv[0], ))
+path = sys.argv[1]
 
 if os.path.exists(os.path.join(path, ".svn")):
 	print("WARNING: SVN directory found: %s" % (os.path.join(path, ".svn"), ))
@@ -14,6 +17,9 @@ if not os.path.exists(os.path.join(path, "help")):
 if not os.path.exists(os.path.join(path, "QuArK.exe")):
 	print("WARNING: QuArK executable missing: %s" % (os.path.join(path, "QuArK.exe"), ))
 
+if not os.path.exists(os.path.join(path, "QuArK.map")):
+	print("WARNING: QuArK executable debug mapping found: %s" % (os.path.join(path, "QuArK.map"), ))
+
 for entry in os.scandir(os.path.join(path, "plugins")):
 	if entry.is_dir():
 		print("WARNING: Unexpected directory: %s" % (entry.path, ))
@@ -24,7 +30,6 @@ for entry in os.scandir(os.path.join(path, "plugins")):
 	if entry.name.endswith(".pyc"):
 		print("WARNING: Compiled Python file found: %s" % (entry.path, ))
 		continue
-	#@
 
 for entry in os.scandir(os.path.join(path, "quarkpy")):
 	if entry.is_dir():
@@ -36,4 +41,3 @@ for entry in os.scandir(os.path.join(path, "quarkpy")):
 	if entry.name.endswith(".pyc"):
 		print("WARNING: Compiled Python file found: %s" % (entry.path, ))
 		continue
-	#@
