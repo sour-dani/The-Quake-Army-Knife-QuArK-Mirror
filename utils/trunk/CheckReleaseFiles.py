@@ -13,13 +13,16 @@ if os.path.exists(os.path.join(path, ".svn")):
 if os.path.exists(os.path.join(path, "Setup.qrk")):
 	print("WARNING: Setup.qrk file found: %s" % (os.path.join(path, "Setup.qrk"), ))
 
+if os.path.exists(os.path.join(path, "QUARK.LOG")):
+	print("WARNING: QuArK log file found: %s" % (os.path.join(path, "QUARK.LOG"), ))
+
 if not os.path.exists(os.path.join(path, "help")):
 	print("WARNING: Help directory missing: %s" % (os.path.join(path, "help"), ))
 
 if not os.path.exists(os.path.join(path, "QuArK.exe")):
 	print("WARNING: QuArK executable missing: %s" % (os.path.join(path, "QuArK.exe"), ))
 
-if not os.path.exists(os.path.join(path, "QuArK.map")):
+if os.path.exists(os.path.join(path, "QuArK.map")):
 	print("WARNING: QuArK executable debug mapping found: %s" % (os.path.join(path, "QuArK.map"), ))
 
 for entry in os.scandir(os.path.join(path, "plugins")):
