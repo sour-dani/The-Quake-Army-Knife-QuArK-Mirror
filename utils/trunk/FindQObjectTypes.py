@@ -1,14 +1,17 @@
+#This script lists all defined QObject's.
+
 import os
+import sys
 
-rootPath = "..\\source\\"
-
-#---
+if len(sys.argv) != 2:
+	raise RuntimeError("Usage: python %s <source path>" % (sys.argv[0], ))
+path = sys.argv[1]
 
 classes = {}
 classExt = {}
 
-def doDir(dir):
-	for item in os.scandir(dir):
+def doDir(path):
+	for item in os.scandir(path):
 		if item.is_dir():
 			doDir(item.path)
 		else:
@@ -16,8 +19,6 @@ def doDir(dir):
 
 def doFile(filename):
 	if not filename.endswith(".pas"):
-		return
-	if filename.endswith("Bezier - OLD_CNT.pas") or filename.endswith("Bezier - NEW_CNT.pas"):
 		return
 	Recording = False
 	with open(filename, mode="r") as inFile:
@@ -91,7 +92,7 @@ def doFile(filename):
 		print(filename)
 		raise RuntimeError("Parse failure!")
 
-doDir(rootPath)
+doDir(path)
 for key in sorted(classes.keys()):
 	print()
 	print("'%s':" % (chr(key), ))
