@@ -10,7 +10,6 @@ object FormDateUtil: TFormDateUtil
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = False
   Position = poDefaultPosOnly
   OnCreate = FormCreate
   PixelsPerInch = 96
