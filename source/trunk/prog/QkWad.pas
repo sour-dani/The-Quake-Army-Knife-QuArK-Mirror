@@ -23,10 +23,7 @@ unit QkWad;
 interface
 {$I DelphiVer.inc}
 
-{$IFNDEF CompiledWithDelphi2}
-  {$DEFINE DontNeedImgListDCU}
-{$ENDIF}
-{$IFNDEF CompiledWithDelphi3}
+{$IFDEF Delphi4orNewerCompiler}
   {$DEFINE DontNeedImgListDCU}
 {$ENDIF}
 
@@ -110,10 +107,10 @@ type
  PWadFileRec = ^TWadFileRec;
  TWadFileRec = record //For WAD2
                Position, Taille, UncompressedSize: LongInt;
-               InfoType: Char;
+               InfoType: AnsiChar;
                Compression: Byte;
                Dummy: Word;
-               Nom: array[0..15] of Byte;
+               Nom: array[0..15] of Byte; //MAXTEXTURENAME
               end;
 
 {var
