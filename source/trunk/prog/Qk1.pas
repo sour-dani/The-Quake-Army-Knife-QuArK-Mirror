@@ -302,6 +302,7 @@ end;
 constructor TForm1.Create(AOwner: TComponent);
 const
  TimerInterval = 500; //in ms
+ MutexName = 'QuArK_Mutex';
 var
  I: Integer;
  S: String;
@@ -353,11 +354,11 @@ begin
 
  //This is the mutex for single-instance checking
  Log(LOG_VERBOSE, 'Checking mutex...');
- OnlyOnceMutex:=CreateMutex(Nil, True, PChar('QuArK_Mutex'));
+ OnlyOnceMutex:=CreateMutex(Nil, True, PChar(MutexName));
  if OnlyOnceMutex = 0 then
  begin
    //Something went terribly wrong!
-   LogWindowsError(GetLastError(), 'CreateMutex(Nil, True, "QuArK_Mutex")');
+   LogWindowsError(GetLastError(), 'CreateMutex("'+MutexName+'")');
    Application.MessageBox(PChar('Unable to check if there already is an instance of QuArK running! If this is the case, this can cause serious problems. For example, changed configuration settings might not be saved, and QuArK might not update correctly.'), 'QuArK', MB_TASKMODAL or MB_OK or MB_ICONWARNING);
    MutexError := 0;
  end
@@ -417,6 +418,7 @@ begin
      end;
 
      // Repair any broken file associations
+     Log(LOG_VERBOSE, 'Refreshing file associations...');
      RefreshAssociations;
 
      // Warn for bugs
@@ -427,6 +429,7 @@ begin
      InitViewport16;
 
      // Load the main form fully
+     Log(LOG_VERBOSE, 'Finishing setting up main form...');
      inherited;
      ConnectToPython;
 
@@ -469,6 +472,7 @@ begin
  Application.OnShowHint:=nil;
  Application.OnHint:=nil;
 
+ Log(LOG_VERBOSE, 'Shutting down Python...');
  ShutdownPython;
  FreeConsole;
 
@@ -1595,15 +1599,14 @@ begin
  if g_LargeDataInClipboard
  and (MessageDlg(LoadStr1(5681), mtConfirmation, [mbYes, mbNo], 0) = mrNo) then
   begin
-   if OpenClipboard(0) = false then
-    //FIXME: Log or raise error?
-    //Exit;
-    ;
-   try
-    EmptyClipboard;
-   finally
-    CloseClipboard;
-   end;
+   if OpenClipboard(0) then
+    try
+     EmptyClipboard;
+    finally
+     CloseClipboard;
+    end
+   else
+    LogWindowsError(GetLastError(), 'OpenClipboard(0)');
   end;
 
  try
