@@ -405,18 +405,21 @@ class ModelFaceHandle(qhandles.GenericHandle):
                         comp.filltris = mdleditor.faceselfilllist(editor, v, fillcolor)
                         mdleditor.setsingleframefillcolor(editor, v)
                         v.repaint()
+                        import plugins.mdlgridscale
                         plugins.mdlgridscale.gridfinishdrawing(editor, v)
                     if v.info["viewname"] == "XZ":
                         fillcolor = MapColor("Options3Dviews_fillColor4", SS_MODEL)
                         comp.filltris = mdleditor.faceselfilllist(editor, v, fillcolor)
                         mdleditor.setsingleframefillcolor(editor, v)
                         v.repaint()
+                        import plugins.mdlgridscale
                         plugins.mdlgridscale.gridfinishdrawing(editor, v)
                     if v.info["viewname"] == "YZ":
                         fillcolor = MapColor("Options3Dviews_fillColor3", SS_MODEL)
                         comp.filltris = mdleditor.faceselfilllist(editor, v, fillcolor)
                         mdleditor.setsingleframefillcolor(editor, v)
                         v.repaint()
+                        import plugins.mdlgridscale
                         plugins.mdlgridscale.gridfinishdrawing(editor, v)
                     if v.info["viewname"] == "editors3Dview":
                         fillcolor = MapColor("Options3Dviews_fillColor1", SS_MODEL)
@@ -520,6 +523,7 @@ class ModelFaceHandle(qhandles.GenericHandle):
             import mdleditor
             mdleditor.setsingleframefillcolor(editor, view) ## Sets the modelfill color.
             view.repaint()            ## Repaints the view to clear the old lines.
+            import plugins.mdlgridscale
             plugins.mdlgridscale.gridfinishdrawing(editor, view)
         cv = view.canvas()            ## Sets the canvas up to draw on.
         cv.pencolor = drag3Dlines     ## Gives the pen color of the lines that will be drawn.
@@ -723,6 +727,7 @@ class TagHandle(qhandles.GenericHandle):
         view.repaint()
         if flags&MB_CTRL:
             v2 = qhandles.aligntogrid(v2, 0)
+            import plugins.mdlgridscale
             plugins.mdlgridscale.gridfinishdrawing(editor, view)
         pv2 = view.proj(v2)        ### v2 is the SINGLE handle's (being dragged) 3D position (x,y and z in space).
                                    ### And this converts its 3D position to the monitor's FLAT screen 2D and 3D views
@@ -2221,6 +2226,7 @@ class VertexHandle(qhandles.GenericHandle):
         if flags&MB_CTRL:
             v2 = qhandles.aligntogrid(v2, 0)
             view.repaint()
+            import plugins.mdlgridscale
             plugins.mdlgridscale.gridfinishdrawing(editor, view)
         pv2 = view.proj(v2)        ### v2 is the SINGLE handle's (being dragged) 3D position (x,y and z in space).
                                    ### And this converts its 3D position to the monitor's FLAT screen 2D and 3D views
@@ -2264,6 +2270,7 @@ class VertexHandle(qhandles.GenericHandle):
                         import mdleditor
                         mdleditor.setsingleframefillcolor(editor, view)
                         view.repaint()            ## Repaints the view to clear the old lines.
+                        import plugins.mdlgridscale
                         plugins.mdlgridscale.gridfinishdrawing(editor, view) ## Sets the modelfill color.
                     cv = view.canvas()            ## Sets the canvas up to draw on.
                     cv.pencolor = drag3Dlines     ## Gives the pen color of the lines that will be drawn.
@@ -3429,6 +3436,7 @@ class RectSelDragObject(qhandles.RectangleDragObject):
             if len(editor.layout.explorer.sellist) == 0:
                 mdleditor.setsingleframefillcolor(editor, view)
                 view.repaint()
+                import plugins.mdlgridscale
                 plugins.mdlgridscale.gridfinishdrawing(editor, view)
                 if quarkx.setupsubset(SS_MODEL, "Options")["LinearBox"] != "1":
                     cv = view.canvas()
@@ -3445,6 +3453,7 @@ class RectSelDragObject(qhandles.RectangleDragObject):
                 else:
                     mdleditor.setsingleframefillcolor(editor, view)
                     view.repaint()
+                    import plugins.mdlgridscale
                     plugins.mdlgridscale.gridfinishdrawing(editor, view)
                     if quarkx.setupsubset(SS_MODEL, "Options")["LinearBox"] != "1":
                         cv = view.canvas()
@@ -3661,7 +3670,9 @@ class RectSelDragObject(qhandles.RectangleDragObject):
                         v.handles = viewhandles
                     mdleditor.setsingleframefillcolor(editor, v)
                     v.repaint()
+                    import plugins.mdlgridscale
                     plugins.mdlgridscale.gridfinishdrawing(editor, v)
+                    import plugins.mdlaxisicons
                     plugins.mdlaxisicons.newfinishdrawing(editor, v)
                     cv = v.canvas()
                     ### To avoid an error if something is selected that does not display the view handles.
@@ -4396,7 +4407,9 @@ class LinearHandle(qhandles.GenericHandle):
             editor = self.mgr.editor
             import mdleditor
             mdleditor.setsingleframefillcolor(editor, view)
+            import plugins.mdlgridscale
             plugins.mdlgridscale.gridfinishdrawing(editor, view)
+            import plugins.mdlaxisicons
             plugins.mdlaxisicons.newfinishdrawing(editor, view)
             if quarkx.setupsubset(SS_MODEL, "Options")["LinearBox"] != "1":
                 rotationorigin = self.mgr.center
@@ -4536,7 +4549,9 @@ class LinRedHandle(LinearHandle): # for LinRedHandle, the center handle.
             cv.pencolor = dragcolor
             import mdleditor
             mdleditor.setsingleframefillcolor(editor, view)
+            import plugins.mdlgridscale
             plugins.mdlgridscale.gridfinishdrawing(editor, view)
+            import plugins.mdlaxisicons
             plugins.mdlaxisicons.newfinishdrawing(editor, view)
         comp = self.mgr.editor.Root.currentcomponent
         if view.info["viewname"] == "skinview":

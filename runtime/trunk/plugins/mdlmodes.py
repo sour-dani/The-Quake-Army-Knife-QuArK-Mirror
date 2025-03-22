@@ -27,6 +27,7 @@ from quarkpy.mdlmgr import *
 import quarkpy.mdlcommands
 import quarkpy.mdleditor
 import quarkpy.mdltoolbars
+import mdlgridscale
 
 
 def lockxclick(m):
@@ -1053,7 +1054,7 @@ class BBoxMakerDragObject(parent):
     def rectanglesel(self, editor, x,y, rectangle, view):
         comp = editor.Root.currentcomponent
         quarkpy.mdleditor.setsingleframefillcolor(editor, view)
-        plugins.mdlgridscale.gridfinishdrawing(editor, view)
+        mdlgridscale.gridfinishdrawing(editor, view)
         for v in editor.layout.views:
             bbox = quarkx.boundingboxof([rectangle])
             m = bbox[0].tuple

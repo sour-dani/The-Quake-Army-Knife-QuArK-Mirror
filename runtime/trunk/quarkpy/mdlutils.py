@@ -4664,7 +4664,9 @@ def Update_Editor_Views(editor, option=4):
             if option <= 7:
                 v.repaint()
             if option <= 7:
+                import plugins.mdlgridscale
                 plugins.mdlgridscale.gridfinishdrawing(editor, v)
+                import plugins.mdlaxisicons
                 plugins.mdlaxisicons.newfinishdrawing(editor, v)
             if option <= 7 or option == 5:
                 if v.info["viewname"] == "editors3Dview" and quarkx.setupsubset(SS_MODEL, "Options")["Options3Dviews_nohandles1"] == "1":
