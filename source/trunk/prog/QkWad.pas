@@ -353,7 +353,7 @@ begin
            Header.Signature:=SignatureWad3;
           if Wad3 or (Copy(S, Length(S)-5, 5) = '.wad_') then
            begin
-            Entree.InfoType:=S[Length(S)];
+            Entree.InfoType:=AnsiChar(S[Length(S)]);
             Tex:=Nil;   { can store directly }
             PasToChar(Entree.Nom, Copy(S, 1, Length(S)-6-Ord(Wad3)));
            end
