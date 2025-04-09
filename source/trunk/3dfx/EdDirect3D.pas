@@ -1662,7 +1662,8 @@ end;
 procedure TDirect3DSceneObject.BuildTexture(Texture: PTexture3);
 var
  TexData: PArithByte;
- MemSize, W, H, J, I: Integer;
+ MemSize: NativeInt;
+ W, H, J, I: Integer;
  Alphasource, Source, Dest: PArithByte;
  l_Res: HResult;
  PSD, PSD2: TPixelSetDescription;

@@ -1682,7 +1682,8 @@ end;
 procedure TGLSceneObject.BuildTexture(Texture: PTexture3);
 var
  TexData: PArithByte;
- MemSize, W, H, J: Integer;
+ MemSize: NativeInt;
+ W, H, J: Integer;
  Alphasource, Source, Dest: PArithByte;
  PaletteEx: array[0..255] of LongInt;
 {BasePalette: Pointer;}

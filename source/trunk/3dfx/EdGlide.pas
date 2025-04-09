@@ -1960,7 +1960,8 @@ end;
 procedure TGlideSceneObject.BuildTexture(Texture: PTexture3);
 var
  PSD, PSD2, PSD3: TPixelSetDescription;
- MemSize, MemSizeTotal, J, w, h: Integer;
+ MemSize, MemSizeTotal: NativeInt;
+ J, w, h: Integer;
  Source, Dest: PArithByte;
  GammaBuf: Pointer;
 begin

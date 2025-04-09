@@ -1688,7 +1688,8 @@ end;*)
 
 procedure TTextureManager.GetTexture(P: PSurfaces; Load: Boolean; AltTexSrc: QObject{; PalWarning: TPaletteWarning});
 var
- {J, MemSize,} w, h, max: Integer;
+ {MemSize: NativeInt;}
+ {J, }w, h, max: Integer;
  {Direct: Boolean;}
  PTex: PTexture3;
  Q: QPixelSet;
