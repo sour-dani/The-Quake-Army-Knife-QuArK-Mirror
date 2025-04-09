@@ -1014,7 +1014,7 @@ begin
             end;
 
             else {version unknown}
-              Raise EErrorFmt(5572, [LoadName, 'Enchanced', Version]);
+              Raise EErrorFmt(5572, [LoadName, 'Enhanced', Version]);
           end;
         end;
 
