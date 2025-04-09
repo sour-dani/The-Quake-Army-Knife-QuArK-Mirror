@@ -51,6 +51,8 @@ const
   LOG_INFO = 30;
   LOG_VERBOSE = 40;
 
+function GetPatchVersion: String;
+
 {$IFDEF PyProfiling}
 Procedure LogProfiling(const Location: String; const Args: array of String; const PythonStackTrace: TStringList);
 
@@ -60,7 +62,9 @@ const
 
 implementation
 
-uses Windows, Forms, Sysutils, QConsts, ApplPaths, ExtraFunctionality;
+{$I DelphiVer.inc}
+
+uses Windows, Forms, Sysutils, ApplPaths, ExtraFunctionality;
 
 var
   LogFile: TextFile;
@@ -106,27 +110,23 @@ end;
 
 Procedure OpenLogFile;
 var
-  PatchVersion: String;
   I: Integer;
+{$IFDEF Delphi7orNewerCompiler}
+  DateFormat: TFormatSettings;
+{$ENDIF}
 begin
   if LogOpened then
     exit;
-  PatchVersion:=GetPatchVersion;
+  {$IFDEF Delphi7orNewerCompiler}
+  GetLocaleFormatSettings(LOCALE_SYSTEM_DEFAULT, DateFormat);
+  {$ENDIF}
   {$I-}
   AssignFile(LogFile, ConcatPaths([GetQPath(pQuArKLog), LogFilename]));
   rewrite(LogFile);
   {$I+}
   LogOpened:=true;
-  Log(LOG_PASCAL, 'QuArK started at %s', [DateTimeToStr(now)]);
-  if Length(PatchVersion) <> 0 then
-    Log(LOG_PASCAL, 'QuArK version is %s %s %s', [QuArKVersion, QuArKMinorVersion, PatchVersion])
-  else
-    Log(LOG_PASCAL, 'QuArK version is %s %s', [QuArKVersion, QuArKMinorVersion]);
+  Log(LOG_PASCAL, 'Logging started at %s', [DateTimeToStr(now{$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF})]);
   Log(LOG_PASCAL, 'Loglevel is %d', [LogLevel]);
-{$IFDEF Debug}
-  Log(LOG_PASCAL, 'Current install is located in %s', [GetQPath(pQuArK)]);
-  Log(LOG_PASCAL, 'Running in DEBUG mode!');
-{$ENDIF}
   if Length(LogCache)<>0 then
   begin
     {$I-}
@@ -216,10 +216,17 @@ begin
 end;
 
 Procedure CloseLogFile;
+{$IFDEF Delphi7orNewerCompiler}
+var
+  DateFormat: TFormatSettings;
+{$ENDIF}
 begin
   if not LogOpened then
     exit;
-  Log(LOG_PASCAL, format('QuArK closed at %s',[DateTimeToStr(now)]));
+  {$IFDEF Delphi7orNewerCompiler}
+  GetLocaleFormatSettings(LOCALE_SYSTEM_DEFAULT, DateFormat);
+  {$ENDIF}
+  Log(LOG_PASCAL, format('Logging stopped at %s',[DateTimeToStr(now{$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF})]));
   {$I-}
   CloseFile(LogFile);
   {$I+}
@@ -286,13 +293,19 @@ end;
 Procedure LogProfiling(const Location: String; const Args: array of String; const PythonStackTrace: TStringList);
 var
   Timestamp: TDateTime;
+{$IFDEF Delphi7orNewerCompiler}
+  DateFormat: TFormatSettings;
+{$ENDIF}
 begin
   Timestamp := Now;
+  {$IFDEF Delphi7orNewerCompiler}
+  GetLocaleFormatSettings(LOCALE_SYSTEM_DEFAULT, DateFormat);
+  {$ENDIF}
   {$I-}
   if PythonStackTrace<>nil then
-   WriteLn(LogProfileFile, Format('[%s %s] Thread %d, Location %s'+sLineBreak+'Arguments: %s'+sLineBreak+'Delphi stack trace:'+sLineBreak+'%s'+sLineBreak+'Python stack trace:'+sLineBreak+'%s', [DateToStr(Timestamp), TimeToStr(Timestamp), GetCurrentThreadId, Location, JoinArgs(Args), GetStackReport(), PythonStackTrace.Text]))
+   WriteLn(LogProfileFile, Format('[%s %s] Thread %d, Location %s'+sLineBreak+'Arguments: %s'+sLineBreak+'Delphi stack trace:'+sLineBreak+'%s'+sLineBreak+'Python stack trace:'+sLineBreak+'%s', [DateToStr(Timestamp{$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF}), TimeToStr(Timestamp{$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF}), GetCurrentThreadId, Location, JoinArgs(Args), GetStackReport(), PythonStackTrace.Text]))
   else
-   WriteLn(LogProfileFile, Format('[%s %s] Thread %d, Location %s'+sLineBreak+'Arguments: %s'+sLineBreak+'Delphi stack trace:'+sLineBreak+'%s'+sLineBreak, [DateToStr(Timestamp), TimeToStr(Timestamp), GetCurrentThreadId, Location, JoinArgs(Args), GetStackReport()]));
+   WriteLn(LogProfileFile, Format('[%s %s] Thread %d, Location %s'+sLineBreak+'Arguments: %s'+sLineBreak+'Delphi stack trace:'+sLineBreak+'%s'+sLineBreak, [DateToStr(Timestamp{$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF}), TimeToStr(Timestamp{$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF}), GetCurrentThreadId, Location, JoinArgs(Args), GetStackReport()]));
   Flush(LogProfileFile);
   {$I+}
 end;

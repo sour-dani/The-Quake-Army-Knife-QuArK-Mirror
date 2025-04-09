@@ -235,7 +235,7 @@ uses {$IFDEF MemTester}MemTester, {$ENDIF}ShellApi, Undo, QkQuakeC, Setup, Confi
   Running, Output1, QkTreeView, PyProcess, Console, Python, Quarkx, About,
   PyMapView, PyForms, Qk3D, EdSceneObject, ApplPaths, FileAssociations,
   QkExceptions, QkQuakeCtx, AutoUpdater, Toolbar1,
-  Splash, Logging, SystemDetails, ExtraFunctionality, Platform;
+  Splash, QConsts, Logging, SystemDetails, ExtraFunctionality, Platform;
 
 type
   TCmdLineOptions = record
@@ -311,6 +311,9 @@ var
  LaunchOptions: TCmdLineOptions;
  Setup: QObject;
  TimerID: {$IFDEF WIN64}UINT_PTR{$ELSE}UINT{$ENDIF};
+{$IFDEF Delphi7orNewerCompiler}
+  DateFormat: TFormatSettings;
+{$ENDIF}
 begin
  // No messageboxes from LoadLibrary; just fail it.
  if DelayFunc_GetErrorMode then
@@ -375,6 +378,22 @@ begin
    Splash:=nil;
  try
    try
+     {$IFDEF Delphi7orNewerCompiler}
+     GetLocaleFormatSettings(LOCALE_SYSTEM_DEFAULT, DateFormat);
+     {$ENDIF}
+
+     // Log QuArK version to the log
+     S:=GetPatchVersion;
+     if Length(S) <> 0 then
+       Log(LOG_PASCAL, 'QuArK version is %s %s %s', [QuArKVersion, QuArKMinorVersion, S])
+     else
+       Log(LOG_PASCAL, 'QuArK version is %s %s', [QuArKVersion, QuArKMinorVersion]);
+     Log(LOG_PASCAL, 'Compiled with %s on %s', [QuArKUsedCompiler, DateToStr(QuArKCompileDate{$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF})]);
+     {$IFDEF Debug}
+     Log(LOG_PASCAL, 'Current install is located at %s', [GetQPath(pQuArK)]);
+     Log(LOG_PASCAL, 'Running in DEBUG mode!');
+     {$ENDIF}
+
      // Write system information to the log
      LogSystemDetails;
 
