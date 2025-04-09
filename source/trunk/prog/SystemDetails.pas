@@ -153,7 +153,7 @@ type
     FType: String;
     FEditionID: String;
     FDisplayVersion: String;
-    //FReleaseId: String;
+    FReleaseId: String;
     {$IFDEF LogSensitiveInformation}
     FSerialNumber: String;
     FRegUser: String;
@@ -191,7 +191,7 @@ type
     property Typ: String read FType stored false;
     property EditionID: String read FEditionID stored false;
     property DisplayVersion: String read FDisplayVersion stored false;
-    //property ReleaseId: String read FReleaseId stored false;
+    property ReleaseId: String read FReleaseId stored false;
     {$IFDEF LogSensitiveInformation}
     property SerialNumber: String read FSerialNumber stored false;
     property RegisteredUser: String read FRegUser stored false;
@@ -1351,6 +1351,8 @@ begin
     {$IFDEF MeasureCPUFrequency}
     add(format('Clock: %d MHz',[Freq]));
     {$ENDIF}
+    if GetSystemMetrics(SM_SLOWMACHINE) <> 0 then
+      add('OS marks this as a low-end (slow) processor.');
   end;
 end;
 
@@ -1469,7 +1471,7 @@ const
   //rvEditionSubstring = 'EditionSubstring'; //Only on WinVista+
   //rvEditionSubVersion = 'EditionSubVersion'; //Only on WinVista+
   rvDisplayVersion = 'DisplayVersion'; //Only on Win10+
-  //rvReleaseId = 'ReleaseId'; //Only on Win10+
+  rvReleaseId = 'ReleaseId'; //Only on Win10+
   {$IFDEF LogSensitiveInformation}
   rvRegOrg = 'RegisteredOrganization';
   rvRegOwn = 'RegisteredOwner';
@@ -1623,13 +1625,31 @@ begin
         0:
          FPlatform:='Windows 2000';
         1:
-         FPlatform:='Windows XP';
+         begin
+          if GetSystemMetrics(SM_TABLETPC) <> 0 then
+           FPlatform:='Windows XP Tablet PC'
+          else if GetSystemMetrics(SM_MEDIACENTER) <> 0 then
+           FPlatform:='Windows XP, Media Center Edition'
+          else if GetSystemMetrics(SM_STARTER) <> 0 then
+           FPlatform:='Windows XP Starter Edition'
+          else
+           FPlatform:='Windows XP';
+         end;
         2:
          begin
           if GetSystemMetrics(SM_SERVERR2) <> 0 then
            FPlatform:='Windows Server 2003 R2'
           else if OS.wProductType = VER_NT_WORKSTATION then
-           FPlatform:='Windows XP 64-bit'
+           begin
+            if GetSystemMetrics(SM_TABLETPC) <> 0 then
+             FPlatform:='Windows XP Tablet PC 64-bit'
+            else if GetSystemMetrics(SM_MEDIACENTER) <> 0 then
+             FPlatform:='Windows XP, Media Center Edition 64-bit'
+            else if GetSystemMetrics(SM_STARTER) <> 0 then
+             FPlatform:='Windows XP Starter Edition 64-bit'
+            else
+             FPlatform:='Windows XP 64-bit';
+           end
           else
            FPlatform:='Windows Server 2003';
          end;
@@ -1644,14 +1664,24 @@ begin
         0:
          begin
           if OS.wProductType = VER_NT_WORKSTATION then
-           FPlatform:='Windows Vista'
+           begin
+            if GetSystemMetrics(SM_STARTER) <> 0 then
+             FPlatform:='Windows Vista Starter'
+            else
+             FPlatform:='Windows Vista';
+           end
           else
            FPlatform:='Windows Server 2008'; //or Windows Longhorn
          end;
         1:
          begin
           if OS.wProductType = VER_NT_WORKSTATION then
-           FPlatform:='Windows 7'
+           begin
+            if GetSystemMetrics(SM_STARTER) <> 0 then
+             FPlatform:='Windows 7 Starter Edition'
+            else
+             FPlatform:='Windows 7';
+           end
           else
            FPlatform:='Windows Server 2008 R2';
          end;
@@ -1679,10 +1709,24 @@ begin
         case MinorVersion of
         0:
          begin
-          if BuildNumber < 22000 then
-           FPlatform:='Windows 10'
+          if OS.wProductType = VER_NT_WORKSTATION then
+           begin
+            if BuildNumber < 22000 then
+             FPlatform:='Windows 10'
+            else
+             FPlatform:='Windows 11';
+           end
           else
-           FPlatform:='Windows 11';
+           begin
+            if ReleaseId = '1607' then
+             FPlatform:='Windows Server 2016'
+            else if ReleaseId = '1809' then
+             FPlatform:='Windows Server 2019'
+            else if ReleaseId = '2009' then
+             FPlatform:='Windows Server 2022'
+            else
+             FPlatform:='Windows Server 2016?';
+           end;
          end
         else
          FPlatform:='Windows NT 11?';
@@ -1739,6 +1783,7 @@ begin
   FPlusVersionNumber:='';
   FEditionID:='';
   FDisplayVersion:='';
+  FReleaseId:='';
   {$IFDEF LogSensitiveInformation}
   FRegUser:='';
   FRegOrg:='';
@@ -1777,6 +1822,8 @@ begin
         FEditionID:=ReadString(rvEditionID);
       if ValueExists(rvDisplayVersion) then
         FDisplayVersion:=ReadString(rvDisplayVersion);
+      if ValueExists(rvReleaseId) then
+        FReleaseId:=ReadString(rvReleaseId);
       {$IFDEF LogSensitiveInformation}
       if ValueExists(rvRegOrg) then
         FRegOrg:=ReadString(rvRegOrg);
@@ -1869,6 +1916,12 @@ begin
 end;
 
 procedure TOperatingSystem.Report(var sl: TStringList);
+{$IFDEF LogSensitiveInformation}
+{$IFDEF Delphi7orNewerCompiler}
+var
+  DateFormat: TFormatSettings;
+{$ENDIF}
+{$ENDIF}
 begin
   with sl do
   begin
@@ -1911,10 +1964,13 @@ begin
     add(format('Registered to person: %s',[RegisteredUser]));
     add(format('Registered to company: %s',[RegisteredOrg]));
     add(format('Serial: %s',[SerialNumber]));
+    {$IFDEF Delphi7orNewerCompiler}
+    GetLocaleFormatSettings(LOCALE_SYSTEM_DEFAULT, DateFormat);
+    {$ENDIF}
     if InstallTime<>0 then
-      add(format('Installed on: %s',[DateTimeToStr(Win64ToDateTime(InstallTime))]))
+      add(format('Installed on: %s',[DateTimeToStr(Win64ToDateTime(InstallTime){$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF})]))
     else
-      add(format('Installed on: %s',[DateTimeToStr(UnixToDateTime(InstallDate))]));
+      add(format('Installed on: %s',[DateTimeToStr(UnixToDateTime(InstallDate){$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF})]));
     {$ENDIF}
     {$IFDEF WIN32}
     if Wow64 then

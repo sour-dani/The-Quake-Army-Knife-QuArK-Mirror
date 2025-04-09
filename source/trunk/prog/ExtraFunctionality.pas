@@ -240,6 +240,10 @@ const
   Win64DateDelta = -109207;
 
 {$ifdef MSWINDOWS}
+{$ifndef Delphi1orNewerCompiler}
+  {$EXTERNALSYM SM_SLOWMACHINE}
+  SM_SLOWMACHINE = 73;
+{$endif}
 {$ifndef Delphi3orNewerCompiler}
   DUPLICATE_CLOSE_SOURCE     = $00000001;
   DUPLICATE_SAME_ACCESS      = $00000002;
