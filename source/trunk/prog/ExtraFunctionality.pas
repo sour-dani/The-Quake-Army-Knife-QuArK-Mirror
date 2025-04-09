@@ -895,12 +895,6 @@ function IsWow64Process(hProcess: THandle; var Wow64Process: BOOL): BOOL; overlo
 function IsWow64Process(hProcess: THandle; Wow64Process: PBOOL): BOOL; external kernel32 name 'IsWow64Process' delayed;
 function IsWow64Process(hProcess: THandle; var Wow64Process: BOOL): BOOL; external kernel32 name 'IsWow64Process' delayed;
 
-function IsWow64Process2(hProcess: THandle; pProcessMachine: PUSHORT; pNativeMachine: PUSHORT): BOOL; overload; stdcall;
-function IsWow64Process2(hProcess: THandle; var pProcessMachine: USHORT; var pNativeMachine: USHORT): BOOL; overload; stdcall;
-{$EXTERNALSYM IsWow64Process2}
-function IsWow64Process2(hProcess: THandle; pProcessMachine: PUSHORT; pNativeMachine: PUSHORT): BOOL; external kernel32 name 'IsWow64Process2' delayed;
-function IsWow64Process2(hProcess: THandle; var pProcessMachine: USHORT; var pNativeMachine: USHORT): BOOL; external kernel32 name 'IsWow64Process2' delayed;
-
 function GetTickCount64: ULONGLONG; stdcall;
 {$EXTERNALSYM GetTickCount64}
 function GetTickCount64; external kernel32 name 'GetTickCount64' delayed;
@@ -911,6 +905,12 @@ function SHRestricted(rest: RESTRICTIONS): DWORD; stdcall;
 {$EXTERNALSYM SHRestricted}
 function SHRestricted; external 'shell32.dll' name 'SHRestricted' delayed;
 {$endif}
+
+function IsWow64Process2(hProcess: THandle; pProcessMachine: PUSHORT; pNativeMachine: PUSHORT): BOOL; overload; stdcall;
+function IsWow64Process2(hProcess: THandle; var pProcessMachine: USHORT; var pNativeMachine: USHORT): BOOL; overload; stdcall;
+{$EXTERNALSYM IsWow64Process2}
+function IsWow64Process2(hProcess: THandle; pProcessMachine: PUSHORT; pNativeMachine: PUSHORT): BOOL; external kernel32 name 'IsWow64Process2' delayed;
+function IsWow64Process2(hProcess: THandle; var pProcessMachine: USHORT; var pNativeMachine: USHORT): BOOL; external kernel32 name 'IsWow64Process2' delayed;
 
 function GetFirmwareType(FirmwareType: PFIRMWARE_TYPE): BOOL; overload; stdcall;
 function GetFirmwareType(var FirmwareType: _FIRMWARE_TYPE): BOOL; overload; stdcall;
@@ -935,12 +935,12 @@ var
   SetDllDirectoryA: function (lpPathName: LPCSTR): BOOL; stdcall;
   SetDllDirectoryW: function (lpPathName: LPCWSTR): BOOL; stdcall;
   IsWow64Process: function (hProcess: THandle; var Wow64Process: BOOL): BOOL; stdcall;
-  IsWow64Process2: function (hProcess: THandle; var pProcessMachine: USHORT; var pNativeMachine: USHORT): BOOL; stdcall;
   GetTickCount64: function: ULONGLONG; stdcall;
 {$endif}
 {$ifndef Delphi2010orNewerCompiler}
   SHRestricted: function (rest: RESTRICTIONS): DWORD; stdcall;
 {$endif}
+  IsWow64Process2: function (hProcess: THandle; var pProcessMachine: USHORT; var pNativeMachine: USHORT): BOOL; stdcall;
   GetFirmwareType: function (var FirmwareType: _FIRMWARE_TYPE): BOOL; stdcall;
 {$endif}
 {$endif}
@@ -1593,7 +1593,6 @@ initialization
   SetDllDirectoryW := GetProcAddress(GetModuleHandle('kernel32'), 'SetDllDirectoryW');
   {$IFDEF UNICODE}SetDllDirectory:=SetDllDirectoryW;{$ELSE}SetDllDirectory:=SetDllDirectoryA;{$ENDIF};
   IsWow64Process := GetProcAddress(GetModuleHandle('kernel32'), 'IsWow64Process');
-  IsWow64Process2 := GetProcAddress(GetModuleHandle('kernel32'), 'IsWow64Process2');
   GetTickCount64 := GetProcAddress(GetModuleHandle('kernel32'), 'GetTickCount64');
 
   DelayFunc_GlobalMemoryStatusEx := Assigned(GlobalMemoryStatusEx);
@@ -1603,7 +1602,6 @@ initialization
   DelayFunc_SetDllDirectoryW := Assigned(SetDllDirectoryW);
   DelayFunc_SetDllDirectory := Assigned(SetDllDirectory);
   DelayFunc_IsWow64Process := Assigned(IsWow64Process);
-  DelayFunc_IsWow64Process2 := Assigned(IsWow64Process2);
   DelayFunc_GetTickCount64 := Assigned(GetTickCount64);
   {$DEFINE DelayFunc_Delphi2009Done}
 {$endif}
@@ -1612,6 +1610,7 @@ initialization
   {$DEFINE DelayFunc_Delphi2010Done}
 {$endif}
 {.$ifndef DelphiXXorNewerCompiler}
+  IsWow64Process2 := GetProcAddress(GetModuleHandle('kernel32'), 'IsWow64Process2');
   GetFirmwareType := GetProcAddress(GetModuleHandle('kernel32'), 'GetFirmwareType');
 
   ShellLib:=SafeLoadLibrary('shell32.dll');
@@ -1620,6 +1619,7 @@ initialization
   else
     SHRestricted := GetProcAddress(ShellLib, 'SHRestricted');
 
+  DelayFunc_IsWow64Process2 := Assigned(IsWow64Process2);
   DelayFunc_GetFirmwareType := Assigned(GetFirmwareType);
   {$DEFINE DelayFunc_DelphiXXDone}
 {.$endif}
@@ -1642,13 +1642,13 @@ initialization
   DelayFunc_SetDllDirectoryW := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003
   DelayFunc_SetDllDirectory := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003
   DelayFunc_IsWow64Process := CheckWin32VersionWithServicePack(5, 1, 2); //Windows XP with SP2, Windows Server 2003 with SP1
-  DelayFunc_IsWow64Process2 := CheckWin32VersionWithBuildNumber(10, 0, 16299); //Windows 10, version 1709
   DelayFunc_GetTickCount64 := CheckWin32Version(6, 0); //Windows Vista, Windows Server 2008
   {$endif}
   {$ifndef DelayFunc_Delphi2010Done}
   DelayFunc_SHRestricted := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003, although it already existed in Windows 2000 as ordinal 100.
   {$endif}
   {$ifndef DelayFunc_DelphiXXDone}
+  DelayFunc_IsWow64Process2 := CheckWin32VersionWithBuildNumber(10, 0, 16299); //Windows 10, version 1709
   DelayFunc_GetFirmwareType := CheckWin32Version(6, 2); //Windows 8, Server 2012
   {$endif}
 {$endif}
