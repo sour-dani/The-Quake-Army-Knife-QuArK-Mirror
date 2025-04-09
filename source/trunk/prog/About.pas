@@ -66,6 +66,8 @@ procedure ProcessRegistration;
 
 implementation
 
+{$I DelphiVer.inc}
+
 uses Messages, Registry2, Qk1, Quarkx, QConsts, ExtraFunctionality;
 
 const
@@ -146,10 +148,10 @@ end;
  {-------------------}
 
 procedure TAboutBox.FormCreate(Sender: TObject);
-{* DanielPharos: Commented out thread-safe date-conversion with the asterix.
-  This because that is Delphi 7+, so it breaks compilation on Delphi 6.
+{$IFDEF Delphi7orNewerCompiler}
 var
-  DateFormat: TFormatSettings;}
+  DateFormat: TFormatSettings;
+{$ENDIF}
 begin
   Caption := LoadStr1(5612);
   MarsCap.ActiveBeginColor := $A08000;
@@ -216,8 +218,10 @@ begin
   WebsiteAddress.Caption := QuArKWebsite;
   RepositoryAddress.Caption := QuArKRepository;
   ForumAddress.Caption := QuArKForum;
-  {*GetLocaleFormatSettings(LOCALE_SYSTEM_DEFAULT, DateFormat);}
-  UsedCompilerLabel.Caption := FmtLoadStr1(5823, [QuArKUsedCompiler, DateToStr(QuArKCompileDate{*, DateFormat})]);
+  {$IFDEF Delphi7orNewerCompiler}
+  GetLocaleFormatSettings(LOCALE_SYSTEM_DEFAULT, DateFormat);
+  {$ENDIF}
+  UsedCompilerLabel.Caption := FmtLoadStr1(5823, [QuArKUsedCompiler, DateToStr(QuArKCompileDate{$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF})]);
 
   //Reposition the labels
   WebsiteAddress.Left := Label1.BoundsRect.Right + LabelSpacing;

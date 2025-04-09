@@ -65,6 +65,8 @@ var
 
 implementation
 
+{$I DelphiVer.inc}
+
 uses QConsts, TextBoxForm, Quarkx, Logging, ExtraFunctionality, Platform;
 
  {-------------------}
@@ -255,6 +257,13 @@ begin
     end;
     OldException(Sender, E);
   end;
+
+{$IFDEF madExcept}
+  //Some parts of QuArK's code (Python exception handling) calls this function directly.
+  //So let's force those cases through madExcept too. However, madExcept can't figure out
+  //the original exception message, so let's display that first, and then blow up.
+  raise E;
+{$ENDIF}
 end;
 
 function TCustomExceptionHandler.MessageException(const E: Exception; const Info: String; Buttons: TMsgDlgButtons) : TModalResult;
@@ -319,8 +328,9 @@ const
  DlgW  = 372;
  MemoH = 160;
  Margin = 8;
- Fallback4616 = '                     *** EXCEPTION REPORT ***'+sLineBreak+sLineBreak+'%s %s'+sLineBreak+'Address in the program: 0x%p (base: 0x%p)'+sLineBreak;
- Fallback4617 = sLineBreak+sLineBreak+'Please report this error to the QuArK development team, so that they can fix the issue promptly.';
+ Fallback4616 = '                     *** EXCEPTION REPORT ***'+sLineBreak+sLineBreak+'%s'+sLineBreak+'Compiled with: %s'+sLineBreak+'Address in the program: 0x%p (base: 0x%p)';
+ Fallback4617 = 'Please report this error to the QuArK development team, so that they can fix the issue promptly.';
+ Fallback5823 = '%s on %s';
 var
 {E: Exception;}
  Msg: String;
@@ -329,6 +339,9 @@ var
  L: TStringList;
  Delta: Integer;
  ExceptAddrX: Pointer;
+{$IFDEF Delphi7orNewerCompiler}
+ DateFormat: TFormatSettings;
+{$ENDIF}
 begin
  with Sender as TButton do
   begin
@@ -341,16 +354,26 @@ begin
   ExceptAddrX:=ExceptAddr
  else
   ExceptAddrX:=OverrideExceptAddr;
+ {$IFDEF Delphi7orNewerCompiler}
+ GetLocaleFormatSettings(LOCALE_SYSTEM_DEFAULT, DateFormat);
+ {$ENDIF}
  if IsPythonInited then
-  L.Add(FmtLoadStr1(4616, [QuArKVersion, QuArKMinorVersion, ExceptAddrX, Pointer(GetModuleHandle(Nil))]))
+  L.Add(FmtLoadStr1(4616, [Format('%s %s', [QuArKVersion, QuArKMinorVersion]), Format(Fallback5823, [QuArKUsedCompiler, DateToStr(QuArKCompileDate{$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF})]), ExceptAddrX, Pointer(GetModuleHandle(Nil))]))
  else
-  L.Add(Format(Fallback4616, [QuArKVersion, QuArKMinorVersion, ExceptAddrX, Pointer(GetModuleHandle(Nil))]));
+  L.Add(Format(Fallback4616, [Format('%s %s', [QuArKVersion, QuArKMinorVersion]), Format(Fallback5823, [QuArKUsedCompiler, DateToStr(QuArKCompileDate{$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF})]), ExceptAddrX, Pointer(GetModuleHandle(Nil))]));
+ {$IFDEF Debug}
+ L.Add('DEBUG VERSION');
+ {$ENDIF}
+ L.Add('');
  P:=Pos('//', Msg);
  if P<>0 then
   begin
    L.Add(Copy(Msg, 1, P-1));
    L.Add(Copy(Msg, P+2, MaxInt));
-  end;
+  end
+ else
+  L.Add(Msg);
+ L.Add(sLineBreak); //Note: This creates two linebreaks.
  if IsPythonInited then
   L.Add(LoadStr1(4617))
  else
@@ -362,7 +385,7 @@ begin
   begin
    SetBounds(Margin, Dlg.ClientHeight, Dlg.ClientWidth + Delta - (2 * Margin), MemoH - Margin);
    Parent:=Dlg;
-   Lines.Text:={$IFDEF Debug}'!! DEBUG !!'+{$ENDIF}L.Text;
+   Lines:=L;
    ScrollBars:=ssVertical;
    ReadOnly:=True;
    WantReturns:=False;
