@@ -337,8 +337,20 @@ begin
   end;
 end;
 
-function TSyntaxMemo.FindText(const SearchStr: String;
- StartPos: Integer; Options: TFindOptions) : Integer;
+function TSyntaxMemo.FindText(const SearchStr: String; StartPos: Integer; Options: TFindOptions) : Integer;
+{$IFDEF CONDITIONALEXPRESSIONS}
+  {$IF COMPILERVERSION < 21}
+    {$DEFINE NeedCharInSet}
+  {$IFEND}
+{$ELSE}
+  {$DEFINE NeedCharInSet}
+{$ENDIF}
+{$IFDEF NeedCharInSet}
+  function CharInSet(C: Char; const CharSet: TSysCharSet): Boolean;
+  begin
+    Result := C in CharSet;
+  end;
+{$ENDIF}
 const
  LettresMot = ['a'..'z', 'A'..'Z', '0'..'9', '_'];
 var
@@ -352,7 +364,7 @@ begin
  if StartPos>=Taille then Exit;
  if frWholeWord in Options then
   if StartPos>0 then
-   Mot:=Ord(Buffer[StartPos-1] in LettresMot) shl 1
+   Mot:=Ord(CharInSet(Buffer[StartPos-1], LettresMot)) shl 1
   else
    Mot:=0
  else
@@ -366,7 +378,7 @@ begin
  while P^<>#0 do
   begin
    if Mot>=0 then
-    Mot:=(Mot shr 1) or (Ord(P^ in LettresMot) shl 1);
+    Mot:=(Mot shr 1) or (Ord(CharInSet(P^, LettresMot)) shl 1);
    if Mot<3 then
     begin
      P1:=P;
@@ -377,7 +389,7 @@ begin
        Inc(P2);
       end;
      if (P2^=#0)
-     and ((Mot<0) or not (P1^ in LettresMot)) then
+     and ((Mot<0) or not (CharInSet(P1^, LettresMot))) then
       begin
        Result:=P-Buffer;
        Exit;
