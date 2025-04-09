@@ -290,7 +290,7 @@ begin
   //MousePos.X := 0;
   //MousePos.Y := 0;
  end;
- Perform(wm_Help, 0, LPARAM(PChar(@HelpInfo)));
+ Perform(wm_Help, 0, LPARAM(PArithByte(@HelpInfo)));
 end;
 
 procedure TRunForm.FormActivate(Sender: TObject);
