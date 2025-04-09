@@ -39,6 +39,8 @@ type
   PInt64 = ^Int64;
   LongWord = DWORD;
   PLongWord = ^LongWord;
+
+  TSysCharSet = set of Char;
 {$endif}
 
 {$ifndef Delphi6orNewerCompiler}
@@ -1040,14 +1042,16 @@ function CheckWin32Version(AMajor: Integer; AMinor: Integer = 0): Boolean;
 function SplitString(const S, Delimiters: string): TStringDynArray;
 {$endif}
 
-//This function doesn't exist at all in Delphi:
-function LastPos(const SubStr: String; const S: String): Integer;
-
+{$ifndef Delphi2009orNewerCompiler}
 function CharInSet(C: AnsiChar; const CharSet: TSysCharSet): Boolean; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 {$ifndef Delphi2orNewerCompiler}
 function CharInSet(C: WideChar; const CharSet: TSysCharSet): Boolean; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 {$endif}
 //function CharInSet(C: UnicodeChar; const CharSet: TSysCharSet): Boolean; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+{$endif}
+
+//This function doesn't exist at all in Delphi:
+function LastPos(const SubStr: String; const S: String): Integer;
 
 //These functions doesn't exist at all in Delphi:
 {$ifdef MSWINDOWS}
@@ -1382,6 +1386,18 @@ end;
 {$endif}
 
 {$ifndef Delphi2009orNewerCompiler}
+function CharInSet(C: AnsiChar; const CharSet: TSysCharSet): Boolean;
+begin
+  Result := C in CharSet;
+end;
+
+{$ifndef Delphi2orNewerCompiler}
+function CharInSet(C: WideChar; const CharSet: TSysCharSet): Boolean;
+begin
+  Result := AnsiChar(C) in CharSet; //FIXME: At some point beyond Delphi 7, the cast to AnsiChar is not longer needed.
+end;
+{$endif}
+
 function GetCPUCount: Integer;
 {$IFDEF MSWINDOWS}
 var
@@ -1409,18 +1425,6 @@ begin
   if (Result <> 0) then
     Result := ((Length(S) - Length(SubStr)) + 1) - Result + 1;
 end;
-
-function CharInSet(C: AnsiChar; const CharSet: TSysCharSet): Boolean;
-begin
-  Result := C in CharSet;
-end;
-
-{$ifndef Delphi2orNewerCompiler}
-function CharInSet(C: WideChar; const CharSet: TSysCharSet): Boolean;
-begin
-  Result := AnsiChar(C) in CharSet; //FIXME: At some point beyond Delphi 7, the cast to AnsiChar is not longer needed.
-end;
-{$endif}
 
 {$IFDEF UNICODE}
 (*function CharInSet(C: UnicodeChar; const CharSet: TSysCharSet): Boolean;
