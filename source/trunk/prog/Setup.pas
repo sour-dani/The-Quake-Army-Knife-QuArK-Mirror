@@ -426,7 +426,7 @@ begin
   { checks loaded data }
  if g_SetupSet[ssGeneral]<>Nil then
   begin   { checks version }
-   V1:=QuarkVersion + ' ' + QuArKMinorVersion;
+   V1:=QuarkFullVersion;
    V2:=g_SetupSet[ssGeneral].Specifics.Strings['Version'];
    if V1 <> V2 then
     begin

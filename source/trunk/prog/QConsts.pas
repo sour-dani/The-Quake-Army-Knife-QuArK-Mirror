@@ -159,6 +159,15 @@ const
   QuArKUpdateSiteSSL      = True;
   QuArKUpdateFile         = '/update/index.dat';
 
+function QuArKFullVersion() : String; {$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+
 implementation
+
+uses SysUtils;
+
+function QuArKFullVersion() : String;
+begin
+  Result:=Format('%s %s', [QuArKVersion, QuArKMinorVersion]);
+end;
 
 end.

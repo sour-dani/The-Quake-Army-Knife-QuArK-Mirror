@@ -358,9 +358,9 @@ begin
  GetLocaleFormatSettings(LOCALE_SYSTEM_DEFAULT, DateFormat);
  {$ENDIF}
  if IsPythonInited then
-  L.Add(FmtLoadStr1(4616, [Format('%s %s', [QuArKVersion, QuArKMinorVersion]), Format(Fallback5823, [QuArKUsedCompiler, DateToStr(QuArKCompileDate{$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF})]), ExceptAddrX, Pointer(GetModuleHandle(Nil))]))
+  L.Add(FmtLoadStr1(4616, [QuArKFullVersion, Format(Fallback5823, [QuArKUsedCompiler, DateToStr(QuArKCompileDate{$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF})]), ExceptAddrX, Pointer(GetModuleHandle(Nil))]))
  else
-  L.Add(Format(Fallback4616, [Format('%s %s', [QuArKVersion, QuArKMinorVersion]), Format(Fallback5823, [QuArKUsedCompiler, DateToStr(QuArKCompileDate{$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF})]), ExceptAddrX, Pointer(GetModuleHandle(Nil))]));
+  L.Add(Format(Fallback4616, [QuArKFullVersion, Format(Fallback5823, [QuArKUsedCompiler, DateToStr(QuArKCompileDate{$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF})]), ExceptAddrX, Pointer(GetModuleHandle(Nil))]));
  {$IFDEF Debug}
  L.Add('DEBUG VERSION');
  {$ENDIF}

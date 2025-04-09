@@ -2854,7 +2854,7 @@ var
 begin
   Text:=TStringList.Create;
   try
-    Text.Add(QuArKVersion + ' ' + QuArKMinorVersion);
+    Text.Add(QuArKFullVersion);
     {$IFDEF MemTester}
     Text.Add(HeavyMemDump);
     {$ENDIF}

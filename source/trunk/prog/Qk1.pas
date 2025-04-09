@@ -385,9 +385,9 @@ begin
      // Log QuArK version to the log
      S:=GetPatchVersion;
      if Length(S) <> 0 then
-       Log(LOG_PASCAL, 'QuArK version is %s %s %s', [QuArKVersion, QuArKMinorVersion, S])
+       Log(LOG_PASCAL, 'QuArK version is %s %s', [QuArKFullVersion, S])
      else
-       Log(LOG_PASCAL, 'QuArK version is %s %s', [QuArKVersion, QuArKMinorVersion]);
+       Log(LOG_PASCAL, 'QuArK version is %s', [QuArKFullVersion]);
      Log(LOG_PASCAL, 'Compiled with %s on %s', [QuArKUsedCompiler, DateToStr(QuArKCompileDate{$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF})]);
      {$IFDEF Debug}
      Log(LOG_PASCAL, 'Current install is located at %s', [GetQPath(pQuArK)]);

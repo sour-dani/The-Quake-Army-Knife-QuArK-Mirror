@@ -172,7 +172,7 @@ begin
   end;
 
   ProgramIcon.Picture.Icon.Handle := LoadImage(HInstance, 'MAINICON', image_Icon, 0, 0, 0);
-  Version.Caption := QuArKVersion + ' ' + QuArKMinorVersion;
+  Version.Caption := QuArKFullVersion;
   {$IFDEF Debug}
   Version.Caption := Version.Caption + '  DEBUG VERSION';
   {$ENDIF}

@@ -3348,7 +3348,7 @@ begin
   Exit;
  if PyDict_SetItemString(QuarkxDict, 'aborted', QuarkxAborted)<>0 then Exit;
 
- m:=PyString_FromString(QuArKVersion + ' ' + QuArKMinorVersion);
+ m:=PyString_FromString(ToPyChar(QuArKFullVersion));
  if m=Nil then
   Exit;
  try

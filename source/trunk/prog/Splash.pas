@@ -159,7 +159,7 @@ begin
   Disclaimer.Form := Self;
 
   {$IFDEF Debug}
-  Label1.Caption := 'DEBUG ' + QuArKVersion + ' ' + QuArKMinorVersion;
+  Label1.Caption := 'DEBUG ' + QuArKFullVersion;
   Label1.Font.Size := 22;
   Label1.Font.Style := Label1.Font.Style + [fsBold];
   {$ELSE}
