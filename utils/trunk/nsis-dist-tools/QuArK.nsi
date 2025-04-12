@@ -9,19 +9,23 @@
 !include MUI2.nsh
 !include LangFile.nsh
 !include LogicLib.nsh
-;!include MultiUser.nsh ;FIXME: Implement!
-  ;https://nsis.sourceforge.io/Docs/MultiUser/Readme.html
-  ;https://nsis.sourceforge.io/Add_uninstall_information_to_Add/Remove_Programs#With_a_MultiUser_Installer
 
+!ifndef BUILDDIR
 !define BUILDDIR "C:\QuArK_installer_files"
+!endif
+!ifndef SPLASHDIR
 !define SPLASHDIR "C:\QuArK_installer_splash_image"
+!endif
+!ifndef INSTALLER_EXENAME
 !define INSTALLER_EXENAME "quark-win32-6.6.0Beta8.exe"
+!endif
 !define PRODUCT_NAME "QuArK"
 !define PRODUCT_NAME_FULL "Quake Army Knife"
 !define PRODUCT_COPYRIGHT "Copyright (c) 2025"
 !define PRODUCT_VERSION "6.6.0 Beta 8"
-!define PRODUCT_VERSION_NUMBER "6.6.8.0"
+!define PRODUCT_VERSION_NUMBER "6.6.0.b8"
 !define PRODUCT_VERSION_STRING "6.6 (Beta-Release)"
+!define PRODUCT_INSTALL_DIR "QuArK 6.6"
 !define PRODUCT_WEB_SITE "https://quark.sourceforge.io/"
 !define PRODUCT_WEB_FORUM "https://quark.sourceforge.io/forums/"
 !define PRODUCT_INFOBASE "https://quark.sourceforge.io/infobase/"
@@ -33,17 +37,98 @@
 ManifestDPIAware true
 ;ManifestLongPathAware true ;Not compatible with CreateShortCut
 ManifestSupportedOS all
-RequestExecutionLevel admin
+;RequestExecutionLevel admin ;Set by MultiUser.nsh
 SetCompressor /SOLID lzma
 ShowInstDetails show
 ShowUnInstDetails show
 Unicode false
 ;XPStyle true
 
+;Note: This cannot be included earlier, because it will conflict with the "Unicode" setting.
+!define MULTIUSER_EXECUTIONLEVEL Admin ;Currently, we only support machine-wide installation.
+!define MULTIUSER_INSTALLMODE_DEFAULT_REGISTRY_KEY "${PRODUCT_UNINST_KEY}"
+!define MULTIUSER_INSTALLMODE_DEFAULT_REGISTRY_VALUENAME "NSIS:MultiUser:InstallMode"
+!define MULTIUSER_INSTALLMODE_INSTDIR "${PRODUCT_INSTALL_DIR}"
+!define MULTIUSER_INSTALLMODE_INSTDIR_REGISTRY_KEY "${PRODUCT_DIR_REGKEY}"
+!define MULTIUSER_INSTALLMODE_INSTDIR_REGISTRY_VALUENAME ""
+!define MULTIUSER_INSTALLMODE_FUNCTION .fixBrokenMultiUserInstDir
+!define MULTIUSER_INSTALLMODE_UNFUNCTION un.fixBrokenMultiUserInstDir ;Yes, NSIS is badly designed, and we must duplicate this function.
+Function .fixBrokenMultiUserInstDir
+	;MultiUser's implementation is broken, as it does not remove the filename component of the string, which InstallDirRegKey is documented to do. So let's fix this, because we are using that functionality.
+	Push $0
+	ReadRegStr $0 HKLM "${MULTIUSER_INSTALLMODE_INSTDIR_REGISTRY_KEY}" "${MULTIUSER_INSTALLMODE_INSTDIR_REGISTRY_VALUENAME}"
+
+	${if} $0 != ""
+	${AndIf} $INSTDIR == $0
+		;Yes, we've been bitten by the MultiUser bug!
+
+		;NSIS cannot handle file paths, which is pretty pathetic for an installer framework, so we have to use this: https://nsis.sourceforge.io/Get_parent_directory
+		Push $1
+		Push $2
+		Push $3
+
+		StrCpy $1 0
+		StrLen $2 $0
+
+		loop:
+			IntOp $1 $1 + 1
+			IntCmp $1 $2 get 0 get
+			StrCpy $3 $0 1 -$1
+			StrCmp $3 "\" get
+			Goto loop
+
+		get:
+			StrCpy $0 $0 -$1
+
+		Pop $3
+		Pop $2
+		Pop $1
+
+		StrCpy $INSTDIR $0
+	${endif}
+	Pop $0
+FunctionEnd
+Function un.fixBrokenMultiUserInstDir
+	;MultiUser's implementation is broken, as it does not remove the filename component of the string, which InstallDirRegKey is documented to do. So let's fix this, because we are using that functionality.
+	Push $0
+	ReadRegStr $0 HKLM "${MULTIUSER_INSTALLMODE_INSTDIR_REGISTRY_KEY}" "${MULTIUSER_INSTALLMODE_INSTDIR_REGISTRY_VALUENAME}"
+
+	${if} $0 != ""
+	${AndIf} $INSTDIR == $0
+		;Yes, we've been bitten by the MultiUser bug!
+
+		;NSIS cannot handle file paths, which is pretty pathetic for an installer framework, so we have to use this: https://nsis.sourceforge.io/Get_parent_directory
+		Push $1
+		Push $2
+		Push $3
+
+		StrCpy $1 0
+		StrLen $2 $0
+
+		loop:
+			IntOp $1 $1 + 1
+			IntCmp $1 $2 get 0 get
+			StrCpy $3 $0 1 -$1
+			StrCmp $3 "\" get
+			Goto loop
+
+		get:
+			StrCpy $0 $0 -$1
+
+		Pop $3
+		Pop $2
+		Pop $1
+
+		StrCpy $INSTDIR $0
+	${endif}
+	Pop $0
+FunctionEnd
+!include MultiUser.nsh
+
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
 OutFile "${INSTALLER_EXENAME}"
-InstallDir "$PROGRAMFILES\QuArK 6.6"
-InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
+;InstallDir "$PROGRAMFILES\${PRODUCT_INSTALL_DIR}" ;Replaced by MultiUser equivalent
+;InstallDirRegKey HKCU "${PRODUCT_DIR_REGKEY}" "" ;SHCTX is invalid here (for whatever undocumented reason...), and we're not going to re-implement this functionality due, so let's just use HKCU. ;Replaced by MultiUser equivalent
 
 ; MUI Settings
 !define MUI_ABORTWARNING
@@ -61,7 +146,7 @@ InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 
 ; Language Selection Dialog Settings
 !define MUI_LANGDLL_ALWAYSSHOW
-!define MUI_LANGDLL_REGISTRY_ROOT HKLM
+!define MUI_LANGDLL_REGISTRY_ROOT SHCTX
 !define MUI_LANGDLL_REGISTRY_KEY "${PRODUCT_UNINST_KEY}"
 !define MUI_LANGDLL_REGISTRY_VALUENAME "NSIS:Language"
 
@@ -400,7 +485,6 @@ Section "$(TEXT_SEC02_TITLE)" SEC02
 SectionEnd
 
 Section "$(TEXT_SEC03_TITLE)" SEC03
-  ;SetShellVarContext all
   SetOutPath $INSTDIR ;To set the working directory for the shortcuts
   CreateDirectory "$SMPROGRAMS\QuArK"
   CreateShortCut "$SMPROGRAMS\QuArK\QuArK.lnk" "$INSTDIR\QuArK.exe"
@@ -412,39 +496,38 @@ Section "$(TEXT_SEC03_TITLE)" SEC03
 SectionEnd
 
 Section /o "$(TEXT_SEC04_TITLE)" SEC04
-  ;SetShellVarContext all
   SetOutPath $INSTDIR ;To set the working directory for the shortcuts
   CreateShortCut "$DESKTOP\QuArK.lnk" "$INSTDIR\QuArK.exe"
 SectionEnd
 
 Section -Post
   WriteUninstaller "$INSTDIR\uninst.exe"
-  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\QuArK.exe"
-  WriteRegStr HKLM "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\QuArK.exe"
-  WriteRegStr HKLM "${PRODUCT_UNINST_KEY}" "DisplayName" "${PRODUCT_NAME_FULL} (${PRODUCT_NAME})"
-  WriteRegStr HKLM "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
-  WriteRegStr HKLM "${PRODUCT_UNINST_KEY}" "HelpLink" "${PRODUCT_WEB_FORUM}"
-  ;WriteRegStr HKLM "${PRODUCT_UNINST_KEY}" "InstallDate" "..."
-  WriteRegStr HKLM "${PRODUCT_UNINST_KEY}" "InstallLocation" "$INSTDIR"
-  WriteRegStr HKLM "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
-  WriteRegStr HKLM "${PRODUCT_UNINST_KEY}" "Readme" "$INSTDIR\README.txt"
-  WriteRegStr HKLM "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
-  WriteRegStr HKLM "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
+  WriteRegStr SHCTX "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\QuArK.exe"
+  WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\QuArK.exe"
+  WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "DisplayName" "${PRODUCT_NAME_FULL} (${PRODUCT_NAME})"
+  WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
+  WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "HelpLink" "${PRODUCT_WEB_FORUM}"
+  ;WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "InstallDate" "..."
+  WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "InstallLocation" "$INSTDIR"
+  WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
+  WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "Readme" "$INSTDIR\README.txt"
+  WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
+  WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
 
-  ;WriteRegStr HKLM "${PRODUCT_UNINST_KEY}" "ModifyPath" "..."
-  WriteRegDWORD HKLM "${PRODUCT_UNINST_KEY}" "NoModify" "0x00000001"
-  ;WriteRegStr HKLM "${PRODUCT_UNINST_KEY}" "RepairPath" "..."
-  WriteRegDWORD HKLM "${PRODUCT_UNINST_KEY}" "NoRepair" "0x00000001"
-  ;WriteRegDWORD HKLM "${PRODUCT_UNINST_KEY}" "NoRemove" "0x00000001"
+  ;WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "ModifyPath" "..."
+  WriteRegDWORD SHCTX "${PRODUCT_UNINST_KEY}" "NoModify" "0x00000001"
+  ;WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "RepairPath" "..."
+  WriteRegDWORD SHCTX "${PRODUCT_UNINST_KEY}" "NoRepair" "0x00000001"
+  ;WriteRegDWORD SHCTX "${PRODUCT_UNINST_KEY}" "NoRemove" "0x00000001"
 
-  ;WriteRegDWORD HKLM "${PRODUCT_UNINST_KEY}" "MajorVersion" "..."
-  ;WriteRegDWORD HKLM "${PRODUCT_UNINST_KEY}" "MinorVersion" "..."
-  ;WriteRegDWORD HKLM "${PRODUCT_UNINST_KEY}" "VersionMajor" "..."
-  ;WriteRegDWORD HKLM "${PRODUCT_UNINST_KEY}" "VersionMinor" "..."
+  ;WriteRegDWORD SHCTX "${PRODUCT_UNINST_KEY}" "MajorVersion" "..."
+  ;WriteRegDWORD SHCTX "${PRODUCT_UNINST_KEY}" "MinorVersion" "..."
+  ;WriteRegDWORD SHCTX "${PRODUCT_UNINST_KEY}" "VersionMajor" "..."
+  ;WriteRegDWORD SHCTX "${PRODUCT_UNINST_KEY}" "VersionMinor" "..."
 
   Call GetInstalledSize
   Pop $0
-  WriteRegDWORD HKLM "${PRODUCT_UNINST_KEY}" "EstimatedSize" "$0"
+  WriteRegDWORD SHCTX "${PRODUCT_UNINST_KEY}" "EstimatedSize" "$0"
 SectionEnd
 
 Section Uninstall
@@ -548,8 +631,8 @@ Section Uninstall
   RMDir "$INSTDIR"
   RMDir "$SMPROGRAMS\QuArK"
 
-  DeleteRegKey HKLM "${PRODUCT_UNINST_KEY}"
-  DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
+  DeleteRegKey SHCTX "${PRODUCT_UNINST_KEY}"
+  DeleteRegKey SHCTX "${PRODUCT_DIR_REGKEY}"
   SetAutoClose true
 SectionEnd
 
@@ -562,10 +645,12 @@ SectionEnd
 
 Function .onInit
   !insertmacro MUI_LANGDLL_DISPLAY
+  !insertmacro MULTIUSER_INIT
 FunctionEnd
 
 Function un.onInit
 !insertmacro MUI_UNGETLANGUAGE
+!insertmacro MULTIUSER_UNINIT
   MessageBox MB_ICONEXCLAMATION|MB_YESNO|MB_DEFBUTTON2 "$(TEXT_UNINSTALL1)" /SD IDYES IDYES +2
   Abort
   MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "$(TEXT_UNINSTALL2)" /SD IDYES IDYES +2
