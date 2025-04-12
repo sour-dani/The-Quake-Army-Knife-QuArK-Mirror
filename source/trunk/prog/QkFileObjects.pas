@@ -163,7 +163,6 @@ type
                   property ObjectGameCode: TGameCode read GetObjectGameCode write SetObjectGameCode;
                   function NeedObjectGameCode: TGameCode;
                   procedure SaveInFile(Format: Integer; AlternateFile: String);
-                  procedure LoadFromStream(F: TStream);
                   function PyGetAttr(attr: PyChar) : PyObject; override;
                   function PySetAttr(attr: PyChar; value: PyObject) : Boolean; override;
                   procedure Go1(maplist, extracted: PyObject; var FirstMap: String; var QCList: TQList); dynamic;
@@ -1049,14 +1048,6 @@ begin
   File1.Free;
  end;
 end;
-
-procedure QFileObject.LoadFromStream(F: TStream);
-begin
- {$IFDEF Debug} FLoading:=True; try {$ENDIF}
- LoadFile(F, F.Size-F.Position);
- {$IFDEF Debug} finally FLoading:=False; end; {$ENDIF}
-end;
-
 
 procedure QFileObject.WriteSiblingsTo(Info1: TInfoEnreg1);
 var

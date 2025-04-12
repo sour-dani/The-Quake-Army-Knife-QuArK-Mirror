@@ -259,7 +259,7 @@ type
     function Ancestry: String;
     procedure AddRef(Delta: Integer); //Incr/decr Py reference count, frees if 0
     procedure Acces; //Does actual full read-in
-    procedure LoadInternal(F: TStream; FSize: TStreamPos);
+    procedure LoadFromStream(F: TStream; FSize: TStreamPos = -1);
     function GetObjectSize(Loaded: TQStream; LoadNow: Boolean) : Integer;
     procedure ObjectState(var E: TEtatObjet); virtual;
     procedure DisplayDetails(SelIcon: Boolean; var D: TDisplayDetails); virtual;
@@ -1002,7 +1002,7 @@ begin
 
   SourceSize:=QStreamAddRef(FNode, Source);
   try
-    LoadInternal(Source, SourceSize);
+    LoadFromStream(Source, SourceSize);
     FFlags:=FFlags and not ofNotLoadedToMemory;
   finally {AiV}
     if (FFlags and ofNotLoadedToMemory = 0) then
@@ -1283,8 +1283,10 @@ type
                     NameSize: Byte;
                   end;
 
-procedure QObject.LoadInternal(F: TStream; FSize: TStreamPos);
+procedure QObject.LoadFromStream(F: TStream; FSize: TStreamPos);
 begin
+  if FSize = -1 then
+    FSize := F.Size - F.Position;
   FLoading:=True;
   try
     LoadFile(F, FSize);
