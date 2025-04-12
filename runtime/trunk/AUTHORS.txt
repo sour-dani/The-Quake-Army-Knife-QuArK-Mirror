@@ -77,7 +77,7 @@ The developers of used libraries/programs
 
 - VTFLib & HLLib:
                         Ryan "NEMESIS" Gregg
-                        http://nemesis.thewavelength.net/
+                        hxxp://nemesis.thewavelength.net/
 
 - DevIL:
                         Denton Woods
@@ -130,11 +130,11 @@ The developers of used libraries/programs
 
 - MarsCap:
                         Chen Ken
-                        http://www.nease.net/~marspark (BROKEN)
+                        hxxp://www.nease.net/~marspark
 
 - Delphi:
                         Borland
-                        http://www.borland.com/
+                        hxxp://www.borland.com/
 
 - Python:
                         Python Software Foundation
