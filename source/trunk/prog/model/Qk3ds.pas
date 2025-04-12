@@ -303,7 +303,7 @@ begin
   with Info do begin
     case Format of
       rf_Default: begin  { write the .3ds file }
-        raise EQObjectSavingNotSupported.Create('Saving 3DS files is currently not supported.');
+        raise EQObjectSavingNotSupported.Create('3DS files');
       end;
       else
         inherited;

@@ -684,9 +684,9 @@ begin
           ObjectGameCode := CurrentGameMode;
       end
       else if (head.id='RDM5') {and (head.version=2)} then
-        Raise EError(5807)
+        Raise EQObjectLoadingNotSupported.Create('RDM5 MD3 models')
       else if (head.id='2LGM') then
-        Raise EError(5808)
+        Raise EQObjectLoadingNotSupported.Create('2LGM MD3 models')
       else
         Raise EErrorFmt(5809, [String(head.id)]);
       Root:=Loaded_Root;

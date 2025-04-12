@@ -59,7 +59,7 @@ begin
  Log(LOG_VERBOSE, 'Loading XMP file: %s', [self.name]);
  case ReadFormat of
   rf_Default: begin  { as stand-alone file }
-      raise EQObjectSavingNotSupported.Create('Loading XMP files is currently not supported.'); //FIXME: Move to dict!
+      raise EQObjectLoadingNotSupported.Create('XMP files');
      end;
  else
   inherited;
@@ -70,7 +70,7 @@ procedure QXMPFile.SaveFile(Info: TInfoEnreg1);
 begin
  with Info do case Format of
   rf_Default: begin  { as stand-alone file }
-      raise EQObjectSavingNotSupported.Create('Saving XMP files is currently not supported.'); //FIXME: Move to dict!
+      raise EQObjectSavingNotSupported.Create('XMP files');
      end;
  else
   inherited;

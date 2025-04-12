@@ -218,6 +218,7 @@ type
   private
     FSpecifics: TSpecificsList;
     FSubElements: TQList;
+    FLoading: Boolean; //True while object is being loaded
     function GetTvParent : QObject;
     { Tv for `tree-view; Nil if obj is root in a tree
       view, such was worldspawn, whose parent is
@@ -236,7 +237,6 @@ type
     FNode: PQStreamRef; //Info about where on disk the objects info is, see QkObjects.txt:delay_loading
     FParent: QObject;
     FSelMult: Byte; //smXXX flags above
-    FLoading: Boolean; //True while object is being loaded
     FPyNoParent: Boolean; //Used by polyhedrons
     procedure SaveFile(Info: TInfoEnreg1); virtual; //Core function for writing to file, normally overridden, nature of Info varies per file format unit (e.g. QkSin)
     procedure LoadFile(F: TStream; FSize: TStreamPos); virtual; //Core function for reading from file, normally overridden
@@ -1289,9 +1289,17 @@ begin
     FSize := F.Size - F.Position;
   FLoading:=True;
   try
-    LoadFile(F, FSize);
-  finally
-    FLoading:=False;
+    try
+      LoadFile(F, FSize);
+    finally
+      FLoading:=False;
+    end;
+  except
+    on E: EQObjectLoadingNotSupported do
+    begin
+      Log(LOG_WARNING, FmtLoadStr1(5807, [E.message]));
+      raise;
+    end;
   end;
 end;
 

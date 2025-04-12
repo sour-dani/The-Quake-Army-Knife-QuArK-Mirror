@@ -641,7 +641,7 @@ procedure QRmfMapFile.SaveFile(Info: TInfoEnreg1);
 begin
  with Info do case Format of
   rf_Default: begin  { as stand-alone file }
-      raise EQObjectSavingNotSupported.Create('Saving RMF files is currently not supported.'); //FIXME: Move to dict!
+      raise EQObjectSavingNotSupported.Create('RMF files');
      end;
  else
   inherited;

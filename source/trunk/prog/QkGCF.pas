@@ -246,7 +246,7 @@ begin
         HLLoaded:=true;
       end;
 
-      raise EQObjectSavingNotSupported.Create('Saving GCF files is currently not supported.');
+      raise EQObjectSavingNotSupported.Create('GCF files');
      end;
  else inherited;
  end;

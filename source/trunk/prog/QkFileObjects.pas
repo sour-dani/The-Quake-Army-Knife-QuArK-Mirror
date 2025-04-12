@@ -173,7 +173,8 @@ type
                        procedure SaveFile(Format: Integer; F: TStream); override;
                      end;}
   EQObjectFileNotFound = class(Exception);
-  EQObjectSavingNotSupported = class(Exception);
+  EQObjectLoadingNotSupported = class(Exception); //Error message should be a description of the file format. Only raise this in in the LoadFile function.
+  EQObjectSavingNotSupported = class(Exception); //Error message should be a description of the file format. Only raise this in the SaveFile function.
 
  {------------------------}
 
@@ -1224,8 +1225,8 @@ begin
  try
    SaveInFile(RecommendFormat, '');
  except
-  on EQObjectSavingNotSupported do
-   ShowMessage(FmtLoadStr1(5219, [Filename]));
+  on E: EQObjectSavingNotSupported do
+   ShowMessage(FmtLoadStr1(5219, [Filename, E.message]));
  end;
 {while EnumObjectWindow(F) do
   SendMessage(F.Handle, wm_InternalMessage, wp_SetModify, 0);

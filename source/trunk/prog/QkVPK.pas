@@ -245,7 +245,7 @@ begin
         HLLoaded:=true;
       end;
 
-      raise EQObjectSavingNotSupported.Create('Saving VPK files is currently not supported.');
+      raise EQObjectSavingNotSupported.Create('VPK files');
      end;
  else inherited;
  end;

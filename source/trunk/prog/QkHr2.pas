@@ -304,7 +304,7 @@ begin
      end;
 
   rf_Default: begin  { write the .fm file }
-      raise EQObjectSavingNotSupported.Create('Saving Heretic II models is currently not supported.');
+      raise EQObjectSavingNotSupported.Create('Heretic II models');
      end;
  else inherited;
  end;

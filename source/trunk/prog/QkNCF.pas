@@ -246,7 +246,7 @@ begin
         HLLoaded:=true;
       end;
 
-      raise EQObjectSavingNotSupported.Create('Saving NCF files is currently not supported.');
+      raise EQObjectSavingNotSupported.Create('NCF files');
      end;
  else inherited;
  end;

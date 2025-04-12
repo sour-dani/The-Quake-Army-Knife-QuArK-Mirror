@@ -195,7 +195,7 @@ procedure QCoD2Material.SaveFile(Info: TInfoEnreg1);
 begin
  with Info do case Format of
   rf_Default: begin  { as stand-alone file }
-      raise EQObjectSavingNotSupported.Create('Saving CoD2 material files is currently not supported!');
+      raise EQObjectSavingNotSupported.Create('CoD2 materials');
      end;
  else inherited;
  end;
