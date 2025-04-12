@@ -87,12 +87,9 @@ begin
                $4: result:='Cx6x86 GXm';
                else result:='Unknown';
              end;
-          else
-             if VendorNo=4 then
-               result:='Nx586'
-             else if VendorNo=5 then
-               result:='IDT C6 (WinChip)'
-             else result:='Unknown';
+          4: result:='Nx586';
+          5: result:='IDT C6 (WinChip)';
+          else result:='Unknown';
           end;
      6: case VendorNo of
           0: case Model of
