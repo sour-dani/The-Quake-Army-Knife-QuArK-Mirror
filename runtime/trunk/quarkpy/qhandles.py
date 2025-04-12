@@ -292,7 +292,7 @@ class Rotate3DHandle(GenericHandle):
             tb2 = editor.layout.toolbars["tb_terrmodes"]
             if view.info["type"] == "3D":
                 if view.info["viewname"] == "editors3Dview" and quarkx.setupsubset(SS_MAP, "Options")["Options3Dviews_noicons1"] == "1":
-                    if tb2.tb.buttons[11].state == 2:
+                    if tb2.tb.buttons[11].state == 2: #FIXME: Soft-code all these numbers! Everywhere!
                         view.cursor = CR_BRUSH
                         view.handlecursor = CR_BRUSH
                     elif tb2.tb.buttons[10].state == 2:
