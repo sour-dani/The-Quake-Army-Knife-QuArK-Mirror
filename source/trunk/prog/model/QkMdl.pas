@@ -450,7 +450,8 @@ type
 //var
 //  F:TStream;
 begin
-  //F := TFileStream.Create(FName , fmOpenRead);
+  //F := TBufferedFileStream.Create(FName, fmOpenRead);
+  //FIXME: Go through proper infrastructure!
 end;
 
 Procedure QMdlFile.ReadHL2Model(F: TStream; FileSize: TStreamPos);

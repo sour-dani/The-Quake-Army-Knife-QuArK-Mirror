@@ -149,7 +149,7 @@ var
  tc: TTypeCode;
  ModeJeu: TGameCode;
  Source: TMemoryStream;
- Target: TFileStream;
+ Target: TBufferedFileStream;
  OutFileName: String;
  B: String; //FIXME: TByteDynArray;
 begin
@@ -197,7 +197,7 @@ begin
 
  OutFileName:=OutputFile(OutputProgsDat);
  try
-  Target:=TFileStream.Create(OutFileName, fmCreate); try
+  Target:=TBufferedFileStream.Create(OutFileName, fmCreate); try
 
   SL1:=TStringList.Create; try
   Compiler(SL, Source, Target, SL1, Impulse0Def, tc);

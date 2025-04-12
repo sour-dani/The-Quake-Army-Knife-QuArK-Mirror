@@ -393,7 +393,7 @@ end;
 
  {------------------------}
 
-procedure Uncompress(Dest: PChar; Source: PInteger; LineWidth, DestWidth, LineCount: Integer; var OptData);
+procedure Uncompress(Dest: PChar; Source: PInteger; LineWidth, DestWidth, LineCount: Integer; var OptData); //FIXME: PArithByte?
 pascal; assembler;
 var
  EndOfLine: PChar;

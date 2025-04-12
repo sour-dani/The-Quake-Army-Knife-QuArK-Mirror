@@ -146,6 +146,10 @@ type
 {$endif}
 {$endif}
 
+{$IF COMPILERVERSION < 31}
+  TBufferedFileStream = TFileStream;
+{$IFEND}
+
   //Delphi is making the mistake of locking their Unicode implementation to UTF-16; we're better than that.
 {$IFDEF UNICODE}
   UnicodeChar = WideChar;

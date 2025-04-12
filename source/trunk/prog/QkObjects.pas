@@ -38,7 +38,7 @@ interface
 {$ENDIF}
 
 uses SysUtils, Messages, Classes, Windows, Controls, Graphics, Forms, qmath,
-  Menus, CommCtrl, Python, QkSpecifics;
+  Menus, CommCtrl, Python, QkSpecifics, ExtraFunctionality;
 
 const
   iiUnknownFile           = 0;
@@ -336,7 +336,7 @@ type
     function FindLastShortName(const nName: String) : QObject;
   end;
 
-  TQStream = class(TFileStream)
+  TQStream = class(TBufferedFileStream)
   protected
     RefCount1: Integer;
   public
@@ -403,7 +403,7 @@ implementation
 uses
   {$IFDEF MemTester}MemTester, {$ENDIF}{$IFDEF Debug}QConsts, {$ENDIF}
   ApplPaths, QkObjectClassList, QkFileObjects, QkExplorer, Travail, Game, qhelper,
-  PyObjects, PyImages, Quarkx, QkExceptions, Qk1, Logging{, ExtraFunctionality};
+  PyObjects, PyImages, Quarkx, QkExceptions, Qk1, Logging;
 
 var
   QFileList: TStringList;
@@ -1297,7 +1297,7 @@ begin
   except
     on E: EQObjectLoadingNotSupported do
     begin
-      Log(LOG_WARNING, FmtLoadStr1(5807, [E.message]));
+      Log(LOG_WARNING, FmtLoadStr1(5219, [E.message]));
       raise;
     end;
   end;
