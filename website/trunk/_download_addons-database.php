@@ -200,6 +200,7 @@ $GamesQRKAddons["HL"   ][] = new cQRKAddon("Natural Selection"        ,"http://w
                                                                                                                         ,"nstrHL_20020125.zip"
                                                                                                                                             ,$downloadroot."addons/half-life/nstrhl_20020125.zip"                     ,"(Technology Release. Textures updated 2002-01-25)"); #http://dl.fileplanet.com/dl/dl.asp?quark/addons/half-life/nstrHL_20020125.zip
 $GamesQRKAddons["HL"   ][] = new cQRKAddon("MMod"                     ,"https://www.moddb.com/mods/half-life-mmod"  ,"" ,"HL1MMod.qrk"      ,"https://sourceforge.net/p/quark/code/HEAD/tree/runtime/trunk/addons/Half-Life/HL1MMod.qrk?format=raw"            ,$OfficialQRKAddon); #http://gunshipstuff.x10.mx/
+$GamesQRKAddons["HL"   ][] = new cQRKAddon("Vampire Slayer", "https://vsmod.co.uk/", "", "VS.qrk", "https://sourceforge.net/p/quark/code/HEAD/tree/runtime/trunk/addons/Half-Life/VS.qrk?format=raw", $OfficialQRKAddon);
 
 # Half-Life: Opposing Force
 $GamesQRKAddons["HLOF" ] = array();
@@ -362,6 +363,7 @@ $GamesQRKAddons["Q1"][] = new cQRKAddon("Copper", "http://www.lunaran.com/copper
                                         "Copper.qrk", "https://sourceforge.net/p/quark/code/HEAD/tree/runtime/trunk/addons/Quake_1/Copper.qrk?format=raw", $OfficialQRKAddon);
 $GamesQRKAddons["Q1"   ][] = new cQRKAddon("Team Fortress"            ,"https://web.archive.org/web/20071023183027/http://www.planetfortress.com/teamfortress/" ,"" ,"TFq1.qrk"         ,"https://sourceforge.net/p/quark/code/HEAD/tree/runtime/trunk/addons/Quake_1/TFq1.qrk?format=raw"        ,$OfficialQRKAddon); #http://www.planetfortress.com/teamfortress
 $GamesQRKAddons["Q1"   ][] = new cQRKAddon("Rally Quake 1"            ,"https://web.archive.org/web/19980224193448/http://impact.frag.com/rally/"   ,"" ,"RallyQ1.qrk"      ,"https://sourceforge.net/p/quark/code/HEAD/tree/runtime/trunk/addons/Quake_1/RallyQ1.qrk?format=raw"     ,$OfficialQRKAddon); #http://impact.frag.com/rally/
+$GamesQRKAddons["Q1"   ][] = new cQRKAddon("Kurok", "", "", "KurokEntities.qrk", "https://sourceforge.net/p/quark/code/HEAD/tree/runtime/trunk/addons/Quake_1/KurokEntities.qrk?format=raw", $OfficialQRKAddon);
 
 # Quake Mission Pack 1: Scourge of Armagon
 $GamesQRKAddons["Q1XP1" ][] = new cQRKAddon("Scourge of Armagon"       ,""                                           ,"" ,"HipnoticQ1.qrk"   ,"https://sourceforge.net/p/quark/code/HEAD/tree/runtime/trunk/addons/Quake_1/HipnoticQ1.qrk?format=raw"  ,$OfficialQRKAddon);
