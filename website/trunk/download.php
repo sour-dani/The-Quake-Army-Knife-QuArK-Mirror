@@ -37,8 +37,7 @@ else
 }
 
 $IntroMessage = "<p>This matrix lists the main QuArK downloads, including a list of what games are supported by each release. Click on a game's icon for more information about that game.</p>
-<p>The needed build-tools for the specific games are not listed here, as they are not part of the QuArK-download; they can be downloaded separately <a href=\"".$mainroot."download_tools.php\">here</a>. Some games might require a gamepak for correct mapping, which can be downloaded <a href=\"".$mainroot."download_gamepaks.php\">here</a>.</p>
-<p>Look <a href=\"".$mainroot."features.php#sysreqs\">here</a> for a list of system requirements.</p>";
+<p>The needed build-tools for the specific games are not listed here, as they are not part of the QuArK-download; they can be downloaded separately <a href=\"".$mainroot."download_tools.php\">here</a>. Some games might require a gamepak for correct mapping, which can be downloaded <a href=\"".$mainroot."download_gamepaks.php\">here</a>.</p>";
 
 $HelpMessage = '<div class="centered">
 The latest file that contains all the online documentation found on the <a href="'.$infobaseroot.'">InfoBase</a> pages can be downloaded from here:<br>
@@ -48,7 +47,7 @@ The latest file that contains all the online documentation found on the <a href=
 
 $PatchIntro = '<p>Some releases contain annoying and/or major bugs. Often, a patch is released to fix those problems. The fix is of course integrated into later releases, so these patches are for one specific release only. They are listed below here:</p>';
 
-$DependenciesInstaller = '<p>QuArK requires some other software packages and patches to be installed. These are all bundled together into one installer: <a href="https://sourceforge.net/projects/quark/files/QuArK%20dependencies/quark-dependencies.exe/download">QuArK dependencies installer</a>.</p>';
+$DependenciesInstaller = '<p>QuArK requires some other software packages and patches to be installed, such as DirectX and OpenGL libraries, and various versions of the Microsoft C and C++ (MSVC) runtime libraries. See <a href="'.$mainroot.'features.php#sysreqs">here</a> for a list of system requirements.<br>These are all bundled together into one installer: <a href="https://sourceforge.net/projects/quark/files/QuArK%20dependencies/quark-dependencies.exe/download">QuArK dependencies installer</a>.</p>';
 
 $PythonMessage = '<p>Download and install Mini-Python prior to installing <b>QuArK 5.10</b> or <b>QuArK 6.3.0</b>!<br>
 <br>
