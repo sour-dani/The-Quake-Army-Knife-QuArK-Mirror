@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>AI rendition of Quake II gameplay</headline>
+
+<p>Microsoft has trained an AI model to generate Quake II gameplay. They basically ported Quake II into an AI model, so instead of reading level files, their model is "remembering" what the game looks like, and it's actually playable! Read more about it <a target="_blank" href="https://www.microsoft.com/en-us/research/articles/whamm-real-time-world-modelling-of-interactive-environments/">here</a>, and give it a go <a target="_blank" href="https://aka.ms/muse-quakeii-whamm">here</a>.</p>
+
+
+<p>Happy Quaking,<br>
+DanielPharos</p>
