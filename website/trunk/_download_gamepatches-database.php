@@ -69,6 +69,7 @@ $GamesQRKGamePatches['CS'   ][] = new cQRKGamePatch('cs1005.exe','http://www.fil
 #Daikatana
 $GamesQRKGamePatches['DK'   ] = array();
 $GamesQRKGamePatches['DK'   ][] = new cQRKGamePatch('dk_us_10_12.exe','http://www.fileplanet.com/47141/40000/fileinfo/Daikatana-v1.0---v1.2-Patch');
+$GamesQRKGamePatches['DK'   ][] = new cQRKGamePatch('dk12texfix.zip','https://www.moddb.com/games/daikatana/downloads/daikatana-v12-texture-fix','After applying the v1.2 patch, there were some missing textures that were overlooked - this fix will get rid of those errors'); #http://www.streamload.com/theromero/daikatana/dk12texfix.zip
 
 #Day of Defeat (Original MOD) http://dayofdefeatmod.com
 #$GamesQRKGamePatches[''     ] = array();

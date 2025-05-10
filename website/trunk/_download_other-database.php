@@ -70,6 +70,11 @@ $GamesQRKOther['Hr2'  ][] = new cQRKOther('H2_Toolkit_maps.exe','https://www.qua
 $GamesQRKOther['Hx2'  ] = array();
 $GamesQRKOther['Hx2'  ][] = new cQRKOther('Hexen2Source.ZIP','http://www.fileplanet.com/51987/50000/fileinfo/Hexen-2-Source-Code');
 
+# Daikatana
+$GamesQRKOther['DK'   ] = array();
+$GamesQRKOther['DK'   ][] = new cQRKOther('Daikatana Pre-Alpha #1','https://www.moddb.com/games/daikatana/downloads/daikatana-1997-pre-alpha');
+//https://web.archive.org/web/20041210180700/http://www.rome.ro/games_daikatana.htm
+
 # Half-life
 $GamesQRKOther['HL'   ] = array();
 #$GamesQRKOther['HL'   ][] = new cQRKOther('HL_Standard_SDK_2_2_Source.zip','http://www.fileplanet.com/81537/80000/fileinfo/Standard-Half-Life-SDK-2.2-(source-only)');

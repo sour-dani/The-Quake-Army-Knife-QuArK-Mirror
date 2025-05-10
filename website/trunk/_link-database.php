@@ -175,7 +175,8 @@ $LinksGame[] = new cLinkGroup('Crystal Space', 'CrSp', array(
            ));
 
 $LinksGame[] = new cLinkGroup('Daikatana', 'DK', array(
-           new cLink('Daikatana 1.3 Project', 'https://bitbucket.org/daikatana13/daikatana', 'This is a bugfixed Version of Daikatana for Windows, Linux and (soonish) Mac OS X') #https://bitbucket.org/DGibson/daikatana-1.3/wiki/Home
+           new cLink('Daikatana 1.3 Project', 'https://github.com/maraakate/daikatana', 'This is a bugfixed Version of Daikatana for Windows, Linux and FreeBSD') #https://bitbucket.org/DGibson/daikatana-1.3/wiki/Home #https://bitbucket.org/daikatana13/daikatana
+          ,new cLink('Daikatana Restoration Project', 'https://github.com/atsb/daikatana-restoration-project', 'Daikatana restoration aiming to have a clean 1.2 source and to support modern systems.')
 //          ,new cLink('Planet Daikatana', 'http://www.planetdaikatana.com/')
           ,new cLink('DaikatanaNews.net', 'http://www.daikatananews.net/', 'the number one source of Daikatana news')
            ));
