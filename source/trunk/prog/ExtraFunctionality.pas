@@ -814,6 +814,8 @@ const
   FirmwareTypeUefi = 2;
   FirmwareTypeMax = 3;
 
+  PROCESS_CALLBACK_FILTER_ENABLED = $1;
+
 //This is a macro that wasn't converted.
 function CopyCursor(pcur: HCursor): HCursor;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 {$endif}
@@ -910,6 +912,7 @@ function SHRestricted(rest: RESTRICTIONS): DWORD; stdcall;
 function SHRestricted; external 'shell32.dll' name 'SHRestricted' delayed;
 {$endif}
 
+{.$ifndef DelphiXXorNewerCompiler}
 function IsWow64Process2(hProcess: THandle; pProcessMachine: PUSHORT; pNativeMachine: PUSHORT): BOOL; overload; stdcall;
 function IsWow64Process2(hProcess: THandle; var pProcessMachine: USHORT; var pNativeMachine: USHORT): BOOL; overload; stdcall;
 {$EXTERNALSYM IsWow64Process2}
@@ -921,6 +924,15 @@ function GetFirmwareType(var FirmwareType: _FIRMWARE_TYPE): BOOL; overload; stdc
 {$EXTERNALSYM GetFirmwareType}
 function GetFirmwareType(FirmwareType: PFIRMWARE_TYPE): BOOL; external kernel32 name 'GetFirmwareType' delayed;
 function GetFirmwareType(var FirmwareType: _FIRMWARE_TYPE): BOOL; external kernel32 name 'GetFirmwareType' delayed;
+
+function GetProcessUserModeExceptionPolicy(dwFlags: LPDWORD): BOOL; stdcall;
+{$EXTERNALSYM GetProcessUserModeExceptionPolicy}
+function GetProcessUserModeExceptionPolicy; external kernel32 name 'GetProcessUserModeExceptionPolicy' delayed;
+
+function SetProcessUserModeExceptionPolicy(dwFlags: DWORD): BOOL; stdcall;
+{$EXTERNALSYM SetProcessUserModeExceptionPolicy}
+function SetProcessUserModeExceptionPolicy; external kernel32 name 'SetProcessUserModeExceptionPolicy' delayed;
+{.$endif}
 {$else}
 var
 {.$ifndef Delphi4orNewerCompiler}
@@ -944,8 +956,12 @@ var
 {$ifndef Delphi2010orNewerCompiler}
   SHRestricted: function (rest: RESTRICTIONS): DWORD; stdcall;
 {$endif}
+{.$ifndef DelphiXXorNewerCompiler}
   IsWow64Process2: function (hProcess: THandle; var pProcessMachine: USHORT; var pNativeMachine: USHORT): BOOL; stdcall;
   GetFirmwareType: function (var FirmwareType: _FIRMWARE_TYPE): BOOL; stdcall;
+  GetProcessUserModeExceptionPolicy: function (dwFlags: LPDWORD): BOOL; stdcall;
+  SetProcessUserModeExceptionPolicy: function (dwFlags: DWORD): BOOL; stdcall;
+{.$endif}
 {$endif}
 {$endif}
 
@@ -1091,6 +1107,8 @@ var
   DelayFunc_IsWow64Process2: Boolean;
   DelayFunc_GetTickCount64: Boolean;
   DelayFunc_GetFirmwareType: Boolean;
+  DelayFunc_GetProcessUserModeExceptionPolicy: Boolean;
+  DelayFunc_SetProcessUserModeExceptionPolicy: Boolean;
   DelayFunc_SHRestricted: Boolean;
 {$endif}
 
@@ -1616,6 +1634,8 @@ initialization
 {.$ifndef DelphiXXorNewerCompiler}
   IsWow64Process2 := GetProcAddress(GetModuleHandle('kernel32'), 'IsWow64Process2');
   GetFirmwareType := GetProcAddress(GetModuleHandle('kernel32'), 'GetFirmwareType');
+  GetProcessUserModeExceptionPolicy := GetProcAddress(GetModuleHandle('kernel32'), 'GetProcessUserModeExceptionPolicy');
+  SetProcessUserModeExceptionPolicy := GetProcAddress(GetModuleHandle('kernel32'), 'SetProcessUserModeExceptionPolicy');
 
   ShellLib:=SafeLoadLibrary('shell32.dll');
   if ShellLib = 0 then
@@ -1625,6 +1645,8 @@ initialization
 
   DelayFunc_IsWow64Process2 := Assigned(IsWow64Process2);
   DelayFunc_GetFirmwareType := Assigned(GetFirmwareType);
+  DelayFunc_GetProcessUserModeExceptionPolicy := Assigned(GetProcessUserModeExceptionPolicy);
+  DelayFunc_SetProcessUserModeExceptionPolicy := Assigned(SetProcessUserModeExceptionPolicy);
   {$DEFINE DelayFunc_DelphiXXDone}
 {.$endif}
 {$endif}
@@ -1654,6 +1676,8 @@ initialization
   {$ifndef DelayFunc_DelphiXXDone}
   DelayFunc_IsWow64Process2 := CheckWin32VersionWithBuildNumber(10, 0, 16299); //Windows 10, version 1709
   DelayFunc_GetFirmwareType := CheckWin32Version(6, 2); //Windows 8, Server 2012
+  DelayFunc_GetProcessUserModeExceptionPolicy := CheckWin32VersionWithServicePack(6, 1, 1) //Windows 7 SP 1
+  DelayFunc_SetProcessUserModeExceptionPolicy := CheckWin32VersionWithServicePack(6, 1, 1) //Windows 7 SP 1
   {$endif}
 {$endif}
 

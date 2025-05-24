@@ -260,6 +260,7 @@ const
 
 procedure MainInit;
 var
+  dwFlags: DWORD;
   Info: BOOL;
   Metrics: TNonClientMetrics;
 begin
@@ -275,6 +276,22 @@ begin
       LogWindowsError(GetLastError(), 'MainInit: SetDllDirectory("")');
       Log(LOG_WARNING, 'Failed to change the DLL search path; QuArK will be vulnerable to DLL hijacking!');
     end;
+
+  //Don't drop exceptions that are thrown in a callback routine runs in the user mode.
+  if CheckWin32Version(6, 0) and not CheckWin32Version(6, 2) then //Windows Vista //Windows 8
+  begin
+    if not (DelayFunc_GetProcessUserModeExceptionPolicy and DelayFunc_SetProcessUserModeExceptionPolicy) then
+      Log(LOG_WARNING, 'GetProcessUserModeExceptionPolicy or SetProcessUserModeExceptionPolicy not available; QuArK may crash with misleading exceptions!')
+    else
+      if (GetProcessUserModeExceptionPolicy(@dwFlags)) then
+      begin
+        if not SetProcessUserModeExceptionPolicy(dwFlags and not PROCESS_CALLBACK_FILTER_ENABLED) then
+        begin
+          LogWindowsError(GetLastError(), 'MainInit: SetProcessUserModeExceptionPolicy(not PROCESS_CALLBACK_FILTER_ENABLED)');
+          Log(LOG_WARNING, 'SetProcessUserModeExceptionPolicy(not PROCESS_CALLBACK_FILTER_ENABLED) failed; QuArK may crash with misleading exceptions!');
+        end;
+      end;
+  end;
 
   //Don't supress exceptions that happen in TimerProc's.
   if CheckWin32VersionWithBuildNumber(10, 0, 10586) then //Windows 10 1511
