@@ -410,6 +410,7 @@ $LinksGame[] = new cLinkGroup('Quake 2', 'Q2', array(
           ,new cLink('Dawn of Darkness', 'https://www.moddb.com/mods/dawn-of-darkness1', 'Dawn of Darkness was an excellent RPG/adventure/action game that was dumped by Ward Six Entertainment in 1999.')
           ,new cLink('Gloom', 'https://www.moddb.com/mods/gloom', 'Gloom is a Quake II modification that blends fast paced action and strategy to create a unique gameplay expierience that will take many years to master.') #http://www.planetquake.com/rxn/gloom/
           ,new cLink("lOkO's MegaMod", 'https://www.angelfire.com/jazz/loko/', 'a Quake2 Bot and Weapons Mod')
+          ,new cLink("Loki's Minions Capture the Flag", 'https://lmctf.com/', 'The Original Capture The Flag Mod For Quake II.')
            ));
 
 $LinksGame[] = new cLinkGroup('Quake 3: Arena', 'Q3A', array(
