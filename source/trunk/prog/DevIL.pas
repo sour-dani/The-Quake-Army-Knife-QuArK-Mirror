@@ -249,7 +249,7 @@ type
   ILbyte     = Char;
   ILshort    = SmallInt;
   ILint      = Integer;
-  ILsizei    = size_t;
+  ILsizei    = NativeInt;
   ILubyte    = Byte;
   ILushort   = Word;
   ILuint     = Cardinal;

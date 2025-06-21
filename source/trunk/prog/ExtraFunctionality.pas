@@ -26,6 +26,13 @@ interface
 
 uses Classes, Types, Windows, SysUtils{$IFDEF Delphi6orNewerCompiler}, StrUtils{$ENDIF};
 
+{$ifdef Delphi2010orNewerCompiler}
+{$ifdef MSWINDOWS}
+//Delphi 2010 and higher supports delayed loading on Windows.
+{$DEFINE DELAYEDLOADING}
+{$endif}
+{$endif}
+
 type
 {$ifndef Delphi2orNewerCompiler}
   Cardinal = Word;
@@ -83,6 +90,18 @@ type
 {$endif}
 
 {$ifdef MSWINDOWS}
+{$ifndef Delphi2010orNewerCompiler}
+  PLPCTSTR = ^LPCTSTR;
+  {$EXTERNALSYM PLPCTSTR}
+  PLPTSTR = ^LPTSTR;
+  {$EXTERNALSYM PLPTSTR}
+{$endif}
+
+{$ifndef Delphi2010orNewerCompiler}
+  LPBYTE = PByte;
+  {$EXTERNALSYM LPBYTE}
+{$endif}
+
   QWORD = {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
   {$EXTERNALSYM QWORD}
   PQWORD = ^QWORD;
@@ -90,41 +109,13 @@ type
   LPQWORD = PQWORD;
   {$EXTERNALSYM LPQWORD}
 
-{$ifndef Delphi2009orNewerCompiler}
-  DWORDLONG = {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
-  {$EXTERNALSYM DWORDLONG}
-{$endif}
-  PDWORDLONG = ^DWORDLONG;
-  {$EXTERNALSYM PDWORDLONG}
-  LPDWORDLONG = PDWORDLONG;
-  {$EXTERNALSYM LPDWORDLONG}
-
-{$ifndef Delphi2orNewerCompiler}
-  LONGLONG = Int64;
-  {$EXTERNALSYM LONGLONG}
-{$endif}
-  PLONGLONG = ^LONGLONG;
-  {$EXTERNALSYM PLONGLONG}
-
-{$ifndef Delphi2007orNewerCompiler}
-  ULONGLONG = {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
-  {$EXTERNALSYM ULONGLONG}
-{$endif}
-  PULONGLONG = ^ULONGLONG;
-  {$EXTERNALSYM PULONGLONG}
-
 {$ifndef Delphi2010orNewerCompiler}
-  LPBYTE = PByte;
-  {$EXTERNALSYM LPBYTE}
   USHORT = Word;
   {$EXTERNALSYM USHORT}
 {$endif}
+{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi XE2, but existing in Delphi 11.3!
   PUSHORT = ^USHORT;
   {$EXTERNALSYM PUSHORT}
-
-{$ifndef Delphi2010orNewerCompiler}
-  PLPCTSTR = ^LPCTSTR;
-  PLPTSTR = ^LPTSTR;
 {$endif}
 
 {$ifndef Delphi2007orNewerCompiler}
@@ -144,6 +135,36 @@ type
   HANDLE_PTR = type NativeUInt;
   {$EXTERNALSYM HANDLE_PTR}
 {$endif}
+
+{$ifndef Delphi2010orNewerCompiler}
+  SIZE_T = ULONG_PTR;
+  {$EXTERNALSYM SIZE_T}
+  SSIZE_T = LONG_PTR;
+  {$EXTERNALSYM SSIZE_T}
+{$endif}
+
+{$ifndef Delphi2orNewerCompiler}
+  LONGLONG = Int64;
+  {$EXTERNALSYM LONGLONG}
+{$endif}
+  PLONGLONG = ^LONGLONG;
+  {$EXTERNALSYM PLONGLONG}
+
+{$ifndef Delphi2009orNewerCompiler}
+  DWORDLONG = {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
+  {$EXTERNALSYM DWORDLONG}
+{$endif}
+  PDWORDLONG = ^DWORDLONG;
+  {$EXTERNALSYM PDWORDLONG}
+  LPDWORDLONG = PDWORDLONG;
+  {$EXTERNALSYM LPDWORDLONG}
+
+{$ifndef Delphi2007orNewerCompiler}
+  ULONGLONG = {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
+  {$EXTERNALSYM ULONGLONG}
+{$endif}
+  PULONGLONG = ^ULONGLONG;
+  {$EXTERNALSYM PULONGLONG}
 {$endif}
 
 {$IF COMPILERVERSION < 31}
@@ -155,9 +176,6 @@ type
   UnicodeChar = WideChar;
   PUnicodeChar = ^WideChar;
 {$ENDIF}
-
-  size_t = NativeUInt;
-  ssize_t = NativeInt;
 
   //To support pointer arithmetic, we need a custom datatype, because support for it has changed throughout the years.
   //https://helloacm.com/pointer-arithmetic-in-delphi/
@@ -854,7 +872,7 @@ var
 {$endif}
 
 {$ifdef MSWINDOWS}
-{$ifdef Delphi2010orNewerCompiler} //Use delayed loading
+{$ifdef DELAYEDLOADING}
 {.$ifndef Delphi4orNewerCompiler}
 //While this exists in Delphi4+, it will be loaded on startup. On systems before Windows 2000 this will crash,
 //because GetGuiResources doesn't exist there. So we HAVE to use our delayed loading implementation!
@@ -933,7 +951,7 @@ function SetProcessUserModeExceptionPolicy(dwFlags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM SetProcessUserModeExceptionPolicy}
 function SetProcessUserModeExceptionPolicy; external kernel32 name 'SetProcessUserModeExceptionPolicy' delayed;
 {.$endif}
-{$else}
+{$else} //DELAYEDLOADING
 var
 {.$ifndef Delphi4orNewerCompiler}
   {$EXTERNALSYM GetGuiResources}
@@ -943,7 +961,7 @@ var
   DwmEnableComposition: function (uCompositionAction: UINT): HResult; stdcall;
   //DwmIsCompositionEnabled: function (out pfEnabled: BOOL): HResult; stdcall;
 {$endif}
-{$ifndef Delphi2010orNewerCompiler}
+{$ifndef Delphi2009orNewerCompiler}
   GlobalMemoryStatusEx: function (var lpBuffer: TMemoryStatusEx): BOOL; stdcall;
   GetNativeSystemInfo: procedure (var lpSystemInformation: TSystemInfo); stdcall;
   GetErrorMode: function : UINT; stdcall;
@@ -1115,8 +1133,8 @@ var
 implementation
 
 {$ifdef MSWINDOWS}
-{$ifndef Delphi2010orNewerCompiler} //NOT Use delayed loading
-//Only used for DelayFunc.
+//For delay loading functionality:
+{$ifndef DELAYEDLOADING}
 var
   UserLib, ShellLib, DWMAPILib: HMODULE;
 {$endif}
@@ -1576,7 +1594,7 @@ end;
 
 initialization
 {$ifdef MSWINDOWS}
-{$ifndef Delphi2010orNewerCompiler} //NOT Use delayed loading
+{$ifndef DELAYEDLOADING}
   //Initialize the delayed loading functions now, because this version of Delphi
   //doesn't support delayed loading.
   //Note: The module 'kernel32' is always loaded inside a process.
@@ -1628,6 +1646,13 @@ initialization
   {$DEFINE DelayFunc_Delphi2009Done}
 {$endif}
 {$ifndef Delphi2010orNewerCompiler}
+  if ShellLib = 0 then
+    ShellLib:=SafeLoadLibrary('shell32.dll');
+  if ShellLib = 0 then
+    SHRestricted := nil
+  else
+    SHRestricted := GetProcAddress(ShellLib, 'SHRestricted');
+
   DelayFunc_SHRestricted := Assigned(SHRestricted);
   {$DEFINE DelayFunc_Delphi2010Done}
 {$endif}
@@ -1636,12 +1661,6 @@ initialization
   GetFirmwareType := GetProcAddress(GetModuleHandle('kernel32'), 'GetFirmwareType');
   GetProcessUserModeExceptionPolicy := GetProcAddress(GetModuleHandle('kernel32'), 'GetProcessUserModeExceptionPolicy');
   SetProcessUserModeExceptionPolicy := GetProcAddress(GetModuleHandle('kernel32'), 'SetProcessUserModeExceptionPolicy');
-
-  ShellLib:=SafeLoadLibrary('shell32.dll');
-  if ShellLib = 0 then
-    SHRestricted := nil
-  else
-    SHRestricted := GetProcAddress(ShellLib, 'SHRestricted');
 
   DelayFunc_IsWow64Process2 := Assigned(IsWow64Process2);
   DelayFunc_GetFirmwareType := Assigned(GetFirmwareType);
@@ -1687,7 +1706,7 @@ initialization
 {$endif}
 
 {$ifdef MSWINDOWS}
-{$ifndef Delphi2010orNewerCompiler} //NOT Use delayed loading
+{$ifndef DELAYEDLOADING}
 finalization
   if UserLib<> 0 then
   begin

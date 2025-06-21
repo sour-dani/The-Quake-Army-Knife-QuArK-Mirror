@@ -43,7 +43,7 @@ type
  PyString = AnsiString;
 
  {$IFDEF PYTHON25}
- Py_ssize_t = ssize_t;
+ Py_ssize_t = NativeInt;
  Py_ssize_tPtr = ^Py_ssize_t;
  {$ENDIF}
 
@@ -1233,7 +1233,7 @@ end;
 //a PyObject, but we're "mis"-parsing it as two pointers, which is functionally equivalent.
 function Py_BuildValueX(const fmt: PyChar; const Args: array of const) : PyObject;
 var
-  StackGrowth: size_t;
+  StackGrowth: NativeUInt;
 asm
   {$IFDEF CPUX86}
   //EAX: fmt
@@ -1545,7 +1545,7 @@ end;
 //See documentation for Py_BuildValueX above for more information
 function PyArg_ParseTupleX(src: PyObject; const fmt: PyChar; const Args: array of const) : Integer;
 var
-  StackGrowth: size_t;
+  StackGrowth: NativeUInt;
 asm
   {$IFDEF CPUX86}
   //EAX: src
