@@ -26,6 +26,11 @@ interface
 
 uses Classes, Types, Windows, SysUtils{$IFDEF Delphi6orNewerCompiler}, StrUtils{$ENDIF};
 
+{$ifndef Delphi6orNewerCompiler}
+//Delphi 5 and earlier don't support other platforms, so they don't define this conditional.
+{$DEFINE MSWINDOWS}
+{$endif}
+
 {$ifdef Delphi2010orNewerCompiler}
 {$ifdef MSWINDOWS}
 //Delphi 2010 and higher supports delayed loading on Windows.
@@ -63,30 +68,25 @@ type
 //  https://stackoverflow.com/questions/24507704/difference-between-longint-and-integer-longword-and-cardinal
 //  https://stackoverflow.com/questions/7630781/delphi-2007-and-xe2-using-nativeint
 //  https://blog.dummzeuch.de/2018/09/08/nativeint-nativeuint-type-in-various-delphi-versions/
+//Note that Delphi 2009 has a compiler bug with NativeUInt (http://qc.embarcadero.com/wc/qcmain.aspx?d=71292),
+//so we supply a proper NativeUInt for Delphi 2009 as well.
 {$ifndef Delphi2009orNewerCompiler}
 {$IFDEF CPU64BITS}
-  NativeInt = Int64;
-  NativeUInt = UInt64;
+  NativeInt = Int64; //Integer is 32-bit on 64-bit platforms, so it cannot be used.
 {$ELSE}
-  //This appears to be true in (32-bit) Delphi
   NativeInt = Integer;
-  NativeUInt = Cardinal;
 {$ENDIF}
 
   PNativeInt = ^NativeInt;
-  PNativeUInt = ^NativeUInt;
-{$else}
+{$endif}
 {$ifndef Delphi2010orNewerCompiler}
-  //Delphi 2009 has a compiler bug with NativeUInt (http://qc.embarcadero.com/wc/qcmain.aspx?d=71292).
 {$IFDEF CPU64BITS}
-  NativeUInt = UInt64;
+  NativeUInt = UInt64; //Cardinal is 32-bit on 64-bit platforms, so it cannot be used.
 {$ELSE}
-  //This appears to be true in (32-bit) Delphi
   NativeUInt = Cardinal;
 {$ENDIF}
 
   PNativeUInt = ^NativeUInt;
-{$endif}
 {$endif}
 
 {$ifdef MSWINDOWS}
@@ -846,11 +846,7 @@ function TryStrToUInt(const S: string; out Value: Cardinal): Boolean;
 
 {$ifndef DelphiXE6orNewerCompiler} //FIXME: Not sure about the version of Delphi these were added
 function UIntToStr(Value: Cardinal): string; overload;
-{$ifdef Delphi2007orNewerCompiler} //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
-function UIntToStr(Value: UInt64): string; overload;
-{$else}
-function UIntToStr(Value: Int64): string; overload;
-{$endif}
+function UIntToStr(Value: {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}): string; overload; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
 {$endif}
 
 {$ifndef Delphi2005orNewerCompiler}
@@ -1185,17 +1181,10 @@ begin
   FmtStr(Result, '%u', [Value]);
 end;
 
-{$ifdef Delphi2007orNewerCompiler}
-function UIntToStr(Value: UInt64): string;
+function UIntToStr(Value: {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}): string; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
 begin
   FmtStr(Result, '%u', [Value]);
 end;
-{$else}
-function UIntToStr(Value: Int64): string;
-begin
-  FmtStr(Result, '%u', [Value]);
-end;
-{$endif}
 {$endif}
 
 {$ifndef Delphi2005orNewerCompiler}
@@ -1375,7 +1364,7 @@ begin
   if UseBoolStrs then
     //This is a down-scaled version of BoolToStr, that doesn't
     //support UseBoolStrs.
-    raise exception.create('BoolToStr: UseBoolStrs not implemented!')
+    raise Exception.Create('BoolToStr: UseBoolStrs not implemented!')
   else
     Result := cSimpleBoolStrs[B];
 end;
@@ -1474,6 +1463,9 @@ end;*)
 {$ENDIF}
 
 {$ifdef MSWINDOWS}
+const
+  msgGetVersionExFailed = 'Unable to retrieve system details. Call to GetVersionEx failed!';
+
 function CheckWin32VersionWithServicePack(AMajor, AMinor, AServicePackMajor, AServicePackMinor: Integer): Boolean;
 var
   OS: TOSVersionInfoEx;
@@ -1489,7 +1481,7 @@ begin
     ZeroMemory(@OS,SizeOf(OS));
     OS.dwOSVersionInfoSize:=SizeOf(TOSVersionInfoEx);
     if not GetVersionEx(POSVersionInfo(@OS)^) then
-      raise exception.create('Unable to retrieve system details. Call to GetVersionEx failed!');
+      raise Exception.Create(msgGetVersionExFailed);
     Win32ServicePackMajor:=OS.wServicePackMajor;
     Win32ServicePackMinor:=OS.wServicePackMinor;
   end;
@@ -1507,7 +1499,7 @@ begin
   ZeroMemory(@OS,SizeOf(OS));
   OS.dwOSVersionInfoSize:=SizeOf(TOSVersionInfo);
   if not GetVersionEx(OS) then
-    raise exception.create('Unable to retrieve system details. Call to GetVersionEx failed!');
+    raise Exception.Create(msgGetVersionExFailed);
   Win32BuildNumber:=OS.dwBuildNumber;
   Result := (Win32MajorVersion > AMajor) or
             ((Win32MajorVersion = AMajor) and (Win32MinorVersion >= AMinor)) or
