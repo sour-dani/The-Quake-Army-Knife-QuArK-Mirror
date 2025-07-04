@@ -40,18 +40,24 @@ type
     class procedure FileObjectClassInfo(var Info: TFileObjectClassInfo); override;
   end;
 
-  (***********  Quake 1 and Hexen II .mdl format  ***********)
+(***********  Quake 1 and Hexen II .mdl format  ***********)
+const
+  cSignatureMdlID = $4F504449; { 'IDPO' --> "ID Poly" }
+  cVersionMdlID = 6;
+
+  cSignatureMdlRaven = $4F504152; { 'RAPO' --> "Raven Poly"}
+  cVersionMdlRaven = $32;
+
+(***********  Half-Life 1 and Half-Life 2 .mdl format  ***********)
+const
+  cSignatureMdlValveST = ((Ord('T') shl 24) or (ord('S') shl 16) or (ord('D') shl 8) or ord('I')); //Studio
+  cSignatureMdlValveSQ = ((Ord('Q') shl 24) or (ord('S') shl 16) or (ord('D') shl 8) or ord('I')); //Sequence group
+  cSignatureMdlValveAG = ((Ord('G') shl 24) or (ord('A') shl 16) or (ord('D') shl 8) or ord('I')); //Animation group
+
+  cVersionMdlValveHL1 = 10; //Half-Life 1
+  cVersionMDLValveHL2 = 44; //Half-Life 2, upto and including Source 2006
 
 const
-  SignatureMdl = $4F504449; { 'IDPO' }
-  VersionMdl = 6;
-  SignatureMdlRa = $4F504152; { 'RAPO'  for PoP }
-  VersionMdlRa = $32;
-
-  SignatureHLMdl = ((Ord('T') shl 24) or (ord('S') shl 16) or (ord('D') shl 8) or ord('I'));
-  SignatureHLMdlS = ((Ord('Q') shl 24) or (ord('S') shl 16) or (ord('D') shl 8) or ord('I'));
-  VersionHLMdl = 10;
-
   VecteursNormaux: array[0..161, 0..2] of Single =
     ({$I anorms.inc});
 
@@ -462,7 +468,7 @@ type
   hl2_model_t = record
     id: Longint;
     version: Longint;
-    checksum: longword;        // this has to be the same in the phy and vtx files to load!
+    checksum: Longword; //long, so should be Longint?       // this has to be the same in the phy and vtx files to load!
     name: array [1..64] of char;
     length: Longint;
     eyeposition: vec3_t;    // ideal eye position
@@ -538,9 +544,13 @@ type
     bonetablebynameindex: Longint;
     // used by tools only that don't cache, but persist mdl's peer data
     // engine uses virtualModel to back link to cache pointers
-    pVertexBase:Pointer;
-    pIndexBase:Pointer;
-    unused: array [1..8] of longint;        // remove as appropriate
+    pVertexBase: Pointer;
+    pIndexBase: Pointer;
+    constdirectionallightdot: Byte;
+    rootLOD: Byte;
+    unused: array[1..2] of Byte;
+    zeroframecacheindex: Longint;
+    unused2: array [1..6] of longint;
   end;
 
 
@@ -844,7 +854,6 @@ var
   PreviousTime: Single;
   NextTime: ^Single;
   mdl_ra: mdl_ra_t;
-  RA: Boolean;
   TrisRA: ^itriangle_ra_t absolute Tris;
   //----
   C: QComponent;
@@ -857,219 +866,258 @@ var
     F.ReadBuffer(Buf, Count);
   end;
 
+var
+ Signature: LongInt;
+ Version: LongInt;
 begin
   case ReadFormat of
-    rf_Default: begin { as stand-alone file }
-        if FSize < SizeOf(mdl) then
-          raise EError(5519);
-        F.ReadBuffer(mdl, SizeOf(mdl));
-        Dec(FSize, SizeOf(mdl));
-        if (mdl.id = SignatureHLMdl) and (mdl.version = 44) then
+    rf_Default:
+    begin { as stand-alone file }
+      if FSize < SizeOf(mdl) then
+        raise EError(5519);
+
+      F.ReadBuffer(Signature, SizeOf(Signature));
+      F.ReadBuffer(Version, SizeOf(Version));
+      F.Seek(-(SizeOf(Signature)+SizeOf(Version)), soCurrent);
+
+      case Signature of
+        cSignatureMdlID:
         begin
-          ReadHL2Model(F,FSize);
+          if Version = cVersionMDLID then
+            F.ReadBuffer(mdl, SizeOf(mdl))
+          else
+            Raise EErrorFmt(5503, [LoadName, 'Quake 1']);
+        end;
+
+        cSignatureMdlRaven:
+        begin
+          if Version = cVersionMDLRaven then
+            F.ReadBuffer(mdl_ra, SizeOf(mdl_ra))
+          else
+            Raise EErrorFmt(5503, [LoadName, 'Hexen 2']);
+        end;
+
+        cSignatureMdlValveST:
+        begin
+          case Version of
+            cVersionMDLValveHL1:
+            begin
+//              LoadHLModel(F, FSize);
+//              Exit;
+              Raise EErrorFmt(5503, [LoadName, 'Half-Life 1 Studio'])
+            end;
+
+            cVersionMDLValveHL2:
+            begin
+              ReadHL2Model(F, FSize);
+              Exit;
+            end;
+
+            else
+              Raise EErrorFmt(5503, [LoadName, 'Valve Studio']);
+          end;
+        end;
+
+        cSignatureMdlValveSQ:
+        begin
+          if Version = cVersionMDLValveHL1 then
+            Raise EErrorFmt(5503, [LoadName, 'Half-Life 1 Sequence Group']) //TODO
+          else
+            Raise EErrorFmt(5503, [LoadName, 'Valve Sequence Group']);
+        end;
+
+        cSignatureMdlValveAG:
+        begin
+          if Version = cVersionMDLValveHL2 then
+            Raise EErrorFmt(5503, [LoadName, 'Half-Life 2 Animation Group']) //TODO
+          else
+            Raise EErrorFmt(5503, [LoadName, 'Valve Animation Group']);
+        end;
+
+        else
+          Raise EErrorFmt(5593, [LoadName, mdl.id]);
+      end;
+
+      { setup Root }
+      Root := Loaded_Root;
+      C := Loaded_Component(Root, '');
+      ObjectGameCode := mjNotQuake2;
+      Root.Specifics.Strings['seamtrick'] := '1';
+      Size[1] := mdl.synctype;
+      Size[2] := mdl.flags;
+      Root.SetFloatsSpec('flags', Size);
+
+      { load skins }
+      Size[1] := mdl.skinwidth;
+      Size[2] := mdl.skinheight;
+      {Taille1:=mdl.skinwidth * mdl.skinheight;}
+      SkinCounter := 0;
+      for I := 1 to mdl.numskins do
+      begin
+        Read1(J, SizeOf(LongInt));
+        if J = 0 then
+        begin
+          SkinGroup.count := 1;
+          NextTime := nil;
         end
         else
         begin
-
-        RA := (mdl.id = SignatureMdlRa) and (mdl.version = VersionMdlRa);
-        if RA then
-          Read1(mdl_ra, SizeOf(mdl_ra))
-        else
-        begin
-          if (mdl.id <> SignatureMdl) or (mdl.version <> VersionMdl) then
-            if ((mdl.id = SignatureHLMdl) or (mdl.id = SignatureHLMdlS)) and (mdl.version = VersionHLMdl) then
-            begin
-//              Inc(FSize, SizeOf(Mdl));
-//              F.Seek(-SizeOf(Mdl), soCurrent);
-//              LoadHLModel(F, FSize);
-//              Exit;
-              Raise EErrorFmt(5503, [LoadName])
-            end
-            else
-              raise EErrorFmt(5593, [LoadName, mdl.id, mdl.version, SignatureMdl, VersionMdl]);
-          mdl_ra.numstverts := mdl.numverts;
+          Read1(SkinGroup, SizeOf(SkinGroup));
+          SetLength(Times, SkinGroup.count * SizeOf(Single));
+          PArithByte(NextTime) := PArithByte(Times);
+          Read1(NextTime^, SkinGroup.count * SizeOf(Single));
         end;
+        PreviousTime := 0;
+        for K := 1 to SkinGroup.count do
+        begin
+          Position0 := F.Position;
+          SkinObj := Loaded_Skin(C, FmtLoadStr1(2372, [SkinCounter]), Size, DeltaW);
+          B:=SkinObj.Specifics.ByteArray['Image1'];
+          P:=PArithByte(B)+Length(B);
+          F.Position := Position0;
+          Inc(SkinCounter);
+          if NextTime <> nil then
+          begin
+            if K = 1 then
+              SkinObj.Specifics.Strings['group'] := '1';
+            SkinObj.SetFloatSpec('duration', NextTime^ - PreviousTime);
+            PreviousTime := NextTime^;
+            Inc(NextTime);
+          end;
+          for J := 1 to mdl.skinheight do
+          begin
+            Inc(P, DeltaW);
+            Read1(P^, mdl.skinwidth);
+          end;
+        end;
+      end;
 
-        { setup Root }
-        Root := Loaded_Root;
-        C := Loaded_Component(Root, '');
-        ObjectGameCode := mjNotQuake2;
-        Root.Specifics.Strings['seamtrick'] := '1';
-        Size[1] := mdl.synctype;
-        Size[2] := mdl.flags;
-        Root.SetFloatsSpec('flags', Size);
+      { load Skin Vertices and Triangles }
+      if mdl.id = cSignatureMdlRaven then
+        Taille1 := SizeOf(stvert_t) * mdl_ra.numstverts
+      else
+        Taille1 := SizeOf(stvert_t) * mdl.numverts;
+      GetMem(STData, Taille1);
+      try
+        Read1(STData^, Taille1);
 
-        { load skins }
-        Size[1] := mdl.skinwidth;
-        Size[2] := mdl.skinheight;
-        {Taille1:=mdl.skinwidth * mdl.skinheight;}
-        SkinCounter := 0;
-        for I := 1 to mdl.numskins do
+        Taille1 := SizeOf(itriangle_t) * mdl.numtris;
+        GetMem(Triangles, Taille1);
+        try
+          Read1(Triangles^, Taille1);
+
+          J := mdl.numtris * SizeOf(TComponentTris);
+          SetLength(B, J);
+
+          Delta := mdl.skinwidth div 2;
+          Tris := Triangles;
+          PArithByte(CTris) := PArithByte(B);
+          if mdl.id = cSignatureMdlRaven then
+          begin
+            for I := 1 to mdl.numtris do { PoP Models }
+            begin
+              Derriere := TrisRA^.facesfront = 0;
+              for J := 0 to 2 do
+              begin
+                with CTris^[J] do
+                begin
+                  VertexNo := TrisRA^.index_xyz[J];
+                  with STData^[TrisRA^.index_st[J]] do
+                  begin
+                    S := ss;
+                    T := tt;
+                    if Derriere and (onseam and $20 <> 0) then
+                      Inc(S, Delta);
+                  end;
+                end;
+              end;
+              Inc(TrisRA);
+              Inc(CTris);
+            end;
+          end
+          else { default Q1 and H2 Models }
+            for I := 1 to mdl.numtris do
+            begin
+              Derriere := Tris^.facesfront = 0;
+              for J := 0 to 2 do
+                with CTris^[J] do
+                begin
+                  VertexNo := Tris^.index_xyz[J];
+                  with STData^[Tris^.index_xyz[J]] do
+                  begin
+                    S := ss;
+                    T := tt;
+                    if Derriere and (onseam and $20 <> 0) then
+                      Inc(S, Delta);
+                  end;
+                end;
+              Inc(Tris);
+              Inc(CTris);
+            end;
+          C.Specifics.ByteArray[SpecTris]:=B;
+        finally
+          FreeMem(Triangles);
+        end;
+      finally
+        FreeMem(STData);
+      end;
+
+      { load frames }
+      Taille1 := SizeOf(trivertx_t) * mdl.numverts;
+      GetMem(FrSourcePts, Taille1);
+      try
+        for I := 1 to mdl.numframes do
         begin
           Read1(J, SizeOf(LongInt));
           if J = 0 then
           begin
-            SkinGroup.count := 1;
+            FrameGroup.count := 1;
             NextTime := nil;
           end
           else
           begin
-            Read1(SkinGroup, SizeOf(SkinGroup));
-            SetLength(Times, SkinGroup.count * SizeOf(Single));
+            Read1(FrameGroup, SizeOf(FrameGroup));
+            SetLength(Times, FrameGroup.count * SizeOf(Single));
             PArithByte(NextTime) := PArithByte(Times);
-            Read1(NextTime^, SkinGroup.count * SizeOf(Single));
+            Read1(NextTime^, FrameGroup.count * SizeOf(Single));
           end;
           PreviousTime := 0;
-          for K := 1 to SkinGroup.count do
+          for K := 1 to FrameGroup.count do
           begin
-            Position0 := F.Position;
-            SkinObj := Loaded_Skin(C, FmtLoadStr1(2372, [SkinCounter]), Size, DeltaW);
-            B:=SkinObj.Specifics.ByteArray['Image1'];
-            P:=PArithByte(B)+Length(B);
-            F.Position := Position0;
-            Inc(SkinCounter);
+            Read1(Frame, SizeOf(Frame));
+            Read1(FrSourcePts^, Taille1);
+            FrameObj := Loaded_Frame(C, CharToPas(Frame.Nom));
             if NextTime <> nil then
             begin
               if K = 1 then
-                SkinObj.Specifics.Strings['group'] := '1';
-              SkinObj.SetFloatSpec('duration', NextTime^ - PreviousTime);
+                FrameObj.Specifics.Strings['group'] := '1';
+              FrameObj.SetFloatSpec('duration', NextTime^ - PreviousTime);
               PreviousTime := NextTime^;
               Inc(NextTime);
             end;
-            for J := 1 to mdl.skinheight do
+            SetLength(B, mdl.numverts * SizeOf(vec3_t));
+            PArithByte(CVert) := PArithByte(B);
+            FrSource := FrSourcePts;
+            for J := 0 to mdl.numverts - 1 do
             begin
-              Inc(P, DeltaW);
-              Read1(P^, mdl.skinwidth);
+              with FrSource^ do begin
+                CVert^[0] := mdl.scale[0] * X + mdl.origin[0];
+                CVert^[1] := mdl.scale[1] * Y + mdl.origin[1];
+                CVert^[2] := mdl.scale[2] * Z + mdl.origin[2];
+              end;
+              Inc(FrSource);
+              Inc(CVert);
             end;
+            FrameObj.Specifics.ByteArray[FloatSpecNameOf(SpecVertices)]:=B;
           end;
         end;
-
-        { load Skin Vertices and Triangles }
-        Taille1 := SizeOf(stvert_t) * mdl_ra.numstverts;
-        GetMem(STData, Taille1);
-        try
-          Read1(STData^, Taille1);
-
-          Taille1 := SizeOf(itriangle_t) * mdl.numtris;
-          GetMem(Triangles, Taille1);
-          try
-            Read1(Triangles^, Taille1);
-
-            J := mdl.numtris * SizeOf(TComponentTris);
-            SetLength(B, J);
-
-            Delta := mdl.skinwidth div 2;
-            Tris := Triangles;
-            PArithByte(CTris) := PArithByte(B);
-            if RA then
-            begin
-              for I := 1 to mdl.numtris do { PoP Models }
-              begin
-                Derriere := TrisRA^.facesfront = 0;
-                for J := 0 to 2 do
-                begin
-                  with CTris^[J] do
-                  begin
-                    VertexNo := TrisRA^.index_xyz[J];
-                    with STData^[TrisRA^.index_st[J]] do
-                    begin
-                      S := ss;
-                      T := tt;
-                      if Derriere and (onseam and $20 <> 0) then
-                        Inc(S, Delta);
-                    end;
-                  end;
-                end;
-                Inc(TrisRA);
-                Inc(CTris);
-              end;
-            end
-            else { default Q1 and H2 Models }
-              for I := 1 to mdl.numtris do
-              begin
-                Derriere := Tris^.facesfront = 0;
-                for J := 0 to 2 do
-                  with CTris^[J] do
-                  begin
-                    VertexNo := Tris^.index_xyz[J];
-                    with STData^[Tris^.index_xyz[J]] do
-                    begin
-                      S := ss;
-                      T := tt;
-                      if Derriere and (onseam and $20 <> 0) then
-                        Inc(S, Delta);
-                    end;
-                  end;
-                Inc(Tris);
-                Inc(CTris);
-              end;
-            C.Specifics.ByteArray[SpecTris]:=B;
-          finally
-            FreeMem(Triangles);
-          end;
-        finally
-          FreeMem(STData);
-        end;
-
-        { load frames }
-        Taille1 := SizeOf(trivertx_t) * mdl.numverts;
-        GetMem(FrSourcePts, Taille1);
-        try
-          for I := 1 to mdl.numframes do
-          begin
-            Read1(J, SizeOf(LongInt));
-            if J = 0 then
-            begin
-              FrameGroup.count := 1;
-              NextTime := nil;
-            end
-            else
-            begin
-              Read1(FrameGroup, SizeOf(FrameGroup));
-              SetLength(Times, FrameGroup.count * SizeOf(Single));
-              PArithByte(NextTime) := PArithByte(Times);
-              Read1(NextTime^, FrameGroup.count * SizeOf(Single));
-            end;
-            PreviousTime := 0;
-            for K := 1 to FrameGroup.count do
-            begin
-              Read1(Frame, SizeOf(Frame));
-              Read1(FrSourcePts^, Taille1);
-              FrameObj := Loaded_Frame(C, CharToPas(Frame.Nom));
-              if NextTime <> nil then
-              begin
-                if K = 1 then
-                  FrameObj.Specifics.Strings['group'] := '1';
-                FrameObj.SetFloatSpec('duration', NextTime^ - PreviousTime);
-                PreviousTime := NextTime^;
-                Inc(NextTime);
-              end;
-              SetLength(B, mdl.numverts * SizeOf(vec3_t));
-              PArithByte(CVert) := PArithByte(B);
-              FrSource := FrSourcePts;
-              for J := 0 to mdl.numverts - 1 do
-              begin
-                with FrSource^ do begin
-                  CVert^[0] := mdl.scale[0] * X + mdl.origin[0];
-                  CVert^[1] := mdl.scale[1] * Y + mdl.origin[1];
-                  CVert^[2] := mdl.scale[2] * Z + mdl.origin[2];
-                end;
-                Inc(FrSource);
-                Inc(CVert);
-              end;
-              FrameObj.Specifics.ByteArray[FloatSpecNameOf(SpecVertices)]:=B;
-            end;
-          end;
-        finally
-          FreeMem(FrSourcePts);
-        end;
-
+      finally
+        FreeMem(FrSourcePts);
       end;
 
-      end;
-  else begin // else of case
-      inherited;
     end;
+  else //else of case
+    inherited;
   end;
 end;
 
@@ -1153,8 +1201,8 @@ begin
             FillChar(mdl, SizeOf(mdl), 0);
             F.WriteBuffer(mdl, SizeOf(mdl));
 
-            mdl.id := SignatureMdl;
-            mdl.version := VersionMdl;
+            mdl.id := cSignatureMdlID;
+            mdl.version := cVersionMdlID;
             if Root.GetFloatsSpec('flags', Size) then
             begin
               mdl.synctype := Round(Size[1]);
