@@ -1362,7 +1362,8 @@ var
  BitmapStruct: Windows.TBitmap;
  BmpInfo: TBitmapInfo256;
  BitmapInfo: TBitmapInfo absolute BmpInfo;
- Source, Data: PByte;
+ Source, Data: PByte; //FIXME: TByteDynArray
+ TMP: String; //FIXME: TByteDynArray
  bpp, BaseMemSize: Integer;
  TmpPalette: TPaletteLmp;
 begin
@@ -1413,7 +1414,8 @@ begin
     end;
    end;
 
-  SetPalettedImageData(Game^.PaletteLmp, PChar(Data), BmpInfo.bmiHeader.biWidth, BmpInfo.bmiHeader.biHeight); //FIXME: Remove PChar
+  SetString(TMP, PAnsiChar(Data), BaseMemSize); //FIXME: TByteDynArray
+  SetPalettedImageData(Game^.PaletteLmp, TMP, BmpInfo.bmiHeader.biWidth, BmpInfo.bmiHeader.biHeight);
  finally
   if Data<>nil then FreeMem(Data);
  end;
