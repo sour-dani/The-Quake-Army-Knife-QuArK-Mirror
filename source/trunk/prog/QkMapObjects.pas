@@ -1685,7 +1685,16 @@ begin
    end;
 
    Mdl:=QModel(FileObj1);
-   Mdl.Acces;
+   try
+     Mdl.Acces;
+   except
+     on E: Exception do
+     begin
+       GlobalWarning(FmtLoadStr1(5775, [MdlPath, MdlBase]));
+       Log(LOG_WARNING, E.Message);
+       Continue;
+     end;
+   end;
 
    S:=Q.Specifics.Strings['mdlframe'];
    if S<>'' then
