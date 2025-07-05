@@ -151,8 +151,7 @@ var
 
   VTFImage: Cardinal;
   ImageFormat: VTFImageFormat;
-  Width, Height: Cardinal;
-  NumberOfPixels: Integer;
+  Width, Height, PaddingDest: Cardinal;
   RawData, RawData2: PvlByte;
   HasAlpha: Boolean;
   V: array[1..2] of Single;
@@ -214,10 +213,13 @@ begin
           //DanielPharos: 46340 squared is just below the integer max value.
           if (Width>46340) or (Height>46340) then
             LogAndRaiseError(FmtLoadStr1(5737, [FormatName]));
-          NumberOfPixels:=Width * Height;
           V[1]:=Width;
           V[2]:=Height;
           SetFloatsSpec('Size', V);
+
+          //This is the padding for the 'Image1'-RGB array
+          PaddingDest:=((Width*3+3) and not 3)-(Width*3);
+
           GetMem(RawData,vlImageComputeImageSize(Width, Height, 1, 1, ImageFormat));
           try
             RawData2:=vlImageGetData(0, 0, 0, 0);
@@ -226,13 +228,13 @@ begin
 
             if HasAlpha then
             begin
-              //Allocate quarks image buffers
-              SetLength(ImgData,   NumberOfPixels * 3); {RGB buffer}
-              Setlength(AlphaData, NumberOfPixels);     {alpha buffer}
+              //Allocate image buffers
+              SetLength(ImgData,   (Width + PaddingDest) * Height * 3);
+              SetLength(AlphaData, Width * Height);
 
-              {copy and reverse the upside down RGBA image to quarks internal format}
-              {also the alpha channel is split}
-              Source:=PChar(RawData) + NumberOfPixels * 4; //FIXME: PByte
+              //Copy and reverse the upside down RGBA image to QuArKs internal format
+              //Also the alpha channel is split
+              Source:=PChar(RawData) + Width * Height * 4; //FIXME: PByte
               DestImg:=PChar(ImgData); //FIXME: PByte
               DestAlpha:=PChar(AlphaData); //FIXME: PByte
               for J:=1 to Height do
@@ -251,7 +253,7 @@ begin
                   Inc(pDestImg, 3);
                   Inc(pDestAlpha);
                 end;
-                Inc(DestImg, 3 * Width);
+                Inc(DestImg, (Width * 3) + PaddingDest);
                 Inc(DestAlpha, Width);
               end;
 
@@ -260,11 +262,11 @@ begin
             end
             else
             begin
-              //Allocate quarks image buffers
-              SetLength(ImgData, NumberOfPixels * 3); {RGB buffer}
+              //Allocate image buffers
+              SetLength(ImgData, (Width + PaddingDest) * Height * 3);
 
-              {copy and reverse the upside down RGB image to quarks internal format}
-              Source:=PChar(RawData) + NumberOfPixels * 3; //FIXME: PByte
+              //Copy and reverse the upside down RGB image to QuArKs internal format
+              Source:=PChar(RawData) + Width * Height * 3; //FIXME: PByte
               DestImg:=PChar(ImgData); //FIXME: PByte
               for J:=1 to Height do
               begin
@@ -279,7 +281,7 @@ begin
                   Inc(pSource, 3);
                   Inc(pDestImg, 3);
                 end;
-                Inc(DestImg, 3 * Width);
+                Inc(DestImg, (Width * 3) + PaddingDest);
               end;
 
               Specifics.ByteArray[Spec1]:=ImgData;
@@ -376,7 +378,8 @@ begin
               on EConvertError do
                 //FIXME: Log!
                 TexFormat := IMAGE_FORMAT_DXT5;
-            end;            ImageFormat:=IMAGE_FORMAT_RGBA8888;
+            end;
+            ImageFormat:=IMAGE_FORMAT_RGBA8888;
             GetMem(RawData2, Width * Height * 4);
             try
               SourceImg:=PChar(PSD.Data) + Width * Height * 3;
@@ -420,7 +423,8 @@ begin
               on EConvertError do
                 //FIXME: Log!
                 TexFormat := IMAGE_FORMAT_DXT5;
-            end;            ImageFormat:=IMAGE_FORMAT_RGB888;
+            end;
+            ImageFormat:=IMAGE_FORMAT_RGB888;
             GetMem(RawData2, Width * Height * 3);
             try
               SourceImg:=PChar(PSD.Data) + Width * Height * 3;
