@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Call of Duty exploits allegedly being abused</headline>
+
+<p>If you are playing Call of Duty online, please be aware that there appears to be <a target="_blank" href="https://x.com/vxunderground/status/1940639088576811516">exploits actively used to compromise and infect computers</a>. Activision has <a target="_blank" href="https://x.com/CODUpdates/status/1941286795565728085">taken Call of Duty: WWII on PC offline</a>, probably due to this. However, there are reports that there are <a target="_blank" href="https://x.com/LasagneManne/status/1940647355042484440">similar active exploits for just about every Call of Duty game</a>, so be careful out there!</p>
+
+
+<p>Safe gaming,<br>
+DanielPharos</p>
