@@ -17,17 +17,16 @@ if (isset($_GET['showxp']))
 }
 else
 {
-	$ShowXP = FALSE;
+	$ShowXP = TRUE;
 }
 
-//FIXME: Rename to "showunsupported"?
-if (isset($_GET['showall']))
+if (isset($_GET['showunsupported']))
 {
-	$ShowAll = ($_GET['showall'] != 0);
+	$ShowUnsupported = ($_GET['showunsupported'] != 0);
 }
 else
 {
-	$ShowAll = FALSE;
+	$ShowUnsupported = FALSE;
 }
 
 function DoesGameHaveLinks($Tag)
@@ -58,7 +57,7 @@ function pageLocalDisplay()
 
 	global $webmasteremail;
 	global $Applications, $Companies, $Engines, $Games;
-	global $ShowAll, $ShowXP;
+	global $ShowUnsupported, $ShowXP;
 
 	$Table2Rows = array('table2rowA', 'table2rowB');
 
@@ -68,7 +67,7 @@ function pageLocalDisplay()
 
 	$bodytext .= '<form action="games.php" method="GET"><fieldset><legend>Filter the gameslist</legend>
 	<label><input type="checkbox" name="showxp" value="1"'.($ShowXP ? ' checked' : '').'>Include expansions</label><br>
-	<label><input type="checkbox" name="showall" value="1"'.($ShowAll ? ' checked' : '').'>Include partially supported and currently unsupported</label><br>
+	<label><input type="checkbox" name="showunsupported" value="1"'.($ShowUnsupported ? ' checked' : '').'>Include partially supported and currently unsupported</label><br>
 	<input type="submit">
 	</fieldset></form>';
 
@@ -81,7 +80,7 @@ function pageLocalDisplay()
 	{
 		$CurrentGame = &$Games[$Game];
 
-		if ((!$ShowAll) and is_null($CurrentGame->FromVersion))
+		if ((!$ShowUnsupported) and is_null($CurrentGame->FromVersion))
 		{
 			continue;
 		}
@@ -116,7 +115,7 @@ function pageLocalDisplay()
 	{
 		$CurrentGame = &$Games[$Game];
 
-		if ((!$ShowAll) and is_null($CurrentGame->FromVersion))
+		if ((!$ShowUnsupported) and is_null($CurrentGame->FromVersion))
 		{
 			continue;
 		}
@@ -210,7 +209,7 @@ function pageLocalDisplay()
 				$bodytext .= '<tr><td class="tablecell" width=200>';
 				$bodytext .= 'Needs game:';
 				$bodytext .= '</td><td class="tablecell">';
-				$bodytext .= '<a href="games.php?showall=1#'.$Games[$GameNeeded]->GameID.'">'.$Games[$GameNeeded]->GameTitle.'</a>';
+				$bodytext .= '<a href="games.php?showunsupported=1#'.$Games[$GameNeeded]->GameID.'">'.$Games[$GameNeeded]->GameTitle.'</a>';
 				$bodytext .= '</td></tr>';
 			}
 		}

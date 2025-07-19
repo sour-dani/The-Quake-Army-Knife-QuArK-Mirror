@@ -2089,7 +2089,7 @@ function getGamesQuery($GameID)
 		return '';
 	$QueryText = array();
 	if (is_null($Games[$Game]->FromVersion))
-		$QueryText[] = 'showall=1';
+		$QueryText[] = 'showunsupported=1';
 	if (!is_null($Games[$Game]->NeedsGame))
 		$QueryText[] = 'showxp=1';
 	if (count($QueryText) === 0)
