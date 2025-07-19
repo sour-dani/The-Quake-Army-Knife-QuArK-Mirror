@@ -26,7 +26,7 @@ Info = {
 import quarkpy.qutils
 import quarkx
 from quarkpy.qutils import *
-#from quarkpy.maputils import *
+from quarkpy.maputils import *
 
 
 class Key:
@@ -228,7 +228,7 @@ class Entity:
         self.m_help = None #JackHammer dialect
 
     def Type(self):
-        raise "This is pure virtual"
+        raise RuntimeError("This is pure virtual")
 
     def SetClassname(self, classname):
         self.m_classname = classname
@@ -383,7 +383,7 @@ def CreateClass(token):
     elif (token.lower() == "npcclass"):
         theEntity = PointEntity()
     else:
-        raise "Unknown @-token:", token
+        raise RuntimeError("Unknown @-token: " + token)
 
 def CloseClass(token):
     global theEntity, theEntities
@@ -608,7 +608,7 @@ def EndKey(token):
     if (currentkeyname is None):
         return
     if (theKey is None or theEntity is None):
-        raise "Failure in EndKey()"
+        raise RuntimeError("Failure in EndKey()")
     if (currentkeytype != None):
         debug(currentkeytype+" "+currentkeyname)
         theKey.m_keyname = currentkeytype+'#'+theKey.m_keyname
@@ -633,7 +633,7 @@ def readentirefile(file):
         for line in f.readlines():
             line = line.strip()
 
-            # Remove end-of-line comments, but not from within strings (which are always double-quoted)
+            #Remove end-of-line comments, but not from within strings (which are always double-quoted)
             index = line.find("//")
             while index != -1:
                 nr_quotes = line[:index].count("\"")
@@ -641,12 +641,12 @@ def readentirefile(file):
                     line = line[:index].rstrip()
                 index = line.find("//", index + len("//"))
 
-            # Added 4/30/2008 - Remove @include and @mapsize statements
-            if line.startswith("@include") or line.startswith("@mapsize"): 
+            #Remove @include and @mapsize statements
+            if line.startswith("@include") or line.startswith("@mapsize"):
                 continue
 
             if line:
-                filecontents = filecontents + line + "\n"
+                filecontents += line + "\n"
     except:
         f.close()
     return filecontents
@@ -902,30 +902,29 @@ def makeqrk(root, filename, gamename, nomessage=0):
     state = 'STATE_UNKNOWN'
     while (len(srcstring) > 1):
         token, token_is, srcstring = getnexttoken(srcstring)
-        #print
-        #print "state:", state
-        #print "token:", token
-        #print "token_is:", toktypes[token_is]
-        #print "nextstring:", repr(srcstring[:64])
+        print
+        print "state:", state
+        print "token:", token
+        print "token_is:", toktypes[token_is]
+        print "nextstring:", repr(srcstring[:64])
         # Figure out, if the token_is type is expected or not
         expectedtypes = []
         newstate = None
-        typestates = statediagram[state]
-        for type, nextstate, func in typestates:
+        for type, nextstate, func in statediagram[state]:
             if (type == token_is):
                 # We found the correct token type, now remember what new state we're going into
                 newstate = nextstate
                 break
             expectedtypes.append(type)
         if newstate is None:
-            #squawk("Parse error: Got type" + toktypes[token_is] + "but expected type(s);" + [toktypes[i] for i in expectedtypes])
-            #squawk("Last classname was = " + str(currentclassname))
-            #squawk("nextstring: " + repr(srcstring[:64]))
-            #squawk("Associated function: " + func_str)
-            if func == "None":
+            if func is None:
                 func_str = "None"
             else:
                 func_str = str(func)
+            squawk("Parse error: Got type %s but expected type(s): %s" % (toktypes[token_is], ", ".join([toktypes[i] for i in expectedtypes])))
+            squawk("Last classname was = " + str(currentclassname))
+            squawk("nextstring: " + repr(srcstring[:64]))
+            squawk("Associated function: " + func_str)
             quarkx.beep()
             quarkx.msgbox("PARSE ERROR !\nNon-supported Entity Definition file(s) format.\n\nGot type " + str(toktypes[token_is]) + "\nbut expected type(s): " + str([toktypes[i] for i in expectedtypes]) + "\n\nPlease contact QuArK development team with copy of Entity file(s).", quarkpy.qutils.MT_ERROR, quarkpy.qutils.MB_ABORT)
             return None

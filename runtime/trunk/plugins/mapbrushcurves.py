@@ -135,7 +135,6 @@ def outerArcLine(n, p0, p1, p2):
             current = quarkx.vect(1.0-math.sin(a), 1.0-math.cos(a), 0)
             currdir = quarkx.vect(-math.cos(a), math.sin(a), 0)
         mid = intersectionPoint2d(prev,prevdir, current, currdir)
-#        squawk(`mid`)
         points.append(mid)
         prev = current
         prevdir = currdir

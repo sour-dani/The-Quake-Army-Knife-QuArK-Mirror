@@ -18,6 +18,7 @@ Info = {
 import quarkpy.qutils
 import quarkx
 from quarkpy.qutils import *
+#from quarkpy.maputils import *
 
 class Key:
     def __init__(self):
@@ -459,16 +460,18 @@ def DoneComment(token):
 ## ------------
 
 def readentirefile(file):
-    f = open(file, "r")
     filecontents = ""
-    while 1:
-        line = f.readline()
-        if not line:
-            break
+    f = open(file, "r")
+    try:
+        for line in f.readlines():
+            line = line.strip()
+
         line = line.strip()
+
         if line:
-            filecontents = filecontents + line + "\n"
-    f.close()
+            filecontents += line + "\n"
+    finally:
+        f.close()
     return filecontents
 
 TYPE_UNKNOWN    = 0
@@ -642,16 +645,14 @@ def makeqrk(root, filename, gamename, nomessage=0):
             if quarkx.setupsubset(SS_FILES, "DEF")["IgnoreUnknownLines"] is not None:
                 newstate = 'STATE_UNKNOWN'
             else:
-           #     print "Parse error: Got type", token_is
-           #     print "but expected type(s);", expectedtypes
-           #     print "Debug: Last classname was =", currentclassname
-           #     print "Debug:", srcstring[:64]
-           #     print "Debug - Associated function: ", func
-           #     raise "Parse error!"
                 if func is None:
                     func_str = "None"
                 else:
                     func_str = str(func)
+                #squawk("Parse error: Got type %s but expected type(s): %s" % (toktypes[token_is], ", ".join([toktypes[i] for i in expectedtypes])))
+                #squawk("Last classname was = " + str(currentclassname))
+                #squawk("nextstring: " + srcstring[:64])
+                #squawk("Associated function: " + func_str)
                 quarkx.beep()
                 quarkx.msgbox("PARSE ERROR !\nNon-supported Entity Definition file(s) format.\n\nGot type " + str(token_is) + "\nbut expected type(s): " + str(expectedtypes) + "\n\nDebug: Last classname was = " + str(currentclassname) + "\nDebug: " + str(srcstring[:64]) + "\nDebug - Associated function: " + func_str + "\n\nContact QuArK development team with copy of Entity file(s).", quarkpy.qutils.MT_ERROR, quarkpy.qutils.MB_ABORT)
                 return None
