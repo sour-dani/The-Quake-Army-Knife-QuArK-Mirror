@@ -51,7 +51,7 @@ $Games = array();
 
 $Games[] = new cGame('630' ,'6DX' ,'6DX engine' ,'6DX' ,'6dx.gif'
                     ,'https://sourceforge.net/projects/aztica/' ,NULL ,'6DX', FALSE
-                    ,'6DX is a COM-based 3D Engine for windows using DirectX.'
+                    ,'6DX is a COM-based 3D Engine for Windows using DirectX.'
                     ,NULL
                     ,NULL
                     ,NULL
@@ -1639,7 +1639,7 @@ $Games[] = new cGame('641a1' ,'JA' ,'Star Wars Jedi Knight: Jedi Academy' ,'JA' 
                     ,array('LucasArts', 'Activision')
                     ,NULL
                     );
-$Games[] = new cGame(NULL ,'SS' ,'Steel Storm: Burning Retribution' ,'SS' ,NULL
+$Games[] = new cGame(NULL ,'SSBR' ,'Steel Storm: Burning Retribution' ,'SSBR' ,NULL
                     ,'https://www.steel-storm.com/' ,'https://en.wikipedia.org/wiki/Steel_Storm' ,'DarkPlaces', FALSE
                     ,'Steel Storm: Burning Retribution is a top down action shooter with old school spirit. It marks the return of top-down shooters with new twists.'
                     ,array('Kot-in-Action')
@@ -1828,6 +1828,41 @@ $Games[] = new cGame(NULL ,'TREM' ,'Tremulous' ,'TREM' ,'trem.gif'
                     ,NULL
                     ,NULL
                     );
+/*$Games[] = new cGame(NULL ,'MTE' ,'Metaltech: Earthsiege' ,'MTE' ,NULL
+                    ,NULL ,'https://en.wikipedia.org/wiki/Metaltech:_Earthsiege' ,'???', FALSE
+                    ,NULL
+                    ,array('Dynamix')
+                    ,array('Sierra Entertainment')
+                    ,NULL
+                    );*/ //Incompatible engine
+/*$Games[] = new cGame(NULL ,'ES2' ,'Earthsiege 2' ,'ES2' ,NULL
+                    ,NULL ,'https://en.wikipedia.org/wiki/Earthsiege_2' ,'???', FALSE
+                    ,NULL
+                    ,array('Dynamix')
+                    ,array('Sierra Entertainment')
+                    ,NULL
+                    );*/ //Incompatible engine
+/*$Games[] = new cGame(NULL ,'SS' ,'Starsiege' ,'SS' ,NULL
+                    ,NULL ,'https://en.wikipedia.org/wiki/Starsiege' ,'???', FALSE
+                    ,NULL
+                    ,array('Dynamix')
+                    ,array('Sierra Entertainment')
+                    ,NULL
+                    );*/ //Incompatible engine
+/*$Games[] = new cGame(NULL ,'SST' ,'Starsiege: Tribes' ,'SST' ,NULL
+                    ,NULL ,'https://en.wikipedia.org/wiki/Starsiege:_Tribes' ,'???', FALSE
+                    ,NULL
+                    ,array('Dynamix')
+                    ,array('Sierra Entertainment')
+                    ,NULL
+                    );*/ //Incompatible engine
+/*$Games[] = new cGame(NULL ,'TE' ,'Tribes Extreme' ,'TE' ,NULL
+                    ,NULL ,NULL ,'???', FALSE
+                    ,NULL
+                    ,array('Dynamix')
+                    ,NULL
+                    ,NULL
+                    ,'SST');*/ //Cancelled
 $Games[] = new cGame(NULL ,'T2' ,'Tribes 2' ,'T2' ,NULL
                     ,NULL ,'https://en.wikipedia.org/wiki/Tribes_2' ,'TGE', FALSE
                     ,'Stand alone and you shall die.'
@@ -1835,6 +1870,34 @@ $Games[] = new cGame(NULL ,'T2' ,'Tribes 2' ,'T2' ,NULL
                     ,array('Sierra Entertainment')
                     ,NULL
                     );
+/*$Games[] = new cGame(NULL ,'TAA' ,'Tribes: Aerial Assault' ,'TAA' ,NULL
+                    ,NULL ,'https://en.wikipedia.org/wiki/Tribes:_Aerial_Assault' ,'TGE', FALSE
+                    ,NULL
+                    ,array('Inevitable Entertainment') #FIXME: Add to companies!
+                    ,array('Sierra Entertainment')
+                    ,NULL
+                    );*/ //Incompatible platform
+/*$Games[] = new cGame(NULL ,'TV' ,'Tribes: Vengeance' ,'TV' ,NULL
+                    ,NULL ,'https://en.wikipedia.org/wiki/Tribes:_Vengeance' ,'Unreal2', FALSE #http://www.tribesvengeance.com/
+                    ,NULL
+                    ,array('Irrational Games') #FIXME: Add to companies!
+                    ,array('Vivendi')
+                    ,NULL
+                    );*/ //Incompatible engine
+/*$Games[] = new cGame(NULL ,'TA' ,'Tribes: Ascend' ,'TA' ,NULL
+                    ,NULL ,'https://en.wikipedia.org/wiki/Tribes:_Ascend' ,'Unreal3', FALSE #http://www.tribesascend.com/
+                    ,NULL
+                    ,array('Hi-Rez Studios') #FIXME: Add to companies!
+                    ,array('Hi-Rez Studios')
+                    ,NULL
+                    );*/ //Incompatible engine
+/*$Games[] = new cGame(NULL ,'T3' ,'Tribes 3: Rivals' ,'T3' ,NULL
+                    ,'https://www.tribes3rivals.com/' ,'https://en.wikipedia.org/wiki/Tribes_3:_Rivals' ,'Unreal5', FALSE
+                    ,NULL
+                    ,array('Prophecy Games') #FIXME: Add to companies!
+                    ,array('Prophecy Games')
+                    ,NULL
+                    );*/ //Incompatible engine
 /*$Games[] = new cGame(NULL ,'TRI' ,'Trinity: The Shatter Effect' ,'TRI' ,NULL
                     ,NULL ,NULL ,'Quake 3', FALSE
                     ,NULL
@@ -2050,6 +2113,8 @@ $Games[] = new cGame(NULL ,'ZC' ,'Zeno Clash' ,'ZC' ,'zc.png'
 //FIXME: https://en.wikipedia.org/wiki/Source_(game_engine)#Games_using_Source
 
 //FIXME: https://www.mobygames.com/game-group/game-engine-torque/
+//FIXME: https://www.moddb.com/engines/torque-game-engine/games
+//FIXME: https://www.moddb.com/engines/torque-game-engine-advanced/games
 
 //Darkplaces:
 //Game: -battlemech runs the multiplayer topdown deathmatch game BattleMech
