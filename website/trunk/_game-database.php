@@ -779,7 +779,7 @@ $Games[] = new cGame('630','HLBS' ,'Half-Life: Blue Shift' ,'HLBS' ,'halflifebs.
                     ,'HL');*/ //Incompatible platform
 $Games[] = new cGame('660b8' ,'HLS' ,'Half-Life: Source' ,'HLS' ,'halflife2.gif'
                     ,NULL ,'https://en.wikipedia.org/wiki/Half-Life:_Source' ,'Source', FALSE
-                    ,NULL
+                    ,'Half-Life: Source is a digitally remastered version of the critically acclaimed and best selling PC game, enhanced via Source technology to include physics simulation, enhanced effects, and more.'
                     ,array('Valve')
                     ,NULL
                     ,NULL
@@ -821,14 +821,14 @@ $Games[] = new cGame('660b5' ,'HL2EP2' ,'Half-Life 2: Episode 2' ,'HL2EP2' ,'hal
                     );*/ //Cancelled
 $Games[] = new cGame('641a1' ,'HL2DM' ,'Half-Life 2: Deathmatch' ,'HL2DM' ,'halflife2.gif'
                     ,NULL ,'https://en.wikipedia.org/wiki/Half-Life_2:_Deathmatch' ,'Source', FALSE
-                    ,NULL
+                    ,'Fast multiplayer action set in the Half-Life 2 universe!'
                     ,array('Valve')
                     ,array('Valve')
                     ,NULL
                     );
 $Games[] = new cGame(NULL ,'HL2LC' ,'Half-Life 2: Lost Coast' ,'HL2LC' ,'halflife2.gif'
                     ,NULL ,'https://en.wikipedia.org/wiki/Half-Life_2:_Lost_Coast' ,'Source', FALSE
-                    ,NULL
+                    ,'Originally planned as a section of the Highway 17 chapter of Half-Life 2, Lost Coast is a playable technology showcase that introduces High Dynamic Range lighting to the Source engine.'
                     ,array('Valve')
                     ,NULL
                     ,NULL
@@ -1464,15 +1464,15 @@ $Games[] = new cGame(NULL ,'RB' ,'RetroBlazer' ,'RB' ,NULL
                     ,NULL
                     );
 $Games[] = new cGame('630' ,'RTCW' ,'Return to Castle Wolfenstein' ,'RTCW' ,'rtcw.gif'
-                    ,NULL ,'https://en.wikipedia.org/wiki/Return_to_Castle_Wolfenstein' ,'Quake 3', FALSE
+                    ,NULL ,'https://en.wikipedia.org/wiki/Return_to_Castle_Wolfenstein' ,'Quake 3', FALSE #castlewolfenstein.com #http://www.activision.com/games/wolfenstein #http://games.activision.com/games/wolfenstein/
                     ,'Wolfenstein, the legacy lives on!'
                     ,array('id', 'Gray Matter', 'Nerve')
                     ,array('Activision')
                     ,NULL
                     );
 $Games[] = new cGame('630' ,'RTCW-ET' ,'Wolfenstein: Enemy Territory' ,'RTCWET' ,'rtcw-et.gif'
-                    ,NULL ,'https://en.wikipedia.org/wiki/Wolfenstein:_Enemy_Territory' ,'Quake 3', FALSE
-                    ,NULL
+                    ,NULL ,'https://en.wikipedia.org/wiki/Wolfenstein:_Enemy_Territory' ,'Quake 3', FALSE #http://games.activision.com:80/games/wolfenstein/index.asp?section=et/
+                    ,'Introducing a totally new gameplay style and a distinctive arsenal of features, Wolfenstein: Enemy Territory enlists solo players to command an elite allied squad in a series of single player campaigns; then take the frontlines online in epic Axis versus Allies multiplayer warfare.'
                     ,array('Splash Damage')
                     ,array('Activision')
                     ,NULL
@@ -1487,7 +1487,7 @@ $Games[] = new cGame(NULL ,'REX' ,'Rexuiz' ,'REX' ,NULL
                     );
 $Games[] = new cGame('660b7' ,'RICO' ,'Ricochet' ,'RICO' ,'ricochet.png'
                     ,NULL ,'https://en.wikipedia.org/wiki/Ricochet_(2000_video_game)' ,'GoldSrc', FALSE
-                    ,NULL
+                    ,'A futuristic action game that challenges your agility as well as your aim, Ricochet features one-on-one and team matches played in a variety of futuristic battle arenas.'
                     ,array('Valve')
                     ,array('Valve')
                     ,NULL
