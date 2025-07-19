@@ -235,6 +235,7 @@ $LinksGame[] = new cLinkGroup('Half-Life', 'HL', array(
 //          ,new cLink('Half-Life Portal', 'http://www.halflifeportal.com/', 'an extensive Half-Life fansite')
           ,new cLink('The Whole Half-Life', 'https://twhl.info/', 'Level design resources for GoldSource, Source, and beyond') #http://www.twhl.co.za/ #'Half-Life/2 Mapping Tutorials and Resources'
           ,new cLink('Combine OverWiki', 'https://combineoverwiki.net/wiki/Main_Page', 'The original ad-free and independent Half-Life and Portal wiki')
+          ,new cLink('Half-Life: Field Intensity', 'https://www.moddb.com/mods/field-intensity/', 'The story of Half-Life: Field Intensity covers the time from the arrival of soldiers up to the nuclear explosion in Black Mesa Research Facility.')
           ,new cLink('Vampire Slayer', 'https://vsmod.co.uk/', 'Vampire Slayer is a multiplayer, team-play modification for Half-Life.')
           ,new cLink('VSUnion.com', 'http://www.vsunion.com/', 'This is a forum about the mod so called Vampire Slayer', 'https://web.archive.org/web/20090124090021/http://www.vsunion.com/')
           ,new cLink('Firearms', 'http://www.firearmsmod.com/', 'Firearms is a realistic modification of the game, that focuses on teamplay with Half-Life gameplay altered to the extreme.', 'https://web.archive.org/web/20090625182731/http://www.firearmsmod.com/')
