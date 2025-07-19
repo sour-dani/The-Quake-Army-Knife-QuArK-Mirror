@@ -17,7 +17,7 @@ if (isset($_GET['showxp']))
 }
 else
 {
-	$ShowXP = TRUE;
+	$ShowXP = FALSE;
 }
 
 if (isset($_GET['showunsupported']))

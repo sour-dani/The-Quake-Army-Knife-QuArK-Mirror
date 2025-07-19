@@ -23,7 +23,7 @@ $navbar = array(
   ,new cNavbarLine( 2,    'Screenshots'       ,NULL          ,$mainroot.'features.php#screenshots'                  )
   ,new cNavbarLine( 2,    'Awards'            ,NULL          ,$mainroot.'awards.php'                                )
   ,new cNavbarLine( 2,    'Videos'            ,NULL          ,$mainroot.'videos.php?TA=1'                           )
-  ,new cNavbarLine( 2,    'Games'             ,NULL          ,$mainroot.'games.php'                                 )
+  ,new cNavbarLine( 2,    'Games'             ,NULL          ,$mainroot.'games.php?showxp=1'                        )
   ,new cNavbarLine( 2,    'Testimonials'      ,NULL          ,$mainroot.'testimonials.php'                          )
   ,new cNavbarLine( 2,    'Download'          ,'download'    ,NULL                                                  )
   ,new cNavbarLine( 3,      'QuArK'           ,NULL          ,$mainroot.'download.php'                              )
