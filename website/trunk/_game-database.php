@@ -51,7 +51,7 @@ $Games = array();
 
 $Games[] = new cGame('630' ,'6DX' ,'6DX engine' ,'6DX' ,'6dx.gif'
                     ,'https://sourceforge.net/projects/aztica/' ,NULL ,'6DX', FALSE
-                    ,NULL
+                    ,'6DX is a COM-based 3D Engine for windows using DirectX.'
                     ,NULL
                     ,NULL
                     ,NULL
@@ -456,7 +456,7 @@ $Games[] = new cGame('660b8' ,'CoF' ,'Cry of Fear' ,'CoF' ,'cof.png'
                     );
 $Games[] = new cGame('620a' ,'CrSp' ,'Crystal Space' ,'Crystal' ,'crystalspace.gif'
                     ,'http://www.crystalspace3d.org/' ,'https://en.wikipedia.org/wiki/Crystal_Space' ,'CrSp', FALSE #https://crystal.sourceforge.net/
-                    ,NULL
+                    ,'Crystal Space is a mature, full-featured Software Development Kit (SDK) providing real-time 3D graphics for applications such as games and virtual reality.'
                     ,NULL
                     ,NULL
                     ,NULL
@@ -1655,7 +1655,7 @@ $Games[] = new cGame('61c' ,'SC' ,'Sven Co-op' ,'SC' ,'sc.png'
                     ); //Went stand-alone with version 5.0 (2016)
 $Games[] = new cGame('641a1' ,'S' ,'Sylphis engine' ,'S' ,'sylphis.gif'
                     ,'https://sourceforge.net/projects/sylphis3d/' ,NULL ,'S', FALSE #http://sylphis3d.com
-                    ,NULL
+                    ,'Sylphis3d is a fully featured, cutting edge game engine designed to support all the latest next-gen features while still being easy to use.'
                     ,NULL
                     ,NULL
                     ,NULL
@@ -1809,7 +1809,7 @@ $Games[] = new cGame(NULL ,'TFALL2' ,'Titanfall 2' ,'TFALL2' ,'tfall2.png'
                     );
 $Games[] = new cGame('630' ,'T' ,'Torque engine' ,'T' ,'torque.gif'
                     ,'http://www.garagegames.com/' ,'https://en.wikipedia.org/wiki/Torque_Game_Engine' ,'TGE', FALSE
-                    ,NULL
+                    ,'Torque is a true cross-platform AAA game engine in the same category as the Source and Unreal engines.'
                     ,array('GarageGames')
                     ,NULL
                     ,NULL
