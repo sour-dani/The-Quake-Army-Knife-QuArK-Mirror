@@ -93,7 +93,7 @@ $Companies['GarageGames'] = new cCompany('GarageGames', 'GarageGames', NULL, 'ht
 $Companies['Gathering of Developers'] = new cCompany('Gathering of Developers', 'Gathering of Developers', NULL, NULL, 'https://en.wikipedia.org/wiki/Gathering_of_Developers');
 $Companies['Gearbox'] = new cCompany('Gearbox Software', 'Gearbox Software', NULL, 'https://www.gearboxsoftware.com/', 'https://en.wikipedia.org/wiki/Gearbox_Software');
 //$Companies['Gratuitous'] = new cCompany('Gratuitous', 'Gratuitous Games', NULL);
-$Companies['Gray Matter'] = new cCompany('Gray Matter', 'Gray Matter Interactive', NULL, NULL, 'https://en.wikipedia.org/wiki/Gray_Matter_Interactive'); #http://www.gmistudios.com/
+$Companies['Gray Matter'] = new cCompany('Gray Matter', 'Gray Matter Interactive Studios', NULL, NULL, 'https://en.wikipedia.org/wiki/Gray_Matter_Interactive'); #http://www.gmistudios.com/
 $Companies['GT'] = new cCompany('GT', 'GT Interactive', NULL, NULL, 'https://en.wikipedia.org/wiki/GT_Interactive');
 $Companies['Head Games'] = new cCompany('Head Games', 'Head Games Publishing, Inc.', NULL, NULL, 'https://en.wikipedia.org/wiki/Head_Games_Publishing'); #http://www.headgames.net
 $Companies['HermitWorks'] = new cCompany('HermitWorks', 'HermitWorks Entertainment', NULL, NULL, 'https://en.wikipedia.org/wiki/HermitWorks_Entertainment');
@@ -203,7 +203,7 @@ $Companies['Vipersoft'] = new cCompany('Vipersoft', 'Vipersoft', NULL);
 $Companies['Vivendi'] = new cCompany('Vivendi', 'Vivendi Universal', NULL, 'https://www.vivendi.com/', 'https://en.wikipedia.org/wiki/Vivendi');
 $Companies['Warsow'] = new cCompany('Warsow', 'War§ow team', NULL);
 $Companies['WizardWorks'] = new cCompany('WizardWorks', 'WizardWorks', NULL, NULL, 'https://en.wikipedia.org/wiki/WizardWorks'); #http://www.wizworks.com/
-$Companies['Xatrix'] = new cCompany('Xatrix', 'Xatrix Entertainment', NULL, NULL, 'https://en.wikipedia.org/wiki/Xatrix_Entertainment');
+$Companies['Xatrix'] = new cCompany('Xatrix', 'Xatrix Entertainment', NULL, NULL, 'https://en.wikipedia.org/wiki/Xatrix_Entertainment'); #Became: Gray Matter Interactive Studios
 $Companies['ZeroGravity'] = new cCompany('ZeroGravity', 'Zero Gravity Entertainment', NULL);
 
 ?>
