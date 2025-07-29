@@ -287,6 +287,8 @@ uses
     {$ENDIF}
     {$SetPEOptFlags IMAGE_DLLCHARACTERISTICS_NX_COMPAT}
   {$ENDIF}
+  //Note: There doesn't appear to be a way to set "DependentLoadFlags" in the PE header to LOAD_LIBRARY_SEARCH_SYSTEM32
+  //Only on Windows 10 RS1 and later.
 {$ENDIF}
 
 begin
