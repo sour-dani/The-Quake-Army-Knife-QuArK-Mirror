@@ -825,8 +825,7 @@ begin
   end;
  if Done then
   begin
-   SizeDownGameFiles; //FIXME: Move into IdleJob? How to make sure it's the last one to run?
-   SizeDownPython;
+   FreeNonUsedObjects; //FIXME: Move into IdleJob? How to make sure it's the last one to run?
   {SaveSetupNow;} //FIXME: Make a configurable option: AutosaveSetup! But only when modified...!
   end;
 {$IFDEF MemTester}
@@ -1682,6 +1681,7 @@ begin
   end;
  ClearExplorer;
  SavePendingFiles(False);
+ ReleaseGameFiles;
  SavePositionTb('Main', False, Explorer);
  if not FNoTempDelete then
   DeleteTempFiles;
@@ -1823,7 +1823,7 @@ procedure TForm1.FreeNonUsedObjects;
 begin
  TTextureManager.FreeNonVisibleTextures;
  FreeNonVisibleForms(Nil);
- ReleaseGameFiles;
+ SizeDownGameFiles;
  ClearGBList;
  SizeDownPython;
 end;

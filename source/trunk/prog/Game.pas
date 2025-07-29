@@ -171,7 +171,6 @@ function GetGameFileBase(const BaseDir, FileName, PakFileName: String; LookInCD:
 procedure ReleaseGameFiles;
 begin
  Log(LOG_VERBOSE, 'Called: ReleaseGameFiles');
- g_Form1.SavePendingFiles(True);
  GameFiles.Free;
  GameFiles:=Nil;
 end;
@@ -389,8 +388,7 @@ begin
  try
   DelayDeleteGameBuffer(GameBuffer1);
   GameBuffer1:=Nil;
-  GameFiles.Free;
-  GameFiles:=Nil;
+  ReleaseGameFiles;
   CloseAddonsList;
   // SourceBases.Free;
   // SourceBases:=Nil;
