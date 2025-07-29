@@ -971,7 +971,7 @@ Strings = {
     5701: "The configuration-setting '.MAP comments prefix' for %s is empty.\nPlease correct this, or set the \"Don't write comments in .map files\" in Configuration->Map->Options.",
     5702: "Unknown map format: %s\nDefaulting to Classic Quake",
 
-    # alexander would like to reserve 5703 .. 5729 for HL2 :-)
+    # 5703 .. 5729: Reserved for HL2
     5703: "%s contains an unsupported format (width %d, height %d, format %d)",
     5704: "Unable to retrieve the location of '%s'. Please make sure the location is set correctly in the Half-Life 2 configuration.",
     #5705: "reserved for hl2",
@@ -1021,7 +1021,7 @@ Strings = {
     5748: "Unable to unload the %s library",
     5749: "Unable to initialize the %s library",
 
-    # Rowdy would like to reserve 5750..5769 for Doom 3 :-)
+    # 5750 .. 5769: Reserved for Doom 3
     5750: "Material '%s' has no image to display",
     5751: "Material images are read-only",
     5752: "Material stage '%s' has no image to display",
@@ -1178,8 +1178,13 @@ Strings = {
     5902: "Library %s unloaded!",
     5903: "No BSP Data for %d",
     5904: "Model '%s' not found.//%s",
+    5905: "Invalid value for '%s' in configuration file found. Defaulting to %d",
+    5906: "Unsupported value for '%s' in configuration file found. Defaulting to %d",
+    5907: "Found %d gamefiles eligible for unloading",
+    5908: "Max gamefiles exceeded; unloading %d gamefiles...",
+    5909: "Memory threshold exceeded; unloading %d gamefiles...",
 
-    # DanielPharos would like to reserve 6000 .. 6099 for all renderers
+    # 6000 .. 6099: Reserved for all 3D renderers
     6000: "Unable to create SceneObject//%s",
     6001: "No 3D driver configured. Please select a 3D driver in the Configuration dialog box",
     6002: "Could not find the 3D drivers (%s). You need either a graphics card with installed drivers or the software 3D library, depending on the choice you made in the Configuration dialog box//Error code %d",
@@ -1197,14 +1202,14 @@ Strings = {
     6015: "Unloading renderer (%s)...",
     6016: "Loading renderer (%s)...",
 
-    # DanielPharos would like to reserve 6100 .. 6199 for the software renderer
+    # 6100 .. 6199: Reserved for the software renderer
     6100: "Error with the Software 3D drivers//%s failed",
     6101: "A hardware Glide driver was loaded, not QuArK's software renderer",
 
     6120: "Software 3D renderer does not support fullscreen views (yet)",
     6121: "You must first call Open3Dfx",
 
-    # DanielPharos would like to reserve 6200 .. 6299 for the Glide renderer
+    # 6200 .. 6299: Reserved for the Glide renderer
     6200: "Error with the 3Dfx Glide drivers//%s failed",
     6201: "Attempting (1) to load Glide DLL: %s",
     6202: "Loading Glide DLL (1)",
@@ -1217,7 +1222,7 @@ Strings = {
     6220: "Glide renderer does not support fullscreen views (yet)",
     6221: "You must first call Open3Dfx",
 
-    # DanielPharos would like to reserve 6300 .. 6399 for the OpenGL renderer
+    # 6300 .. 6399: Reserved for the OpenGL renderer
     6300: "Could not load the OpenGL drivers//Error code %d",
     6301: "Error in OpenGL initialization//'%s' failed",
     6302: "Error in OpenGL commands [Error code(s) %s step %d]",
@@ -1250,7 +1255,7 @@ Strings = {
     6336: "OpenGL: PixelFormat: Color Bits: %d",
     6337: "OpenGL: PixelFormat: Depth Bits: %d",
 
-    # DanielPharos would like to reserve 6400 .. 6499 for the DirectX renderer
+    # 6400 .. 6499: Reserved for the DirectX renderer
     6400: "Error in DirectX initialization//'%s'",
     6401: "Error in DirectX uninitialization//'%s'",
     6402: "Could not load the DirectX drivers//Error code %d",
@@ -1268,8 +1273,7 @@ Strings = {
     6424: "Direct3D: Pure device disabled",
     6425: "Direct3D Init: Zero lights supported! Lighting disabled out of safety.",
 
-# Negative numbers are never used directly by QUARK5.EXE.
-
+    # Negative numbers are never used directly by the executable.
     -101: "Cannot drop this item into a map.",
     #-102: "\nNote: to use a bitmap as a texture, you must first convert the bitmap into a texture : in the Texture Browser, choose 'Paste Special' instead of 'Paste'.",
     -103: "%d texture(s) could not be found. Are you sure you want to continue ?",
@@ -1282,5 +1286,4 @@ Strings = {
     -409: "Bezier",
 
     -459: "Parameters about the selected Bezier patch(es)|bezier patches",
-
 }

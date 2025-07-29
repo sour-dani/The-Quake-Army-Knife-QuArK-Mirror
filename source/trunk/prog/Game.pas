@@ -192,15 +192,19 @@ begin
    if GameFiles[I].PythonObj.ob_refcnt = 1 then
     Eligible.Add(Pointer(I)); //Don't store the objects themselves, as this will mess with their refcount.
 
-  Log(LOG_VERBOSE, 'SizeDownGameFiles: Found %d gamefiles eligible for unloading.', [Eligible.Count]);
+  Log(LOG_VERBOSE, LoadStr1(5907), [Eligible.Count]);
 
   //Delete files if we are above the maximum amount of files.
   Setup:=SetupSubSet(ssGeneral, 'Memory');
   MaxFiles:=Round(Setup.GetFloatSpec('GameFiles', 15));
-  if MaxFiles<0 then MaxFiles:=0;
+  if MaxFiles<0 then
+  begin
+    Log(LOG_WARNING, LoadStr1(5905), ['GameFiles', 0]);
+    MaxFiles:=0;
+  end;
   I:=Min(GameFiles.Count-MaxFiles, Eligible.Count);
   if I>0 then
-    Log(LOG_VERBOSE, 'SizeDownGameFiles: Max gamefiles exceeded; unloading %d gamefiles...', [I]);
+    Log(LOG_VERBOSE, LoadStr1(5908), [I]);
   while I > 0 do
    begin
     GameFiles.Delete(Integer(Eligible.Last));
@@ -227,7 +231,7 @@ begin
    end;
 
   if J<>Eligible.Count then
-    Log(LOG_VERBOSE, 'SizeDownGameFiles: Memory threshold exceeded; unloading %d gamefiles...', [Eligible.Count-J+1]);
+    Log(LOG_VERBOSE, LoadStr1(5909), [Eligible.Count-J+1]);
 
   //And delete the rest.
   for I:=Eligible.Count-1 downto J do

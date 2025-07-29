@@ -1196,9 +1196,15 @@ begin
     L.Text:=g_SetupSet[ssGeneral].Specifics.Strings['RecentFiles'];
     MaxRecentFiles:=Round(SetupSubSet(ssGeneral, 'Display').GetFloatSpec('MaxRecentFiles', 5));
     if MaxRecentFiles<0 then
+    begin
+      Log(LOG_WARNING, LoadStr1(5905), ['RecentFiles', 0]);
       MaxRecentFiles:=0;
+    end;
     if MaxRecentFiles>MaxRecentFilesUpperLimit then //Let's set an upper limit
+    begin
+      Log(LOG_WARNING, LoadStr1(5906), ['RecentFiles', MaxRecentFilesUpperLimit]);
       MaxRecentFiles:=MaxRecentFilesUpperLimit;
+    end;
     for I:=0 to MaxRecentFiles-1 do //Loop over all the RecentFile menu-items
      if I<L.Count then
       begin

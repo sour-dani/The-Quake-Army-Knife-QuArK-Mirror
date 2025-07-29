@@ -95,13 +95,17 @@ begin
         3: Flag:=IL_DXT1A;
         4: Flag:=IL_DXT_NO_COMP;
         else
-          //FIXME: Log!
-          Flag:=IL_DXT5;
+          begin
+            Log(LOG_WARNING, LoadStr1(5905), ['SaveFormatADevIL', 1]);
+            Flag:=IL_DXT5;
+          end;
         end;
       except
         on EConvertError do
-          //FIXME: Log!
-          Flag:=IL_DXT5;
+          begin
+            Log(LOG_WARNING, LoadStr1(5905), ['SaveFormatADevIL', 1]);
+            Flag:=IL_DXT5;
+          end;
       end;
     end
     else
@@ -114,13 +118,17 @@ begin
         3: Flag:=IL_DXT1A;
         4: Flag:=IL_DXT_NO_COMP;
         else
-          //FIXME: Log!
-          Flag:=IL_DXT1;
+          begin
+            Log(LOG_WARNING, LoadStr1(5905), ['SaveFormatDevIL', 0]);
+            Flag:=IL_DXT1;
+          end;
         end;
       except
         on EConvertError do
-          //FIXME: Log!
-          Flag:=IL_DXT1;
+          begin
+            Log(LOG_WARNING, LoadStr1(5905), ['SaveFormatDevIL', 0]);
+            Flag:=IL_DXT1;
+          end;
       end;
     end;
   finally
@@ -182,13 +190,17 @@ begin
           2: Flag:=DXT_QUALITY_HIGH;
           3: Flag:=DXT_QUALITY_HIGHEST;
           else
-            //FIXME: Log!
-            Flag:=DXT_QUALITY_HIGH;
+            begin
+              Log(LOG_WARNING, LoadStr1(5905), ['DXTQualityVTFLib', 2]);
+              Flag:=DXT_QUALITY_HIGH;
+            end;
           end;
         except
           on EConvertError do
-            //FIXME: Log!
-            Flag:=DXT_QUALITY_HIGH;
+            begin
+              Log(LOG_WARNING, LoadStr1(5905), ['DXTQualityVTFLib', 2]);
+              Flag:=DXT_QUALITY_HIGH;
+            end;
         end;
         vlSetInteger(VTFLIB_DXT_QUALITY, Flag);
 
@@ -372,12 +384,16 @@ begin
             try
               TexFormat:=SetupSubSet(ssFiles, 'VTF').Specifics.Integers['SaveFormatA'];
               if (TexFormat < 0) or (TexFormat >= IMAGE_FORMAT_COUNT) then
-                //FIXME: Log!
+              begin
+                Log(LOG_WARNING, LoadStr1(5905), ['SaveFormatA', IMAGE_FORMAT_DXT5]);
                 TexFormat := IMAGE_FORMAT_DXT5;
+              end;
             except
               on EConvertError do
-                //FIXME: Log!
-                TexFormat := IMAGE_FORMAT_DXT5;
+                begin
+                  Log(LOG_WARNING, LoadStr1(5905), ['SaveFormatA', IMAGE_FORMAT_DXT5]);
+                  TexFormat := IMAGE_FORMAT_DXT5;
+                end;
             end;
             ImageFormat:=IMAGE_FORMAT_RGBA8888;
             GetMem(RawData2, Width * Height * 4);
@@ -417,12 +433,16 @@ begin
             try
               TexFormat:=SetupSubSet(ssFiles, 'VTF').Specifics.Integers['SaveFormat'];
               if (TexFormat < 0) or (TexFormat >= IMAGE_FORMAT_COUNT) then
-                //FIXME: Log!
+              begin
+                Log(LOG_WARNING, LoadStr1(5905), ['SaveFormat', IMAGE_FORMAT_DXT5]);
                 TexFormat := IMAGE_FORMAT_DXT5;
+              end;
             except
               on EConvertError do
-                //FIXME: Log!
-                TexFormat := IMAGE_FORMAT_DXT5;
+                begin
+                  Log(LOG_WARNING, LoadStr1(5905), ['SaveFormat', IMAGE_FORMAT_DXT5]);
+                  TexFormat := IMAGE_FORMAT_DXT5;
+                end;
             end;
             ImageFormat:=IMAGE_FORMAT_RGB888;
             GetMem(RawData2, Width * Height * 3);

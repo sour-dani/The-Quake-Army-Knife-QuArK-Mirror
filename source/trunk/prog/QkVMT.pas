@@ -342,13 +342,17 @@ begin
           0: vlSetInteger(VTFLIB_VMT_PARSE_MODE, PARSE_MODE_STRICT);
           1: vlSetInteger(VTFLIB_VMT_PARSE_MODE, PARSE_MODE_LOOSE);
           else
-            //FIXME: Log!
-            vlSetInteger(VTFLIB_VMT_PARSE_MODE, PARSE_MODE_LOOSE);
+            begin
+              Log(LOG_WARNING, LoadStr1(5905), ['ParseMode', 1]);
+              vlSetInteger(VTFLIB_VMT_PARSE_MODE, PARSE_MODE_LOOSE);
+            end;
           end;
         except
           on EConvertError do
-            //FIXME: Log!
-            vlSetInteger(VTFLIB_VMT_PARSE_MODE, PARSE_MODE_LOOSE);
+            begin
+              Log(LOG_WARNING, LoadStr1(5905), ['ParseMode', 1]);
+              vlSetInteger(VTFLIB_VMT_PARSE_MODE, PARSE_MODE_LOOSE);
+            end;
         end;
 
         if vlMaterialLoadLump(PvlVoid(RawBuffer), FSize)=vlFalse then
