@@ -1710,7 +1710,6 @@ begin
   end;
  ClearExplorer;
  SavePendingFiles(False);
- ReleaseGameFiles;
  SavePositionTb('Main', False, Explorer);
  if not FNoTempDelete then
   DeleteTempFiles;
@@ -1766,6 +1765,8 @@ begin
  ClearGameBuffers(False);
  ClearWireframeCache;
  CloseSetupSet;
+
+ //FIXME: FreeLibrary all the loaded libraries, such as VTFLib!
 
  //Remove the QObjects from the dynamically created components;
  //otherwise, they can't be unloaded!

@@ -500,6 +500,7 @@ Strings = {
     4203: "']'",
     4204: " or ",
 
+    4415: "Clearing game buffers...",
     4416: "Cannot set this attribute to screen panel objects",
     4417: "QuArK file object expected",
     4418: "Cannot load bitmap file '%s'",
