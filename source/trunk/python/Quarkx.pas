@@ -3412,6 +3412,10 @@ begin
  Result:=True;
 end;
 
+const
+  msgLoadStr1NoPython = 'Trying to call LoadStr1(%d) while Python is not initialized!';
+  msgLoadStr1Missing = 'Cannot find string number %d in LoadStr1!';
+
 function LoadStr1(I: Integer) : String;
 var
  obj, key: PyObject;
@@ -3419,8 +3423,8 @@ var
 begin
  if (not IsPythonLoaded) or (Py_xStrings = Nil) then
  begin
-   //Can't load text!
-   Log(LOG_WARNING, 'Trying to call LoadStr1 while Python has not been loaded yet!');
+   //Can't load text if Python isn't initialized (yet)!
+   Log(LOG_WARNING, msgLoadStr1NoPython, [I]);
    Result:=LoadStrMissingText;
    Exit;
  end;
@@ -3431,7 +3435,7 @@ begin
    obj:=PyDict_GetItem(Py_xStrings, key);
    if obj=Nil then
    begin
-    Log(LOG_WARNING, 'Cannot find string number %d in LoadStr1!', [I]);
+    Log(LOG_WARNING, msgLoadStr1Missing, [I]);
     Exit;
    end;
    P:=PyString_AsString(obj);
