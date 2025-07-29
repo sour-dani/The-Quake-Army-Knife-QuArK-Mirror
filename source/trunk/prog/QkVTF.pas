@@ -536,5 +536,8 @@ end;
 
 finalization
   if VTFLoaded then
+  begin
     UnloadVTFLib;
+    VTFLoaded:=false;
+  end;
 end.

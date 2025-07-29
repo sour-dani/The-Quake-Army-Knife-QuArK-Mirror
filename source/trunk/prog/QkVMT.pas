@@ -492,5 +492,9 @@ begin
 end;
 
 finalization
-  UnloadVTFLib(true);
+  if VMTLoaded then
+  begin
+    UnloadVTFLib;
+    VMTLoaded:=false;
+  end;
 end.
