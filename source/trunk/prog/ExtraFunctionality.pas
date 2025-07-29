@@ -253,6 +253,39 @@ type
   TRestrictions = RESTRICTIONS;
 {$endif}
 
+{$ifndef Delphi11orNewerCompiler}
+  PProcessMitigationStrictHandleCheckPolicy = ^TProcessMitigationStrictHandleCheckPolicy;
+  _PROCESS_MITIGATION_STRICT_HANDLE_CHECK_POLICY = record
+    Flags: DWORD;
+  end;
+  {$EXTERNALSYM _PROCESS_MITIGATION_STRICT_HANDLE_CHECK_POLICY}
+  TProcessMitigationStrictHandleCheckPolicy = _PROCESS_MITIGATION_STRICT_HANDLE_CHECK_POLICY;
+  PROCESS_MITIGATION_STRICT_HANDLE_CHECK_POLICY = _PROCESS_MITIGATION_STRICT_HANDLE_CHECK_POLICY;
+  {$EXTERNALSYM PROCESS_MITIGATION_STRICT_HANDLE_CHECK_POLICY}
+
+  _PROCESS_MITIGATION_POLICY = (
+    ProcessDEPPolicy,
+    ProcessASLRPolicy,
+    ProcessDynamicCodePolicy,
+    ProcessStrictHandleCheckPolicy,
+    ProcessSystemCallDisablePolicy,
+    ProcessMitigationOptionsMask,
+    ProcessExtensionPointDisablePolicy,
+    ProcessControlFlowGuardPolicy,
+    ProcessSignaturePolicy,
+    ProcessFontDisablePolicy,
+    ProcessImageLoadPolicy,
+    MaxProcessMitigationPolicy
+  );
+  {$EXTERNALSYM _PROCESS_MITIGATION_POLICY}
+  PROCESS_MITIGATION_POLICY = _PROCESS_MITIGATION_POLICY;
+  {$EXTERNALSYM PROCESS_MITIGATION_POLICY}
+  PPROCESS_MITIGATION_POLICY = ^_PROCESS_MITIGATION_POLICY;
+  {$EXTERNALSYM PPROCESS_MITIGATION_POLICY}
+  TProcessMitigationPolicy = _PROCESS_MITIGATION_POLICY;
+  PProcessMitigationPolicy = ^TProcessMitigationPolicy;
+{$endif}
+
   _FIRMWARE_TYPE = LongWord; //Really: enum
   {$EXTERNALSYM _FIRMWARE_TYPE}
   PFIRMWARE_TYPE = ^_FIRMWARE_TYPE;
@@ -926,6 +959,16 @@ function SHRestricted(rest: RESTRICTIONS): DWORD; stdcall;
 function SHRestricted; external 'shell32.dll' name 'SHRestricted' delayed;
 {$endif}
 
+{$ifndef Delphi11orNewerCompiler} //FIXME: Not sure, but missing in XE2, but exist in 11.3
+function GetProcessMitigationPolicy(hProcess: THandle; MitigationPolicy: TProcessMitigationPolicy; lpBuffer: Pointer; dwLength: SIZE_T): BOOL; stdcall;
+{$EXTERNALSYM GetProcessMitigationPolicy}
+function GetProcessMitigationPolicy; external kernel32 name 'GetProcessMitigationPolicy' delayed;
+
+function SetProcessMitigationPolicy(MitigationPolicy: TProcessMitigationPolicy; lpBuffer: Pointer; dwLength: SIZE_T): BOOL; stdcall;
+{$EXTERNALSYM SetProcessMitigationPolicy}
+function SetProcessMitigationPolicy; external kernel32 name 'SetProcessMitigationPolicy' delayed;
+{$endif}
+
 {.$ifndef DelphiXXorNewerCompiler}
 function IsWow64Process2(hProcess: THandle; pProcessMachine: PUSHORT; pNativeMachine: PUSHORT): BOOL; overload; stdcall;
 function IsWow64Process2(hProcess: THandle; var pProcessMachine: USHORT; var pNativeMachine: USHORT): BOOL; overload; stdcall;
@@ -969,6 +1012,10 @@ var
 {$endif}
 {$ifndef Delphi2010orNewerCompiler}
   SHRestricted: function (rest: RESTRICTIONS): DWORD; stdcall;
+{$endif}
+{$ifndef Delphi11orNewerCompiler}
+  GetProcessMitigationPolicy: function (hProcess: THandle; MitigationPolicy: TProcessMitigationPolicy; lpBuffer: Pointer; dwLength: SIZE_T): BOOL; stdcall;
+  SetProcessMitigationPolicy: function (MitigationPolicy: TProcessMitigationPolicy; lpBuffer: Pointer; dwLength: SIZE_T): BOOL; stdcall;
 {$endif}
 {.$ifndef DelphiXXorNewerCompiler}
   IsWow64Process2: function (hProcess: THandle; var pProcessMachine: USHORT; var pNativeMachine: USHORT): BOOL; stdcall;
@@ -1120,6 +1167,8 @@ var
   DelayFunc_IsWow64Process: Boolean;
   DelayFunc_IsWow64Process2: Boolean;
   DelayFunc_GetTickCount64: Boolean;
+  DelayFunc_GetProcessMitigationPolicy: Boolean;
+  DelayFunc_SetProcessMitigationPolicy: Boolean;
   DelayFunc_GetFirmwareType: Boolean;
   DelayFunc_GetProcessUserModeExceptionPolicy: Boolean;
   DelayFunc_SetProcessUserModeExceptionPolicy: Boolean;
@@ -1648,6 +1697,14 @@ initialization
   DelayFunc_SHRestricted := Assigned(SHRestricted);
   {$DEFINE DelayFunc_Delphi2010Done}
 {$endif}
+{$ifndef Delphi11orNewerCompiler}
+  GetProcessMitigationPolicy := GetProcAddress(GetModuleHandle('kernel32'), 'GetProcessMitigationPolicy');
+  SetProcessMitigationPolicy := GetProcAddress(GetModuleHandle('kernel32'), 'SetProcessMitigationPolicy');
+
+  DelayFunc_GetProcessMitigationPolicy := Assigned(GetProcessMitigationPolicy);
+  DelayFunc_SetProcessMitigationPolicy := Assigned(SetProcessMitigationPolicy);
+  {$DEFINE DelayFunc_Delphi11Done}
+{$endif}
 {.$ifndef DelphiXXorNewerCompiler}
   IsWow64Process2 := GetProcAddress(GetModuleHandle('kernel32'), 'IsWow64Process2');
   GetFirmwareType := GetProcAddress(GetModuleHandle('kernel32'), 'GetFirmwareType');
@@ -1683,6 +1740,10 @@ initialization
   {$endif}
   {$ifndef DelayFunc_Delphi2010Done}
   DelayFunc_SHRestricted := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003, although it already existed in Windows 2000 as ordinal 100.
+  {$endif}
+  {$ifndef DelayFunc_Delphi11Done}
+  DelayFunc_GetProcessMitigationPolicy := CheckWin32Version(6, 2); //Windows 8, Windows Server 2012
+  DelayFunc_SetProcessMitigationPolicy := CheckWin32Version(6, 2); //Windows 8, Windows Server 2012
   {$endif}
   {$ifndef DelayFunc_DelphiXXDone}
   DelayFunc_IsWow64Process2 := CheckWin32VersionWithBuildNumber(10, 0, 16299); //Windows 10, version 1709

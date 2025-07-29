@@ -263,6 +263,7 @@ var
   dwFlags: DWORD;
   Info: BOOL;
   Metrics: TNonClientMetrics;
+  PMSHCP: TProcessMitigationStrictHandleCheckPolicy;
 begin
   //Open the log file.
   OpenLogFile;
@@ -301,6 +302,28 @@ begin
     begin
       LogWindowsError(GetLastError(), 'MainInit: SetUserObjectInformation(UOI_TIMERPROC_EXCEPTION_SUPPRESSION, False)');
       Log(LOG_WARNING, 'SetUserObjectInformation(UOI_TIMERPROC_EXCEPTION_SUPPRESSION, False) failed; QuArK may be vulnerable to TimerProc vulnerabilities!');
+    end;
+  end;
+
+  if DelayFunc_GetProcessMitigationPolicy and DelayFunc_SetProcessMitigationPolicy then
+  begin
+    if not GetProcessMitigationPolicy(GetCurrentProcess(), ProcessStrictHandleCheckPolicy, @PMSHCP, SizeOf(PMSHCP)) then
+    begin
+      LogWindowsError(GetLastError(), 'MainInit: GetProcessMitigationPolicy(ProcessStrictHandleCheckPolicy)');
+      Log(LOG_WARNING, 'GetProcessMitigationPolicy(ProcessStrictHandleCheckPolicy) failed; strict handle policy not changed!');
+    end
+    else
+    begin
+      //Note: Windows bitfields are packed right-to-left (https://learn.microsoft.com/en-us/cpp/c-language/c-bit-fields)
+      //  DWORD RaiseExceptionOnInvalidHandleReference : 1;
+      //  DWORD HandleExceptionsPermanentlyEnabled : 1;
+      //  DWORD ReservedFlags : 30;
+      PMSHCP.Flags := PMSHCP.Flags or $3;
+      if not SetProcessMitigationPolicy(ProcessStrictHandleCheckPolicy, @PMSHCP, SizeOf(PMSHCP)) then
+      begin
+        LogWindowsError(GetLastError(), 'MainInit: SetProcessMitigationPolicy(ProcessStrictHandleCheckPolicy)');
+        Log(LOG_WARNING, 'SetProcessMitigationPolicy(ProcessStrictHandleCheckPolicy) failed; strict handle policy not changed!');
+      end;
     end;
   end;
 
