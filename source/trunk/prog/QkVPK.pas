@@ -22,7 +22,7 @@ unit QkVPK;
 
 interface
 
-uses Windows, SysUtils, Classes, QkObjects, QkFileObjects, QkPak, HLLib;
+uses SysUtils, Classes, QkObjects, QkFileObjects, QkPak, HLLib;
 
 type
  QVPKFolder = class(QPakFolder)
@@ -136,7 +136,7 @@ begin
   end;
 end;
 
-Procedure AddTree(ParentFolder: QObject; VPKDirectoryFile : PHLDirectoryItem; root: Bool; F: TStream);
+Procedure AddTree(ParentFolder: QObject; VPKDirectoryFile : PHLDirectoryItem; IsRoot: Boolean; F: TStream);
 var
   Nsubelements : hlUInt;
   VPKDirectoryItem : PHLDirectoryItem;
@@ -145,28 +145,29 @@ var
 begin
   if hlItemGetType(VPKDirectoryFile) = HL_ITEM_FOLDER then
   begin
-    {handle a folder}
-    Folder:= QVPKFolder.Create( PChar(hlItemGetName(VPKDirectoryFile)), ParentFolder);
+    //Handle a folder
+    Folder:= QVPKFolder.Create(PChar(hlItemGetName(VPKDirectoryFile)), ParentFolder);
     Log(LOG_VERBOSE, 'Made vpk folder object: %s', [Folder.name]);
-    ParentFolder.SubElements.Add( Folder );
-    if root then
+    ParentFolder.SubElements.Add(Folder);
+    if IsRoot then
       Folder.TvParent:= nil
     else
       Folder.TvParent:= ParentFolder;
 
-    {recurse into subelements of folder}
+    //Recurse into subelements of folder
     Nsubelements := hlFolderGetCount(VPKDirectoryFile);
-    for I:=0 to Nsubelements-1 do
-    begin
-      VPKDirectoryItem := hlFolderGetItem(VPKDirectoryFile, I);
-      AddTree(Folder, VPKDirectoryItem, False, F);
-    end;
+    if Nsubelements > 0 then //Prevent underflow by -1 in for-loop
+      for I:=0 to Nsubelements-1 do
+      begin
+        VPKDirectoryItem := hlFolderGetItem(VPKDirectoryFile, I);
+        AddTree(Folder, VPKDirectoryItem, False, F);
+      end;
   end
   else
   begin
-    Q := MakeFileQObject( PChar(hlItemGetName(VPKDirectoryFile)), ParentFolder);
+    Q := MakeFileQObject(PChar(hlItemGetName(VPKDirectoryFile)), ParentFolder);
 
-    ParentFolder.SubElements.Add( Q );
+    ParentFolder.SubElements.Add(Q);
 
     Log(LOG_VERBOSE, 'Made vpk file object: %s', [Q.name]);
     if Q is QFileObject then
