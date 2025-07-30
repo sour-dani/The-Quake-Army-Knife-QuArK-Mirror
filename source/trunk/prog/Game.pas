@@ -170,7 +170,8 @@ function GetGameFileBase(const BaseDir, FileName, PakFileName: String; LookInCD:
 
 procedure ReleaseGameFiles;
 begin
- Log(LOG_VERBOSE, 'Called: ReleaseGameFiles');
+ Log(LOG_VERBOSE, 'Releasing all game files');
+ //Note: Make sure g_Form1.SavePendingFiles has been called, or changes might be lost!
  GameFiles.Free;
  GameFiles:=Nil;
 end;
@@ -239,8 +240,6 @@ begin
  finally
   Eligible.Free;
  end;
-
- ClearGBList;
 end;
 
 procedure ClearGBList;

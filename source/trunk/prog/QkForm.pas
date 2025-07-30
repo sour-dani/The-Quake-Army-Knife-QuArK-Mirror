@@ -1224,7 +1224,7 @@ begin
 
   { FREE } Ord('F')+256*Ord('R')+65536*Ord('E')+16777216*Ord('E'):
     begin
-     g_Form1.FreeNonUsedObjects;
+     g_Form1.FreeNonUsedObjects(True);
     end;
 
   { ASSO } Ord('A')+256*Ord('S')+65536*Ord('S')+16777216*Ord('O'):

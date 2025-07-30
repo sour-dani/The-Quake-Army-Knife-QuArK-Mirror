@@ -218,7 +218,7 @@ type
     procedure SavePendingFiles(CanCancel: Boolean);
    {function GetEmptyMenu : TPopupMenu;}
     function GetObjMenu(Control: TControl; Extra: Boolean) : TPopupMenu;
-    procedure FreeNonUsedObjects;
+    procedure FreeNonUsedObjects(FreeMore: Boolean = False);
     procedure MdlImportFrom1Item1Click(Sender: TObject);
     procedure ConvertFrom1Item1Click(Sender: TObject);
   end;
@@ -1849,11 +1849,17 @@ begin
   end;
 end;
 
-procedure TForm1.FreeNonUsedObjects;
+procedure TForm1.FreeNonUsedObjects(FreeMore: Boolean);
 begin
  TTextureManager.FreeNonVisibleTextures;
- FreeNonVisibleForms(Nil);
- SizeDownGameFiles;
+ if FreeMore then
+  begin
+   FreeNonVisibleForms(Nil);
+   SavePendingFiles(True);
+   ReleaseGameFiles;
+  end
+ else
+  SizeDownGameFiles;
  ClearGBList;
  SizeDownPython;
 end;
@@ -2124,7 +2130,7 @@ end;
 
 procedure TForm1.wmCompacting(var Msg: TMessage);
 begin
- FreeNonUsedObjects;
+ FreeNonUsedObjects(True);
 end;
 
 procedure TForm1.wmRenderFormat(var Msg: TMessage);
