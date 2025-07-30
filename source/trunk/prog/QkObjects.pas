@@ -21,7 +21,7 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 unit QkObjects;
 
 {$IFDEF DEBUG}
-{$DEFINE StreamRefDEBUG}
+{$DEFINE StreamRefDEBUG} //Note: This can make loading lots of game files really slow.
 {$DEFINE MemQObjectDEBUG}
 {$ENDIF}
 
@@ -2860,7 +2860,9 @@ var
   Text: TStringList;
   I: Integer;
   SomeQStream: TQStream;
+  {$IFDEF MemQObjectDEBUG}
   SomeQObject: QObject;
+  {$ENDIF}
 begin
   Text:=TStringList.Create;
   try
@@ -2878,6 +2880,7 @@ begin
       Text.Add(Format('%5d  %s', [SomeQStream.RefCount1, QFileList[I]]));
     end;
 
+    {$IFDEF MemQObjectDEBUG}
     Text.Add('-----');
 
     Text.Add(Format('%5.5s  %2.2s  %s', ['RefCnt', 'Flags', 'Object']));
@@ -2889,6 +2892,7 @@ begin
       else
         Text.Add(Format('%5s  %2x  %s', [                             '', SomeQObject.Flags, SomeQObject.GetFullName]));
     end;
+    {$ENDIF}
 
     Text.SaveToFile(ExtractFilePath(ParamStr(0))+DataDumpFile);
   finally
