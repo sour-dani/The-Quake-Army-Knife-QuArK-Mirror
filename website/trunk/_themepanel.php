@@ -1,12 +1,9 @@
 <?php
-require_once('_server_vars.php');
 require_once('_functions.php');
 require_once('_language_functions.php');
 require_once('_theme-database.php');
 
-global $Request_URI;
-
-$themeselector = '<div class="centered"><form action="' . htmlentities($Request_URI) . '" method="post">
+$themeselector = '<div class="centered"><form action="' . htmlentities($_SERVER['REQUEST_URI']) . '" method="post">
 	<fieldset><legend>'.GetLanguageString('SelectTheme').'</legend>
 	<select name="theme">
 ';
