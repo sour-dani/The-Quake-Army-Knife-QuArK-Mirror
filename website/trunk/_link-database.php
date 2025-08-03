@@ -539,6 +539,7 @@ $LinksGame[] = new cLinkGroup('Star Wars Jedi Knight II: Jedi Outcast', 'JK2', a
           ,new cLink('OpenJK', 'https://github.com/JACoders/OpenJK', 'OpenJK is a community effort to maintain and improve the game and engine powering Jedi Academy and Jedi Outcast, while maintaining full backwards compatibility with the existing games and mods.')
           ,new cLink('JK2MV', 'https://jk2mv.org/', 'improved, modernized JK2 client and server.')
           ,new cLink('JKMods.com', 'http://www.jkmods.com/', NULL, 'https://web.archive.org/web/20060404181752/http://www.jkmods.com/')
+          ,new cLink('JKHub', 'https://jkhub.org/', 'This community is dedicated to the games Star Wars: Jedi Outcast (2002) and Jedi Academy (2003).')
            ));
 
 $LinksGame[] = new cLinkGroup('Star Wars Jedi Knight: Jedi Academy', 'JA', array(
@@ -548,6 +549,7 @@ $LinksGame[] = new cLinkGroup('Star Wars Jedi Knight: Jedi Academy', 'JA', array
           ,new cLink('EchoNetwork', 'http://www.echonetwork.net/', 'The Star Wars gaming resource', 'https://web.archive.org/web/20170620024235/http://www.echonetwork.net/', 'The Star Wars gaming resource')
           ,new cLink('OpenJK', 'https://github.com/JACoders/OpenJK', 'OpenJK is a community effort to maintain and improve the game and engine powering Jedi Academy and Jedi Outcast, while maintaining full backwards compatibility with the existing games and mods.')
           ,new cLink('JKMods.com', 'http://www.jkmods.com/', NULL, 'https://web.archive.org/web/20060404181752/http://www.jkmods.com/')
+          ,new cLink('JKHub', 'https://jkhub.org/', 'This community is dedicated to the games Star Wars: Jedi Outcast (2002) and Jedi Academy (2003).')
           ,new cLink('The Jedi Academy', 'https://www.thejediacademy.net/', 'THE place for Jedi training.')
           ,new cLink('Movie Battles II', 'https://www.moviebattles.org/', 'Movie Battles is a fast-paced, action packed mod for the award winning Jedi Knight Jedi Academy game, that lets players play and fight in the most iconic battles seen throughout the entire saga!')
            ));
