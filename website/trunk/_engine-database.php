@@ -81,6 +81,7 @@ $Engines['KEX3'] = new cEngine('KEX 3', 'KEX 3 Engine', NULL, 'Proprietary', NUL
 //$Engines['LithTech1'] = new cEngine('LithTech1', 'LithTech 1.0', NULL, 'Proprietary', NULL, NULL, NULL);
 //$Engines['LithTech2'] = new cEngine('LithTech2', 'LithTech 2.0', NULL, 'Proprietary', NULL, NULL, 'LithTech1');
 //$Engines['LithTech3'] = new cEngine('LithTech3', 'LithTech 3.0', NULL, 'Proprietary', NULL, NULL, 'LithTech2');
+$Engines['Motor'] = new cEngine('Motor', 'Motor', NULL, 'Proprietary', NULL, NULL, 'id Tech 7');
 //$Engines['NGL'] = new cEngine('NGL', 'Treyarch NGL', NULL, 'Proprietary', NULL, 'https://en.wikipedia.org/wiki/Treyarch_NGL', NULL);
 $Engines['OpenWolf'] = new cEngine('OpenWolf', 'OpenWolf', NULL, 'Open source', NULL, NULL, 'ETXreaL'); //https://github.com/TheDushan/OpenWolf-Engine
 $Engines['Qfusion'] = new cEngine('Qfusion', 'Qfusion', NULL, 'Open source (GPL)', 'https://qfusion.github.io/qfusion/', 'https://en.wikipedia.org/wiki/Qfusion', 'Quake 2'); #http://hkitchen.net/qfusion/

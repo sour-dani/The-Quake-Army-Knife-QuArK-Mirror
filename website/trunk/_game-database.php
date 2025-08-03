@@ -939,7 +939,7 @@ $Games[] = new cGame(NULL ,'HDTF' ,'Hunt Down The Freeman' ,'HDTF' ,NULL
                     ,NULL
                     );*/ //Incompatible platform
 $Games[] = new cGame(NULL ,'IJGC' ,'Indiana Jones and the Great Circle' ,'IJGC' ,NULL
-                    ,'https://indianajones.bethesda.net/' ,'https://en.wikipedia.org/wiki/Indiana_Jones_and_the_Great_Circle' ,'id Tech 7', FALSE
+                    ,'https://indianajones.bethesda.net/' ,'https://en.wikipedia.org/wiki/Indiana_Jones_and_the_Great_Circle' ,'Motor', FALSE
                     ,NULL
                     ,array('MachineGames')
                     ,array('Bethesda')
