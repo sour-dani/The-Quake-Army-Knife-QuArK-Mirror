@@ -362,8 +362,15 @@ $Games[] = new cGame(NULL ,'CoD20' ,'Call of Duty: Modern Warfare III' ,'CoD20' 
                     ,array('Activision')
                     ,NULL
                     );
-/*$Games[] = new cGame(NULL ,'CoD21' ,'Call of Duty: Black Ops 6' ,'CoD21' ,NULL
+$Games[] = new cGame(NULL ,'CoD21' ,'Call of Duty: Black Ops 6' ,'CoD21' ,NULL
                     ,'https://www.callofduty.com/blackops6' ,'https://en.wikipedia.org/wiki/Call_of_Duty:_Black_Ops_6' ,'IW9', FALSE
+                    ,NULL
+                    ,array('Treyarch', 'Raven')
+                    ,array('Activision')
+                    ,NULL
+                    );
+/*$Games[] = new cGame(NULL ,'CoD22' ,'Call of Duty: Black Ops 7' ,'CoD22' ,NULL
+                    ,'https://www.callofduty.com/blackops7' ,'https://en.wikipedia.org/wiki/Call_of_Duty:_Black_Ops_7' ,'IW9', FALSE
                     ,NULL
                     ,array('Treyarch', 'Raven')
                     ,array('Activision')
