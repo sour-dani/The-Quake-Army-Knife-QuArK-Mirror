@@ -364,6 +364,10 @@ $GamesQRKTools["DM3"  ] = array();
 $GamesQRKTools["DM3"  ][] = new cQRKTools("Doom 3 1.3.1 SDK","http://www.gamers.org/pub/idgames/idstuff/doom3/source/win32/D3_1.3.1_SDK.exe"); #ftp://ftp.idsoftware.com/
 #$GamesQRKTools["DM3"  ][] = new cQRKTools("Osman Turan's BSP compiler","http://www.osmanturan.com/");
 
+# Doom Eternal
+$GamesQRKTools["DM5"  ] = array();
+$GamesQRKTools["DM5"  ][] = new cQRKTools("idStudio","https://idstudio.idsoftware.com/","Only available on Steam (PC), idStudio Beta allows community members to create and publish original mods for all Steam (PC) and Microsoft Store (PC) players."); #steam://store/2545650
+
 # Half-Life 2
 #$GamesQRKTools["HL2"  ] = array(); #Note: Already done above for Source SDK!
 $GamesQRKTools["HL2"  ][] = new cQRKTools("Custom Source Tools","https://www.ammahls.com/zhlt/cst.htm","These tools are for all games Built on the Source Engine, including, Counter-Strike Source, and Half Life 2.");

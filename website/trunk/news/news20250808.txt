@@ -1,0 +1,10 @@
+<author>DanielPharos</author>
+<headline>Doom Eternal gets modding support</headline>
+
+<p>Doom Eternal (on PC) now has modding support! It was in beta since last year, and over 650 mods have already been created by the community. But yesterday, it was <a target="_blank" href="https://store.steampowered.com/news/app/782330/view/539987488382386493">finally officially released</a>, together with all the content from the game (except the DLC .map/.refmap files).</p>
+
+<p>Unfortunately, QuArK at this time doesn't support Doom Eternal, but with this release, it has become a whole lot easier to implement!</p>
+
+
+<p>Happy modding,<br>
+DanielPharos</p>

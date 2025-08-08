@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Call of Duty: Black Ops 7 will require TPM 2.0 and Secure Boot</headline>
+
+<p>RICOCHET, the anti-cheat used for various Call of Duty games, is getting an update. Activision <a target="_blank" href="https://news.blizzard.com/en-us/article/24224368/ricochet-anti-cheat-update-season-05">has announced</a> that <i>Call of Duty: Black Ops 7</i>, which should release later this year, will require TPM 2.0 and Secure Boot on PC. They also state that this anti-cheat update will be rolled out on <i>Call of Duty: Black Ops 6</i> and <i>Call of Duty: Warzone</i>, however, they don't mention whether this includes the TPM 2.0 and Secure Boot requirement.
+
+
+<p>Safe gaming,<br>
+DanielPharos</p>
