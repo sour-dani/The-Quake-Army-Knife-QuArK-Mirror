@@ -364,7 +364,7 @@ begin
       'v': if StrComp(attr, 'vtxlist')=0 then begin
         N:=PyObject_Length(value);
         SetLength(B, SizeOf(Integer));
-        PChar(DestV):=PChar(S);
+        PChar(DestV):=PChar(B);
         Move(N, DestV^, SizeOf(Integer));
         I:=SizeOf(Integer);
         DictLen:=0;
