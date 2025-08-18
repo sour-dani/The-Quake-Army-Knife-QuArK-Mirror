@@ -920,14 +920,10 @@ def loadmodel(root, filename, gamename, nomessage=0):
 
     ### First we test for a valid (proper) model path.
     basepath = ie_utils.validpath(filename)
-    try:
-        basepath = basepath.replace("\\", "/")
-    except:
-        editor = None # Reset the global again.
-        return
     if basepath is None:
         editor = None # Reset the global again.
         return
+    basepath = basepath.replace("\\", "/")
 
     ### Line below just runs the importer without the editor being open.
     ### Need to figure out how to open the editor with it & complete the ModelRoot.

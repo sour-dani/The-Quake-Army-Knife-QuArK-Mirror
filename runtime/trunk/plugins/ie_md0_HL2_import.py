@@ -4647,16 +4647,11 @@ def loadmodel(root, filename, gamename, nomessage=0):
 
     ### First we test for a valid (proper) model path.
     basepath = ie_utils.validpath(filename)
-    try:
-        basepath = basepath.replace("\\", "/")
-    except:
-        editor = None # Reset the global again.
-        quarkx.msgbox("Can not open the file.\n" + filename + "\n\nCopy file to\na folder called 'models'\nsomeplace and try again.", MT_ERROR, MB_OK)
-        return
     if basepath is None:
         editor = None # Reset the global again.
         quarkx.msgbox("Can not open the file.\n" + filename + "\n\nCopy file to\na folder called 'models'\nsomeplace and try again.", MT_ERROR, MB_OK)
         return
+    basepath = basepath.replace("\\", "/")
 
     # Step 1 to import model from QuArK's Explorer.
     if editor is None:

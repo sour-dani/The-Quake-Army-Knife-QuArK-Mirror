@@ -1170,12 +1170,12 @@ def loadmodel(root, filename, gamename, nomessage=0):
 
     ### First we test for a valid (proper) model path.
     basepath = ie_utils.validpath(filename)
-    # basepath = the full path up to and including the game folder with ending forward slash, ex:
-    # D:/Program Files/Doom 3/base/
-    basepath = basepath.replace("\\", "/")
     if basepath is None:
         editor = None   #Reset the global again
         return
+    basepath = basepath.replace("\\", "/")
+    # basepath = the full path up to and including the game folder with ending forward slash, ex:
+    # D:/Program Files/Doom 3/base/
 
     if filename.endswith(".md5mesh"): # Calls to load the .md5_mesh file.
         logging, tobj, starttime = ie_utils.default_start_logging(importername, textlog, filename, "IM") ### Use "EX" for exporter text, "IM" for importer text.
