@@ -17,7 +17,7 @@ if (isset($_GET['showxp']))
 }
 else
 {
-	$ShowXP = FALSE;
+	$ShowXP = false;
 }
 
 if (isset($_GET['showunsupported']))
@@ -26,7 +26,7 @@ if (isset($_GET['showunsupported']))
 }
 else
 {
-	$ShowUnsupported = FALSE;
+	$ShowUnsupported = false;
 }
 
 function DoesGameHaveLinks($Tag)
@@ -199,7 +199,7 @@ function pageLocalDisplay()
 		if (!is_null($CurrentGame->NeedsGame))
 		{
 			$GameNeeded = findGame($CurrentGame->NeedsGame);
-			if ($GameNeeded === FALSE)
+			if ($GameNeeded === false)
 			{
 				# Shouldn't happen!
 				trigger_error('Unable to find '.$CurrentGame->NeedsGame.' in Games array!', E_USER_WARNING);
@@ -312,7 +312,7 @@ function pageLocalDisplay()
 		else
 		{
 			$ApplFound = findAppl($CurrentGame->FromVersion);
-			if ($ApplFound === FALSE)
+			if ($ApplFound === false)
 			{
 				$bodytext .= 'Not supported (yet?)';
 			}

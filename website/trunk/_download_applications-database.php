@@ -559,6 +559,6 @@ function findAppl($VersionID)
 			return $Appl;
 		}
 	}
-	return FALSE;
+	return false;
 }
 ?>

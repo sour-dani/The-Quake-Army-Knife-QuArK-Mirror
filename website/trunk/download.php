@@ -24,7 +24,7 @@ if (isset($_GET['showsuperseded']))
 }
 else
 {
-	$ShowSuperseded = FALSE;
+	$ShowSuperseded = false;
 }
 
 if (isset($_GET['shownonfinal']))
@@ -33,7 +33,7 @@ if (isset($_GET['shownonfinal']))
 }
 else
 {
-	$ShowNonFinal = FALSE;
+	$ShowNonFinal = false;
 }
 
 $IntroMessage = "<p>This matrix lists the main QuArK downloads, including a list of what games are supported by each release. Click on a game's icon for more information about that game.</p>
@@ -101,7 +101,7 @@ function pageLocalDisplay()
 			continue;
 
 		$SupportApplication = findAppl($CurrentGame->FromVersion);
-		if ($SupportApplication === FALSE)
+		if ($SupportApplication === false)
 			# Game is not supported by any KNOWN app version
 			continue;
 
@@ -307,7 +307,7 @@ function pageLocalDisplay()
 			if ($CurrentPatch->VersionID !== $OldVersionID)
 			{
 				$PatchApplication = findAppl($CurrentPatch->VersionID);
-				if ($PatchApplication === FALSE)
+				if ($PatchApplication === false)
 				{
 					# Patch for unknown application version; let's skip it...
 					continue;

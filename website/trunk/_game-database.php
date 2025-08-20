@@ -2149,7 +2149,7 @@ function findGame($GameID)
 			return $Game;
 		}
 	}
-	return FALSE;
+	return false;
 }
 
 //FIXME: Can we do this in a better way?
@@ -2157,7 +2157,7 @@ function getGamesQuery($GameID)
 {
 	global $Games;
 	$Game = findGame($GameID);
-	if ($Game === FALSE)
+	if ($Game === false)
 		return '';
 	$QueryText = array();
 	if (is_null($Games[$Game]->FromVersion))
