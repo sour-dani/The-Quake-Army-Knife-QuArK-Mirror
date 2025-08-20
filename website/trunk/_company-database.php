@@ -35,7 +35,7 @@ $Companies = array();
 
 $Companies['10tacle Studios'] = new cCompany('10tacle Studios', '10tacle Studios AG', NULL);
 $Companies['1C'] = new cCompany('1C', '1C Entertainment', NULL, 'https://1ce.games/', 'https://en.wikipedia.org/wiki/1C_Company');
-$Companies['2015'] = new cCompany('2015', '2015, Inc.', NULL, 'http://2015games.net/', 'https://en.wikipedia.org/wiki/2015_Games,_LLC.'); #http://www.2015.com/ #https://en.wikipedia.org/wiki/2015,_Inc.
+$Companies['2015'] = new cCompany('2015', '2015, Inc.', NULL, NULL, 'https://en.wikipedia.org/wiki/2015_Games,_LLC.'); #http://www.2015.com/ #http://2015games.net/ #https://web.archive.org/web/20201111190638/http://2015games.net/ #https://en.wikipedia.org/wiki/2015,_Inc.
 $Companies['2K'] = new cCompany('2K', '2K Games', NULL, 'https://2k.com/', 'https://en.wikipedia.org/wiki/2K_Games'); #http://www.2kgames.com/
 $Companies['3D Realms'] = new cCompany('3D Realms', '3D Realms', NULL, 'https://3drealms.com/', 'https://en.wikipedia.org/wiki/3D_Realms');
 //$Companies['5th Cell'] = new cCompany('5th Cell', '5th Cell', NULL, 'https://www.5thcell.com/', 'https://en.wikipedia.org/wiki/5th_Cell');
