@@ -468,14 +468,20 @@ var
    AddOffset                     : Word;
    pyv, pyv_f: byte; // AiV
 begin
-   {$IfDef VER120}       // D4 the SFX executable's file size
-      StartOfFile := 90624; //39936=US, 40448=NL,DE
+   {$IfDef VER150}         //D7
+      StartOfFile := 136192;
    {$Else}
-      {$IfDef VER100}    // D3
-         StartOfFile := 39936;
-      {$Else}
-         {$IfDef VER90}  // D2
-            StartOfFile := { 37888 check this!!! };
+     {$IfDef VER120}       // D4 the SFX executable's file size
+        StartOfFile := 90624; //39936=US, 40448=NL,DE
+     {$Else}
+        {$IfDef VER100}    // D3
+           StartOfFile := 39936;
+        {$Else}
+           {$IfDef VER90}  // D2
+              StartOfFile := { 37888 check this!!! };
+           {$Else}
+              See the Readme.txt!
+           {$EndIf}
          {$EndIf}
       {$EndIf}
    {$EndIf}
