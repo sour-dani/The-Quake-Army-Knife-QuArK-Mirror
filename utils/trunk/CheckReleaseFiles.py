@@ -10,6 +10,12 @@ path = sys.argv[1]
 if os.path.exists(os.path.join(path, ".svn")):
 	print("WARNING: SVN directory found: %s" % (os.path.join(path, ".svn"), ))
 
+if os.path.exists(os.path.join(path, ".git")):
+	print("WARNING: GIT directory found: %s" % (os.path.join(path, ".git"), ))
+
+if os.path.exists(os.path.join(path, ".DS_Store")):
+	print("WARNING: .DS_Store file found: %s" % (os.path.join(path, ".DS_Store"), ))
+
 if os.path.exists(os.path.join(path, "Setup.qrk")):
 	print("WARNING: Setup.qrk file found: %s" % (os.path.join(path, "Setup.qrk"), ))
 
