@@ -254,7 +254,7 @@ begin
         end;
       end;
 
-      FreeBuffer(PipeBuffer, False);
+      FreeBuffer(PipeBuffer, False); //FIXME: Are we properly DECREF-ing Src in the lines we don't copy?
       PipeBuffer:=NewBuffer;
       NewBuffer:=nil;
       PipeBufPos:=0;
