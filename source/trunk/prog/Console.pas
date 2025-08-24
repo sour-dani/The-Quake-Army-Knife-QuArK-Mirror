@@ -108,11 +108,10 @@ type
  PPipeBuffer = ^TPipeBuffer;
 
 var
- PipeBuffer: PPipeBuffer;
+ PipeBuffer: PPipeBuffer = nil;
  PipeBufPos: Integer;
  ConsoleWidth: Integer = MinConsoleWidth;
  ConsoleHeight: Integer = MinConsoleHeight;
- ConsoleReady: Boolean = False;
 
  {-------------------}
 
@@ -151,15 +150,14 @@ end;
 
 procedure InitConsole;
 begin
-  if ConsoleReady then Exit;
+  if PipeBuffer<>nil then Exit;
   InitBuffer(PipeBuffer, ConsoleWidth, ConsoleHeight);
   PipeBufPos:=0;
-  ConsoleReady:=True;
 end;
 
 procedure ClearConsole;
 begin
-  if not ConsoleReady then Exit;
+  if PipeBuffer=nil then Exit;
   FreeBuffer(PipeBuffer, True);
   InitBuffer(PipeBuffer, ConsoleWidth, ConsoleHeight);
   PipeBufPos:=0;
@@ -167,8 +165,7 @@ end;
 
 procedure FreeConsole;
 begin
-  if not ConsoleReady then Exit;
-  ConsoleReady:=False;
+  if PipeBuffer=nil then Exit;
   FreeBuffer(PipeBuffer, True);
 end;
 
@@ -180,7 +177,6 @@ var
   BufLine, BufChar: Integer;
   NewBuffer: PPipeBuffer;
 begin
-  if not ConsoleReady then Exit;
   Setup:=SetupSubSet(ssGeneral, 'Display');
   try
     NewConsoleWidth:=Round(Setup.GetFloatSpec('ConsoleWidth', 0));
@@ -206,60 +202,63 @@ begin
     NewConsoleHeight:=MaxConsoleHeight;
   if (NewConsoleWidth<>ConsoleWidth) or (NewConsoleHeight<>ConsoleHeight) then
   begin
-    NewBuffer:=nil;
-    InitBuffer(NewBuffer, NewConsoleWidth, NewConsoleHeight);
-
-    BufLine:=NewConsoleHeight-1;
-    BufChar:=0;
-    P:=PipeBufPos-1;
-    if P=-1 then
-      Inc(P, ConsoleHeight);
-    for I:=ConsoleHeight-1 downto 0 do
+    if PipeBuffer<>nil then
     begin
-      NewBuffer^[BufLine].Src:=PipeBuffer^[P].Src;
-      //FIXME
-      //Resizing the width causes weird line-breaks right now...
-      //We need some better scheme to copy the data from one buffer
-      //to the other...
-      for J:=0 to PipeBuffer^[P].DataLength-1 do
+      NewBuffer:=nil;
+      InitBuffer(NewBuffer, NewConsoleWidth, NewConsoleHeight);
+
+      BufLine:=NewConsoleHeight-1;
+      BufChar:=0;
+      P:=PipeBufPos-1;
+      if P=-1 then
+        Inc(P, ConsoleHeight);
+      for I:=ConsoleHeight-1 downto 0 do
       begin
-        NewBuffer^[BufLine].Data[BufChar]:=PipeBuffer^[P].Data[J];
-        Inc(BufChar);
-        if (BufChar=NewConsoleWidth) and (J<PipeBuffer^[P].DataLength-1) then
+        NewBuffer^[BufLine].Src:=PipeBuffer^[P].Src;
+        //FIXME
+        //Resizing the width causes weird line-breaks right now...
+        //We need some better scheme to copy the data from one buffer
+        //to the other...
+        for J:=0 to PipeBuffer^[P].DataLength-1 do
         begin
-          NewBuffer^[BufLine].DataLength:=BufChar;
-          Dec(BufLine);
-          if BufLine=0 then
-            break;
-          BufChar:=0;
-          NewBuffer^[BufLine].Src:=PipeBuffer^[P].Src;
+          NewBuffer^[BufLine].Data[BufChar]:=PipeBuffer^[P].Data[J];
+          Inc(BufChar);
+          if (BufChar=NewConsoleWidth) and (J<PipeBuffer^[P].DataLength-1) then
+          begin
+            NewBuffer^[BufLine].DataLength:=BufChar;
+            Dec(BufLine);
+            if BufLine=0 then
+              break;
+            BufChar:=0;
+            NewBuffer^[BufLine].Src:=PipeBuffer^[P].Src;
+          end;
+        end;
+        NewBuffer^[BufLine].DataLength:=BufChar;
+        if BufLine=0 then
+          break;
+
+        if I>0 then
+        begin
+          Dec(P);
+          if P=-1 then
+            Inc(P, ConsoleHeight);
+
+          if PipeBuffer^[P].EndLine then
+          begin
+            Dec(BufLine);
+            if BufLine=0 then
+              break;
+            BufChar:=0;
+            NewBuffer^[BufLine].EndLine:=True;
+          end;
         end;
       end;
-      NewBuffer^[BufLine].DataLength:=BufChar;
-      if BufLine=0 then
-        break;
 
-      if I>0 then
-      begin
-        Dec(P);
-        if P=-1 then
-          Inc(P, ConsoleHeight);
-
-        if PipeBuffer^[P].EndLine then
-        begin
-          Dec(BufLine);
-          if BufLine=0 then
-            break;
-          BufChar:=0;
-          NewBuffer^[BufLine].EndLine:=True;
-        end;
-      end;
+      FreeBuffer(PipeBuffer, False);
+      PipeBuffer:=NewBuffer;
+      NewBuffer:=nil;
+      PipeBufPos:=0;
     end;
-
-    FreeBuffer(PipeBuffer, False);
-    PipeBuffer:=NewBuffer;
-    NewBuffer:=nil;
-    PipeBufPos:=0;
 
     ConsoleHeight:=NewConsoleHeight;
     ConsoleWidth:=NewConsoleWidth;
@@ -292,7 +291,7 @@ var
  Line: ^TPipeLine;
  S: String;
 begin
- if not ConsoleReady then
+ if PipeBuffer=nil then
   begin
    Log(LOG_WARNING, 'Console not ready; text: %s', [Text]);
    Exit;
@@ -412,7 +411,7 @@ var
  obj: PyObject;
  LineBuf: String;
 begin
- if not ConsoleReady then Exit;
+ if PipeBuffer=nil then Exit;
  if ConsoleFont=0 then
   begin
    ConsoleFont:=CreateFont(ConsoleFontHeight, 0, 0, 0, FW_DONTCARE, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH or FF_DONTCARE, Nil);
@@ -639,7 +638,7 @@ var
  I, J: Integer;
  H: HGlobal;
 begin
- if not ConsoleReady then Exit;
+ if PipeBuffer=nil then Exit;
  if Clipboard1=Clipboard2 then Exit;
  if ((GetTickCount<More) or (GetTickCount>More+200))
  and (MessageDlg(LoadStr1(4456), mtConfirmation, [mbYes, mbNo], 0) = mrYes) then
