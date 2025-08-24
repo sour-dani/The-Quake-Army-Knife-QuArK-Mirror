@@ -28,7 +28,6 @@ uses Windows, Messages, ShellApi, SysUtils, Python, Forms, Menus;
 
 var
  Py_None        : PyObject = Nil;
- Py_xStrings    : PyObject = Nil;
  MacrosDict     : PyObject = Nil;
  QuarkxDict     : PyObject = Nil;
  QuarkxError    : PyObject = Nil;
@@ -107,6 +106,7 @@ const
  ToolBoxOpen   = 2;  { is currently open }
 
 var
+  Py_xStrings: PyObject = Nil;
   PythonInited: Boolean;
 
  {-------------------}

@@ -495,9 +495,13 @@ begin
 end;
 
 procedure TConsoleForm.FormCreate(Sender: TObject);
+const
+ Fallback6 = 'Console';
 begin
- if Py_xStrings<>nil then
-  Caption:=LoadStr1(6);
+ if IsPythonInited then
+  Caption:=LoadStr1(6)
+ else
+  Caption:=Fallback6;
  Notebook1.ClientHeight:=ComboBox1.Height;
  ToolbarButton971.Height:=ComboBox1.Height;
  UpdateRunningProcesses;
