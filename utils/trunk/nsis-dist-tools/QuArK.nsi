@@ -23,7 +23,7 @@
 !define PRODUCT_NAME_FULL "Quake Army Knife"
 !define PRODUCT_COPYRIGHT "Copyright (c) 2025"
 !define PRODUCT_VERSION "6.6.0 Beta 8"
-!define PRODUCT_VERSION_NUMBER "6.6.0.b8"
+!define PRODUCT_VERSION_NUMBER "6.6.0.8"
 !define PRODUCT_VERSION_STRING "6.6 (Beta-Release)"
 !define PRODUCT_INSTALL_DIR "QuArK 6.6"
 !define PRODUCT_WEB_SITE "https://quark.sourceforge.io/"
@@ -487,7 +487,7 @@ SectionEnd
 Section "$(TEXT_SEC03_TITLE)" SEC03
   SetOutPath $INSTDIR ;To set the working directory for the shortcuts
   CreateDirectory "$SMPROGRAMS\QuArK"
-  CreateShortCut "$SMPROGRAMS\QuArK\QuArK.lnk" "$INSTDIR\QuArK.exe"
+  CreateShortCut "$SMPROGRAMS\QuArK\QuArK.lnk" "$INSTDIR\QuArK.exe" ;FIXME: Set a description/comment? https://nsis.sourceforge.io/Reference/CreateShortCut
   CreateShortCut /NoWorkingDir "$SMPROGRAMS\QuArK\Website.lnk" "$INSTDIR\${PRODUCT_NAME}.url"
   CreateShortCut /NoWorkingDir "$SMPROGRAMS\QuArK\Forum.lnk" "${PRODUCT_WEB_FORUM}"
   CreateShortCut /NoWorkingDir "$SMPROGRAMS\QuArK\Online Infobase.lnk" "${PRODUCT_INFOBASE}"
