@@ -1,6 +1,9 @@
 cvs
 .svn
 #
+*.log
 *.pyc
 *.pyo
+QuArK.exe
+QuArK.map
 Setup.qrk
