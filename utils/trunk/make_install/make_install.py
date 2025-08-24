@@ -18,7 +18,7 @@ pathUtils = os.path.join(pathRoot, "utils")
 pathMakeInstall = os.path.join(pathUtils, "make_install")
 pathDCC = "C:\\Program Files\\Borland\\Delphi7\\Bin\\DCC32.EXE"
 pathUPX = os.path.join(pathMakeInstall, "upx", "upx.exe")
-pathMT = os.path.expandvars(os.path.join("%ProgramFiles(x86)%", "Windows Kits", "10", "bin", "10.0.22000.0", "x86", "mt.exe")) #FIXME: Hardcoded SDK version!
+pathMT = os.path.expandvars(os.path.join("%ProgramFiles(x86)%", "Windows Kits", "10", "bin", "10.0.26100.0", "x86", "mt.exe")) #FIXME: Hardcoded SDK version!
 pathAddMaker = os.path.join(pathMakeInstall, "addmaker", "addmaker.exe")
 pathSFXStub = os.path.join(pathMakeInstall, "SFX", "SFX.exe")
 pathNSIS = "C:\\Program Files\\NSIS\\makensis.exe"
@@ -73,7 +73,7 @@ parts = parts.split(".")
 if len(parts) != 2:
 	raise ValueError("Invalid format for version!")
 version_major, version_minor = parts
-version_revision = 0
+version_revision = "0"
 del parts #Release for GC
 
 if args.SNAPSHOT:
