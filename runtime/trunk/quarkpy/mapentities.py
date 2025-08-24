@@ -734,7 +734,7 @@ class DefaultDrawEntityLines:
                                 entity["angles"] = netangles
                                 entityform = editor.layout.dataform.linkedobjects[0] # A list of "dictspec" items, the Specifics and their Arguments.
                                 editor.layout.dataform.setdata(entityform, editor.layout.dataform.form)
-                                editor.buildhandles()
+                                editor.buildhandles() #FIXME: Only call this once? This is in a for-loop right now!!!
 
                 LightingInnerConeKeyword = quarkx.setupsubset()["LightingInnerConeKeyword"]
                 LightingOuterConeKeyword = quarkx.setupsubset()["LightingOuterConeKeyword"]
