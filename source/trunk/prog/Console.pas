@@ -65,7 +65,7 @@ type
 
 var
   g_Ty_InternalConsole: TyObject = (ob_refcnt: 1);
-  ConsoleLogging: Boolean;
+  ConsoleLogging: Boolean = false;
 
  {-------------------}
 
@@ -741,7 +741,4 @@ begin
   Handled := true;
 end;
 
-initialization
-  ConsoleLogging:=False;
-finalization
 end.
