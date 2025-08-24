@@ -161,7 +161,6 @@ procedure ClearConsole;
 begin
   if not ConsoleReady then Exit;
   FreeBuffer(PipeBuffer, True);
-  PipeBuffer:=nil;
   InitBuffer(PipeBuffer, ConsoleWidth, ConsoleHeight);
   PipeBufPos:=0;
 end;
@@ -171,7 +170,6 @@ begin
   if not ConsoleReady then Exit;
   ConsoleReady:=False;
   FreeBuffer(PipeBuffer, True);
-  PipeBuffer:=nil;
 end;
 
 procedure ResizeConsole;
