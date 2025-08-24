@@ -161,10 +161,10 @@ begin
     if Chunk.xType=0 then
     begin
       if Chunk.Size<>SizeOf(Header) then
-        Raise EErrorFmt(5509, [85]);
+        Raise EErrorFmt(5509, ['Invalid header size']);
 
       if Chunk.Elements<>1 then
-        Raise EErrorFmt(5509, [85]);
+        Raise EErrorFmt(5509, ['Invalid number of elements']);
 
       if DataRemaining < SizeOf(Header) then
         Raise EError(5519);
@@ -177,7 +177,7 @@ begin
         Raise EErrorFmt(5520, [FBsp.Name, 0]); //FIXME: Bad values!
 
       if Header.Version<>GBSP_VERSION then
-        Raise EErrorFmt(5509, [85]);
+        Raise EErrorFmt(5509, ['Version mismatch']);
 
       FBsp.Specifics.Strings['BSPTime']:=Format('%d-%d-%d-%d-%d-%d-%d-%d',
         [Header.BSPTime.wYear,
@@ -196,11 +196,11 @@ begin
     begin
       if Chunk.xType=GBSP_CHUNK_END then
         break;
-      Raise EErrorFmt(5509, [83]);
+      Raise EErrorFmt(5509, ['Unexpected end chunk']);
     end;
 
     if Chunk.Size*Chunk.Elements < 0 then
-      Raise EErrorFmt(5509, [84]);
+      Raise EErrorFmt(5509, ['Negative size chunk']);
 
     Q:=MakeFileQObject(F, BspG3DEntryNames[Chunk.xType], FBsp);
     FBsp.SubElements.Add(Q);

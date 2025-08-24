@@ -317,7 +317,7 @@ begin
       if (Header.Intro.PosRep + Header.Intro.TailleRep > FSize)
       or (Header.Intro.PosRep<SizeOf(TIntroPak))
       or (Header.Intro.TailleRep<0) then
-       Raise EErrorFmt(5509, [61]);
+       Raise EErrorFmt(5509, ['File truncated']);
       F.Position:=Origine + Header.Intro.PosRep;
       GetMem(Entrees1, Header.Intro.TailleRep);
       try
@@ -369,7 +369,7 @@ begin
          or ((CurrentGameMode = mjDK) and (PFinEntreePak(P1)^.Position+PFinEntreeDaikatanaPak(P1)^.CompressLen > FSize))
          or (PFinEntreePak(P1)^.Position<SizeOf(TIntroPak))
          {or (PFinEntreePak(P1)^.Taille<0)} then
-          Raise EErrorFmt(5509, [62]);
+          Raise EErrorFmt(5509, ['File truncated']);
 
          F.Position:=PFinEntreePak(P1)^.Position;
          if (CurrentGameMode = mjDK) and (PFinEntreeDaikatanaPak(P1)^.CompressType <> 0) then

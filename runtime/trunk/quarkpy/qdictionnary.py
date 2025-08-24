@@ -773,7 +773,7 @@ Strings = {
     5506: "'%s' is not a PACK file//%d should be %d",
 
     5508: "Files names in PACK files are limited to %d characters, including the path. '%s' is too long",
-    5509: "Invalid data. The file is probably corrupted//Error %d",
+    5509: "Invalid data. The file is probably corrupted//%s",
 
     5511: "The WAD file contains data that cannot be written to this type of file.//'%s' invalid",
 

@@ -368,18 +368,18 @@ procedure LoadGroup(Result: TTreeMap; S: TStream; T: PTransfertTreeMap);
 var
  I: Integer;
  Nombre: Word;
- InfoTypes: String;
+ InfoTypes: String; //FIXME: AnsiString?
 begin
  TTreeMapSpecCharger(Result, S);
  S.ReadBuffer(Nombre, SizeOf(Nombre));
  if Nombre>0 then
   begin
    SetLength(InfoTypes, Nombre);
-   S.ReadBuffer(PChar(InfoTypes)^, Nombre);
+   S.ReadBuffer(PChar(InfoTypes)^, Nombre); //FIXME: PAnsiChar?
    for I:=1 to Nombre do
     begin
      if Ord(InfoTypes[I]) > High(TreeMapObj) then
-      Raise EErrorFmt(5509, [9000+Ord(InfoTypes[I])]);
+      Raise EErrorFmt(5509, [Format('invalid type: %d', [Ord(InfoTypes[I])])]);
      Result.SubElements.Add(TreeMapObj[Ord(InfoTypes[I])](S, T, Result));
     end;
   end;
@@ -456,7 +456,7 @@ begin
   begin  { turns this data into a map }
    FillChar(T, SizeOf(T), 0);
    S:=Specifics.Strings['Map'];
-   if S='' then Raise EErrorFmt(5509, [811]);
+   if S='' then Raise EErrorFmt(5509, ['Missing map specific']);
    M:=SpecAsMemStream(S); try
    Q:=TTreeMapBrushCharger(M, @T, Self);
    SubElements.Add(Q);

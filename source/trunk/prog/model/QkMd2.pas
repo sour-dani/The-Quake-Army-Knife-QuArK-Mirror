@@ -101,10 +101,10 @@ begin
 end;
 
 procedure QMd2File.LoadFile(F: TStream; FSize: TStreamPos);
-  procedure Check(Ofs, Num, Size1: Integer);
+  procedure Check(Ofs, Num, Size1: Integer; const Error: String);
   begin
     if (Ofs<SizeOf(dmdl_t)) or (Ofs>FSize) or (Num<0) or (Ofs+Size1*Num>FSize) then
-      Raise EErrorFmt(5509, [142]);
+      Raise EErrorFmt(5509, [Error]);
   end;
 
 var
@@ -120,15 +120,15 @@ begin
       if (mdl.ident<>SignatureMdl2) or (mdl.version<>VersionMdl2) then
         Raise EErrorFmt(5571, [LoadName, mdl.ident, mdl.version, SignatureMdl2, VersionMdl2]);
       if (mdl.num_frames>0) and (mdl.framesize<>BaseAliasFrameSize+mdl.num_xyz*SizeOf(dtrivertx_t)) then
-        Raise EErrorFmt(5509, [141]);
+        Raise EErrorFmt(5509, ['Invalid frame data']);
       if mdl.ofs_end>FSize then
         Raise EErrorFmt(5186, [LoadName]);
       FSize:=mdl.ofs_end;
-      Check(mdl.ofs_skins, mdl.num_skins, MAX_SKINNAME);
-      Check(mdl.ofs_st, mdl.num_st, SizeOf(dstvert_t));
-      Check(mdl.ofs_tris, mdl.num_tris, SizeOf(dtriangle_t));
-      Check(mdl.ofs_frames, mdl.num_frames, mdl.framesize);
-      Check(mdl.ofs_glcmds, mdl.num_glcmds, SizeOf(LongInt));
+      Check(mdl.ofs_skins, mdl.num_skins, MAX_SKINNAME, 'Invalid skin name');
+      Check(mdl.ofs_st, mdl.num_st, SizeOf(dstvert_t), 'Invalid texture data');
+      Check(mdl.ofs_tris, mdl.num_tris, SizeOf(dtriangle_t), 'Invalid triangle data');
+      Check(mdl.ofs_frames, mdl.num_frames, mdl.framesize, 'Invalid frame data');
+      Check(mdl.ofs_glcmds, mdl.num_glcmds, SizeOf(LongInt), 'Invalid glcmds');
       ReadMd2File(F, Origine, mdl);
     end;
     else

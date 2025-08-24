@@ -236,13 +236,13 @@ begin
             Exit;
            end;
   else
-   Raise EErrorFmt(5509, [133]);
+   Raise EErrorFmt(5509, ['Unknown tag']);
   end;
   Result:=Org+SizeOf(HCount);
   if Result>StreamSize then Raise EError(5608);
   Stream.ReadBuffer(HCount, SizeOf(HCount));
   if HCount<=0 then
-   Raise EErrorFmt(5509, [136]);
+   Raise EErrorFmt(5509, ['hcount < 0']);
   Inc(Result, HCount+BytesPerTick1(FrameOfs.Count));
   if Result>StreamSize then Raise EError(5608);
   Palettes.Add(NewPalette);
@@ -483,7 +483,7 @@ begin
  GetMem(HData, HCount); try
  Stream.ReadBuffer(HData^, HCount);
  if HData^<>FrameWidth*FrameHeight then
-  Raise EErrorFmt(5509, [134]);
+  Raise EErrorFmt(5509, ['Invalid frame data']);
  Uncompress(PChar(ImageHdr[tagHdr]), HData, FrameWidth, (FrameWidth+3) and not 3, FrameHeight, OptData);
  finally FreeMem(HData); end;
  if PaletteChange>0 then

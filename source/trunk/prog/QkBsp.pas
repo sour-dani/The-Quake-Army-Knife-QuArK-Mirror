@@ -610,7 +610,7 @@ begin
     if ModeH2 then
       Result := mjHexen2
     else
-      Raise EErrorFmt(5509, [84]);
+      Raise EErrorFmt(5509, ['Invalid BSP1 game code']);
 end;
 
 function TryNumberOfLumps(F: TStream; FSize: TStreamPos; NumberOfLumps: Integer) : Boolean;

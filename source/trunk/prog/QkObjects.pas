@@ -1340,7 +1340,7 @@ begin
     { file item count is stored in more than one byte }
     Size:=0;
     if FileItemCount and qsLongSizeMask > SizeOf(Size) then
-      Raise EErrorFmt(5509, [51]);
+      Raise EErrorFmt(5509, ['Too many items']);
 
     F.ReadBuffer(Size, FileItemCount and qsLongSizeMask);
     Inc(DeltaPos, FileItemCount and qsLongSizeMask);
@@ -1349,7 +1349,7 @@ begin
 
   Size:=FileItemCount * SizeOf(TFileItemInfo);
   Inc(DeltaPos, Size);
-  if DeltaPos > FSize then   { Raise EErrorFmt(5509, [52]); }
+  if DeltaPos > FSize then   { Raise EErrorFmt(5509, ['File truncated']); }
   begin
     FileCrashRecoverHack;
     Exit;
@@ -1381,7 +1381,7 @@ begin
     Inc(DeltaPos, Size);
 
     if DeltaPos > FSize then
-      Raise EErrorFmt(5509, [53]);
+      Raise EErrorFmt(5509, ['file truncated']);
 
     SetLength(Names, Size);
     F.ReadBuffer(PChar(Names)^, Size);  { read the names }
@@ -1395,7 +1395,7 @@ begin
       I:=FSize-DeltaPos;  { stored at the end of the data block }
 
       if I<0 then
-        Raise EErrorFmt(5509, [54]);
+        Raise EErrorFmt(5509, ['file corrupt']);
 
       F.Seek(I, soCurrent);
       SetLength(ExtraSizes, ExtraSize);
@@ -1430,14 +1430,14 @@ begin
         J:=Info^.Code and qsLongSizeMask;
 
         if J > SizeOf(Size) then
-          Raise EErrorFmt(5509, [55]);
+          Raise EErrorFmt(5509, ['file truncated']);
 
         Move(ExtraSizes[ExtraSize], Size, J);
         Inc(ExtraSize, J);
       end;
 
       Inc(DeltaPos, Size);
-      if DeltaPos > FSize then    {Raise EErrorFmt(5509, [56])}
+      if DeltaPos > FSize then    {Raise EErrorFmt(5509, ['file truncated'])}
       begin
         if not Hack then
         begin

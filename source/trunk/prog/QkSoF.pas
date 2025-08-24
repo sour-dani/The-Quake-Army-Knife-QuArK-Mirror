@@ -414,14 +414,14 @@ begin
   for I:=0 to HEADER_LUMPS-1 do
   begin
     if Header.Entries[I].EntrySize < 0 then
-      Raise EErrorFmt(5509, [84]);
+      Raise EErrorFmt(5509, ['Invalid entry size']);
 
     if Header.Entries[I].EntrySize = 0 then
       Header.Entries[I].EntryPosition := SizeOf(Header)
     else
     begin
       if Header.Entries[I].EntryPosition < SizeOf(Header) then
-        Raise EErrorFmt(5509, [85]);
+        Raise EErrorFmt(5509, ['Invalid file offset']);
 
       if Header.Entries[I].EntryPosition+Header.Entries[I].EntrySize > StreamSize then
       begin

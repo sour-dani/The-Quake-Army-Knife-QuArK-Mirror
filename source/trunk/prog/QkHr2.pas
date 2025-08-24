@@ -237,7 +237,7 @@ begin
         F.ReadBuffer(Hr2Entry, SizeOf(Hr2Entry));
         Inc(Delta, SizeOf(Hr2Entry));
         if (Delta+TStreamPos(Hr2Entry.Size) > FSize) then
-         Raise EErrorFmt(5509, [291]);
+         Raise EErrorFmt(5509, ['File truncated']);
 
         S:=CharToPas(Hr2Entry.SectionName);
         if (S='header') and (Hr2Entry.Size>=SizeOf(Hr2Header)) then

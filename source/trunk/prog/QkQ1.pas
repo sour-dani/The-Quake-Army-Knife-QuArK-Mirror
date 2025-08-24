@@ -404,7 +404,7 @@ begin
     if (Header.Entries[I].EntryPosition+Header.Entries[I].EntrySize > StreamSize)
     or (Header.Entries[I].EntryPosition < SizeOf(Header))
     or (Header.Entries[I].EntrySize < 0) then
-      Raise EErrorFmt(5509, [82]);
+      Raise EErrorFmt(5509, ['File truncated']);
 
     F.Position := Origine + Header.Entries[I].EntryPosition;
     Q := MakeFileQObject(F, Bsp1EntryNames[I], FBsp); //FIXME: Used Header.Entries[I].EntrySize as third argument to OpenFileObjectData.

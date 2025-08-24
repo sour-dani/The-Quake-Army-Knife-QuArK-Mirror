@@ -217,7 +217,7 @@ begin
       begin
         I:=Header.NoOfFileEntries * SizeOf(TWadDirectoryEntry);
         if (I<0) or (Header.PosRep<SizeOf(TWadHeader)) then
-          Raise EErrorFmt(5509, [71]);
+          Raise EErrorFmt(5509, ['Truncated file']);
         if Header.PosRep + I > FSize then
           Raise EErrorFmt(5186, [LoadName]);
 
@@ -237,7 +237,7 @@ begin
             if (P_1^.Position+P_1^.Taille > FSize) or
                (P_1^.Position<SizeOf(Header)) or
                (P_1^.Taille<0) then
-              Raise EErrorFmt(5509, [72]);
+              Raise EErrorFmt(5509, ['Truncated file']);
             F.Position:=P_1^.Position;
             Q:=MakeFileQObject(F, CharToPas(P_1^.Nom)+Prefix, Self); //FIXME: Used P_1^.Taille as third argument to OpenFileObjectData.
             SubElements.Add(Q);
@@ -253,7 +253,7 @@ begin
         //Wad2 or Wad3
         I:=Header.NoOfFileEntries * SizeOf(TWadFileRec);
         if (I<0) or (Header.PosRep<SizeOf(TWadHeader)) then
-          Raise EErrorFmt(5509, [71]);
+          Raise EErrorFmt(5509, ['Truncated file']);
         if Header.PosRep + I > FSize then
           Raise EErrorFmt(5186, [LoadName]);
 
@@ -269,9 +269,9 @@ begin
             if (P^.Position+P^.Taille > FSize) or
                (P^.Position<SizeOf(Header)) or
                (P^.Taille<0) then
-              Raise EErrorFmt(5509, [72]);
+              Raise EErrorFmt(5509, ['Truncated file']);
             if P^.Compression<>0 then
-              Raise EErrorFmt(5509, [73]);
+              Raise EErrorFmt(5509, ['Invalid compression']);
 
             if WorkaroundGFX and (Self.GetFullName() = 'gfx.wad') then
              if CharToPas(P^.Nom) = 'COLORMAP' then
@@ -480,7 +480,7 @@ begin
       Origine:=F.Position;
       F.ReadBuffer(Count, SizeOf(Count));
       if Count<0 then
-       Raise EErrorFmt(5509, [91]);
+       Raise EErrorFmt(5509, ['Invalid count']);
       if Count=0 then
        Exit;
       Min:=(Count+1)*SizeOf(LongInt);
@@ -505,7 +505,7 @@ begin
          else
           begin
            if (P^>FSize) or (P^<Min) then
-            Raise EErrorFmt(5509, [92]);
+            Raise EErrorFmt(5509, ['Invalid file offset']);
            F.Position:=Origine + P^;
            if I=Count then
             MaxSize:=FSize

@@ -164,7 +164,7 @@ begin
       SetFloatsSpec('Size', V);
       ScanW:=(XSize+3) and not 3;
       if Header.BytesPerLine > ScanW then
-       Raise EErrorFmt(5509, [34]);
+       Raise EErrorFmt(5509, ['Scanline too small']);
       SetLength(Data, ScanW*YSize);
       ScanLine:=PArithByte(Data)+Length(Data);
       BufMin:=Header.BytesPerLine*2;  { one input line may need up to this count of bytes }
@@ -195,7 +195,7 @@ begin
         while I<Header.BytesPerLine do
          begin
           if BufStart=BufEnd then
-           Raise EErrorFmt(5509, [31]);
+           Raise EErrorFmt(5509, ['Data truncated']);
           Byte1:=Ord(InBuffer[BufStart]);
           Inc(BufStart);
           if Byte1<$C0 then
@@ -207,9 +207,9 @@ begin
            begin
             K:=Byte1 and not $C0;   { repeat count }
             if I+K>Header.BytesPerLine then
-             Raise EErrorFmt(5509, [32]);
+             Raise EErrorFmt(5509, ['Scanline too small']);
             if BufStart=BufEnd then
-             Raise EErrorFmt(5509, [31]);
+             Raise EErrorFmt(5509, ['Data truncated']);
             Byte2:=Ord(InBuffer[BufStart]);
             Inc(BufStart);
             for L:=I to I+K-1 do
