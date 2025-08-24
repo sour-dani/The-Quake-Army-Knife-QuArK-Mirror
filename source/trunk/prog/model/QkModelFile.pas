@@ -196,6 +196,7 @@ end;
 
 // Create a QImage object of size 'SZ' containing black and white squares,
 // if a texture can't be found...
+//FIXME: Merge with EdSceneObject's GetTex3Description
 function QModelFile.CantFindTexture(Component: QComponent; const name: string; SZ: TPoint): QImage;
 var
   bmp: TBitmap;
