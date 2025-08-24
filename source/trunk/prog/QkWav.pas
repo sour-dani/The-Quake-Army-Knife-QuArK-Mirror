@@ -260,7 +260,7 @@ begin
  Result:=TWavDataInfo.Create;
  with TWavDataInfo(Result) do
   begin
-   ErrorCode:=131;
+   ErrorCode:=0;
    Taille:=GetReadStream(S); try
    if Taille=0 then
     begin
@@ -283,7 +283,7 @@ begin
      Dec(Taille, SizeOf(Header)+TailleA);
      if Taille<0 then
       begin
-       ErrorCode:=130;
+       ErrorCode:=1;
        Break;
       end;
      Pos1:=S.Position;
@@ -293,14 +293,14 @@ begin
        SndRate:=WaveFmt.fmtRate;
        SndChannels:=WaveFmt.fmtChannels;
        SndWidth:=WaveFmt.fmtBlockAlign div SndChannels;
-       ErrorCode:=132;
+       ErrorCode:=2;
       end
      else
       if Header.Signature=WaveBlockdata then
        begin
         OfsData:=Pos1-Position0;
         DataSize:=Header.Taille;
-        ErrorCode:=133;
+        ErrorCode:=3;
        end;
      S.Position:=Pos1+TailleA;
     end;
@@ -308,7 +308,8 @@ begin
    BytesPerTick:=SndWidth*SndChannels*(SndRate div TicksPerSec);
    Length:=(DataSize+BytesPerTick-1) div BytesPerTick;
    if (BytesPerTick=0) or (Length=0) then
-    Raise EErrorFmt(5509, [ErrorCode]);
+    //FIXME: If ErrorCode is zero, this will produce the wrong error message!
+    Raise EErrorFmt(5509, [LoadStr1(5909+ErrorCode)]);
    if Taille<0 then
     GlobalWarning(LoadStr1(5632));
   end;

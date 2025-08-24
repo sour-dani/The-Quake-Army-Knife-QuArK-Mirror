@@ -1184,6 +1184,10 @@ Strings = {
     5907: "Found %d gamefiles eligible for unloading",
     5908: "Max gamefiles exceeded; unloading %d gamefiles...",
     5909: "Memory threshold exceeded; unloading %d gamefiles...",
+    5910: "file corrupt",
+    5911: "not enough data",
+    5912: "unexpected data",
+    5913: "unexpected end of data",
 
     # 6000 .. 6099: Reserved for all 3D renderers
     6000: "Unable to create SceneObject//%s",
