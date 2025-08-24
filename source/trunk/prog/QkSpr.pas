@@ -199,15 +199,15 @@ begin
   end;
 end;
 
-procedure QSprFile.LoadQ1Spr(fs:TStream; PPPalette:PGameBuffer; Sprite: QSprite);
+procedure QSprFile.LoadQ1Spr(fs: TStream; PPPalette: PGameBuffer; Sprite: QSprite);
 var
-  dst:TQ1SprHeader;
-  group,ID_SPRHeader,i,j,k,nopics{,noframes}:longint;
+  dst: TQ1SprHeader;
+  group, ID_SPRHeader, i, j, k, nopics{, noframes} :longint;
   pos: TStreamPos;
   xoffset,yoffset,width,height:Longint;
   aPalette: TPaletteLmp;
-  p: PChar;
-  DeltaW:Integer;
+  P: PChar; //FIXME: ArithByte!
+  DeltaW: Integer;
   times: array[1..1024] of Single; //FIXME: Hardcoded limit...? THERE IS NO LIMIT IN Q1!!! REWRITE!!! Make an ARRAY!!! SetLength!!!
 begin
   aPalette:=PPPalette^.PaletteLmp;
@@ -223,26 +223,32 @@ begin
   Self.Specifics.Floats['SPR_RADIUS']:=dst.boundingradius;
   Self.Specifics.Integers['SPR_WIDTH']:=dst.width;
   Self.Specifics.Integers['SPR_HEIGHT']:=dst.height;
-  //FIXME: If dst.numframes < 1 THEN ERROR! Invalid number of frames!
-  for i:=1 to dst.numframes do begin
+  //FIXME: If dst.numframes < 0 THEN ERROR! Invalid number of frames!
+  for i:=1 to dst.numframes do
+  begin
     fs.ReadBuffer(group,4);
-    if group=0 then begin
+    if group=0 then
+    begin
       fs.ReadBuffer(xoffset,4);
       fs.ReadBuffer(yoffset,4);
       fs.ReadBuffer(width,4);
       fs.ReadBuffer(height,4);
-      J:=Fs.Position;
+      Pos:=Fs.Position;
       Loaded_Frame(Sprite, format('Frame %d',[i]), [width,height], p, DeltaW, apalette);
-      Fs.Position:=J;
-      for J:=1 to height do begin
+      Fs.Position:=Pos;
+      for J:=1 to height do
+      begin
         Fs.ReadBuffer(P^, width);
         Inc(P, DeltaW);
       end;
-    end else begin
+    end
+    else
+    begin
       fs.readbuffer(nopics,4);
       for j:=1 to nopics do
         fs.readbuffer(times[j],4);
-      for j:=1 to nopics do begin
+      for j:=1 to nopics do
+      begin
         fs.ReadBuffer(xoffset,4);
         fs.ReadBuffer(yoffset,4);
         fs.ReadBuffer(width,4);
@@ -250,7 +256,8 @@ begin
         Pos:=Fs.Position;
         Loaded_Frame(Sprite, format('Frame %d',[i]), [width,height], p, DeltaW, apalette);
         Fs.Position:=Pos;
-        for k:=1 to height do begin
+        for k:=1 to height do
+        begin
           Fs.ReadBuffer(P^, width);
           Inc(P, DeltaW);
         end;
@@ -259,14 +266,15 @@ begin
   end;
 end;
 
-procedure QSprFile.LoadHLSpr(Fs:TStream; Sprite: QSprite);
+procedure QSprFile.LoadHLSpr(Fs: TStream; Sprite: QSprite);
 var
-  dst:THLSprHeader;
-  ID_SPRHEADER, i, w, h, lint, lint2, J:Longint;
-  DeltaW:Integer;
-  fshort:SmallInt;
+  dst: THLSprHeader;
+  group, ID_SPRHEADER, i, w, h, lint, lint2, J: Longint;
+  pos: TStreamPos;
+  DeltaW: Integer;
+  PalLen: SmallInt;
   aPalette: TPaletteLmp;
-  P:PChar;
+  P: PChar; //FIXME: ArithByte!
 begin
   ID_SPRHEADER:=(ord('P') shl 24)+(ord('S')shl 16)+(ord('D') shl 8)+ord('I');
   fs.ReadBuffer(dst,sizeof(dst));
@@ -282,8 +290,9 @@ begin
   Self.Specifics.Integers['SPR_HEIGHT']:=dst.height;
   Self.Specifics.Integers['SPR_NOFRAMES']:=dst.numframes;
 
-  fs.ReadBuffer(FShort,2);
-  for i:=0 to FShort-1 do begin
+  fs.ReadBuffer(PalLen, SizeOf(SmallInt));
+  for i:=0 to PalLen-1 do
+  begin
     fs.ReadBuffer(lint2,1);
     aPalette[i,0]:=lint2;
     fs.ReadBuffer(lint2,1);
@@ -291,32 +300,34 @@ begin
     fs.ReadBuffer(lint2,1);
     aPalette[i,2]:=lint2;
   end;
-  for i:=1 to dst.numframes do begin
-    fs.ReadBuffer(lint,4);
+  for i:=1 to dst.numframes do
+  begin
+    fs.ReadBuffer(group,4);
     fs.ReadBuffer(lint,4);
     fs.ReadBuffer(lint,4);
     fs.ReadBuffer(W,4);
     fs.ReadBuffer(H,4);
-    J:=Fs.Position;
+    Pos:=Fs.Position;
     Loaded_Frame(Sprite, format('Frame %d',[i]), [w,h], p, DeltaW, apalette);
-    Fs.Position:=J;
-    for J:=1 to h do begin
+    Fs.Position:=Pos;
+    for J:=1 to h do
+    begin
       Fs.ReadBuffer(P^, w);
       Inc(P, DeltaW);
     end;
   end;
 end;
 
-Procedure QSprFile.WriteQ1Spr(F:TStream);
+Procedure QSprFile.WriteQ1Spr(F: TStream);
 var
-  ID_SPRHEADER,Ver,cnt,typ,i,j,delta:Longint;
-  rad:Single;
-  w,h,z:Longint;
-  P:PByte;
+  ID_SPRHEADER, Ver, cnt, typ, i, j, delta: Longint;
+  rad: Single;
+  w, h, z: Longint;
+  P: PByte; //FIXME: ArithByte?
   Image1B: String;
   SkinObj: QImage;
   Spr: QSprite;
-  pt:TPoint;
+  pt: TPoint;
 begin
   z:= 0;
   ID_SPRHeader:=(ord('P') shl 24)+(ord('S')shl 16)+(ord('D') shl 8)+ord('I');
@@ -381,7 +392,7 @@ begin
     result:=QSprite(Obj);
 end;
 
-procedure QSprFile.GetWidthHeight(var size:TPoint);
+procedure QSprFile.GetWidthHeight(var size: TPoint);
 var
  SizeTemp:TPoint;
  WTemp,HTemp,i:Longint;
@@ -400,17 +411,17 @@ begin
   Size.Y:=HTemp;
 end;
 
-Procedure QSprFile.WriteHLSpr(F:TStream);
+Procedure QSprFile.WriteHLSpr(F: TStream);
 var
-  ID_SPRHEADER,Ver,cnt,typ,i,j,delta:Longint;
-  rad:Single;
-  w,h,z:Longint;
-  P:PByte;
+  ID_SPRHEADER, Ver, cnt, typ, i, j, delta: Longint;
+  rad: Single;
+  w, h, z: Longint;
+  P: PByte; //FIXME: ArithByte?
   Image1B: String;
   SkinObj: QImage;
-  bt:Byte;
-  pt:TPoint;
-  Pal:TPaletteLmp;
+  bt: Byte;
+  pt: TPoint;
+  Pal: TPaletteLmp;
   Spr: QSprite;
 begin
   z:= 0;
@@ -477,10 +488,10 @@ procedure QSp2File.LoadFile(F: TStream; FSize: TStreamPos);
 const
   ID_SP2Header = (ord('2') shl 24)+(ord('S')shl 16)+(ord('D') shl 8)+ord('I');
 var
-  dst:TQ2SprHeader;
-  i:Longint;
+  dst: TQ2SprHeader;
+  i: Longint;
   frame: TQ2SprFrame;
-  str:String;
+  str: String;
 begin
   f.ReadBuffer(Dst,sizeof(dst));
   if dst.ident<>ID_SP2HEADER then
@@ -512,9 +523,9 @@ end;
 
 Procedure QSp2File.SaveFile(Info: TInfoEnreg1);
 var
-  ID_SP2HEADER,Ver,cnt,i:Longint;
-  x,y,w,h:Longint;
-  data:String;
+  ID_SP2HEADER, Ver, cnt, i: Longint;
+  x, y, w, h: Longint;
+  data: String;
 begin
   with Info do begin
     case Format of
@@ -737,7 +748,7 @@ begin
   end;
 end;
 
-Function SetRowSelect(h: THandle):Boolean;
+Function SetRowSelect(h: THandle): Boolean;
 var
   lvflags: DWord;
 begin
