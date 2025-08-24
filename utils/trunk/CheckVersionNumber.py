@@ -3,11 +3,21 @@
 import os
 import sys
 
-if len(sys.argv) != 7:
-	raise RuntimeError("Usage: python %s <version major> <version minor> <release> <version patch> <source path> <runtime path>" % (sys.argv[0], ))
-version_major, version_minor, version_release, version_patch = sys.argv[1:5]
-pathSource = sys.argv[5]
-pathRuntime = sys.argv[6]
+if len(sys.argv) != 8:
+	raise RuntimeError("Usage: python %s <version major> <version minor> <version revision> <release> <version patch> <source path> <runtime path>" % (sys.argv[0], ))
+version_major, version_minor, version_revision, version_release, version_patch = sys.argv[1:6]
+pathSource = sys.argv[6]
+pathRuntime = sys.argv[7]
+
+version_build = "0" #Not used
+if version_release == "Alpha":
+	release = "a"
+elif version_release == "Beta":
+	release = "b"
+elif version_release == "Final":
+	release = ""
+else:
+	raise RuntimeError("Unhandled version release!")
 
 #Check QConsts.pas
 FoundVersion = False
@@ -71,7 +81,8 @@ with open(os.path.join(pathSource, "QuArK.dof"), mode="r") as inFile:
 			if len(parts) != 2:
 				raise RuntimeError("Parse failure in QuArK.dof!")
 			version = parts[1]
-			version_expected = "%s.%s.%s.%s" % (version_major, version_minor, version_patch, "0")
+			#version_expected = "%s.%s.%s.%s%s" % (version_major, version_minor, version_revision, release, version_patch) #Delphi cannot handle this.
+			version_expected = "%s.%s.%s.%s" % (version_major, version_minor, version_patch, version_build)
 			if version != version_expected:
 				raise RuntimeError("QuArK.dof FileVersion is different. Got '%s', expected '%s'!" % (version, version_expected))
 			FoundFileVersion = True
@@ -104,7 +115,8 @@ with open(os.path.join(pathSource, "QuArK.manifest"), mode="r") as inFile:
 			if not lineX.endswith("\" processorArchitecture=\"x86\"/>"):
 				raise RuntimeError("Parse failure in QuArK.manifest!")
 			version = lineX[len("<assemblyIdentity type=\"win32\" name=\"QuArK\" version=\""):-len("\" processorArchitecture=\"x86\"/>")]
-			version_expected = "%s.%s.%s.%s" % (version_major, version_minor, version_patch, "0")
+			#version_expected = "%s.%s.%s.%s%s" % (version_major, version_minor, version_revision, release, version_patch) #Delphi cannot handle this.
+			version_expected = "%s.%s.%s.%s" % (version_major, version_minor, version_patch, version_build)
 			if version != version_expected:
 				raise RuntimeError("QuArK.manifest Version is different. Got '%s', expected '%s'!" % (version, version_expected))
 			FoundVersion = True
@@ -128,6 +140,7 @@ with open(os.path.join(pathRuntime, "addons", "Defaults.qrk"), mode="r") as inFi
 			if not (version.startswith("\"") and version.endswith("\"")):
 				raise RuntimeError("Parse failure in Defaults.qrk!")
 			version = version[len("\""):-len("\"")]
+			#version_expected = "QuArK %s.%s.%s %s %s" % (version_major, version_minor, version_revision, version_release, version_patch)
 			version_expected = "QuArK %s.%s %s %s" % (version_major, version_minor, version_release, version_patch)
 			if version != version_expected:
 				raise RuntimeError("Defaults.qrk version is different. Got '%s', expected '%s'!" % (version, version_expected))
@@ -174,6 +187,7 @@ with open(os.path.join(pathRuntime, "quarkpy", "qdictionnary.py"), mode="r") as 
 			if not (version.startswith("\"") and version.endswith("\"")):
 				raise RuntimeError("Parse failure in qdictionnary.py!")
 			version = version[len("\""):-len("\"")]
+			#version_expected = "QuArK %s.%s.%s %s %s" % (version_major, version_minor, version_revision, version_release, version_patch)
 			version_expected = "QuArK %s.%s %s %s" % (version_major, version_minor, version_release, version_patch)
 			if version != version_expected:
 				raise RuntimeError("qdictionnary.py version is different. Got '%s', expected '%s'!" % (version, version_expected))
