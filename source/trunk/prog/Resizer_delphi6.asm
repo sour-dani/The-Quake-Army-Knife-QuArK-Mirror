@@ -21,6 +21,8 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 
    (* THIS IS SUPPOSED TO BE COMPILED THROUGH CCODE.PAS *)
 
+   (* Function signature: Resample(void *SrcPalette, void *Source, void *DestPalette, void *Dest, int ow, int oh, int oscan, int nw, int nh, int nscan) *)
+
    (* .file	"resizer.c" *)
    (* / GNU C version 2.7.2p snapshot 970522 (i386-go32-msdos) compiled by GNU C version 2.7.2p snapshot 970502. *)
    (* / options passed:  -O9 *)
