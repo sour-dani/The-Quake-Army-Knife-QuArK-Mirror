@@ -994,17 +994,10 @@ end;
  { ----------------- }
 
 //Based on: Intel Processor Identification and the CPUID Instruction, Application Note 485, May 2012
-{$IFDEF CompiledWithDelphi1}
-{$DEFINE DoChecksX86}
-{$ENDIF}
 {$IFDEF CPUX86}
-{$DEFINE DoChecksX86}
-{$ENDIF}
-
-{$IFDEF DoChecksX86}
 function TCPU.GetCPUType: Cardinal; assembler;
 asm
-{$IFDEF CompiledWithDelphi1} //16 bit
+{$IFDEF CPU16BITS}
   // Intel 8086 processor check
   // Bits 12-15 of the FLAGS register are always set on the 8086 processor.
 @check_8086:
