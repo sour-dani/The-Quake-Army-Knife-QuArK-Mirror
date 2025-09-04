@@ -1325,7 +1325,6 @@ begin
    Title:=Specifics.Strings['Typ'];
    case Title[2] of
     'D': begin
-{Decker}
           if (Length(Title)>2) and (Title[3]='L') then
           begin
            {Directory-Dialog, but only returns the _Last_ folder-name. Useful for game-modification folders}
@@ -1344,7 +1343,6 @@ begin
           end
           else
           begin
-{/Decker}
            Title:=Specifics.Strings['Txt'];
          // Lines below cause Title to display twice.
          // 'Hint' was being used causing that also to be displayed incorrectly.
@@ -1360,9 +1358,7 @@ begin
              if (I=0) or (not SameText(Copy(Path, I+1, Length(Title)), Title)) then
               Path:=ConcatPaths([Path, Title]);
             end;
-{Decker}
           end;
-{/Decker}
          end;
     'T': begin
           if PopupForm<>Nil then
@@ -1799,7 +1795,6 @@ begin
         HintMsg:=Strings['Hint'];
         if HintMsg<>'' then
          HintMsg:=Format1str(HintPrefix+HintMsg, Spec+'$Hint');
-{Decker}
         {Decker 2001-06-14
         - Reason for these extra lines: I was sick and tired of always specifying
           TXT="&" for each and every specific in .QRK files containing entities.
@@ -1811,7 +1806,6 @@ begin
           S:='&E'
         else
           S:=Strings['Txt'];
-{/Decker}
         if S<>'' then
          begin
           { check for 'editable specific label'. Txt="&" or Txt="&E" }
@@ -2271,7 +2265,6 @@ begin
                  Btn.OnClick:=ClickKey;
                  ResultCtrl:=Btn;
                 end;
-{Decker 2002-12-29}
            'M': begin { Memo / Multiline-text-displaybox }
                  Icone := 0;
                  if TryGetIntegers('Rows', TextRows)<>tgrSuccess then
@@ -2314,7 +2307,6 @@ begin
                  Memo.OnEnter := AnyControlEnter;
                  ResultCtrl := Memo;
                 end;
-{/Decker 2002-12-29}
            'T': begin { Trackbar / Lone horizontal scrollbar }
                  Icone := 0;
                  if S[2] = 'F' then
@@ -3090,7 +3082,6 @@ end;
 
 procedure TFormCfg.MemoKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  {Decker 2002-12-29: Handle keys up/down/pageup/pagedown for a TMemo object}
   case Key of
     VK_UP:
       begin
