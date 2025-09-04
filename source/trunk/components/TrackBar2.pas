@@ -1,3 +1,24 @@
+(**************************************************************************
+QuArK -- Quake Army Knife -- 3D game editor
+Copyright (C) QuArK Development Team
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
+**************************************************************************)
+
 {
   QuArK TrackBar2 - Delphi's TrackBar, but then better!
 
@@ -13,13 +34,6 @@ uses
   Windows, Messages, ComCtrls, CommCtrl, Graphics, Classes, Controls, SysUtils;
 
 type
-  TTBEndTrack = packed record //FIXME: Untested!
-    Msg: Cardinal;
-    Unused1: WPARAM;
-    Unused2: LPARAM;
-    Result: LRESULT;
-  end;
-
   TTrackBar2 = class(TTrackBar)
   private
     FCanvas: TCanvas;
@@ -32,8 +46,8 @@ type
     FFloatMax: Single;
     FShowValue: Boolean;
     procedure WMPaint(var Message: TWMPaint); message WM_PAINT;
-    procedure WMLButtonUp(var Message: TWMLButtonUp); message WM_LBUTTONUP;
-    procedure TBEndTrack(var Message: TTBEndTrack); message TB_ENDTRACK;
+    procedure CNHScroll(var Message: TWMHScroll); message CN_HSCROLL;
+    procedure CNVScroll(var Message: TWMVScroll); message CN_VSCROLL;
     procedure SetSteps(Value: Integer);
     procedure SetAmIFloat(Value: Boolean);
     function GetIntPosition() : Integer;
@@ -119,24 +133,26 @@ begin
   end;
 end;
 
-procedure TTrackBar2.WMLButtonUp(var Message: TWMLButtonUp);
+procedure TTrackBar2.CNHScroll(var Message: TWMHScroll);
 begin
-  //For some reason, releasing the mouse doesn't trigger TBEndTrack 'on time'
-  //FIXME: Not proper, but hey, it works!
-  if Assigned(OnAccept) then
-    OnAccept(Self);
   inherited;
+  if Message.ScrollCode = TB_ENDTRACK then
+    if Assigned(OnAccept) then
+      OnAccept(Self);
 end;
 
-procedure TTrackBar2.TBEndTrack(var Message: TTBEndTrack);
+procedure TTrackBar2.CNVScroll(var Message: TWMVScroll);
 begin
-  if Assigned(OnAccept) then
-    OnAccept(Self);
   inherited;
+  if Message.ScrollCode = TB_ENDTRACK then
+    if Assigned(OnAccept) then
+      OnAccept(Self);
 end;
 
 procedure TTrackBar2.SetSteps(Value: Integer);
 begin
+  if Value<1 then
+    Value:=1;
   if not FAmIFloat then
     if (IntMax - IntMax) mod Value <> 0 then
       raise exception.create('TTrackBar2: Non-integer tick-size while in integer mode!');
