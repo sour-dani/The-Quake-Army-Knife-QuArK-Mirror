@@ -20,6 +20,7 @@ class cPatch
 }
 
 global $downloadroot;
+global $forumsroot;
 
 global $Patches;
 $Patches = array();

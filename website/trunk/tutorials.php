@@ -10,6 +10,8 @@ LoadLanguageFile('tutorials.php');
 
 function tutorialListPanel($TutorialList)
 {
+	global $mainroot;
+
 	$bodytext = '';
 	if (!is_null($TutorialList->Description))
 	{

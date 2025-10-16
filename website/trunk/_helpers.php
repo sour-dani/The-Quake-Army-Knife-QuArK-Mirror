@@ -1,7 +1,6 @@
 <?php
 function StringLeft(&$string, $length)
 {
-	if (is_null($string)) throw 1;
 	return substr($string, 0, $length);
 }
 

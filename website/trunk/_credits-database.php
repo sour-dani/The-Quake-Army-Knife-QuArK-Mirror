@@ -3,6 +3,7 @@
 class cCredits
 {
 	var $Name;        # Name of the person
+	var $PersonID;    # Index into people database of this person
 	var $Description; # Description of the contribution(s) made by this person
 
 	function __construct($aName, $aPersonID=-1, $aDescription=NULL)

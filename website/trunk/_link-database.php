@@ -546,7 +546,7 @@ $LinksGame[] = new cLinkGroup('Star Wars Jedi Knight: Jedi Academy', 'JA', array
 //           new cLink('Jedi Academy FileFront', 'http://jediknight3.filefront.com/')
            new cLink('JediKnight.Net', 'http://www.jediknight.net/', 'Star Wars Gaming At Its Best!', 'https://web.archive.org/web/20190108110946/http://www.jediknight.net/')
           ,new cLink('Force Temple :: Jedi Knight: Jedi Academy', 'http://www.force-temple.com/jk3/', NULL, 'https://web.archive.org/web/20090218172417/http://www.force-temple.com/jk3/')
-          ,new cLink('EchoNetwork', 'http://www.echonetwork.net/', 'The Star Wars gaming resource', 'https://web.archive.org/web/20170620024235/http://www.echonetwork.net/', 'The Star Wars gaming resource')
+          ,new cLink('EchoNetwork', 'http://www.echonetwork.net/', 'The Star Wars gaming resource', 'https://web.archive.org/web/20170620024235/http://www.echonetwork.net/')
           ,new cLink('OpenJK', 'https://github.com/JACoders/OpenJK', 'OpenJK is a community effort to maintain and improve the game and engine powering Jedi Academy and Jedi Outcast, while maintaining full backwards compatibility with the existing games and mods.')
           ,new cLink('JKMods.com', 'http://www.jkmods.com/', NULL, 'https://web.archive.org/web/20060404181752/http://www.jkmods.com/')
           ,new cLink('JKHub', 'https://jkhub.org/', 'This community is dedicated to the games Star Wars: Jedi Outcast (2002) and Jedi Academy (2003).')

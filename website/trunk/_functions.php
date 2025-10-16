@@ -105,14 +105,14 @@ function DisplayTimeAgo($date)
 	elseif ($daysago === 1)
 		if ($weeksago > 1)
 			$timeago = $weeksago . ' weeks and ' . $daysago . ' day ago';
-		elseif ($weekago === 1)
+		elseif ($weeksago === 1)
 			$timeago = $weeksago . ' week and ' . $daysago . ' day ago';
 		else
 			$timeago = $daysago . ' day ago';
 	elseif ($daysago === 0)
 		if ($weeksago > 1)
 			$timeago = $weeksago . ' weeks ago';
-		elseif ($weekago === 1)
+		elseif ($weeksago === 1)
 			$timeago = $weeksago . ' week ago';
 		else
 			$timeago = 'today';

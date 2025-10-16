@@ -12,7 +12,7 @@ function pageLocalDisplay()
 
 	pageName('Stats');
 
-	$bodytext .= '<p>SourceForge is collecting stats, including a download counter. <a rel="noopener" target="_blank" href="https://sourceforge.net/projects/quark/files/stats/">See here</a>.</p>';
+	$bodytext = '<p>SourceForge is collecting stats, including a download counter. <a rel="noopener" target="_blank" href="https://sourceforge.net/projects/quark/files/stats/">See here</a>.</p>';
 	#Old: http://sourceforge.net/project/stats/?group_id=1181&amp;ugn=quark
 
 	$bodytext .= '<hr class="smallbreak">';

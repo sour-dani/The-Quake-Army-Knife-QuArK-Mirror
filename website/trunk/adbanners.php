@@ -8,6 +8,8 @@ LoadLanguageFile('adbanners.php');
 
 function pageLocalDisplay()
 {
+	global $mainroot;
+
 	pageName('Ad Banners');
 
 	$bodytext = 'With the historic "upcoming Quake-3:Arena map-editing support in QuArK" event, I asked the community for any artist, who would be able to

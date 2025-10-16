@@ -3,11 +3,12 @@ require_once('_main_paths.php');
 
 class cInstapoll
 {
-	var $Question;  # Text question of this poll
-	var $StartDate; # Date this instapoll opened
-	var $EndDate;   # Date this instapoll closed
-	var $Picture;   # Picture that goes with the question (if any)
-	var $Options;   # Array of instapoll options/choices
+	var $Question;   # Text question of this poll
+	var $StartDate;  # Date this instapoll opened
+	var $EndDate;    # Date this instapoll closed
+	var $Picture;    # Picture that goes with the question (if any)
+	var $Options;    # Array of instapoll options/choices
+	var $TotalVotes; # Total number of votes (calculated)
 
 	function __construct($aQuestion, $aStartDate, $aEndDate=0, $aPicture=NULL, $aOptions=NULL)
 	{

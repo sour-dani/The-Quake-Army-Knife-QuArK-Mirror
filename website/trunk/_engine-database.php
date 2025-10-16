@@ -13,6 +13,8 @@ class cEngine
 
 	function __construct($aID, $aName, $aLogo, $aLicense, $aURL, $aWikipediaURL, $aBasedOn)
 	{
+		global $picsroot;
+
 		$this->ID           = $aID;
 		$this->Name         = $aName;
 		if (is_null($aLogo))

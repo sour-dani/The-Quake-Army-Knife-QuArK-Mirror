@@ -1,5 +1,8 @@
 <?php
+require_once('_main_paths.php');
 require_once('_image_functions.php');
+
+global $picsroot;
 
 class cAward
 {
@@ -11,8 +14,6 @@ class cAward
 
 	function __construct($aName, $aOrg, $aPic=NULL, $aDate=0, $aURL=NULL)
 	{
-		global $picsroot;
-
 		$this->Name = $aName;
 		$this->Org = $aOrg;
 		$this->Pic = $aPic;

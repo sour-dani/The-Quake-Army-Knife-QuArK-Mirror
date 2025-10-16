@@ -5,8 +5,7 @@ require_once('_main_paths.php');
 class cVideo
 {
 	var $Name;
-	var $DateAdded;
-	var $DateUpdated;
+	var $DatePublished;
 	var $Link;
 	var $DownloadLink;
 	var $Screenshot;
@@ -709,7 +708,6 @@ Thanks for watching!"
  'Quake army knife and a male cat'
 ,mktime(0, 0, 0, 8, 15, 2017)
 ,'https://www.youtube.com/watch?v=7iBLkqcPeGg' #https://www.youtube.com/watch?v=7iBLkqcPeGg&list=PLYUjdFYquLZmxA1tIZUviv9hRiBaKmYsZ&index=5
-,NULL
 ,NULL
 ,new cImage($picsroot.'videos/Quake_army_knife_and_a_male_cat.png', 'Preview', 320, 180)
 ,NULL
