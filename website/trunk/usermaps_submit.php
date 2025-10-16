@@ -163,34 +163,31 @@ function pageLocalDone()
 $submit_map_error_email = NULL;
 $submit_map_error_size = NULL;
 $submit_map = NULL;
-if (is_array($_POST))
+if (array_key_exists('map_name', $_POST))
 {
-	if (array_key_exists('map_name', $_POST))
+	$submit_map = new cSubmitMap($_POST['map_name'], $_POST['map_download'], $_POST['map_screenshot'], $_POST['map_website'], $_POST['map_email'], $_POST['map_author'], $_POST['map_filesize'], $_POST['map_type'], $_POST['map_game'], $_POST['map_mod'], $_POST['map_description'], $_POST['map_comment']);
+	# Simple email validation (not catch-it-all proof!)
+	if (!is_null($submit_map->Email))
 	{
-		$submit_map = new cSubmitMap($_POST['map_name'], $_POST['map_download'], $_POST['map_screenshot'], $_POST['map_website'], $_POST['map_email'], $_POST['map_author'], $_POST['map_filesize'], $_POST['map_type'], $_POST['map_game'], $_POST['map_mod'], $_POST['map_description'], $_POST['map_comment']);
-		# Simple email validation (not catch-it-all proof!)
-		if (!is_null($submit_map->Email))
+		if (strpos($submit_map->Email, '@') === FALSE)
 		{
-			if (strpos($submit_map->Email, '@') === FALSE)
-			{
-				$submit_map->Email = NULL;
-				$submit_map_error_email = 'Please enter a valid email address!';
-			}
+			$submit_map->Email = NULL;
+			$submit_map_error_email = 'Please enter a valid email address!';
 		}
-		# File size validation
-		if (!is_null($submit_map->Size))
+	}
+	# File size validation
+	if (!is_null($submit_map->Size))
+	{
+		if ($submit_map->Size <= 0)
 		{
-			if ($submit_map->Size <= 0)
-			{
-				$submit_map->Size = NULL;
-				$submit_map_error_size = 'Please enter a valid (non-zero) filesize!';
-			}
+			$submit_map->Size = NULL;
+			$submit_map_error_size = 'Please enter a valid (non-zero) filesize!';
 		}
-		if (array_key_exists('map_verified', $_POST) and ($_POST['map_verified'] === '1'))
-		{
-			# Submit it!
-			$submit_map->Submit();
-		}
+	}
+	if (array_key_exists('map_verified', $_POST) and ($_POST['map_verified'] === '1'))
+	{
+		# Submit it!
+		$submit_map->Submit();
 	}
 }
 

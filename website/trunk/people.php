@@ -65,10 +65,7 @@ else
 		$TmpList[$CurrentPerson->getDisplayName()] = $person;
 	}
 
-	if (ksort($TmpList) === FALSE)
-	{
-		#FIXME: Dunno, what should we do with this?
-	}
+	ksort($TmpList);
 
 	foreach ($TmpList as $PersonNick => $PersonID)
 	{

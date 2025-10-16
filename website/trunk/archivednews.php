@@ -44,13 +44,13 @@ function pageLocalDisplay()
 	}
 	unset($newsperiod); //No longer required or correct; prevent accidental further usage.
 
-	if ($newsyear && $newsmonth)
+	if (isset($newsyear) && isset($newsmonth))
 	{
 		$month = date('F', mktime(0,0,0,$newsmonth,1,$newsyear));
 		pageName('Archived News of ' . $month . ' ' . $newsyear);
 	}
 	else
-		pageName('Archived News');
+		pageName('Archived News'); //Note: Dead code
 
 	$filterpanel = '<form action="archivednews.php" method="get">Select year and month of archived news: <select name="newsperiod">';
 
@@ -99,7 +99,7 @@ function pageLocalDisplay()
 
 	pagePanel(NULL, 'Select...', '', $topbuttons);
 
-	if ($newsyear && $newsmonth)
+	if (isset($newsyear) && isset($newsmonth))
 	{
 		if (displayArchiveNews(mktime(0,0,0, $newsmonth+1, 0, $newsyear), mktime(0,0,0, $newsmonth, 1, $newsyear)) > 0)
 			pagePanel(NULL, '', '', $bottombuttons);
