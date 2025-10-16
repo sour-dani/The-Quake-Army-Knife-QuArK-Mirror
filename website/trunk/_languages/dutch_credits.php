@@ -1,4 +1,7 @@
 <?php
+require_once(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '_main_paths.php');
+
+global $webmasteremail;
 
 global $Strings;
 $Strings['ThanksTo'] = 'Dank gaat uit naar...';

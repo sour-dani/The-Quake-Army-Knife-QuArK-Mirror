@@ -6,6 +6,7 @@ require_once('_game-database.php');
 require_once('_main_paths.php');
 
 global $mainroot;
+global $webmasteremail;
 
 # Load language file
 LoadLanguageFile('download_addons.php');

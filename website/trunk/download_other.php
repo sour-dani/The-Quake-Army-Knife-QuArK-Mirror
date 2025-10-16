@@ -7,6 +7,8 @@ require_once('_game-database.php');
 # Load language file
 LoadLanguageFile('download_other.php');
 
+global $webmasteremail;
+
 $IntroMessage = '<p>This table lists miscellaneous other stuff, like SDKs (Software Development Kits) and game source code. If you find a broken link or know of a missing interesting item, please <a href='.DisplayEncodedEmail($webmasteremail, 'QuArK Game Other page correction').'>tell us</a>, and we will try to correct it.</p>';
 
 function pageLocalDisplay()

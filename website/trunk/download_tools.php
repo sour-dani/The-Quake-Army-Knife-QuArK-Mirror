@@ -8,6 +8,8 @@ require_once('_image_functions.php');
 # Load language file
 LoadLanguageFile('download_tools.php');
 
+global $webmasteremail;
+
 $IntroMessage = '<p>This matrix lists tools and compilers that can be used with QuArK, sorted per game. If you find a broken link or know of a missing compiler that QuArK is compatible with, please <a href='.DisplayEncodedEmail($webmasteremail, 'QuArK Tools page correction').'>tell us</a>, and we will try to correct it.</p>';
 
 function pageLocalDisplay()

@@ -7,6 +7,8 @@ require_once('_game-database.php');
 # Load language file
 LoadLanguageFile('download_gamepatches.php');
 
+global $webmasteremail;
+
 $IntroMessage = '<p>This matrix lists all the known official and unofficial game patches (that still matter) for games supported by QuArK. If you find a broken link or know of a missing patch, please <a href='.DisplayEncodedEmail($webmasteremail, 'QuArK Gamepatches page correction').'>tell us</a>, and we will try to correct it.</p>';
 
 function pageLocalDisplay()
