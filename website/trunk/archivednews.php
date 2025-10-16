@@ -9,46 +9,52 @@ LoadLanguageFile('archivednews.php');
 
 function pageLocalDisplay()
 {
+	$CurTime = time(); //Only retrieve this once to prevent race conditions.
+
 	global $OldestNewsYear, $OldestNewsMonth;
 
 	$newsperiod = isset($_GET['newsperiod']) ? $_GET['newsperiod'] : NULL;
-
-	$newsyear = 0; //Using this to detect whether the news-period is found and is correct.
 	if ((!is_null($newsperiod)) && (strlen($newsperiod) === 6))
 	{
 		$newsyear = intval(substr($newsperiod, 0, 4));
 		$newsmonth = intval(substr($newsperiod, 4, 2));
 		if (($newsyear < $OldestNewsYear) || ($newsmonth < 1) || ($newsmonth > 12) || ($newsyear === $OldestNewsYear && $newsmonth < $OldestNewsMonth))
 		{
-			$newsyear = 0;
+			//Invalid date
+			$newsperiod = null;
+			unset($newsyear);
+			unset($newsmonth);
 		}
 		else
 		{
-			$newsperiod = mktime(0,0,0,date('m'),1,date('Y'));
-			if (($newsyear > intval(date('Y', $newsperiod))) || ($newsyear === intval(date('Y', $newsperiod)) && $newsmonth > intval(date('m', $newsperiod))))
+			if (($newsyear > intval(date('Y', $CurTime))) || ($newsyear === intval(date('Y', $CurTime)) && $newsmonth > intval(date('m', $CurTime))))
 			{
-				$newsyear = 0;
+				//Reject future date
+				$newsperiod = null;
+				unset($newsyear);
+				unset($newsmonth);
 			}
 		}
 	}
-	if ($newsyear === 0)
+	if (is_null($newsperiod))
 	{
-		$newsperiod = mktime(0,0,0,date('m'),1,date('Y'));
-		$newsyear = intval(date('Y', $newsperiod));
-		$newsmonth = intval(date('m', $newsperiod));
+		//No or invalid period requested. Use the current month instead.
+		$newsyear = intval(date('Y', $CurTime));
+		$newsmonth = intval(date('m', $CurTime));
 	}
+	unset($newsperiod); //No longer required or correct; prevent accidental further usage.
 
 	if ($newsyear && $newsmonth)
 	{
 		$month = date('F', mktime(0,0,0,$newsmonth,1,$newsyear));
 		pageName('Archived News of ' . $month . ' ' . $newsyear);
-	} else
+	}
+	else
 		pageName('Archived News');
 
 	$filterpanel = '<form action="archivednews.php" method="get">Select year and month of archived news: <select name="newsperiod">';
 
 	$LastDate = mktime(0,0,0,$OldestNewsMonth,1,$OldestNewsYear);
-	$CurTime = time();
 	$year = intval(date('Y', $CurTime));
 	$month = intval(date('m', $CurTime));
 	do
@@ -77,7 +83,7 @@ function pageLocalDisplay()
 		$prevbutton = '<form action="archivednews.php" method="get"><input type="hidden" name="newsperiod" value="' . date('Ym', $somedate) . '"><input type="submit" value="&lt;--- Prev month"></form>';
 	} else
 		$prevbutton = '';
-	if (($newsyear < intval(date('Y'))) || ($newsyear === intval(date('Y')) && $newsmonth < intval(date('m'))))
+	if (($newsyear < intval(date('Y', $CurTime))) || ($newsyear === intval(date('Y', $CurTime)) && $newsmonth < intval(date('m', $CurTime))))
 	{
 		$somedate = mktime(0,0,0,$newsmonth + 1,1,$newsyear);
 		$nextbutton = '<form action="archivednews.php" method="get"><input type="hidden" name="newsperiod" value="' . date('Ym', $somedate) . '"><input type="submit" value="Next month ---&gt;"></form>';

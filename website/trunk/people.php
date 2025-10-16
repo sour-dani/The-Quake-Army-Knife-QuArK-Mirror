@@ -33,6 +33,7 @@ $peopleform = '<div class="centered">
 </div>';
 
 #Do actual search:
+global $personsdatabase;
 global $DidSearch;
 global $SearchResult;
 $DidSearch = false;
