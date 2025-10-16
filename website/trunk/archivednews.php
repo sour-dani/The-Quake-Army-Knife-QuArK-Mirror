@@ -13,7 +13,7 @@ function pageLocalDisplay()
 
 	global $OldestNewsYear, $OldestNewsMonth;
 
-	$newsperiod = isset($_GET['newsperiod']) ? $_GET['newsperiod'] : NULL;
+	$newsperiod = isset($_GET['newsperiod']) ? $_GET['newsperiod'] : null;
 	if ((!is_null($newsperiod)) && (strlen($newsperiod) === 6))
 	{
 		$newsyear = intval(substr($newsperiod, 0, 4));
@@ -46,7 +46,7 @@ function pageLocalDisplay()
 
 	if (isset($newsyear) && isset($newsmonth))
 	{
-		$month = date('F', mktime(0,0,0,$newsmonth,1,$newsyear));
+		$month = date('F', mktime(0, 0, 0, $newsmonth, 1, $newsyear));
 		pageName('Archived News of ' . $month . ' ' . $newsyear);
 	}
 	else
@@ -54,17 +54,17 @@ function pageLocalDisplay()
 
 	$filterpanel = '<form action="archivednews.php" method="get">Select year and month of archived news: <select name="newsperiod">';
 
-	$LastDate = mktime(0,0,0,$OldestNewsMonth,1,$OldestNewsYear);
+	$LastDate = mktime(0, 0, 0, $OldestNewsMonth, 1, $OldestNewsYear);
 	$year = intval(date('Y', $CurTime));
 	$month = intval(date('m', $CurTime));
 	do
 	{
-		$somedate = mktime(0,0,0,$month,1,$year);
+		$somedate = mktime(0, 0, 0, $month, 1, $year);
 		if (intval(date('Y', $somedate)) === $newsyear && intval(date('m', $somedate)) === $newsmonth)
 			$selected = ' selected';
 		else
 			$selected = '';
-		$NRArticles = countArchiveNews(mktime(0,0,0, $month+1, 0, $year), $somedate);
+		$NRArticles = countArchiveNews(mktime(0, 0, 0, $month+1, 0, $year), $somedate);
 		$filterpanel .= '<option' . $selected . ' value="' . date('Ym', $somedate) . '">' . date('Y F', $somedate) . ' (' . $NRArticles . ')';
 		$month--;
 		if ($month === 0)
@@ -79,13 +79,13 @@ function pageLocalDisplay()
 
 	if (($newsyear > $OldestNewsYear) || ($newsyear === $OldestNewsYear && $newsmonth > $OldestNewsMonth))
 	{
-		$somedate = mktime(0,0,0,$newsmonth - 1,1,$newsyear);
+		$somedate = mktime(0, 0, 0, $newsmonth - 1, 1, $newsyear);
 		$prevbutton = '<form action="archivednews.php" method="get"><input type="hidden" name="newsperiod" value="' . date('Ym', $somedate) . '"><input type="submit" value="&lt;--- Prev month"></form>';
 	} else
 		$prevbutton = '';
 	if (($newsyear < intval(date('Y', $CurTime))) || ($newsyear === intval(date('Y', $CurTime)) && $newsmonth < intval(date('m', $CurTime))))
 	{
-		$somedate = mktime(0,0,0,$newsmonth + 1,1,$newsyear);
+		$somedate = mktime(0, 0, 0, $newsmonth + 1, 1, $newsyear);
 		$nextbutton = '<form action="archivednews.php" method="get"><input type="hidden" name="newsperiod" value="' . date('Ym', $somedate) . '"><input type="submit" value="Next month ---&gt;"></form>';
 	} else
 		$nextbutton = '';
@@ -97,12 +97,12 @@ function pageLocalDisplay()
 	#  $topbuttons = $filterpanel;
 	#}
 
-	pagePanel(NULL, 'Select...', '', $topbuttons);
+	pagePanel(null, 'Select...', '', $topbuttons);
 
 	if (isset($newsyear) && isset($newsmonth))
 	{
-		if (displayArchiveNews(mktime(0,0,0, $newsmonth+1, 0, $newsyear), mktime(0,0,0, $newsmonth, 1, $newsyear)) > 0)
-			pagePanel(NULL, '', '', $bottombuttons);
+		if (displayArchiveNews(mktime(0, 0, 0, $newsmonth+1, 0, $newsyear), mktime(0, 0, 0, $newsmonth, 1, $newsyear)) > 0)
+			pagePanel(null, '', '', $bottombuttons);
 	}
 }
 
