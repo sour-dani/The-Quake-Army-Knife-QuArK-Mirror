@@ -140,10 +140,18 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
   {$DEFINE CompiledWithDelphi12}
   {$DEFINE Delphi12orNewerCompiler}
 {$ENDIF}
+{$IFDEF VER370}
+  {$DEFINE CompiledWithDelphi13}
+  {$DEFINE Delphi13orNewerCompiler}
+{$ENDIF}
 
 //
 // Cascade to define all lower DelphiXorNewerCompiler
 //
+
+{$IFDEF Delphi13orNewerCompiler}
+  {$DEFINE Delphi12orNewerCompiler}
+{$ENDIF}
 
 {$IFDEF Delphi12orNewerCompiler}
   {$DEFINE Delphi11orNewerCompiler}
