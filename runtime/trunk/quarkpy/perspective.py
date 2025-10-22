@@ -105,20 +105,15 @@ def splitpoints(edge1, edge2):
   common = shared_vertices([edge1, edge2])[0]
   if common is None:
     return None
-#  squawk("removeing")
   first = othervect(common, edge1)
-#  squawk("first")
   second = othervect(common,edge2)
-#  squawk("second")
 #  squawk(`first`+"--"+`second`)
   return common, first, second
 
 def pointdict(dict):
   points = {}
   front, up, left = dict["f"], dict["u"], dict["l"]
-#  squawk('ful')
   topfront = shared_vertices([front, up])
-#  squawk('tf')
   topleft = shared_vertices([left, up])
   points["tlf"], points["trf"], points["tlb"]=splitpoints(topfront, topleft)
   right, down, back = dict["r"], dict["d"], dict["b"]
