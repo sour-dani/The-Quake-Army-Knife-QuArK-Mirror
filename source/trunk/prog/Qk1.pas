@@ -251,6 +251,7 @@ var
 
 const
   MaxRecentFilesUpperLimit = 20;
+  HintHidePause = 15000; //in ms
 
 {$I DelphiVer.inc}
 {$R *.DFM}
@@ -493,6 +494,7 @@ begin
      ConnectToPython;
 
      //These need Python to function:
+     Application.HintHidePause:=HintHidePause;
      Application.OnShowHint:=AppShowHint;
      Application.OnHint:=AppHint;
    except
@@ -2240,12 +2242,12 @@ begin
 end;
 
 procedure TForm1.AppShowHint(var HintStr: string; var CanShow: Boolean; var HintInfo: THintInfo);
-const
- HintHidePauseSecs = 15; //4
 var
  I, Code: Integer;
 begin
- Application.HintHidePause:=(HintHidePauseSecs * 1000);
+{$ifndef Delphi3orNewerCompiler}
+ Application.HintHidePause:=HintHidePause;
+{$endif}
  if HintStr<>'' then
   begin
   {if (Form4<>Nil) and (ModeEcran3D<>0) and Form3D.DessinEnCours then
@@ -2276,7 +2278,11 @@ begin
        HintInfo.HintPos.X:=I;
       HintInfo.HintColor:=$00F0CAA6;
       HintInfo.HintMaxWidth:=MaximumSizeWindowX-20-I;
+      {$ifndef Delphi3orNewerCompiler}
       Application.HintHidePause:=MaxInt;
+      {$else}
+      HintInfo.HideTimeout:=MaxInt;
+      {$endif}
      end
     else
      if HintStr='TEX' then
