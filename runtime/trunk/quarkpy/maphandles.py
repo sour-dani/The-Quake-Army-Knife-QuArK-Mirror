@@ -112,7 +112,7 @@ def CenterEntityHandle(o, view, handleclass=IconHandle, pos=None):
         new.hint = "?" + o.shortname + "||This point represents an entity, i.e. an object that appears and interacts in the game when you play the map. The exact kind of entity depends on its 'classname' (its name).\n\nThis handle lets you move the entity with the mouse. Normally, the movement is done by steps of the size of the grid : if the entity was not aligned on the grid before the movement, it will not be after it. Hold down Ctrl to force the entity to the grid.|maped.duplicators.extruder.html"
 
         #
-        # Compute a handle for aditional control points.
+        # Compute a handle for additional control points.
         #
         hp = []
 
