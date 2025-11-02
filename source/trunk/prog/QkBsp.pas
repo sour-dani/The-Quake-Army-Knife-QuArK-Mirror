@@ -286,7 +286,7 @@ type
 const
  cSignatureBspQ1H2 = $0000001D; //Quake-1/Hexen-2 BSP
  cSignatureBspHL   = $0000001E; //Half-Life BSP
- cSignatureQ64     = $51363420; //"Q64 " in reverse = Quake64 BSP
+ cSignatureBspQ64  = $51363420; //"Q64 " in reverse = Quake64 BSP
 
 (***********  id Software .bsp format  ***********)
 const
@@ -711,6 +711,16 @@ begin
           FFileHandler.LoadBsp(F, StreamSize);
         end;
 
+        cSignatureBspQ64: { Quake 64 }
+        begin
+(*
+          ObjectGameCode := mjQuake64;
+          FFileHandler:=QBsp1FileHandler.Create(Self);
+          FFileHandler.LoadBsp(F, StreamSize);
+*)
+          Raise EErrorFmt(5602, [LoadName, 'Quake 64']);
+        end;
+
         cSignatureBspID: { id Software BSP format }
         begin
           case Version of
@@ -1003,6 +1013,12 @@ begin
             else {version unknown}
               Raise EErrorFmt(5572, [LoadName, 'generic', Version]);
           end;
+        end;
+
+        cSignatureBspRMQ: { Remake Quake format }
+        begin
+          //FIXME: Add support!
+          Raise EErrorFmt(5602, [LoadName, 'Remake Quake']);
         end;
 
         cSignatureBsp2: { BSP2 format }
