@@ -312,6 +312,13 @@ const
   GR_GDIOBJECTS = 0;    { Count of GDI objects }
   {$EXTERNALSYM GR_USEROBJECTS}
   GR_USEROBJECTS = 1;    { Count of USER objects }
+
+  ComCtlVersionIE3 = $00040046;
+  ComCtlVersionIE4 = $00040047;
+  ComCtlVersionIE401 = $00040048;
+{$endif}
+{$ifndef Delphi5orNewerCompiler}
+  ComCtlVersionIE5 = $00050050;
 {$endif}
 {$ifndef Delphi7orNewerCompiler}
   //These exist in Delphi 6-, but only in the MultiMon unit.
@@ -319,6 +326,9 @@ const
   SM_CXVIRTUALSCREEN = 78;
   {$EXTERNALSYM SM_CYVIRTUALSCREEN}
   SM_CYVIRTUALSCREEN = 79;
+
+  ComCtlVersionIE501 = $00050051;
+  ComCtlVersionIE6 = $00060000;
 {$endif}
 {$ifndef Delphi2005orNewerCompiler}
   {$EXTERNALSYM SM_CMONITORS}
@@ -1048,6 +1058,10 @@ type
 function CompareMem(P1, P2: Pointer; Length: Integer): Boolean; assembler;
 {$endif}
 
+{$ifndef Delphi4orNewerCompiler}
+function GetComCtlVersion: Integer;
+{$endif}
+
 {$ifndef Delphi5orNewerCompiler}
 { SameText compares S1 to S2, without case-sensitivity. Returns true if
   S1 and S2 are the equal, that is, if CompareText would return 0. SameText
@@ -1117,6 +1131,8 @@ function PosEx(const SubStr, S: string; Offset: Cardinal = 1): Integer;
 function CheckWin32Version(AMajor: Integer; AMinor: Integer = 0): Boolean;
 {$ifend}
 {$endif}
+
+function GetFileVersion(const AFileName: string): Cardinal;
 {$endif}
 
 {$ifndef DelphiXEorNewerCompiler}
@@ -1301,6 +1317,15 @@ asm
 end;
 {$endif}
 
+{$ifndef Delphi4orNewerCompiler}
+function GetComCtlVersion: Integer;
+begin
+  if ComCtlVersion = 0 then
+    ComCtlVersion := GetFileVersion(comctl32);
+  Result := ComCtlVersion;
+end;
+{$endif}
+
 {$ifndef Delphi5orNewerCompiler}
 function SameText(const S1, S2: string): Boolean; assembler;
 asm
@@ -1438,6 +1463,33 @@ begin
 end;
 {$endif}
 {$endif}
+
+function GetFileVersion(const AFileName: string): Cardinal;
+var
+  FileName: string;
+  InfoSize, Wnd: DWORD;
+  VerBuf: Pointer;
+  FI: PVSFixedFileInfo;
+  VerSize: DWORD;
+begin
+  Result := Cardinal(-1);
+  // GetFileVersionInfo modifies the filename parameter data while parsing.
+  // Copy the string const into a local variable to create a writeable copy.
+  FileName := AFileName;
+  UniqueString(FileName);
+  InfoSize := GetFileVersionInfoSize(PChar(FileName), Wnd);
+  if InfoSize <> 0 then
+  begin
+    GetMem(VerBuf, InfoSize);
+    try
+      if GetFileVersionInfo(PChar(FileName), Wnd, InfoSize, VerBuf) then
+        if VerQueryValue(VerBuf, '\', Pointer(FI), VerSize) then
+          Result:= FI.dwFileVersionMS;
+    finally
+      FreeMem(VerBuf);
+    end;
+  end;
+end;
 {$endif}
 
 {$ifndef DelphiXEorNewerCompiler}

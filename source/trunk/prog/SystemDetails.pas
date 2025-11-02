@@ -161,6 +161,7 @@ type
     FInstallDate: DWORD;
     FInstallTime: QWORD;
     {$ENDIF}
+    FComCtlVersion: Integer;
     FEnv: TStrings;
     FDirs: TStrings;
     procedure GetEnvironment;
@@ -199,6 +200,7 @@ type
     property InstallDate: DWORD read FInstallDate stored false;
     property InstallTime: QWORD read FInstallTime stored false;
     {$ENDIF}
+    property ComCtlVersion: Integer read FComCtlVersion stored false;
     property Environment: TStrings read FEnv stored false;
     property Directories: TStrings read FDirs stored False;
   end;
@@ -344,7 +346,7 @@ type
 implementation
 
 uses Math, Forms, Graphics, DateUtils, {$IFDEF CompiledWithDelphi2}ShellObj, OLE2, {$ELSE}ShlObj, ActiveX, {$ENDIF}
-  TlHelp32, Psapi, Registry, Registry2, Logging, QkExceptions, QConsts;
+  ComCtrls, TlHelp32, Psapi, Registry, Registry2, Logging, QkExceptions, QConsts;
 
 type
   {$IFDEF Delphi4orNewerCompiler}
@@ -1784,6 +1786,7 @@ begin
   FInstallDate:=0;
   FInstallTime:=0;
   {$ENDIF}
+  FComCtlVersion:=GetComCtlVersion;
   with TRegistry2.Create(KEY_READ) do
   begin
     rootkey:=HKEY_LOCAL_MACHINE;
@@ -1909,9 +1912,10 @@ begin
 end;
 
 procedure TOperatingSystem.Report(var sl: TStringList);
+var
+  S: String;
 {$IFDEF LogSensitiveInformation}
 {$IFDEF Delphi7orNewerCompiler}
-var
   DateFormat: TFormatSettings;
 {$ENDIF}
 {$ENDIF}
@@ -1920,39 +1924,49 @@ begin
   begin
     add('Platform: '+Platform);
     case Architecture of
-    PROCESSOR_ARCHITECTURE_INTEL: add('Architecture: Intel x86');
-    PROCESSOR_ARCHITECTURE_ARM: add('Architecture: ARM');
-    PROCESSOR_ARCHITECTURE_IA64: add('Architecture: Intel Itanium');
-    PROCESSOR_ARCHITECTURE_AMD64: add('Architecture: AMD64');
-    PROCESSOR_ARCHITECTURE_UNKNOWN: add('Architecture: Unknown');
-    else add('Architecture: Unknown');
+    PROCESSOR_ARCHITECTURE_INTEL: S:='Intel x86';
+    PROCESSOR_ARCHITECTURE_ARM: S:='ARM';
+    PROCESSOR_ARCHITECTURE_IA64: S:='Intel Itanium';
+    PROCESSOR_ARCHITECTURE_AMD64: S:='AMD64';
+    PROCESSOR_ARCHITECTURE_UNKNOWN: S:='Unknown';
+    else S:='Unknown';
     end;
+    add('Architecture: ' + S);
+
     if Length(EditionID)<>0 then
     begin
       if Length(DisplayVersion)<>0 then
-        add(format('Edition: %s %s %s',[EditionID, DisplayVersion, Typ]))
+        S:=format('%s %s %s', [EditionID, DisplayVersion, Typ])
       else
-        add(format('Edition: %s %s',[EditionID, Typ]));
+        S:=format('%s %s', [EditionID, Typ]);
+      add('Edition: ' + S);
     end;
-    add(format('Version: %d.%d.%d',[MajorVersion,MinorVersion,BuildNumber]));
+
+    add(format('Version: %d.%d.%d', [MajorVersion,MinorVersion,BuildNumber]));
+
     if Length(PlusVersionNumber)<>0 then
       add(format('Plus! Version: %s',[PlusVersionNumber]));
+
     if Extended then
     begin
       if ServicePackMinor<>0 then
-        add(format('Service Pack: %d.%d',[ServicePackMajor,ServicePackMinor]))
+        S:=format('%d.%d',[ServicePackMajor,ServicePackMinor])
       else
-        add(format('Service Pack: %d',[ServicePackMajor]));
+        S:=format('%d',[ServicePackMajor]);
+      add('Service Pack: ' + S);
+
       //FIXME: Handle SuiteMask!
+
       case ProductType of
-        0: ; //Nothing set
-        VER_NT_WORKSTATION: add('Type: Workstation');
-        VER_NT_DOMAIN_CONTROLLER: add('Type: Domain Controller');
-        VER_NT_SERVER: add('Type: Server');
-        else
-          add('Type: Unknown');
+        0: S:='Unknown'; //Nothing set
+        VER_NT_WORKSTATION: S:='Workstation';
+        VER_NT_DOMAIN_CONTROLLER: S:='Domain Controller';
+        VER_NT_SERVER: S:='Server';
+        else S:='Unknown';
+        add('Type: ' + S);
       end;
     end;
+
     {$IFDEF LogSensitiveInformation}
     add(format('Registered to person: %s',[RegisteredUser]));
     add(format('Registered to company: %s',[RegisteredOrg]));
@@ -1961,10 +1975,28 @@ begin
     GetLocaleFormatSettings(LOCALE_SYSTEM_DEFAULT, DateFormat);
     {$ENDIF}
     if InstallTime<>0 then
-      add(format('Installed on: %s',[DateTimeToStr(Win64ToDateTime(InstallTime){$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF})]))
+      S:=DateTimeToStr(Win64ToDateTime(InstallTime){$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF})
     else
-      add(format('Installed on: %s',[DateTimeToStr(UnixToDateTime(InstallDate){$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF})]));
+      S:=DateTimeToStr(UnixToDateTime(InstallDate){$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF});
+    add('Installed on: ' + S);
     {$ENDIF}
+
+    if ComCtlVersion < ComCtlVersionIE3 then
+      S:='Pre-IE 3.0'
+    else if ComCtlVersion < ComCtlVersionIE4 then
+      S:='IE 3.0'
+    else if ComCtlVersion < ComCtlVersionIE401 then
+      S:='IE 4.0'
+    else if ComCtlVersion < ComCtlVersionIE5 then
+      S:='IE 4.01'
+    else if ComCtlVersion < ComCtlVersionIE501 then
+      S:='IE 5.0'
+    else if ComCtlVersion < ComCtlVersionIE6 then
+      S:='IE 5.01'
+    else
+      S:='IE 6.0';
+    add(format('Common Controls version: %s (%d)', [S,ComCtlVersion]));
+
     {$IFDEF WIN32}
     if Wow64 then
       add('Running under Wow64');
