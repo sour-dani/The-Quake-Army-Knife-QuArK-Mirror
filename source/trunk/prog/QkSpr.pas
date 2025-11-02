@@ -57,8 +57,8 @@ type
     noFrames: Longint;
   end;
   TQ2SprFrame = packed record
-    x,y,w,h: longint;
-    fn: array[1..64] of char;
+    x, y, w, h: LongInt;
+    fn: array[1..64] of Byte;
   end;
   QSprFile = class(QFileObject)
   public
@@ -118,15 +118,26 @@ type
     { Public declarations }
   end;
 
+(***********  Quake 1/Half-Life 1 .spr format  ***********)
+const
+  cSignatureSprID = (Ord('P') shl 24) or (ord('S') shl 16) or (ord('D') shl 8) or ord('I'); //"IDSP" = ID Sprite
+  cVersionSprQ1H2 = 1;
+  cVersionSprHL = 2;
+
+(***********  Quake 2 .spr format  ***********)
+const
+  cSignatureSprQ2 = (Ord('2') shl 24) or (ord('S') shl 16) or (ord('D') shl 8) or ord('I'); //"IDS2" = ID Sprite 2
+  cVersionSprQ2 = 2;
+
 implementation
 
-uses CommCtrl, Math, Quarkx, QkExceptions, QkPcx, QkTextures, QkObjectClassList;
+uses CommCtrl, Math, Quarkx, QkExceptions, QkPcx, QkTextures, QkObjectClassList, qhelper;
 
 {$R *.DFM}
 
  {------------------------}
 
-Function MyIntSpec(s:QSprFile; const ident:String):Integer;
+Function MyIntSpec(s:QSprFile; const ident:String):Integer; //FIXME: These shouldn't be needed!
 begin
   if s.Specifics.IndexOfName(ident)=-1 then
     result:=0
@@ -138,7 +149,7 @@ begin
     end;
 end;
 
-Function MyStrSpec(s:QSprFile; const ident:String):String;
+Function MyStrSpec(s:QSprFile; const ident:String):String; //FIXME: These shouldn't be needed!
 begin
   if s.Specifics.IndexOfName(ident)=-1 then
     result:=''
@@ -146,7 +157,7 @@ begin
     result:=s.Specifics.Strings[ident];
 end;
 
-Function MyFloatSpec(s:QSprFile; const ident:String):Single;
+Function MyFloatSpec(s:QSprFile; const ident:String):Single; //FIXME: These shouldn't be needed!
 begin
   if s.Specifics.IndexOfName(ident)=-1 then
     result:=0.0
@@ -170,30 +181,29 @@ end;
 
 procedure QSprFile.LoadFile(F: TStream; FSize: TStreamPos);
 var
-  ID_SPRHEADER,head,ver: Longint;
-  org: TStreamPos;
+  Signature, Version: LongInt;
   pgb: PGameBuffer;
   spr: QSprite;
 begin
   case ReadFormat of
     rf_Default: begin  { as stand-alone file }
-      ID_SPRHEADER:=(ord('P') shl 24)+(ord('S')shl 16)+(ord('D') shl 8)+ord('I');
-      org:=f.Position;
-      f.ReadBuffer(head,4);
-      if (head<>ID_SPRHEADER) then
-        raise EErrorFmt(5797, [head,ID_SPRHEADER]);
-      f.ReadBuffer(ver,4);
-      f.seek(org,soBeginning);
+
+      F.ReadBuffer(Signature, SizeOf(Signature));
+      if (Signature<>cSignatureSprID) then
+        raise EErrorFmt(5797, [Signature,cSignatureSprID]); //FIXME: Do errors like in QkBSP!
+      F.ReadBuffer(Version, SizeOf(Version));
+      F.Seek(-(SizeOf(Signature)+SizeOf(Version)), soCurrent);
+
       spr:=getsprite;
-      if (ver=1) then begin
-          pgb:=GameBuffer(mjQuake);
-          f.seek(org,soBeginning); // something happens to f after gamebuffer is called, so i reset the position to org.
-          LoadQ1Spr(f, pgb, spr);
-        end
-      else if (ver=2)  then
-        LoadHLSpr(f, spr)
+      if (Version=cVersionSprQ1H2) then
+      begin
+        pgb:=GameBuffer(mjQuake);
+        LoadQ1Spr(F, pgb, spr);
+      end
+      else if (Version=cVersionSprHL) then
+        LoadHLSpr(F, spr)
       else
-        raise EErrorFmt(5798, [ver]);
+        raise EErrorFmt(5798, [Version]); //FIXME: Do errors like in QkBSP!
       end;
     else inherited;
   end;
@@ -202,7 +212,7 @@ end;
 procedure QSprFile.LoadQ1Spr(fs: TStream; PPPalette: PGameBuffer; Sprite: QSprite);
 var
   dst: TQ1SprHeader;
-  group, ID_SPRHeader, i, j, k, nopics{, noframes} :longint;
+  group, i, j, k, nopics{, noframes} :longint;
   pos: TStreamPos;
   xoffset,yoffset,width,height:Longint;
   aPalette: TPaletteLmp;
@@ -212,11 +222,10 @@ var
 begin
   aPalette:=PPPalette^.PaletteLmp;
   fs.ReadBuffer(dst,sizeof(dst));
-  ID_SPRHeader:=(ord('P') shl 24)+(ord('S')shl 16)+(ord('D') shl 8)+ord('I');
-  if dst.ident<>ID_SPRHEADER then
-    raise EErrorFmt(5799, [dst.ident,ID_SPRHEADER]);
-  if dst.version<>1 then
-    raise EErrorFmt(5800, [dst.version,2]);
+  if dst.ident<>cSignatureSprID then
+    raise EErrorFmt(5799, [dst.ident, cSignatureSprID]); //FIXME: Do errors like in QkBSP!
+  if dst.version<>cVersionSprQ1H2 then
+    raise EErrorFmt(5800, [dst.version, cVersionSprQ1H2]); //FIXME: Do errors like in QkBSP!
   ObjectGameCode:=mjQuake;
   Self.Specifics.Integers['SPR_STYPE']:=dst.sType;
   Self.Specifics.Integers['SPR_TXTYPE']:=-1;
@@ -229,7 +238,7 @@ begin
     fs.ReadBuffer(group,4);
     if group=0 then
     begin
-      fs.ReadBuffer(xoffset,4);
+      fs.ReadBuffer(xoffset,4); //@@@Make into struct?
       fs.ReadBuffer(yoffset,4);
       fs.ReadBuffer(width,4);
       fs.ReadBuffer(height,4);
@@ -249,7 +258,7 @@ begin
         fs.readbuffer(times[j],4);
       for j:=1 to nopics do
       begin
-        fs.ReadBuffer(xoffset,4);
+        fs.ReadBuffer(xoffset,4); //@@@Make into struct?
         fs.ReadBuffer(yoffset,4);
         fs.ReadBuffer(width,4);
         fs.ReadBuffer(height,4);
@@ -269,19 +278,18 @@ end;
 procedure QSprFile.LoadHLSpr(Fs: TStream; Sprite: QSprite);
 var
   dst: THLSprHeader;
-  group, ID_SPRHEADER, i, w, h, lint, lint2, J: Longint;
+  group, i, w, h, lint, lint2, J: Longint;
   pos: TStreamPos;
   DeltaW: Integer;
   PalLen: SmallInt;
-  aPalette: TPaletteLmp;
+  aPalette: TPaletteLmp;         //@@@Al die ReadBuffers-->SizeOf gebruiken!!!
   P: PChar; //FIXME: ArithByte!
 begin
-  ID_SPRHEADER:=(ord('P') shl 24)+(ord('S')shl 16)+(ord('D') shl 8)+ord('I');
   fs.ReadBuffer(dst,sizeof(dst));
-  if dst.ident<>ID_SPRHEADER then
-    raise EErrorFmt(5773, [dst.ident,ID_SPRHEADER]);
-  if dst.version<>2 then
-    raise EErrorFmt(5774, [dst.version,2]);
+  if dst.ident<>cSignatureSprID then
+    raise EErrorFmt(5773, [dst.ident,cSignatureSprID]); //FIXME: Do errors like in QkBSP!
+  if dst.version<>cVersionSprHL then
+    raise EErrorFmt(5774, [dst.version, cVersionSprHL]); //FIXME: Do errors like in QkBSP!
   ObjectGameCode:=mjHalfLife;
   Self.Specifics.Integers['SPR_STYPE']:=dst.sType;
   Self.Specifics.Integers['SPR_TXTYPE']:=dst.texformat;
@@ -290,7 +298,12 @@ begin
   Self.Specifics.Integers['SPR_HEIGHT']:=dst.height;
   Self.Specifics.Integers['SPR_NOFRAMES']:=dst.numframes;
 
-  fs.ReadBuffer(PalLen, SizeOf(SmallInt));
+  //@@@ https://github.com/yuraj11/HL-Texture-Tools/blob/master/HL%20Texture%20Tools/HLTools/SpriteLoader.cs
+  //@@@ https://github.com/Toodles2You/halflife-tools/blob/main/src/sprite.h
+  //!!!: https://github.com/ValveSoftware/halflife/blob/master/utils/sprgen/sprgen.c#L80
+  //+ https://github.com/ValveSoftware/halflife/blob/master/utils/sprgen/spritegn.h
+  fs.ReadBuffer(PalLen, SizeOf(SmallInt)); //Palette will be missing in no16bit mode...! @@@ADD option to allow, or auto-detect???
+  //@@@if PalLen < 0 or PalLen > 256 ERROR
   for i:=0 to PalLen-1 do
   begin
     fs.ReadBuffer(lint2,1);
@@ -302,12 +315,13 @@ begin
   end;
   for i:=1 to dst.numframes do
   begin
-    fs.ReadBuffer(group,4);
-    fs.ReadBuffer(lint,4);
-    fs.ReadBuffer(lint,4);
-    fs.ReadBuffer(W,4);
+    fs.ReadBuffer(group,4);   //@@@Make into struct? Also, what are these int's?    Group    FrameType   SPR_SINGLE or group...?!?    SPR_SINGLE=0, SPR_GROUP } spriteframetype_t;
+	  //if group=0 then ETC
+    fs.ReadBuffer(lint,4);   //OriginX
+    fs.ReadBuffer(lint,4);   //OriginY
+    fs.ReadBuffer(W,4);   //@@@?!?
     fs.ReadBuffer(H,4);
-    Pos:=Fs.Position;
+    Pos:=Fs.Position;   //@@@Why is this needed...?!?
     Loaded_Frame(Sprite, format('Frame %d',[i]), [w,h], p, DeltaW, apalette);
     Fs.Position:=Pos;
     for J:=1 to h do
@@ -320,52 +334,49 @@ end;
 
 Procedure QSprFile.WriteQ1Spr(F: TStream);
 var
-  ID_SPRHEADER, Ver, cnt, typ, i, j, delta: Longint;
-  rad: Single;
-  w, h, z: Longint;
+  Header: TQ1SprHeader;
+  i, j, delta: Integer;
+  dummy: LongInt;
   P: PByte; //FIXME: ArithByte?
   Image1B: String;
   SkinObj: QImage;
   Spr: QSprite;
   pt: TPoint;
 begin
-  z:= 0;
-  ID_SPRHeader:=(ord('P') shl 24)+(ord('S')shl 16)+(ord('D') shl 8)+ord('I');
-  f.WriteBuffer(ID_SPRHEADER,4);
-  ver:=1;
-  f.WriteBuffer(ver,4);
-  typ:=myIntSpec(self,'SPR_STYPE');
-  f.Writebuffer(typ,4);
-
+  Header.ident:=cSignatureSprID;
+  Header.version:=cVersionSprQ1H2;
+  Header.stype:=myIntSpec(self,'SPR_STYPE');
   GetWidthHeight(pt);
-  w:=pt.x;
-  h:=pt.y;
-  rad:=Sqrt(Sqr(w/2)+Sqr(h/2));
-  f.Writebuffer(rad,4);
-  f.WriteBuffer(w,4);
-  f.WriteBuffer(h,4);
-  cnt:=SubElements.count;
-  f.Writebuffer(cnt,4);
-  f.WriteBuffer(z,4);
-  f.WriteBuffer(z,4);
+  Header.width:=pt.x;
+  Header.height:=pt.y;
+  Header.boundingradius:=Sqrt(Sqr(Header.width/2)+Sqr(Header.height/2));
+  Header.numframes:=SubElements.count;
+  Header.beamlength:=0.0; //FIXME: Hardcoded for now!
+  Header.synctype:=0; //FIXME: Hardcoded for now!
+  F.WriteBuffer(Header, SizeOf(Header));
+
   Spr:= GetSprite;
   if (Spr = nil) then
     raise EError(5502);
-  for i:=1 to cnt do begin
+
+  dummy:=0;
+  for i:=1 to SubElements.count do
+  begin
     SkinObj:=QImage(spr.SubElements[i-1]);
     SkinObj.NotTrueColor;
     pt:=SkinObj.GetSize;
-    f.WriteBuffer(z,4);
-    f.WriteBuffer(z,4);
-    f.WriteBuffer(z,4);
+    f.WriteBuffer(dummy,4);
+    f.WriteBuffer(dummy,4);
+    f.WriteBuffer(dummy,4);
     f.WriteBuffer(pt.x,4);
     f.WriteBuffer(pt.y,4);
     Image1B:=SkinObj.GetImage1(P);
-    Delta:=(w + 3) and not 3;
-    Inc(P, Delta*h);   { FIXME: check palette }
-    for J:=1 to h do begin
+    Delta:=(Header.width + 3) and not 3;
+    Inc(P, Delta*Header.height); //FIXME: check palette
+    for j:=1 to Header.height do
+    begin
       Dec(P, Delta);
-      F.WriteBuffer(P^, w);
+      F.WriteBuffer(P^, Header.width);
     end;
   end;
 end;
@@ -413,9 +424,10 @@ end;
 
 Procedure QSprFile.WriteHLSpr(F: TStream);
 var
-  ID_SPRHEADER, Ver, cnt, typ, i, j, delta: Longint;
-  rad: Single;
-  w, h, z: Longint;
+  Header: THLSprHeader;
+  i, j, delta: Integer;
+  dummy: LongInt;
+  PalLen: SmallInt;
   P: PByte; //FIXME: ArithByte?
   Image1B: String;
   SkinObj: QImage;
@@ -424,30 +436,22 @@ var
   Pal: TPaletteLmp;
   Spr: QSprite;
 begin
-  z:= 0;
-  ID_SPRHeader:=(ord('P') shl 24)+(ord('S')shl 16)+(ord('D') shl 8)+ord('I');
-  f.WriteBuffer(ID_SPRHEADER,4);
-  ver:=2;
-  f.WriteBuffer(ver,4);
-  typ:=myIntSpec(self,'SPR_STYPE');
-  f.Writebuffer(typ,4);
-  typ:=myIntSpec(self,'SPR_TXTYPE');
-  f.Writebuffer(typ,4);
-
+  Header.ident:=cSignatureSprID;
+  Header.version:=cVersionSprHL;
+  Header.stype:=myIntSpec(self,'SPR_STYPE');
+  Header.texFormat:=myIntSpec(self,'SPR_TXTYPE');
   GetWidthHeight(pt);
-  w:=pt.x;
-  h:=pt.y;
+  Header.width:=pt.x;
+  Header.height:=pt.y;
+  Header.boundingradius:=Sqrt(Sqr(Header.width/2)+Sqr(Header.height/2));
+  Header.numframes:=SubElements.count;
+  Header.beamlength:=0.0; //FIXME: Hardcoded for now!
+  Header.synctype:=0; //FIXME: Hardcoded for now!
+  F.WriteBuffer(Header, SizeOf(Header));
 
-  rad:=Sqrt(Sqr(w/2)+Sqr(h/2));
-  f.Writebuffer(rad,4);
-  f.WriteBuffer(w,4);
-  f.WriteBuffer(h,4);
-  cnt:=SubElements.count;
-  f.Writebuffer(cnt,4);
-  f.WriteBuffer(z,4);
-  f.WriteBuffer(z,4);
-  typ:=256;
-  f.WriteBuffer(typ,2);
+  PalLen:=256; //FIXME: Hardcoded for now!
+  f.WriteBuffer(PalLen, SizeOf(PalLen));
+
   Spr := GetSprite;
   if (Spr = nil) then
     raise EError(5502);
@@ -463,41 +467,39 @@ begin
     end;
   end;
 
-  for i:=1 to cnt do
+  dummy:=0;
+  for i:=1 to SubElements.count do
   begin
     SkinObj:=QImage(Spr.SubElements[i-1]);
     SkinObj.NotTrueColor;
     pt:=SkinObj.GetSize;
-    f.WriteBuffer(z,4);
-    f.WriteBuffer(z,4);
-    f.WriteBuffer(z,4);
+    f.WriteBuffer(dummy,4);
+    f.WriteBuffer(dummy,4);
+    f.WriteBuffer(dummy,4);
     f.WriteBuffer(pt.x,4);
     f.WriteBuffer(pt.y,4);
     Image1B:=SkinObj.GetImage1(P);
-    Delta:=(w + 3) and not 3;
-    Inc(P, Delta*h);   { FIXME: check palette }
-    for J:=1 to h do
+    Delta:=(Header.width + 3) and not 3;
+    Inc(P, Delta*Header.height); //FIXME: check palette
+    for j:=1 to Header.height do
     begin
       Dec(P, Delta);
-      F.WriteBuffer(P^, w);
+      F.WriteBuffer(P^, Header.width);
     end;
   end;
 end;
 
 procedure QSp2File.LoadFile(F: TStream; FSize: TStreamPos);
-const
-  ID_SP2Header = (ord('2') shl 24)+(ord('S')shl 16)+(ord('D') shl 8)+ord('I');
 var
   dst: TQ2SprHeader;
   i: Longint;
   frame: TQ2SprFrame;
-  str: String;
 begin
   f.ReadBuffer(Dst,sizeof(dst));
-  if dst.ident<>ID_SP2HEADER then
-    raise EErrorFmt(5801, [dst.ident,ID_SP2HEADER]);
-  if dst.version<>2 then
-    raise EErrorFmt(5802, [dst.version,2]);
+  if dst.ident<>cSignatureSprQ2 then
+    raise EErrorFmt(5801, [dst.ident,cSignatureSprQ2]); //FIXME: Do errors like in QkBSP!
+  if dst.version<>cVersionSprQ2 then
+    raise EErrorFmt(5802, [dst.version,cVersionSprQ2]); //FIXME: Do errors like in QkBSP!
   ObjectGameCode:=mjQuake2;
   Self.Specifics.Integers['SPR_STYPE']:=-1;
   Self.Specifics.Integers['SPR_TXTYPE']:=-1;
@@ -505,13 +507,11 @@ begin
   Self.Specifics.Strings['SPR_WIDTH']:='N / A';
   Self.Specifics.Strings['SPR_HEIGHT']:='N / A';
   Self.Specifics.Integers['SPR_NOFRAMES']:=Dst.noframes;
-  fillchar(Frame,sizeof(Frame),#0);
-  For i:=1 to dst.Noframes do begin
+  For i:=1 to dst.Noframes do
+  begin
     f.Readbuffer(frame,sizeof(frame));
-    str:=frame.fn;
-    setlength(str,pos(#0,frame.fn));
     Self.Specifics.Integers[Format('SPR_FRAME%d_CAPTION',[i])]:=i;
-    Self.Specifics.Strings[Format('SPR_FRAME%d_FTYPE',[i])]:=str;
+    Self.Specifics.Strings[Format('SPR_FRAME%d_FTYPE',[i])]:=CharToPas(frame.fn);
     Self.Specifics.Integers[Format('SPR_FRAME%d_XORG',[i])]:=frame.x;
     Self.Specifics.Integers[Format('SPR_FRAME%d_YORG',[i])]:=frame.y;
     Self.Specifics.Integers[Format('SPR_FRAME%d_WIDTH',[i])]:=frame.w;
@@ -523,30 +523,27 @@ end;
 
 Procedure QSp2File.SaveFile(Info: TInfoEnreg1);
 var
-  ID_SP2HEADER, Ver, cnt, i: Longint;
-  x, y, w, h: Longint;
-  data: String;
+  Header: TQ2SprHeader;
+  Frame: TQ2SprFrame;
+  i: Longint;
+  Data: String;
 begin
   with Info do begin
     case Format of
       rf_Default: begin  { as stand-alone file }
-        ID_SP2Header:=(ord('2') shl 24)+(ord('S')shl 16)+(ord('D') shl 8)+ord('I');
-        f.WriteBuffer(ID_SP2HEADER,4);
-        ver:=2;
-        f.WriteBuffer(ver,4);
-        cnt:=IntSpec['SPR_NOFRAMES'];
-        f.Writebuffer(cnt,4);
-        for i:=1 to cnt do begin
-          x:=myIntSpec(self,Sysutils.format('SPR_FRAME%d_XORG',[i]));
-          y:=myIntSpec(self,Sysutils.format('SPR_FRAME%d_YORG',[i]));
-          w:=myIntSpec(self,Sysutils.format('SPR_FRAME%d_WIDTH',[i]));
-          h:=myIntSpec(self,Sysutils.format('SPR_FRAME%d_HEIGHT',[i]));
+        Header.ident:=cSignatureSprQ2;
+        Header.version:=cVersionSprQ2;
+        Header.noFrames:=IntSpec['SPR_NOFRAMES'];
+        F.WriteBuffer(Header, SizeOf(Header));
+        for i:=1 to Header.noFrames do
+        begin
+          Frame.x:=myIntSpec(self,Sysutils.format('SPR_FRAME%d_XORG',[i]));
+          Frame.y:=myIntSpec(self,Sysutils.format('SPR_FRAME%d_YORG',[i]));
+          Frame.w:=myIntSpec(self,Sysutils.format('SPR_FRAME%d_WIDTH',[i]));
+          Frame.h:=myIntSpec(self,Sysutils.format('SPR_FRAME%d_HEIGHT',[i]));
           Data:=myStrSpec(self,Sysutils.format('SPR_FRAME%d_FTYPE',[i]));
-          f.WriteBuffer(x,4);
-          f.WriteBuffer(y,4);
-          f.WriteBuffer(w,4);
-          f.WriteBuffer(h,4);
-          f.WriteBuffer(PChar(Data)^,64);
+          PasToChar(Frame.fn, Data); //FIXME: Cap at 64 Bytes...!
+          F.WriteBuffer(Frame, SizeOf(Frame));
         end;
       end;
       else
@@ -805,4 +802,3 @@ initialization
   RegisterQObject(QSprFile, 'p');
   RegisterQObject(QSp2File, 'p');
 end.
-

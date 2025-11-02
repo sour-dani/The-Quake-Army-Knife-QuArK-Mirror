@@ -42,17 +42,17 @@ type
 
 (***********  Quake 1 and Hexen II .mdl format  ***********)
 const
-  cSignatureMdlID = $4F504449; { 'IDPO' --> "ID Poly" }
+  cSignatureMdlID = $4F504449; //"IDPO" = ID Poly
   cVersionMdlID = 6;
 
-  cSignatureMdlRaven = $4F504152; { 'RAPO' --> "Raven Poly"}
+  cSignatureMdlRaven = $4F504152; //"RAPO" = Raven Poly
   cVersionMdlRaven = $32;
 
 (***********  Half-Life 1 and Half-Life 2 .mdl format  ***********)
 const
-  cSignatureMdlValveST = ((Ord('T') shl 24) or (ord('S') shl 16) or (ord('D') shl 8) or ord('I')); //Studio
-  cSignatureMdlValveSQ = ((Ord('Q') shl 24) or (ord('S') shl 16) or (ord('D') shl 8) or ord('I')); //Sequence group
-  cSignatureMdlValveAG = ((Ord('G') shl 24) or (ord('A') shl 16) or (ord('D') shl 8) or ord('I')); //Animation group
+  cSignatureMdlValveST = (Ord('T') shl 24) or (ord('S') shl 16) or (ord('D') shl 8) or ord('I'); //"IDST" = Studio
+  cSignatureMdlValveSQ = (Ord('Q') shl 24) or (ord('S') shl 16) or (ord('D') shl 8) or ord('I'); //"IDSQ" = Sequence group
+  cSignatureMdlValveAG = (Ord('G') shl 24) or (ord('A') shl 16) or (ord('D') shl 8) or ord('I'); //"IDAG" = Animation group
 
   cVersionMdlValveHL1 = 10; //Half-Life 1
   cVersionMDLValveHL2 = 44; //Half-Life 2, upto and including Source 2006
@@ -867,8 +867,7 @@ var
   end;
 
 var
- Signature: LongInt;
- Version: LongInt;
+ Signature, Version: LongInt;
 begin
   case ReadFormat of
     rf_Default:
