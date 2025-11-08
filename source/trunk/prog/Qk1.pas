@@ -22,8 +22,6 @@ unit Qk1;
 
 interface
 
-{$INCLUDE MemManager.inc}
-
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   QkGroup, ExtCtrls, CommCtrl, QkExplorer, QkObjects,
@@ -229,6 +227,8 @@ var
  {------------------------}
 
 implementation
+
+{$INCLUDE MemManager.inc}
 
 uses {$IFDEF MemTester}MemTester, {$ENDIF}ShellApi, Undo, QkQuakeC, Setup, Config,
   ToolBox1, Game, QkOwnExplorer, ObjProp, qdraw, QkInclude, QkObjectClassList,
