@@ -357,10 +357,6 @@ const
   SM_TABLETPC = 86;
   {$EXTERNALSYM SM_MEDIACENTER}
   SM_MEDIACENTER = $87;
-  {$EXTERNALSYM SM_STARTER}
-  SM_STARTER = 88;
-  {$EXTERNALSYM SM_SERVERR2}
-  SM_SERVERR2 = 89;
   {$EXTERNALSYM SM_SHUTTINGDOWN}
   SM_SHUTTINGDOWN = $2000;
   {$EXTERNALSYM SM_REMOTECONTROL}
@@ -373,6 +369,11 @@ const
   GR_USEROBJECTS_PEAK = 4;
   {$EXTERNALSYM GR_GLOBAL}
   GR_GLOBAL = THandle(-2);
+
+  {$EXTERNALSYM SM_STARTER}
+  SM_STARTER = 88;
+  {$EXTERNALSYM SM_SERVERR2}
+  SM_SERVERR2 = 89;
 
   REST_NONE                        = $00000000;
   {$EXTERNALSYM REST_NONE}
@@ -881,17 +882,6 @@ const
 function CopyCursor(pcur: HCursor): HCursor;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 {$endif}
 
-{$ifndef DelphiXE6orNewerCompiler} //FIXME: Not sure about the version of Delphi these were added
-function StrToUInt(const S: string): Cardinal;
-function StrToUIntDef(const S: string; Default: Cardinal): Cardinal;
-function TryStrToUInt(const S: string; out Value: Cardinal): Boolean;
-{$endif}
-
-{$ifndef DelphiXE6orNewerCompiler} //FIXME: Not sure about the version of Delphi these were added
-function UIntToStr(Value: Cardinal): string; overload;
-function UIntToStr(Value: {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}): string; overload; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
-{$endif}
-
 {$ifndef Delphi2005orNewerCompiler}
 function ContainsText(const AText, ASubText: string): Boolean;
 function StartsText(const ASubText, AText: string): Boolean;
@@ -899,6 +889,17 @@ function EndsText(const ASubText, AText: string): Boolean;
 function ContainsStr(const AText, ASubText: string): Boolean;
 function StartsStr(const ASubText, AText: string): Boolean;
 function EndsStr(const ASubText, AText: string): Boolean;
+{$endif}
+
+{$ifndef Delphi2009orNewerCompiler}
+function UIntToStr(Value: Cardinal): string; overload;
+function UIntToStr(Value: {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}): string; overload; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
+{$endif}
+
+{$ifndef DelphiXE6orNewerCompiler} //FIXME: Not sure about the version of Delphi these were added
+function StrToUInt(const S: string): Cardinal;
+function StrToUIntDef(const S: string; Default: Cardinal): Cardinal;
+function TryStrToUInt(const S: string; out Value: Cardinal): Boolean;
 {$endif}
 
 //These are missing altogether:
@@ -934,13 +935,15 @@ function GlobalMemoryStatusEx(var lpBuffer : TMEMORYSTATUSEX): BOOL; stdcall;
 {$EXTERNALSYM GlobalMemoryStatusEx}
 function GlobalMemoryStatusEx; external kernel32 name 'GlobalMemoryStatusEx' delayed;
 
+function GetTickCount64: ULONGLONG; stdcall;
+{$EXTERNALSYM GetTickCount64}
+function GetTickCount64; external kernel32 name 'GetTickCount64' delayed;
+{$endif}
+
+{$ifndef Delphi2010orNewerCompiler}
 procedure GetNativeSystemInfo(var lpSystemInformation: TSystemInfo); stdcall;
 {$EXTERNALSYM GetNativeSystemInfo}
 procedure GetNativeSystemInfo; external kernel32 name 'GetNativeSystemInfo' delayed;
-
-function GetErrorMode(): UINT; stdcall;
-{$EXTERNALSYM GetErrorMode}
-function GetErrorMode; external kernel32 name 'GetErrorMode' delayed;
 
 function SetDllDirectory(lpPathName: LPCWSTR): BOOL; stdcall;
 {$EXTERNALSYM SetDllDirectory}
@@ -952,21 +955,21 @@ function SetDllDirectory; external kernel32 name {$IFDEF UNICODE}'SetDllDirector
 function SetDllDirectoryA; external kernel32 name 'SetDllDirectoryA' delayed;
 function SetDllDirectoryW; external kernel32 name 'SetDllDirectoryW' delayed;
 
+function SHRestricted(rest: RESTRICTIONS): DWORD; stdcall;
+{$EXTERNALSYM SHRestricted}
+function SHRestricted; external 'shell32.dll' name 'SHRestricted' delayed;
+{$endif}
+
+{$ifndef DelphiXE2orNewerCompiler}
+function GetErrorMode(): UINT; stdcall;
+{$EXTERNALSYM GetErrorMode}
+function GetErrorMode; external kernel32 name 'GetErrorMode' delayed;
+
 function IsWow64Process(hProcess: THandle; Wow64Process: PBOOL): BOOL; overload; stdcall;
 function IsWow64Process(hProcess: THandle; var Wow64Process: BOOL): BOOL; overload; stdcall;
 {$EXTERNALSYM IsWow64Process}
 function IsWow64Process(hProcess: THandle; Wow64Process: PBOOL): BOOL; external kernel32 name 'IsWow64Process' delayed;
 function IsWow64Process(hProcess: THandle; var Wow64Process: BOOL): BOOL; external kernel32 name 'IsWow64Process' delayed;
-
-function GetTickCount64: ULONGLONG; stdcall;
-{$EXTERNALSYM GetTickCount64}
-function GetTickCount64; external kernel32 name 'GetTickCount64' delayed;
-{$endif}
-
-{$ifndef Delphi2010orNewerCompiler}
-function SHRestricted(rest: RESTRICTIONS): DWORD; stdcall;
-{$EXTERNALSYM SHRestricted}
-function SHRestricted; external 'shell32.dll' name 'SHRestricted' delayed;
 {$endif}
 
 {$ifndef Delphi11orNewerCompiler} //FIXME: Not sure, but missing in XE2, but exist in 11.3
@@ -1012,16 +1015,18 @@ var
 {$endif}
 {$ifndef Delphi2009orNewerCompiler}
   GlobalMemoryStatusEx: function (var lpBuffer: TMemoryStatusEx): BOOL; stdcall;
-  GetNativeSystemInfo: procedure (var lpSystemInformation: TSystemInfo); stdcall;
-  GetErrorMode: function : UINT; stdcall;
-  SetDllDirectory: function (lpPathName: LPCTSTR): BOOL; stdcall;
-  SetDllDirectoryA: function (lpPathName: LPCSTR): BOOL; stdcall;
-  SetDllDirectoryW: function (lpPathName: LPCWSTR): BOOL; stdcall;
-  IsWow64Process: function (hProcess: THandle; var Wow64Process: BOOL): BOOL; stdcall;
   GetTickCount64: function: ULONGLONG; stdcall;
 {$endif}
 {$ifndef Delphi2010orNewerCompiler}
+  GetNativeSystemInfo: procedure (var lpSystemInformation: TSystemInfo); stdcall;
+  SetDllDirectory: function (lpPathName: LPCTSTR): BOOL; stdcall;
+  SetDllDirectoryA: function (lpPathName: LPCSTR): BOOL; stdcall;
+  SetDllDirectoryW: function (lpPathName: LPCWSTR): BOOL; stdcall;
   SHRestricted: function (rest: RESTRICTIONS): DWORD; stdcall;
+{$endif}
+{$ifndef DelphiXE2orNewerCompiler}
+  GetErrorMode: function : UINT; stdcall;
+  IsWow64Process: function (hProcess: THandle; var Wow64Process: BOOL): BOOL; stdcall;
 {$endif}
 {$ifndef Delphi11orNewerCompiler}
   GetProcessMitigationPolicy: function (hProcess: THandle; MitigationPolicy: TProcessMitigationPolicy; lpBuffer: Pointer; dwLength: SIZE_T): BOOL; stdcall;
@@ -1206,6 +1211,50 @@ begin
 end;
 {$endif}
 
+{$ifndef Delphi2005orNewerCompiler}
+function ContainsText(const AText, ASubText: string): Boolean;
+begin
+  Result := AnsiContainsText(AText, ASubText); //Note: Apparently, this function is misnamed, and it handles unicode too!
+end;
+
+function StartsText(const ASubText, AText: string): Boolean;
+begin
+  Result := AnsiStartsText(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
+end;
+
+function EndsText(const ASubText, AText: string): Boolean;
+begin
+  Result := AnsiEndsText(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
+end;
+
+function ContainsStr(const AText, ASubText: string): Boolean;
+begin
+  Result := AnsiContainsStr(AText, ASubText); //Note: Apparently, this function is misnamed, and it handles unicode too!
+end;
+
+function StartsStr(const ASubText, AText: String): Boolean;
+begin
+  Result := AnsiStartsStr(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
+end;
+
+function EndsStr(const ASubText, AText: String): Boolean;
+begin
+ Result := AnsiEndsStr(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
+end;
+{$endif}
+
+{$ifndef Delphi2009orNewerCompiler}
+function UIntToStr(Value: Cardinal): string;
+begin
+  FmtStr(Result, '%u', [Value]);
+end;
+
+function UIntToStr(Value: {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}): string; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
+begin
+  FmtStr(Result, '%u', [Value]);
+end;
+{$endif}
+
 {$ifndef DelphiXE6orNewerCompiler}
 function StrToUInt(const S: string): Cardinal;
 const
@@ -1237,50 +1286,6 @@ begin
 
   Value:=Cardinal(Dummy);
   Result:=True;
-end;
-{$endif}
-
-{$ifndef DelphiXE6orNewerCompiler}
-function UIntToStr(Value: Cardinal): string;
-begin
-  FmtStr(Result, '%u', [Value]);
-end;
-
-function UIntToStr(Value: {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}): string; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
-begin
-  FmtStr(Result, '%u', [Value]);
-end;
-{$endif}
-
-{$ifndef Delphi2005orNewerCompiler}
-function ContainsText(const AText, ASubText: string): Boolean;
-begin
-  Result := AnsiContainsText(AText, ASubText); //Note: Apparently, this function is misnamed, and it handles unicode too!
-end;
-
-function StartsText(const ASubText, AText: string): Boolean;
-begin
-  Result := AnsiStartsText(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
-end;
-
-function EndsText(const ASubText, AText: string): Boolean;
-begin
-  Result := AnsiEndsText(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
-end;
-
-function ContainsStr(const AText, ASubText: string): Boolean;
-begin
-  Result := AnsiContainsStr(AText, ASubText); //Note: Apparently, this function is misnamed, and it handles unicode too!
-end;
-
-function StartsStr(const ASubText, AText: String): Boolean;
-begin
-  Result := AnsiStartsStr(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
-end;
-
-function EndsStr(const ASubText, AText: String): Boolean;
-begin
- Result := AnsiEndsStr(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
 end;
 {$endif}
 
@@ -1720,25 +1725,17 @@ initialization
 {$endif}
 {$ifndef Delphi2009orNewerCompiler}
   GlobalMemoryStatusEx := GetProcAddress(GetModuleHandle('kernel32'), 'GlobalMemoryStatusEx');
-  GetNativeSystemInfo := GetProcAddress(GetModuleHandle('kernel32'), 'GetNativeSystemInfo');
-  GetErrorMode := GetProcAddress(GetModuleHandle('kernel32'), 'GetErrorMode');
-  SetDllDirectoryA := GetProcAddress(GetModuleHandle('kernel32'), 'SetDllDirectoryA');
-  SetDllDirectoryW := GetProcAddress(GetModuleHandle('kernel32'), 'SetDllDirectoryW');
-  {$IFDEF UNICODE}SetDllDirectory:=SetDllDirectoryW;{$ELSE}SetDllDirectory:=SetDllDirectoryA;{$ENDIF};
-  IsWow64Process := GetProcAddress(GetModuleHandle('kernel32'), 'IsWow64Process');
   GetTickCount64 := GetProcAddress(GetModuleHandle('kernel32'), 'GetTickCount64');
 
   DelayFunc_GlobalMemoryStatusEx := Assigned(GlobalMemoryStatusEx);
-  DelayFunc_GetNativeSystemInfo := Assigned(GetNativeSystemInfo);
-  DelayFunc_GetErrorMode := Assigned(GetErrorMode);
-  DelayFunc_SetDllDirectoryA := Assigned(SetDllDirectoryA);
-  DelayFunc_SetDllDirectoryW := Assigned(SetDllDirectoryW);
-  DelayFunc_SetDllDirectory := Assigned(SetDllDirectory);
-  DelayFunc_IsWow64Process := Assigned(IsWow64Process);
   DelayFunc_GetTickCount64 := Assigned(GetTickCount64);
   {$DEFINE DelayFunc_Delphi2009Done}
 {$endif}
 {$ifndef Delphi2010orNewerCompiler}
+  GetNativeSystemInfo := GetProcAddress(GetModuleHandle('kernel32'), 'GetNativeSystemInfo');
+   SetDllDirectoryA := GetProcAddress(GetModuleHandle('kernel32'), 'SetDllDirectoryA');
+  SetDllDirectoryW := GetProcAddress(GetModuleHandle('kernel32'), 'SetDllDirectoryW');
+  {$IFDEF UNICODE}SetDllDirectory:=SetDllDirectoryW;{$ELSE}SetDllDirectory:=SetDllDirectoryA;{$ENDIF};
   if ShellLib = 0 then
     ShellLib:=SafeLoadLibrary('shell32.dll');
   if ShellLib = 0 then
@@ -1746,8 +1743,20 @@ initialization
   else
     SHRestricted := GetProcAddress(ShellLib, 'SHRestricted');
 
+  DelayFunc_GetNativeSystemInfo := Assigned(GetNativeSystemInfo);
+  DelayFunc_SetDllDirectoryA := Assigned(SetDllDirectoryA);
+  DelayFunc_SetDllDirectoryW := Assigned(SetDllDirectoryW);
+  DelayFunc_SetDllDirectory := Assigned(SetDllDirectory);
   DelayFunc_SHRestricted := Assigned(SHRestricted);
   {$DEFINE DelayFunc_Delphi2010Done}
+{$endif}
+{$ifndef DelphiXE2orNewerCompiler}
+  GetErrorMode := GetProcAddress(GetModuleHandle('kernel32'), 'GetErrorMode');
+  IsWow64Process := GetProcAddress(GetModuleHandle('kernel32'), 'IsWow64Process');
+
+  DelayFunc_GetErrorMode := Assigned(GetErrorMode);
+  DelayFunc_IsWow64Process := Assigned(IsWow64Process);
+  {$DEFINE DelayFunc_DelphiXE2Done}
 {$endif}
 {$ifndef Delphi11orNewerCompiler}
   GetProcessMitigationPolicy := GetProcAddress(GetModuleHandle('kernel32'), 'GetProcessMitigationPolicy');
@@ -1782,16 +1791,18 @@ initialization
   {$endif}
   {$ifndef DelayFunc_Delphi2009Done}
   DelayFunc_GlobalMemoryStatusEx := CheckWin32Version(5, 0); //Windows 2000
-  DelayFunc_GetNativeSystemInfo := CheckWin32Version(5, 1); //Windows XP, Windows Server 2003
-  DelayFunc_GetErrorMode := CheckWin32Version(6, 0); //Windows Vista
-  DelayFunc_SetDllDirectoryA := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003
-  DelayFunc_SetDllDirectoryW := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003
-  DelayFunc_SetDllDirectory := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003
-  DelayFunc_IsWow64Process := CheckWin32VersionWithServicePack(5, 1, 2); //Windows XP with SP2, Windows Server 2003 with SP1
   DelayFunc_GetTickCount64 := CheckWin32Version(6, 0); //Windows Vista, Windows Server 2008
   {$endif}
   {$ifndef DelayFunc_Delphi2010Done}
+  DelayFunc_GetNativeSystemInfo := CheckWin32Version(5, 1); //Windows XP, Windows Server 2003
+  DelayFunc_SetDllDirectoryA := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003
+  DelayFunc_SetDllDirectoryW := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003
+  DelayFunc_SetDllDirectory := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003
   DelayFunc_SHRestricted := CheckWin32VersionWithServicePack(5, 1, 1); //Windows XP SP1, Windows Server 2003, although it already existed in Windows 2000 as ordinal 100.
+  {$endif}
+  {$ifndef DelayFunc_DelphiXE2Done}
+  DelayFunc_GetErrorMode := CheckWin32Version(6, 0); //Windows Vista
+  DelayFunc_IsWow64Process := CheckWin32VersionWithServicePack(5, 1, 2); //Windows XP with SP2, Windows Server 2003 with SP1
   {$endif}
   {$ifndef DelayFunc_Delphi11Done}
   DelayFunc_GetProcessMitigationPolicy := CheckWin32Version(6, 2); //Windows 8, Windows Server 2012
