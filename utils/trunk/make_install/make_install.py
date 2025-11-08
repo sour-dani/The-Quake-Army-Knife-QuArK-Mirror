@@ -299,17 +299,18 @@ def build_exe():
 			proc = subprocess.run((pathDCC, "QuArK.dpr", "-B", "-DDEBUG", "-E%s" % (pathTemp, ), "-N%s" % (pathCompileTemp, ), "-H", "-W", "-Q"), cwd=pathSource, capture_output=True)
 		else:
 			proc = subprocess.run((pathDCC, "QuArK.dpr", "-B", "-E%s" % (pathTemp, ), "-N%s" % (pathCompileTemp, ), "-H", "-W", "-Q"), cwd=pathSource, capture_output=True)
-		if proc.returncode != 0:
-			if len(proc.stdout) != 0:
-				print(proc.stdout)
+
+		#Save the compile logs.
+		with open(os.path.join(args.OUTPUTDIR, "compile.log"), mode='wb') as outFile:
+			outFile.write(proc.stdout)
 			if len(proc.stderr) != 0:
-				print(proc.stderr)
-			raise RuntimeError("Failed to compile source!")
-		if not os.path.exists(os.path.join(pathTemp, "QuArK.exe")):
-			with open(os.path.join(args.OUTPUTDIR, "compile_errors.txt"), mode='w') as outFile:
-				outFile.write(proc.stdout)
 				outFile.write(proc.stderr)
-			raise RuntimeError("There was an error during compile - see \"compile_errors.txt\"!")
+
+		#Check if something went wrong.
+		if proc.returncode != 0:
+			raise RuntimeError("Failed to compile source - check \"compile.log\"!")
+		if not os.path.exists(os.path.join(pathTemp, "QuArK.exe")):
+			raise RuntimeError("Compiler did not produce expected executable - check \"compile.log\"!")
 	finally:
 		os.remove(os.path.join(pathSource, "dcc32.cfg"))
 
