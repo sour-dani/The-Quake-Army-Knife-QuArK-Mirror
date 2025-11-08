@@ -77,7 +77,7 @@ type
     function Loaded_FrameFile(Root: QObject; const Name: String) : QImage;
     procedure GetWidthHeight(var size:TPoint);
     function GetSprite: QSprite;
-    Function CreateSpriteObject: QSprite;
+    Function CreateSpriteObject: QSprite; //FIXME: Refactor away?
   end;
   QSp2File = class(QSprFile)
   public
@@ -108,7 +108,7 @@ type
     procedure ComboBox2Change(Sender: TObject);
     procedure ComboBox3Change(Sender: TObject);
   private
-    Index: Longint;
+    Index: Integer;
     procedure UpdateListView;
     { Private declarations }
   public
