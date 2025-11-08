@@ -136,7 +136,7 @@ type
   {$EXTERNALSYM HANDLE_PTR}
 {$endif}
 
-{$ifndef Delphi2010orNewerCompiler}
+{$ifndef DelphiXE2orNewerCompiler} //Note: While Delphi 2010-XE do define these, they are in DXTypes, and that file contains a lot of other interfering definitions, so we can't use that.
   SIZE_T = ULONG_PTR;
   {$EXTERNALSYM SIZE_T}
   SSIZE_T = LONG_PTR;
@@ -1811,8 +1811,8 @@ initialization
   {$ifndef DelayFunc_DelphiXXDone}
   DelayFunc_IsWow64Process2 := CheckWin32VersionWithBuildNumber(10, 0, 16299); //Windows 10, version 1709
   DelayFunc_GetFirmwareType := CheckWin32Version(6, 2); //Windows 8, Server 2012
-  DelayFunc_GetProcessUserModeExceptionPolicy := CheckWin32VersionWithServicePack(6, 1, 1) //Windows 7 SP 1
-  DelayFunc_SetProcessUserModeExceptionPolicy := CheckWin32VersionWithServicePack(6, 1, 1) //Windows 7 SP 1
+  DelayFunc_GetProcessUserModeExceptionPolicy := CheckWin32VersionWithServicePack(6, 1, 1); //Windows 7 SP 1
+  DelayFunc_SetProcessUserModeExceptionPolicy := CheckWin32VersionWithServicePack(6, 1, 1); //Windows 7 SP 1
   {$endif}
 {$endif}
 

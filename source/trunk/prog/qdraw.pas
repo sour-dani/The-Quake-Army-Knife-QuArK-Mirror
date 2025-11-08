@@ -28,11 +28,11 @@ uses Windows, SysUtils, Graphics;
 
 var
  PointVisible95: function(const P: TPoint) : Boolean;
- Line95: function(DC: HDC; P1,P2: TPoint) : Bool;
- Rectangle95: function(DC: HDC; X1,Y1,X2,Y2: Integer) : Bool; stdcall;
- Ellipse95: function(DC: HDC; X1, Y1, X2, Y2: Integer) : Bool; stdcall;
- Polygon95: function(DC: HDC; {$IFDEF Delphi11orNewerCompiler}const{$ELSE}var{$ENDIF} Pts; NbPts: Integer) : Bool; stdcall; //DanielPharos: I have no idea in what version of Delphi this got changed.
- PolyPolyline95: function(DC: HDC; const Pts, Cnt; NbPolylines: DWORD) : Bool; stdcall;
+ Line95: function(DC: HDC; P1, P2: TPoint) : Boolean;
+ Rectangle95: function(DC: HDC; X1, Y1, X2, Y2: Integer) : BOOL; stdcall;
+ Ellipse95: function(DC: HDC; X1, Y1, X2, Y2: Integer) : BOOL; stdcall;
+ Polygon95: function(DC: HDC; {$IFDEF Delphi2010orNewerCompiler}const{$ELSE}var{$ENDIF} Pts; NbPts: Integer) : BOOL; stdcall;
+ PolyPolyline95: function(DC: HDC; const Pts; const Cnt; NbPolylines: DWORD) : BOOL; stdcall;
 
 //Returns False out of bounds, True if visible
 function Ligne95(var P1, P2: TPoint) : Boolean;
@@ -57,7 +57,7 @@ begin
  Result:=True;
 end;
 
-function LineOk(DC: HDC; P1,P2: TPoint) : Bool;
+function LineOk(DC: HDC; P1, P2: TPoint) : Boolean;
 begin
  Result:=Windows.MoveToEx(DC, P1.X,P1.Y, Nil);
  if not Result then Exit;
@@ -139,7 +139,7 @@ begin
  Result:=(P.X>=-Max95) and (P.Y>=-Max95) and (P.X<Max95) and (P.Y<Max95);
 end;
 
-function Polygon16(DC: HDC; {$IFDEF Delphi11orNewerCompiler}const{$ELSE}var{$ENDIF} Pts; NbPts: Integer) : Bool; stdcall;
+function Polygon16(DC: HDC; {$IFDEF Delphi2010orNewerCompiler}const{$ELSE}var{$ENDIF} Pts; NbPts: Integer) : BOOL; stdcall;
 var
  I, J: Integer;
  Pt, Tampon, Dest: ^TPoint;
@@ -202,7 +202,7 @@ begin
  Result:=True;
 end;
 
-function PolyPolyline16(DC: HDC; const Pts, Cnt; NbPolylines: DWORD) : Bool; stdcall;
+function PolyPolyline16(DC: HDC; const Pts; const Cnt; NbPolylines: DWORD) : BOOL; stdcall;
 var
  I, J: DWORD;
  P: ^Integer; //FIXME: We're using negative numbers here...!
@@ -266,7 +266,7 @@ begin
  Result:=True;
 end;
 
-function Line16(DC: HDC; P1,P2: TPoint) : Bool;
+function Line16(DC: HDC; P1, P2: TPoint) : Boolean;
 begin
  if not Ligne95(P1, P2) then
   begin
@@ -276,7 +276,7 @@ begin
  Result:=LineOk(DC, P1, P2);
 end;
 
-function Rectangle16(DC: HDC; X1,Y1,X2,Y2: Integer) : Bool; stdcall;
+function Rectangle16(DC: HDC; X1, Y1, X2, Y2: Integer) : BOOL; stdcall;
 begin
  if (X2<=-Max95) or (Y2<=-Max95) or (X1>=Max95) or (Y1>=Max95) then
   begin
@@ -287,10 +287,10 @@ begin
  if Y1<-Max95 then Y1:=-Max95;
  if X2>Max95 then X2:=Max95;
  if Y2>Max95 then Y2:=Max95;
- Result:=Windows.Rectangle(DC, X1,Y1,X2,Y2);
+ Result:=Windows.Rectangle(DC, X1, Y1, X2, Y2);
 end;
 
-function Ellipse16(DC: HDC; X1, Y1, X2, Y2: Integer) : Bool; stdcall;
+function Ellipse16(DC: HDC; X1, Y1, X2, Y2: Integer) : BOOL; stdcall;
 begin
  if (X2<=-Max95) or (Y2<=-Max95) or (X1>=Max95) or (Y1>=Max95) then
   begin
@@ -301,7 +301,7 @@ begin
  if Y1<-Max95 then Y1:=-Max95;
  if X2>Max95 then X2:=Max95;
  if Y2>Max95 then Y2:=Max95;
- Result:=Windows.Ellipse(DC, X1,Y1,X2,Y2);
+ Result:=Windows.Ellipse(DC, X1, Y1, X2, Y2);
 end;
 
 procedure InitViewport16();
