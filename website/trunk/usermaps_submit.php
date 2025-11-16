@@ -24,7 +24,7 @@ class cSubmitMap
 
 	function __construct($aName, $aDownloadLink='', $aScreenshotLink='', $aWebsiteLink='', $aEmail='', $aAuthor='', $aSize=0, $aType='', $aGame='', $aMod='', $aDescription='', $aComments='')
 	{
-		if (strlen($aName) == 0)
+		if (strclen($aName) === 0)
 		{
 			$this->Name = NULL;
 		}
@@ -32,7 +32,7 @@ class cSubmitMap
 		{
 			$this->Name = $aName;
 		}
-		if ((strlen($aDownloadLink) == 0) or ($aDownloadLink === 'ftp://'))
+		if ((strclen($aDownloadLink) === 0) or ($aDownloadLink === 'ftp://'))
 		{
 			$this->DownloadLink = NULL;
 		}
@@ -40,7 +40,7 @@ class cSubmitMap
 		{
 			$this->DownloadLink = $aDownloadLink;
 		}
-		if ((strlen($aScreenshotLink) == 0) or ($aScreenshotLink === 'http://'))
+		if ((strclen($aScreenshotLink) === 0) or ($aScreenshotLink === 'http://'))
 		{
 			$this->ScreenshotLink = NULL;
 		}
@@ -48,7 +48,7 @@ class cSubmitMap
 		{
 			$this->ScreenshotLink = $aScreenshotLink;
 		}
-		if ((strlen($aWebsiteLink) == 0) or ($aWebsiteLink === 'http://'))
+		if ((strclen($aWebsiteLink) === 0) or ($aWebsiteLink === 'http://'))
 		{
 			$this->WebsiteLink = NULL;
 		}
@@ -56,7 +56,7 @@ class cSubmitMap
 		{
 			$this->WebsiteLink = $aWebsiteLink;
 		}
-		if (strlen($aEmail) == 0)
+		if (strclen($aEmail) === 0)
 		{
 			$this->Email = NULL;
 		}
@@ -64,7 +64,7 @@ class cSubmitMap
 		{
 			$this->Email = $aEmail;
 		}
-		if (strlen($aAuthor) == 0)
+		if (strclen($aAuthor) === 0)
 		{
 			$this->Author = NULL;
 		}
@@ -72,17 +72,17 @@ class cSubmitMap
 		{
 			$this->Author = $aAuthor;
 		}
-		if (strlen($aSize) == 0)
+		if (strclen($aSize) === 0)
 		{
 			$this->Size = NULL;
 		}
 		else
 		{
 			$this->Size = intval($aSize);
-			if ($this->Size == 0)
+			if ($this->Size === 0)
 				$this->Size = NULL;
 		}
-		if ((strlen($aType) == 0) or ($aType === '--Please select one--'))
+		if ((strclen($aType) === 0) or ($aType === '--Please select one--'))
 		{
 			$this->Type = NULL;
 		}
@@ -90,7 +90,7 @@ class cSubmitMap
 		{
 			$this->Type = $aType;
 		}
-		if ((strlen($aGame) == 0) or ($aGame === '--Please select one--'))
+		if ((strclen($aGame) === 0) or ($aGame === '--Please select one--'))
 		{
 			$this->Game = NULL;
 		}
@@ -98,7 +98,7 @@ class cSubmitMap
 		{
 			$this->Game = $aGame;
 		}
-		if ((strlen($aMod) == 0) or ($aMod === '--Please select one--'))
+		if ((strclen($aMod) === 0) or ($aMod === '--Please select one--'))
 		{
 			$this->Mod = NULL;
 		}
@@ -106,7 +106,7 @@ class cSubmitMap
 		{
 			$this->Mod = $aMod;
 		}
-		if (strlen($aDescription) == 0)
+		if (strclen($aDescription) === 0)
 		{
 			$this->Description = NULL;
 		}
@@ -114,7 +114,7 @@ class cSubmitMap
 		{
 			$this->Description = $aDescription;
 		}
-		if (strlen($aComments) == 0)
+		if (strclen($aComments) === 0)
 		{
 			$this->Comments = NULL;
 		}

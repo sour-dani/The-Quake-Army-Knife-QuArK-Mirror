@@ -14,7 +14,7 @@ function pageLocalDisplay()
 	global $OldestNewsYear, $OldestNewsMonth;
 
 	$newsperiod = isset($_GET['newsperiod']) ? $_GET['newsperiod'] : null;
-	if ((!is_null($newsperiod)) && (strlen($newsperiod) === 6))
+	if ((!is_null($newsperiod)) && (strclen($newsperiod) === 6))
 	{
 		$newsyear = intval(substr($newsperiod, 0, 4));
 		$newsmonth = intval(substr($newsperiod, 4, 2));

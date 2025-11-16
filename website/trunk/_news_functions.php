@@ -131,7 +131,7 @@ function displayNewsArticle($ArticleID)
 		$stop = stripos($author, '</author>');
 		if (($start !== FALSE) and ($stop !== FALSE))
 		{
-			$start += strlen('<author>');
+			$start += strclen('<author>');
 			$newsauthor = substr($author, $start, $stop - $start);
 			next($thefile);
 		}
@@ -190,13 +190,13 @@ function displayNewsArticle($ArticleID)
 			$start = strpos($line, '<pic ');
 			if ($start !== FALSE)
 			{
-				$start += strlen('<pic ');
+				$start += strclen('<pic ');
 				$stop = strpos($line, '>', $start);
 				if ($stop !== FALSE)
 				{
-					$stop += strlen('>');
+					$stop += strclen('>');
 					$img = DisplayImage(substr($line, $start, $stop - $start - 1));
-					$line = substr($line, 0, $start - strlen('<pic ')) . $img . substr($line, $stop, strlen($line) - $stop);
+					$line = substr($line, 0, $start - strclen('<pic ')) . $img . substr($line, $stop, strclen($line) - $stop);
 				}
 			}
 

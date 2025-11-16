@@ -1,4 +1,37 @@
 <?php
+//PHP is still missing a build-in function that can return the length of a string in characters, so let's make our own.
+function strclen(string $string): int
+{
+	//If "mbstring" is installed, use that
+	if (function_exists('mb_strlen'))
+	{
+		if (version_compare(phpversion(), '8.0.0', '<'))
+		{
+			return mb_strlen($string, mb_internal_encoding());
+		}
+		else
+		{
+			return mb_strlen($string);
+		}
+	}
+
+	//If "iconv" is installed, use that
+	if (function_exists('iconv_strlen'))
+	{
+		if (version_compare(phpversion(), '8.0.0', '<'))
+		{
+			return iconv_strlen($string, iconv.internal_encoding);
+		}
+		else
+		{
+			return iconv_strlen($string);
+		}
+	}
+
+	//Fall back to strlen
+	return strlen($string);
+}
+
 function StringLeft(&$string, $length)
 {
 	return substr($string, 0, $length);
@@ -6,7 +39,7 @@ function StringLeft(&$string, $length)
 
 function StringRight(&$string, $length)
 {
-	return substr($string, strlen($string) - $length, $length);
+	return substr($string, strclen($string) - $length, $length);
 }
 
 function MultiExplode(&$string, $delimiters)
@@ -26,12 +59,12 @@ if (version_compare(phpversion(), '8.0.0', '<'))
 
 	function str_starts_with($string, $needle)
 	{
-		return strncmp($string, $needle, strlen($needle)) === 0;
+		return strncmp($string, $needle, strclen($needle)) === 0;
 	}
 
 	function str_ends_with($string, $needle)
 	{
-		return substr_compare($string, $needle, -strlen($needle)) === 0;
+		return substr_compare($string, $needle, -strclen($needle)) === 0;
 	}
 }
 
@@ -60,7 +93,7 @@ function unparse_url($parsed_url) //Note: PHP doesn't allow this to be passed by
 function parseAcceptHeader($header)
 {
 	$result = array();
-	while (strlen($header) !== 0)
+	while (strclen($header) !== 0)
 	{
 		$index = strpos($header, ';q=');
 		if ($index === false)
@@ -72,7 +105,7 @@ function parseAcceptHeader($header)
 		else
 		{
 			$foundItem = StringLeft($header, $index);
-			$header = substr($header, $index + strlen(';q='));
+			$header = substr($header, $index + strclen(';q='));
 			$index = strpos($header, ',');
 			if ($index === false)
 			{
@@ -82,7 +115,7 @@ function parseAcceptHeader($header)
 			else
 			{
 				$foundWeight = floatval(trim(StringLeft($header, $index)));
-				$header = substr($header, $index + strlen(','));
+				$header = substr($header, $index + strclen(','));
 			}
 		}
 		foreach (explode(',', $foundItem) as $foundItemX)
