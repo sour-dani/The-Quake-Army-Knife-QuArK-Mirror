@@ -369,13 +369,13 @@ $Games[] = new cGame(NULL ,'CoD21' ,'Call of Duty: Black Ops 6' ,'CoD21' ,NULL
                     ,array('Activision')
                     ,NULL
                     );
-/*$Games[] = new cGame(NULL ,'CoD22' ,'Call of Duty: Black Ops 7' ,'CoD22' ,NULL
+$Games[] = new cGame(NULL ,'CoD22' ,'Call of Duty: Black Ops 7' ,'CoD22' ,NULL
                     ,'https://www.callofduty.com/blackops7' ,'https://en.wikipedia.org/wiki/Call_of_Duty:_Black_Ops_7' ,'IW9', FALSE
                     ,NULL
                     ,array('Treyarch', 'Raven')
                     ,array('Activision')
                     ,NULL
-                    );*/ //Not released yet
+                    );
 $Games[] = new cGame(NULL ,'C' ,'Catechumen' ,'C' ,'c.png'
                     ,NULL ,'https://en.wikipedia.org/wiki/Catechumen_(video_game)' ,'G3D', FALSE #http://www.catechumen.com
                     ,'Catechumen is a first person action/adventure Christian game where your goal is to defeat the forces of evil, descending deeper into the depths of the Earth and rescue your captured brethren.'
