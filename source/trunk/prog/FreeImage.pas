@@ -215,10 +215,7 @@ function InitDllPointer(DLLHandle: HMODULE; const APIFuncname : String) : Pointe
 begin
   Result := GetProcAddress(DLLHandle, PChar(APIFuncname));
   if Result = Nil then
-  begin
-    LogWindowsError(GetLastError(), 'GetProcAddress(DLLHandle, "'+APIFuncname+'")');
-    LogAndRaiseError(FmtLoadStr1(5743, [APIFuncname, 'FreeImage']));
-  end;
+    LogAndRaiseLastOSError(FmtLoadStr1(5743, [APIFuncname, 'FreeImage']));
 end;
 
 procedure FreeImageErrorHandler(fif : FREE_IMAGE_FORMAT; xmessage : PAnsiChar);
@@ -240,10 +237,7 @@ begin
 
       HFreeImage := LoadLibrary(PChar(FreeImageLibraryFilename));
       if HFreeImage = 0 then
-      begin
-        LogWindowsError(GetLastError(), 'LoadLibrary("'+FreeImageLibraryFilename+'")');
-        LogAndRaiseError(FmtLoadStr1(5741, ['FreeImage']));
-      end;
+        LogAndRaiseLastOSError(FmtLoadStr1(5741, ['FreeImage']));
 
       //FreeImage_Initialise   := InitDllPointer(HFreeImage, '_FreeImage_Initialise@4');
       //FreeImage_DeInitialise := InitDllPointer(HFreeImage, '_FreeImage_DeInitialise@0');
@@ -311,10 +305,7 @@ begin
       Log(LOG_VERBOSE, LoadStr1(5901), ['FreeImage']);
 
       if FreeLibrary(HFreeImage) = false then
-      begin
-        LogWindowsError(GetLastError(), 'FreeLibrary(HFreeImage)');
-        LogAndRaiseError(FmtLoadStr1(5748, ['FreeImage']));
-      end;
+        LogAndRaiseLastOSError(FmtLoadStr1(5748, ['FreeImage']));
       HFreeImage := 0;
 
       //FreeImage_Initialise            := nil;

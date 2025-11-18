@@ -972,10 +972,7 @@ begin
         Log(LOG_VERBOSE, 'Loading OpenGL library: OPENGL32.DLL');
         OpenGL32Lib := LoadLibrary('OPENGL32.DLL');
         if OpenGL32Lib=0 then
-        begin
-          LogWindowsError(GetLastError(), 'LoadLibrary(OPENGL32.DLL)');
-          LogAndRaiseError(FmtLoadStr1(5741, ['OpenGL']));
-        end;
+          LogAndRaiseLastOSError(FmtLoadStr1(5741, ['OpenGL']));
         Log(LOG_INFO, 'Loaded OpenGL library: '+RetrieveModuleFilename(OpenGL32Lib));
       end;
 
@@ -984,10 +981,7 @@ begin
         Log(LOG_VERBOSE, 'Loading GLU library: GLU32.DLL');
         Glu32Lib := LoadLibrary('GLU32.DLL');
         if Glu32Lib=0 then
-        begin
-          LogWindowsError(GetLastError(), 'LoadLibrary(GLU32.DLL)');
-          LogAndRaiseError(FmtLoadStr1(5741, ['GLU']));
-        end;
+          LogAndRaiseLastOSError(FmtLoadStr1(5741, ['GLU']));
         Log(LOG_INFO, 'Loaded GLU library: '+RetrieveModuleFilename(Glu32Lib));
       end;
 
@@ -1066,22 +1060,16 @@ begin
     end;
 
     if FreeLibrary(Glu32Lib)=false then
-    begin
-      LogWindowsError(GetLastError(), 'FreeLibrary(Glu32Lib)');
-      LogAndRaiseError(FmtLoadStr1(5748, ['Glu32Lib']));
-    end;
+      LogAndRaiseLastOSError(FmtLoadStr1(5748, ['Glu32Lib']));
     Glu32Lib:=0;
 
     for I:=Low(Glu32DLL_FuncList) to High(Glu32DLL_FuncList) do
       PPointer(Glu32DLL_FuncList[I].FuncPtr)^:=nil;
 
-    //DanielPharos: This cannot be freed, because the pixel format will then be forgotten,
+    //This cannot be freed, because the pixel format will then be forgotten,
     //causing errors when OpenGL is restarted!
     {if FreeLibrary(OpenGL32Lib)=false then
-    begin
-      LogWindowsError(GetLastError(), 'FreeLibrary(OpenGL32Lib)');
-      LogAndRaiseError(FmtLoadStr1(5748, ['OpenGL32Lib']));
-    end;
+      LogAndRaiseLastOSError(FmtLoadStr1(5748, ['OpenGL32Lib']));
     OpenGL32Lib:=0;}
 
     for I:=Low(OpenGL32DLL_FuncList) to High(OpenGL32DLL_FuncList) do

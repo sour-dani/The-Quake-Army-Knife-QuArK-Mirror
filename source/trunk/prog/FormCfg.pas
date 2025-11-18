@@ -1517,7 +1517,8 @@ begin
    {$IF RTLVersion < 20}
    SB.DoubleBuffered:=DoubleBuffered;
    {$IFEND}
-   SB.ParentBackground:=False;
+   //SB.ParentBackground:=False;
+   //SB.ParentColor:=True;
    SB.Parent:=Self;
    SB.Align:=alClient;
   {SB.Color:=clWindow;}
@@ -1546,7 +1547,7 @@ begin
  else
   begin
    SB.VertScrollBar.Range:=0;
-   Color:=clBtnFace;
+   Color:=clBtnFace; //FIXME: Why Self.Color?!? And this appears to be done elsewhere too?!?
    SB.Visible:=True;
   end;
 end;
@@ -1955,6 +1956,10 @@ begin
                  EditTogether.Add(Spec);
                  if GrayForm and gfGray = 0 then
                   begin
+				  //https://www.daniweb.com/programming/software-development/threads/357081/a-problematic-color-problem-in-delphi
+          //https://microsoft.public.win32.programmer.ui.narkive.com/LyuHfMLd/transparent-background-color-for-a-checkbox
+          //https://learn.microsoft.com/en-us/windows/win32/controls/wm-ctlcolorstatic
+          // --> "You can set the text background color of a disabled edit control, but you cannot set the text foreground color. The system always uses COLOR_GRAYTEXT."
                    Ctrl:=TCheckBox.Create(Self);
                    TCheckBox(Ctrl).Caption:=Strings['Cap'];
                    TCheckBox(Ctrl).OnEnter:=AnyControlEnter;
@@ -2414,7 +2419,7 @@ begin
                  except
                    on EConvertError do
                      //FIXME: LOG!
-                     iSteps := 10;
+                     iSteps := 1;
                  end;
                  TrackBar.Steps := iSteps;
                  try
@@ -2673,7 +2678,7 @@ begin
     //when using Common Controls v6. It seems similar to the WM_UPDATEUISTATE problem,
     //but fixing the WM_UPDATEUISTATE problem,  doesn't fix this.
     //We have to tell SB to draw its children ourselves.
-    SB.Repaint;
+    SB.Invalidate;
    end;
  end;
 end;

@@ -1063,6 +1063,10 @@ type
 function CompareMem(P1, P2: Pointer; Length: Integer): Boolean; assembler;
 {$endif}
 
+{$ifndef Delphi3orNewerCompiler}
+procedure RaiseLastWin32Error;
+{$endif}
+
 {$ifndef Delphi4orNewerCompiler}
 function GetComCtlVersion: Integer;
 {$endif}
@@ -1089,6 +1093,9 @@ procedure FreeAndNil(var Obj);
 {$endif}
 
 {$ifndef Delphi6orNewerCompiler}
+const
+  RaiseLastOSError: procedure = RaiseLastWin32Error;
+
 { IsPathDelimiter returns True if the character at byte S[Index]
   is a PathDelimiter ('\' or '/'), and it is not a MBCS lead or trail byte. }
 function IsPathDelimiter(const S: string; Index: Integer): Boolean;
@@ -1319,6 +1326,22 @@ asm
 @@1:    INC     EAX
 @@2:    POP     EDI
         POP     ESI
+end;
+{$endif}
+
+{$ifndef Delphi3orNewerCompiler}
+procedure RaiseLastWin32Error;
+var
+  LastError: DWORD;
+  Error: EWin32Error;
+begin
+  LastError := GetLastError;
+  if LastError <> ERROR_SUCCESS then
+    Error := EWin32Error.CreateFmt(SWin32Error, [LastError, SysErrorMessage(LastError)])
+  else
+    Error := EWin32Error.Create(SUnkWin32Error);
+  Error.ErrorCode := LastError;
+  raise Error;
 end;
 {$endif}
 

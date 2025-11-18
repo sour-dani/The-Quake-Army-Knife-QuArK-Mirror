@@ -465,10 +465,7 @@ var
 begin
   DIBSection:=CreateDIBSection(DC, tagBITMAPINFO(BitmapInfo), DIB_RGB_COLORS, Bits, 0, 0);
   if DIBSection = 0 then
-  begin
-    LogWindowsError(GetLastError(), 'CreateDIBSection(DC, tagBITMAPINFO(BitmapInfo), DIB_RGB_COLORS, Bits, 0, 0)');
-    LogAndRaiseError(LoadStr1(5820));
-  end;
+    LogAndRaiseLastOSError(LoadStr1(5820));
   try
     Width:=TBitmapInfo(BitmapInfo).bmiHeader.biWidth;
     Height:=TBitmapInfo(BitmapInfo).bmiHeader.biHeight;

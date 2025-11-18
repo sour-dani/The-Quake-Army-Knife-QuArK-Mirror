@@ -29,7 +29,7 @@ procedure DeleteDummyWindow(DummyWindow: HWND);
 
 implementation
 
-uses QkExceptions;
+uses QkExceptions, Quarkx;
 
 const
   DummyWindowClassName: string = 'QuArK Dummy Window Class';
@@ -59,18 +59,12 @@ begin
     DummyWindowClass.lpfnWndProc:=@WndMessageProc;
     DummyWindowClassAtom:=RegisterClassEx(DummyWindowClass);
     if DummyWindowClassAtom = 0 then
-    begin
-      LogWindowsError(GetLastError(), 'RegisterClassEx(DummyWindowClass)');
-      Raise EErrorFmt(6014, ['RegisterClassEx']);
-    end;
+      LogAndRaiseLastOSError(FmtLoadStr1(6014, ['RegisterClassEx']));
   end;
 
   Result := CreateWindow(DummyWindowClass.lpszClassName, PChar(Caption), WS_CLIPCHILDREN or WS_CLIPSIBLINGS or WS_DISABLED, Integer(CW_USEDEFAULT), Integer(CW_USEDEFAULT), Integer(CW_USEDEFAULT), Integer(CW_USEDEFAULT), 0, 0, hInstance, nil);
   if Result = 0 then
-  begin
-    LogWindowsError(GetLastError(), 'CreateWindow(DummyWindowClass)');
-    Raise EErrorFmt(6014, ['CreateWindow']);
-  end;
+    LogAndRaiseLastOSError(FmtLoadStr1(6014, ['CreateWindow']));
 
   WindowsLoaded:=WindowsLoaded+1;
 end;
@@ -80,18 +74,12 @@ begin
   if DummyWindow<>0 then
     if IsWindow(DummyWindow)=True then
       if DestroyWindow(DummyWindow) = false then
-      begin
-        LogWindowsError(GetLastError(), 'DestroyWindow(DummyWindow)');
-        Raise EErrorFmt(6014, ['DestroyWindow']);
-      end;
+        LogAndRaiseLastOSError(FmtLoadStr1(6014, ['DestroyWindow']));
 
   if WindowsLoaded = 1 then
   begin
     if UnregisterClass(DummyWindowClass.lpszClassName, hInstance) = false then
-    begin
-      LogWindowsError(GetLastError(), 'UnregisterClass(DummyWindowClass)');
-      Raise EErrorFmt(6014, ['UnregisterClass']);
-    end;
+      LogAndRaiseLastOSError(FmtLoadStr1(6014, ['UnregisterClass']));
     DummyWindowClassAtom := 0;
 
     WindowsLoaded := 0;

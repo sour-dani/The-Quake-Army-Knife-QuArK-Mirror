@@ -338,10 +338,7 @@ function InitDllPointer(DLLHandle: HMODULE; const APIFuncname: String) : Pointer
 begin
   Result := GetProcAddress(DLLHandle, PChar(APIFuncname));
   if Result = Nil then
-  begin
-    LogWindowsError(GetLastError(), 'GetProcAddress(DLLHandle, "'+APIFuncname+'")');
-    LogAndRaiseError(FmtLoadStr1(5743, [APIFuncname, 'DevIL']));
-  end;
+    LogAndRaiseLastOSError(FmtLoadStr1(5743, [APIFuncname, 'DevIL']));
 end;
 
 function LoadDevIL : Boolean;
@@ -357,10 +354,7 @@ begin
 
       HDevIL := LoadLibrary(PChar(DevILLibraryFilename));
       if HDevIL = 0 then
-      begin
-        LogWindowsError(GetLastError(), 'LoadLibrary("'+DevILLibraryFilename+'")');
-        LogAndRaiseError(FmtLoadStr1(5741, ['DevIL']));
-      end;
+        LogAndRaiseLastOSError(FmtLoadStr1(5741, ['DevIL']));
 
       ilInit            := InitDllPointer(HDevIL, 'ilInit');
       ilShutDown        := InitDllPointer(HDevIL, 'ilShutDown');
@@ -426,10 +420,7 @@ begin
       ilShutdown;
 
       if FreeLibrary(HDevIL) = false then
-      begin
-        LogWindowsError(GetLastError(), 'FreeLibrary(HDevIL)');
-        LogAndRaiseError(FmtLoadStr1(5748, ['DevIL']));
-      end;
+        LogAndRaiseLastOSError(FmtLoadStr1(5748, ['DevIL']));
       HDevIL := 0;
 
       ilInit                := nil;

@@ -454,10 +454,7 @@ begin
       Exit;
     end
     else
-    begin
-      LogWindowsError(GetLastError(), 'GetShortPathName("'+FullName+'")');
-      Raise EErrorFmt(5188, [FullName]);
-    end;
+      LogAndRaiseLastOSError(FmtLoadStr1(5188, [FullName]));
   end;
   SetString(FullName, Z, StrLen(Z));
 

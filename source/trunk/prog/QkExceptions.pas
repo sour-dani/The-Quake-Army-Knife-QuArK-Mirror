@@ -52,6 +52,7 @@ function QFileNotFoundFmt(Res: Integer; const Fmt: array of const) : Exception;
 procedure GlobalWarning(const Texte: String);
 procedure GlobalDisplayWarnings;
 
+procedure LogAndRaiseLastOSError(const AdditionalInfo: string);
 procedure LogWindowsError(ErrNr: DWORD; const Call: String);
 
 procedure InstallExceptProc;
@@ -200,6 +201,20 @@ begin
 end;
 
  {------------------------}
+
+procedure LogAndRaiseLastOSError(const AdditionalInfo: string);
+begin
+  try
+    RaiseLastOSError;
+    //Note: This always raises something!
+  except
+    on E: {$IFDEF Delphi6orNewerCompiler}EOSError{$ELSE}EWin32Error{$ENDIF} do
+    begin
+      Log(LOG_WARNING, E.Message);
+      raise;
+    end;
+  end;
+end;
 
 procedure LogWindowsError(ErrNr: DWORD; const Call: String);
 begin

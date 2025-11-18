@@ -434,24 +434,15 @@ begin
         NVDXTStartupInfo.dwFlags:=STARTF_USESHOWWINDOW;
         NVDXTStartupInfo.wShowWindow:=SW_HIDE+SW_MINIMIZE;
         if CreateProcess(PChar(ConcatPaths([GetQPath(pQuArKDll), 'nvdxt.exe'])), PChar('nvdxt.exe -rescale nearest -file "'+NVDXTFileNamePNG+'" -output "'+NVDXTFileNameDDS+'" -'+TexFormatParameter+' -'+QualityParameter), nil, nil, false, 0, nil, PChar(GetQPath(pQuArKDll)), NVDXTStartupInfo, NVDXTProcessInformation)=false then
-        begin
-          LogWindowsError(GetLastError(), 'CreateProcess(nvdxt.exe)');
-          LogAndRaiseError(FmtLoadStr1(5721, [FormatName, 'CreateProcess']));
-        end;
+          LogAndRaiseLastOSError(FmtLoadStr1(5721, [FormatName, 'CreateProcess']));
         try
           CloseHandle(NVDXTProcessInformation.hThread);
 
           //DanielPharos: This is kinda dangerous, but NVDXT should exit rather quickly!
           if WaitForSingleObject(NVDXTProcessInformation.hProcess, INFINITE)=WAIT_FAILED then
-          begin
-            LogWindowsError(GetLastError(), 'WaitForSingleObject(NVDXT)');
-            LogAndRaiseError(FmtLoadStr1(5721, [FormatName, 'WaitForSingleObject']));
-          end;
+            LogAndRaiseLastOSError(FmtLoadStr1(5721, [FormatName, 'WaitForSingleObject']));
           if not GetExitCodeProcess(NVDXTProcessInformation.hProcess, NVDXTReturnCode) then
-          begin
-            LogWindowsError(GetLastError(), 'GetExitCodeProcess(NVDXT)');
-            LogAndRaiseError(FmtLoadStr1(5721, [FormatName, 'GetExitCodeProcess']));
-          end;
+            LogAndRaiseLastOSError(FmtLoadStr1(5721, [FormatName, 'GetExitCodeProcess']));
         finally
           CloseHandle(NVDXTProcessInformation.hProcess);
         end;

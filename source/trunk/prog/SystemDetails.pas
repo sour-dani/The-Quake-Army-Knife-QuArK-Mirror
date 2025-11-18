@@ -3097,10 +3097,7 @@ begin
   begin
     FSnapshotHandle := CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
     if FSnapshotHandle = INVALID_HANDLE_VALUE then
-    begin
-      LogWindowsError(GetLastError(), 'CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS)');
-      LogAndRaiseError('Unable to retrieve process information!');
-    end;
+      LogAndRaiseLastOSError('Unable to retrieve process information!');
     try
       FProcessEntry32.dwSize := SizeOf(FProcessEntry32);
       ContinueLoop := Process32First(FSnapshotHandle, FProcessEntry32);
@@ -3110,10 +3107,7 @@ begin
         begin
           FSnapshotHandle2 := CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, FProcessEntry32.th32ProcessID);
           if FSnapshotHandle2 = INVALID_HANDLE_VALUE then
-          begin
-            LogWindowsError(GetLastError(), 'CreateToolhelp32Snapshot(TH32CS_SNAPMODULE)');
-            LogAndRaiseError('Unable to retrieve process information!');
-          end;
+            LogAndRaiseLastOSError('Unable to retrieve process information!');
           try
             FModuleEntry32.dwSize := SizeOf(FModuleEntry32);
             Module32First(FSnapshotHandle2, FModuleEntry32);

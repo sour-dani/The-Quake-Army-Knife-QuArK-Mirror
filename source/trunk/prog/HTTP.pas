@@ -207,10 +207,7 @@ begin
 
   InetHandle:=InternetOpen(PChar('QuArK'), INTERNET_OPEN_TYPE_PRECONFIG, nil, nil, 0);
   if InetHandle=nil then
-  begin
-    LogWindowsError(GetLastError(), 'THTTPConnection.GoOnline: InternetOpen failed!');
-    raise exception.create('Unable to open internet connection.');
-  end;
+    LogAndRaiseLastOSError('Unable to open internet connection.');
   Online:=True;
   Result:=True;
 end;
@@ -243,10 +240,7 @@ begin
   else
     InetConnection:=InternetConnect(InetHandle, PChar(HostName), INTERNET_DEFAULT_HTTP_PORT, nil, nil, INTERNET_SERVICE_HTTP, 0, 0);
   if InetConnection=nil then
-  begin
-    LogWindowsError(GetLastError(), 'THTTPConnection.ConnectTo: InternetConnect failed!');
-    raise exception.create('Unable to open internet connection.');
-  end;
+    LogAndRaiseLastOSError('Unable to open internet connection.');
   Connected:=True;
   UsingSSL:=UseSSL;
 end;
@@ -278,15 +272,9 @@ begin
   else
     InetResource:=HttpOpenRequest(InetConnection, PChar('GET'), PChar(FileName), nil, nil, nil, INTERNET_FLAG_RELOAD + INTERNET_FLAG_NO_CACHE_WRITE, 0);
   if InetResource=nil then
-  begin
-    LogWindowsError(GetLastError(), 'THTTPConnection.FileRequest: HttpOpenRequest failed!');
-    raise exception.create('Can not access file to download.');
-  end;
+    LogAndRaiseLastOSError('Can not access file to download.');
   if HttpSendRequest(InetResource, nil, 0, nil, 0)=false then
-  begin
-    LogWindowsError(GetLastError(), 'THTTPConnection.FileRequest: HttpSendRequest failed!');
-    raise exception.create('Can not access file to download.');
-  end;
+    LogAndRaiseLastOSError('Can not access file to download.');
   Requesting:=True;
 end;
 
@@ -347,10 +335,7 @@ begin
   if DataStart<>0 then
   begin
     if (InternetSetFilePointer(InetResource, DataStart, nil, FILE_BEGIN, 0) = INVALID_SET_FILE_POINTER) and (GetLastError() <> NO_ERROR) then
-    begin
-      LogWindowsError(GetLastError(), 'THTTPConnection.ReadFile: InternetSetFilePointer failed!');
-      raise exception.create('Cannot download file. Data transfer failed.');
-    end;
+      LogAndRaiseLastOSError('Cannot download file. Data transfer failed.');
   end;
 
   FileData.Seek(0, soFromBeginning);
@@ -360,10 +345,7 @@ begin
   try
     repeat
       if InternetReadFile(InetResource, Buffer, FileBufferLength, BufferLength)=false then
-      begin
-        LogWindowsError(GetLastError(), 'THTTPConnection.ReadFile: InternetReadFile failed!');
-        raise exception.create('Cannot download file. Data transfer failed.');
-      end;
+        LogAndRaiseLastOSError('Cannot download file. Data transfer failed.');
       if BufferLength>0 then
         FileData.WriteBuffer(Buffer^, BufferLength);
     until BufferLength=0;

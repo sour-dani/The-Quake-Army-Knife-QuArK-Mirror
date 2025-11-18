@@ -191,10 +191,7 @@ function InitDllPointer(DLLHandle: HINST; const APIFuncname : String) : Pointer;
 begin
   Result := GetProcAddress(DLLHandle, PChar(APIFuncname));
   if Result=Nil then
-  begin
-    LogWindowsError(GetLastError(), 'GetProcAddress(DLLHandle, "'+APIFuncname+'")');
-    LogAndRaiseError(FmtLoadStr1(5743, [APIFuncname, 'HLLib']));
-  end;
+    LogAndRaiseLastOSError(FmtLoadStr1(5743, [APIFuncname, 'HLLib']));
 end;
 
 function LoadHLLib : Boolean;
@@ -210,10 +207,7 @@ begin
 
       HHLLib := LoadLibrary(PChar(HLLibLibraryFilename));
       if HHLLib = 0 then
-      begin
-        LogWindowsError(GetLastError(), 'LoadLibrary("'+HLLibLibraryFilename+'")');
-        LogAndRaiseError(FmtLoadStr1(5741, ['HLLib']));
-      end;
+        LogAndRaiseLastOSError(FmtLoadStr1(5741, ['HLLib']));
 
       hlInitialize := InitDllPointer(HHLLib, 'hlInitialize');
       hlShutdown   := InitDllPointer(HHLLib, 'hlShutdown');
@@ -274,10 +268,7 @@ begin
       hlShutdown;
 
       if FreeLibrary(HHLLib)=false then
-      begin
-        LogWindowsError(GetLastError(), 'FreeLibrary(HHLLib)');
-        LogAndRaiseError(FmtLoadStr1(5748, ['HLLib']));
-      end;
+        LogAndRaiseLastOSError(FmtLoadStr1(5748, ['HLLib']));
       HHLLib := 0;
 
       hlInitialize := nil;

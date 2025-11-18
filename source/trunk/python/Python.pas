@@ -1154,12 +1154,9 @@ begin
   if PythonLib<>0 then
   begin
     if FreeLibrary(PythonLib)=false then
-    begin
       //FIXME: If FreeLibrary failed, can we still trust the loaded Python?
       //       Shouldn't we be killing PythonLoaded?
-      LogWindowsError(GetLastError(), 'FreeLibrary(PythonLib)');
-      LogAndRaiseError('Unable to unload the Python library');
-    end;
+      LogAndRaiseLastOSError('Unable to unload the Python library');
     PythonLib:=0;
 
     PythonLoaded:=false;

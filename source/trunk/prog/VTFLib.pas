@@ -396,10 +396,7 @@ function InitDllPointer(DLLHandle: HMODULE; const APIFuncname : String) : Pointe
 begin
   Result := GetProcAddress(DLLHandle, PChar(APIFuncname));
   if Result = Nil then
-  begin
-    LogWindowsError(GetLastError(), 'GetProcAddress(DLLHandle, "'+APIFuncname+'")');
-    LogAndRaiseError(FmtLoadStr1(5743, [APIFuncname, 'VTFLib']));
-  end;
+    LogAndRaiseLastOSError(FmtLoadStr1(5743, [APIFuncname, 'VTFLib']));
 end;
 
 function LoadVTFLib : Boolean;
@@ -415,10 +412,7 @@ begin
 
       HVTFLib := LoadLibrary(PChar(VTFLibLibraryFilename));
       if HVTFLib = 0 then
-      begin
-        LogWindowsError(GetLastError(), 'LoadLibrary("'+VTFLibLibraryFilename+'")');
-        LogAndRaiseError(FmtLoadStr1(5741, ['VTFLib']));
-      end;
+        LogAndRaiseLastOSError(FmtLoadStr1(5741, ['VTFLib']));
 
       vlGetVersion        := InitDllPointer(HVTFLib, 'vlGetVersion');
       //vlGetVersionString  := InitDllPointer(HVTFLib, 'vlGetVersionString');
@@ -520,10 +514,7 @@ begin
       vlShutdown;
 
       if FreeLibrary(HVTFLib) = false then
-      begin
-        LogWindowsError(GetLastError(), 'FreeLibrary(VTFLib)');
-        LogAndRaiseError(FmtLoadStr1(5748, ['VTFLib']));
-      end;
+        LogAndRaiseLastOSError(FmtLoadStr1(5748, ['VTFLib']));
       HVTFLib := 0;
 
       vlGetVersion      := nil;
