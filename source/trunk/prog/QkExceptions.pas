@@ -52,7 +52,6 @@ function QFileNotFoundFmt(Res: Integer; const Fmt: array of const) : Exception;
 procedure GlobalWarning(const Texte: String);
 procedure GlobalDisplayWarnings;
 
-function GetSystemErrorMessage(ErrNr: DWORD) : String;
 procedure LogWindowsError(ErrNr: DWORD; const Call: String);
 
 procedure InstallExceptProc;
@@ -202,28 +201,11 @@ end;
 
  {------------------------}
 
-//Based on: http://www.swissdelphicenter.ch/torry/showcode.php?id=282
-function GetSystemErrorMessage(ErrNr: DWORD) : String;
-var
-  P: LPTSTR;
-begin
-  if FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER + FORMAT_MESSAGE_FROM_SYSTEM, nil, ErrNR, 0, @P, 0, nil) <> 0 then
-  begin
-    Result:=P;
-    LocalFree(HLOCAL(P));
-  end
-  else
-  begin
-    Log(LOG_WARNING, 'Unable to retrieve system error message for error: %u', [ErrNR]);
-    Result:='';
-  end;
-end;
-
 procedure LogWindowsError(ErrNr: DWORD; const Call: String);
 begin
   Log(LOG_WARNING, 'Error when calling a Windows API:' + sLineBreak +
                    'Call: %s' + sLineBreak +
-                   'Reason: %s', [Call, GetSystemErrorMessage(ErrNr)]);
+                   'Reason: %s', [Call, SysErrorMessage(ErrNr)]);
 end;
 
  {------------------------}

@@ -2064,7 +2064,7 @@ begin
        begin
         H:=CreateEvent(Nil, False, True, PChar(Format(TagAtom, [OldId])));
         if H=0 then
-         raise EErrorFmt(5744, [GetSystemErrorMessage(GetLastError)]);
+         raise EErrorFmt(5744, [SysErrorMessage(GetLastError)]);
         try
          OldId:=WaitForSingleObject(H, 0);
         finally

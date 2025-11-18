@@ -2339,7 +2339,7 @@ begin
 
   if ShellExecute(0, 'open', PChar(FullFile), nil, nil, SW_SHOWDEFAULT) <= 32 then
   begin
-    Log(LOG_WARNING, LoadStr1(5875), [FullFile, 'ShellExecute', GetSystemErrorMessage(GetLastError)]);
+    Log(LOG_WARNING, LoadStr1(5875), [FullFile, 'ShellExecute', SysErrorMessage(GetLastError)]);
 
     //Fall back to opening the associated program directly.
     Reg:=TRegistry2.Create(KEY_READ);
