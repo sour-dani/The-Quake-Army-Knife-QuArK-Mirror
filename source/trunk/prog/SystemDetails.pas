@@ -27,6 +27,8 @@ uses SysUtils, StrUtils, Windows, Classes, ExtraFunctionality;
 {.$DEFINE MeasureCPUFrequency} //This seems like an awful waste of CPU cycles!
 {.$DEFINE LogSensitiveInformation} //Decker: we're not interested in Machine-/Username. We're not Login-Crackers!
 {$DEFINE CPUNameLookup}
+{$DEFINE DetectWine}
+{$DEFINE DetectReactOS}
 
 {$I DelphiVer.inc}
 
@@ -133,6 +135,9 @@ type
 
   TOperatingSystem = class(TPersistent)
   private
+    {$IFDEF DetectWine}
+    FWineVersion, FWineBuildID, FWineSysName, FWineRelease: String;
+    {$ENDIF}
     FExtended: Boolean; //This platform supports OSVersionInfoEx
     FBuildNumber: DWORD; //SysUtils.Win32BuildNumber has the wrong datatype!
     FMajorVersion: DWORD; //SysUtils.Win32MajorVersion has the wrong datatype!
@@ -147,8 +152,12 @@ type
     FWow64: Boolean;
     {$ENDIF}
     FArchitecture: WORD;
-    (*FVersion: String;
-    FVersionNumber: String;*)
+    {$IFDEF DetectReactOS}
+    FVersion: String;
+    FBuildLab: String;
+    FReactOSVersion: String;
+    {$ENDIF}
+    //FVersionNumber: String;
     FPlusVersionNumber: String;
     FType: String;
     FEditionID: String;
@@ -172,6 +181,12 @@ type
     procedure GetInfo;
     procedure Report(var sl: TStringList);
   published
+    {$IFDEF DetectWine}
+    property WineVersion: String read FWineVersion stored false;
+    property WineBuildID: String read FWineBuildID stored false;
+    property WineSysName: String read FWineSysName stored false;
+    property WineRelease: String read FWineRelease stored false;
+    {$ENDIF}
     property Extended: boolean read FExtended stored false;
     property MajorVersion: DWORD read FMajorVersion stored false;
     property MinorVersion: DWORD read FMinorVersion stored false;
@@ -186,8 +201,12 @@ type
     property Wow64: Boolean read FWow64 stored false;
     {$ENDIF}
     property Architecture: WORD read FArchitecture stored false;
-    (*property Version: String read FVersion stored false;
-    property VersionNumber: String read FVersionNumber stored false;*)
+    {$IFDEF DetectReactOS}
+    property Version: String read FVersion stored false;
+    property BuildLab: String read FBuildLab stored false;
+    property ReactOSVersion: String read FReactOSVersion stored false;
+    {$ENDIF}
+    //property VersionNumber: String read FVersionNumber stored false;
     property PlusVersionNumber: String read FPlusVersionNumber stored false;
     property Typ: String read FType stored false;
     property EditionID: String read FEditionID stored false;
@@ -368,6 +387,14 @@ type
 var
   WindowsPlatformCompatibility: TPlatformType;
   DriverBugs: TStringList;
+
+{$IFDEF DetectWine}
+var
+  //Detect Wine and retrieve its version information
+  wine_get_version: function(): {const} PChar; cdecl;
+  wine_get_build_id: function(): {const} PChar; cdecl;
+  wine_get_host_version: procedure(const sysname: PPChar; const release: PPChar); cdecl;
+{$ENDIF}
 
 {$IFDEF CPUNameLookup}
 {$INCLUDE GetCPUName.inc}
@@ -1427,29 +1454,34 @@ end;
 procedure TOperatingSystem.GetInfo;
 var
   OS: TOSVersionInfoEx;
-  SI :TSystemInfo;
+  SI: TSystemInfo;
   {$IFDEF WIN32}
   pProcessMachine, pNativeMachine: USHORT;
   bIsWow64: BOOL;
   {$ENDIF}
-  p: pchar;
+  p{$IFDEF DetectWine}, p2{$ENDIF}: pchar;
   n: DWORD;
   WinH: HWND;
   s: string;
   bdata: PByte;
   dummy: Integer;
   rkOSInfo: string;
-  (*rvVersionName, rvVersionNumber, *)rvType: string;
+  {$IFDEF DetectReactOS}rvVersionName, {$ENDIF}(*rvVersionNumber, *)rvType: string;
+  {$IFDEF DetectWine}
+  h: HMODULE;
+  {$ENDIF}
   {$IFDEF LogSensitiveInformation}
   rvInstallDate: string;
   {$ENDIF}
 const
   rkOSInfo95 = {HKEY_LOCAL_MACHINE\}'SOFTWARE\Microsoft\Windows\CurrentVersion';
   rkOSInfoNT = {HKEY_LOCAL_MACHINE\}'SOFTWARE\Microsoft\Windows NT\CurrentVersion';
-  (*rvVersionName95 = 'Version';
+  {$IFDEF DetectReactOS}
+  rvVersionName95 = 'Version';
   rvVersionNameNT = 'ProductName';
-  rvVersionNumber95 = 'VersionNumber';
-  rvVersionNumberNT = 'CurrentVersion';*)
+  {$ENDIF}
+  //rvVersionNumber95 = 'VersionNumber';
+  //rvVersionNumberNT = 'CurrentVersion';
   //rvProductType95 = 'ProductType'; //Overlaps with TOSVersionInfoEx.wProductType
   //rvProductTypeNT = 'SoftwareType'; //Overlaps with TOSVersionInfoEx.wProductType
   rvType95 = 'InstallType';
@@ -1481,6 +1513,37 @@ begin
   Log(LOG_VERBOSE, 'Starting gathering OS information...');
   FDirs.Clear;
 
+  {$IFDEF DetectWine}
+  //Detect Wine and retrieve its version information
+  h := GetModuleHandle('ntdll.dll');
+  if h <> 0 then
+  begin
+    wine_get_version := GetProcAddress(h, 'wine_get_version');
+    if Assigned(wine_get_version) then
+    begin
+      p := wine_get_version();
+      if p <> nil then
+        FWineVersion := StrPas(p);
+    end;
+    wine_get_build_id := GetProcAddress(h, 'wine_get_build_id');
+    if Assigned(wine_get_build_id) then
+    begin
+      p := wine_get_build_id();
+      if p <> nil then
+        FWineBuildID := StrPas(p);
+    end;
+    wine_get_host_version := GetProcAddress(h, 'wine_get_host_version');
+    if Assigned(wine_get_build_id) then
+    begin
+      wine_get_host_version(@p, @p2);
+      if p <> nil then
+        FWineSysName := StrPas(p);
+      if p2 <> nil then
+        FWineRelease := StrPas(p2);
+    end;
+  end;
+  {$ENDIF}
+
   //See: https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-osversioninfoexa
   ZeroMemory(@OS,SizeOf(OS));
   if CheckWin32Version(5, 0) then //Windows 2000
@@ -1495,6 +1558,7 @@ begin
   end;
   if not GetVersionEx(POSVersionInfo(@OS)^) then
     raise Exception.Create('Unable to retrieve system details. Call to GetVersionEx failed!');
+
   FMajorVersion:=OS.dwMajorVersion;
   FMinorVersion:=OS.dwMinorVersion;
   FBuildNumber:=OS.dwBuildNumber;
@@ -1749,8 +1813,10 @@ begin
   osWin95Comp:
    begin
     rkOSInfo:=rkOSInfo95;
-    (*rvVersionName:=rvVersionName95;
-    rvVersionNumber:=rvVersionNumber95;*)
+    {$IFDEF DetectReactOS}
+    rvVersionName:=rvVersionName95;
+    {$ENDIF}
+    //rvVersionNumber:=rvVersionNumber95;
     rvType:=rvType95;
     {$IFDEF LogSensitiveInformation}
     rvInstallDate:=rvInstallDate95;
@@ -1759,8 +1825,10 @@ begin
   osWinNTComp:
    begin
     rkOSInfo:=rkOSInfoNT;
-    (*rvVersionName:=rvVersionNameNT;
-    rvVersionNumber:=rvVersionNumberNT;*)
+    {$IFDEF DetectReactOS}
+    rvVersionName:=rvVersionNameNT;
+    {$ENDIF}
+    //rvVersionNumber:=rvVersionNumberNT;
     rvType:=rvTypeNT;
     {$IFDEF LogSensitiveInformation}
     rvInstallDate:=rvInstallDateNT;
@@ -1772,8 +1840,12 @@ begin
   {$ENDIF}
   end;
   FCSD:=StrPas(OS.szCSDVersion);
-  (*FVersion:='';
-  FVersionNumber:='';*)
+  {$IFDEF DetectReactOS}
+  FVersion:='';
+  FBuildLab:='';
+  FReactOSVersion:='';
+  {$ENDIF}
+  //FVersionNumber:='';
   FType:='';
   FPlusVersionNumber:='';
   FEditionID:='';
@@ -1792,9 +1864,13 @@ begin
     rootkey:=HKEY_LOCAL_MACHINE;
     if OpenKey(rkOSInfo,false) then
     begin
-      (*if ValueExists(rvVersionName) then
+      {$IFDEF DetectReactOS}
+      if ValueExists(rvVersionName) then
         FVersion:=ReadString(rvVersionName);
-      if ValueExists(rvVersionNumber) then
+      if ValueExists('BuildLab') then
+        FBuildLab:=ReadString('BuildLab');
+      {$ENDIF}
+      (*if ValueExists(rvVersionNumber) then
         FVersionNumber:=ReadString(rvVersionNumber);*)
       if ValueExists(rvType) then
       begin
@@ -1909,6 +1985,23 @@ begin
   s:=ReverseString(Copy(s,Pos(PathDelim,s)+1,MaxInt));
   FDirs.Add('Profile='+s);
   GetEnvironment;
+
+  {$IFDEF DetectReactOS}
+  //This seems to be the current method: https://github.com/reactos/reactos/blob/master/base/shell/cmd/ver.c
+  if Version = 'ReactOS' then
+    FReactOSVersion:=BuildLab
+  else //older fallback
+  begin
+    //Based on: https://reactos.org/forum/viewtopic.php?p=11684&sid=dbf3bf9a6fce746515d8d090f6b1f366#p11684
+    dummy:=StrLen(OS.szCSDVersion) + SizeOf(Char);
+    if dummy < SizeOf(OS.szCSDVersion) then
+    begin
+      p:=@OS.szCSDVersion[0];
+      Inc(p, dummy);
+      FReactOSVersion:=StrPas(p);
+    end;
+  end;
+  {$ENDIF}
 end;
 
 procedure TOperatingSystem.Report(var sl: TStringList);
@@ -1966,6 +2059,20 @@ begin
         add('Type: ' + S);
       end;
     end;
+
+    {$IFDEF DetectReactOS}
+    if ReactOSVersion<>'' then
+      add(format('React OS version: %s',[ReactOSVersion]));
+    {$ENDIF}
+
+    {$IFDEF DetectWine}
+    if WineVersion<>'' then
+      {$IFDEF LogSensitiveInformation}
+      add(format('Wine version: %s (%s) on %s %s',[WineVersion,WineBuildID,WineSysName,WineRelease]));
+      {$ELSE}
+      add(format('Wine version: %s (%s)',[WineVersion,WineBuildID]));
+      {$ENDIF}
+    {$ENDIF}
 
     {$IFDEF LogSensitiveInformation}
     add(format('Registered to person: %s',[RegisteredUser]));
