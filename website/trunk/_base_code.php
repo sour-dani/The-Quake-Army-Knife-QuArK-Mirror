@@ -15,19 +15,19 @@ global $Themes;
 global $DefaultTheme;
 
 global $CurrentTheme;
-$CurrentTheme = NULL;
+$CurrentTheme = null;
 
 if (isset($_POST['theme']))
 {
 	$ThemeToUse = &$_POST['theme'];
 }
-else if (isset($_COOKIE['theme']))
+elseif (isset($_COOKIE['theme']))
 {
 	$ThemeToUse = &$_COOKIE['theme'];
 }
 else
 {
-	$ThemeToUse = NULL;
+	$ThemeToUse = null;
 }
 if (!is_null($ThemeToUse))
 {

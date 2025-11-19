@@ -294,7 +294,7 @@ function pageLocalDisplay()
 		$bodytext .= '<table cellpadding=2 cellspacing=0 width="100%">';
 		$bodytext .= '<tr><td class="text1, downloadtabletitle" colspan=2 align=right><b>QuArK Patches</b></td></tr>';
 
-		$OldVersionID = NULL;
+		$OldVersionID = null;
 		for ($Patch = count($Patches) - 1; $Patch >= 0; $Patch--)
 		{
 			$CurrentPatch = &$Patches[$Patch];

@@ -9,7 +9,7 @@ function DisplayPerson($PersonID)
 	{
 		return '<a href="person.php?PersonID='.($PersonID+1).'">'.$CurrentPerson->Nick.'</a>';
 	}
-	else if ($CurrentPerson->AllowRealName)
+	elseif ($CurrentPerson->AllowRealName)
 	{
 		return '<a href="person.php?PersonID='.($PersonID+1).'">'.$CurrentPerson->Name.'</a>';
 	}

@@ -38,7 +38,9 @@ function DoesGameHaveLinks($Tag)
 	{
 		$CurrentLinkGroup = &$LinksGame[$LinkGroup];
 		if ($CurrentLinkGroup->Tag === $Tag)
+		{
 			return true;
+		}
 	}
 	return false;
 }
@@ -224,7 +226,9 @@ function pageLocalDisplay()
 			{
 				$CurrentDeveloper = &$CurrentGame->Developer[$Developer];
 				if ($Developer !== 0)
+				{
 					$bodytext .= ', ';
+				}
 				if (!array_key_exists($CurrentDeveloper, $Companies))
 				{
 					trigger_error('Unable to find '.$CurrentDeveloper.' in Companies array!', E_USER_WARNING);
@@ -253,7 +257,9 @@ function pageLocalDisplay()
 			{
 				$CurrentPublisher = &$CurrentGame->Publisher[$Publisher];
 				if ($Publisher !== 0)
+				{
 					$bodytext .= ', ';
+				}
 				if (!array_key_exists($CurrentPublisher, $Companies))
 				{
 					trigger_error('Unable to find '.$CurrentPublisher.' in Companies array!', E_USER_WARNING);
@@ -282,7 +288,9 @@ function pageLocalDisplay()
 			{
 				$CurrentDistributor = &$CurrentGame->Distributor[$Distributor];
 				if ($Distributor !== 0)
+				{
 					$bodytext .= ', ';
+				}
 				if (!array_key_exists($CurrentDistributor, $Companies))
 				{
 					trigger_error('Unable to find '.$CurrentDistributor.' in Companies array!', E_USER_WARNING);

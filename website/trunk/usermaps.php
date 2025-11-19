@@ -7,7 +7,7 @@ require_once('_people-database.php');
 # Load language file
 LoadLanguageFile('usermaps.php');
 
-$checkboxon = array(NULL => ''
+$checkboxon = array(null => ''
                    ,'on' => 'checked '
                    ,'1'  => 'checked ');
 
@@ -22,46 +22,46 @@ else
 	$page = 0;
 }
 
-$Q1 = isset($_GET['Q1']) ? $_GET['Q1'] : NULL;
-$Q2 = isset($_GET['Q2']) ? $_GET['Q2'] : NULL;
-$Q3A = isset($_GET['Q3A']) ? $_GET['Q3A'] : NULL;
-$Q4 = isset($_GET['Q4']) ? $_GET['Q4'] : NULL;
-$CS = isset($_GET['CS']) ? $_GET['CS'] : NULL;
-$D3 = isset($_GET['D3']) ? $_GET['D3'] : NULL;
-$HL = isset($_GET['HL']) ? $_GET['HL'] : NULL;
-$HL2 = isset($_GET['HL2']) ? $_GET['HL2'] : NULL;
-$HX2 = isset($_GET['HX2']) ? $_GET['HX2'] : NULL;
-$HR2 = isset($_GET['HR2']) ? $_GET['HR2'] : NULL;
-$KP = isset($_GET['KP']) ? $_GET['KP'] : NULL;
-$MOHAA = isset($_GET['MOHAA']) ? $_GET['MOHAA'] : NULL;
-$SIN = isset($_GET['SIN']) ? $_GET['SIN'] : NULL;
-$SOF = isset($_GET['SOF']) ? $_GET['SOF'] : NULL;
-$EF = isset($_GET['EF']) ? $_GET['EF'] : NULL;
-$EF2 = isset($_GET['EF2']) ? $_GET['EF2'] : NULL;
-$ZZZ = isset($_GET['ZZZ']) ? $_GET['ZZZ'] : NULL;
-$ZZX = isset($_GET['ZZX']) ? $_GET['ZZX'] : NULL;
+$Q1 = isset($_GET['Q1']) ? $_GET['Q1'] : null;
+$Q2 = isset($_GET['Q2']) ? $_GET['Q2'] : null;
+$Q3A = isset($_GET['Q3A']) ? $_GET['Q3A'] : null;
+$Q4 = isset($_GET['Q4']) ? $_GET['Q4'] : null;
+$CS = isset($_GET['CS']) ? $_GET['CS'] : null;
+$D3 = isset($_GET['D3']) ? $_GET['D3'] : null;
+$HL = isset($_GET['HL']) ? $_GET['HL'] : null;
+$HL2 = isset($_GET['HL2']) ? $_GET['HL2'] : null;
+$HX2 = isset($_GET['HX2']) ? $_GET['HX2'] : null;
+$HR2 = isset($_GET['HR2']) ? $_GET['HR2'] : null;
+$KP = isset($_GET['KP']) ? $_GET['KP'] : null;
+$MOHAA = isset($_GET['MOHAA']) ? $_GET['MOHAA'] : null;
+$SIN = isset($_GET['SIN']) ? $_GET['SIN'] : null;
+$SOF = isset($_GET['SOF']) ? $_GET['SOF'] : null;
+$EF = isset($_GET['EF']) ? $_GET['EF'] : null;
+$EF2 = isset($_GET['EF2']) ? $_GET['EF2'] : null;
+$ZZZ = isset($_GET['ZZZ']) ? $_GET['ZZZ'] : null;
+$ZZX = isset($_GET['ZZX']) ? $_GET['ZZX'] : null;
 
-$M_NO = isset($_GET['M_NO']) ? $_GET['M_NO'] : NULL;
-$M_RA = isset($_GET['M_RA']) ? $_GET['M_RA'] : NULL;
-$M_TFC = isset($_GET['M_TFC']) ? $_GET['M_TFC'] : NULL;
-$M_ACT = isset($_GET['M_ACT']) ? $_GET['M_ACT'] : NULL;
-$M_CS = isset($_GET['M_CS']) ? $_GET['M_CS'] : NULL;
-$M_AIR = isset($_GET['M_AIR']) ? $_GET['M_AIR'] : NULL;
-$M_GLM = isset($_GET['M_GLM']) ? $_GET['M_GLM'] : NULL;
-$M_OP4 = isset($_GET['M_OP4']) ? $_GET['M_OP4'] : NULL;
-$M_KMQ2 = isset($_GET['M_KMQ2']) ? $_GET['M_KMQ2'] : NULL;
-$M_ZZZ = isset($_GET['M_ZZZ']) ? $_GET['M_ZZX'] : NULL;
-$M_ZZX = isset($_GET['M_ZZX']) ? $_GET['M_ZZX'] : NULL;
+$M_NO = isset($_GET['M_NO']) ? $_GET['M_NO'] : null;
+$M_RA = isset($_GET['M_RA']) ? $_GET['M_RA'] : null;
+$M_TFC = isset($_GET['M_TFC']) ? $_GET['M_TFC'] : null;
+$M_ACT = isset($_GET['M_ACT']) ? $_GET['M_ACT'] : null;
+$M_CS = isset($_GET['M_CS']) ? $_GET['M_CS'] : null;
+$M_AIR = isset($_GET['M_AIR']) ? $_GET['M_AIR'] : null;
+$M_GLM = isset($_GET['M_GLM']) ? $_GET['M_GLM'] : null;
+$M_OP4 = isset($_GET['M_OP4']) ? $_GET['M_OP4'] : null;
+$M_KMQ2 = isset($_GET['M_KMQ2']) ? $_GET['M_KMQ2'] : null;
+$M_ZZZ = isset($_GET['M_ZZZ']) ? $_GET['M_ZZX'] : null;
+$M_ZZX = isset($_GET['M_ZZX']) ? $_GET['M_ZZX'] : null;
 
-$T_SP = isset($_GET['T_SP']) ? $_GET['T_SP'] : NULL;
-$T_COOP = isset($_GET['T_COOP']) ? $_GET['T_COOP'] : NULL;
-$T_DM = isset($_GET['T_DM']) ? $_GET['T_DM'] : NULL;
-$T_TD = isset($_GET['T_TD']) ? $_GET['T_TD'] : NULL;
-$T_TOUR = isset($_GET['T_TOUR']) ? $_GET['T_TOUR'] : NULL;
-$T_TP = isset($_GET['T_TP']) ? $_GET['T_TP'] : NULL;
-$T_CTF = isset($_GET['T_CTF']) ? $_GET['T_CTF'] : NULL;
-$T_ZZZ = isset($_GET['T_ZZZ']) ? $_GET['T_ZZZ'] : NULL;
-$T_ZZX = isset($_GET['T_ZZX']) ? $_GET['T_ZZX'] : NULL;
+$T_SP = isset($_GET['T_SP']) ? $_GET['T_SP'] : null;
+$T_COOP = isset($_GET['T_COOP']) ? $_GET['T_COOP'] : null;
+$T_DM = isset($_GET['T_DM']) ? $_GET['T_DM'] : null;
+$T_TD = isset($_GET['T_TD']) ? $_GET['T_TD'] : null;
+$T_TOUR = isset($_GET['T_TOUR']) ? $_GET['T_TOUR'] : null;
+$T_TP = isset($_GET['T_TP']) ? $_GET['T_TP'] : null;
+$T_CTF = isset($_GET['T_CTF']) ? $_GET['T_CTF'] : null;
+$T_ZZZ = isset($_GET['T_ZZZ']) ? $_GET['T_ZZZ'] : null;
+$T_ZZX = isset($_GET['T_ZZX']) ? $_GET['T_ZZX'] : null;
 
 $usermapsform = "<div class=\"centered\">
 <form action=\"usermaps.php\" method=\"get\">
@@ -166,7 +166,7 @@ if ($SIN || $ZZX) $games[] = 'SIN';
 if ($SOF || $ZZX) $games[] = 'SOF';
 if ($EF  || $ZZX) $games[] = 'EF';
 if ($EF2 || $ZZX) $games[] = 'EF2';
-if ($ZZZ || $ZZX) $games[] = NULL;
+if ($ZZZ || $ZZX) $games[] = null;
 
 # Create a search array for maptype-ids
 $maptypes = array();
@@ -177,7 +177,7 @@ if ($T_TP   || $T_ZZX) $maptypes[] = 'TP';
 if ($T_TD   || $T_ZZX) $maptypes[] = 'TD';
 if ($T_TOUR || $T_ZZX) $maptypes[] = 'TOUR';
 if ($T_CTF  || $T_ZZX) $maptypes[] = 'CTF';
-if ($T_ZZZ  || $T_ZZX) $maptypes[] = NULL;
+if ($T_ZZZ  || $T_ZZX) $maptypes[] = null;
 
 # Create a search array for mod-ids
 $mods = array();
@@ -189,7 +189,7 @@ if ($M_AIR || $M_ZZX) $mods[] = 'AIR';
 if ($M_GLM || $M_ZZX) $mods[] = 'GLM';
 if ($M_OP4 || $M_ZZX) $mods[] = 'OP4';
 if ($M_KMQ2 || $M_ZZX) $mods[] = 'KMQ2';
-if ($M_ZZZ || $M_ZZX) $mods[] = NULL;
+if ($M_ZZZ || $M_ZZX) $mods[] = null;
 
 # This is used for the next/prev button panel
 #FIXME: This should be done better!
@@ -254,7 +254,7 @@ function pageLocalDisplay()
 
 	pageName('User maps');
 
-	pagePanel(NULL, 'Filter...', '', $usermapsform);
+	pagePanel(null, 'Filter...', '', $usermapsform);
 
 	if ($games && $maptypes && $mods)
 	{
@@ -317,7 +317,7 @@ function pageLocalDisplay()
 				$filterpanel = 'Page: ' . ($page + 1) . ' / ' . ($max_page + 1);
 
 				$pagepaneltext = '<table cellspacing=8 cellpadding=0 width="100%"><tr><td align=left>'.$prevbutton.'</td><td align=center>'.$filterpanel.'</td><td align=right>'.$nextbutton.'</td></tr></table>';
-				pagePanel(NULL, 'Select...', '', $pagepaneltext);
+				pagePanel(null, 'Select...', '', $pagepaneltext);
 			}
 
 			# Display the maps
@@ -424,7 +424,7 @@ function pageLocalDisplay()
 			{
 				# Display bottom paging panel
 				$pagepaneltext = '<table cellspacing=8 cellpadding=0 width="100%"><tr><td align=left>'.$prevbutton.'</td><td align=right>'.$nextbutton.'</td></tr></table>';
-				pagePanel(NULL, '', '', $pagepaneltext);
+				pagePanel(null, '', '', $pagepaneltext);
 			}
 		}
 	}
