@@ -2067,11 +2067,7 @@ begin
 
     {$IFDEF DetectWine}
     if WineVersion<>'' then
-      {$IFDEF LogSensitiveInformation}
       add(format('Wine version: %s (%s) on %s %s',[WineVersion,WineBuildID,WineSysName,WineRelease]));
-      {$ELSE}
-      add(format('Wine version: %s (%s)',[WineVersion,WineBuildID]));
-      {$ENDIF}
     {$ENDIF}
 
     {$IFDEF LogSensitiveInformation}
