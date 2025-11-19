@@ -180,8 +180,8 @@ begin
   if GlobalWarnings=Nil then
     Exit;
 
- //Note that we need to clear GlobalWarnings before going into the Modal loop,
- //because AppIdle will trigger, and call this procedure again, causing an endless loop!
+  //Note that we need to clear GlobalWarnings before going into the Modal loop,
+  //because AppIdle will trigger, and call this procedure again, causing an endless loop!
 
   ProcessedWarnings:=TStringList.Create;
   try
@@ -205,11 +205,20 @@ end;
 procedure LogAndRaiseLastOSError(const AdditionalInfo: string);
 begin
   try
-    RaiseLastOSError;
+    //We could use this (missing in Delphi XE2, but existing in Delphi 11.3),
+    //but it's bad in two ways:
+    //1) We have to retrieve the LastError ourselves, which is dumb. If you
+    //are going to have overloads, at least have the right ones.
+    //2) AdditionalInfo simply gets appended, without even a sLineBreak. This
+    //creates totally unreadable error messages.
+    //So instead, we're going to manipulate the error message below.
+    //RaiseLastOSError(GetLastError, AdditionalInfo);
+    RaiseLastOSError();
     //Note: This always raises something!
   except
     on E: {$IFDEF Delphi6orNewerCompiler}EOSError{$ELSE}EWin32Error{$ENDIF} do
     begin
+      E.Message:=AdditionalInfo + sLineBreak + sLineBreak + E.Message;
       Log(LOG_WARNING, E.Message);
       raise;
     end;
