@@ -20,12 +20,28 @@ function strclen(string $string): int
 	{
 		if (version_compare(phpversion(), '8.0.0', '<'))
 		{
-			return iconv_strlen($string, iconv.internal_encoding);
+			$len = iconv_strlen($string, iconv.internal_encoding);
 		}
 		else
 		{
-			return iconv_strlen($string);
+			$len = iconv_strlen($string);
 		}
+		if ($len === false)
+		{
+			if (version_compare(phpversion(), '7.0.0', '<'))
+			{
+				throw new Exception('Invalid string');
+			}
+			elseif (version_compare(phpversion(), '8.0.0', '<'))
+			{
+				throw new TypeError('Invalid string');
+			}
+			else
+			{
+				throw new ValueError('Invalid string');
+			}
+		}
+		return $len;
 	}
 
 	//Fall back to strlen
