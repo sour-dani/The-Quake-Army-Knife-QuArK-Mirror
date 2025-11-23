@@ -1,0 +1,8 @@
+<author>DanielPharos</author>
+<headline>Funny HL2 bug</headline>
+
+<p>It's a bit technical, but a funny bug was found (over a decade ago) in Half-Life 2, where the game would <a target="_blank" href="https://mastodon.gamedev.place/@TomF/115589875974658415">softlock you at the very start</a>. Turns out the bug was caused by a very, very small difference in how calculations are performed by different parts of the CPU!</p>
+
+
+<p>Happy Half-Lifing,<br>
+DanielPharos</p>
