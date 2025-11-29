@@ -311,8 +311,17 @@ begin
   HullNum:=Index;
 
   InvFaces:=0;
+  {$IFNDEF Delphi8orNewerCompiler} //Actually, Delphi 7.1 fixes these.
+  Q1Faces:=Nil; //Supress compiler warning
+  Q2Faces:=Nil; //Supress compiler warning
+  Q3Faces:=Nil; //Supress compiler warning
+  //Q3VertexP:=Nil; //Supress compiler warning
+  LEdge:=Nil; //Supress compiler warning
+  SinFaces:=Nil; //Supress compiler warning
+  SOFFaces:=Nil; //Supress compiler warning
+  {$ENDIF}
   {$IFNDEF Delphi10_1orNewerCompiler}
-  PlaneDist:=0;
+  PlaneDist:=0; //Supress compiler warning
   {$ENDIF}
 
   FBsp:=nBsp;
@@ -389,8 +398,8 @@ begin
   {$IFNDEF Delphi10_1orNewerCompiler}
   else
   begin
-    cLEdges:=0;
-    cEdges:=0;
+    cLEdges:=0; //Supress compiler warning
+    cEdges:=0; //Supress compiler warning
   end{$ENDIF};
 
   TexInfo:=FBsp.GetBspEntryData(FBsp.FileHandler.GetLumpTexInfo());
@@ -686,7 +695,7 @@ begin
       else if BSPType=bspTypeSOF then
         TexInfo_id:=SOFFaces^.TexInfo_id
       {$IFNDEF Delphi10_1orNewerCompiler}
-      else
+      else //Supress compiler warning
         TexInfo_id:=0{$ENDIF};
 
       if TexInfo_id >= cTexInfo then
@@ -930,6 +939,15 @@ var
 begin
  if (FBsp=Nil) or (SurfaceList=Nil) then Exit;
 
+ {$IFNDEF Delphi8orNewerCompiler} //Actually, Delphi 7.1 fixes these.
+ Q1Faces:=Nil; //Supress compiler warning
+ Q2Faces:=Nil; //Supress compiler warning
+ {Q3Faces:=Nil; //Supress compiler warning}
+ LEdge:=Nil; //Supress compiler warning
+ SinFaces:=Nil; //Supress compiler warning
+ SOFFaces:=Nil; //Supress compiler warning
+ {$ENDIF}
+
  BSPType:=FBsp.FileHandler.BSPType(FBsp.NeedObjectGameCode);
  case BSPType of
  bspTypeQ1, bspTypeH2:
@@ -1024,7 +1042,7 @@ begin
     for I:=1 to NbFaces do   { fast version }
      begin
       {$IFNDEF Delphi10_1orNewerCompiler}
-      EdgeNum:=0;
+      EdgeNum:=0; //Supress compiler warning
       {$ENDIF}
       if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) then
       begin
@@ -1097,7 +1115,7 @@ begin
    for I:=1 to NbFaces do   { slow version }
     begin
      {$IFNDEF Delphi10_1orNewerCompiler}
-     EdgeNum:=0;
+     EdgeNum:=0; //Supress compiler warning
      {$ENDIF}
      if (BSPType=bspTypeQ1) or (BSPType=bspTypeH2) then
      begin
