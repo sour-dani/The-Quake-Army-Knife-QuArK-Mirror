@@ -3376,25 +3376,25 @@ var
 begin
   Log(LOG_VERBOSE, 'Now logging Delphi details...');
   Log(LOG_SYS, LOG_INFO, 'Used compiler: %s', [QuArKUsedCompiler]);
+  {$IFDEF Delphi6orNewerCompiler}
   {$IFDEF Delphi12orNewerCompiler}
   Version:=GetCompilerVersion();
   Log(LOG_SYS, LOG_INFO, 'Compiler version: %d.%d', [Hi(Version), Lo(Version)]);
   Version:=GetRTLVersion();
   Log(LOG_SYS, LOG_INFO, 'RTL version: %d.%d', [Hi(Version), Lo(Version)]);
-  {$IFDEF RTLVersion120}if RTLVersion120 then Log(LOG_SYS, LOG_VERBOSE, 'RTL version 12.0: True');{$ENDIF}
-  {$IFDEF RTLVersion121}if RTLVersion121 then Log(LOG_SYS, LOG_VERBOSE, 'RTL version 12.1: True');{$ENDIF}
-  {$IFDEF RTLVersion122}if RTLVersion122 then Log(LOG_SYS, LOG_VERBOSE, 'RTL version 12.2: True');{$ENDIF}
-  {$IFDEF RTLVersion123}if RTLVersion123 then Log(LOG_SYS, LOG_VERBOSE, 'RTL version 12.3: True');{$ENDIF}
   {$ELSE}
-  {$IFDEF Delphi6orNewerCompiler}
   Log(LOG_SYS, LOG_INFO, 'Compiler version: %f', [CompilerVersion]);
   Log(LOG_SYS, LOG_INFO, 'RTL version: %f', [RTLVersion]);
+  {$ENDIF}
   {$IFDEF RTLVersion1041}if RTLVersion1041 then Log(LOG_SYS, LOG_VERBOSE, 'RTL version 10.4.1: True');{$ENDIF}
   {$IFDEF RTLVersion1042}if RTLVersion1042 then Log(LOG_SYS, LOG_VERBOSE, 'RTL version 10.4.2: True');{$ENDIF}
   {$IFDEF RTLVersion111}if RTLVersion111 then Log(LOG_SYS, LOG_VERBOSE, 'RTL version 11.1: True');{$ENDIF}
   {$IFDEF RTLVersion112}if RTLVersion112 then Log(LOG_SYS, LOG_VERBOSE, 'RTL version 11.2: True');{$ENDIF}
   {$IFDEF RTLVersion113}if RTLVersion113 then Log(LOG_SYS, LOG_VERBOSE, 'RTL version 11.3: True');{$ENDIF}
-  {$ENDIF}
+  {$IFDEF RTLVersion121}if RTLVersion121 then Log(LOG_SYS, LOG_VERBOSE, 'RTL version 12.1: True');{$ENDIF}
+  {$IFDEF RTLVersion122}if RTLVersion122 then Log(LOG_SYS, LOG_VERBOSE, 'RTL version 12.2: True');{$ENDIF}
+  {$IFDEF RTLVersion123}if RTLVersion123 then Log(LOG_SYS, LOG_VERBOSE, 'RTL version 12.3: True');{$ENDIF}
+  {$IFDEF RTLVersion131}if RTLVersion131 then Log(LOG_SYS, LOG_VERBOSE, 'RTL version 13.1: True');{$ENDIF}
   {$ENDIF}
 
   Log(LOG_INFO, 'Now logging system details...');
