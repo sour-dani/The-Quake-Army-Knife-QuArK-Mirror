@@ -26,17 +26,22 @@ interface
 
 uses Classes, Types, Windows, SysUtils{$IFDEF Delphi6orNewerCompiler}, StrUtils{$ENDIF};
 
-{$ifndef Delphi6orNewerCompiler}
-//Delphi 5 and earlier don't support other platforms, so they don't define this conditional.
-{$DEFINE MSWINDOWS}
-{$endif}
+//
+//   Defines
+//
 
-{$ifdef Delphi2010orNewerCompiler}
-{$ifdef MSWINDOWS}
-//Delphi 2010 and higher supports delayed loading on Windows.
-{$DEFINE DELAYEDLOADING}
-{$endif}
-{$endif}
+//Note: There's a lot of defines in DelphiVer.inc, so they can get included.
+
+{$IFDEF MSWINDOWS}
+  {$IFDEF Delphi2010orNewerCompiler}
+    //Delphi 2010 and higher supports delayed loading on Windows.
+    {$DEFINE DELAYEDLOADING}
+  {$ENDIF}
+{$ENDIF}
+
+//
+//   Types
+//
 
 type
 {$ifndef Delphi2orNewerCompiler}
@@ -44,6 +49,10 @@ type
   AnsiChar = Char;
   PAnsiChar = PChar;
   AnsiString = String;
+{$endif}
+
+{$ifndef Delphi3orNewerCompiler}
+  TCustomForm = TForm;
 {$endif}
 
 {$ifndef Delphi4orNewerCompiler}
@@ -61,6 +70,9 @@ type
   PSingle = ^Single;
   PDouble = ^Double;
   PPointer = ^Pointer;
+
+{ TStream seek origins }
+  TSeekOrigin = (soBeginning, soCurrent, soEnd);
 {$endif}
 
 //NativeInt and NativeUInt are not suitable before Delphi 2009, so let's supply our own.
@@ -88,6 +100,32 @@ type
 
   PNativeUInt = ^NativeUInt;
 {$endif}
+
+  //To support pointer arithmetic, we need a custom datatype, because support for it has changed throughout the years.
+  //https://helloacm.com/pointer-arithmetic-in-delphi/
+  //Using naming convection suggested by: https://stackoverflow.com/questions/38371432/how-to-handle-pbyte-pointer-operations-in-d5-d7-operator-not-applicable-to-this#comment64189614_38372378
+{$ifdef Delphi2009orNewerCompiler}
+  ArithByte = Byte;
+  PArithByte = PByte;
+{$else}
+  ArithByte = AnsiChar;
+  PArithByte = PAnsiChar;
+{$endif}
+
+{$ifndef Delphi10_1orNewerCompiler}
+  TBufferedFileStream = TFileStream;
+{$endif}
+
+  //Delphi is making the mistake of locking their Unicode implementation to UTF-16; we're better than that.
+{$IFDEF UNICODE}
+  UnicodeChar = WideChar;
+  PUnicodeChar = ^WideChar;
+{$ENDIF}
+
+  TMemoryStreamWithCapacity = class(TMemoryStream)
+  public
+    property Capacity;
+  end;
 
 {$ifdef MSWINDOWS}
 {$ifndef Delphi2010orNewerCompiler}
@@ -165,30 +203,7 @@ type
 {$endif}
   PULONGLONG = ^ULONGLONG;
   {$EXTERNALSYM PULONGLONG}
-{$endif}
 
-{$IF COMPILERVERSION < 31}
-  TBufferedFileStream = TFileStream;
-{$IFEND}
-
-  //Delphi is making the mistake of locking their Unicode implementation to UTF-16; we're better than that.
-{$IFDEF UNICODE}
-  UnicodeChar = WideChar;
-  PUnicodeChar = ^WideChar;
-{$ENDIF}
-
-  //To support pointer arithmetic, we need a custom datatype, because support for it has changed throughout the years.
-  //https://helloacm.com/pointer-arithmetic-in-delphi/
-  //Using naming convection suggested by: https://stackoverflow.com/questions/38371432/how-to-handle-pbyte-pointer-operations-in-d5-d7-operator-not-applicable-to-this#comment64189614_38372378
-{$ifdef Delphi2009orNewerCompiler}
-  ArithByte = Byte;
-  PArithByte = PByte;
-{$else}
-  ArithByte = AnsiChar;
-  PArithByte = PAnsiChar;
-{$endif}
-
-{$ifdef MSWINDOWS}
 {$ifndef Delphi2009orNewerCompiler}
   PMemoryStatusEx = ^TMemoryStatusEx;
   _MEMORYSTATUSEX = record
@@ -291,6 +306,10 @@ type
   PFIRMWARE_TYPE = ^_FIRMWARE_TYPE;
   {$EXTERNALSYM PFIRMWARE_TYPE}
 {$endif}
+
+//
+//   Consts
+//
 
 const
   { Days between TDateTime basis (12/31/1899) and Windows 64-bit timestamp basis (1/1/1601) }
@@ -877,9 +896,96 @@ const
   FirmwareTypeMax = 3;
 
   PROCESS_CALLBACK_FILTER_ENABLED = $1;
+{$endif}
 
-//This is a macro that wasn't converted.
-function CopyCursor(pcur: HCursor): HCursor;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+//
+//   Functions
+//
+
+{$ifndef Delphi2orNewerCompiler}
+{ CompareMem performs a binary compare of Length bytes of memory referenced
+  by P1 to that of P2.  CompareMem returns True if the memory referenced by
+  P1 is identical to that of P2. }
+function CompareMem(P1, P2: Pointer; Length: Integer): Boolean; assembler;
+
+function WideLowerCaseFileName(const S: WideString): WideString;
+function WideCompareFileName(const S1, S2: WideString): Integer;
+{$endif}
+
+{$ifndef Delphi3orNewerCompiler}
+procedure RaiseLastWin32Error;
+{$endif}
+
+{$ifndef Delphi4orNewerCompiler}
+function GetComCtlVersion: Integer;
+{$endif}
+
+{$ifndef Delphi5orNewerCompiler}
+{ SameText compares S1 to S2, without case-sensitivity. Returns true if
+  S1 and S2 are the equal, that is, if CompareText would return 0. SameText
+  has the same 8-bit limitations as CompareText }
+function SameText(const S1, S2: string): Boolean;
+
+{ AnsiSameStr compares S1 to S2, with case-sensitivity. The compare
+  operation is controlled by the current Windows locale. The return value
+  is True if AnsiCompareStr would have returned 0. }
+function AnsiSameStr(const S1, S2: string): Boolean;
+
+{ AnsiSameText compares S1 to S2, without case-sensitivity. The compare
+  operation is controlled by the current Windows locale. The return value
+  is True if AnsiCompareText would have returned 0. }
+function AnsiSameText(const S1, S2: string): Boolean;
+
+{ FreeAndNil frees the given TObject instance and sets the variable reference
+  to nil.  Be careful to only pass TObjects to this routine. }
+procedure FreeAndNil(var Obj);
+{$endif}
+
+{$ifndef Delphi6orNewerCompiler}
+const
+  RaiseLastOSError: procedure = RaiseLastWin32Error;
+
+{ IsPathDelimiter returns True if the character at byte S[Index]
+  is a PathDelimiter ('\' or '/'), and it is not a MBCS lead or trail byte. }
+function IsPathDelimiter(const S: string; Index: Integer): Boolean;
+
+{ IncludeTrailingPathDelimiter returns the path with a PathDelimiter
+  ('/' or '\') at the end.  This function is MBCS enabled. }
+function IncludeTrailingPathDelimiter(const S: string): string;
+
+{ ExcludeTrailingPathDelimiter returns the path without a PathDelimiter
+  ('\' or '/') at the end.  This function is MBCS enabled. }
+function ExcludeTrailingPathDelimiter(const S: string): string;
+
+const
+  PathDelim  = {$IFDEF MSWINDOWS} '\'; {$ELSE} '/'; {$ENDIF}
+  DriveDelim = {$IFDEF MSWINDOWS} ':'; {$ELSE} '';  {$ENDIF}
+  PathSep    = {$IFDEF MSWINDOWS} ';'; {$ELSE} ':'; {$ENDIF}
+  sLineBreak = {$IFDEF LINUX} #10 {$ENDIF} {$IFDEF MSWINDOWS} #13#10 {$ENDIF};
+
+function StrToFloatDef(const S: String; const Default: Extended) : Extended;
+
+function RightStr(Const Str: String; Size: Word): String;
+
+function MidStr(Const Str: String; From, Size: Word): String;
+
+function LeftStr(Const Str: String; Size: Word): String;
+
+{ Returns the reverse of a specified string. }
+function ReverseString(const AText: string): string;
+
+function BoolToStr(B: Boolean; UseBoolStrs: Boolean = False): string;
+{$endif}
+
+{$ifndef Delphi7orNewerCompiler}
+{ PosEx searches for SubStr in S and returns the index position of
+  SubStr if found and 0 otherwise.  If Offset is not given then the result is
+  the same as calling Pos.  If Offset is specified and > 1 then the search
+  starts at position Offset within S.  If Offset is larger than Length(S)
+  then PosEx returns 0.  By default, Offset equals 1. }
+function PosEx(const SubStr, S: string; Offset: Cardinal = 1): Integer;
+
+function GetFileVersion(const AFileName: string): Cardinal;
 {$endif}
 
 {$ifndef Delphi2005orNewerCompiler}
@@ -894,6 +1000,19 @@ function EndsStr(const ASubText, AText: string): Boolean;
 {$ifndef Delphi2009orNewerCompiler}
 function UIntToStr(Value: Cardinal): string; overload;
 function UIntToStr(Value: {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}): string; overload; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
+
+function CharInSet(C: AnsiChar; const CharSet: TSysCharSet): Boolean; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+{$ifndef Delphi2orNewerCompiler}
+function CharInSet(C: WideChar; const CharSet: TSysCharSet): Boolean; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+{$endif}
+{$endif}
+
+{$IFDEF UNICODE}
+(*function CharInSet(C: UnicodeChar; const CharSet: TSysCharSet): Boolean; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}*)
+{$ENDIF}
+
+{$ifndef DelphiXEorNewerCompiler}
+function SplitString(const S, Delimiters: string): TStringDynArray;
 {$endif}
 
 {$ifndef DelphiXE6orNewerCompiler} //FIXME: Not sure about the version of Delphi these were added
@@ -902,9 +1021,19 @@ function StrToUIntDef(const S: string; Default: Cardinal): Cardinal;
 function TryStrToUInt(const S: string; out Value: Cardinal): Boolean;
 {$endif}
 
-//These are missing altogether:
+//These functions don't exist at all in Delphi:
+function LastPos(const SubStr: String; const S: String): Integer;
+
 function DateTimeToWin64(const AValue: TDateTime): QWORD;
 function Win64ToDateTime(const AValue: QWORD): TDateTime;
+
+function CompareFileName(const S1, S2: string): Integer;
+procedure CleanupFileName(var S: String);
+
+{$IFDEF UNICODE}
+function UnicodeLowerCaseFileName(const S: UnicodeString): string;
+function UnicodeCompareFileName(const S1, S2: UnicodeString): Integer;
+{$ENDIF}
 
 {$ifndef Delphi2009orNewerCompiler}
 var
@@ -912,6 +1041,14 @@ var
 {$endif}
 
 {$ifdef MSWINDOWS}
+{$ifndef Delphi7orNewerCompiler}
+//This was added in Delphi 6 Update Pack 2.
+{$IF not Defined(CheckWin32Version)}
+{$define ExtraFunc_CheckWin32Version}
+function CheckWin32Version(AMajor: Integer; AMinor: Integer = 0): Boolean;
+{$ifend}
+{$endif}
+
 {$ifdef DELAYEDLOADING}
 {.$ifndef Delphi4orNewerCompiler}
 //While this exists in Delphi4+, it will be loaded on startup. On systems before Windows 2000 this will crash,
@@ -1039,149 +1176,15 @@ var
   SetProcessUserModeExceptionPolicy: function (dwFlags: DWORD): BOOL; stdcall;
 {.$endif}
 {$endif}
-{$endif}
 
-type
-  TMemoryStreamWithCapacity = class(TMemoryStream)
-  public
-    property Capacity;
-  end;
-{$IFDEF CompiledWithDelphi2}
-  TCustomForm = TForm;
-{$ENDIF}
-
-{$ifndef Delphi6orNewerCompiler}
-type
-{ TStream seek origins }
-  TSeekOrigin = (soBeginning, soCurrent, soEnd);
-{$ENDIF}
-
-{$ifndef Delphi2orNewerCompiler}
-{ CompareMem performs a binary compare of Length bytes of memory referenced
-  by P1 to that of P2.  CompareMem returns True if the memory referenced by
-  P1 is identical to that of P2. }
-function CompareMem(P1, P2: Pointer; Length: Integer): Boolean; assembler;
-{$endif}
-
-{$ifndef Delphi3orNewerCompiler}
-procedure RaiseLastWin32Error;
-{$endif}
-
-{$ifndef Delphi4orNewerCompiler}
-function GetComCtlVersion: Integer;
-{$endif}
-
-{$ifndef Delphi5orNewerCompiler}
-{ SameText compares S1 to S2, without case-sensitivity. Returns true if
-  S1 and S2 are the equal, that is, if CompareText would return 0. SameText
-  has the same 8-bit limitations as CompareText }
-function SameText(const S1, S2: string): Boolean;
-
-{ AnsiSameStr compares S1 to S2, with case-sensitivity. The compare
-  operation is controlled by the current Windows locale. The return value
-  is True if AnsiCompareStr would have returned 0. }
-function AnsiSameStr(const S1, S2: string): Boolean;
-
-{ AnsiSameText compares S1 to S2, without case-sensitivity. The compare
-  operation is controlled by the current Windows locale. The return value
-  is True if AnsiCompareText would have returned 0. }
-function AnsiSameText(const S1, S2: string): Boolean;
-
-{ FreeAndNil frees the given TObject instance and sets the variable reference
-  to nil.  Be careful to only pass TObjects to this routine. }
-procedure FreeAndNil(var Obj);
-{$endif}
-
-{$ifndef Delphi6orNewerCompiler}
-const
-  RaiseLastOSError: procedure = RaiseLastWin32Error;
-
-{ IsPathDelimiter returns True if the character at byte S[Index]
-  is a PathDelimiter ('\' or '/'), and it is not a MBCS lead or trail byte. }
-function IsPathDelimiter(const S: string; Index: Integer): Boolean;
-
-{ IncludeTrailingPathDelimiter returns the path with a PathDelimiter
-  ('/' or '\') at the end.  This function is MBCS enabled. }
-function IncludeTrailingPathDelimiter(const S: string): string;
-
-{ ExcludeTrailingPathDelimiter returns the path without a PathDelimiter
-  ('\' or '/') at the end.  This function is MBCS enabled. }
-function ExcludeTrailingPathDelimiter(const S: string): string;
-
-const
-  PathDelim  = {$IFDEF MSWINDOWS} '\'; {$ELSE} '/'; {$ENDIF}
-  DriveDelim = {$IFDEF MSWINDOWS} ':'; {$ELSE} '';  {$ENDIF}
-  PathSep    = {$IFDEF MSWINDOWS} ';'; {$ELSE} ':'; {$ENDIF}
-  sLineBreak = {$IFDEF LINUX} #10 {$ENDIF} {$IFDEF MSWINDOWS} #13#10 {$ENDIF};
-
-function StrToFloatDef(const S: String; const Default: Extended) : Extended;
-
-function RightStr(Const Str: String; Size: Word): String;
-
-function MidStr(Const Str: String; From, Size: Word): String;
-
-function LeftStr(Const Str: String; Size: Word): String;
-
-{ Returns the reverse of a specified string. }
-function ReverseString(const AText: string): string;
-
-function BoolToStr(B: Boolean; UseBoolStrs: Boolean = False): string;
-{$endif}
-
-{$ifndef Delphi7orNewerCompiler}
-{ PosEx searches for SubStr in S and returns the index position of
-  SubStr if found and 0 otherwise.  If Offset is not given then the result is
-  the same as calling Pos.  If Offset is specified and > 1 then the search
-  starts at position Offset within S.  If Offset is larger than Length(S)
-  then PosEx returns 0.  By default, Offset equals 1. }
-function PosEx(const SubStr, S: string; Offset: Cardinal = 1): Integer;
-
-//This was added in Delphi 6 Update Pack 2.
-{$ifdef MSWINDOWS}
-{$IF not Defined(CheckWin32Version)}
-{$define ExtraFunc_CheckWin32Version}
-function CheckWin32Version(AMajor: Integer; AMinor: Integer = 0): Boolean;
-{$ifend}
-{$endif}
-
-function GetFileVersion(const AFileName: string): Cardinal;
-{$endif}
-
-{$ifndef DelphiXEorNewerCompiler}
-function SplitString(const S, Delimiters: string): TStringDynArray;
-{$endif}
-
-{$ifndef Delphi2009orNewerCompiler}
-function CharInSet(C: AnsiChar; const CharSet: TSysCharSet): Boolean; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
-{$ifndef Delphi2orNewerCompiler}
-function CharInSet(C: WideChar; const CharSet: TSysCharSet): Boolean; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
-{$endif}
-//function CharInSet(C: UnicodeChar; const CharSet: TSysCharSet): Boolean; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
-{$endif}
-
-//This function doesn't exist at all in Delphi:
-function LastPos(const SubStr: String; const S: String): Integer;
+//This is a macro that wasn't converted.
+function CopyCursor(pcur: HCursor): HCursor;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 
 //These functions doesn't exist at all in Delphi:
-{$ifdef MSWINDOWS}
 function CheckWin32VersionWithServicePack(AMajor: Integer; AMinor: Integer = 0; AServicePackMajor: Integer = 0; AServicePackMinor: Integer = 0): Boolean; //Note: We use the wrong datatype to be consistent with CheckWin32Version.
 function CheckWin32VersionWithBuildNumber(AMajor: Integer; AMinor: Integer = 0; ABuildNumber: Integer = 0): Boolean; //Note: We use the wrong datatype to be consistent with CheckWin32Version.
-{$endif}
-{$ifndef Delphi2orNewerCompiler}
-function WideLowerCaseFileName(const S: WideString): WideString;
-function WideCompareFileName(const S1, S2: WideString): Integer;
-{$endif}
-{$IFDEF UNICODE}
-function UnicodeLowerCaseFileName(const S: UnicodeString): string;
-function UnicodeCompareFileName(const S1, S2: UnicodeString): Integer;
-{$ENDIF}
-
-//This function doesn't exist at all in Delphi:
-function CompareFileName(const S1, S2: string): Integer;
-procedure CleanupFileName(var S: String);
 
 //For delay loading functionality:
-{$ifdef MSWINDOWS}
 var
   DelayFunc_GetGuiResources: Boolean;
   DelayFunc_DwmEnableComposition: Boolean;
@@ -1205,107 +1208,6 @@ var
 
 implementation
 
-{$ifdef MSWINDOWS}
-//For delay loading functionality:
-{$ifndef DELAYEDLOADING}
-var
-  UserLib, ShellLib, DWMAPILib: HMODULE;
-{$endif}
-
-function CopyCursor(pcur: HCursor): HCursor;
-begin
-  Result:=HCURSOR(CopyIcon(HICON(pcur)));
-end;
-{$endif}
-
-{$ifndef Delphi2005orNewerCompiler}
-function ContainsText(const AText, ASubText: string): Boolean;
-begin
-  Result := AnsiContainsText(AText, ASubText); //Note: Apparently, this function is misnamed, and it handles unicode too!
-end;
-
-function StartsText(const ASubText, AText: string): Boolean;
-begin
-  Result := AnsiStartsText(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
-end;
-
-function EndsText(const ASubText, AText: string): Boolean;
-begin
-  Result := AnsiEndsText(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
-end;
-
-function ContainsStr(const AText, ASubText: string): Boolean;
-begin
-  Result := AnsiContainsStr(AText, ASubText); //Note: Apparently, this function is misnamed, and it handles unicode too!
-end;
-
-function StartsStr(const ASubText, AText: String): Boolean;
-begin
-  Result := AnsiStartsStr(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
-end;
-
-function EndsStr(const ASubText, AText: String): Boolean;
-begin
- Result := AnsiEndsStr(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
-end;
-{$endif}
-
-{$ifndef Delphi2009orNewerCompiler}
-function UIntToStr(Value: Cardinal): string;
-begin
-  FmtStr(Result, '%u', [Value]);
-end;
-
-function UIntToStr(Value: {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}): string; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
-begin
-  FmtStr(Result, '%u', [Value]);
-end;
-{$endif}
-
-{$ifndef DelphiXE6orNewerCompiler}
-function StrToUInt(const S: string): Cardinal;
-const
-  SInvalidCardinal = '''%s'' is not a valid cardinal value';
-begin
-  if not TryStrToUInt(S, Result) then EConvertError.Create(Format(SInvalidCardinal, [S]));
-end;
-
-function StrToUIntDef(const S: string; Default: Cardinal): Cardinal;
-begin
-  if not TryStrToUInt(S, Result) then Result:=Default;
-end;
-
-function TryStrToUInt(const S: string; out Value: Cardinal): Boolean;
-const
-  MaxCardinal = 4294967295; //FIXME: Use Cardinal.MaxValue in Delphi 11.3
-var
-  Dummy: Int64;
-begin
-  Result:=False;
-
-  //Go through Int64
-  if not TryStrToInt64(S, Dummy) then
-    Exit;
-
-  //And then check the bounds
-  if (Dummy < 0) or (Dummy > MaxCardinal) then
-    Exit;
-
-  Value:=Cardinal(Dummy);
-  Result:=True;
-end;
-{$endif}
-
-function DateTimeToWin64(const AValue: TDateTime): QWORD;
-begin
-  Result := Round((AValue - Win64DateDelta) * SecsPerDay * 100000000);
-end;
-
-function Win64ToDateTime(const AValue: QWORD): TDateTime;
-begin
-  Result := AValue / SecsPerDay / 100000000 + Win64DateDelta;
-end;
-
 {$ifndef Delphi2orNewerCompiler}
 function CompareMem(P1, P2: Pointer; Length: Integer): Boolean; assembler;
 asm
@@ -1326,6 +1228,37 @@ asm
 @@1:    INC     EAX
 @@2:    POP     EDI
         POP     ESI
+end;
+
+function WideLowerCaseFileName(const S: WideString): WideString;
+var
+  I,L: Integer;
+begin
+  if SysLocale.FarEast then
+  begin
+    L := Length(S);
+    SetLength(Result, L);
+    I := 1;
+    while I <= L do
+    begin
+      Result[I] := S[I];
+      if S[I] in LeadBytes then
+      begin
+        Inc(I);
+        Result[I] := S[I];
+      end
+      else
+        if Result[I] in ['A'..'Z'] then Inc(Byte(Result[I]), 32);
+      Inc(I);
+    end;
+  end
+  else
+    Result := WideLowerCase(S);
+end;
+
+function WideCompareFileName(const S1, S2: WideString): Integer;
+begin
+  Result := WideCompareStr(WideLowerCaseFileName(S1), WideLowerCaseFileName(S2));
 end;
 {$endif}
 
@@ -1481,17 +1414,6 @@ begin
     Result := Result + Offset;
 end;
 
-{$ifdef MSWINDOWS}
-{$ifdef ExtraFunc_CheckWin32Version}
-function CheckWin32Version(AMajor: Integer; AMinor: Integer = 0): Boolean;
-begin
-  Result := (Win32MajorVersion > AMajor) or
-            ((Win32MajorVersion = AMajor) and
-             (Win32MinorVersion >= AMinor));
-end;
-{$endif}
-{$endif}
-
 function GetFileVersion(const AFileName: string): Cardinal;
 var
   FileName: string;
@@ -1520,6 +1442,69 @@ begin
 end;
 {$endif}
 
+{$ifndef Delphi2005orNewerCompiler}
+function ContainsText(const AText, ASubText: string): Boolean;
+begin
+  Result := AnsiContainsText(AText, ASubText); //Note: Apparently, this function is misnamed, and it handles unicode too!
+end;
+
+function StartsText(const ASubText, AText: string): Boolean;
+begin
+  Result := AnsiStartsText(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
+end;
+
+function EndsText(const ASubText, AText: string): Boolean;
+begin
+  Result := AnsiEndsText(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
+end;
+
+function ContainsStr(const AText, ASubText: string): Boolean;
+begin
+  Result := AnsiContainsStr(AText, ASubText); //Note: Apparently, this function is misnamed, and it handles unicode too!
+end;
+
+function StartsStr(const ASubText, AText: String): Boolean;
+begin
+  Result := AnsiStartsStr(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
+end;
+
+function EndsStr(const ASubText, AText: String): Boolean;
+begin
+ Result := AnsiEndsStr(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
+end;
+{$endif}
+
+{$ifndef Delphi2009orNewerCompiler}
+function UIntToStr(Value: Cardinal): string;
+begin
+  FmtStr(Result, '%u', [Value]);
+end;
+
+function UIntToStr(Value: {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif}): string; //UInt64 is known to be broken before Delphi 2007, even if present. Borland also uses Int64 instead in ActiveX.pas
+begin
+  FmtStr(Result, '%u', [Value]);
+end;
+
+function CharInSet(C: AnsiChar; const CharSet: TSysCharSet): Boolean;
+begin
+  Result := C in CharSet;
+end;
+
+{$ifndef Delphi2orNewerCompiler}
+function CharInSet(C: WideChar; const CharSet: TSysCharSet): Boolean;
+begin
+  Result := AnsiChar(C) in CharSet; //FIXME: At some point beyond Delphi 7, the cast to AnsiChar is not longer needed.
+end;
+{$endif}
+{$endif}
+
+{$IFDEF UNICODE}
+(*function CharInSet(C: UnicodeChar; const CharSet: TSysCharSet): Boolean;
+begin
+  Result := UnicodeChar(C) in CharSet; //FIXME: At some point beyond Delphi 7, the cast to AnsiChar is not longer needed.
+end;*)
+{$ENDIF}
+
 {$ifndef DelphiXEorNewerCompiler}
 function SplitString(const S, Delimiters: string): TStringDynArray;
 var
@@ -1543,19 +1528,103 @@ begin
 end;
 {$endif}
 
-{$ifndef Delphi2009orNewerCompiler}
-function CharInSet(C: AnsiChar; const CharSet: TSysCharSet): Boolean;
+{$ifndef DelphiXE6orNewerCompiler}
+function StrToUInt(const S: string): Cardinal;
+const
+  SInvalidCardinal = '''%s'' is not a valid cardinal value';
 begin
-  Result := C in CharSet;
+  if not TryStrToUInt(S, Result) then EConvertError.Create(Format(SInvalidCardinal, [S]));
 end;
 
-{$ifndef Delphi2orNewerCompiler}
-function CharInSet(C: WideChar; const CharSet: TSysCharSet): Boolean;
+function StrToUIntDef(const S: string; Default: Cardinal): Cardinal;
 begin
-  Result := AnsiChar(C) in CharSet; //FIXME: At some point beyond Delphi 7, the cast to AnsiChar is not longer needed.
+  if not TryStrToUInt(S, Result) then Result:=Default;
+end;
+
+function TryStrToUInt(const S: string; out Value: Cardinal): Boolean;
+const
+  MaxCardinal = 4294967295; //FIXME: Use Cardinal.MaxValue in Delphi 11.3
+var
+  Dummy: Int64;
+begin
+  Result:=False;
+
+  //Go through Int64
+  if not TryStrToInt64(S, Dummy) then
+    Exit;
+
+  //And then check the bounds
+  if (Dummy < 0) or (Dummy > MaxCardinal) then
+    Exit;
+
+  Value:=Cardinal(Dummy);
+  Result:=True;
 end;
 {$endif}
 
+//From: http://delphi.about.com/od/adptips2004/a/bltip0904_2.htm
+function LastPos(const SubStr: String; const S: String): Integer;
+begin
+  Result := Pos(ReverseString(SubStr), ReverseString(S)) ;
+  if (Result <> 0) then
+    Result := ((Length(S) - Length(SubStr)) + 1) - Result + 1;
+end;
+
+function DateTimeToWin64(const AValue: TDateTime): QWORD;
+begin
+  Result := Round((AValue - Win64DateDelta) * SecsPerDay * 100000000);
+end;
+
+function Win64ToDateTime(const AValue: QWORD): TDateTime;
+begin
+  Result := AValue / SecsPerDay / 100000000 + Win64DateDelta;
+end;
+
+function CompareFileName(const S1, S2: string): Integer;
+begin
+  {$IFDEF UNICODE}
+  Result:=UnicodeCompareFileName(S1, S2);
+  {$ELSE}
+  Result:=AnsiCompareFileName(S1, S2);
+  {$ENDIF}
+end;
+
+procedure CleanupFileName(var S: String);
+const
+{$ifdef MSWINDOWS}
+  //Semi-colon and comma are invalid if long filenames are not supported.
+  cInvalidChars = ['\', '/', ':', '*', '?', '"', '<', '>', '|'{, ';', ','}];
+{$else}
+  cInvalidChars = ['/'];
+{$endif}
+var
+ I: Integer;
+begin
+ for I:=Length(S) downto 1 do
+ begin
+   {$ifdef MSWINDOWS}
+   if (S[I] < #20) //Control characters are invalid
+   {$else}
+   if (S[I] = #0) //Null bytes are invalid
+   {$endif}
+   or CharInSet(S[I], cInvalidChars) then
+     System.Delete(S, I, 1);
+ end;
+end;
+
+{$IFDEF UNICODE}
+function UnicodeLowerCaseFileName(const S: UnicodeString): UnicodeString;
+begin
+  Result := AnsiLowerCase(S); //Yes, this function is misnamed in Delphi.
+end;
+
+function UnicodeCompareFileName(const S1, S2: UnicodeString): Integer;
+begin
+  Result := CompareStr(UnicodeLowerCaseFileName(S1), UnicodeLowerCaseFileName(S2)); //UnicodeCompareStr doesn't exist, but CompareStr is documented to handle Unicode.
+end;
+{$ENDIF}
+
+{$ifndef Delphi2009orNewerCompiler}
 function GetCPUCount: Integer;
 {$IFDEF MSWINDOWS}
 var
@@ -1576,22 +1645,29 @@ end;
 {$ENDIF}
 {$endif}
 
-//From: http://delphi.about.com/od/adptips2004/a/bltip0904_2.htm
-function LastPos(const SubStr: String; const S: String): Integer;
+{$ifdef MSWINDOWS}
+//For delay loading functionality:
+{$ifndef DELAYEDLOADING}
+var
+  UserLib, ShellLib, DWMAPILib: HMODULE;
+{$endif}
+
+{$ifndef Delphi7orNewerCompiler}
+{$ifdef ExtraFunc_CheckWin32Version}
+function CheckWin32Version(AMajor: Integer; AMinor: Integer = 0): Boolean;
 begin
-  Result := Pos(ReverseString(SubStr), ReverseString(S)) ;
-  if (Result <> 0) then
-    Result := ((Length(S) - Length(SubStr)) + 1) - Result + 1;
+  Result := (Win32MajorVersion > AMajor) or
+            ((Win32MajorVersion = AMajor) and
+             (Win32MinorVersion >= AMinor));
+end;
+{$endif}
+{$endif}
+
+function CopyCursor(pcur: HCursor): HCursor;
+begin
+  Result:=HCURSOR(CopyIcon(HICON(pcur)));
 end;
 
-{$IFDEF UNICODE}
-(*function CharInSet(C: UnicodeChar; const CharSet: TSysCharSet): Boolean;
-begin
-  Result := UnicodeChar(C) in CharSet; //FIXME: At some point beyond Delphi 7, the cast to AnsiChar is not longer needed.
-end;*)
-{$ENDIF}
-
-{$ifdef MSWINDOWS}
 const
   msgGetVersionExFailed = 'Unable to retrieve system details. Call to GetVersionEx failed!';
 
@@ -1635,83 +1711,6 @@ begin
             ((Win32MajorVersion = AMajor) and (Win32MinorVersion = AMinor) and (Win32BuildNumber >= ABuildNumber));
 end;
 {$endif}
-
-{$ifndef Delphi2orNewerCompiler}
-function WideLowerCaseFileName(const S: WideString): WideString;
-var
-  I,L: Integer;
-begin
-  if SysLocale.FarEast then
-  begin
-    L := Length(S);
-    SetLength(Result, L);
-    I := 1;
-    while I <= L do
-    begin
-      Result[I] := S[I];
-      if S[I] in LeadBytes then
-      begin
-        Inc(I);
-        Result[I] := S[I];
-      end
-      else
-        if Result[I] in ['A'..'Z'] then Inc(Byte(Result[I]), 32);
-      Inc(I);
-    end;
-  end
-  else
-    Result := WideLowerCase(S);
-end;
-
-function WideCompareFileName(const S1, S2: WideString): Integer;
-begin
-  Result := WideCompareStr(WideLowerCaseFileName(S1), WideLowerCaseFileName(S2));
-end;
-{$endif}
-
-{$IFDEF UNICODE}
-function UnicodeLowerCaseFileName(const S: UnicodeString): UnicodeString;
-begin
-  Result := AnsiLowerCase(S); //Yes, this function is misnamed in Delphi.
-end;
-
-function UnicodeCompareFileName(const S1, S2: UnicodeString): Integer;
-begin
-  Result := CompareStr(UnicodeLowerCaseFileName(S1), UnicodeLowerCaseFileName(S2)); //UnicodeCompareStr doesn't exist, but CompareStr is documented to handle Unicode.
-end;
-{$ENDIF}
-
-function CompareFileName(const S1, S2: string): Integer;
-begin
-  {$IFDEF UNICODE}
-  Result:=UnicodeCompareFileName(S1, S2);
-  {$ELSE}
-  Result:=AnsiCompareFileName(S1, S2);
-  {$ENDIF}
-end;
-
-procedure CleanupFileName(var S: String);
-const
-{$ifdef MSWINDOWS}
-  //Semi-colon and comma are invalid if long filenames are not supported.
-  cInvalidChars = ['\', '/', ':', '*', '?', '"', '<', '>', '|'{, ';', ','}];
-{$else}
-  cInvalidChars = ['/'];
-{$endif}
-var
- I: Integer;
-begin
- for I:=Length(S) downto 1 do
- begin
-   {$ifdef MSWINDOWS}
-   if (S[I] < #20) //Control characters are invalid
-   {$else}
-   if (S[I] = #0) //Null bytes are invalid
-   {$endif}
-   or CharInSet(S[I], cInvalidChars) then
-     System.Delete(S, I, 1);
- end;
-end;
 
 initialization
 {$ifdef MSWINDOWS}

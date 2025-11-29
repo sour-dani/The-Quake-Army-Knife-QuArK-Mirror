@@ -22,7 +22,7 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 // Versions of this unit are floating freely in several Delphi User Group forums out there I don't know the origin.
 // It was added because it is a misnomer that a compiler constant is defined for that compiler and all newer versions. - SilverPaladin
 
-// DanielPharos: For more complete list of defines, see: http://delphi.wikia.com/wiki/Borland_Compiler_Conditional_Defines
+//For more complete list of defines, see: http://delphi.wikia.com/wiki/Borland_Compiler_Conditional_Defines
 
 {$IFDEF VER80}
   {$DEFINE CompiledWithDelphi1}
@@ -137,11 +137,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
   {$DEFINE Delphi11orNewerCompiler}
 {$ENDIF}
 {$IFDEF VER360}
-  {$DEFINE CompiledWithDelphi12}
+  {$DEFINE CompiledWithDelphi12} //12.0 or 12.1 or 12.2 or 12.3
   {$DEFINE Delphi12orNewerCompiler}
 {$ENDIF}
 {$IFDEF VER370}
-  {$DEFINE CompiledWithDelphi13}
+  {$DEFINE CompiledWithDelphi13} //13.0 or 13.1
   {$DEFINE Delphi13orNewerCompiler}
 {$ENDIF}
 
@@ -261,35 +261,50 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
   {$DEFINE Delphi1orNewerCompiler}
 {$ENDIF}
 
-// Also set CPU architecture defines that were added in later Delph versions.
-// Based on information from: https://docwiki.embarcadero.com/RADStudio/Sydney/en/Conditional_compilation_(Delphi)
+//DanielPharos: We do this here, so we don't have to create yet another include.
 
-{$IFDEF CompiledWithDelphi1}
-{$DEFINE WIN16}
-{$DEFINE CPU16BITS}
+//Set CPU architecture defines that were added in later Delph versions.
+//Based on information from: https://docwiki.embarcadero.com/RADStudio/Sydney/en/Conditional_compilation_(Delphi)
+
+{$IFNDEF Delphi2005orNewerCompiler}
+  {$DEFINE CPU386}
 {$ENDIF}
 
 {$IFNDEF DelphiXE2orNewerCompiler}
-{$IFNDEF CPUX64}
-{$DEFINE CPUX86}
-{$ENDIF}
+  {$DEFINE CPUX86}
 {$ENDIF}
 
 {$IFNDEF DelphiXE8orNewerCompiler}
-{$IFDEF CPUX86}
-{$DEFINE CPU32BITS}
-{$ELSE}
-{$DEFINE CPU64BITS}
-{$ENDIF}
+  {$IFDEF CPUX64}
+    {$DEFINE CPU64BITS}
+  {$ELSE} //CPUX86 or CPUARM
+    {$IFDEF CompiledWithDelphi1}
+      {$DEFINE CPU16BITS}
+    {$ELSE}
+      {$DEFINE CPU32BITS}
+    {$ENDIF}
+  {$ENDIF}
+
+  {$IFDEF CPUARM}
+    {$IFDEF CPU64BITS}
+      {$DEFINE CPUARM64}
+    {$ELSE} //CPU32BITS
+      {$DEFINE CPUARM32}
+    {$ENDIF}
+  {$ENDIF}
 {$ENDIF}
 
-{$IFNDEF DelphiXE4orNewerCompiler}
-{$IFDEF CPUARM}
-{$IFDEF CPU32BITS}
-{$DEFINE CPUARM32}
+{$IFNDEF Delphi6orNewerCompiler}
+  //Delphi 5 and earlier don't support other platforms, so they don't define this conditional.
+  {$DEFINE MSWINDOWS}
 {$ENDIF}
-{$IFDEF CPU64BITS}
-{$DEFINE CPUARM64}
-{$ENDIF}
-{$ENDIF}
+
+{$IFDEF MSWINDOWS}
+  {$IFNDEF Delphi2009orNewerCompiler}
+    {$IFDEF CompiledWithDelphi1}
+      {$DEFINE WIN16}
+    {$ELSE}
+      {$DEFINE WIN32}
+    {$ENDIF}
+  {$ENDIF}
 {$ENDIF}
