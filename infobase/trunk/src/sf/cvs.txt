@@ -5,7 +5,7 @@ The code repository on SourceForge was migrated to SVN from CVS some time ago. F
 
 ---
 
-For more serious work, the software you need first is a CVS client. Although the command-line version works perfectly well, there is a GUI version (<a target="_blank" href="http://www.wincvs.org/">WinCVS</a>) available.
+For more serious work, the software you need first is a CVS client. One option is to use WinCVS; more information about it and how to set it up can be found here <ref>src/sf/wincvs</ref>.
 
 If you want to be able to contribute your own changes to the source into the repository, you will also need an SSH client. You can use <a target="_blank" href="http://asp.planetquake.com/dl/dl.asp?quark/source/ssh-pack.zip">this one</a> and follow the instructions given in the file, or alternatively you could use PuTTY (read <a target="_blank" href="http://sourceforge.net/docman/display_doc.php?docid=766&group_id=1">CVS client installation: WinCvs with PuTTY on 32-bit Microsoft Windows platforms</a> to help you get set up with it).
 

@@ -1,8 +1,4 @@
 title: Registering at SourceForge
 author: Armin Rigo, Peter Brett
 
-Connect to the <a target="_blank" href="http://sourceforge.net">SourceForge
-website</a> and register yourself as a new user. Then contact a QuArK
-project administrator and give your login name so that we can add you
-to the QuArK project members list. They are listed on the <link project>SourceForge website</link>
-after the "Brought to you by"-text near the top of the page.
+If you want to submit code to the SourceForge repository, you will need a SourceForge account, and write-permission to the repository. Go to the <a target="_blank" href="http://sourceforge.net/">SourceForge website</a> and register yourself as a new user. Then contact a QuArK project administrator and give your login name so that we can add you to the QuArK project members list. They are listed on the <link project>SourceForge website</link> after the "Brought to you by"-text near the top of the page.
