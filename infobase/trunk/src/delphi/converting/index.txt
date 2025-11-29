@@ -1,0 +1,4 @@
+title: Archive: Delphi upgrade reports
+desc: delphi6 delphi7
+
+These are historical reports when the Delphi code was converted from one version of Delphi to a newer one.

@@ -1,10 +1,15 @@
 title: Getting Delphi
 author: Rowdy
 
-The central core of QuArK is written in Delphi, with add-ons and lots of the map manipulation code written in Python.
-
 Upto and including Delphi 5, you could only obtain commercial versions for which you had to pay a licence fee to Borland.  Starting from Delphi 6, Borland have provided a Personal Edition of Delphi which is accompanied by a licence which says that you cannot use a Personal Edition of Delphi to produce commercial applications, and that you must make the source code of your applications available.  For the purposes of developing QuArK this is ideal!
 
-Delphi 6 or 7 Personal Edition can be downloaded from the <a href="http://www.borland.com/delphi/">Borland Delphi</a> web site, or can sometimes be found on computer magazine cover CDs which seem to feature Delphi every six months or so (maybe ask a few friends if they have older magazines with cover CDs).
+Obtain Delphi 6 Personal Edition or Delphi 7 Personal from the <a target="_blank" href="http://www.borland.com/delphi/">Borland Delphi</a> web site (approx. 140M). To download Delphi you need to have or to create a Borland account, this is a fairly painless procedure on the web.  You also need to register your copy of Delphi after installing it - once again this is fairly painless and can be done automatically (if you have an active Internet connection) or on the web or via email (which takes a bit longer, but is still usually fairly quick), or even via telephone.  There are some patches to Delphi 6, but I haven't installed them and things seemed to work ok.  If you do download patches, make sure they are the Personal Edition patches.
 
-To download Delphi you need to have or to create a Borland account, this is a fairly painless procedure on the web.  You also need to register your copy of Delphi after installing it - once again this is fairly painless and can be done automatically (if you have an active Internet connection) or on the web or via email (which takes a bit longer, but is still usually fairly quick).
+Alternatively, Delphi Personal editions can sometimes be found on computer magazine cover CDs which seem to feature Delphi every six months or so (maybe ask a few friends if they have older magazines with cover CDs).
+
+<b>Other software to install</b>
+If you're going to use QuArK 6.3 or older, you should also get (if you haven't already got it) the mini Python installer (minipy) from the QuArK downloads page (1M).  Note that these versions of QuArK require Python 1.5.1 or 1.5.2 - you can install a more recent version of Python but these older versions of QuArK will not work with any version other than 1.5.1 and 1.5.2.
+
+This from Tiglari on the Python versions: QuArK will work with either; the current .exe looks for a .dll called python151 and uses it if it can, because there are some bugs in 151 (which is the Minipy) that cause certain Python code to work in 152 but not 151/Minipy.  So *if* you want to have 152 installed and to QuArK development, first install the Minipy and rename the .dll to Python151 (in Windows/System), then install 1.52, and this won't interfere.  Python 2 doesn't have any collisions with the Minipy, and the infobase build script (build.py) works fine with Python 2.2.2 (latest stable).
+
+That is basically all the software you need to develop for QuArK.  However, if you will be developing QuArK, it is a Good Idea (tm) to test your changes before releasing them, and to do that you will need to have at least one of the supported games installed on your PC.  You will also need the build pack(s) for whichever game you want to make maps for (build packs can be downloaded from the QuArK web site).  If you are an existing QuArK user, you should already have all these dependencies installed, a game or two set-up, and probably their build packs installed.  (I don't need to say that if you are testing levels then you need the respective game installed.)

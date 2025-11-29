@@ -1,0 +1,26 @@
+title: What has changed for Delphi 7
+author: Rowdy, DanielPharos
+
+Files which I had to change to get QuArK to compile under D7:
+<ul>
+<li>prog\SystemDetails.pas - included a {$ifdef VER150} to cover Delphi 7
+<li>prog\CCode.pas - {$I} for Resizer_delphi6.asm inside a {$ifdef VER150}
+</ul>
+
+This was summarised by nurail in a post to the QuArK-Python mailing list on 26-Dec-2002.
+
+A while ago I modified resizer.asm so that it would compile under Delphi 6, the modified version also works under Delphi 7.  The {$ifdef VER150} in CCode.pas takes care of including the correct .asm file.
+
+<b>Testing</b>
+
+After building QuArK, I copied the .exe into a runtime directory, ran it, configured the Q3 build tools, created a simple Q3 map with a few entities, several textures and shaders, and then built and ran it.  Everything seemed to work ok, including the OpenGL preview inside QuArK.
+
+There is a lot of QuArK which I don't use, but loading/saving, the texture-browser, common tasks in the map-editing window, OpenGL preview and building (including QuArK's console) all appear basically to work.
+
+<b>Caveat</b>
+
+This was all done using Delphi 7 Enterprise, there is nothing in the documentation comparing the different editions of Delphi 7 which indicates that this would not work with the Personal edition. (DanielPharos: I also got it working in Delphi 7 Free, just by following this guide. I didn't experience any problems, so everything should be OK.)
+
+
+Rowdy
+30-Dec-2002

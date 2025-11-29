@@ -1,0 +1,29 @@
+title: What has changed for Delphi 6
+author: Rowdy
+
+Files which I had to change to get QuArK to compile under D6PE:
+<ul>
+<li>prog\SystemDetails.pas - included a {$ifdef VER140} to cover Delphi 6
+<li>prog\Resizer_delphi6.asm - modified version of Resizer.asm
+<li>prog\CCode.pas - {$I} for Resizer_delphi6.asm inside a {$ifdef VER140}
+</ul>
+
+The biggest change was to Resizer.asm (the new version is called Resizer_delphi6.asm for easy reversal 'cause I don't know assembler, and just made some fairly obvious changes which might or might not be correct).  What changed were lines like:
+
+<tt>sal esi, dword +24</tt>
+
+was changed to:
+
+<tt>sal esi, byte +24</tt>
+
+Intel's Pentium CPU manual notes that SAL (shift arithmetic left) accepts a register (ESI in this case) and an argument.  It multiplies the contents of the register by 2 the number of times indicated by the second argument, which can be 1, CL or an 8 bit number.  I'm guessing that the Delphi 2..5 inline assembler automatically converted the "DWORD" typecast to a "BYTE" typecasty, but D6 is not as forgiving, and demands a "BYTE" typecast, which is all that it really is, just a typecast.  There are lots of lines which needed this change, but it is the same change throughout.
+
+<b>Testing</b>
+
+After building QuArK, I copied the .exe into a runtime directory, ran it, configured the Q3 build tools (GtkRadiant 1.2.1), created a simple Q3 map with a few entities, a duplicator, several textures and shaders, and then built and ran it.  Everything seemed to work ok, including the OpenGL preview inside QuArK, except for the grid in the editing window disappearing at odd intervals.
+
+There is a lot of QuArK which I don't use, but loading/saving, the texture-browser, common tasks in the map-editing window, OpenGL preview and building (including QuArK's console) all appear basically to work.
+
+
+Rowdy
+1-Apr-2002

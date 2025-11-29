@@ -3,7 +3,7 @@ subdir: intro struct topics pas python bugs quarkx math sf delphi distribution
 
 This section discusses QuArK programming.
 
-QuArK is written partly in Delphi and partly in Python, and available under the GNU General Public Licence.
+The central core of QuArK is written in Delphi, with add-ons and lots of the map manipulation code written in Python. It is available under the GNU General Public Licence.
 
 If you want to start developing for QuArK, there's a few steps to take:
 <ol>

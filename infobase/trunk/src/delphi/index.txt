@@ -1,4 +1,5 @@
 title: Delphi - installation and set-up
+subdir: converting
 desc: getting installing configuring components options using
 
 This is by no means a fully comprehensive tutorial on how to use Delphi.  It is basically the steps you need to follow, including screen dumps, to install the extra components which QuArK needs, setting a few options, and a couple of hints to make compiling easier.  There are lots of tutorials for Delphi on the web (altho none spring to mind at the moment).  The steps below will get you started using Delphi to help develop QuArK, after that it is up to you to experiment and explore the Delphi IDE and the QuArK source.
