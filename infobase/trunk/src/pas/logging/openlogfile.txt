@@ -2,9 +2,9 @@ title: OpenLogFile
 author: DanielPharos
 
 <code>
-Procedure OpenLogFile;
+procedure OpenLogFile;
 </code>
 
-This procedure opens and clears the logfile.
+This procedure opens and clears/truncates the logfile. It creates a new file, or opens an existing file and blanks it. The filename is <tt>GetQPath(pQuArK)+LogFilename</tt>. It then writes the current date and time to the logfile.
 
-It first checks if there already is a log open (using the boolean <tt>LogOpened</tt>). If not, it then either creates a new file, or opens an existing file and blanks it. The filename is <tt>GetQPath(pQuArK)+LogFilename</tt>. It then invokes the procedure that outputs the system details into the logfile.
+It is safe to call this procedure if the logfile is already open; it will then do nothing.

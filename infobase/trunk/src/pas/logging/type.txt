@@ -2,7 +2,7 @@ title: Types
 author: DanielPharos
 
 <code>
-  TLogName = (LOG_DEFAULT, LOG_PASCAL, LOG_PYTHON, LOG_SYS, LOG_DEBUG);
+  TLogName = (LOG_DEFAULT, LOG_PASCAL, LOG_PYTHON, LOG_SYS, LOG_CONSOLE, LOG_DEBUG);
 </code>
 
 This type is used by the callers of the <tt>Log</tt> procedure.
