@@ -308,8 +308,7 @@ var
   VMTMaterial: vlUInt;
   Stage: QVMTStage;
   StageList: array of QObject;
-  GroupEndWorkaround: Boolean;
-  GroupEndWorkaroundName: PvlChar;
+  GroupEndWorkaround: String;
 
   NodeLevel: Cardinal;
   NodeType: VMTNodeType;
@@ -317,6 +316,8 @@ var
   NodeValueString: PvlChar;
   NodeValueInteger: vlUInt;
   NodeValueSingle: vlFloat;
+const
+  GroupEndWorkaroundSentinel = 'QuArK_WORKAROUND';
 begin
   Log(LOG_VERBOSE, 'Loading VMF file: %s', [self.name]);
   case ReadFormat of
@@ -367,12 +368,13 @@ begin
         NodeLevel:=0;
         SetLength(StageList, NodeLevel+1);
         StageList[NodeLevel]:=Self;
-        GroupEndWorkaround:=false;
+
         { DanielPharos:
           We need a workaround for the fact that VTFLib reports a GROUP with
           exactly the same name AFTER each GROUPEND (unless it's the last one
           of the file). So we will simply ignore the first GROUP after any
           GROUPEND if it has the same name as the GROUPEND.}
+        GroupEndWorkaround:=GroupEndWorkaroundSentinel;
 
         repeat
           NodeName:=vlMaterialGetNodeName;
@@ -380,7 +382,7 @@ begin
           case NodeType of
           NODE_TYPE_GROUP:
             begin
-              if (GroupEndWorkaround=false) or (NodeName<>GroupEndWorkaroundName) then
+              if String(NodeName)<>GroupEndWorkaround then
               begin
                 NodeLevel:=NodeLevel+1;
                 Stage:=QVMTStage.Create(PChar(NodeName), StageList[NodeLevel-1]);
@@ -391,7 +393,7 @@ begin
             end;
           NODE_TYPE_GROUP_END:
             begin
-              if (NodeLevel = 0) then raise Exception.Create('ERROR: QkVMT: NodeLevel < 0!');
+              if (NodeLevel = 0) then raise Exception.Create('QkVMT: NodeLevel < 0!');
               NodeLevel:=NodeLevel-1;
               SetLength(StageList, NodeLevel+1);
             end;
@@ -413,14 +415,11 @@ begin
           end;
 
           if NodeType=NODE_TYPE_GROUP_END then
-          begin
-            GroupEndWorkaround:=true;
-            GroupEndWorkaroundName:=NodeName;
-          end
+            GroupEndWorkaround:=String(NodeName)
           else
-            GroupEndWorkaround:=false;
+            GroupEndWorkaround:=GroupEndWorkaroundSentinel;
         until vlMaterialGetNextNode=vlFalse;
-        if (NodeLevel <> 0) then raise Exception.Create('ERROR: QkVMT: NodeLevel != 0!');
+        if (NodeLevel <> 0) then raise Exception.Create('QkVMT: NodeLevel != 0!');
       finally
         vlDeleteMaterial(VMTMaterial);
       end;
