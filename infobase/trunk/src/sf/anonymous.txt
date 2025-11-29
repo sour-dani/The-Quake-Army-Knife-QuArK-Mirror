@@ -1,4 +1,4 @@
-title: Obtaining a copy the source code
+title: Obtaining a copy of the source code
 author: DanielPharos
 
 There are generally three ways of looking at the QuArK source code:

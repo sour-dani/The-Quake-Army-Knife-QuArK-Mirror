@@ -6,5 +6,3 @@ This is by no means a fully comprehensive tutorial on how to use Delphi.  It is 
 Remember, if you totally stuff things up you can always delete your QuArK source directory and do another checkout from source code repository without breaking anything.
 
 Note that the examples here are from Delphi 7, but the commands and dialogs are similar for earlier versions of Delphi.
-
-Delphi 6 should also still work, but for Delphi 5 some module name adjustments for StringUtils/SysUtils is required.

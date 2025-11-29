@@ -1,21 +1,11 @@
 title: Project options
-author: Rowdy
+author: Rowdy, Armin Rigo
 
 Before you can compile QuArK, you will almost certainly need to change some of the project options.  Select File - Open, browse to the source directory, change the file type to "Delphi Project (*.dpr)" if necessary (most Delphi versions default to opening .dpr files, but Delphi 7 appears to remember the last file type you opened), select QuArK.dpr and click Open.
 
 <pic>open_project.png</pic>
 
-Now a quick word about the directory structure.  I have a directory called c:\src in which I keep all my source files (for all projects).  There is a subdirectory c:\src\QuArK in which I checkout the QuArK source.  So my working directory in WinCVS is c:\src\QuArK, and WinCVS creates a bunch of directories under that, like this:
-
-<pic>direct_struct0.png</pic>
-
-To keep the CVS source as clean as possible, I create two additional directories, one to hold a working copy of the runtime files (called "run") and one to hold temporary files, such as .dcu (Delphi compiled unit) files.  I copy all of the contents of the "runtime" directory into the "run" directory EXCEPT the CVS subdirectories.  CVS subdirectories tell WinCVS that the files in that directory should be checked for changes, and I do not want that to happen for the "run" and "tmp" directories, so I make sure there are no "CVS" directories under those two.  WinCVS reports those directories and all their subdirectories as "NonCvs Folder" which is fine as I will never be committing anything in either of those two folders.
-
-<pic>direct_struct1.png</pic>
-
-If you have existing programming practices, then you should keep following it rather than introducing new practices just for QuArK.  For example lots of people store all temporary files in one place, such as c:\temp (under older Windows) or %TEMP% (under Windows NT/2K/XP).
-
-In Delphi, with the QuArK project loaded, select Project - Options, and go to the Directories/Conditionals tab.  Change the "Output directory" and the "Unit output directory" to be a working runtime directory (I would use c:\src\QuArK\run) and a temporary directory (I would use c:\src\QuArK\tmp) respectively.  In conditional defines a little bit further down, if the word "Debug" appears, delete it.  You only need this if you are doing extensive debugging of QuArK.
+In Delphi, with the QuArK project loaded, select Project - Options, and go to the Directories/Conditionals tab.  Change the "Output directory" and the "Unit output directory" to be a working runtime directory (I would use c:\src\QuArK\run) and a temporary directory (I would use c:\src\QuArK\tmp) respectively.  In conditional defines a little bit further down, if the word "Debug" appears, delete it.  You only need this if you are doing extensive debugging of QuArK, as this will make QuArK compile as a development version with a lot of internal tests. Note: after you added or removed this setting, you must completely rebuild QuArK (Compile menu, Build) or you will get compilation errors.
 
 Instead, using the drop down arrow to the right, select "PYTHON_BUNDLED". This is because the basic Python library is now included with the QuArK runtime files in the dll folder, eliminating the need of having to install Python or the old Mini-python package that was required with older versions of QuArK.
 
@@ -40,4 +30,11 @@ Note that they do not all fit into one screen in the picture below, you will nee
 
 <pic>options_messages.png</pic>
 
-Finally click OK to save the project options, and select File - Save All to save the new project options.  Note that these settings are saved in the QuArK.dof and QuArK.cfg files, and WinCVS will indicate that those files have been modified.  You should NOT commit those changes (unless you have changed something else fundamental in the project options) as these changes will affect all developers, and options saved in a later version of Delphi might not work in an earlier version.
+Finally click OK to save the project options, and select File - Save All to save the new project options.  Note that these settings are saved in the QuArK.dof and QuArK.cfg files, and your repository client will indicate that those files have been modified.  You should NOT commit those changes (unless you have changed something else fundamental in the project options) as these changes will affect all developers, and options saved in a later version of Delphi might not work in an earlier version.
+
+<b>Notes on running QuArK from Delphi IDE</b>
+
+QuArK expects to find a lot of things (the .qrk files, the quarkpy and plugins directories, etc.) where the quark.exe file is. With a recent version of Delphi you can configure it to write the compiled units (.dcu) into c:\temp\delphiexe and only the quark.exe into another directory. Another solution is to use an environment variable: if QUARKPATH is set, QuArK will use this path instead of the path where the .exe is stored. To set environment variables on Win95/98, edit your file "autoexec.bat" and add a line:
+<tt>SET QUARKPATH=c:\some\path</tt>
+
+On WinNT, go to Control Panel, System. An alternate solution could be added if you think it might be useful, e.g. having QuArK recognize a run-time parameter like "--quark-path=...". Delphi lets you specify run-time parameters and they are saved when you leave Delphi.

@@ -1,8 +1,14 @@
 title: Installing components
-author: Rowdy
+author: Armin Rigo, Rowdy
 
-Delphi comes with a rich set of components, both visual components (those which correspond to actual things you can see on forms, such as buttons and edit fields) and non-visual components (such as timers, Internet protocol helpers and so on).  The flexible QuArK interface makes use of some components which are not part of the standard Delphi component suite, they are supplied as part of the source (in the source\components directories).  Installing them is a fairly painless procedure, as follows:
-Run Delphi, select File - Open from the main menu, change the file type to "Delphi packages (*.dpk)", browse to the source\components directory which you checked out of the CVS repository, select the file vclar40.dpk and click Open.
+Delphi comes with a rich set of components, both visual components (those which correspond to actual things you can see on forms, such as buttons and edit fields) and non-visual components (such as timers, Internet protocol helpers and so on).  The flexible QuArK interface makes use of some components which are not part of the standard Delphi component suite, they are supplied as part of the source (in the source\components directories). The components in TB97 are by Jordan Russell; marsCaption is by Chen Ken. These ones are not covered by the GNU General Public Licence. The other components are by myself (Armin Rigo) and covered by the GNU GPL.
+
+For Delphi 2 and 3, directly install the components (Component, Install). All the .pas files in the "components" subdirectory contain components, except "ShellObj.pas" and "BrowseForFolder.pas".
+
+Important: with Delphi 2 and 3, if the source code of any component is modified, you must do Component, Rebuild library. Be careful about it as Wincvs will probably not explicitly warn you that the component source code was modified. With later versions of Delphi I guess (but I'm not sure) that recompiling occurs automatically.
+
+For Delphi 4 and later, installing them is a fairly painless procedure, as follows:
+Run Delphi, select File - Open from the main menu, change the file type to "Delphi packages (*.dpk)", browse to the source\components directory which you checked out of the repository, select the file vclar40.dpk and click Open.
 
 <pic>open_package.png</pic>
 

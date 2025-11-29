@@ -1,5 +1,5 @@
 title: Broadcasting the release
-author: DanielPharos
+author: DanielPharos, Armin Rigo
 
 There are some steps only the webmaster can perform, because it involves modifying things on the QuArK website. These are:
 
@@ -20,3 +20,7 @@ There are some steps only the webmaster can perform, because it involves modifyi
 <li>Contact any mirror-sites, so they can update their downloads.</li>
 <li>Consider updating the release information on QuArK's Wikipedia page.</li>
 </ol>
+
+
+Note that in the past, after making changes to the cvs-stored InfoBase, one was to visit this URL (warning, this URL might change later): http://imaux.unil.ch:8000/infobase/
+As doing so would update the InfoBase at SourceForge.

@@ -1,0 +1,12 @@
+title: Directory structure
+author: Rowdy
+
+The recommended organisation is to have one central directory in which you keep all your repository-related files. For example, you could have everything stored in c:\src\QuArK, where you would checkout the QuArK source.  This would then create a bunch of directories under that, like this:
+
+<pic>direct_struct0.png</pic>
+
+To keep the repository source as clean as possible, I create two additional directories, one to hold a working copy of the runtime files (called "run") and one to hold temporary files, such as .dcu (Delphi compiled unit) files.  I copy all of the contents of the "runtime" directory into the "run" directory, EXCEPT the CVS subdirectories, if you are using CVS.  CVS subdirectories tell your CVS client that the files in that directory should be checked for changes, and I do not want that to happen for the "run" and "tmp" directories, so I make sure there are no "CVS" directories under those two.  Your CVS client should report those directories and all their subdirectories as "NonCvs Folder" which is fine as I will never be committing anything in either of those two folders.
+
+<pic>direct_struct1.png</pic>
+
+If you have existing programming practices, then you should keep following it rather than introducing new practices just for QuArK.  For example lots of people store all temporary files in one place, such as c:\temp (under older Windows) or %TEMP% (under Windows NT/2K/XP).

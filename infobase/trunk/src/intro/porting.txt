@@ -8,7 +8,7 @@ The current state of the Linux port idea is that, unless we need for a C++ versi
 having to learn Delphi first, the Linux port will wait until Borland releases its Delphi-for-Linux project (Kylix). However,
 that was scheduled for mid-2000 and is now cancelled.
 
-Another posibility is Free Pascal, which is an alternative Pascal (and also Delphi) compiler. However, as this doesn't support
+Another possibility is Free Pascal, which is an alternative Pascal (and also Delphi) compiler. However, as this doesn't support
 Delphi packages (yet), this isn't an option at this time.
 
 But the C++ translation could be needed just because it would let many new programmers with C++ knowledge enter the project. In
@@ -37,7 +37,7 @@ would then be available on numerous platforms (e.g. the Mac) with little effort.
 widely-available GUI library we will target : Tk, Qt, others ?
 
 In any case, keep in mind that most parts of QuArK are tightly integrated with each other... I mean, if you want to make, say,
-first an independant C++ version of QuArK where the model editor would be developed, and hope to translate the map editor from
+first an independent C++ version of QuArK where the model editor would be developed, and hope to translate the map editor from
 the "official" QuArK later as a block when everything works well, then forget about it. If you wanted even just to reproduce
 the current model viewer, you would have to port so many things from the current QuArK that you will end up with something that
 can already run the map editor's Python code... This means that you will have ported the map editor just by trying to port the
@@ -45,4 +45,4 @@ model viewer ;-)
 
 In conclusion, porting/translating has to be carefully prepared and it has to be done as fast as possible while the Delphi
 development is frozen. It cannot easily be done piece-by-piece. This would mean we need quite a big team of people working more
-or less nonstop, porting code from Delphi to C++, and at the moment (begin 2007) the development team is way too small.
+or less nonstop, porting code from Delphi to C++, and at the moment (beginning of 2007) the development team is way too small.

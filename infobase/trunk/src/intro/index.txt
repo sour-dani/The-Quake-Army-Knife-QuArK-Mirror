@@ -1,3 +1,6 @@
 title: Introduction to the source
-desc: porting
-desc: delphiintro delphiperse lexicon
+desc: structure delphiintro delphiperse porting lexicon
+
+The Delphi code is currently being compiled by Delphi 7. Delphi 6 should also still work, but for Delphi 5 some unit name adjustments are required, due to a re-organisation of string function from SysUtils to the new StringUtils that Delphi 6 did)/SysUtils is required. Delphi 4 is the lowest potentially-supported version, as this is the version of Delphi to introduce dynamica sized arrays, which are used all over the Delphi code.
+
+The Python code is currently on Python 2.4. This is the last version of Python to officially support Windows 95 (as Python 2.5 deprecates it).
