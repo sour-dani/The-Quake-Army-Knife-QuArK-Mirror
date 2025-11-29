@@ -1,0 +1,43 @@
+title: Project options
+author: Rowdy
+
+Before you can compile QuArK, you will almost certainly need to change some of the project options.  Select File - Open, browse to the source directory, change the file type to "Delphi Project (*.dpr)" if necessary (most Delphi versions default to opening .dpr files, but Delphi 7 appears to remember the last file type you opened), select QuArK.dpr and click Open.
+
+<pic>open_project.png</pic>
+
+Now a quick word about the directory structure.  I have a directory called c:\src in which I keep all my source files (for all projects).  There is a subdirectory c:\src\QuArK in which I checkout the QuArK source.  So my working directory in WinCVS is c:\src\QuArK, and WinCVS creates a bunch of directories under that, like this:
+
+<pic>direct_struct0.png</pic>
+
+To keep the CVS source as clean as possible, I create two additional directories, one to hold a working copy of the runtime files (called "run") and one to hold temporary files, such as .dcu (Delphi compiled unit) files.  I copy all of the contents of the "runtime" directory into the "run" directory EXCEPT the CVS subdirectories.  CVS subdirectories tell WinCVS that the files in that directory should be checked for changes, and I do not want that to happen for the "run" and "tmp" directories, so I make sure there are no "CVS" directories under those two.  WinCVS reports those directories and all their subdirectories as "NonCvs Folder" which is fine as I will never be committing anything in either of those two folders.
+
+<pic>direct_struct1.png</pic>
+
+If you have existing programming practices, then you should keep following it rather than introducing new practices just for QuArK.  For example lots of people store all temporary files in one place, such as c:\temp (under older Windows) or %TEMP% (under Windows NT/2K/XP).
+
+In Delphi, with the QuArK project loaded, select Project - Options, and go to the Directories/Conditionals tab.  Change the "Output directory" and the "Unit output directory" to be a working runtime directory (I would use c:\src\QuArK\run) and a temporary directory (I would use c:\src\QuArK\tmp) respectively.  In conditional defines a little bit further down, if the word "Debug" appears, delete it.  You only need this if you are doing extensive debugging of QuArK.
+
+Instead, using the drop down arrow to the right, select "PYTHON_BUNDLED". This is because the basic Python library is now included with the QuArK runtime files in the dll folder, eliminating the need of having to install Python or the old Mini-python package that was required with older versions of QuArK.
+
+<pic>options_dircond.png</pic>
+
+Now go to the Linker tab and unselect the "Include TD32 debug info" - once again this is not necessary if you are not doing extensive debugging of QuArK, and will drastically increase the size of the QuArK.exe which Delphi compiles if it is selected.
+
+<pic>options_linker.png</pic>
+
+If you are using Delphi 7, there are a bunch of extra warnings which Delphi 7 produces.  Most of these you do not have to see, and the compile slows to an absolute crawl if they are left on.  I tried to compile with all warnings enabled, and Delphi produced over 4500 warnings, compiling about 10 lines a second, so I killed the compile, disabled the warnings, and now a full rebuild of QuArK takes about 12 seconds.  Still in the Options window, go to the Warnings tab, and unselect the following warnings:
+
+<ul>
+<li>Comparing signed and unsigned types - widened both operands
+<li>Combining signed and unsigned types - widened both operands
+<li>Suspicious typecast
+<li>Unsafe type
+<li>Unsafe code
+<li>Unsafe typecast
+</ul>
+
+Note that they do not all fit into one screen in the picture below, you will need to scroll to find all the options.
+
+<pic>options_messages.png</pic>
+
+Finally click OK to save the project options, and select File - Save All to save the new project options.  Note that these settings are saved in the QuArK.dof and QuArK.cfg files, and WinCVS will indicate that those files have been modified.  You should NOT commit those changes (unless you have changed something else fundamental in the project options) as these changes will affect all developers, and options saved in a later version of Delphi might not work in an earlier version.

@@ -1,8 +1,6 @@
 title: Required software
 author: DanielPharos
 
-First, note that you need no special software to browse the <link svn>on-line version of the repository</link>.
-
 To checkout and commit files to the repository, download and install TortoiseSVN from <a target="_blank" href="http://tortoisesvn.net/">tortoisesvn.net</a>. That website also contains quite complete Help Documentation about how to install and get you started using TortoiseSVN. The checkout URL to use is given on the SourceForge repository page; it's the text field labeled with "svn checkout".
 
 Another useful program is <b>WinMerge</b>. This program allows you to compare two directories, complete with files and subdirectories, to look for changes. You can download it from the <a target="_blank" href="http://winmerge.org/">winmerge.org</a> site. It comes in handy when you want to maintain multiple local copies of the repository to work in.

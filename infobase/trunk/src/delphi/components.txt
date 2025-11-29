@@ -1,0 +1,36 @@
+title: Installing components
+author: Rowdy
+
+Delphi comes with a rich set of components, both visual components (those which correspond to actual things you can see on forms, such as buttons and edit fields) and non-visual components (such as timers, Internet protocol helpers and so on).  The flexible QuArK interface makes use of some components which are not part of the standard Delphi component suite, they are supplied as part of the source (in the source\components directories).  Installing them is a fairly painless procedure, as follows:
+Run Delphi, select File - Open from the main menu, change the file type to "Delphi packages (*.dpk)", browse to the source\components directory which you checked out of the CVS repository, select the file vclar40.dpk and click Open.
+
+<pic>open_package.png</pic>
+
+A message might be displayed warning that the resources file was missing but was re-created. If so, just click OK.
+
+<pic>create_resources.png</pic>
+
+Also, if you are using Delphi 5 or later (the "40" in "vclar40.dpk" originates from Delphi 4) you might be advised that the package is in an older format, and would you like it to be converted. Again, if so, just Click Yes.
+
+<pic>older_format.png</pic>
+
+A successful conversion (I am yet to see an unsuccessful one) would be indicated by the following dialog.
+
+<pic>update_complete.png</pic>
+
+Now the Package window should be visible.<br>
+In this window click the Install button icon at the top.
+
+<pic>package_window.png</pic>
+
+Delphi will compile the package and register the components.  Successful component registration will be indicated by something like the following message.
+
+<pic>comps_registered.png</pic>
+
+To see where the new components are, scroll the component palette all the way to the right, and you should see tabs called Toolbar97, Exemples and Mars.
+
+<pic>new_tabs.png</pic>
+
+Now select File - Close All from the Delphi main menu.  You will be prompted to save changes to the project vclar40.dpk - you should NOT do this, so click No.  The components have already been installed into the Delphi IDE, and if you do save the vclar40.dpk project then WinCVS will register that you have changed those files.  So you do not need to save changes to the vclar40.dpk project.
+
+<pic>save_vclar40.png</pic>

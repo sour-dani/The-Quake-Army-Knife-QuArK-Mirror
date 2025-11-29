@@ -1,7 +1,14 @@
 title: The Source Code
-subdir: sf intro struct topics pas python bugs 
-subdir: quarkx math delphi distribution
+subdir: intro struct topics pas python bugs quarkx math sf delphi distribution
 
 This section discusses QuArK programming.
 
-QuArK is written partly in Delphi and partly in Python, and available under the GNU General Public Licence -- see <ref> src/sf </ref>.
+QuArK is written partly in Delphi and partly in Python, and available under the GNU General Public Licence.
+
+If you want to start developing for QuArK, there's a few steps to take:
+<ol>
+<li>Obtain a copy of the source code -- see <ref> src/sf </ref>.
+<li>Install and configure Delphi -- see <ref> src/delphi </ref>.
+<li>Learn about the structure of the source code -- see <ref> src/intro </ref> and <ref> src/struct </ref>.
+<li>Build your own installer -- see <ref> src/distribution </ref>.
+</ol>

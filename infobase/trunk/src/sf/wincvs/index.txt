@@ -3,7 +3,7 @@ author: Armin Rigo
 
 Although the command-line version works perfectly well, there is a GUI version (<a target="_blank" href="http://www.wincvs.org/">WinCVS</a>) available.
 
-Once WinCVS is installed, you can anonymously download the QuArK source. Configure WinCVS (from the Admin menu) as follows:
+Once WinCVS is installed, you can download the QuArK source. Configure WinCVS (from the Admin menu) as follows:
 
 <code>
 CVS Root:              anonymous@quark.cvs.sourceforge.net:/cvsroot/quark

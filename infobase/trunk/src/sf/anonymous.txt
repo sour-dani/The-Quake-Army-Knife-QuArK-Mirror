@@ -1,0 +1,9 @@
+title: Obtaining a copy the source code
+author: DanielPharos
+
+There are generally three ways of looking at the QuArK source code:
+<ol>
+<li>You can browse the <link svn>on-line version of the repository</link>. Other than a browser, no software is required to do this. This is a read-only view, so no changes can be submitted to the repository this way.
+<li>You can download a source code archive (typically a <g>.zip</g> file) from our <link project>website</link>.
+<li>You can set-up a connection with the repository to check-out and submit code. The rest of this guide describes how to do this.
+</ol>

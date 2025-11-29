@@ -1,6 +1,6 @@
 title: The code repository at SourceForge
 subdir: wincvs eclipse
-desc: software reg cvs
+desc: anonymous software reg cvs
 
 The source code of QuArK is stored in a code repository provided by <a href="http://sourceforge.net/">SourceForge</a>.
 Here is how you can access it.

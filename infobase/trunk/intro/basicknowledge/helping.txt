@@ -53,11 +53,11 @@ give some help! If you need help about these ways of helping, see the
 <li><strong>Direct changes in the source code</strong>:<br>
   The source code of QuArK is freely available, by various forms of access from
   <link project>project QuArK</link> on SourceForge (anonymous
-  CVS/WinCVS is probably the most convenient, once you can get it working).
+  access is probably the most convenient).
 
-  The main programming language is Borland Delphi, either 5 or 6 will do.  Personal Version 6
-  is quite adequate, and is available as a free download from
-  <a target="_blank" href="http://www.borland.com">Borland</a>.  If you want to program a new interface feature (such as
+  The main programming language is Borland Delphi, version 7 or higher will do.  There are various free versions available,
+  for example Personal Version 6 and Personal Version 7 are quite adequate, and are available as a free download from
+  <a target="_blank" href="http://www.borland.com/">Borland</a>.  If you want to program a new interface feature (such as
   a dialog box to hunt for things in the map having some properties, or maybe a new map layout
   such as perhaps something that works like the XY view in Radiant, with the vertical Z window,
   etc.), most or very likely all of the coding would be in Python.  Reading and
