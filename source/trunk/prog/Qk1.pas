@@ -228,6 +228,7 @@ var
 
 implementation
 
+{$I DelphiVer.inc}
 {$INCLUDE MemManager.inc}
 
 uses {$IFDEF MemTester}MemTester, {$ENDIF}ShellApi, Undo, QkQuakeC, Setup, Config,
@@ -235,7 +236,7 @@ uses {$IFDEF MemTester}MemTester, {$ENDIF}ShellApi, Undo, QkQuakeC, Setup, Confi
   Running, Output1, QkTreeView, PyProcess, Console, Python, Quarkx, About,
   PyMapView, PyForms, Qk3D, EdSceneObject, ApplPaths, FileAssociations,
   QkExceptions, QkQuakeCtx, AutoUpdater, Toolbar1,
-  Splash, QConsts, Logging, SystemDetails, ExtraFunctionality, Platform;
+  Splash, QConsts, Logging, SystemDetails, ExtraFunctionality, Platform{$IFDEF Delphi7orNewerCompiler}, UxTheme{$ENDIF}; //FIXME: Mike Lischke's Theme XP Manager would add support for Delphi 4-6.
 
 type
   TCmdLineOptions = record
@@ -253,7 +254,6 @@ const
   MaxRecentFilesUpperLimit = 20;
   HintHidePause = 15000; //in ms
 
-{$I DelphiVer.inc}
 {$R *.DFM}
 {$R ICONES\ICONES.RES}
 
@@ -336,6 +336,20 @@ begin
     DefFontData.Name:=PChar(@Metrics.lfMessageFont.lfFaceName);
     DefFontData.Height:=Metrics.lfMessageFont.lfHeight;
   end;
+
+  {$IFDEF Delphi7orNewerCompiler} //FIXME: Mike Lischke's Theme XP Manager would add support for Delphi 4-6.
+  //Disable theming of controls for older Delphi's, because it's just too broken.
+  {$IFNDEF Delphi8orNewerCompiler} //FIXME: Not sure what version fixes enough, but at least Delphi 7 is broken.
+  (*InitThemeLibrary;
+  try
+    dwFlags := GetThemeAppProperties();
+    SetThemeAppProperties(dwFlags and not STAP_ALLOW_CONTROLS);
+    SendMessage(Application.Handle, WM_THEMECHANGED, 0, 0);
+  finally
+    FreeThemeLibrary;
+  end;*)
+  {$ENDIF}
+  {$ENDIF}
 end;
 
  {------------------------}
