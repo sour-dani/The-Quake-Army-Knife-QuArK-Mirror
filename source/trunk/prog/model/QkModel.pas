@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkModel;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  SysUtils, Classes, QkObjects, QkFileObjects,
+  DelphiCompat, SysUtils, Classes, QkObjects, QkFileObjects,
   QkForm, QkImages, Python, Game, QkModelRoot, Forms, PyForms;
 
 type
@@ -41,8 +43,7 @@ type
 
 implementation
 
-uses Quarkx, QkQkl, QkMdl, QkMd2, QkMd3, form_model, QkHr2, ApplPaths,
-  Setup, ExtraFunctionality;
+uses Quarkx, QkQkl, QkMdl, QkMd2, QkMd3, form_model, QkHr2, ApplPaths, Setup;
 
 function QModel.TestConversionType(I: Integer) : QFileObjectClass;
 begin

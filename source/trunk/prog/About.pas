@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit About;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
+uses DelphiCompat, Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   ExtCtrls, Dialogs, QkForm, QkObjects, ComCtrls, Grids;
 
 type
@@ -66,9 +68,7 @@ procedure ProcessRegistration;
 
 implementation
 
-{$I DelphiVer.inc}
-
-uses Messages, Registry2, Qk1, Quarkx, QConsts, ExtraFunctionality;
+uses Messages, Registry2, Qk1, Quarkx, QConsts;
 
 const
   RegistrationKey = '\Software\Armin Rigo\QuakeMap';

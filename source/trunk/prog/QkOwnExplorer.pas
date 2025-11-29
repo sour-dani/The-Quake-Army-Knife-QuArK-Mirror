@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkOwnExplorer;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Messages, SysUtils, Classes, Graphics, Controls, Forms,
+  DelphiCompat, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   QkObjects, QkFileExplorer, ExtCtrls, QkForm, QkFileObjects, TB97;
 
 type

@@ -20,7 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit qhelper;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
+
+uses DelphiCompat;
 
 function CharToPas(const C: array of Byte) : String;
 procedure PasToChar(var C: array of Byte; const S: String);

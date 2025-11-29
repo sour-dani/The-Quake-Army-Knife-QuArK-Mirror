@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkSysData;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses QkObjects;
+uses DelphiCompat, QkObjects;
 
 type
   QSysData = class(QObject)

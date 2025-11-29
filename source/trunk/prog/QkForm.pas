@@ -20,16 +20,18 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkForm;
 
-interface
-
 //FIXME: Disable MarsCaption for now...
 {$DEFINE NoMarsCaption}
 
-uses Windows, Messages, Classes, SysUtils, Controls, Forms,
+ {-------------------}
+
+{$INCLUDE DelphiCompat.inc}
+
+interface
+
+uses DelphiCompat, Windows, Messages, Classes, SysUtils, Controls, Forms,
      QkObjects, Menus, TB97, StdCtrls, ComCtrls, CommCtrl,
      {$IFNDEF NoMarsCaption} marsCap, {$ENDIF} Graphics;
-
-{$I DelphiVer.inc}
 
 const
  wm_InternalMessage = {wm_User + $73}  $68FF;
@@ -199,7 +201,7 @@ uses QkFileObjects, qmath, Setup, Qk1, Toolbar1, ToolBox1,
      TbUndoMenu, Undo, ObjProp, Config, Game, Dialogs, Logging,
      QkMacro, FormCfg, Running, Output1, PyImages, Quarkx, QConsts,
      QkExplorer, PyToolbars, PyControls, QkFormCfg, FileAssociations,
-     Platform, ExtraFunctionality;
+     Platform;
 
 const
  ActiveFontColor    = clWhite;

@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit Running;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, ShellAPI,
+  DelphiCompat, Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, ShellAPI,
   StdCtrls, ExtCtrls, TB97, QkObjects, QkFileObjects, QkForm;
 
 type
@@ -60,7 +62,7 @@ procedure ExternalEdit(Q: QObject);
 
 implementation
 
-uses Config, Undo, Setup, Quarkx, QkExceptions, Logging, ExtraFunctionality;
+uses Config, Undo, Setup, Quarkx, QkExceptions, Logging;
 
 {$R *.DFM}
 

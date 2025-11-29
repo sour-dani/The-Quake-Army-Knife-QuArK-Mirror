@@ -20,16 +20,17 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkFullScreenWindow;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, QkObjects;
+uses DelphiCompat, Windows, SysUtils, QkObjects;
 
 procedure OpenFullscreenWindow(const Caption: String; Root: QObject);
 
 implementation
 
-uses Messages, QkExceptions, Coordinates, EdSceneObject, qmath, Setup, Qk3D,
-  ExtraFunctionality;
+uses Messages, QkExceptions, Coordinates, EdSceneObject, qmath, Setup, Qk3D;
 
 type
   QFullScreenWindow = class

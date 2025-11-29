@@ -20,15 +20,15 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit FileAssociations;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses SysUtils, Classes, QkObjects;
+uses DelphiCompat, SysUtils, Classes, QkObjects;
 
 procedure MakeAssociations(Config: QObject);
 procedure RefreshAssociations;
 procedure RemoveAssociations;
-
-{$I DelphiVer.inc}
 
  {------------------------}
 
@@ -37,7 +37,7 @@ implementation
 uses Windows, Forms, StrUtils, Registry2, Quarkx, ApplPaths, Setup,
      QkExceptions, QkFileObjects, QkObjectClassList,
      {$IFDEF CompiledWithDelphi2} ShellObj, {$ELSE} ShlObj, {$ENDIF}
-     ExtraFunctionality, Logging;
+     Logging;
 
  {------------------------}
 

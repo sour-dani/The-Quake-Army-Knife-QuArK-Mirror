@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit qmatrices;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses SysUtils, qmath;
+uses DelphiCompat, SysUtils, qmath;
 
 type
  PMatrixTransformation = ^TMatrixTransformation;

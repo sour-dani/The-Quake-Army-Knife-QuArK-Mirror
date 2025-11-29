@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkQ3;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, SysUtils, Classes, QkZip2, QkFileObjects, QkObjects, QkText,
+  DelphiCompat, Windows, SysUtils, Classes, QkZip2, QkFileObjects, QkObjects, QkText,
   QkTextures, QkBsp, Setup, QkWad, QkPixelSet;
 
 type
@@ -101,8 +103,7 @@ type
 
 implementation
 
-uses StrUtils, QuarkX, QkExceptions, Game, Travail, QkObjectClassList, QkSpecifics,
-  Logging, ExtraFunctionality;
+uses StrUtils, QuarkX, QkExceptions, Game, Travail, QkObjectClassList, QkSpecifics, Logging;
 
 const
  LUMP_ENTITIES = 0;

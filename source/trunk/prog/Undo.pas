@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit Undo;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses SysUtils, Classes, Controls, Forms, Dialogs,
+uses DelphiCompat, SysUtils, Classes, Controls, Forms, Dialogs,
      QkObjects, QkSpecifics, QkExplorer, QkFileObjects;
 
 type

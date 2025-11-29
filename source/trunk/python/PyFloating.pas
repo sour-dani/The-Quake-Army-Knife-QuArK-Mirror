@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit PyFloating;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, Messages, SysUtils, Classes, Controls, Forms, Graphics, Menus,
+uses DelphiCompat, Windows, Messages, SysUtils, Classes, Controls, Forms, Graphics, Menus,
      Quarkx, Python, QkObjects, PyObjects, PyControls, PyPanels, QkForm;
 
 const

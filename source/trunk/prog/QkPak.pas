@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkPak;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  DelphiCompat, Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   QkObjects, QkFileObjects, TB97, QkFileExplorer, QkListView,
   ComCtrls, QkForm, QkGroup, Python;
 
@@ -108,7 +110,7 @@ implementation
 
 uses Travail, QkExplorer, Quarkx, QkExceptions, PyObjects, Game, QkSin,
  Qkzip2, QkQ3, QkD3, QkCoD2, QkKEX, QkSylphis, QkTribes2, QkGCF, QkNCF, QkVPK,
- QkObjectClassList, QkBsp, BrowseForFolder, Setup, Logging, ExtraFunctionality;
+ QkObjectClassList, QkBsp, BrowseForFolder, Setup, Logging;
 
 {$R *.DFM}
 

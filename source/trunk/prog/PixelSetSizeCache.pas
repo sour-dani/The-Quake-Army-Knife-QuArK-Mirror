@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit PixelSetSizeCache;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Types, Classes, QkObjects;
+uses DelphiCompat, Types, Classes, QkObjects;
 
 type
   TPixelSetSizeCache = class

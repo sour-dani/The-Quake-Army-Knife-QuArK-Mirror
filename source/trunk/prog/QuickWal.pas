@@ -25,10 +25,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 
 unit QuickWal;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  QkObjects, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  DelphiCompat, QkObjects, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   TB97, StdCtrls, ExtCtrls, QkForm;
 
 type
@@ -69,7 +71,7 @@ implementation
 
 uses StrUtils, Platform, QkGroup, Game, QkTextures, QkWad, QkExplorer, QkZip2,
   Quarkx, QkExceptions, Travail, ToolBox1, QkPak, QkFileObjects, QkHL, ToolBoxGroup,
-  Setup, Logging, QkQ3, OsFolder, QkD3, ApplPaths, ExtraFunctionality;
+  Setup, Logging, QkQ3, OsFolder, QkD3, ApplPaths;
 
 {$R *.DFM}
 

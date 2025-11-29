@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit HLLib;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Classes;
+uses DelphiCompat, Windows, SysUtils, Classes;
 
 function LoadHLLib : Boolean;
 procedure UnloadHLLib(ForceUnload: boolean = false);
@@ -172,9 +174,7 @@ var
 
 implementation
 
-uses QkExceptions, Logging, ApplPaths, Quarkx, SystemDetails, ExtraFunctionality;
-
-{$I DelphiVer.inc}
+uses QkExceptions, Logging, ApplPaths, Quarkx, SystemDetails;
 
 const RequiredGCFAPI = 3;
 

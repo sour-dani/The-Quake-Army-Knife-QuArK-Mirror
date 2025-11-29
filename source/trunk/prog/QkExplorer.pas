@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkExplorer;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Messages, Classes, Controls, Menus,
+uses DelphiCompat, Windows, SysUtils, Messages, Classes, Controls, Menus,
      Forms, StdCtrls, ExtCtrls, Buttons, ComCtrls,
      EnterEditCtrl, QkObjects, QkTreeView,
      QkGroup, QkForm, QSplitter;

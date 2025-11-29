@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit TexHints;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Types, SysUtils, Classes, Graphics, Controls, Forms, QkObjects;
+uses DelphiCompat, Types, SysUtils, Classes, Graphics, Controls, Forms, QkObjects;
 
 type
   TTexHintWindow = class(THintWindow)
@@ -36,7 +38,7 @@ type
 
 implementation
 
-uses StrUtils, Setup, Game, Travail, QkPixelSet, QkTextures, ExtraFunctionality;
+uses StrUtils, Setup, Game, Travail, QkPixelSet, QkTextures;
 
 procedure TTexHintWindow.Paint;
 var

@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkSoF;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses SysUtils, Classes, QkObjects, QkFileObjects, QkBsp, QkImages, Dialogs;
+uses DelphiCompat, SysUtils, Classes, QkObjects, QkFileObjects, QkBsp, QkImages, Dialogs;
 
 type
  QM32 = class(QImage)
@@ -58,7 +60,7 @@ type
 implementation
 
 uses StrUtils, Setup, Travail, Quarkx, QkExceptions, QkPixelSet,
-  QkText, QkObjectClassList, ExtraFunctionality;
+  QkText, QkObjectClassList;
 
 const
   LUMP_ENTITIES = 0;

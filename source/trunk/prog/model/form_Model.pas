@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit form_Model;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  DelphiCompat, Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   QkObjects, QkFileObjects, TB97, Python, PyMapView,
   StdCtrls, EnterEditCtrl, ExtCtrls, QkForm, QkMdlObject;
 

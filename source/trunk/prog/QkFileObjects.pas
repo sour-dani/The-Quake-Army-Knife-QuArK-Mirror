@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkFileObjects;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, StrUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  DelphiCompat, Windows, Messages, SysUtils, StrUtils, Classes, Graphics, Controls, Forms, Dialogs,
   Menus, QkObjects, TB97, EnterEditCtrl, QkForm, ComCtrls, CommCtrl, Python;
 
 const
@@ -211,7 +213,7 @@ implementation
 uses qhelper, Qk1, Undo, QkExplorer, Setup, qmath, QkGroup, Travail, QkOwnExplorer,
   QkFileExplorer, QkUnknown, Quarkx, QkExceptions, QkInclude,
   PyObjects, QConsts, Logging, SystemDetails,
-  PyForms, QkTreeView, Game, QkObjectClassList, ApplPaths, ExtraFunctionality;
+  PyForms, QkTreeView, Game, QkObjectClassList, ApplPaths;
 
 {$R *.DFM}
 

@@ -20,11 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit qmath;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-{$I DelphiVer.inc}
-
-uses Types, SysUtils, Graphics;
+uses DelphiCompat, Types, SysUtils, Graphics;
 
 type
  PVect = ^TVect;

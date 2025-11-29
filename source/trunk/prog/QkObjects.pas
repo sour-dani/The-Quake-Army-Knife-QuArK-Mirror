@@ -29,7 +29,8 @@ unit QkObjects;
 
 interface
 
-{$I DelphiVer.inc}
+{$INCLUDE DelphiCompat.inc}
+
 {$INCLUDE MemManager.inc}
 
 {$IFNDEF Delphi4orNewerCompiler}
@@ -37,8 +38,8 @@ interface
   {$DEFINE TLIST_NOVIRTUALCLEAR}
 {$ENDIF}
 
-uses SysUtils, Messages, Classes, Windows, Controls, Graphics, Forms, qmath,
-  Menus, CommCtrl, Python, QkSpecifics, ExtraFunctionality;
+uses DelphiCompat, SysUtils, Messages, Classes, Windows, Controls, Graphics, Forms, qmath,
+  Menus, CommCtrl, Python, QkSpecifics;
 
 const
   iiUnknownFile           = 0;

@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkHr2;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses SysUtils, Classes, Graphics, Dialogs, Controls,
+uses DelphiCompat, SysUtils, Classes, Graphics, Dialogs, Controls,
      QkObjects, QkFileObjects, QkTextures, QkMd2, QkQ2;
 
 type

@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit Logging;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 //Keep the number of uses to a bare minimal, due to Delphi's init-order!
-{$IFDEF PyProfiling}uses Classes;{$ENDIF}
+uses DelphiCompat{$IFDEF PyProfiling}, Classes{$ENDIF};
 
 type
   TLogName = (LOG_DEFAULT, LOG_PASCAL, LOG_PYTHON, LOG_SYS, LOG_CONSOLE, LOG_DEBUG);
@@ -62,9 +64,7 @@ const
 
 implementation
 
-{$I DelphiVer.inc}
-
-uses Windows, Forms, Sysutils, ApplPaths, ExtraFunctionality;
+uses Windows, Forms, Sysutils, ApplPaths;
 
 var
   LogFile: TextFile;

@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkDaikatana;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Classes, QkObjects, QkQ2;
+uses DelphiCompat, Classes, QkObjects, QkQ2;
 
 procedure LoadTextureDataDK(F: TStream; Base, Taille: TStreamPos; var Texture: QTexture2);
 

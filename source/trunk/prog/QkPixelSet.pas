@@ -20,10 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkPixelSet;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Classes, Graphics, Game, Python, QkObjects,
-     QkFileObjects, ExtraFunctionality;
+uses DelphiCompat, Windows, SysUtils, Classes, Graphics, Game, Python, QkObjects, QkFileObjects;
 
 type
  TPixelSetFormat = (psfDefault, psf8bpp, psf24bpp);

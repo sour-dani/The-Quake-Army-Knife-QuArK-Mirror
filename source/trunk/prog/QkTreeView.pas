@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkTreeView;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Messages, Classes, ExtCtrls, Forms, Graphics,
+uses DelphiCompat, Windows, SysUtils, Messages, Classes, ExtCtrls, Forms, Graphics,
      Menus, CommCtrl, EnterEditCtrl, QkObjects, QkForm, Controls;
 
 type

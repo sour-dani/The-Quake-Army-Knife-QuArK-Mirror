@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkInclude;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Classes, SysUtils, QkObjects;
+uses DelphiCompat, Classes, SysUtils, QkObjects;
 
 type
 {QInclude = class(QObject)

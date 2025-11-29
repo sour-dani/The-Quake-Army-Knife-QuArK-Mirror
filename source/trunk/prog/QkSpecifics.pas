@@ -30,9 +30,11 @@ unit QkSpecifics;
 //It is heavily inspired by TStringList, but we've stripped functionality
 //we don't need.
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Classes;
+uses DelphiCompat, Classes;
 
 resourcestring
   SListItemNotFoundError = 'Item not found (%s)';

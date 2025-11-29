@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit ApplPaths;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-{$I DelphiVer.inc}
+uses DelphiCompat;
 
 type
   TQPathType = (
@@ -64,7 +66,7 @@ function EscapeCommandline(const S: string): string;{$IFDEF Delphi2005orNewerCom
 
 implementation
 
-uses SysUtils, StrUtils, Windows, Forms, Setup, QkExceptions, ExtraFunctionality;
+uses SysUtils, StrUtils, Windows, Forms, Setup, QkExceptions;
 
 const
   ADDONS_SUBDIRECTORY = 'addons';

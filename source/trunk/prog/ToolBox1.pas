@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit ToolBox1;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Controls, Forms, Dialogs,
+  DelphiCompat, Windows, Messages, SysUtils, Classes, Controls, Forms, Dialogs,
   TB97, QkObjects, QkFileObjects, QkExplorer, ExtCtrls, QkTreeView,
   QkGroup, QkFileExplorer, QkForm, CommCtrl, Menus, QkFormVw;
 

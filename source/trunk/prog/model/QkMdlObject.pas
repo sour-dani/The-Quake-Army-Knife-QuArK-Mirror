@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkMdlObject;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses QkObjects, Qk3D, qmath, Python;
+uses DelphiCompat, QkObjects, Qk3D, qmath, Python;
 
 type
   dstvert_p = ^dstvert_t;

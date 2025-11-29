@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit Qk1;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  DelphiCompat, Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   QkGroup, ExtCtrls, CommCtrl, QkExplorer, QkObjects,
   QkFileObjects, Menus, TB97, QkFileExplorer, QkForm, ComCtrls;
 
@@ -228,7 +230,6 @@ var
 
 implementation
 
-{$I DelphiVer.inc}
 {$INCLUDE MemManager.inc}
 
 uses {$IFDEF MemTester}MemTester, {$ENDIF}ShellApi, Undo, QkQuakeC, Setup, Config,
@@ -236,7 +237,7 @@ uses {$IFDEF MemTester}MemTester, {$ENDIF}ShellApi, Undo, QkQuakeC, Setup, Confi
   Running, Output1, QkTreeView, PyProcess, Console, Python, Quarkx, About,
   PyMapView, PyForms, Qk3D, EdSceneObject, ApplPaths, FileAssociations,
   QkExceptions, QkQuakeCtx, AutoUpdater, Toolbar1,
-  Splash, QConsts, Logging, SystemDetails, ExtraFunctionality, Platform{$IFDEF Delphi7orNewerCompiler}, UxTheme{$ENDIF}; //FIXME: Mike Lischke's Theme XP Manager would add support for Delphi 4-6.
+  Splash, QConsts, Logging, SystemDetails, Platform{$IFDEF Delphi7orNewerCompiler}, UxTheme{$ENDIF}; //FIXME: Mike Lischke's Theme XP Manager would add support for Delphi 4-6.
 
 type
   TCmdLineOptions = record

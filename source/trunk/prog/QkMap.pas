@@ -20,16 +20,20 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkMap;
 
+{.$DEFINE ClassnameLowerCase}
+{$DEFINE RemoveEmptySpecs}
+
+ {-------------------}
+
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, Messages, Classes, SysUtils, Forms, Controls,
+  DelphiCompat, Windows, Messages, Classes, SysUtils, Forms, Controls,
   StdCtrls, EnterEditCtrl, ExtCtrls, TB97,
   QkMapObjects, QkMapPoly, QkBsp, qmath, Python, Setup,
   QkForm, QkObjects, QkFileObjects, PyMapView;
-
-{ $DEFINE ClassnameLowerCase}
-{$DEFINE RemoveEmptySpecs}
 
 type
  TMapFormatTypes = (
@@ -122,7 +126,7 @@ uses
   Undo, Quarkx, qmatrices, Qk3D, Coordinates, QkQuakeMap, ApplPaths, QkTextures, QkSpecifics,
   Graphics, StrUtils, Game, QkExceptions, Travail, QConsts, Logging, PyControls,
   PyForms, Bezier, QkMesh, Duplicator, QkPixelSet, Qk6DX, QkVMF, QkSylphis, QkQ2,
-  QkSin, MapError, PixelSetSizeCache, QkObjectClassList, ExtraFunctionality;
+  QkSin, MapError, PixelSetSizeCache, QkObjectClassList;
 
 type
   vec3d = array[1..3] of Double;

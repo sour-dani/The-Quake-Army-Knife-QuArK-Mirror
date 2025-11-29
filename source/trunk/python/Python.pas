@@ -27,12 +27,13 @@ unit Python;
 
  {-------------------}
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses ExtraFunctionality {$IFDEF PyProfiling}, Classes {$ENDIF};
+uses DelphiCompat{$IFDEF PyProfiling}, Classes{$ENDIF};
 
 {$INCLUDE PyVersions.inc}
-{$I DelphiVer.inc}
 
 type
  CFILE = Pointer;

@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkDummyWindow;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils;
+uses DelphiCompat, Windows, SysUtils;
 
 function CreateDummyWindow(const Caption: String): HWND;
 procedure DeleteDummyWindow(DummyWindow: HWND);

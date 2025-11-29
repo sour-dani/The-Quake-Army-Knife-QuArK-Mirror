@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit HelpPopup1;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
+  DelphiCompat, Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   StdCtrls, QkForm, ExtCtrls, ActnList;
 
 type

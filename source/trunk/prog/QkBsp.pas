@@ -20,12 +20,14 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkBsp;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls,
+  DelphiCompat, Windows, Messages, SysUtils, Classes, Graphics, Controls,
   Forms, Dialogs, QkObjects, QkFileObjects, QkForm, QkMapObjects, qmath,
-  StdCtrls, Python, TB97, ExtraFunctionality;
+  StdCtrls, Python, TB97;
 
  const
   { these are the game codes for the default games

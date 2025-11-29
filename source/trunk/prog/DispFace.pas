@@ -20,8 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit DispFace;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
-uses SysUtils, qmath, Python, QkMappoly;
+
+uses DelphiCompat, SysUtils, qmath, Python, QkMapPoly;
 
 type
  TControlPoints3 = {array of} vec3_t;
@@ -46,6 +49,7 @@ type
 
 
 implementation
+
 uses math;
 
 function TDispFace.PyGetAttr(attr: PyChar) : PyObject;

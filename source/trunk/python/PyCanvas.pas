@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit PyCanvas;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Classes, Graphics, Python, Quarkx, CommCtrl;
+uses DelphiCompat, Windows, SysUtils, Classes, Graphics, Python, Quarkx, CommCtrl;
 
 type
  PyCanvasObj = ^TyCanvasObj;

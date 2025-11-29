@@ -20,11 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit qdraw;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-{$I DelphiVer.inc}
-
-uses Windows, SysUtils, Graphics;
+uses DelphiCompat, Windows, SysUtils, Graphics;
 
 var
  PointVisible95: function(const P: TPoint) : Boolean;
@@ -45,7 +45,7 @@ function DataToBmp16(const S: String; W: Integer) : HBitmap;
 
 implementation
 
-uses QkPixelSet, ExtraFunctionality;
+uses QkPixelSet;
 
 const
  Max95 = 8192;  { to clip coordinates x and y }

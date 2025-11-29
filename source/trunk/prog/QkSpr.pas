@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkSpr;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  DelphiCompat, Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   QkForm, QkFileObjects, QSplitter, StdCtrls, ComCtrls, ExtCtrls, TB97,
   QkObjects, Game, Setup, Menus, QkImages, Sprite;
 
@@ -188,6 +190,7 @@ begin
   case ReadFormat of
     rf_Default: begin  { as stand-alone file }
 
+      //FIXME: Check file length!
       F.ReadBuffer(Signature, SizeOf(Signature));
       if (Signature<>cSignatureSprID) then
         raise EErrorFmt(5797, [Signature,cSignatureSprID]); //FIXME: Do errors like in QkBSP!
@@ -495,6 +498,7 @@ var
   i: Longint;
   frame: TQ2SprFrame;
 begin
+  //FIXME: Check file length!
   f.ReadBuffer(Dst,sizeof(dst));
   if dst.ident<>cSignatureSprQ2 then
     raise EErrorFmt(5801, [dst.ident,cSignatureSprQ2]); //FIXME: Do errors like in QkBSP!

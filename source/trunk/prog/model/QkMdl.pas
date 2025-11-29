@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkMdl;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Types, SysUtils, Classes, QkObjects, QkFileObjects, QkImages, Python, Game,
+  DelphiCompat, Types, SysUtils, Classes, QkObjects, QkFileObjects, QkImages, Python, Game,
   QkModelFile, QMath, QkMdlObject, QkFrame, QkComponent, Logging;
 
 type
@@ -105,8 +107,7 @@ type
 
 implementation
 
-uses qhelper, QuarkX, QkExceptions, QkModelRoot, Setup, Travail, QkObjectClassList,
-  QkPcx, ExtraFunctionality;
+uses qhelper, QuarkX, QkExceptions, QkModelRoot, Setup, Travail, QkObjectClassList, QkPcx;
 
 class function QMdlFile.TypeInfo;
 begin

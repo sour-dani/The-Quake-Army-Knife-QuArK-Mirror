@@ -20,17 +20,17 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit BrowseForFolder;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-{$I DelphiVer.inc}
-
-uses Windows;
+uses DelphiCompat, Windows;
 
 function BrowseForFolderDlg(hwnd: HWnd; var Path: String; Title: String; const CheckFile: String) : Boolean;
 
 implementation
 
-uses SysUtils, SystemDetails, FileExists2, {$IFDEF CompiledWithDelphi2}ShellObj, OLE2,{$ELSE}ShlObj, ActiveX,{$ENDIF} ExtraFunctionality;
+uses SysUtils, SystemDetails, FileExists2, {$IFDEF CompiledWithDelphi2}ShellObj, OLE2{$ELSE}ShlObj, ActiveX{$ENDIF};
 
 function BrowseCallback(hWnd: HWND; uMsg: UINT; lParam, lpData: LPARAM): Integer stdcall; export;
 var

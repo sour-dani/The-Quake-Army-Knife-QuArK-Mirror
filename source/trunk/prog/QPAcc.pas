@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QPAcc;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Classes, SysUtils;
+uses DelphiCompat, Classes, SysUtils;
 
 const
  Impulse0Def = 166;

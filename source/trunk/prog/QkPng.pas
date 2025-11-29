@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkPng;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Classes, QkImages, QkPixelSet, QkObjects, QkFileObjects,
+uses DelphiCompat, Classes, QkImages, QkPixelSet, QkObjects, QkFileObjects,
      DevIL, FreeImage;
 
 type

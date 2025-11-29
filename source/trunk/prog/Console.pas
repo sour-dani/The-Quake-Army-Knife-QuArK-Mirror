@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit Console;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  DelphiCompat, Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   Python, CursorScrollBox, StdCtrls, ExtCtrls, TB97, QkForm, EnterEditCtrl;
 
 type
@@ -84,8 +86,7 @@ implementation
 
 {$R *.DFM}
 
-uses Qk1, QkObjects, QkExceptions, Quarkx, PyProcess, Setup,
-     Logging, ApplPaths, ExtraFunctionality;
+uses Qk1, QkObjects, QkExceptions, Quarkx, PyProcess, Setup, Logging, ApplPaths;
 
 var
   g_ConsoleForm: TConsoleForm;

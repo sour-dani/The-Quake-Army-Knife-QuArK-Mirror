@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit FreeImage;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils;
+uses DelphiCompat, Windows, SysUtils;
 
 const
 //FREE_IMAGE_FORMAT

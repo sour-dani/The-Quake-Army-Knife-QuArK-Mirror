@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit Game;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, SysUtils, Classes, Controls, Forms, Dialogs,
+  DelphiCompat, Windows, SysUtils, Classes, Controls, Forms, Dialogs,
   QkObjects, QkFileObjects, qmath, QkForm, StdCtrls, TB97, ComCtrls;
 
 type
@@ -146,7 +148,7 @@ implementation
 
 uses Math, StrUtils, Graphics, QkPak, Setup, QkUnknown, QkTextures, Travail, ToolBox1,
   QkImages, AddOns, QkQuakeCtx, Config, PakFiles, QkExceptions, Quarkx, PyImages,
-  ApplPaths, Qk1, SteamFS, Python, Logging, FileExists2, ExtraFunctionality;
+  ApplPaths, Qk1, SteamFS, Python, Logging, FileExists2;
 
 var
  GameFiles: TQList = Nil;

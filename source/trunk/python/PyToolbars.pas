@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit PyToolbars;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, Messages, SysUtils, Classes, Graphics, Forms, TB97, ExtCtrls, Controls,
+uses DelphiCompat, Windows, Messages, SysUtils, Classes, Graphics, Forms, TB97, ExtCtrls, Controls,
      Python, QkForm, PyImages, PyControls, QkObjects, QkGroup, CommCtrl, MouseTracker;
 
 type

@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit MapError;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Classes;
+uses DelphiCompat, Classes;
 
 type
   TMapError = class

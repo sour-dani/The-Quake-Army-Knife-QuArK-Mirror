@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit AutoUpdateInstaller;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, Forms, Classes, StdCtrls, Controls, ComCtrls;
+uses DelphiCompat, Windows, Forms, Classes, StdCtrls, Controls, ComCtrls;
 
 type
   TAutoUpdateInstaller = class(TForm)

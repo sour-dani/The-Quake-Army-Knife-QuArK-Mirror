@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkFtx;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Classes, QkPixelSet, QkImages, QkObjects, QkFileObjects;
+uses DelphiCompat, Classes, QkPixelSet, QkImages, QkObjects, QkFileObjects;
 
 type
  QFtx = class(QImage)
@@ -39,7 +41,7 @@ type
 
 implementation
 
-uses Quarkx, QkExceptions, QkObjectClassList, Logging, ExtraFunctionality;
+uses Quarkx, QkExceptions, QkObjectClassList, Logging;
 
 type
  TFtxHeader = record

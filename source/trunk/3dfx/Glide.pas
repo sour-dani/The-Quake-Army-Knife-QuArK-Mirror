@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit Glide;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils;
+uses DelphiCompat, Windows, SysUtils;
 
 (**************    3DFX.H    **************)
 
@@ -1584,7 +1586,7 @@ procedure UnloadGlide;
 
 implementation
 
-uses QkExceptions, QkDummyWindow, ApplPaths, Logging, Quarkx, SystemDetails, ExtraFunctionality;
+uses QkExceptions, QkDummyWindow, ApplPaths, Logging, Quarkx, SystemDetails;
 
 type
   TFuncRequirement =  { Specifies which DLL, the function should exist in: }

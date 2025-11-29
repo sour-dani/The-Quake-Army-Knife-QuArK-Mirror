@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit EdOpenGL;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, Classes, qmath, Coordinates, GL1, EdSceneObject, ExtraFunctionality;
+uses DelphiCompat, Windows, Classes, qmath, Coordinates, GL1, EdSceneObject;
 
 type
  PLightList = ^TLightList;

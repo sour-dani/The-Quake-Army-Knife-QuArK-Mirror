@@ -20,11 +20,13 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit PyMath;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-{$INCLUDE PyVersions.inc}
+uses DelphiCompat, SysUtils, Coordinates, qmath, qquaternions, qmatrices, Python, Quarkx;
 
-uses SysUtils, Coordinates, qmath, qquaternions, qmatrices, Python, Quarkx;
+{$INCLUDE PyVersions.inc}
 
 type
   PyVect = ^TyVect;

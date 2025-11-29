@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkModelRoot;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Classes, QkObjects, Python, QkMdlObject,
+uses DelphiCompat, Windows, SysUtils, Classes, QkObjects, Python, QkMdlObject,
      QkMiscGroup, QkBoneGroup, QkComponent, QkFrameGroup, QkFrame;
 
 type

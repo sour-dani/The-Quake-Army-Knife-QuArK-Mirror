@@ -20,14 +20,14 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit FormCfg;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses SysUtils, Classes, Controls, Graphics, Forms, StdCtrls, ExtCtrls,
+uses DelphiCompat, SysUtils, Classes, Controls, Graphics, Forms, StdCtrls, ExtCtrls,
      QkObjects, Windows, ComCtrls, Messages, TB97, Dialogs,
      Menus, CommCtrl, EnterEditCtrl, TrackBar2, QkForm, Game,
      CursorScrollBox, Spin, SmArrowBtn, QkFormCfg;
-
-{$I DelphiVer.inc}
 
 const
  wp_InternalEdit = 96;
@@ -172,7 +172,7 @@ uses StrUtils, Types, Math, qdraw, qhelper, qmath, QkUnknown, Undo, TbPalette,
      Toolbar1, ToolBox1, Setup, QuarkX, QkExceptions, QkFileObjects, QkInclude,
      QkMacro, QkImages, Python, PyMacros, PyToolbars, PyForms, QkPixelSet,
      QkObjectClassList, QkSpecifics, ApplPaths, BrowseForFolder, FileExists2,
-     Console, SystemDetails, Platform, Logging, ExtraFunctionality;
+     Console, SystemDetails, Platform, Logging;
 
 const
  Differs = 5391;

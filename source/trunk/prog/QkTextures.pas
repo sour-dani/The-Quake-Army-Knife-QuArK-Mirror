@@ -20,14 +20,14 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkTextures;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  DelphiCompat, Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   QkObjects, QkFileObjects, TB97, StdCtrls, ExtCtrls, PaintPanel, Game,
   EnterEditCtrl, QkForm, Python, QkPixelSet;
-
-{$I DelphiVer.inc}
 
 const
   cp4MipIndexes  = 4;    { 4 images scaled down. 1/1, 1/2, 1/4 and 1/8 }
@@ -189,7 +189,7 @@ implementation
 uses Types, qhelper, QkWad, QkBsp, ToolBox1, QkImages, Setup, Travail, qmath,{ QkPcx,}
   TbPalette, TbTexture, Undo, QkExplorer, QkPak, QkQuakeCtx, Quarkx, QkExceptions,
   CCode, PyObjects, QkHr2, QkHL, QkSin, QkFormCfg, Logging,
-  QkQ1, QkQ2, QkQ3, QkCoD2, QkObjectClassList, QkD3, ApplPaths, Platform, ExtraFunctionality;
+  QkQ1, QkQ2, QkQ3, QkCoD2, QkObjectClassList, QkD3, ApplPaths, Platform;
 
 {$R *.DFM}
 

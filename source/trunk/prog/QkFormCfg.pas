@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkFormCfg;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  QkObjects, QkFileObjects, QkFormVw, QkQuakeCtx;
+  DelphiCompat, QkObjects, QkFileObjects, QkFormVw, QkQuakeCtx;
 
 type
  QInternal = class(QFormObject)

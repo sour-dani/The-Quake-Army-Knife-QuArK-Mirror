@@ -20,7 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit VersionNumbers;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
+
+uses DelphiCompat;
 
 type
   TVersionNumber = class
@@ -39,7 +43,7 @@ type
 
 implementation
 
-uses SysUtils, StrUtils, Math, ExtraFunctionality;
+uses SysUtils, StrUtils, Math;
 
  { ------------------- }
 

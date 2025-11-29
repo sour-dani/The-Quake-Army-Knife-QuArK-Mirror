@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit Qk6DX;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  QkObjects, QkFileObjects, QkMap;
+  DelphiCompat, QkObjects, QkFileObjects, QkMap;
 
 type
   QHmfFile = class(QMapFile)

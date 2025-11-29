@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit Duplicator;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Classes, Graphics, QkObjects, QkMapObjects,
+uses DelphiCompat, Windows, SysUtils, Classes, Graphics, QkObjects, QkMapObjects,
      qmath, Python;
 
 type

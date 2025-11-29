@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit PyControls;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Messages, Classes, Controls, Forms, Python, PyPanels;
+uses DelphiCompat, Windows, SysUtils, Messages, Classes, Controls, Forms, Python, PyPanels;
 
 const
  mbClick      = 256;

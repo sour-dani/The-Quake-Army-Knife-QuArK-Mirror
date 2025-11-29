@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkVMT;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, Classes, QkWad, QkPixelSet, QkObjects, QkFileObjects, VTFLib;
+uses DelphiCompat, Windows, Classes, QkWad, QkPixelSet, QkObjects, QkFileObjects, VTFLib;
 
 type
   QVMTStage = class(QObject)
@@ -52,7 +54,7 @@ type
 implementation
 
 uses SysUtils, Setup, Quarkx, QkExceptions, QkObjectClassList, Game, Logging,
-     QkVTF, StrUtils, ExtraFunctionality, ApplPaths, QkTextures;
+     QkVTF, StrUtils, ApplPaths, QkTextures;
 
 var
   VMTLoaded: Boolean;

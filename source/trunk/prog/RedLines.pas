@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit RedLines;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Classes, Controls, ExtCtrls, Graphics, Forms,
+uses DelphiCompat, Windows, SysUtils, Classes, Controls, ExtCtrls, Graphics, Forms,
      MouseTracker;
 
 type

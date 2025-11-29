@@ -20,11 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit Quarkx;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-{$I DelphiVer.inc}
-
-uses Windows, Messages, ShellApi, SysUtils, Python, Forms, Menus;
+uses DelphiCompat, Windows, Messages, ShellApi, SysUtils, Python, Forms, Menus;
 
 var
  Py_None        : PyObject = Nil;
@@ -87,7 +87,7 @@ uses Classes, Dialogs, Graphics, CommCtrl, ExtCtrls, Controls,
      PakFiles, Registry2, SearchHoles, QkMapPoly, HelpPopup1, QkFullScreenWindow,
      PyForms, QkPixelSet, Bezier, Logging, QkObjectClassList, TextBoxForm,
      ApplPaths, MapError, StrUtils, QkImages, QkExceptions,
-     Coordinates, SystemDetails, ExtraFunctionality, Platform;
+     Coordinates, SystemDetails, Platform;
 
 {$INCLUDE PyVersions.inc}
 

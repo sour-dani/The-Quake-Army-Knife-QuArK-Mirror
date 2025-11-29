@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkDDS;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, Classes, QkImages, QkPixelSet, QkObjects, QkFileObjects,
+uses DelphiCompat, Windows, Classes, QkImages, QkPixelSet, QkObjects, QkFileObjects,
      DevIL, FreeImage;
 
 type

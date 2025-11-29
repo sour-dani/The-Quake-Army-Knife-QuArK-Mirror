@@ -20,12 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit EdSceneObject;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, Classes,
-     Game, Coordinates, qmath, Bezier, QkMesh,
-     QkObjects, QkPixelSet, QkComponent, QkMapPoly,
-     Glide, GL1, Direct3D9, Sprite, ExtraFunctionality;
+uses DelphiCompat, Windows, Classes, Game, Coordinates, qmath, Bezier, QkMesh,
+     QkObjects, QkPixelSet, QkComponent, QkMapPoly, Glide, GL1, Direct3D9, Sprite;
 
  {------------------------}
 
@@ -221,8 +221,6 @@ procedure GetwhForTexture(const info: GrTexInfo; var w,h: Integer);
  {------------------------}
 
 implementation
-
-{$I DelphiVer.inc}
 
 uses SysUtils, Math, {$IFDEF Delphi2007orNewerCompiler}DWMAPI, {$ENDIF}Logging,
      Travail, Quarkx, QkExceptions, Setup,

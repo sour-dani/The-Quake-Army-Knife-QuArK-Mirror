@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit Qk3ds;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  SysUtils, Classes, QkObjects, QkFileObjects, QkImages, Python, Game, QkModelFile,
+  DelphiCompat, SysUtils, Classes, QkObjects, QkFileObjects, QkImages, Python, Game, QkModelFile,
   Graphics, Windows, QkModelRoot, QkMdlObject, QkFrame, QkComponent;
 
 type

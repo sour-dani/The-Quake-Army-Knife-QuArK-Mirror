@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkZip2;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, SysUtils, Classes, QkObjects, QkFileObjects, QkPak;
+  DelphiCompat, Windows, SysUtils, Classes, QkObjects, QkFileObjects, QkPak;
 
 {
   Zip File Structure is as follows:
@@ -129,7 +131,7 @@ type
 implementation
 
 uses Travail, QkExplorer, Quarkx, QkExceptions, PyObjects, Game, ZipAbbrevia,
-     QkUnknown, QkObjectClassList, ExtraFunctionality;
+     QkUnknown, QkObjectClassList;
 
 const
   cZIP_HEADER   = $04034B50;

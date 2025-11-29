@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit DX9;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Direct3D, Direct3D9;
+uses DelphiCompat, Windows, SysUtils, Direct3D, Direct3D9;
 
 var
  D3D : IDirect3D9 = nil;

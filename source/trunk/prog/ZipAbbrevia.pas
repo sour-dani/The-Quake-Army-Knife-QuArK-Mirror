@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit ZipAbbrevia;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Sysutils, Classes, QkObjects;
+uses DelphiCompat, Sysutils, Classes, QkObjects;
 
 function ZipCompressStream(input: TStream; var output: TMemoryStream): LongWord; //Returns the CRC32
 function ZipDecompressStream(input: TStream; var output: TStream): LongWord; //Returns the CRC32

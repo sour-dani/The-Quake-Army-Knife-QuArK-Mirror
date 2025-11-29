@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkPcx;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, Classes, QkImages, QkPixelSet, QkObjects, QkFileObjects,
+uses DelphiCompat, Windows, Classes, QkImages, QkPixelSet, QkObjects, QkFileObjects,
      Devil, FreeImage;
 
 type
@@ -45,7 +47,7 @@ type
 implementation
 
 uses SysUtils, Setup, Quarkx, QkExceptions, QkObjectClassList,
-     Game, Logging, Travail, ExtraFunctionality;
+     Game, Logging, Travail;
 
 const
   pcxSignature   = $0801050A;

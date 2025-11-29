@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit PyFormCfg;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, Messages, SysUtils, Classes, Controls, FormCfg, Python,
+uses DelphiCompat, Windows, Messages, SysUtils, Classes, Controls, FormCfg, Python,
      StdCtrls, PyObjects, PyControls, QkForm;
 
 const

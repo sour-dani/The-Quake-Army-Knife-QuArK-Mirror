@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit Travail;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Controls, Forms,
+  DelphiCompat, Windows, Messages, SysUtils, Classes, Controls, Forms,
   ComCtrls, StdCtrls, ExtCtrls;
 
 type

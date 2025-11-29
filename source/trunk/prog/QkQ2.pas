@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkQ2;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Classes, QkObjects, QkFileObjects, QkTextures, QkBsp;
+  DelphiCompat, Classes, QkObjects, QkFileObjects, QkTextures, QkBsp;
 
 type
  TCompactTexName = array[0..31] of Byte;

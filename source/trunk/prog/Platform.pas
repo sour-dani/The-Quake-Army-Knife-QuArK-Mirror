@@ -20,7 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit Platform;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
+
+uses DelphiCompat;
 
 type
   TSoundType = (SOUND_DEFAULT, SOUND_INFO, SOUND_QUESTION, SOUND_WARNING, SOUND_ERROR);
@@ -31,7 +35,7 @@ function SaveWindowPositions: Boolean;
 
 implementation
 
-uses {$IFDEF LINUX}SysUtils{$ELSE}Windows, ShlObj{$ENDIF}, QkExceptions, ExtraFunctionality;
+uses {$IFDEF LINUX}SysUtils{$ELSE}Windows, ShlObj{$ENDIF}, QkExceptions;
 
 function PlaySound(const SoundType: TSoundType): Boolean;
 {$IFNDEF LINUX}

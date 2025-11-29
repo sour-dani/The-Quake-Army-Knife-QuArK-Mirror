@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkVPK;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses SysUtils, Classes, QkObjects, QkFileObjects, QkPak, HLLib;
+uses DelphiCompat, SysUtils, Classes, QkObjects, QkFileObjects, QkPak, HLLib;
 
 type
  QVPKFolder = class(QPakFolder)
@@ -54,7 +56,7 @@ type
 
 implementation
 
-uses Quarkx, QkExceptions, PyObjects, Game, QkObjectClassList, Logging, ExtraFunctionality;
+uses Quarkx, QkExceptions, PyObjects, Game, QkObjectClassList, Logging;
 
 var
   HLLoaded: Boolean;

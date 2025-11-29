@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit PyTravail;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Classes, QkObjects, Python;
+uses DelphiCompat, Classes, QkObjects, Python;
 
 function GetProgressBarModule(nText, nCount: Integer) : PyObject;
 

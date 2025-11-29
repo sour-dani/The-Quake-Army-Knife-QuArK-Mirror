@@ -20,13 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit EdSoftware;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, Classes, Setup, SysUtils,
-     Coordinates, qmath, Bezier,
-     QkObjects,
-     Glide,
-     EdSceneObject, ExtraFunctionality;
+uses DelphiCompat, Windows, Classes, Setup, SysUtils, Coordinates, qmath, Bezier,
+     QkObjects, Glide, EdSceneObject;
 
  {------------------------}
 

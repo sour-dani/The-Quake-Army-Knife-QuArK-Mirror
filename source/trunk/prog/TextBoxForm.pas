@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit TextBoxForm;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Classes, Forms, Controls, StdCtrls, ExtCtrls, Dialogs,
+uses DelphiCompat, Windows, SysUtils, Classes, Forms, Controls, StdCtrls, ExtCtrls, Dialogs,
   TB97;
 
 type

@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkFormVw;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Controls, Forms,
+  DelphiCompat, Windows, Messages, SysUtils, Classes, Controls, Forms,
   QkForm, QkFileObjects, ExtCtrls, TB97;
 
 type

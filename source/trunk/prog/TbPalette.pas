@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit TbPalette;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Classes, Graphics, Controls, TB97, Dialogs,
+uses DelphiCompat, Windows, SysUtils, Classes, Graphics, Controls, TB97, Dialogs,
      QkObjects, Game;
 
  {------------------------}

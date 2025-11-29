@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkBBoxGroup;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  QkObjects, QkFileObjects, QkForm, QkImages, Python, Game, QkMdlObject;
+  DelphiCompat, QkObjects, QkFileObjects, QkForm, QkImages, Python, Game, QkMdlObject;
 
 type
   QBBoxGroup = Class(QMdlObject)

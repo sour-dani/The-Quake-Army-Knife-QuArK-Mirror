@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit PyMacros;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Graphics, QkObjects, PyForms, Quarkx, Python;
+uses DelphiCompat, Graphics, QkObjects, PyForms, Quarkx, Python;
 
 type
  QPyMacro = class(QObject)

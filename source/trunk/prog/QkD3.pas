@@ -33,8 +33,10 @@ unit QkD3;
 
 interface
 
+{$INCLUDE DelphiCompat.inc}
+
 uses
-  Windows, Classes, SysUtils, QkZip2, QkFileObjects, QkPixelSet, QkObjects, QkWad;
+  DelphiCompat, Windows, Classes, SysUtils, QkZip2, QkFileObjects, QkPixelSet, QkObjects, QkWad;
 
 type
   D3Pak = class(QZipPak)
@@ -82,8 +84,7 @@ type
 
 implementation
 
-uses StrUtils, Quarkx, QkExceptions, QkObjectClassList, Game, Setup, Travail, QkSpecifics,
-  Logging, ExtraFunctionality;
+uses StrUtils, Quarkx, QkExceptions, QkObjectClassList, Game, Setup, Travail, QkSpecifics, Logging;
 
 {------------------------}
 

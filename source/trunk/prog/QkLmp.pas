@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkLmp;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Classes, Types, QkPixelSet, QkImages, QkObjects, QkFileObjects;
+uses DelphiCompat, Classes, Types, QkPixelSet, QkImages, QkObjects, QkFileObjects;
 
 type
  QLmp = class(QImage)
@@ -40,10 +42,10 @@ type
 
 implementation
 
-uses SysUtils, Quarkx, Game, QkExceptions, QkObjectClassList, Logging, ExtraFunctionality;
+uses SysUtils, Quarkx, Game, QkExceptions, QkObjectClassList, Logging;
 
 type
- TLmpHeader = record
+ TLmpHeader = record //FIXME: packed?
                width: Longint;
                height: Longint;
               end;

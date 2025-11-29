@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkBoundFrame;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, Sysutils, QkMdlObject, QkObjects, qmath, Graphics, Python;
+uses DelphiCompat, Windows, Sysutils, QkMdlObject, QkObjects, qmath, Graphics, Python;
 
 type
   QBoundFrame = class(QMdlObject)

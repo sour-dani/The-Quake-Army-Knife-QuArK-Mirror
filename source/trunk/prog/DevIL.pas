@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit DevIL;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, ExtraFunctionality;
+uses DelphiCompat, Windows, SysUtils;
 
 const
   IL_FALSE =0;

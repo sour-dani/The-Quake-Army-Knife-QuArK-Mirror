@@ -20,12 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkBspHulls;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Classes, QkObjects, QkMapObjects, QkBsp,
-     qmath, QkFileObjects, ExtraFunctionality;
-
-{$I DelphiVer.inc}
+uses DelphiCompat, Windows, SysUtils, Classes, QkObjects, QkMapObjects, QkBsp,
+     qmath, QkFileObjects;
 
 const
   MAX_MAP_HULLS = 4; //8 for Hexen 2!!!

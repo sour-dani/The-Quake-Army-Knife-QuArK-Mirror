@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkMacro;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Classes, QkObjects, QkGroup;
+uses DelphiCompat, Windows, SysUtils, Classes, QkObjects, QkGroup;
 
 const
  typSeparator    = 'S';
@@ -62,7 +64,7 @@ implementation
 
 uses StrUtils, Controls, Forms, Console, FormCfg, Platform, Python, Setup, QkExplorer,
   QkFileObjects, QkForm, QkFormCfg, QkInclude, QkObjectClassList, qmath, Qk3D, Quarkx,
-  QkSpecifics, ToolBox1, QkExceptions, ExtraFunctionality;
+  QkSpecifics, ToolBox1, QkExceptions;
 
  {------------------------}
 

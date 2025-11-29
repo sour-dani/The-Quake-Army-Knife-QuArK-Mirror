@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit PyUndo;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Classes, QkObjects, Undo, Python;
+uses DelphiCompat, Classes, QkObjects, Undo, Python;
 
 function GetUndoModule(DoDebutAction: Boolean = True) : PyObject;
 

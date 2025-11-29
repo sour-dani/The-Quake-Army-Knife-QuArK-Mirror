@@ -20,12 +20,14 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit PyImages;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-{$INCLUDE PyVersions.inc}
-
-uses Windows, Messages, SysUtils, Classes, Graphics, CommCtrl, Python,
+uses DelphiCompat, Windows, Messages, SysUtils, Classes, Graphics, CommCtrl, Python,
      QkObjects, Controls, ComCtrls, PyControls, QkForm;
+
+{$INCLUDE PyVersions.inc}
 
 type
  PyImage = ^TyImage;
@@ -129,8 +131,6 @@ procedure FinalizeInternalImages;
 implementation
 
 uses Types, Forms, Quarkx, QkExceptions, PyCanvas, Dialogs;
-
-{$I DelphiVer.inc}
 
 const
  DisabledNak = TBitmap(1);

@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkNCF;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Classes, QkObjects, QkFileObjects, QkPak, HLLib;
+uses DelphiCompat, Windows, SysUtils, Classes, QkObjects, QkFileObjects, QkPak, HLLib;
 
 type
  QNCFFolder = class(QPakFolder)
@@ -54,7 +56,7 @@ type
 
 implementation
 
-uses Quarkx, QkExceptions, PyObjects, Game, QkObjectClassList, Logging, ExtraFunctionality;
+uses Quarkx, QkExceptions, PyObjects, Game, QkObjectClassList, Logging;
 
 var
   HLLoaded: Boolean;

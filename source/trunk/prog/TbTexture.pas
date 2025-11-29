@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit TbTexture;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
+uses DelphiCompat, Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
      QkObjects, QkForm;
 
  {------------------------}

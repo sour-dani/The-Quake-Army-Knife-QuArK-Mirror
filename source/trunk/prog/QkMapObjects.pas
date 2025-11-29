@@ -20,13 +20,13 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkMapObjects;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Classes, Menus, Controls, Graphics, CommCtrl,
+uses DelphiCompat, Windows, SysUtils, Classes, Menus, Controls, Graphics, CommCtrl,
      QkObjects, qmath, QkExplorer, QkFileObjects, QkForm, qmatrices,
      Qk3D, Python;
-
-{$I DelphiVer.inc}
 
 const
  vfGrayedout        = 1;
@@ -216,7 +216,7 @@ implementation
 uses qdraw, Setup, QkMapPoly, Undo, FormCfg, Game, Quarkx, QkExceptions,
      PyMath, PyMapView, PyObjects, QkImages, Bezier, EdSceneObject, Logging,
      QkModel, QkFrame, QkMdlObject, QkComponent, QkMD3, QkModelFile, QkModelRoot,
-     Coordinates, StrUtils, QkObjectClassList, ExtraFunctionality;
+     Coordinates, StrUtils, QkObjectClassList;
 
  {------------------------}
 

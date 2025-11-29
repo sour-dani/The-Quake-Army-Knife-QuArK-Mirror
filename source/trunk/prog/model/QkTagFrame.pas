@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkTagFrame;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses QkMdlObject, QkObjects, qmath, qmatrices;
+uses DelphiCompat, QkMdlObject, QkObjects, qmath, qmatrices;
 
 type
   QTagFrame = class(QMdlObject)

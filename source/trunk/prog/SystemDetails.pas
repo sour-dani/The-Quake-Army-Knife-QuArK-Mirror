@@ -20,17 +20,19 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit SystemDetails;
 
-interface
-
-uses SysUtils, StrUtils, Windows, Classes, ExtraFunctionality;
-
 {.$DEFINE MeasureCPUFrequency} //This seems like an awful waste of CPU cycles!
 {.$DEFINE LogSensitiveInformation} //Decker: we're not interested in Machine-/Username. We're not Login-Crackers!
 {$DEFINE CPUNameLookup}
 {$DEFINE DetectWine}
 {$DEFINE DetectReactOS}
 
-{$I DelphiVer.inc}
+ {-------------------}
+
+{$INCLUDE DelphiCompat.inc}
+
+interface
+
+uses DelphiCompat, SysUtils, StrUtils, Windows, Classes;
 
 procedure LogSystemDetails;
 function CheckWindows98And2000: Boolean;
@@ -2165,8 +2167,8 @@ begin
 
   if CheckWin32Version(6, 2) then //Windows 7
   begin
-    FGlobalGDIObjects:=ExtraFunctionality.GetGuiResources(GR_GLOBAL, GR_GDIOBJECTS);
-    FGlobalUSERObjects:=ExtraFunctionality.GetGuiResources(GR_GLOBAL, GR_USEROBJECTS);
+    FGlobalGDIObjects:=DelphiCompat.GetGuiResources(GR_GLOBAL, GR_GDIOBJECTS);
+    FGlobalUSERObjects:=DelphiCompat.GetGuiResources(GR_GLOBAL, GR_USEROBJECTS);
   end
   else
   begin
@@ -2736,7 +2738,7 @@ begin
     FColorMgmtCaps:=[];
     if CheckWin32Version(5, 0) then //Windows 2000
     begin
-      I:=GetDeviceCaps(l_hdc,{windows.}ExtraFunctionality.COLORMGMTCAPS);
+      I:=GetDeviceCaps(l_hdc,{windows.}DelphiCompat.COLORMGMTCAPS);
       if I<>CM_NONE then
       begin
         if (I and CM_CMYK_COLOR)=CM_CMYK_COLOR then

@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit PyProcess;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Classes, QkObjects, Undo, Quarkx, Python;
+uses DelphiCompat, Windows, SysUtils, Classes, QkObjects, Undo, Quarkx, Python;
 
  {-------------------}
 
@@ -61,7 +63,7 @@ function EmptyInputPipe : THandle;
 
 implementation
 
-uses PyObjects, QkExceptions, QkForm, Qk1, Console, ExtraFunctionality;
+uses PyObjects, QkExceptions, QkForm, Qk1, Console;
 
  {-------------------}
 

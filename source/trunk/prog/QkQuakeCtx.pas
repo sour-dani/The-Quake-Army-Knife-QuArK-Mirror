@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkQuakeCtx;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  DelphiCompat, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   QkObjects, QkFileObjects, QkFormVw, Python, PyObjects;
 
 type
@@ -56,7 +58,7 @@ implementation
 
 uses Setup, Quarkx, QkObjectClassList, QuickWal, QkPak, QkBSP, ToolBox1,
      ToolBoxGroup, Game, QkMapObjects, FormCfg, QkExplorer, ApplPaths,
-     QkForm, Travail, QkFormCfg, QkExceptions, Logging, ExtraFunctionality;
+     QkForm, Travail, QkFormCfg, QkExceptions, Logging;
 
  {------------------------}
 

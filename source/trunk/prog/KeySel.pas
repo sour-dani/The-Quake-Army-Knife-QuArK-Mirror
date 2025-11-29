@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit KeySel;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, Messages, Classes, Controls, Forms, StdCtrls, Buttons;
+  DelphiCompat, Windows, Messages, Classes, Controls, Forms, StdCtrls, Buttons;
 
 type
   TKeySelDlg = class(TForm)

@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkTribes2;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Classes, QkObjects, QkFileObjects, QkZip2, QkText;
+uses DelphiCompat, Classes, QkObjects, QkFileObjects, QkZip2, QkText;
 
 type
   QVL2File = class(QZipPak)

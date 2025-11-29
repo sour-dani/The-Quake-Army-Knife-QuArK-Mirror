@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit VTFLib;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils;
+uses DelphiCompat, Windows, SysUtils;
 
 function LoadVTFLib : Boolean;
 procedure UnloadVTFLib(ForceUnload: boolean = false);
@@ -386,7 +388,7 @@ var
 
 implementation
 
-uses Setup, Quarkx, QkExceptions, Logging, ApplPaths, SystemDetails, ExtraFunctionality;
+uses Setup, Quarkx, QkExceptions, Logging, ApplPaths, SystemDetails;
 
 var
   TimesLoaded: Cardinal;

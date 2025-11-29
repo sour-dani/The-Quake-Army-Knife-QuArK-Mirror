@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit Config;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  DelphiCompat, Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   QkObjects, QkExplorer, ExtCtrls, FormCfg, QkFileObjects, TB97,
   StdCtrls, QkForm, Setup;
 
@@ -88,7 +90,6 @@ implementation
 
 uses Qk1, Game, Quarkx, QkGroup, QkTreeView, QkFormCfg;
 
-{$I DelphiVer.inc}
 {$R *.DFM}
 
 var

@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit Qk3D;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Classes, QkObjects, qmath, qmatrices,
+uses DelphiCompat, Windows, SysUtils, Classes, QkObjects, qmath, qmatrices,
      CommCtrl, Python, PyMath, Coordinates;
 
 type

@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkCin;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Classes, Graphics, Controls, Forms,
+uses DelphiCompat, Windows, SysUtils, Classes, Graphics, Controls, Forms,
      Game, qmath, QkObjects, QkFileObjects, QkRawFile, QkWav;
 
 type

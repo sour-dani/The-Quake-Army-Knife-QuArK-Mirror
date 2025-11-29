@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkMapPoly;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses SysUtils, Windows, Classes, Graphics,
+uses DelphiCompat, SysUtils, Windows, Classes, Graphics,
      QkObjects, Qk3D, QkMapObjects, qmath, qmatrices,
      QkExplorer, Setup, QkTextures, Python;
 
@@ -248,7 +250,7 @@ implementation
 
 uses QkFileObjects, Undo, PyMapView, QkMap, QkPixelSet, Dialogs, EdSceneObject,
      Quarkx, QkExceptions, PyObjects, QkSin, QkQuakeCtx, QkObjectClassList,
-     Coordinates, qdraw, Logging, Math, PyMath, ExtraFunctionality;
+     Coordinates, qdraw, Logging, Math, PyMath;
 
 const
  TmpFaceSpec = '!~tmp~!this is a bug';

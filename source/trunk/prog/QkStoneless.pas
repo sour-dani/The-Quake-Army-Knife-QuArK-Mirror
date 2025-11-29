@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkStoneless;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  SysUtils, Classes, QkFileObjects, QkObjects, QkMap;
+  DelphiCompat, SysUtils, Classes, QkFileObjects, QkObjects, QkMap;
 
 type
  QXMPFile = class(QMapFile)

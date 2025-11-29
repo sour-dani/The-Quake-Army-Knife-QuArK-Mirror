@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit Toolbar1;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, {ShellApi,} SysUtils, Classes, Controls, TB97, Dialogs,
+uses DelphiCompat, Windows, {ShellApi,} SysUtils, Classes, Controls, TB97, Dialogs,
      Menus, QkObjects, QkFileObjects, QkForm, QkMacro;
 
 type

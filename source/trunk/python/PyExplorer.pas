@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit PyExplorer;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, Messages, SysUtils, Classes, Controls, QkExplorer, Python,
+uses DelphiCompat, Windows, Messages, SysUtils, Classes, Controls, QkExplorer, Python,
      Menus, QkObjects, PyObjects, PyControls, QkForm, QkGroup;
 
 const

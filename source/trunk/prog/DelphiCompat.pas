@@ -18,11 +18,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
-unit ExtraFunctionality;
+unit DelphiCompat;
+
+{$INCLUDE DelphiCompat.inc}
 
 interface
-
-{$I DelphiVer.inc}
 
 uses Classes, Types, Windows, SysUtils{$IFDEF Delphi6orNewerCompiler}, StrUtils{$ENDIF};
 

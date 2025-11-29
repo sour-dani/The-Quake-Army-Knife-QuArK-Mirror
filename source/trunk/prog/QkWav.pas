@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkWav;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, MMSystem, SysUtils, Classes, Graphics,
+uses DelphiCompat, Windows, MMSystem, SysUtils, Classes, Graphics,
      QkObjects, QkFileObjects, QkRawFile;
 
 const

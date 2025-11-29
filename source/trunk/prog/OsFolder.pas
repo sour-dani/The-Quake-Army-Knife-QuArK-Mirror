@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit OsFolder;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  ToolBoxGroup, QkObjects, Dialogs, Classes, QkFileObjects, QuickWal, QkWad;
+  DelphiCompat, ToolBoxGroup, QkObjects, Dialogs, Classes, QkFileObjects, QuickWal, QkWad;
 
 type
   QOsFolder = class(QTextureList)

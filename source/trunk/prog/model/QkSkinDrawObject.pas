@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkSkinDrawObject;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses SysUtils, QkObjects, Qk3D, Graphics,
+uses DelphiCompat, SysUtils, QkObjects, Qk3D, Graphics,
      QkImages, qmath, QkTextures, Python, QkMdlObject;
 
 type

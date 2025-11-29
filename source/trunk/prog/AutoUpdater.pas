@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit AutoUpdater;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, ShellApi, Classes, Forms, StdCtrls, Controls, Graphics, CheckLst,
+uses DelphiCompat, Windows, ShellApi, Classes, Forms, StdCtrls, Controls, Graphics, CheckLst,
   HTTP, TB97;
 
 type
@@ -125,7 +127,7 @@ procedure DoUpdate(AllowOnline: Boolean; AutomaticCheck: Boolean);
 implementation
 
 uses StrUtils, SysUtils, DateUtils, Quarkx, QkObjects, QConsts, Setup, Logging,
-  Travail, QkExceptions, AutoUpdateInstaller, TextBoxForm, ExtraFunctionality;
+  Travail, QkExceptions, AutoUpdateInstaller, TextBoxForm;
 
 var
   UpdateIndexFile: TUpdateIndexFile;

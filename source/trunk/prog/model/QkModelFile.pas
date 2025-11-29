@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkModelFile;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, Graphics, SysUtils, QkModel, QkModelRoot, QkComponent, QkFrame,
+  DelphiCompat, Windows, Graphics, SysUtils, QkModel, QkModelRoot, QkComponent, QkFrame,
   QkModelBone, QkImages, QkObjects, QkFileObjects;
 
 type

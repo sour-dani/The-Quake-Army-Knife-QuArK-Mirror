@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit PakFiles;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, Classes;
+uses DelphiCompat, Windows, Classes;
 
 type
   TGetPakNames = class

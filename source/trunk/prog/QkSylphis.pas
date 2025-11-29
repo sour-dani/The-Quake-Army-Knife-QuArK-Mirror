@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkSylphis;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  QkZip2, QkFileObjects, QkObjects, QkMap;
+  DelphiCompat, QkZip2, QkFileObjects, QkObjects, QkMap;
 
 type
   SylphisPak = class(QZipPak)

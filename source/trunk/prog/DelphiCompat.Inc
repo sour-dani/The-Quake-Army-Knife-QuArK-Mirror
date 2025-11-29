@@ -18,40 +18,48 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
-unit QkSkinGroup;
 
-{$INCLUDE DelphiCompat.inc}
+{$INCLUDE DelphiVer.inc}
 
-interface
+{$IFNDEF Delphi2005orNewerCompiler}
+  {$DEFINE CPU386}
+{$ENDIF}
 
-uses
-  DelphiCompat, QkObjects, QkFileObjects, QkForm, QkImages, Python, Game, QkMdlObject;
+{$IFNDEF DelphiXE2orNewerCompiler}
+  {$DEFINE CPUX86}
+{$ENDIF}
 
-type
-  QSkinGroup = Class(QMdlObject)
-  public
-    class function TypeInfo: String; override;
-    function IsAllowedParent(nParent: QObject) : Boolean; override;
-  end;
+{$IFNDEF DelphiXE8orNewerCompiler}
+  {$IFDEF CPUX64}
+    {$DEFINE CPU64BITS}
+  {$ELSE} //CPUX86 or CPUARM
+    {$IFDEF CompiledWithDelphi1}
+      {$DEFINE CPU16BITS}
+    {$ELSE}
+      {$DEFINE CPU32BITS}
+    {$ENDIF}
+  {$ENDIF}
 
-implementation
+  {$IFDEF CPUARM}
+    {$IFDEF CPU64BITS}
+      {$DEFINE CPUARM64}
+    {$ELSE} //CPU32BITS
+      {$DEFINE CPUARM32}
+    {$ENDIF}
+  {$ENDIF}
+{$ENDIF}
 
-uses QkObjectClassList, QkComponent;
+{$IFNDEF Delphi6orNewerCompiler}
+  //Delphi 5 and earlier don't support other platforms, so they don't define this conditional.
+  {$DEFINE MSWINDOWS}
+{$ENDIF}
 
-function QSkinGroup.IsAllowedParent(nParent: QObject) : Boolean;
-begin
-  if (nParent=nil) or (nParent is QComponent) then
-    Result:=true
-  else
-    Result:=false;
-end;
-
-class function QSkinGroup.TypeInfo;
-begin
-  Result:=':sg';
-end;
-
-initialization
-  RegisterQObject(QSkinGroup, 'a');
-end.
-
+{$IFDEF MSWINDOWS}
+  {$IFNDEF Delphi2009orNewerCompiler}
+    {$IFDEF CompiledWithDelphi1}
+      {$DEFINE WIN16}
+    {$ELSE}
+      {$DEFINE WIN32}
+    {$ENDIF}
+  {$ENDIF}
+{$ENDIF}

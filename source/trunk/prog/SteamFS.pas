@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit SteamFS;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, Classes;
+uses DelphiCompat, Windows, Classes;
 
 function RunSteam: Boolean;
 function RunSteamExtractor(const Filename : String) : Boolean;
@@ -33,7 +35,7 @@ function GetSteamCacheDir : String;
 implementation
 
 uses ShellAPI, SysUtils, StrUtils, Quarkx, Game, Setup, Logging, SystemDetails,
-     QkObjects, ExtraFunctionality, ApplPaths, QkExceptions, QkFileObjects;
+     QkObjects, ApplPaths, QkExceptions, QkFileObjects;
 
 const
   QSASDelay: DWORD = 30000; //How long (in ms) to wait for QSAS to run

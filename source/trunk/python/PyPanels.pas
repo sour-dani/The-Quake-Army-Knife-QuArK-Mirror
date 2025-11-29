@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit PyPanels;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, Messages, SysUtils, Classes, Controls, Graphics, Forms, ExtCtrls,
+uses DelphiCompat, Windows, Messages, SysUtils, Classes, Controls, Graphics, Forms, ExtCtrls,
      Python, QSplitter, QkForm;
 
 type
@@ -139,8 +141,6 @@ implementation
 uses Quarkx, QkExceptions, PyExplorer, PyFormCfg, PyMapView, PyImages,
      PyToolbars, PyForms, PyControls, FormCfg, QkObjects,
      PyFloating, PyFullscreen;
-
-{$I DelphiVer.inc}
 
 const
  wp_RealignControls = 91;

@@ -20,11 +20,13 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkModelBone;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 {$INCLUDE ..\Python\PyVersions.inc}
 
-uses SysUtils, QkMdlObject, QkObjects, qmath, qmatrices, Python, QkBoneGroup;
+uses DelphiCompat, SysUtils, QkMdlObject, QkObjects, qmath, qmatrices, Python, QkBoneGroup;
 
 {
 Internal Format:
@@ -76,7 +78,7 @@ type
 
 implementation
 
-uses qk3d, pymath, quarkx, QkExceptions, QkObjectClassList, QkMiscGroup, ExtraFunctionality;
+uses qk3d, pymath, quarkx, QkExceptions, QkObjectClassList, QkMiscGroup;
 
  {------------------------}
 

@@ -20,13 +20,13 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkMd3;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Types, SysUtils, Classes, QkObjects, QkImages, QkTextures, QkFileObjects,
+uses DelphiCompat, Types, SysUtils, Classes, QkObjects, QkImages, QkTextures, QkFileObjects,
      QkModelFile, QkModelRoot, QkFrame, QkComponent, QkMdlObject, QkModelTag,
      QkTagFrame, QkBoundFrame, QkMiscGroup{, QkFrameGroup};
-
-{$I DelphiVer.inc}
 
 type
   QMd3File = class(QModelFile)
@@ -49,7 +49,7 @@ type
 implementation
 
 uses StrUtils, qhelper, QuarkX, QkExceptions, Setup, QkObjectClassList, Game, QkQ3,
-     QkPixelset, QkPcx, ApplPaths, qmath, qmatrices, Logging, Travail, ExtraFunctionality;
+     QkPixelset, QkPcx, ApplPaths, qmath, qmatrices, Logging, Travail;
 
 const
  MAX_QPATH = 64;

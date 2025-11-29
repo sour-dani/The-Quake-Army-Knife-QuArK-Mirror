@@ -20,11 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit MemTester;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-{$I DelphiVer.inc}
-
-uses Windows;
+uses DelphiCompat, Windows;
 
 {$IFDEF Debug}
 {.$DEFINE MemResourceViewer}

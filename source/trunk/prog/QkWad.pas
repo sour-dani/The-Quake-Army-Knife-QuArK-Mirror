@@ -20,15 +20,16 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkWad;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
-{$I DelphiVer.inc}
 
 {$IFDEF Delphi4orNewerCompiler}
   {$DEFINE DontNeedImgListDCU}
 {$ENDIF}
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  DelphiCompat, Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   QkFileObjects, TB97, QkObjects, StdCtrls, ExtCtrls, ComCtrls, CommCtrl,
   QkListView, QkTextures, Game, QkForm, QkPixelSet
   {$IFNDEF DontNeedImgListDCU}, ImgList{$ENDIF};

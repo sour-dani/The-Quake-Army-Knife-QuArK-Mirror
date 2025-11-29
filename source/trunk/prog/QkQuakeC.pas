@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkQuakeC;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  DelphiCompat, Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   QkFileObjects, StdCtrls, SyntaxMemo, ExtCtrls, Menus, QkObjects, TB97,
   QkForm, QkText, Python;
 
@@ -80,7 +82,7 @@ procedure CompilerPatches(const L: TQList; var CfgFile: String);
 implementation
 
 uses Undo, Qk1, Setup, FormCfg, Quarkx, QkExceptions, QPAcc, Game,
-     QkUnknown, QkSpecifics, Keys, Travail, QkObjectClassList, ExtraFunctionality;
+     QkUnknown, QkSpecifics, Keys, Travail, QkObjectClassList;
 
 const
  OutputProgsDat = 'progs.dat';

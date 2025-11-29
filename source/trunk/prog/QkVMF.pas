@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkVMF;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, SysUtils, Classes, Dialogs,
+  DelphiCompat, Windows, SysUtils, Classes, Dialogs,
   QkFileObjects, QkObjects, QkMapObjects, QkMap;
 
 type
@@ -41,7 +43,7 @@ implementation
 
 uses Qk1, QkQme, QkMapPoly, qmath, Travail, Setup,
   Qk3D, QkBsp, Undo, Game, Quarkx, QkExceptions, QkSpecifics,
-  QkObjectClassList, MapError, Logging, DispFace, QConsts, ExtraFunctionality;
+  QkObjectClassList, MapError, Logging, DispFace, QConsts;
 
  {------------------------}
 

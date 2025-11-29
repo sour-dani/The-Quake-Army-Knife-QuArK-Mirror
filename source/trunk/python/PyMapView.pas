@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit PyMapView;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, Messages, SysUtils, Classes, Forms, Controls, Graphics,
+uses DelphiCompat, Windows, Messages, SysUtils, Classes, Forms, Controls, Graphics,
      Dialogs, Quarkx, QkExplorer, Python, QkObjects, PyObjects,
      PyControls, QkForm, CursorScrollBox, Qk3D, QkMapObjects,
      qmath, PyMath, Coordinates, Setup, Travail, ExtCtrls,
@@ -221,7 +223,7 @@ var
 implementation
 
 uses Types, PyCanvas, QkFileObjects, QkTextures, Game, PyForms, RedLines, Logging, Qk1,
-     qdraw, EdSoftware, EdGlide, EdOpenGL, EdDirect3D, SystemDetails, QkExceptions, ExtraFunctionality;
+     qdraw, EdSoftware, EdGlide, EdOpenGL, EdDirect3D, SystemDetails, QkExceptions;
 
 const
  MAX_PITCH = pi/2.1;

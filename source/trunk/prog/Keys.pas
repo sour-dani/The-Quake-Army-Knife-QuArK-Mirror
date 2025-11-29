@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit Keys;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, Classes, Graphics, Controls, Forms, Dialogs,
+  DelphiCompat, Windows, Classes, Graphics, Controls, Forms, Dialogs,
   KeySel, StdCtrls, Buttons, ComCtrls, ImgList;
 
 type

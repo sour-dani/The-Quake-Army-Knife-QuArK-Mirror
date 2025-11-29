@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit AddOns;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  SysUtils, Classes, Graphics, Controls, Forms, TB97, ComCtrls, StdCtrls, QkForm;
+  DelphiCompat, SysUtils, Classes, Graphics, Controls, Forms, TB97, ComCtrls, StdCtrls, QkForm;
 
 type
   TAddOnsAddDlg = class(TQkForm)

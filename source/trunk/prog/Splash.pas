@@ -20,11 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit Splash;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-{$I DelphiVer.inc}
-
-uses Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
+uses DelphiCompat, Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
   ExtCtrls, Messages;
 
 type

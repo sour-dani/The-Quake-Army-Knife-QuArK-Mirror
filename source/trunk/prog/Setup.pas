@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit Setup;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Classes, Graphics, Forms, Dialogs, Controls,
+uses DelphiCompat, Windows, SysUtils, Classes, Graphics, Forms, Dialogs, Controls,
      QkObjects, QkFileObjects;
 
 const
@@ -164,7 +166,7 @@ implementation
 uses QkMapObjects, Travail, Game, Console, QkGroup, QkForm, Qk1,
      ToolBox1, Toolbar1, QkQuakeCtx, Quarkx, QkExceptions, Python, PyMapView,
      Qk3D, EdSceneObject, QkObjectClassList, ApplPaths, FileAssociations,
-     QConsts, ExtraFunctionality, Logging;
+     QConsts, Logging;
 
 const
  SetupFileName    = 'Setup.qrk';

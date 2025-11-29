@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkBmp;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, Classes, QkImages, QkObjects, QkFileObjects, DevIL, FreeImage;
+uses DelphiCompat, Windows, Classes, QkImages, QkObjects, QkFileObjects, DevIL, FreeImage;
 
 type
  QBmp = class(QImage)
@@ -45,8 +47,6 @@ type
 implementation
 
 uses SysUtils, Qk1, Setup, Quarkx, QkObjectClassList, Game, QkExceptions, Logging;
-
-{$I DelphiVer.inc}
 
 var
  Chain1: TClipboardHandler;

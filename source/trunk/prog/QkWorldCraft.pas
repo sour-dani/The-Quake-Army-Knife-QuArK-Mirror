@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkWorldCraft;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, SysUtils, Classes, QkFileObjects, QkObjects, QkMap;
+  DelphiCompat, Windows, SysUtils, Classes, QkFileObjects, QkObjects, QkMap;
 
 type
  QRmfMapFile = class(QMapFile)

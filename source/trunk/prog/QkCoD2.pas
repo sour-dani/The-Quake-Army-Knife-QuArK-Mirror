@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkCoD2;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Classes, QkZip2, QkBsp, QkFileObjects, QkObjects, QkPixelset;
+  DelphiCompat, Classes, QkZip2, QkBsp, QkFileObjects, QkObjects, QkPixelset;
 
 type
   QCoD2Pak = class(QZipPak)
@@ -57,7 +59,7 @@ type
 implementation
 
 uses Windows, SysUtils, Quarkx, QkExceptions, QkObjectClassList,
-  Setup, Game, Logging, QkTextures, ApplPaths, ExtraFunctionality;
+  Setup, Game, Logging, QkTextures, ApplPaths;
 
 type
   //Based on: https://github.com/CptAsgard/CoD2Unity/blob/master/Assets/cod2materialfiles.txt

@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkExceptions;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Classes, Controls, Dialogs, Forms, StdCtrls;
+uses DelphiCompat, Windows, SysUtils, Classes, Controls, Dialogs, Forms, StdCtrls;
 
 type
   TCustomExceptionHandler = class(TObject)
@@ -65,9 +67,7 @@ var
 
 implementation
 
-{$I DelphiVer.inc}
-
-uses QConsts, TextBoxForm, Quarkx, Logging, ExtraFunctionality, Platform;
+uses QConsts, TextBoxForm, Quarkx, Logging, Platform;
 
  {-------------------}
 

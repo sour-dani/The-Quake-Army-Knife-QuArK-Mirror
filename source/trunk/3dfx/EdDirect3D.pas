@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit EdDirect3D;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, Classes, qmath, Coordinates, DX9, Direct3D9, EdSceneObject, ExtraFunctionality;
+uses DelphiCompat, Windows, Classes, qmath, Coordinates, DX9, Direct3D9, EdSceneObject;
 
 type
   TTextureFiltering = (tfNone, tfBilinear, tfTrilinear, tfAnisotropic);

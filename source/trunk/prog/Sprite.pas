@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit Sprite;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Types, SysUtils, Classes, qmath, QkObjects, Qk3D, QkImages, QkMdlObject;
+uses DelphiCompat, Types, SysUtils, Classes, qmath, QkObjects, Qk3D, QkImages, QkMdlObject;
 
 type
   QSprite = class(Q3DObject)

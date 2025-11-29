@@ -26,11 +26,11 @@ unit PyObjects;
 
  {-------------------}
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses SysUtils, Classes, Python, QkObjects, Dialogs;
-
-{$I DelphiVer.inc}
+uses DelphiCompat, SysUtils, Classes, Python, QkObjects, Dialogs;
 
 function QkObjFromPyObj(o: PyObject) : QObject;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 {$IFDEF Delphi2005orNewerCompiler}function QkObjFromPyObj1(o: PyObject) : QObject; register;{$ENDIF} //This needs to be externally callable if QkObjFromPyObj gets inlined.

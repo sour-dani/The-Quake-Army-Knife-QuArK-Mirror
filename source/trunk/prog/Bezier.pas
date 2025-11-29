@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit Bezier;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Classes, Python, qmath, qmatrices, QkMesh,
+uses DelphiCompat, Windows, SysUtils, Classes, Python, qmath, qmatrices, QkMesh,
      QkObjects, QkMapObjects, QkMapPoly, Qk3D;
 
 type
@@ -71,7 +73,7 @@ function TriangleSTCoordinates(const cp: TMeshBuf5; I, J: Integer) : vec_st_t;
 implementation
 
 uses qdraw, Coordinates, QuarkX, QkExceptions, Setup,
-     PyMath, PyMapView, PyObjects, QkObjectClassList, EdSceneObject, ExtraFunctionality;
+     PyMath, PyMapView, PyObjects, QkObjectClassList, EdSceneObject;
 
  (*    QUADRATIC BEZIER PATCHES
   *

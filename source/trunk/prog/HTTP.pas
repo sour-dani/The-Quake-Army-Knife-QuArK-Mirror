@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit HTTP;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, Classes;
+uses DelphiCompat, Windows, Classes;
 
 //We can't use WinInet here, because that creates a load-time dependency on wininet.dll,
 //which might not exist on Windows 95 RTM. So we're copy-pasting part from it,
@@ -53,7 +55,7 @@ type
 
 implementation
 
-uses StrUtils, SysUtils, Logging, QkExceptions, ExtraFunctionality;
+uses StrUtils, SysUtils, Logging, QkExceptions;
 
 const
   StatusBufferLength : DWORD = 256;

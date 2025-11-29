@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkG3D;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, SysUtils, Classes, QkFileObjects, QkObjects, QkText,
+  DelphiCompat, Windows, SysUtils, Classes, QkFileObjects, QkObjects, QkText,
   QkTextures, QkBsp, Setup, QkWad, QkPixelSet;
 
 type

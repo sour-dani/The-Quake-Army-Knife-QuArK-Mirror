@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit Coordinates;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, Types, qmath, qmatrices;
+uses DelphiCompat, Windows, Types, qmath, qmatrices;
 
 const
  os_Left    = $01;   { x too small }
@@ -237,7 +239,7 @@ implementation
 
 { $DEFINE DebugCoord}
 
-uses SysUtils, qdraw, Qk3D, QkMapPoly, Setup, ExtraFunctionality;
+uses SysUtils, qdraw, Qk3D, QkMapPoly, Setup;
 
 const
   MaxoowLocal = 1.0;

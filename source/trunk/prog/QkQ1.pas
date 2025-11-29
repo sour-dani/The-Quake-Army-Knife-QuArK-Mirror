@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkQ1;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Classes, QkObjects, QkFileObjects, QkTextures, QkBsp, Sysutils,
+  DelphiCompat, Classes, QkObjects, QkFileObjects, QkTextures, QkBsp, Sysutils,
   Dialogs, QkImages, QkText;
 
 type
@@ -84,8 +86,7 @@ procedure WriteColormapFile();
 implementation
 
 uses
-  qhelper, Travail, Quarkx, QkExceptions, Game, Setup, QkWad, QkPcx,
-  QkObjectClassList, ExtraFunctionality;
+  qhelper, Travail, Quarkx, QkExceptions, Game, Setup, QkWad, QkPcx, QkObjectClassList;
 
 const
  LUMP_ENTITIES = 0;

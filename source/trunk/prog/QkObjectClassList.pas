@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkObjectClassList;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Classes, QkObjects;
+uses DelphiCompat, Classes, QkObjects;
 
 procedure RegisterQObject(Q: QObjectClass; Prior: Char);
 function ConstructQObject(const Name: String; nParent: QObject) : QObject;

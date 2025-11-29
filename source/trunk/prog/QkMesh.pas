@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkMesh;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Classes, Python, qmath, qmatrices, Coordinates, QkObjects,
+uses DelphiCompat, Windows, SysUtils, Classes, Python, qmath, qmatrices, Coordinates, QkObjects,
      QkMapObjects, QkMapPoly, Qk3D;
 
 type
@@ -89,7 +91,7 @@ type
 implementation
 
 uses Types, qdraw, QuarkX, QkExceptions, Setup,
-     PyMath, PyMapView, PyObjects, QkObjectClassList, EdSceneObject, ExtraFunctionality;
+     PyMath, PyMapView, PyObjects, QkObjectClassList, EdSceneObject;
 
 //@
 //https://github.com/id-Software/Quake-III-Arena/blob/dbe4ddb10315479fc00086f08e25d968b4b43c49/code/qcommon/cm_patch.c

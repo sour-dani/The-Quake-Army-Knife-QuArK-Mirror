@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkKEX;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, SysUtils, Classes, QkZip2, QkFileObjects, QkObjects;
+  DelphiCompat, Windows, SysUtils, Classes, QkZip2, QkFileObjects, QkObjects;
 
 type
   QKPF = class(QZipPak)

@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit SearchHoles;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses SysUtils, Classes, QkObjects, Python;
+uses DelphiCompat, SysUtils, Classes, QkObjects, Python;
 
  {-------------------}
 

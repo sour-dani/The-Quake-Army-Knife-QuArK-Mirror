@@ -20,10 +20,12 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkImages;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  DelphiCompat, Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   QkObjects, QkFileObjects, TB97, ExtCtrls, PaintPanel, Game,
   QkForm, QkTextures, QkPixelSet, StdCtrls, EnterEditCtrl,
   DevIL, FreeImage;
@@ -119,8 +121,7 @@ function TestConversionImages(var I: Integer) : QImageClass;
 implementation
 
 uses Types, QkPcx, QkBmp, QkTga, QkDDS, QkFTX, QkIwi, QkJpg, QkLmp, QkPng, QkSoF, QkVTF,
-     TbPalette, qmath, Quarkx, QkExceptions, CCode, Undo, Travail, Setup,
-     Logging, ExtraFunctionality;
+     TbPalette, qmath, Quarkx, QkExceptions, CCode, Undo, Travail, Setup, Logging;
 
 {$R *.DFM}
 

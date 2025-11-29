@@ -20,11 +20,13 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit MarsCol1;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
   THIS UNIT IS NOT USED IN THE PROJECT QUARK   { MARSCAPFIX }
 
-uses Windows, Graphics, Forms;
+uses DelphiCompat, Windows, Graphics, Forms;
 
 const
  ActiveFontColor    = clWhite;

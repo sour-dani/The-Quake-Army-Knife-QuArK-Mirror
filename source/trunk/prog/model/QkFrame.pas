@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit QkFrame;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Classes, QkObjects, Qk3D, Python, QkMdlObject,
+uses DelphiCompat, Windows, SysUtils, Classes, QkObjects, Qk3D, Python, QkMdlObject,
      QMath, QkModelBone, qmatrices;
 
 type

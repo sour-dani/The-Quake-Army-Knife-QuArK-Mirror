@@ -21,7 +21,7 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 program QuArK;
 {%File '..\Runtime\addons\Defaults.qrk'}
 
-{$I DelphiVer.inc}
+{$INCLUDE DelphiCompat.inc}
 {$INCLUDE MemManager.inc}
 
 uses
@@ -80,6 +80,11 @@ uses
   RtlVclOptimize in 'prog\RtlVclOptimize.pas',
 {$ENDIF}
 
+  //
+  // Delphi version compatibility
+  //
+  DelphiCompat in 'prog\DelphiCompat.pas',
+
   Forms, SysUtils, {$IFNDEF LINUX}Windows,{$ENDIF}
 
   //Init the logging module FIRST, otherwise we'll miss log-calls from other init's!
@@ -132,7 +137,6 @@ uses
   DevIL in 'prog\DevIL.pas',
   DispFace in 'prog\DispFace.pas',
   Duplicator in 'prog\Duplicator.pas',
-  ExtraFunctionality in 'prog\ExtraFunctionality.pas',
   FormCfg in 'prog\FormCfg.pas',
   FileAssociations in 'prog\FileAssociations.pas',
   FileExists2 in 'prog\FileExists2.pas',

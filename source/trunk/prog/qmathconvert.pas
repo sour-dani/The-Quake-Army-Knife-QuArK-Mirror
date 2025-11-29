@@ -22,9 +22,11 @@ unit qmathconvert;
 
 //Putting these in a separate module, as to prevent cyclical includes.
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses SysUtils, qmath, qmatrices, qquaternions;
+uses DelphiCompat, SysUtils, qmath, qmatrices, qquaternions;
 
 function QuaternionToMatrix(const Q: TQuaternion) : TMatrixTransformation;
 function MatrixToQuaternion(const M: TMatrixTransformation) : TQuaternion;

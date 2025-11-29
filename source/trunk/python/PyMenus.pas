@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit PyMenus;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Windows, SysUtils, Classes, Python, PyForms;
+uses DelphiCompat, Windows, SysUtils, Classes, Python, PyForms;
 
 const
  wID_HelpMenu    = 32100;

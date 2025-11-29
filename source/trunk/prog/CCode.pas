@@ -20,9 +20,11 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 **************************************************************************)
 unit CCode;
 
+{$INCLUDE DelphiCompat.inc}
+
 interface
 
-uses Game;
+uses DelphiCompat, Game;
 
 (* Parameters
      SrcPalette :  palette of the source image, if it is 8-bit, or Nil if it is 24-bit
@@ -38,8 +40,6 @@ procedure Resample(SrcPalette: PPaletteLmp; Source: PByte;
  cdecl;
 
 implementation
-
-{$I DelphiVer.inc}
 
 (*procedure MemSet(var Buf; C: Char; Count: Integer); stdcall; assembler;
 asm
