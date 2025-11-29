@@ -36,6 +36,11 @@ type
 
   TBytes = TByteDynArray;
 
+  {$IF COMPILERVERSION < 15}
+  NativeInt = Integer;
+  NativeUInt = Cardinal;
+  {$IFEND}
+
   {$IF COMPILERVERSION >= 20}
   ArithByte = Byte;
   PArithByte = PByte;
