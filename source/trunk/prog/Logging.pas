@@ -30,23 +30,20 @@ uses DelphiCompat{$IFDEF PyProfiling}, Classes{$ENDIF};
 type
   TLogName = (LOG_DEFAULT, LOG_PASCAL, LOG_PYTHON, LOG_SYS, LOG_CONSOLE, LOG_DEBUG);
 
-Procedure OpenLogFile;
+procedure OpenLogFile;
 
 function GetLogLevel : Cardinal;
 
-Procedure Log(const s: string); overload;
-Procedure Log(level: cardinal; const s: string); overload;
-Procedure Log(const s: string; const args: array of const); overload;
-Procedure Log(level: cardinal; const s: string; const args: array of const); overload;
-Procedure Log(Logger: TLogName; const s: string); overload;
-Procedure Log(Logger: TLogName; level: cardinal; const s: string); overload;
-Procedure Log(Logger: TLogName; const s: string; const args: array of const); overload;
-Procedure Log(Logger: TLogName; level: cardinal; const s: string; const args: array of const); overload;
+procedure Log(const msg: String); overload;
+procedure Log(level: Cardinal; const msg: String); overload;
+procedure Log(const msg: String; const args: array of const); overload;
+procedure Log(level: Cardinal; const msg: String; const args: array of const); overload;
+procedure Log(Logger: TLogName; const msg: String); overload;
+procedure Log(Logger: TLogName; level: Cardinal; const msg: String); overload;
+procedure Log(Logger: TLogName; const msg: String; const args: array of const); overload;
+procedure Log(Logger: TLogName; level: Cardinal; const msg: String; const args: array of const); overload;
 
 const
-  LOG_FILENAME = 'QUARK.LOG';
-  LOG_PATCHFILE = 'PATCH.TXT';
-
   LOG_ALWAYS = 0;
   LOG_CRITICAL = 10;
   LOG_WARNING = 20;
@@ -56,32 +53,35 @@ const
 function GetPatchVersion: String;
 
 {$IFDEF PyProfiling}
-Procedure LogProfiling(const Location: String; const Args: array of String; const PythonStackTrace: TStringList);
-
-const
-  LOG_PROFILE_FILENAME = 'PROFILING.LOG';
+procedure LogProfiling(const Location: String; const Args: array of String; const PythonStackTrace: TStringList);
 {$ENDIF}
 
 implementation
 
-uses Windows, Forms, Sysutils, ApplPaths;
+uses Windows, Classes, Forms, Sysutils, ApplPaths;
 
 var
   LogFile: TextFile;
-  LogOpened: boolean;
-  LogFilename: string;
-  LogPatchname: string;
-  LogLevel: cardinal;
-  LogCache: array of string;
+  LogOpened: Boolean;
+  LogFilename: String;
+  LogPatchname: String;
+  LogLevel: Cardinal;
+  LogCache: TStringList = nil;
 {$IFDEF PyProfiling}
   LogProfileFile: TextFile;
 {$ENDIF}
 
 const
+  LOG_FILENAME = 'QUARK.LOG';
+  LOG_PATCHFILE = 'PATCH.TXT';
+  {$IFDEF PyProfiling}
+  LOG_PROFILE_FILENAME = 'PROFILING.LOG';
+  {$ENDIF}
+
   //Default level is 'warning'
   DefaultLogLevel = LOG_WARNING;
 
-Procedure aLog(Logger: TLogName; const s: string); forward;
+procedure aLog(Logger: TLogName; const msg: String); forward;
 
  {------------------------}
 
@@ -93,7 +93,7 @@ end;
 function GetPatchVersion: String;
 var
   PF: TextFile;
-  filename: string;
+  filename: String;
 begin
   result:='';
   filename:=ConcatPaths([GetQPath(pQuArK), LogPatchname]);
@@ -108,7 +108,7 @@ begin
   end;
 end;
 
-Procedure OpenLogFile;
+procedure OpenLogFile;
 var
   I: Integer;
 {$IFDEF Delphi7orNewerCompiler}
@@ -116,7 +116,7 @@ var
 {$ENDIF}
 begin
   if LogOpened then
-    exit;
+    Exit;
   {$IFDEF Delphi7orNewerCompiler}
   GetLocaleFormatSettings(LOCALE_SYSTEM_DEFAULT, DateFormat);
   {$ENDIF}
@@ -127,14 +127,14 @@ begin
   LogOpened:=true;
   Log(LOG_PASCAL, 'Logging started at %s', [DateTimeToStr(now{$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF})]);
   Log(LOG_PASCAL, 'Loglevel is %d', [LogLevel]);
-  if Length(LogCache)<>0 then
+  if Assigned(LogCache) then
   begin
     {$I-}
-    for I:=0 to Length(LogCache)-1 do
+    for I:=0 to LogCache.Count-1 do
       WriteLn(LogFile, LogCache[I]);
     Flush(LogFile);
     {$I+}
-    SetLength(LogCache, 0);
+    FreeAndNil(LogCache);
   end;
 {$IFDEF PyProfiling}
   {$I-}
@@ -144,85 +144,85 @@ begin
 {$ENDIF}
 end;
 
-Procedure aLog(logger: TLogName; const s: string);
+procedure aLog(logger: TLogName; const msg: String);
 var
-  S2: string;
+  s: String;
 begin
   case logger of
-    LOG_DEFAULT: S2:=Format('Log> %s', [s]);
-    LOG_PASCAL:  S2:=Format('QuArKLog> %s', [s]);
-    LOG_PYTHON:  S2:=Format('PythonLog> %s', [s]);
-    LOG_SYS:     S2:=Format('SysLog> %s', [s]);
-    LOG_CONSOLE: S2:=Format('ConsoleLog> %s', [s]);
-    LOG_DEBUG:   S2:=Format('DebugLog> %s', [s]);
-    else         S2:=s;
+    LOG_DEFAULT: s:=Format('Log> %s', [msg]);
+    LOG_PASCAL:  s:=Format('QuArKLog> %s', [msg]);
+    LOG_PYTHON:  s:=Format('PythonLog> %s', [msg]);
+    LOG_SYS:     s:=Format('SysLog> %s', [msg]);
+    LOG_CONSOLE: s:=Format('ConsoleLog> %s', [msg]);
+    LOG_DEBUG:   s:=Format('DebugLog> %s', [msg]);
+    else         s:=msg;
   end;
   if not LogOpened then
   begin
     //Logfile isn't open yet (or already closed). Let's store it,
     //and write it as soon as the logfile gets opened (again?).
-    SetLength(LogCache, Length(LogCache) + 1);
-    LogCache[Length(LogCache) - 1]:=S2;
+    if not Assigned(LogCache) then LogCache := TStringList.Create();
+    LogCache.Append(s);
     Exit;
   end;
   {$I-}
-  WriteLn(LogFile, S2);
+  WriteLn(LogFile, s);
   Flush(LogFile);
   {$I+}
 end;
 
-Procedure Log(const s: string);
+procedure Log(const msg: String);
 begin
-  aLog(LOG_DEFAULT, s);
+  aLog(LOG_DEFAULT, msg);
 end;
 
-Procedure Log(level: cardinal; const s: string);
-begin
-  if level<=Loglevel then
-    aLog(LOG_DEFAULT, s);
-end;
-
-Procedure Log(const s: string; const args: array of const);
-begin
-  aLog(LOG_DEFAULT, format(s, args));
-end;
-
-Procedure Log(level: cardinal; const s: string; const args: array of const);
+procedure Log(level: Cardinal; const msg: String);
 begin
   if level<=Loglevel then
-    aLog(LOG_DEFAULT, format(s, args));
+    aLog(LOG_DEFAULT, msg);
 end;
 
-Procedure Log(Logger: TLogName; const s: string);
+procedure Log(const msg: String; const args: array of const);
 begin
-  aLog(Logger, s);
+  aLog(LOG_DEFAULT, format(msg, args));
 end;
 
-Procedure Log(Logger: TLogName; level: cardinal; const s: string);
-begin
-  if level<=Loglevel then
-    aLog(Logger, s);
-end;
-
-Procedure Log(Logger: TLogName; const s: string; const args: array of const);
-begin
-  aLog(Logger, format(s, args));
-end;
-
-Procedure Log(Logger: TLogName; level: cardinal; const s: string; const args: array of const);
+procedure Log(level: Cardinal; const msg: String; const args: array of const);
 begin
   if level<=Loglevel then
-    aLog(Logger, format(s, args));
+    aLog(LOG_DEFAULT, format(msg, args));
 end;
 
-Procedure CloseLogFile;
+procedure Log(Logger: TLogName; const msg: String);
+begin
+  aLog(Logger, msg);
+end;
+
+procedure Log(Logger: TLogName; level: Cardinal; const msg: String);
+begin
+  if level<=Loglevel then
+    aLog(Logger, msg);
+end;
+
+procedure Log(Logger: TLogName; const msg: String; const args: array of const);
+begin
+  aLog(Logger, format(msg, args));
+end;
+
+procedure Log(Logger: TLogName; level: Cardinal; const msg: String; const args: array of const);
+begin
+  if level<=Loglevel then
+    aLog(Logger, format(msg, args));
+end;
+
+procedure CloseLogFile;
 {$IFDEF Delphi7orNewerCompiler}
 var
   DateFormat: TFormatSettings;
 {$ENDIF}
 begin
   if not LogOpened then
-    exit;
+    Exit;
   {$IFDEF Delphi7orNewerCompiler}
   GetLocaleFormatSettings(LOCALE_SYSTEM_DEFAULT, DateFormat);
   {$ENDIF}
@@ -270,7 +270,7 @@ begin
 end;
 
 //Based on: https://stackoverflow.com/a/46523477
-function JoinArgs(const s: array of string): string;
+function JoinArgs(const s: array of String): String;
 var
   i, c: Integer;
   p: PChar;
@@ -290,7 +290,7 @@ begin
   end;
 end;
 
-Procedure LogProfiling(const Location: String; const Args: array of String; const PythonStackTrace: TStringList);
+procedure LogProfiling(const Location: String; const Args: array of String; const PythonStackTrace: TStringList);
 var
   Timestamp: TDateTime;
 {$IFDEF Delphi7orNewerCompiler}
