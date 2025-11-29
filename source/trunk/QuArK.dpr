@@ -76,7 +76,9 @@ uses
   FastMove in 'prog\FastMove.pas',
 {$ENDIF}
 {$IFNDEF Delphi2009orNewerCompiler}
+{$IFDEF Delphi7orNewerCompiler}
   FastCode in 'prog\FastCode\FastCode.pas',
+{$ENDIF}
   RtlVclOptimize in 'prog\RtlVclOptimize.pas',
 {$ENDIF}
 
