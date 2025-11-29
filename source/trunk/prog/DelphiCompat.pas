@@ -1406,12 +1406,16 @@ end;
 {$endif}
 
 {$ifndef Delphi7orNewerCompiler}
+//This code is NOT copied from the StrUtils, so it MIGHT react differently!
 function PosEx(const SubStr, S: string; Offset: Cardinal = 1): Integer;
 begin
-  //This code is NOT copied from the StrUtils, so it MIGHT react differently!
-  Result := Pos(SubStr, RightStr(S, Length(S) - Offset));
+  if Offset < 1 then
+    raise Exception.Create('Invalid offset');
+  if Offset > Cardinal(MaxInt) then
+    raise Exception.Create('Out of bounds');
+  Result := Pos(SubStr, RightStr(S, Length(S) - Integer(Offset)));
   if Result <> 0 then
-    Result := Result + Offset;
+    Result := Result + Integer(Offset);
 end;
 
 function GetFileVersion(const AFileName: string): Cardinal;
