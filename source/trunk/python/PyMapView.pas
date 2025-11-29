@@ -1278,7 +1278,7 @@ begin
    if CurrentHandle = Py_None then
    begin
      Py_DECREF(CurrentHandleX);
-     CurrentHandleX:=PyNoResult;
+     //CurrentHandleX:=PyNoResult;
    end;
    if (HiddenMouse>=1) and GetCursorPos(P) then
     begin  { hide and recenter the mouse }
