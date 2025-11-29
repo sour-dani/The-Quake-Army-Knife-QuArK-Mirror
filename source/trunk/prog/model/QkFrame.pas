@@ -25,7 +25,7 @@ unit QkFrame;
 interface
 
 uses DelphiCompat, Windows, SysUtils, Classes, QkObjects, Qk3D, Python, QkMdlObject,
-     QMath, QkModelBone, qmatrices;
+     qmath, QkModelBone, qmatrices;
 
 type
   TBoneRec = packed record

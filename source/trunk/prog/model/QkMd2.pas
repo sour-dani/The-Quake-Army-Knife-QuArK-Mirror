@@ -26,7 +26,7 @@ interface
 
 uses
   DelphiCompat, Types, SysUtils, Classes, QkObjects, QkFileObjects, QkImages, Python, Game,
-  QkMdl, QMath, Graphics, QkModelRoot, QkMdlObject, QkComponent, QkFrame,
+  QkMdl, qmath, Graphics, QkModelRoot, QkMdlObject, QkComponent, QkFrame,
   QkModelFile;
 
 (***********  Quake 2 .md2 format  ***********)

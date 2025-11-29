@@ -26,7 +26,7 @@ interface
 
 uses
   DelphiCompat, Types, SysUtils, Classes, QkObjects, QkFileObjects, QkImages, Python, Game,
-  QkModelFile, QMath, QkMdlObject, QkFrame, QkComponent, Logging;
+  QkModelFile, qmath, QkMdlObject, QkFrame, QkComponent, Logging;
 
 type
   QMdlFile = class(QModelFile)
