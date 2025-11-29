@@ -62,7 +62,6 @@ uses Windows, Classes, Forms, Sysutils, ApplPaths;
 
 var
   LogFile: TextFile;
-  LogOpened: Boolean;
   LogFilename: String;
   LogPatchname: String;
   LogLevel: Cardinal;
@@ -115,16 +114,15 @@ var
   DateFormat: TFormatSettings;
 {$ENDIF}
 begin
-  if LogOpened then
+  if TTextRec(LogFile).Mode<>fmClosed then
     Exit;
   {$IFDEF Delphi7orNewerCompiler}
   GetLocaleFormatSettings(LOCALE_SYSTEM_DEFAULT, DateFormat);
   {$ENDIF}
   {$I-}
   AssignFile(LogFile, ConcatPaths([GetQPath(pQuArKLog), LogFilename]));
-  rewrite(LogFile);
+  Rewrite(LogFile);
   {$I+}
-  LogOpened:=true;
   Log(LOG_PASCAL, 'Logging started at %s', [DateTimeToStr(now{$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF})]);
   Log(LOG_PASCAL, 'Loglevel is %d', [LogLevel]);
   if Assigned(LogCache) then
@@ -157,7 +155,7 @@ begin
     LOG_DEBUG:   s:=Format('DebugLog> %s', [msg]);
     else         s:=msg;
   end;
-  if not LogOpened then
+  if TTextRec(LogFile).Mode=fmClosed then
   begin
     //Logfile isn't open yet (or already closed). Let's store it,
     //and write it as soon as the logfile gets opened (again?).
@@ -221,7 +219,7 @@ var
   DateFormat: TFormatSettings;
 {$ENDIF}
 begin
-  if not LogOpened then
+  if TTextRec(LogFile).Mode=fmClosed then
     Exit;
   {$IFDEF Delphi7orNewerCompiler}
   GetLocaleFormatSettings(LOCALE_SYSTEM_DEFAULT, DateFormat);
@@ -230,7 +228,6 @@ begin
   {$I-}
   CloseFile(LogFile);
   {$I+}
-  LogOpened:=false;
 {$IFDEF PyProfiling}
   {$I-}
   CloseFile(LogProfileFile);
@@ -319,7 +316,8 @@ const
  EnvVarLogPatchname = 'QUARK_LOG_PATCHNAME';
 
 initialization
-  LogOpened:=False;
+  FillChar(LogFile, sizeof(TFileRec), 0);
+  TTextRec(LogFile).Mode := fmClosed;
 
   LogFilename:=GetEnvironmentVariable(EnvVarLogFilename);
   if LogFilename='' then
