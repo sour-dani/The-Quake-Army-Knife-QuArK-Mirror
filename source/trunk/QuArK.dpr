@@ -85,7 +85,9 @@ uses
 {$IFDEF Delphi6orNewerCompiler}
   FastCode in 'prog\FastCode\FastCode.pas',
 {$ENDIF}
+{$IFDEF Delphi5orNewerCompiler}
   RtlVclOptimize in 'prog\RtlVclOptimize.pas',
+{$ENDIF}
 {$ENDIF}
 
   //
