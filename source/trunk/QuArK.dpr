@@ -54,7 +54,13 @@ uses
   // Runtime fixes
   //
 {$IFDEF CompiledWithDelphi6}
+  //SysUtils.CheckWin32Version was added in Update Pack 2 of Delphi 6,
+  //but there is no way to check which Update Pack is installed,
+  //so let's check for the existence of the function itself.
+  {$IF Declared(CheckWin32Version)}
+  {$DEFINE NeedD6CheckWin32VersionFix}
   D6CheckWin32VersionFix in 'prog\D6CheckWin32VersionFix.pas',
+  {$IFEND}
 {$ENDIF}
 {$IFDEF Delphi6orNewerCompiler}{$IFNDEF Delphi2010orNewerCompiler}{$IFDEF CPUX86}
   VCLFixPack in 'prog\VCLFixPack.pas',
@@ -307,13 +313,8 @@ begin
 
   Application.Title:='Quake Army Knife';
 
-  {$IFDEF CompiledWithDelphi6}
-  //SysUtils.CheckWin32Version was added in Update Pack 2 of Delphi 6,
-  //but there is no way to check for which Update Pack is installed,
-  //so let's check for the existence of the function itself.
-  {$IF Declared(CheckWin32Version)}
+  {$IFDEF NeedD6CheckWin32VersionFix}
   PatchCheckWin32Version;
-  {$IFEND}
   {$ENDIF}
 
   //Configure localization settings.
