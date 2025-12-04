@@ -24,7 +24,7 @@ unit DelphiCompat;
 
 interface
 
-uses Classes, Types, Windows, SysUtils{$IFDEF Delphi6orNewerCompiler}, StrUtils{$ENDIF};
+uses Classes, SysUtils, {$IFDEF Delphi6orNewerCompiler}Types, StrUtils, {$ENDIF}Windows;
 
 //
 //   Defines
@@ -1052,12 +1052,16 @@ var
 {$endif}
 
 {$ifdef MSWINDOWS}
-{$ifndef Delphi7orNewerCompiler}
-//This was added in Delphi 6 Update Pack 2.
-{$IF not Defined(CheckWin32Version)}
+{$ifndef Delphi6orNewerCompiler}
 {$define ExtraFunc_CheckWin32Version}
+{$endif}
+{$ifdef CompiledWithDelphi6}
+{$IF not Defined(CheckWin32Version)} //This was added in Delphi 6 Update Pack 2.
+{$define ExtraFunc_CheckWin32Version}
+{$IFEND}
+{$endif}
+{$ifdef ExtraFunc_CheckWin32Version}
 function CheckWin32Version(AMajor: Integer; AMinor: Integer = 0): Boolean;
-{$ifend}
 {$endif}
 
 {$ifdef DELAYEDLOADING}
@@ -1465,32 +1469,32 @@ end;
 {$ifndef Delphi2005orNewerCompiler}
 function ContainsText(const AText, ASubText: string): Boolean;
 begin
-  Result := AnsiContainsText(AText, ASubText); //Note: Apparently, this function is misnamed, and it handles unicode too!
+  Result := AnsiContainsText(AText, ASubText); //Note: Apparently, this function is misnamed, and it handles Unicode too!
 end;
 
 function StartsText(const ASubText, AText: string): Boolean;
 begin
-  Result := AnsiStartsText(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
+  Result := AnsiStartsText(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles Unicode too!
 end;
 
 function EndsText(const ASubText, AText: string): Boolean;
 begin
-  Result := AnsiEndsText(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
+  Result := AnsiEndsText(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles Unicode too!
 end;
 
 function ContainsStr(const AText, ASubText: string): Boolean;
 begin
-  Result := AnsiContainsStr(AText, ASubText); //Note: Apparently, this function is misnamed, and it handles unicode too!
+  Result := AnsiContainsStr(AText, ASubText); //Note: Apparently, this function is misnamed, and it handles Unicode too!
 end;
 
 function StartsStr(const ASubText, AText: String): Boolean;
 begin
-  Result := AnsiStartsStr(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
+  Result := AnsiStartsStr(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles Unicode too!
 end;
 
 function EndsStr(const ASubText, AText: String): Boolean;
 begin
- Result := AnsiEndsStr(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles unicode too!
+ Result := AnsiEndsStr(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles Unicode too!
 end;
 {$endif}
 
@@ -1672,7 +1676,6 @@ var
   UserLib, ShellLib, DWMAPILib: HMODULE;
 {$endif}
 
-{$ifndef Delphi7orNewerCompiler}
 {$ifdef ExtraFunc_CheckWin32Version}
 function CheckWin32Version(AMajor: Integer; AMinor: Integer = 0): Boolean;
 begin
@@ -1680,7 +1683,6 @@ begin
             ((Win32MajorVersion = AMajor) and
              (Win32MinorVersion >= AMinor));
 end;
-{$endif}
 {$endif}
 
 function CopyCursor(pcur: HCursor): HCursor;
