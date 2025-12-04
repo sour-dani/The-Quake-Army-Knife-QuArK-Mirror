@@ -311,7 +311,7 @@ begin
   HullNum:=Index;
 
   InvFaces:=0;
-  {$IFNDEF Delphi8orNewerCompiler} //Actually, Delphi 7.1 fixes these.
+  {$IFNDEF DelphiXEorNewerCompiler} //FIXME: Not sure when these were fixed.
   Q1Faces:=Nil; //Supress compiler warning
   Q2Faces:=Nil; //Supress compiler warning
   Q3Faces:=Nil; //Supress compiler warning
@@ -939,7 +939,7 @@ var
 begin
  if (FBsp=Nil) or (SurfaceList=Nil) then Exit;
 
- {$IFNDEF Delphi8orNewerCompiler} //Actually, Delphi 7.1 fixes these.
+ {$IFNDEF DelphiXEorNewerCompiler} //FIXME: Not sure when these were fixed.
  Q1Faces:=Nil; //Supress compiler warning
  Q2Faces:=Nil; //Supress compiler warning
  {Q3Faces:=Nil; //Supress compiler warning}
