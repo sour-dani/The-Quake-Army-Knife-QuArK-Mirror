@@ -164,7 +164,7 @@ type
   FIMEMORY = PByte; //These are defined as pointers to the FreeImage's versions
   FIBITMAP = PByte;
   //FIMULTIBITMAP = PByte;
-  FreeImage_OutputMessageFunction = procedure(fif : FREE_IMAGE_FORMAT; xmessage : PAnsiChar);
+  FreeImage_OutputMessageFunction = procedure(fif : FREE_IMAGE_FORMAT; const xmessage : PAnsiChar);
 
 var
   //DanielPharos: First two not needed, are done automatically in the Windows version of FreeImage DLL.
@@ -220,7 +220,7 @@ begin
     LogAndRaiseLastOSError(FmtLoadStr1(5743, [APIFuncname, 'FreeImage']));
 end;
 
-procedure FreeImageErrorHandler(fif : FREE_IMAGE_FORMAT; xmessage : PAnsiChar);
+procedure FreeImageErrorHandler(fif : FREE_IMAGE_FORMAT; const xmessage : PAnsiChar);
 begin
   LogAndRaiseError(xmessage);
 end;
