@@ -371,8 +371,8 @@ def build_exe():
 			#	print(proc.stderr)
 			raise RuntimeError("Failed to compress executable!")
 
-	#Move executable into output directory.
-	shutil.move(os.path.join(pathTemp, "QuArK.exe"), args.OUTPUTDIR)
+	#Copy executable into output directory.
+	shutil.copy2(os.path.join(pathTemp, "QuArK.exe"), args.OUTPUTDIR)
 
 	return
 
