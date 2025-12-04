@@ -377,7 +377,12 @@ end;
 
 function Pos_JOH_PAS_6(const SubStr : AnsiString; const Str : AnsiString) : Integer; {$IFDEF Inline} inline; {$ENDIF}
 begin
+{$IFDEF Delphi7Plus}
   Result := StrUtils.PosEx(SubStr, Str, 1);
+{$ELSE}
+  //DanielPharos: PosEx doesn't exist before Delphi 7, so let's fix this Delphi 6 breaking oversight.
+  Result := Pos(SubStr, Str);
+{$ENDIF}
 end;
 
 function PosStub(const substr: AnsiString; const s: AnsiString): Integer;
