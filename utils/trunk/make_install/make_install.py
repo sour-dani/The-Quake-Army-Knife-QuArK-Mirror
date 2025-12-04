@@ -105,7 +105,7 @@ if not args.RUNTIME:
 def check_dependencies():
 	if args.COMPILE:
 		try:
-			proc = subprocess.run((pathDCC, "--version"), capture_output=True)
+			proc = subprocess.run((pathDCC, ), capture_output=True)
 		except (FileNotFoundError, ):
 			raise RuntimeError("Delphi compiler not found!")
 		if proc.returncode != 0:
@@ -114,7 +114,33 @@ def check_dependencies():
 			if len(proc.stderr) != 0:
 				print(proc.stderr)
 			raise RuntimeError("Delphi compiler appears to be broken!")
-		#FIXME: Check for version Delphi 4+!
+		header = proc.stdout.splitlines()[0].decode("UTF-8")
+		index = header.find("Copyright")
+		if index != -1:
+			header = header[:index].rstrip()
+		del index
+		product_name, version_tag, version = header.rsplit(" ", 2)
+		if version_tag not in set({"Version", "version"}):
+			raise RuntimeError("Parse failure!")
+		delphi_version = version.split(".")
+		if int(delphi_version[0]) > 13:
+			try:
+				proc = subprocess.run((pathDCC, "--version"), capture_output=True)
+			except (FileNotFoundError, ):
+				raise RuntimeError("Delphi compiler not found!")
+			if proc.returncode != 0:
+				if len(proc.stdout) != 0:
+					print(proc.stdout)
+				if len(proc.stderr) != 0:
+					print(proc.stderr)
+				raise RuntimeError("Delphi compiler appears to be broken!")
+			header = proc.stdout.splitlines()[0].decode("UTF-8")
+			product_name, version = header.rsplit(" ", 1)
+			delphi_version = version.split(".")
+
+		#QuArK needs dynamic array support (Delphi 4+)
+		if int(delphi_version[0]) < 12:
+			raise RuntimeError("Delphi too old; version 4 or higher required!")
 
 	if args.COMPRESSEXE:
 		try:
@@ -162,7 +188,7 @@ def check_dependencies():
 			raise RuntimeError("Unexpected Python version!")
 		python_version = python_version[len("Python "):].split(".")
 		if int(python_version[0]) < 3:
-			raise RuntimeError("Python version too old!")
+			raise RuntimeError("Python too old; version 3.x or higher required!")
 		#Not going to check the exact version; this'll have to do...
 
 	if args.SFX:
@@ -182,7 +208,12 @@ def check_dependencies():
 			if len(proc.stderr) != 0:
 				print(proc.stderr)
 			raise RuntimeError("NSIS appears to be broken!")
-		#FIXME: Check for v3.0 or higher!
+		version = proc.stdout.decode("UTF-8")
+		if version.startswith("v"):
+			version = version[len("v"):]
+		nsis_version = version.split(".")
+		if int(nsis_version[0]) < 3:
+			raise RuntimeError("NSIS too old; version 3.x or higher required!")
 
 	return
 
@@ -282,7 +313,7 @@ def build_exe():
 	#CLI compiler uses a dcc32.cfg file.
 	if os.path.exists(os.path.join(pathSource, "dcc32.cfg")):
 		raise RuntimeError("dcc32.cfg file already exists!")
-	with open(os.path.join(pathSource, "quark.cfg"), mode="r") as inFile:
+	with open(os.path.join(pathSource, "QuArK.cfg"), mode="r") as inFile:
 		with open(os.path.join(pathSource, "dcc32.cfg"), mode="w") as outFile:
 			for line in inFile.readlines():
 				if (line.strip() == "-$D-") and args.DEBUG:
