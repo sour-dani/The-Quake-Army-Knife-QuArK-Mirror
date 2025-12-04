@@ -587,9 +587,7 @@ begin
 
     Text.Add(Format('%s %s', ['Address', 'Type']));
     for I:=0 to g_Controls.Count-1 do
-    begin
-      Text.Add(Format('%s %s', [g_Controls.Names[I], g_Controls.ValueFromIndex[I]]))
-    end;
+      Text.Add(Format('%s %s', [g_Controls.Names[I], {$IFDEF Delphi7orNewerCompiler}g_Controls.ValueFromIndex[I]{$ELSE}TStrings_ValueFromIndex_Get(g_Controls, I){$ENDIF}]));
 
     Text.SaveToFile(ExtractFilePath(ParamStr(0))+ControlDumpFile);
   finally

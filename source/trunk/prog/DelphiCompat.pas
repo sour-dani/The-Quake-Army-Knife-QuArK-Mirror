@@ -994,6 +994,9 @@ function BoolToStr(B: Boolean; UseBoolStrs: Boolean = False): string;
 function PosEx(const SubStr, S: string; Offset: Cardinal = 1): Integer;
 
 function GetFileVersion(const AFileName: string): Cardinal;
+
+//This is supposed to be a member function.
+function TStrings_ValueFromIndex_Get(const ss: TStrings; Index: Integer): string;
 {$endif}
 
 {$ifndef Delphi2005orNewerCompiler}
@@ -1451,6 +1454,11 @@ begin
       FreeMem(VerBuf);
     end;
   end;
+end;
+
+function TStrings_ValueFromIndex_Get(const ss: TStrings; Index: Integer): string;
+begin
+  Result := Copy(ss.Strings[Index], Length(ss.Names[Index]) + 2, MaxInt);
 end;
 {$endif}
 

@@ -673,8 +673,8 @@ begin
           for j:=0 to e_sl.count-1 do
           begin
             if e_sl.Names[j] = 'classname' then continue // remove classname specific
-            else if (e_sl.Names[j] = 'model') and (e_sl.ValueFromIndex[j][1]='*') then continue; // remove model specifics if it points to a BSP model
-            Entity.Specifics.Strings[e_sl.Names[j]]:=e_sl.ValueFromIndex[j];
+            else if (e_sl.Names[j] = 'model') and ({$IFDEF Delphi7orNewerCompiler}e_sl.ValueFromIndex[j]{$ELSE}TStrings_ValueFromIndex_Get(e_sl, j){$ENDIF}[1]='*') then continue; // remove model specifics if it points to a BSP model
+            Entity.Specifics.Strings[e_sl.Names[j]]:={$IFDEF Delphi7orNewerCompiler}e_sl.ValueFromIndex[j]{$ELSE}TStrings_ValueFromIndex_Get(e_sl, j){$ENDIF};
           end;
           Entity.Specifics.Strings[SpecDesc]:='(insert description here)';
           if ext=':b' then
