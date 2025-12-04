@@ -65,22 +65,22 @@ uses
 {$IFDEF Delphi6orNewerCompiler}{$IFNDEF Delphi2010orNewerCompiler}{$IFDEF CPUX86}
   VCLFixPack in 'prog\VCLFixPack.pas',
 {$ENDIF}{$ENDIF}{$ENDIF}
-{$IFNDEF DelphiXE2orNewerCompiler}
+{$IFDEF Delphi6orNewerCompiler}{$IFNDEF DelphiXE2orNewerCompiler}
   ControlsAtomFix in 'prog\ControlsAtomFix.pas',
-{$ENDIF}
+{$ENDIF}{$ENDIF}
   //VistaAltFixUnit in 'prog\VistaAltFixUnit.pas',
   //VistaAltFixUnit2 in 'prog\VistaAltFixUnit2.pas',
 
   //
   // Runtime optimization
   //
-{$IFNDEF DelphiXE2orNewerCompiler}
+{$IFDEF Delphi6orNewerCompiler}{$IFNDEF DelphiXE2orNewerCompiler}
   //System.Move changed signature in Delphi XE2, and FastMove was never updated for that.
   //And even though some code was licensed into Delphi, FastMove is still useful on Delphi 2006+
   //because only the CPU-generic Assembly version was integrated:
   //https://borland.public.delphi.language.basm.narkive.com/gmmCDU4z/rad-studio-delphi-2007-and-fastobj-fastmove#post4
   FastMove in 'prog\FastMove.pas',
-{$ENDIF}
+{$ENDIF}{$ENDIF}
 {$IFNDEF Delphi2009orNewerCompiler}
 {$IFDEF Delphi6orNewerCompiler}
   FastCode in 'prog\FastCode\FastCode.pas',
