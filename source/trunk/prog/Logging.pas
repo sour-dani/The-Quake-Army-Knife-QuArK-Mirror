@@ -58,7 +58,7 @@ procedure LogProfiling(const Location: String; const Args: array of String; cons
 
 implementation
 
-uses Windows, Classes, Forms, Sysutils, ApplPaths;
+uses Windows{$IFNDEF PyProfiling}, Classes{$ENDIF}, Forms, Sysutils, ApplPaths;
 
 var
   LogFile: TextFile;
@@ -137,7 +137,7 @@ begin
 {$IFDEF PyProfiling}
   {$I-}
   AssignFile(LogProfileFile, ConcatPaths([GetQPath(pQuArKLog), LOG_PROFILE_FILENAME]));
-  rewrite(LogProfileFile);
+  Rewrite(LogProfileFile);
   {$I+}
 {$ENDIF}
 end;
@@ -222,7 +222,7 @@ begin
   if TTextRec(LogFile).Mode=fmClosed then
     Exit;
   {$IFDEF Delphi7orNewerCompiler}
-  GetLocaleFormatSettings(LOCALE_SYSTEM_DEFAULT, DateFormat);
+  GetLocaleFormatSettings(LOCALE_SYSTEM_DEFAULT, DateFormat); //FIXME: Probably want to more this to a more central place?
   {$ENDIF}
   Log(LOG_PASCAL, format('Logging stopped at %s',[DateTimeToStr(now{$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF})]));
   {$I-}
@@ -236,13 +236,8 @@ begin
 end;
 
 {$IFDEF PyProfiling}
-function AddressInfo(X: Cardinal): String;
-begin
-  Result:=IntToHex(X, 8);
-end;
-
 //Based on: https://stackoverflow.com/questions/15890029/delphi-obtain-stack-trace-after-exception
-function GetStackReport: AnsiString;
+function GetStackReport: String;
 var
   retaddr, walker: ^pointer;
 begin
@@ -254,14 +249,14 @@ begin
   end;
 
   // assume return address is present above ebp
-  while Cardinal(walker^) <> 0 do
+  while NativeUInt(walker^) <> 0 do
   begin
-    if Cardinal(walker^)=1 then Exit;
+    if NativeUInt(walker^)=1 then Exit;
     retaddr := walker;
     Inc(retaddr);
     if result<>'' then
       result := result + sLineBreak;
-    result := result + AddressInfo(Cardinal(retaddr^));
+    result := result + {U}IntToHex(NativeUInt(retaddr^), SizeOf(NativeUInt) * 2);
     walker := walker^;
   end;
 end;
@@ -342,4 +337,6 @@ initialization
 
 finalization
   CloseLogFile;
+  if Assigned(LogCache) then
+    FreeAndNil(LogCache);
 end.
