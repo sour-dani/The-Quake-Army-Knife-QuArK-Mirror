@@ -115,7 +115,7 @@ function CollerObjets(PasteNow: QObject) : Boolean;
 var
  Source: TMemoryStream;
  H: THandle;
- P: PChar;
+ P: PByte;
  SourceTaille: {$IFDEF CPU64BITS}SIZE_T{$ELSE}DWORD{$ENDIF};
 begin
  Result:=IsClipboardFormatAvailable(g_CF_QObjects);
@@ -148,9 +148,9 @@ begin
       P:=GlobalLock(H);
       if P<>Nil then
        begin
-        Result:=CheckFileSignature(PAnsiChar(P));
+        Result:=CheckFileSignature(P, GlobalSize(H));
         if Result and Assigned(PasteNow) then
-         ConstructObjsFromText(PasteNow, P, StrLen(P));
+         ConstructObjsFromText(PasteNow, PAnsiChar(P), StrLen(PAnsiChar(P)));
        end;
       GlobalUnlock(H);
      end;

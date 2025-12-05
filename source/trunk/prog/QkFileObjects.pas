@@ -202,7 +202,7 @@ function SortedFindFileName(Q: TQList; const nFileName: String) : QFileObject;
 
 procedure ConstructObjsFromText(Self: QObject; P: PChar; PSize: Integer);
 procedure ConvertObjsToText(Self: QObject; L: TStringList; Comment: Boolean);
-function CheckFileSignature(var P: PAnsiChar) : Boolean;
+function CheckFileSignature(var P: PByte; Size: Integer) : Boolean;
 function MakeTempFileName(const Tag: String) : String;
 function CompareFiles(const Filename1, Filename2: String) : Boolean;
 
@@ -1463,9 +1463,9 @@ begin
  L.Add('}');
 end;
 
-function CheckFileSignature(var P: PAnsiChar) : Boolean;
+function CheckFileSignature(var P: PByte; Size: Integer) : Boolean;
 begin
- if {Ansi}StrLen(P) < SizeOf(TFileHeaderSignature) then
+ if Size < SizeOf(TFileHeaderSignature) then
  begin
   Result:=false;
   exit;
