@@ -202,7 +202,7 @@ function SortedFindFileName(Q: TQList; const nFileName: String) : QFileObject;
 
 procedure ConstructObjsFromText(Self: QObject; P: PChar; PSize: Integer);
 procedure ConvertObjsToText(Self: QObject; L: TStringList; Comment: Boolean);
-function CheckFileSignature(var P: PChar) : Boolean;
+function CheckFileSignature(var P: PAnsiChar) : Boolean;
 function MakeTempFileName(const Tag: String) : String;
 function CompareFiles(const Filename1, Filename2: String) : Boolean;
 
@@ -226,15 +226,20 @@ const
  c_FileVersionText     = $31435253;  {SRC1}
  //c_FileVersionText2    = $32435253;  {SRC2}
 
- c_FileSignatureSize = 2*SizeOf(LongWord);  { Signature + Version }
-
 type
- TFileHeaderBinary = record
-                    Signature: LongWord;
-                    Version: LongWord;
-                    TotalFileLength: LongInt;
-                    InfoType: array[0..19] of Byte;
-                   end;
+ TFileHeaderSignature = packed record
+                         Signature: LongWord;
+                         Version: LongWord;
+                        end;
+ PFileHeaderSignature = ^TFileHeaderSignature;
+
+ TFileHeaderBinary = packed record
+                      //TFileHeaderSignature:
+                      Signature: LongWord;
+                      Version: LongWord;
+                      TotalFileLength: LongInt;
+                      InfoType: array[0..19] of Byte;
+                     end;
 
 var
  AutoRestoreEvent: THandle;
@@ -554,12 +559,14 @@ var
  S: String;
  Lu: Integer;
 begin
- Lu:=Source.Read(Header, SizeOf(Header));
- if (Lu < c_FileSignatureSize)
+ Lu:=Source.Read(Header, SizeOf(TFileHeaderSignature)); //Note: reading only the TFileHeaderSignature part!
+ if (Lu < SizeOf(TFileHeaderSignature))
  or (Header.Signature<>c_FileSignatureQQRK) then
   Raise EErrorFmt(5184, [LoadName]);
  case Header.Version of
   c_FileVersionBinary: begin
+                    Source.Seek(Lu, soCurrent);
+                    Lu:=Source.Read(Header, SizeOf(Header));
                     if (Lu<SizeOf(Header))
                     or (Header.TotalFileLength < SizeOf(Header)) then
                      Raise EErrorFmt(5186, [LoadName]);
@@ -572,8 +579,8 @@ begin
                     ReadFormat:=rf_Private;
                    end;
   c_FileVersionText: begin
-                   Source.Seek(c_FileSignatureSize - Lu, soCurrent);
-                   Dec(SourceTaille, c_FileSignatureSize);
+                   Source.Seek(SizeOf(TFileHeaderSignature) - Lu, soCurrent);
+                   Dec(SourceTaille, SizeOf(TFileHeaderSignature));
                    ReadFormat:=rf_AsText;
                   end;
   else
@@ -1440,11 +1447,11 @@ end;
 
 procedure ConvertObjsToText(Self: QObject; L: TStringList; Comment: Boolean);
 var
- S: String; //FIXME: AnsiString?
+ S: AnsiString;
 begin
- SetLength(S, c_FileSignatureSize);
- PLongWord(@S[1])^:=c_FileSignatureQQRK;
- PLongWord(@S[1+SizeOf(LongWord)])^:=c_FileVersionText;
+ SetLength(S, SizeOf(TFileHeaderSignature));
+ PFileHeaderSignature(PAnsiChar(S))^.Signature:=c_FileSignatureQQRK;
+ PFileHeaderSignature(PAnsiChar(S))^.Version:=c_FileVersionText;
  L.Add(S);
  if Comment then
   begin
@@ -1456,15 +1463,15 @@ begin
  L.Add('}');
 end;
 
-function CheckFileSignature(var P: PChar) : Boolean; //FIXME: PAnsiChar?
+function CheckFileSignature(var P: PAnsiChar) : Boolean;
 begin
- if StrLen(P) < c_FileSignatureSize then
+ if {Ansi}StrLen(P) < SizeOf(TFileHeaderSignature) then
  begin
   Result:=false;
   exit;
  end;
- Result:=(PLongWord(P)^=c_FileSignatureQQRK) and (PLongWord(P+SizeOf(LongWord))^=c_FileVersionText);
- Inc(P, c_FileSignatureSize);
+ Result:=(PFileHeaderSignature(P)^.Signature=c_FileSignatureQQRK) and (PFileHeaderSignature(P)^.Version=c_FileVersionText);
+ Inc(P, SizeOf(TFileHeaderSignature));
 end;
 
 procedure QFileObject.SaveFile(Info: TInfoEnreg1);

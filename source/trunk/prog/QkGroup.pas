@@ -148,7 +148,7 @@ begin
       P:=GlobalLock(H);
       if P<>Nil then
        begin
-        Result:=CheckFileSignature(P);
+        Result:=CheckFileSignature(PAnsiChar(P));
         if Result and Assigned(PasteNow) then
          ConstructObjsFromText(PasteNow, P, StrLen(P));
        end;
