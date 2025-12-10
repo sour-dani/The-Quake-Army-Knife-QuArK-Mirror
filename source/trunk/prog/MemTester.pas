@@ -241,7 +241,7 @@ procedure MemTesting(H: HWnd);
 var
  S: String;
  DC: HDC;
- OldMode: Cardinal;
+ OldMode: UINT;
  R: TRect;
 begin
  GetWindowRect(H, R);
