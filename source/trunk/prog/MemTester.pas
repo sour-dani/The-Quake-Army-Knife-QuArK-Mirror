@@ -185,6 +185,20 @@ begin
 end;
 
 {$IFDEF MemHeavyListings}
+const
+{$IFDEF CPU16BITS}
+  HeavyMemDumpFormatStr = '%04x %5d'#13#10;
+  HeavyMemDumpFormatStrLen = 19;
+{$ENDIF}
+{$IFDEF CPU32BITS}
+  HeavyMemDumpFormatStr = '%08x %10d'#13#10;
+  HeavyMemDumpFormatStrLen = 21;
+{$ENDIF}
+{$IFDEF CPU64BITS}
+  HeavyMemDumpFormatStr = '%016x %20d'#13#10;
+  HeavyMemDumpFormatStrLen = 39;
+{$ENDIF}
+
 function HeavyMemDump: String;
 var
  P: Pointer;
@@ -194,7 +208,7 @@ var
 begin
  P:=FullLinkedList;
  Count:=FullListSize;
- SetLength(Result, Count*19);
+ SetLength(Result, Count*HeavyMemDumpFormatStrLen);
  Q:=PChar(Result);
  while Assigned(P) do
   begin
@@ -206,8 +220,8 @@ begin
      Dec(Count);
      PPointer(@Args[0])^ := P;
      PSizeT(@Args[SizeOf(Pointer)])^ := OldSize;
-     wvsprintf(Q, '%08x %8d'#13#10, @Args);
-     Inc(Q, 19);
+     wvsprintf(Q, HeavyMemDumpFormatStr, @Args);
+     Inc(Q, HeavyMemDumpFormatStrLen);
      P:=PPointer(PArithByte(P)+SizeOf(SizeT)+SizeOf(LongWord)+OldSize+2*SizeOf(LongWord))^;
     end
    else
