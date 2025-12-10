@@ -24,11 +24,11 @@ unit MemTester;
 
 interface
 
-uses DelphiCompat, Windows;
+uses Windows;
 
 {$IFDEF Debug}
-{.$DEFINE MemResourceViewer}
-{.$DEFINE MemHeavyListings} //Do not activate if MemTesterPassthrough is defined!
+{$DEFINE MemResourceViewer}
+{$DEFINE MemHeavyListings} //Do not activate if MemTesterPassthrough is defined!
 {.$DEFINE MemTrackAddress} //Don't forget to set your BREAKPOINT below!
 {$ELSE}
 //By default, only use this in Debug
@@ -43,6 +43,17 @@ implementation
 uses SysUtils;
 
 type
+  //We can't include DelphiCompat.pas, because that causes allocations to happen
+  //before the new memory manager is installed. So we copy the one thing we need
+  //from it here:
+{$ifdef Delphi2009orNewerCompiler}
+  ArithByte = Byte;
+  PArithByte = PByte;
+{$else}
+  ArithByte = AnsiChar;
+  PArithByte = PAnsiChar;
+{$endif}
+
   //The memory manager switches from Integer to NativeInt in Delphi XE2. Let's make a type to keep our code readable.
 {$IFDEF DelphiXE2orNewerCompiler}
   SizeT = NativeInt;
