@@ -43,13 +43,7 @@ implementation
 uses SysUtils;
 
 type
-{$IFDEF Delphi2009orNewerCompiler}
-  ArithByte = Byte;
-  PArithByte = PByte;
-{$ELSE}
-  ArithByte = AnsiChar;
-  PArithByte = PAnsiChar;
-{$ENDIF}
+  //The memory manager switches from Integer to NativeInt in Delphi XE2. Let's make a type to keep our code readable.
 {$IFDEF DelphiXE2orNewerCompiler}
   SizeT = NativeInt;
   PSizeT = PNativeInt;
@@ -155,8 +149,7 @@ end;
 function NewReallocMem(P: Pointer; Size: SizeT): Pointer;
 {$IFNDEF MemTesterPassthrough}
 var
- OldSize: Integer;
-{$IFDEF MemHeavyListings} I: Integer; {$ENDIF}
+ OldSize: SizeT;
 {$ENDIF}
 begin
   {$IFNDEF MemTesterPassthrough}
@@ -175,8 +168,7 @@ begin
     Exit;
    end;
   Result:=NewGetMem(Size);
-  for I:=0 to OldSize-1 do
-   PByte(PArithByte(Result)+I)^:=PByte(PArithByte(P)+I)^;
+  Move(PByte(P)^, PByte(Result)^, OldSize);
   NewFreeMem(P);
   {$ELSE}
   Inc(AllocatedMemSize, Size-OldSize);
@@ -203,7 +195,7 @@ begin
  P:=FullLinkedList;
  Count:=FullListSize;
  SetLength(Result, Count*19);
- Q:=Pointer(Result);
+ Q:=PChar(Result);
  while Assigned(P) do
   begin
    Dec(PByte(P), SizeOf(SizeT)+SizeOf(LongWord));
@@ -212,8 +204,8 @@ begin
     begin
      if Count=0 then Raise Exception.Create('HeavyMemDump: Count<0');
      Dec(Count);
-     PPointer(Args[0])^ := P;
-     PSizeT(Args[SizeOf(Pointer)])^ := OldSize;
+     PPointer(@Args[0])^ := P;
+     PSizeT(@Args[SizeOf(Pointer)])^ := OldSize;
      wvsprintf(Q, '%08x %8d'#13#10, @Args);
      Inc(Q, 19);
      P:=PPointer(PArithByte(P)+SizeOf(SizeT)+SizeOf(LongWord)+OldSize+2*SizeOf(LongWord))^;
