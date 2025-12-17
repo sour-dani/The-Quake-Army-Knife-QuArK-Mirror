@@ -1001,6 +1001,8 @@ const
   PathSep    = {$IFDEF MSWINDOWS} ';'; {$ELSE} ':'; {$ENDIF}
   sLineBreak = {$IFDEF LINUX} #10 {$ENDIF} {$IFDEF MSWINDOWS} #13#10 {$ENDIF};
 
+function TryStrToInt64(const S: string; out Value: Int64): Boolean;
+
 function StrToFloatDef(const S: String; const Default: Extended) : Extended;
 
 function RightStr(Const Str: String; Size: Word): String;
@@ -1393,6 +1395,14 @@ begin
   Result := S;
   if IsPathDelimiter(Result, Length(Result)) then
     SetLength(Result, Length(Result)-1);
+end;
+
+function TryStrToInt64(const S: string; out Value: Int64): Boolean;
+var
+  E: Integer;
+begin
+  Val(S, Value, E);
+  Result := E = 0;
 end;
 
 function StrToFloatDef(const S: String; const Default: Extended) : Extended;
