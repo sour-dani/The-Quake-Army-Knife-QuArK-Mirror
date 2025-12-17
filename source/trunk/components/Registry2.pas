@@ -51,7 +51,15 @@ type
 
 implementation
 
-uses {$IFDEF Delphi6orNewerCompiler}RTLConsts{$ELSE}consts{$ENDIF};
+{$IFDEF CONDITIONALEXPRESSIONS}
+  {$IF COMPILERVERSION >= 14}
+    {$DEFINE GotRTLConsts}
+  {$IFEND}
+{$ELSE}
+  {$UNDEF GotRTLConsts}
+{$ENDIF}
+
+uses {$IFDEF GotRTLConsts}RTLConsts{$ELSE}consts{$ENDIF};
 
 const
   REG_QWORD = 11;
