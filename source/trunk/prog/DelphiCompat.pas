@@ -52,6 +52,15 @@ type
 {$endif}
 
 {$ifndef Delphi3orNewerCompiler}
+  //Exist in Delphi 3-, but only in Windows.pas
+  PByte = ^Byte;
+  PInteger = ^Integer;
+  PSingle = ^Single;
+  PDouble = ^Double;
+
+  //Exists in Delphi 3-, but only in grids.pas
+  PPointer = ^Pointer;
+
   TCustomForm = TForm;
 {$endif}
 
@@ -65,11 +74,32 @@ type
 {$endif}
 
 {$ifndef Delphi6orNewerCompiler}
-  PByte = ^Byte;
-  PInteger = ^Integer;
-  PSingle = ^Single;
-  PDouble = ^Double;
-  PPointer = ^Pointer;
+  TIntegerDynArray      = array of Integer;
+  {$EXTERNALSYM TIntegerDynArray}
+  TCardinalDynArray     = array of Cardinal;
+  {$EXTERNALSYM TCardinalDynArray}
+  TWordDynArray         = array of Word;
+  {$EXTERNALSYM TWordDynArray}
+  TSmallIntDynArray     = array of SmallInt;
+  {$EXTERNALSYM TSmallIntDynArray}
+  TByteDynArray         = array of Byte;
+  {$EXTERNALSYM TByteDynArray}
+  TShortIntDynArray     = array of ShortInt;
+  {$EXTERNALSYM TShortIntDynArray}
+  TInt64DynArray        = array of Int64;
+  {$EXTERNALSYM TInt64DynArray}
+  TLongWordDynArray     = array of LongWord;
+  {$EXTERNALSYM TLongWordDynArray}
+  TSingleDynArray       = array of Single;
+  {$EXTERNALSYM TSingleDynArray}
+  TDoubleDynArray       = array of Double;
+  {$EXTERNALSYM TDoubleDynArray}
+  TBooleanDynArray      = array of Boolean;
+  {$EXTERNALSYM TBooleanDynArray}
+  TStringDynArray       = array of string;
+  {$EXTERNALSYM TStringDynArray}
+  TWideStringDynArray   = array of WideString;
+  {$EXTERNALSYM TWideStringDynArray}
 
 { TStream seek origins }
   TSeekOrigin = (soBeginning, soCurrent, soEnd);
