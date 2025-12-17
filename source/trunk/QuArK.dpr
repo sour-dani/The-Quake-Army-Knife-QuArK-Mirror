@@ -29,25 +29,25 @@ uses
   // Memory managers
   //
 {$IFDEF MemTester}
-  MemTester in 'prog\MemTester.pas',
+  MemTester in 'modules\MemTester.pas',
 {$ENDIF}
 {$IFDEF RecyclerMM}
-  RecyclerMM in 'prog\RecyclerMM.pas',
+  RecyclerMM in 'modules\RecyclerMM.pas',
 {$ENDIF}
 {$IFDEF FastMM}
-  FastMM in 'prog\FastMM.pas',
+  FastMM in 'modules\FastMM.pas',
 {$ENDIF}
 {$IFDEF FastMM3}
-  FastMM3 in 'prog\FastMM3.pas',
+  FastMM3 in 'modules\FastMM3.pas',
 {$ENDIF}
 {$IFDEF FastMM4}
-  FastMM4 in 'prog\FastMM4.pas',
+  FastMM4 in 'modules\FastMM4.pas',
 {$ENDIF}
 {$IFDEF FastMM5}
-  FastMM5 in 'prog\FastMM5.pas',
+  FastMM5 in 'modules\FastMM5.pas',
 {$ENDIF}
 {$IFDEF MemCheck}
-  MemCheck in 'prog\MemCheck.pas',
+  MemCheck in 'modules\MemCheck.pas',
 {$ENDIF}
 
   //
@@ -59,17 +59,17 @@ uses
   //so let's check for the existence of the function itself.
   {$IF Declared(CheckWin32Version)}
   {$DEFINE NeedD6CheckWin32VersionFix}
-  D6CheckWin32VersionFix in 'prog\D6CheckWin32VersionFix.pas',
+  D6CheckWin32VersionFix in 'modules\D6CheckWin32VersionFix.pas',
   {$IFEND}
 {$ENDIF}
 {$IFDEF Delphi6orNewerCompiler}{$IFNDEF Delphi2010orNewerCompiler}{$IFDEF CPUX86}
-  VCLFixPack in 'prog\VCLFixPack.pas',
+  VCLFixPack in 'modules\VCLFixPack.pas',
 {$ENDIF}{$ENDIF}{$ENDIF}
 {$IFDEF Delphi6orNewerCompiler}{$IFNDEF DelphiXE2orNewerCompiler}
-  ControlsAtomFix in 'prog\ControlsAtomFix.pas',
+  ControlsAtomFix in 'modules\ControlsAtomFix.pas',
 {$ENDIF}{$ENDIF}
-  //VistaAltFixUnit in 'prog\VistaAltFixUnit.pas',
-  //VistaAltFixUnit2 in 'prog\VistaAltFixUnit2.pas',
+  //VistaAltFixUnit in 'modules\VistaAltFixUnit.pas',
+  //VistaAltFixUnit2 in 'modules\VistaAltFixUnit2.pas',
 
   //
   // Runtime optimization
@@ -79,21 +79,21 @@ uses
   //And even though some code was licensed into Delphi, FastMove is still useful on Delphi 2006+
   //because only the CPU-generic Assembly version was integrated:
   //https://borland.public.delphi.language.basm.narkive.com/gmmCDU4z/rad-studio-delphi-2007-and-fastobj-fastmove#post4
-  FastMove in 'prog\FastMove.pas',
+  FastMove in 'modules\FastMove.pas',
 {$ENDIF}{$ENDIF}
 {$IFNDEF Delphi2009orNewerCompiler}
 {$IFDEF Delphi6orNewerCompiler}
-  FastCode in 'prog\FastCode\FastCode.pas',
+  FastCode in 'modules\FastCode\FastCode.pas',
 {$ENDIF}
 {$IFDEF Delphi5orNewerCompiler}
-  RtlVclOptimize in 'prog\RtlVclOptimize.pas',
+  RtlVclOptimize in 'modules\RtlVclOptimize.pas',
 {$ENDIF}
 {$ENDIF}
 
   //
   // Delphi version compatibility
   //
-  DelphiCompat in 'prog\DelphiCompat.pas',
+  DelphiCompat in 'modules\DelphiCompat.pas',
 
   Forms, SysUtils, {$IFNDEF LINUX}Windows,{$ENDIF}
 
