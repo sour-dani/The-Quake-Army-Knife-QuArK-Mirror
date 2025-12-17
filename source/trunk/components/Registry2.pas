@@ -51,7 +51,7 @@ type
 
 implementation
 
-uses RTLConsts;
+uses {$IFDEF Delphi6orNewerCompiler}RTLConsts{$ELSE}consts{$ENDIF};
 
 const
   REG_QWORD = 11;
