@@ -1113,6 +1113,10 @@ var
 {$endif}
 
 {$ifdef MSWINDOWS}
+{$ifndef Delphi5orNewerCompiler}
+function SafeLoadLibrary(const FileName: string; ErrorMode: UINT = SEM_NOOPENFILEERRORBOX): HMODULE;
+{$endif}
+
 {$ifndef Delphi6orNewerCompiler}
 {$define ExtraFunc_CheckWin32Version}
 {$endif}
@@ -1821,6 +1825,20 @@ end;
 {$ifndef DELAYEDLOADING}
 var
   UserLib, ShellLib, DWMAPILib: HMODULE;
+{$endif}
+
+{$ifndef Delphi5orNewerCompiler}
+function SafeLoadLibrary(const Filename: string; ErrorMode: UINT): HMODULE;
+var
+  OldMode: UINT;
+begin
+  OldMode := SetErrorMode(ErrorMode);
+  try
+    Result := LoadLibrary(PChar(Filename));
+  finally
+    SetErrorMode(OldMode);
+  end;
+end;
 {$endif}
 
 {$ifdef ExtraFunc_CheckWin32Version}
