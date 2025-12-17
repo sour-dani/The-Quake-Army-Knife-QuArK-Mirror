@@ -24,15 +24,35 @@ interface
 
 uses Windows, Classes, SysUtils, Registry;
 
+{$IFDEF VER80}
+  {$DEFINE FallbackReadOnly}
+{$ENDIF}
+{$IFDEF VER90}
+  {$DEFINE FallbackReadOnly}
+{$ENDIF}
+{$IFDEF VER100}
+  {$DEFINE FallbackReadOnly}
+{$ENDIF}
+{$IFDEF VER120}
+  {$DEFINE FallbackReadOnly}
+{$ENDIF}
+
 type
   QWORD = Int64;
 
 type
  TRegistry2 = class(TRegistry)
+              {$IFDEF FallbackReadOnly}
+              private
+               ReadOnly: Boolean;
+              {$ENDIF}
               public
               {OnWrite: TNotifyEvent;
-               DontWrite: Boolean;
-               Tag: Integer;}
+               DontWrite: Boolean;}
+               {$IFDEF FallbackReadOnly}
+               constructor Create(AAccess: LongWord = KEY_ALL_ACCESS);
+               function OpenKey(const Key: String; Cancreate: boolean): Boolean;
+               {$ENDIF}
                function ReadOpenKey(const KeyName: String) : Boolean;
                function GetRawDataType(const ValueName: string): DWORD;
                function ReadDWORD(const Name: string) : DWORD;
@@ -88,21 +108,45 @@ end;
 
 // ---
 
-{function TRegistry2.OpenKey(const KeyName: String; Create: Boolean) : Boolean;
+{$IFDEF FallbackReadOnly}
+constructor TRegistry2.Create(AAccess: LongWord);
 begin
- if Create and (DontWrite or Assigned(OnWrite)) then
+  inherited Create();
+  if AAccess = KEY_READ then
+    ReadOnly := true
+  else
+    //Note: Delphi 4- isn't capable of anything else.
+    ReadOnly := false;
+end;
+
+function TRegistry2.OpenKey(const Key: String; Cancreate: boolean): Boolean;
+begin
+  if ReadOnly then
   begin
-   Result:=OpenKey(KeyName, False);
+    if Cancreate then
+      raise ERegistryException.Create('Cannot create key in read-only mode.');
+    Result:=OpenKeyReadOnly(Key);
+  end
+  else
+    Result:=inherited OpenKey(Key, Cancreate);
+end;
+{$ENDIF}
+
+{function TRegistry2.OpenKey(const Key: String; Cancreate: Boolean) : Boolean;
+begin
+ if Cancreate and (DontWrite or Assigned(OnWrite)) then
+  begin
+   Result:=OpenKey(Key, False);
    if not Result then
     begin
      if DontWrite then Exit;
      if Assigned(OnWrite) then OnWrite(Self);
      if DontWrite then Exit;
-     Result:=OpenKey(KeyName, True);
+     Result:=OpenKey(Key, True);
     end;
   end
  else
-  OpenKey:=inherited OpenKey(KeyName, Create);
+  Result:=inherited OpenKey(Key, Cancreate);
 end;}
 
 function TRegistry2.ReadOpenKey(const KeyName: String) : Boolean;
