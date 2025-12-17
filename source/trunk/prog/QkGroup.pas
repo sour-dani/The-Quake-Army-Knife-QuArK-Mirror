@@ -116,6 +116,7 @@ var
  Source: TMemoryStream;
  H: THandle;
  P: PByte;
+ S: AnsiString;
  SourceTaille: {$IFDEF CPU64BITS}SIZE_T{$ELSE}DWORD{$ENDIF};
 begin
  Result:=IsClipboardFormatAvailable(g_CF_QObjects);
@@ -140,9 +141,9 @@ begin
    finally Source.Free; end;
   end
  else
-  if not Result and IsClipboardFormatAvailable(CF_Text) and OpenClipboard(0) then
+  if not Result and IsClipboardFormatAvailable(CF_TEXT) and OpenClipboard(0) then
    begin
-    H:=GetClipboardData(CF_Text);
+    H:=GetClipboardData(CF_TEXT);
     if H<>0 then
      begin
       P:=GlobalLock(H);
@@ -151,7 +152,10 @@ begin
       try
        Result:=CheckFileSignature(P, GlobalSize(H));
        if Result and Assigned(PasteNow) then
-        ConstructObjsFromText(PasteNow, PAnsiChar(P), StrLen(PAnsiChar(P)));
+        begin
+         SetString(S, PAnsiChar(P), StrLen(PAnsiChar(P))); //FIXME: StrLen? What if there's no ending NULL? Use GlobalSize instead?
+         ConstructObjsFromText(PasteNow, S);
+        end;
       finally
        GlobalUnlock(H);
       end;
@@ -280,8 +284,11 @@ begin
  if H<>0 then
   begin
    P:=GlobalLock(H);
-   Move(Data[1], P^, Length(Data)+1);
-   GlobalUnlock(H);
+   try
+     Move(Data[1], P^, Length(Data)+1);
+   finally
+     GlobalUnlock(H);
+   end;
    SetClipboardData(CF_TEXT, H);
   end;
 end;
