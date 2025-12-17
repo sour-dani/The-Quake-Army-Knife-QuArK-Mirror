@@ -26,6 +26,14 @@ uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   ExtCtrls, CursorScrollBox;
 
+{$IFDEF CONDITIONALEXPRESSIONS}
+  {$IF RTLVersion >= 15.0}
+    {$DEFINE TCustomPanel_HasParentBackground}
+  {$IFEND}
+{$ELSE}
+  {$UNDEF TCustomPanel_HasParentBackground}
+{$ENDIF}
+
 const
  wm_InternalPaint = wm_User + $72;
 
@@ -65,7 +73,9 @@ type
     property HelpContext;
     property Hint;
     property Left;
+    {$IFDEF TCustomPanel_HasParentBackground}
     property ParentBackground;
+    {$ENDIF}
     property ParentColor;
     property ParentCtl3D;
     property ParentShowHint;
