@@ -200,7 +200,7 @@ function ByFileName(Item1, Item2: Pointer) : Integer;
 function SortedFindName(Q: TQList; const nName: String) : QObject;
 function SortedFindFileName(Q: TQList; const nFileName: String) : QFileObject;
 
-procedure ConstructObjsFromText(Self: QObject; P: PChar; PSize: Integer);
+procedure ConstructObjsFromText(Self: QObject; const Text: String);
 procedure ConvertObjsToText(Self: QObject; L: TStringList; Comment: Boolean);
 function CheckFileSignature(var P: PByte; Size: Integer) : Boolean;
 function MakeTempFileName(const Tag: String) : String;
@@ -638,20 +638,20 @@ var
 begin
  SetLength(S, Taille);
  F.ReadBuffer(PAnsiChar(S)^, Taille);
- ConstructObjsFromText(Self, PChar(String(S)), Taille);
+ ConstructObjsFromText(Self, S);
   { when loading from the Addons path, try to build a cached (compiled) version }
 (* if (ExtractFilePath(Filename)=GetApplicationAddonsPath())
  and (ExtractFileExt(Filename)=TypeInfo)... *)
 end;
 
-procedure ConstructObjsFromText(Self: QObject; P: PChar; PSize: Integer);
+procedure ConstructObjsFromText(Self: QObject; const Text: String);
 const
  cSeparators = [#13, #10, ' ', #9];
  Granularite = 8192;
 var
  NameSpec, Arg, A1: String;
  Level, Q: QObject;
- P1: PChar;
+ P, P1: PChar;
  Ligne, I, J {,IgnoreLevel}: Integer;
  Value: Single;
 (* ValueI: Integer;*)
@@ -805,8 +805,9 @@ var
   end;
 
 begin
+ P:=PChar(Text);
  Filename:=Self.GetFullName;
- ProgressIndicatorStart(5447, PSize div Granularite);
+ ProgressIndicatorStart(5447, Length(Text) div Granularite);
  try
   Ligne:=1;
   Prochain:=P+Granularite;

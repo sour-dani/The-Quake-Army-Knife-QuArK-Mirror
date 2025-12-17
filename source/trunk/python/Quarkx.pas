@@ -1089,12 +1089,14 @@ function xTruncStr(self, args: PyObject) : PyObject; cdecl;
 var
  P: PyChar;
  Size: {$IFDEF PYTHON25}Py_ssize_t{$ELSE}Integer{$ENDIF};
+ S: String;
 begin
  Result:=Nil;
  try
   if PyArg_ParseTupleX(args, 's#', [@P, @Size])=0 then
    Exit;
-  Result:=PyString_FromString(P);
+  S := PyStrPas(P, Size);
+  Result:=PyString_FromString(ToPyChar(S));
  except
   Py_XDECREF(Result);
   EBackToPython;
@@ -2091,14 +2093,12 @@ var
  text: PyChar;
  textlength: {$IFDEF PYTHON25}Py_ssize_t{$ELSE}Integer{$ENDIF};
  obj: PyObject;
- S: String;
 begin
  Result:=Nil;
  try
   if PyArg_ParseTupleX(args, 'Os#', [@obj, @text, @textlength])=0 then
    Exit;
-  SetString(S, PChar(PyStrPas(text)), textlength);
-  WriteConsole(obj, S);
+  WriteConsole(obj, PyStrPas(text, textlength));
   Result:=PyNoResult;
  except
   Py_XDECREF(Result);
@@ -3198,7 +3198,7 @@ const
    (ml_name: 'getmapdir';       ml_meth: xGetMapDir;       ml_flags: METH_VARARGS),
    (ml_name: 'lines2list';      ml_meth: xLines2List;      ml_flags: METH_VARARGS),
    (ml_name: 'list2lines';      ml_meth: xList2Lines;      ml_flags: METH_VARARGS),
-   (ml_name: 'truncstr';        ml_meth: xTruncStr;        ml_flags: METH_VARARGS),
+   (ml_name: 'truncstr';        ml_meth: xTruncStr;        ml_flags: METH_VARARGS), //FIXME: Appears unused. Remove?
    (ml_name: 'getmaperror';     ml_meth: xGetMapError;     ml_flags: METH_VARARGS),
    (ml_name: 'getshorthint';    ml_meth: xGetShortHint;    ml_flags: METH_VARARGS),
    (ml_name: 'getlonghint';     ml_meth: xGetLongHint;     ml_flags: METH_VARARGS),

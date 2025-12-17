@@ -568,7 +568,7 @@ begin
    Exit;
   Q:=QkObjFromPyObj(self);
   Q.Acces;
-  ConstructObjsFromText(Q, PChar(PyStrPas(src)), count);
+  ConstructObjsFromText(Q, PyStrPas(src, count));
   Result:=PyNoResult;
  except
   Py_XDECREF(Result);

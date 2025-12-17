@@ -710,10 +710,12 @@ procedure SizeDownPython;
 
 //These functions convert the Delphi String (AnsiString or UnicodeString) to Python's PChar (PAnsiChar or PUnicodeChar) and back.
 {$IFDEF UNICODE}
-function PyStrPas(const P: PyChar) : UnicodeString;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+function PyStrPas(const P: PyChar) : UnicodeString; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+function PyStrPas(const P: PyChar; Length: {$IFDEF PYTHON25}Py_ssize_t{$ELSE}Integer{$ENDIF}) : UnicodeString; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 function ToPyChar(const S: UnicodeString) : PyChar;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 {$ELSE}
-function PyStrPas(const P: PyChar) : AnsiString;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+function PyStrPas(const P: PyChar) : AnsiString; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+function PyStrPas(const P: PyChar; Length: {$IFDEF PYTHON25}Py_ssize_t{$ELSE}Integer{$ENDIF}) : AnsiString; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 function ToPyChar(const S: AnsiString) : PyChar;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
 {$ENDIF}
 //This function does the same, but then with Delphi's String class.
@@ -1918,6 +1920,14 @@ begin
  Result:=UnicodeString(P);
 end;
 
+function PyStrPas(const P: PyChar; Length: {$IFDEF PYTHON25}Py_ssize_t{$ELSE}Integer{$ENDIF}) : UnicodeString;
+var
+ S: PyString;
+begin
+ SetLength(S, P, Length);
+ Result:=UnicodeString(S);
+end;
+
 function ToPyChar(const S: UnicodeString) : PyChar;
 begin
  Result:=PAnsiChar(AnsiString(S));
@@ -1926,6 +1936,11 @@ end;
 function PyStrPas(const P: PyChar) : AnsiString;
 begin
  Result:=P;
+end;
+
+function PyStrPas(const P: PyChar; Length: {$IFDEF PYTHON25}Py_ssize_t{$ELSE}Integer{$ENDIF}) : AnsiString;
+begin
+ SetString(Result, P, Length);
 end;
 
 function ToPyChar(const S: AnsiString) : PyChar;
