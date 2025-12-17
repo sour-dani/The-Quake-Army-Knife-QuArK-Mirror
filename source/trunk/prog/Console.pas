@@ -634,6 +634,8 @@ end;
 
 procedure TConsoleForm.DisplayMouseUp(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+const
+ GracePeriod = 200; //in ms
 var
  Text, S: String;
  I, J: Integer;
@@ -641,7 +643,7 @@ var
 begin
  if PipeBuffer=nil then Exit;
  if Clipboard1=Clipboard2 then Exit;
- if ((GetTickCount<More) or (GetTickCount>More+200))
+ if ((GetTickCount<More) or (GetTickCount>More+GracePeriod))
  and (MessageDlg(LoadStr1(4456), mtConfirmation, [mbYes, mbNo], 0) = mrYes) then
   begin
    I:=Clipboard1;
@@ -656,15 +658,14 @@ begin
     if I>=ConsoleHeight then Dec(I, ConsoleHeight);
    until I=Clipboard2;
 
-   H:=GlobalAlloc(GMEM_MOVEABLE or GMEM_DDESHARE, Length(Text)+1);
+   H:=GlobalAlloc(GMEM_MOVEABLE or GMEM_DDESHARE, Length(Text)+1); //FIXME: Confusing Bytes for Characters; this won't work in Unicode!
    if H=0 then
     //FIXME: Log or raise error?
     Exit;
-   Move(PChar(Text)^, GlobalLock(H)^, Length(Text)+1);
+   Move(PChar(Text)^, GlobalLock(H)^, Length(Text)+1); //FIXME: Confusing Bytes for Characters; this won't work in Unicode!
    GlobalUnlock(H);
    if OpenClipboard(Handle) = false then
-    //FIXME: Log or raise error?
-    Exit;
+    RaiseLastOSError;
    try
     EmptyClipboard;
     if SetClipboardData(CF_TEXT, H) = 0 then
