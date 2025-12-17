@@ -22,19 +22,13 @@ unit Types;
 
 interface
 
-//uses System;
+uses {System, }Windows;
 
-//A dummy module to redirect Types to System for Delphi 5-.
+//A dummy module to redirect Types to System and Windows for Delphi 5-.
 
-type //From windows.pas
-  PPoint = ^TPoint;
-  TPoint = record
-    x: Longint;
-    y: Longint;
-  end;
-  {$NODEFINE TPoint}
-  tagPOINT = TPoint;
-  {$NODEFINE tagPOINT}
+type
+  PPoint = Windows.PPoint;
+  TPoint = Windows.TPoint;
 
 implementation
 
