@@ -103,9 +103,6 @@ type
   {$EXTERNALSYM TStringDynArray}
   TWideStringDynArray   = array of WideString;
   {$EXTERNALSYM TWideStringDynArray}
-
-{ TStream seek origins }
-  TSeekOrigin = (soBeginning, soCurrent, soEnd);
 {$endif}
 
 //NativeInt and NativeUInt are not suitable before Delphi 2009, so let's supply our own.
@@ -348,6 +345,11 @@ const
 {$ifndef Delphi6orNewerCompiler}
   //Exists in system.pas, but not published.
   reInvalidCast       = 10;
+
+  //Note: Delphi 5- doesn't support 64-bit file access.
+  soBeginning = soFromBeginning;
+  soCurrent = soFromCurrent;
+  soEnd = soFromEnd;
 
   PathDelim  = {$IFDEF MSWINDOWS} '\'; {$ELSE} '/'; {$ENDIF}
   DriveDelim = {$IFDEF MSWINDOWS} ':'; {$ELSE} '';  {$ENDIF}
