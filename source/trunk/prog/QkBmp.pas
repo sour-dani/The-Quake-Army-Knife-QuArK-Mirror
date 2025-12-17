@@ -63,22 +63,26 @@ begin
   begin
    Image:=Nil;
    Source:=Nil; try
-   OpenClipboard(g_Form1.Handle); try
-   H:=GetClipboardData(CF_DIB);
-   if H=0 then
-    begin
-     Result:=False;
-     SourceTaille:=0;
-    end
-   else
-    begin
-     SourceTaille:=GlobalSize(H);
-     Source:=TMemoryStream.Create;
-     Source.SetSize(SourceTaille);
-     Move(GlobalLock(H)^, Source.Memory^, SourceTaille);
-     GlobalUnlock(H);
-    end;
-   finally CloseClipboard; end;
+   if OpenClipboard(g_Form1.Handle) = false then
+    RaiseLastOSError;
+   try
+    H:=GetClipboardData(CF_DIB);
+    if H=0 then
+     begin
+      Result:=False;
+      SourceTaille:=0;
+     end
+    else
+     begin
+      SourceTaille:=GlobalSize(H);
+      Source:=TMemoryStream.Create;
+      Source.SetSize(SourceTaille);
+      Move(GlobalLock(H)^, Source.Memory^, SourceTaille);
+      GlobalUnlock(H);
+     end;
+   finally
+    CloseClipboard;
+   end;
    if Result then
     begin
      Image:=QBmp.Create(LoadStr1(5138), PasteNow);

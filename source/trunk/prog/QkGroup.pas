@@ -123,19 +123,23 @@ begin
  if Result and Assigned(PasteNow) then
   begin
    Source:=Nil; try
-   OpenClipboard(g_Form1.Handle); try
-   H:=GetClipboardData(g_CF_QObjects);
-   if H=0 then
-    Result:=False
-   else
-    begin
-     SourceTaille:=GlobalSize(H);
-     Source:=TMemoryStream.Create;
-     Source.SetSize(SourceTaille);
-     Move(GlobalLock(H)^, Source.Memory^, SourceTaille);
-     GlobalUnlock(H);
-    end;
-   finally CloseClipboard; end;
+   if OpenClipboard(g_Form1.Handle) = false then
+    RaiseLastOSError;
+   try
+    H:=GetClipboardData(g_CF_QObjects);
+    if H=0 then
+     Result:=False
+    else
+     begin
+      SourceTaille:=GlobalSize(H);
+      Source:=TMemoryStream.Create;
+      Source.SetSize(SourceTaille);
+      Move(GlobalLock(H)^, Source.Memory^, SourceTaille);
+      GlobalUnlock(H);
+     end;
+   finally
+    CloseClipboard;
+   end;
    if Result then
     (PasteNow as QExplorerGroup).ReadObjectStream(Source);
    finally Source.Free; end;
@@ -248,23 +252,27 @@ begin
  Move(M.Memory^, GlobalLock(H)^, M.Size);
  GlobalUnlock(H);
  finally M.Free; end;
- OpenClipboard(g_Form1.Handle); try
- EmptyClipboard;
- SetClipboardData(g_CF_QObjects, H);
- HasText:=False;
- if SubElements.Count=1 then
-  SubElements[0].CopyExtraData(HasText);
- if not HasText then
-  if Complet or (GetObjectSize(Nil, False) < DelaySizeThreshold) then
-   RenderAsText
-  else
-   begin
-    SetClipboardData(CF_TEXT, 0);
-    AddRef(+1);
-    g_DelayedClipboardGroup:=Self;
-    g_LargeDataInClipboard:=True;
-   end;
- finally CloseClipboard; end;
+ if OpenClipboard(g_Form1.Handle) = false then
+  RaiseLastOSError;
+ try
+  EmptyClipboard;
+  SetClipboardData(g_CF_QObjects, H);
+  HasText:=False;
+  if SubElements.Count=1 then
+   SubElements[0].CopyExtraData(HasText);
+  if not HasText then
+   if Complet or (GetObjectSize(Nil, False) < DelaySizeThreshold) then
+    RenderAsText
+   else
+    begin
+     SetClipboardData(CF_TEXT, 0);
+     AddRef(+1);
+     g_DelayedClipboardGroup:=Self;
+     g_LargeDataInClipboard:=True;
+    end;
+ finally
+  CloseClipboard;
+ end;
 end;
 
 procedure QExplorerGroup.RenderAsText;

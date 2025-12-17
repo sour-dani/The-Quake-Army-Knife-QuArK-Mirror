@@ -1680,14 +1680,13 @@ begin
  if g_LargeDataInClipboard
  and (MessageDlg(LoadStr1(5681), mtConfirmation, [mbYes, mbNo], 0) = mrNo) then
   begin
-   if OpenClipboard(0) then
-    try
-     EmptyClipboard;
-    finally
-     CloseClipboard;
-    end
-   else
-    LogWindowsError(GetLastError(), 'OpenClipboard(0)');
+   if OpenClipboard(0) = false then
+    RaiseLastOSError;
+   try
+    EmptyClipboard;
+   finally
+    CloseClipboard;
+   end;
   end;
 
  try
