@@ -61,6 +61,19 @@ implementation
 
 uses {$IFDEF GotRTLConsts}RTLConsts{$ELSE}consts{$ENDIF};
 
+{$IFDEF VER80}
+  {$DEFINE FallbackCreateFmt}
+{$ENDIF}
+{$IFDEF VER90}
+  {$DEFINE FallbackCreateFmt}
+{$ENDIF}
+{$IFDEF VER100}
+  {$DEFINE FallbackCreateFmt}
+{$ENDIF}
+{$IFDEF VER120}
+  {$DEFINE FallbackCreateFmt}
+{$ENDIF}
+
 const
   REG_QWORD = 11;
 
@@ -70,7 +83,7 @@ const
 //Copied from Registry.pas:
 procedure ReadError(const Name: string);
 begin
-  raise ERegistryException.CreateResFmt(@SInvalidRegType, [Name]);
+  raise ERegistryException.{$IFDEF FallbackCreateFmt}CreateFmt({$ELSE}CreateResFmt(@{$ENDIF}SInvalidRegType, [Name]);
 end;
 
 // ---
@@ -267,7 +280,7 @@ begin
   DataType := REG_NONE;
   if RegQueryValueEx(CurrentKey, PChar(Name), nil, @DataType, PByte(@Result),
     @BufSize) <> ERROR_SUCCESS then
-    raise ERegistryException.CreateResFmt(@SRegGetDataFailed, [Name]);
+    raise ERegistryException.{$IFDEF FallbackCreateFmt}CreateFmt({$ELSE}CreateResFmt(@{$ENDIF}SRegGetDataFailed, [Name]);
   if DataType <> REG_QWORD then ReadError(Name);
 end;
 
@@ -295,7 +308,7 @@ begin
   BufSize := SizeOf(Value);
   if RegSetValueEx(CurrentKey, PChar(Name), 0, REG_QWORD, @Value,
     BufSize) <> ERROR_SUCCESS then
-    raise ERegistryException.CreateResFmt(@SRegSetDataFailed, [Name]);
+    raise ERegistryException.{$IFDEF FallbackCreateFmt}CreateFmt({$ELSE}CreateResFmt(@{$ENDIF}SRegSetDataFailed, [Name]);
 end;
 
 function TRegistry2.TryWriteQWORD(const Name: string; Value: QWORD) : Boolean;
