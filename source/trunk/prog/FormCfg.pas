@@ -29,6 +29,14 @@ uses DelphiCompat, SysUtils, Classes, Controls, Graphics, Forms, StdCtrls, ExtCt
      Menus, CommCtrl, EnterEditCtrl, TrackBar2, QkForm, Game,
      CursorScrollBox, Spin, SmArrowBtn, QkFormCfg;
 
+{$IFDEF CONDITIONALEXPRESSIONS}
+  {$IF RTLVersion < 20}
+    {$DEFINE NeedParentDoubleBuffered}
+  {$IFEND
+{$ELSE}
+  {$DEFINE NeedParentDoubleBuffered}
+{$ENDIF}
+
 const
  wp_InternalEdit = 96;
  wp_LineStep     = 97;
@@ -41,9 +49,9 @@ type
  TNeedGameInfoEvent = function(Sender: TObject): PGameBuffer of object;
  TFormCfg = class(TCustomPanel)
             private
-              {$IF RTLVersion < 20}
+              {$IFDEF NeedParentDoubleBuffered}
               FParentDoubleBuffered: Boolean;
-              {$IFEND}
+              {$ENDIF}
               HC: THeaderControl;
               SB: TScrollBox;
               NeedInitControls: Boolean;
@@ -62,9 +70,9 @@ type
               function GetQPaletteIdx(I: Integer) : TColorRef;
               procedure ClosePopupWindows;
               procedure ClosePopupForm;
-              {$IF RTLVersion < 20}
+              {$IFDEF NeedParentDoubleBuffered}
               procedure SetParentDoubleBuffered(nParentDoubleBuffered: Boolean);
-              {$IFEND}
+              {$ENDIF}
             protected
               Links: TQList;
               Form, FOriginalForm: QFormCfg;
@@ -109,9 +117,9 @@ type
               procedure Resize; override;
               procedure SectionResize(Sender: THeaderControl; Section: THeaderSection);
               procedure SectionClick(Sender: THeaderControl; Section: THeaderSection);
-              {$IF RTLVersion < 20}
+              {$IFDEF NeedParentDoubleBuffered}
               procedure SetParent(AParent: TWinControl); override;
-              {$IFEND}
+              {$ENDIF}
               procedure PopupMenuPopupFirst(Sender: TObject);
               procedure PopupMenuPopup(Sender: TObject);
               procedure PopupMenuClick(Sender: TObject);
@@ -147,10 +155,10 @@ type
               function GetSingleName(var nName: String) : TCommonSpec;
               procedure InternalMenuCommand(Cmd: Integer);  { cmd_xxx }
               property OriginalForm: QFormCfg read FOriginalForm;
-            {$IF RTLVersion < 20}
+            {$IFDEF NeedParentDoubleBuffered}
             published
               property ParentDoubleBuffered : Boolean read FParentDoubleBuffered write SetParentDoubleBuffered default True;
-            {$IFEND}
+            {$ENDIF}
             end;
 
  {------------------------}
@@ -173,6 +181,14 @@ uses StrUtils, Types, Math, qdraw, qhelper, qmath, QkUnknown, Undo, TbPalette,
      QkMacro, QkImages, Python, PyMacros, PyToolbars, PyForms, QkPixelSet,
      QkObjectClassList, QkSpecifics, ApplPaths, BrowseForFolder, FileExists2,
      Console, SystemDetails, Platform, Logging;
+
+{$IFDEF CONDITIONALEXPRESSIONS}
+  {$IF RTLVersion >= 15.0}
+    {$DEFINE HasParentBackground}
+  {$IFEND}
+{$ELSE}
+  {$UNDEF HasParentBackground}
+{$ENDIF}
 
 const
  Differs = 5391;
@@ -1514,10 +1530,12 @@ begin
 
    SB:=TScrollBox.Create(Self);
    SB.Visible:=False;
-   {$IF RTLVersion < 20}
+   {$IFDEF NeedParentDoubleBuffered}
    SB.DoubleBuffered:=DoubleBuffered;
-   {$IFEND}
+   {$ENDIF}
+   {$IFDEF HasParentBackground}
    //SB.ParentBackground:=False;
+   {$ENDIF}
    //SB.ParentColor:=True;
    SB.Parent:=Self;
    SB.Align:=alClient;
@@ -1596,7 +1614,7 @@ procedure TFormCfg.SectionClick;
 begin
 end;
 
-{$IF RTLVersion < 20}
+{$IFDEF NeedParentDoubleBuffered}
 procedure TFormCfg.SetParent(AParent: TWinControl);
 begin
   inherited;
@@ -1608,7 +1626,7 @@ begin
   FParentDoubleBuffered:=nParentDoubleBuffered;
   if FParentDoubleBuffered and (Parent<>nil) then DoubleBuffered:=Parent.DoubleBuffered;
 end;
-{$IFEND}
+{$ENDIF}
 
 function TFormCfg.Format1str(const Text, SourceSpec: String) : String;
 var
@@ -1636,10 +1654,12 @@ begin
   BevelOuter:=bvNone;
   BorderStyle:=bsSingle;
   Caption:='';
+  {$IFDEF HasParentBackground}
   ParentBackground:=False;
-  {$IF RTLVersion < 20}
+  {$ENDIF}
+  {$IFDEF NeedParentDoubleBuffered}
   ParentDoubleBuffered:=True;
-  {$IFEND}
+  {$ENDIF}
   ShowHint:=True;
   OnMouseWheelDown:=MouseWheelDown;
   OnMouseWheelUp:=MouseWheelUp;
