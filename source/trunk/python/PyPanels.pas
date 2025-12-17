@@ -27,6 +27,14 @@ interface
 uses DelphiCompat, Windows, Messages, SysUtils, Classes, Controls, Graphics, Forms, ExtCtrls,
      Python, QSplitter, QkForm;
 
+{$IFDEF CONDITIONALEXPRESSIONS}
+  {$IF RTLVersion < 20}
+    {$DEFINE NeedParentDoubleBuffered}
+  {$IFEND
+{$ELSE}
+  {$DEFINE NeedParentDoubleBuffered}
+{$ENDIF}
+
 type
   TLayoutPos = (lpClient, lpFloating, lpBottom, lpTop, lpRight, lpLeft);
   TComponentCmd = (cmdInvalidate1, cmdRepaint, cmdUpdate, cmdInternalInvalidate);
@@ -61,9 +69,9 @@ type
   protected
     FLayoutMgr: TLayoutMgr;
     procedure Resize; override;
-    {$IF RTLVersion < 20}
+    {$IFDEF NeedParentDoubleBuffered}
     procedure SetParent(AParent: TWinControl); override;
-    {$IFEND}
+    {$ENDIF}
     procedure wmInternalMessage(var Msg: TMessage); message wm_InternalMessage;
   public
     constructor Create(AOwner: TComponent); override;
@@ -165,9 +173,9 @@ end;
 
 constructor TQkMainPanel.Create;
 begin
- {$IF RTLVersion < 20}
+ {$IFDEF NeedParentDoubleBuffered}
  FDoubleBuffered:=True;
- {$IFEND}
+ {$ENDIF}
  inherited;
  FLayoutMgr:=TLayoutMgr.Create(Self, Nil);
  BevelOuter:=bvNone;
@@ -189,7 +197,7 @@ begin
  FLayoutMgr.InvalidateAlignment;
 end;
 
-{$IF RTLVersion < 20}
+{$IFDEF NeedParentDoubleBuffered}
 procedure TQkMainPanel.SetParent(AParent: TWinControl);
 begin
  inherited;
@@ -198,7 +206,7 @@ begin
  else
   FDoubleBuffered:=True;
 end;
-{$IFEND}
+{$ENDIF}
 
 procedure TQkMainPanel.AlignmentChanged;
 begin
