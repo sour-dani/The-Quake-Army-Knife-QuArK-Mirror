@@ -124,7 +124,7 @@ type
 
 implementation
 
-uses RTLConsts, SysUtils;
+uses {$IFDEF Delphi6orNewerCompiler}RTLConsts{$ELSE}consts{$ENDIF}, SysUtils;
 
 destructor TSpecificsList.Destroy;
 begin

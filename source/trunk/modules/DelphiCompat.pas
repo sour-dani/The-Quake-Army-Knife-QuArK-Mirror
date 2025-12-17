@@ -52,15 +52,6 @@ type
 {$endif}
 
 {$ifndef Delphi3orNewerCompiler}
-  //Exist in Delphi 3-, but only in Windows.pas
-  PByte = ^Byte;
-  PInteger = ^Integer;
-  PSingle = ^Single;
-  PDouble = ^Double;
-
-  //Exists in Delphi 3-, but only in grids.pas
-  PPointer = ^Pointer;
-
   TCustomForm = TForm;
 {$endif}
 
@@ -74,6 +65,18 @@ type
 {$endif}
 
 {$ifndef Delphi6orNewerCompiler}
+  //Exist in Delphi 3-, but only in Windows.pas
+  PByte = ^Byte;
+  PInteger = ^Integer;
+  PSingle = ^Single;
+  PDouble = ^Double;
+
+  //Exists in Delphi 3-, but only in grids.pas
+  PPointer = ^Pointer;
+
+  //Exists in Delphi 5, but only in ibexternals.pas
+  PPChar               = ^PChar;
+
   TIntegerDynArray      = array of Integer;
   {$EXTERNALSYM TIntegerDynArray}
   TCardinalDynArray     = array of Cardinal;
@@ -342,6 +345,19 @@ type
 //
 
 const
+{$ifndef Delphi6orNewerCompiler}
+  //Exists in system.pas, but not published.
+  reInvalidCast       = 10;
+
+  PathDelim  = {$IFDEF MSWINDOWS} '\'; {$ELSE} '/'; {$ENDIF}
+  DriveDelim = {$IFDEF MSWINDOWS} ':'; {$ELSE} '';  {$ENDIF}
+  PathSep    = {$IFDEF MSWINDOWS} ';'; {$ELSE} ':'; {$ENDIF}
+  sLineBreak = {$IFDEF LINUX} #10 {$ENDIF} {$IFDEF MSWINDOWS} #13#10 {$ENDIF};
+
+  { Days between TDateTime basis (12/31/1899) and Unix time_t basis (1/1/1970) }
+  UnixDateDelta = 25569;
+{$endif}
+
   { Days between TDateTime basis (12/31/1899) and Windows 64-bit timestamp basis (1/1/1601) }
   Win64DateDelta = -109207;
 
@@ -951,6 +967,10 @@ function WideCompareFileName(const S1, S2: WideString): Integer;
 {$endif}
 
 {$ifndef Delphi3orNewerCompiler}
+{ IsPathDelimiter returns True if the character at byte S[Index]
+  is a PathDelimiter ('\' or '/'), and it is not a MBCS lead or trail byte. }
+function IsPathDelimiter(const S: string; Index: Integer): Boolean;
+
 procedure RaiseLastWin32Error;
 {$endif}
 
@@ -983,9 +1003,8 @@ procedure FreeAndNil(var Obj);
 const
   RaiseLastOSError: procedure = RaiseLastWin32Error;
 
-{ IsPathDelimiter returns True if the character at byte S[Index]
-  is a PathDelimiter ('\' or '/'), and it is not a MBCS lead or trail byte. }
-function IsPathDelimiter(const S: string; Index: Integer): Boolean;
+//Exists in SysUtils, but is not published.
+procedure DivMod(Dividend: Integer; Divisor: Word; var Result, Remainder: Word);
 
 { IncludeTrailingPathDelimiter returns the path with a PathDelimiter
   ('/' or '\') at the end.  This function is MBCS enabled. }
@@ -995,26 +1014,30 @@ function IncludeTrailingPathDelimiter(const S: string): string;
   ('\' or '/') at the end.  This function is MBCS enabled. }
 function ExcludeTrailingPathDelimiter(const S: string): string;
 
-const
-  PathDelim  = {$IFDEF MSWINDOWS} '\'; {$ELSE} '/'; {$ENDIF}
-  DriveDelim = {$IFDEF MSWINDOWS} ':'; {$ELSE} '';  {$ENDIF}
-  PathSep    = {$IFDEF MSWINDOWS} ';'; {$ELSE} ':'; {$ENDIF}
-  sLineBreak = {$IFDEF LINUX} #10 {$ENDIF} {$IFDEF MSWINDOWS} #13#10 {$ENDIF};
+function SameFileName(const S1, S2: string): Boolean;
 
 function TryStrToInt64(const S: string; out Value: Int64): Boolean;
 
 function StrToFloatDef(const S: String; const Default: Extended) : Extended;
 
-function RightStr(Const Str: String; Size: Word): String;
+function BoolToStr(B: Boolean; UseBoolStrs: Boolean = False): string;
 
-function MidStr(Const Str: String; From, Size: Word): String;
+function AnsiContainsText(const AText, ASubText: string): Boolean;
+function AnsiStartsText(const ASubText, AText: string): Boolean;
+function AnsiEndsText(const ASubText, AText: string): Boolean;
 
-function LeftStr(Const Str: String; Size: Word): String;
+function AnsiContainsStr(const AText, ASubText: string): Boolean;
+function AnsiStartsStr(const ASubText, AText: string): Boolean;
+function AnsiEndsStr(const ASubText, AText: string): Boolean;
 
 { Returns the reverse of a specified string. }
 function ReverseString(const AText: string): string;
 
-function BoolToStr(B: Boolean; UseBoolStrs: Boolean = False): string;
+function LeftStr(Const Str: String; Size: Word): String;
+function RightStr(Const Str: String; Size: Word): String;
+function MidStr(Const Str: String; From, Size: Word): String;
+
+function UnixToDateTime(const AValue: Int64): TDateTime;
 {$endif}
 
 {$ifndef Delphi7orNewerCompiler}
@@ -1035,6 +1058,7 @@ function TStrings_ValueFromIndex_Get(const ss: TStrings; Index: Integer): string
 function ContainsText(const AText, ASubText: string): Boolean;
 function StartsText(const ASubText, AText: string): Boolean;
 function EndsText(const ASubText, AText: string): Boolean;
+
 function ContainsStr(const AText, ASubText: string): Boolean;
 function StartsStr(const ASubText, AText: string): Boolean;
 function EndsStr(const ASubText, AText: string): Boolean;
@@ -1310,6 +1334,12 @@ end;
 {$endif}
 
 {$ifndef Delphi3orNewerCompiler}
+function IsPathDelimiter(const S: string; Index: Integer): Boolean;
+begin
+  Result := (Index > 0) and (Index <= Length(S)) and (S[Index] = PathDelim)
+    and (ByteType(S, Index) = mbSingleByte);
+end;
+
 procedure RaiseLastWin32Error;
 var
   LastError: DWORD;
@@ -1377,10 +1407,10 @@ end;
 {$endif}
 
 {$ifndef Delphi6orNewerCompiler}
-function IsPathDelimiter(const S: string; Index: Integer): Boolean;
+procedure DivMod(Dividend: Integer; Divisor: Word; var Result, Remainder: Word);
 begin
-  Result := (Index > 0) and (Index <= Length(S)) and (S[Index] = PathDelim)
-    and (ByteType(S, Index) = mbSingleByte);
+  Result    := Dividend div Divisor;
+  Remainder := Dividend mod Divisor;
 end;
 
 function IncludeTrailingPathDelimiter(const S: string): string;
@@ -1395,6 +1425,11 @@ begin
   Result := S;
   if IsPathDelimiter(Result, Length(Result)) then
     SetLength(Result, Length(Result)-1);
+end;
+
+function SameFileName(const S1, S2: string): Boolean;
+begin
+  Result := AnsiCompareFileName(S1, S2) = 0;
 end;
 
 function TryStrToInt64(const S: string; out Value: Int64): Boolean;
@@ -1417,20 +1452,69 @@ begin
   end;
 end;
 
-function RightStr(Const Str: String; Size: Word): String;
+function BoolToStr(B: Boolean; UseBoolStrs: Boolean = False): string;
+const
+  cSimpleBoolStrs: array [boolean] of String = ('0', '-1');
 begin
-  if Size > Length(Str) then Size := Length(Str) ;
-  RightStr := Copy(Str, Length(Str)-Size+1, Size)
+  if UseBoolStrs then
+    //This is a down-scaled version of BoolToStr, that doesn't
+    //support UseBoolStrs.
+    raise Exception.Create('BoolToStr: UseBoolStrs not implemented!')
+  else
+    Result := cSimpleBoolStrs[B];
 end;
 
-function MidStr(Const Str: String; From, Size: Word): String;
+function AnsiContainsText(const AText, ASubText: string): Boolean;
 begin
-  MidStr := Copy(Str, From, Size)
+  Result := AnsiPos(AnsiUppercase(ASubText), AnsiUppercase(AText)) > 0;
 end;
 
-function LeftStr(Const Str: String; Size: Word): String;
+function AnsiStartsText(const ASubText, AText: string): Boolean;
+var
+  P: PChar;
+  L, L2: Integer;
 begin
-  LeftStr := Copy(Str, 1, Size)
+  P := PChar(AText);
+  L := Length(ASubText);
+  L2 := Length(AText);
+  if L > L2 then
+    Result := False
+  else
+    Result := CompareString(LOCALE_USER_DEFAULT, NORM_IGNORECASE,
+      P, L, PChar(ASubText), L) = 2;
+end;
+
+function AnsiEndsText(const ASubText, AText: string): Boolean;
+var
+  P: PChar;
+  L, L2: Integer;
+begin
+  P := PChar(AText);
+  L := Length(ASubText);
+  L2 := Length(AText);
+  Inc(P, L2 - L);
+  if L > L2 then
+    Result := False
+  else
+    Result := CompareString(LOCALE_USER_DEFAULT, NORM_IGNORECASE,
+      P, L, PChar(ASubText), L) = 2;
+end;
+
+function AnsiContainsStr(const AText, ASubText: string): Boolean;
+begin
+  Result := AnsiPos(ASubText, AText) > 0;
+end;
+
+function AnsiStartsStr(const ASubText, AText: string): Boolean;
+begin
+  Result := AnsiSameStr(ASubText, Copy(AText, 1, Length(ASubText)));
+end;
+
+function AnsiEndsStr(const ASubText, AText: string): Boolean;
+begin
+  Result := AnsiSameStr(ASubText,
+                        Copy(AText, Length(AText) - Length(ASubText) + 1,
+                                    Length(ASubText)));
 end;
 
 function ReverseString(const AText: string): string;
@@ -1447,16 +1531,25 @@ begin
   end;
 end;
 
-function BoolToStr(B: Boolean; UseBoolStrs: Boolean = False): string;
-const
-  cSimpleBoolStrs: array [boolean] of String = ('0', '-1');
+function LeftStr(Const Str: String; Size: Word): String;
 begin
-  if UseBoolStrs then
-    //This is a down-scaled version of BoolToStr, that doesn't
-    //support UseBoolStrs.
-    raise Exception.Create('BoolToStr: UseBoolStrs not implemented!')
-  else
-    Result := cSimpleBoolStrs[B];
+  LeftStr := Copy(Str, 1, Size)
+end;
+
+function RightStr(Const Str: String; Size: Word): String;
+begin
+  if Size > Length(Str) then Size := Length(Str) ;
+  RightStr := Copy(Str, Length(Str)-Size+1, Size)
+end;
+
+function MidStr(Const Str: String; From, Size: Word): String;
+begin
+  MidStr := Copy(Str, From, Size)
+end;
+
+function UnixToDateTime(const AValue: Int64): TDateTime;
+begin
+  Result := AValue / SecsPerDay + UnixDateDelta;
 end;
 {$endif}
 
@@ -1509,32 +1602,32 @@ end;
 {$ifndef Delphi2005orNewerCompiler}
 function ContainsText(const AText, ASubText: string): Boolean;
 begin
-  Result := AnsiContainsText(AText, ASubText); //Note: Apparently, this function is misnamed, and it handles Unicode too!
+  Result := AnsiContainsText(AText, ASubText); //Note: This function was misnamed, and now it handles Unicode too!
 end;
 
 function StartsText(const ASubText, AText: string): Boolean;
 begin
-  Result := AnsiStartsText(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles Unicode too!
+  Result := AnsiStartsText(ASubText, AText); //Note: This function was misnamed, and now it handles Unicode too!
 end;
 
 function EndsText(const ASubText, AText: string): Boolean;
 begin
-  Result := AnsiEndsText(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles Unicode too!
+  Result := AnsiEndsText(ASubText, AText); //Note: This function was misnamed, and now it handles Unicode too!
 end;
 
 function ContainsStr(const AText, ASubText: string): Boolean;
 begin
-  Result := AnsiContainsStr(AText, ASubText); //Note: Apparently, this function is misnamed, and it handles Unicode too!
+  Result := AnsiContainsStr(AText, ASubText); //Note: This function was misnamed, and now it handles Unicode too!
 end;
 
 function StartsStr(const ASubText, AText: String): Boolean;
 begin
-  Result := AnsiStartsStr(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles Unicode too!
+  Result := AnsiStartsStr(ASubText, AText); //Note: This function was misnamed, and now it handles Unicode too!
 end;
 
 function EndsStr(const ASubText, AText: String): Boolean;
 begin
- Result := AnsiEndsStr(ASubText, AText); //Note: Apparently, this function is misnamed, and it handles Unicode too!
+ Result := AnsiEndsStr(ASubText, AText); //Note: This function was misnamed, and now it handles Unicode too!
 end;
 {$endif}
 
