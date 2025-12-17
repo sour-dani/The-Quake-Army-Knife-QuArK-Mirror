@@ -8,6 +8,7 @@
 !include LogicLib.nsh
 !include Sections.nsh
 !include WinVer.nsh
+!include WordFunc.nsh
 
 !define SPLASHDIR "C:\QuArK_installer_splash_image"
 !define DEPENDENCYDIR "C:\QuArK_installer_dependencies"
@@ -15,8 +16,8 @@
 !define PRODUCT_NAME "QuArK dependencies"
 !define PRODUCT_NAME_FULL "Quake Army Knife dependencies"
 !define PRODUCT_COPYRIGHT "Copyright (c) 2025"
-!define PRODUCT_VERSION_NUMBER "1.0.0.3"
-!define PRODUCT_VERSION_STRING "1.0.0.3"
+!define PRODUCT_VERSION_NUMBER "1.0.0.4"
+!define PRODUCT_VERSION_STRING "1.0.0.4"
 !define PRODUCT_WEB_SITE "https://quark.sourceforge.io/"
 !define PRODUCT_PUBLISHER "QuArK Development Team"
 
@@ -243,6 +244,47 @@ SectionEnd
 
 
 
+; PSAPI installer ------
+
+Function _isInstalledPSAPI
+  ${IfNot} ${IsWinNT4}
+    Push 1
+    Return
+  ${EndIf}
+
+  ClearErrors
+  GetDllVersion "$SYSDIR\Psapi.Dll" $R0 $R1
+  IfErrors NotInstalled
+  IntOp $R2 $R0 >> 16
+  IntOp $R2 $R2 & 0x0000FFFF ; $R2 now contains major version
+  IntOp $R3 $R0 & 0x0000FFFF ; $R3 now contains minor version
+  IntOp $R4 $R1 >> 16
+  IntOp $R4 $R4 & 0x0000FFFF ; $R4 now contains release
+  IntOp $R5 $R1 & 0x0000FFFF ; $R5 now contains build
+  IntCmp $R2 4 0 NeedsUpdate +4 ;Check major version
+  IntCmp $R3 0 0 NeedsUpdate +3 ;Check major version
+  IntCmp $R4 1371 0 NeedsUpdate +2 ;Check major version
+  IntCmp $R5 1 0 NeedsUpdate +1 ;Check major version
+  Push 1
+  Return
+NotInstalled:
+NeedsUpdate:
+  Push 0
+FunctionEnd
+
+Section /o "$(TEXT_SecPSAPI_TITLE)" SecPSAPI
+  SetOutPath $TEMP
+  File "${DEPENDENCYDIR}\PSAPI\psinst.EXE"
+  ExecWait "$TEMP\psinst.EXE /Q /T:$\"$TEMP$\" /C"
+  Delete "$TEMP\psinst.EXE"
+  ExecWait "$TEMP\PSApi.exe /auto $\"$TEMP\PSAPI$\""
+  Delete "$TEMP\PSApi.exe"
+  Rename "$TEMP\PSAPI\x86\Psapi.Dll" "$SYSDIR\Psapi.Dll"
+  RMDir /r $TEMP\PSAPI
+SectionEnd
+
+
+
 ; Windows Installer 2 ------
 
 ; https://docs.microsoft.com/en-us/windows/win32/msi/released-versions-of-windows-installer
@@ -355,15 +397,18 @@ Function _isInstalledIE4SP2
 
   ClearErrors
   ReadRegStr $0 HKLM "SOFTWARE\Microsoft\Internet Explorer" "Version"
-  IfErrors 0 AlreadyInstalled
-  Push 0
-  Return
-AlreadyInstalled:
-  StrCmp $0 "4.72.3612.1713" RightVersion
-  Push 0
-  Return
-RightVersion:
+  IfErrors NotInstalled
+
+  ${VersionCompare} $0 "4.72.3612.1713" $R0
+  ${If} $R0 == 2
+    Goto NeedsUpdate
+  ${EndIf}
   Push 1
+  Return
+
+NotInstalled:
+NeedsUpdate:
+  Push 0
 FunctionEnd
 
 Section /o "$(TEXT_SecIE4SP2_TITLE)" SecIE4SP2
@@ -481,15 +526,18 @@ Function _isInstalledDirectX9
 
   ClearErrors
   ReadRegStr $0 HKLM "SOFTWARE\Microsoft\DirectX" "Version"
-  IfErrors 0 AlreadyInstalled
-  Push 0
-  Return
-AlreadyInstalled:
-  StrCmp $0 "4.09.00.0904" RightVersion
-  Push 0
-  Return
-RightVersion:
+  IfErrors NotInstalled
+
+  ${VersionCompare} $0 "4.09.00.0904" $R0
+  ${If} $R0 == 2
+    Goto NeedsUpdate
+  ${EndIf}
   Push 1
+  Return
+
+NotInstalled:
+NeedsUpdate:
+  Push 0
 FunctionEnd
 
 Section /o "$(TEXT_SecDirectX9_TITLE)" SecDirectX9
@@ -574,6 +622,7 @@ SectionEnd
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SecWinNT4SP3} "$(TEXT_SecWinNT4SP3_DESC)"
   !insertmacro MUI_DESCRIPTION_TEXT ${SecWinNT4SP6} "$(TEXT_SecWinNT4SP6_DESC)"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecPSAPI} "$(TEXT_SecPSAPI_DESC)"
   !insertmacro MUI_DESCRIPTION_TEXT ${SecWinInstaller2} "$(TEXT_SecWinInstaller2_DESC)"
   ;!insertmacro MUI_DESCRIPTION_TEXT ${SecWinInstaller31} "$(TEXT_SecWinInstaller31_DESC)"
   !insertmacro MUI_DESCRIPTION_TEXT ${SecIE4SP2} "$(TEXT_SecIE4SP2_DESC)"
@@ -587,6 +636,14 @@ SectionEnd
 
 Function .onInit
   !insertmacro MUI_LANGDLL_DISPLAY
+
+  Call _isInstalledPSAPI
+  Pop $0
+  ${If} $0 == 0
+    SectionGetFlags ${SecPSAPI} $0
+    IntOp $0 $0 | ${SF_SELECTED}
+    SectionSetFlags ${SecPSAPI} $0
+  ${EndIf}
 
   Call _isInstalledIE4SP2
   Pop $0
