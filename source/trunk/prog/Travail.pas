@@ -65,7 +65,7 @@ const
  cBarMax = 100; //Make sure this remains synced with the .dfm file!
  cIgnoreTime = 375;  //in milliseconds
 
-{$IFDEF DebugTTT}
+{$IFDEF Debug}
 var ProgressIndicatorCount: Integer;
 {$ENDIF}
 
@@ -105,7 +105,7 @@ procedure ProgressIndicatorStart(TextNr, Total: Integer);
 var
  P: PProgressIndicator;
 begin
-{$IFDEF DebugTTT}
+{$IFDEF Debug}
   Inc(ProgressIndicatorCount);
 {$ENDIF}
 
@@ -248,7 +248,7 @@ var
  P: PProgressIndicator;
  StepsMissed: Integer;
 begin
-{$IFDEF DebugTTT}
+{$IFDEF Debug}
   Dec(ProgressIndicatorCount);
   try
 {$ENDIF}
@@ -298,12 +298,10 @@ begin
     Screen.Cursor:=crDefault;
   end;
 
-{$IFDEF DebugTTT}
+{$IFDEF Debug}
   finally
-    if (ProgressIndicatorCount=0) and (Screen.Cursor<>crDefault) then
-    begin
-      Abort;
-    end;
+    if ProgressIndicatorCount=0 then
+      Assert(Screen.Cursor = crDefault);
   end;
 {$ENDIF}
 end;
