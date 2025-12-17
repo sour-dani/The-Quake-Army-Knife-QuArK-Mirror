@@ -1000,6 +1000,9 @@ procedure FreeAndNil(var Obj);
 {$endif}
 
 {$ifndef Delphi6orNewerCompiler}
+//Exists in system.pas, but not published.
+procedure Error(errorCode: Byte);
+
 const
   RaiseLastOSError: procedure = RaiseLastWin32Error;
 
@@ -1407,6 +1410,15 @@ end;
 {$endif}
 
 {$ifndef Delphi6orNewerCompiler}
+procedure Error(errorCode: Byte);
+asm
+        AND     EAX,127
+        MOV     ECX,ErrorProc
+        //Note: Removed the test for ErrorProc<>Nil, for simplicities sake
+        POP     EDX
+        CALL    ECX
+end;
+
 procedure DivMod(Dividend: Integer; Divisor: Word; var Result, Remainder: Word);
 begin
   Result    := Dividend div Divisor;

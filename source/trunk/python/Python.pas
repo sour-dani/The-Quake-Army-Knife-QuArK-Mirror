@@ -1278,7 +1278,11 @@ asm
     pop esi                { restore the original value of esi }
     pop edi                { restore the original value of edi }
     mov al, reInvalidCast  { prepare an "invalid cast" error }
+{$IFDEF Delphi6orNewerCompiler}
     jmp System.Error       { raise the error }
+{$ELSE}
+    jmp DelphiCompat.Error { raise the error }
+{$ENDIF}
 
     @skipFmtChar:
     inc esi            { go to the next character }
@@ -1306,7 +1310,11 @@ asm
     pop esi                { restore the original value of esi }
     pop edi                { restore the original value of edi }
     mov al, reInvalidCast  { prepare an "invalid cast" error }
+{$IFDEF Delphi6orNewerCompiler}
     jmp System.Error       { raise the error }
+{$ELSE}
+    jmp DelphiCompat.Error { raise the error }
+{$ENDIF}
 
     //Convert the item
     @lInteger:
@@ -1414,7 +1422,11 @@ asm
     pop rsi                { restore the original value of rsi }
     pop rdi                { restore the original value of rdi }
     mov al, reInvalidCast  { prepare an "invalid cast" error }
+{$IFDEF Delphi6orNewerCompiler}
     jmp System.Error       { raise the error }
+{$ELSE}
+    jmp DelphiCompat.Error { raise the error }
+{$ENDIF}
 
     @skipFmtChar:
     inc rsi            { go to the next character }
@@ -1442,7 +1454,11 @@ asm
     pop rsi                { restore the original value of rsi }
     pop rdi                { restore the original value of rdi }
     mov al, reInvalidCast  { prepare an "invalid cast" error }
+{$IFDEF Delphi6orNewerCompiler}
     jmp System.Error       { raise the error }
+{$ELSE}
+    jmp DelphiCompat.Error { raise the error }
+{$ENDIF}
 
     //Convert the item
     @lInteger:
@@ -1595,7 +1611,11 @@ asm
     pop esi                { restore the original value of esi }
     pop edi                { restore the original value of edi }
     mov al, reInvalidCast  { prepare an "invalid cast" error }
+{$IFDEF Delphi6orNewerCompiler}
     jmp System.Error       { raise the error }
+{$ELSE}
+    jmp DelphiCompat.Error { raise the error }
+{$ENDIF}
 
     @skipFmtChar:
     inc esi            { go to the next character }
@@ -1624,7 +1644,11 @@ asm
     pop esi                { restore the original value of esi }
     pop edi                { restore the original value of edi }
     mov al, reInvalidCast  { prepare an "invalid cast" error }
+{$IFDEF Delphi6orNewerCompiler}
     jmp System.Error       { raise the error }
+{$ELSE}
+    jmp DelphiCompat.Error { raise the error }
+{$ENDIF}	
 
     //Convert the item
     @lInteger:
@@ -1722,7 +1746,11 @@ asm
     add rsp, StackGrowth   { remove the arguments we pushed onto the stack }
     pop rdi                { restore the original value of rdi }
     mov al, reInvalidCast  { prepare an "invalid cast" error }
+{$IFDEF Delphi6orNewerCompiler}
     jmp System.Error       { raise the error }
+{$ELSE}
+    jmp DelphiCompat.Error { raise the error }
+{$ENDIF}
 
     //Convert the item
     @lPointer:
