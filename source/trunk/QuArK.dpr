@@ -95,9 +95,9 @@ uses
   //
   DelphiCompat in 'modules\DelphiCompat.pas',
 {$IFNDEF Delphi6orNewerCompiler}
-  DateUtils in 'modules\DateUtils.pas',
-  StrUtils in 'modules\StrUtils.pas',
-  Types in 'modules\Types.pas',
+  DateUtils in 'modules\NoSearchPath\DateUtils.pas',
+  StrUtils in 'modules\NoSearchPath\StrUtils.pas',
+  Types in 'modules\NoSearchPath\Types.pas',
 {$ENDIF}
 
   Forms, SysUtils, {$IFNDEF LINUX}Windows,{$ENDIF}

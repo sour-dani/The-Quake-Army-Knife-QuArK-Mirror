@@ -1,0 +1,1 @@
+This directory needs to be outside of the compiler's search path, because otherwise the compiler will fail due to these units. In other words, the compiler doesn't process its search path one-by-one, but looks in all locations at once.
