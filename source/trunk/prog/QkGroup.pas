@@ -146,13 +146,15 @@ begin
     if H<>0 then
      begin
       P:=GlobalLock(H);
-      if P<>Nil then
-       begin
-        Result:=CheckFileSignature(P, GlobalSize(H));
-        if Result and Assigned(PasteNow) then
-         ConstructObjsFromText(PasteNow, PAnsiChar(P), StrLen(PAnsiChar(P)));
-       end;
-      GlobalUnlock(H);
+      if P=nil then
+       RaiseLastOSError;
+      try
+       Result:=CheckFileSignature(P, GlobalSize(H));
+       if Result and Assigned(PasteNow) then
+        ConstructObjsFromText(PasteNow, PAnsiChar(P), StrLen(PAnsiChar(P)));
+      finally
+       GlobalUnlock(H);
+      end;
      end;
     CloseClipboard;
    end;

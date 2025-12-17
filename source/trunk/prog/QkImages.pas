@@ -1581,10 +1581,13 @@ begin  { copy a bitmap version of the data to the clipboard }
  if H<>0 then
   begin
    P:=GlobalLock(H);
-   Move(BmpInfo, P^, Base);
-   Inc(P, Base);
-   Move(Data^, P^, BmpInfo.bmiHeader.biSizeImage);
-   GlobalUnlock(H);
+   try
+    Move(BmpInfo, P^, Base);
+    Inc(P, Base);
+    Move(Data^, P^, BmpInfo.bmiHeader.biSizeImage);
+   finally
+    GlobalUnlock(H);
+   end;
    SetClipboardData(CF_DIB, H);
   end;
 end;

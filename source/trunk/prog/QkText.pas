@@ -185,8 +185,11 @@ begin
  if H<>0 then
   begin
    P:=GlobalLock(H);
-   Move(Data[1], P^, Length(Data)+1); //FIXME: Char or Bytes?!?
-   GlobalUnlock(H);
+   try
+    Move(Data[1], P^, Length(Data)+1); //FIXME: Char or Bytes?!?
+   finally
+    GlobalUnlock(H);
+   end;
    SetClipboardData(CF_TEXT, H);
    HasText:=True;
   end;
