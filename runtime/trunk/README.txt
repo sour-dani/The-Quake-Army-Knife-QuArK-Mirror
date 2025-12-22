@@ -32,10 +32,10 @@ Contents
 QuArK is the Quake Army Knife, a multi-purpose tool for games based on
 or similar to the Quake engine by id Software.  QuArK has the ability
 to directly edit maps, as well as models, and can import, export and
-convert sounds, textures and various other game assets. It is also able
-to modify .pak and .pk3 files, as well as importing compiled BSP's in
-order to study the entities as well as add/change/delete entities from
-these files.
+convert sounds, textures and various other game assets.  It is also
+able to modify .pak and .pk3 files, as well as importing compiled
+BSP's in order to study the entities as well as add/change/delete
+entities from these files.
 
 QuArK is completely different from and not related to the desktop
 publishing program Quark.
@@ -53,11 +53,11 @@ QuArK for 32-bit Windows is available as a free download from the
 QuArK website as an executable installer or as a zip archive.
 
 The latest release is always available from
-http://sourceforge.net/projects/quark.
+https://sourceforge.net/projects/quark/
 
-Source archives are also available, or you could use anonymous svn to
-checkout the sources from our SourceForge svn repository (the project
-name is 'quark').
+Source archives are also available, or you could use anonymous web
+access to get the sources from our SourceForge code repository (the
+project name is 'quark').
 
 
 3. What are the system requirements for QuArK?
@@ -69,10 +69,17 @@ QuArK.  You will need about 40 MB of free disk space to install QuArK,
 and the minimum amount of RAM needed differs per game, but at least
 64 MB is advised.  Almost any Intel Pentium or compatible CPU will be
 able to handle QuArK, but the slower the CPU, the slower QuArK will
-be.  Also, Internet Explorer 4.0 or higher is needed.
-(Note: Although you do not actually need to use Internet Explorer to
-display the Infobase files, some components of Internet Explorer are
-used by QuArK, so you still need to have it installed.)
+be.
+
+There are some software dependencies that are required, especially on
+older versions of Windows.  These are bundled into a single installer,
+the 'QuArK dependencies' installer, which also can be found on the
+SourceForge download page.
+
+Additionally, Internet Explorer 4.0 or higher is needed.  Although you
+do not have to use Internet Explorer to display the Infobase files,
+some components of Internet Explorer are used by QuArK, so you still
+need to have it installed.
 
 
 4. How do I install QuArK?
@@ -96,7 +103,6 @@ pages for instructions for building QuArK.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For installation instructions for GNU Linux systems, please see:
-
 https://quark.sourceforge.io/infobase/intro.quarkonlinux.installing.html
 
 If you require further assistance, please see the next section.
@@ -137,7 +143,7 @@ their distribution order.
 7. License
 ----------
 
-QuArK is distributed under the Gnu Public License.  See 'COPYING.txt' in the
+QuArK is distributed under the GNU Public License.  See 'COPYING.txt' in the
 same directory as this file, which is the folder that QuArK was installed in.
 
 
