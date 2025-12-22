@@ -67,8 +67,6 @@ type
     {$ENDIF}
     function GetSubModel: String;
   public
-    //constructor Create;
-    //destructor Destroy; override;
     procedure GetInfo;
     procedure Report(var sl: TStringList);
   published
@@ -437,16 +435,6 @@ begin
 end;
 
 { TCPU }
-
-(*constructor TCPU.Create;
-begin
-  inherited;
-end;*)
-
-(*destructor TCPU.Destroy;
-begin
-  inherited;
-end;*)
 
 const
   ID_Bit = $200000;   // EFLAGS ID bit
@@ -1299,8 +1287,6 @@ begin
       end;
       {$IFDEF CPUNameLookup}
       FName:=GetCPUName(FFamily, FVendorNo, FModel);
-      {$ELSE}
-      FName:='';
       {$ENDIF}
       FSubModel:=GetSubModel;
 
@@ -1363,7 +1349,7 @@ begin
     {$ENDIF}
     if HasCPUID then
     begin
-      if CPUIDExtLevel > 4 then
+      if Brand <> '' then
         add(format('Brand: %s',[Brand]));
       add(format('Submodel: %s',[Submodel]));
       add(format('Model ID: Family %d  Model %d  Stepping %d',[Family,Model,Stepping]));
@@ -1431,13 +1417,13 @@ begin
   err:=SHGetMalloc(AMalloc);
   if not SUCCEEDED(err) then
   begin
-    Log(LOG_WARNING, 'Failed to get special folder %d: error 0x%x (SHGetMalloc)', [nFolder, LongWord(err)]);
+    Log(LOG_WARNING, 'Failed to get special folder %d: %s (SHGetMalloc)', [nFolder, SysErrorMessage(err)]);
     Exit;
   end;
   err:=SHGetSpecialFolderLocation(Handle, nFolder, PIDL);
-  if err<>S_OK then
+  if not SUCCEEDED(err) then
   begin
-    Log(LOG_WARNING, 'Failed to get special folder %d: error 0x%x', [nFolder, LongWord(err)]);
+    Log(LOG_WARNING, 'Failed to get special folder %d: %s', [nFolder, SysErrorMessage(err)]);
     Exit;
   end;
   try
@@ -1455,8 +1441,8 @@ end;
 
 procedure TOperatingSystem.GetInfo;
 var
-  OS: TOSVersionInfoEx;
   SI: TSystemInfo;
+  OS: TOSVersionInfoEx;
   {$IFDEF WIN32}
   pProcessMachine, pNativeMachine: USHORT;
   bIsWow64: BOOL;
@@ -1546,6 +1532,13 @@ begin
   end;
   {$ENDIF}
 
+  ZeroMemory(@SI,SizeOf(SI));
+  if DelayFunc_GetNativeSystemInfo then
+    GetNativeSystemInfo(SI)
+  else
+    GetSystemInfo(SI);
+  FArchitecture:=SI.wProcessorArchitecture;
+
   //See: https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-osversioninfoexa
   ZeroMemory(@OS,SizeOf(OS));
   if CheckWin32Version(5, 0) then //Windows 2000
@@ -1615,13 +1608,6 @@ begin
       FWow64:=False;
   end;
   {$ENDIF}
-
-  ZeroMemory(@SI,SizeOf(SI));
-  if DelayFunc_GetNativeSystemInfo then
-    GetNativeSystemInfo(SI)
-  else
-    GetSystemInfo(SI);
-  FArchitecture:=SI.wProcessorArchitecture;
 
   case OS.dwPlatformId of
     VER_PLATFORM_WIN32s:
@@ -2017,12 +2003,23 @@ var
 begin
   with sl do
   begin
-    add('Platform: '+Platform);
+    add('Platform: ' + Platform);
     case Architecture of
     PROCESSOR_ARCHITECTURE_INTEL: S:='Intel x86';
+    PROCESSOR_ARCHITECTURE_MIPS: S:='MIPS';
+    PROCESSOR_ARCHITECTURE_ALPHA: S:='DEC Alpha';
+    PROCESSOR_ARCHITECTURE_PPC: S:='IBM PowerPC';
+    PROCESSOR_ARCHITECTURE_SHX: S:='Hitachi SuperH';
     PROCESSOR_ARCHITECTURE_ARM: S:='ARM';
     PROCESSOR_ARCHITECTURE_IA64: S:='Intel Itanium';
+    PROCESSOR_ARCHITECTURE_ALPHA64: S:='DEC Alpha64';
+    PROCESSOR_ARCHITECTURE_MSIL: S:='Microsoft Intermediate Language';
     PROCESSOR_ARCHITECTURE_AMD64: S:='AMD64';
+    PROCESSOR_ARCHITECTURE_IA32_ON_WIN64: S:='WoW64'; //'x86 emulation on AMD64'
+    PROCESSOR_ARCHITECTURE_NEUTRAL: S:='Neutral';
+    PROCESSOR_ARCHITECTURE_ARM64: S:='ARM64';
+    PROCESSOR_ARCHITECTURE_ARM32_ON_WIN64: S:='ARM32 emulation on AMD64';
+    PROCESSOR_ARCHITECTURE_IA32_ON_ARM64: S:='x86 emulation on ARM64';
     PROCESSOR_ARCHITECTURE_UNKNOWN: S:='Unknown';
     else S:='Unknown';
     end;
@@ -2037,20 +2034,53 @@ begin
       add('Edition: ' + S);
     end;
 
-    add(format('Version: %d.%d.%d', [MajorVersion,MinorVersion,BuildNumber]));
+    add(format('Version: %d.%d.%d', [MajorVersion, MinorVersion, BuildNumber]));
 
     if Length(PlusVersionNumber)<>0 then
-      add(format('Plus! Version: %s',[PlusVersionNumber]));
+      add(format('Plus! Version: %s', [PlusVersionNumber]));
 
     if Extended then
     begin
       if ServicePackMinor<>0 then
-        S:=format('%d.%d',[ServicePackMajor,ServicePackMinor])
+        S:=format('%d.%d', [ServicePackMajor, ServicePackMinor])
       else
-        S:=format('%d',[ServicePackMajor]);
+        S:=format('%d', [ServicePackMajor]);
       add('Service Pack: ' + S);
 
-      //FIXME: Handle SuiteMask!
+      if (SuiteMask and VER_SUITE_SMALLBUSINESS) <> 0 then
+        add('Installed suite feature: Microsoft Small Business Server');
+      if (SuiteMask and VER_SUITE_ENTERPRISE) <> 0 then
+        add('Installed suite feature: Enterprise, Enterprise Edition, or Advanced Server');
+      if (SuiteMask and VER_SUITE_BACKOFFICE) <> 0 then
+        add('Installed suite feature: Microsoft BackOffice components');
+      if (SuiteMask and VER_SUITE_COMMUNICATIONS) <> 0 then
+        add('Installed suite feature: Microsoft Office Communications Server');
+      if (SuiteMask and VER_SUITE_TERMINAL) <> 0 then
+        add('Installed suite feature: Terminal Services');
+      if (SuiteMask and VER_SUITE_SMALLBUSINESS_RESTRICTED) <> 0 then
+        add('Installed suite feature: Microsoft Small Business Serves (restricted)');
+      if (SuiteMask and VER_SUITE_EMBEDDEDNT) <> 0 then
+        add('Installed suite feature: Windows XP Embedded');
+      if (SuiteMask and VER_SUITE_DATACENTER) <> 0 then
+        add('Installed suite feature: Datacenter, Datacenter Edition, or Datacenter Server');
+      if (SuiteMask and VER_SUITE_SINGLEUSERTS) <> 0 then
+        add('Installed suite feature: Remote Desktop (single user)');
+      if (SuiteMask and VER_SUITE_PERSONAL) <> 0 then
+        add('Installed suite feature: Home Premium, Home Basic, or Home Edition');
+      if (SuiteMask and VER_SUITE_BLADE) <> 0 then
+        add('Installed suite feature: Web Edition');
+      if (SuiteMask and VER_SUITE_EMBEDDED_RESTRICTED) <> 0 then
+        add('Installed suite feature: Embedded (restricted)');
+      if (SuiteMask and VER_SUITE_SECURITY_APPLIANCE) <> 0 then
+        add('Installed suite feature: Security Appliance');
+      if (SuiteMask and VER_SUITE_STORAGE_SERVER) <> 0 then
+        add('Installed suite feature: Windows Storage Server');
+      if (SuiteMask and VER_SUITE_COMPUTE_SERVER) <> 0 then
+        add('Installed suite feature: Compute Cluster Edition');
+      if (SuiteMask and VER_SUITE_WH_SERVER) <> 0 then
+        add('Installed suite feature: Windows Home Server');
+      if (SuiteMask and VER_SUITE_MULTIUSERTS) <> 0 then
+        add('Installed suite feature: AppServer mode');
 
       case ProductType of
         0: S:='Unknown'; //Nothing set
@@ -2064,18 +2094,18 @@ begin
 
     {$IFDEF DetectReactOS}
     if ReactOSVersion<>'' then
-      add(format('React OS version: %s',[ReactOSVersion]));
+      add(format('React OS version: %s', [ReactOSVersion]));
     {$ENDIF}
 
     {$IFDEF DetectWine}
     if WineVersion<>'' then
-      add(format('Wine version: %s (%s) on %s %s',[WineVersion,WineBuildID,WineSysName,WineRelease]));
+      add(format('Wine version: %s (%s) on %s %s', [WineVersion, WineBuildID, WineSysName, WineRelease]));
     {$ENDIF}
 
     {$IFDEF LogSensitiveInformation}
-    add(format('Registered to person: %s',[RegisteredUser]));
-    add(format('Registered to company: %s',[RegisteredOrg]));
-    add(format('Serial: %s',[SerialNumber]));
+    add(format('Registered to person: %s', [RegisteredUser]));
+    add(format('Registered to company: %s', [RegisteredOrg]));
+    add(format('Serial: %s', [SerialNumber]));
     {$IFDEF Delphi7orNewerCompiler}
     GetLocaleFormatSettings(LOCALE_SYSTEM_DEFAULT, DateFormat);
     {$ENDIF}
@@ -2100,7 +2130,7 @@ begin
       S:='IE 5.01'
     else
       S:='IE 6.0';
-    add(format('Common Controls version: %s (%d)', [S,ComCtlVersion]));
+    add(format('Common Controls version: %s (%d)', [S, ComCtlVersion]));
 
     {$IFDEF WIN32}
     if Wow64 then
@@ -2108,6 +2138,8 @@ begin
     {$ENDIF}
   end;
 end;
+
+{ TMemory }
 
 procedure TMemory.GetInfo;
 var
@@ -2215,6 +2247,8 @@ begin
     {$ENDIF}
   end;
 end;
+
+{ TWorkstation }
 
 {$IFDEF LogSensitiveInformation}
 function GetSystemUpTime: {$ifdef Delphi2007orNewerCompiler}UInt64{$else}Int64{$endif};
@@ -2394,6 +2428,8 @@ begin
   end;
 end;
 {$ENDIF}
+
+{ TDisplay }
 
 function GetStringOrBinary(RegKey: TRegistry2; const ValueName, RootKeyName: String) : String;
 var
@@ -3006,6 +3042,8 @@ begin
   end;
 end;
 
+{ TDirectX }
+
 constructor TDirectX.Create;
 begin
   inherited;
@@ -3068,7 +3106,7 @@ begin
     try
       if OpenKey(rkDirect3D,false) then
       begin
-        getkeynames(sl);
+        GetKeyNames(sl);
         CloseKey;
         for i:=0 to sl.count-1 do
           if OpenKey(rkDirect3D+'\'+sl[i],false) then
@@ -3098,6 +3136,8 @@ begin
       add('Not installed.');
   end;
 end;
+
+// ---
 
 Procedure GetCPUDetails(var s: TStringlist);
 var
@@ -3178,6 +3218,8 @@ begin
     c.free;
   end;
 end;
+
+// ---
 
 function ProcessExists(const exeFileName: String): Boolean;
 var
@@ -3368,7 +3410,7 @@ begin
   end;
 end;
 
-Procedure LogSystemDetails;
+procedure LogSystemDetails;
 var
   s: TStringlist;
   i: Integer;

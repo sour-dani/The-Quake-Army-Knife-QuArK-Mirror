@@ -234,6 +234,8 @@ type
   PULONGLONG = ^ULONGLONG;
   {$EXTERNALSYM PULONGLONG}
 
+  SCODE = HRESULT;
+
 {$ifndef Delphi2009orNewerCompiler}
   PMemoryStatusEx = ^TMemoryStatusEx;
   _MEMORYSTATUSEX = record
@@ -923,6 +925,9 @@ const
   {$EXTERNALSYM REG_QWORD}
   REG_QWORD_LITTLE_ENDIAN = 11;
   {$EXTERNALSYM REG_QWORD_LITTLE_ENDIAN}
+
+  VER_SUITE_MULTIUSERTS               = $00020000;
+  {$EXTERNALSYM VER_SUITE_MULTIUSERTS}
 {$endif}
 
   IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE = $0040;
@@ -944,6 +949,19 @@ const
   CM_GAMMA_RAMP = 2;     { Supports GetDeviceGammaRamp and SetDeviceGammaRamp }
   {$EXTERNALSYM CM_CMYK_COLOR}
   CM_CMYK_COLOR = 4;     { Accepts CMYK color space ICC color profile }
+
+  PROCESSOR_ARCHITECTURE_NEUTRAL         (*: WORD*) = 11;
+  {$EXTERNALSYM PROCESSOR_ARCHITECTURE_NEUTRAL}
+  PROCESSOR_ARCHITECTURE_ARM64           (*: WORD*) = 12;
+  {$EXTERNALSYM PROCESSOR_ARCHITECTURE_ARM64}
+  PROCESSOR_ARCHITECTURE_ARM32_ON_WIN64  (*: WORD*) = 13;
+  {$EXTERNALSYM PROCESSOR_ARCHITECTURE_ARM32_ON_WIN64}
+  PROCESSOR_ARCHITECTURE_IA32_ON_ARM64   (*: WORD*) = 14;
+  {$EXTERNALSYM PROCESSOR_ARCHITECTURE_IA32_ON_ARM64}
+
+  //A missing old alias for VER_SUITE_BLADE
+  VER_SUITE_SERVERAPPLIANCE            = VER_SUITE_BLADE;
+  {$EXTERNALSYM VER_SUITE_SERVERAPPLIANCE}
 
   //_FIRMWARE_TYPE:
   FirmwareTypeUnknown = 0;
@@ -1257,8 +1275,14 @@ var
 {.$endif}
 {$endif}
 
-//This is a macro that wasn't converted.
+//Macro's that weren't converted.
 function CopyCursor(pcur: HCursor): HCursor;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+function HRESULT_CODE(hr: HResult): DWORD; //Under another name in ActiveX.pas: ResultCode
+function SCODE_CODE(sc: SCODE): DWORD;
+function HRESULT_FACILITY(hr: HResult): DWORD; //Under another name in ActiveX.pas: ResultFacility
+function SCODE_FACILITY(sc: SCODE): DWORD;
+function HRESULT_SEVERITY(hr: HResult): DWORD; //Under another name in ActiveX.pas: ResultSeverity
+function SCODE_SEVERITY(sc: SCODE): DWORD;
 
 //These functions doesn't exist at all in Delphi:
 function CheckWin32VersionWithServicePack(AMajor: Integer; AMinor: Integer = 0; AServicePackMajor: Integer = 0; AServicePackMinor: Integer = 0): Boolean; //Note: We use the wrong datatype to be consistent with CheckWin32Version.
@@ -1852,7 +1876,37 @@ end;
 
 function CopyCursor(pcur: HCursor): HCursor;
 begin
-  Result:=HCURSOR(CopyIcon(HICON(pcur)));
+  Result := HCURSOR(CopyIcon(HICON(pcur)));
+end;
+
+function HRESULT_CODE(hr: HResult): DWORD;
+begin
+  Result := hr and $FFFF;
+end;
+
+function SCODE_CODE(sc: SCODE): DWORD;
+begin
+  Result := sc and $FFFF;
+end;
+
+function HRESULT_FACILITY(hr: HResult): DWORD;
+begin
+  Result := (hr shr 16) and $1fff;
+end;
+
+function SCODE_FACILITY(sc: SCODE): DWORD;
+begin
+  Result := (sc shr 16) and $1fff;
+end;
+
+function HRESULT_SEVERITY(hr: HResult): DWORD;
+begin
+  Result := (hr shr 31) and $1;
+end;
+
+function SCODE_SEVERITY(sc: SCODE): DWORD;
+begin
+  Result := (sc shr 31) and $1;
 end;
 
 const
