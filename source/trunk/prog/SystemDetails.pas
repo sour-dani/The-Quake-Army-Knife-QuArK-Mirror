@@ -35,11 +35,6 @@ interface
 uses DelphiCompat, SysUtils, StrUtils, Windows, Classes;
 
 procedure LogSystemDetails;
-function CheckWindows98And2000: Boolean;
-function CheckWindowsMEAnd2000: Boolean;
-function ProcessExists(const exeFileName: String): Boolean;
-function WindowExists(const WindowName: String): Boolean;
-function RetrieveModuleFilename(ModuleHandle: HMODULE): String;
 procedure WarnDriverBugs;
 
 type
@@ -362,10 +357,16 @@ type
     property Direct3D: TStrings read FDirect3D stored false;
   end;
 
+  TPlatformType = (osWin95Comp, osWinNTComp);
+
+function GetPlatformType: TPlatformType;
+function CheckWindows98And2000: Boolean;
+function CheckWindowsMEAnd2000: Boolean;
+
 implementation
 
-uses Math, Forms, Graphics, DateUtils, {$IFDEF CompiledWithDelphi2}ShellObj, OLE2, {$ELSE}ShlObj, ActiveX, {$ENDIF}
-  ComCtrls, TlHelp32, Psapi, Registry, Registry2, Logging, QkExceptions, QConsts;
+uses Math, Forms, DateUtils, {$IFDEF CompiledWithDelphi2}ShellObj, OLE2, {$ELSE}ShlObj, ActiveX, {$ENDIF}
+  ComCtrls, Registry, Registry2, Logging, QkExceptions, QConsts;
 
 type
   {$IFDEF Delphi4orNewerCompiler}
@@ -373,8 +374,6 @@ type
   {$ELSE}
      TLargInt = TLargeInteger;
   {$ENDIF}
-
-  TPlatformType = (osWin95Comp, osWinNTComp);
 
   TVendorStr = array[0..11] of AnsiChar;
   TFeatureFlags = record
@@ -3221,195 +3220,6 @@ end;
 
 // ---
 
-function ProcessExists(const exeFileName: String): Boolean;
-var
-  ContinueLoop: BOOL;
-  FSnapshotHandle, FSnapshotHandle2: THandle;
-  FProcessEntry32: TProcessEntry32;
-  FModuleEntry32: TModuleEntry32;
-  ProcessNumber: Integer;
-  ProcessSize, BytesReturned: DWORD;
-  ProcessList, ProcessList2: PDWORD;
-  ProcessHandle: THandle;
-  ProcessModule: HMODULE;
-  SizeNeeded: DWORD;
-  ProcessName: String;
-  ProcessNameBuffer: PChar;
-  ProcessNameBufferSize: Cardinal;
-  RealProcessNameSize: Cardinal;
-  I: Integer;
-begin
-  Result := False;
-  if WindowsPlatformCompatibility=osWin95Comp then
-  begin
-    FSnapshotHandle := CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-    if FSnapshotHandle = INVALID_HANDLE_VALUE then
-      LogAndRaiseLastOSError('Unable to retrieve process information!');
-    try
-      FProcessEntry32.dwSize := SizeOf(FProcessEntry32);
-      ContinueLoop := Process32First(FSnapshotHandle, FProcessEntry32);
-      while ContinueLoop <> false do
-      begin
-        if SameFileName(ExtractFilename(StrPas(FProcessEntry32.szExeFile)), ExtractFilename(exeFileName)) then
-        begin
-          FSnapshotHandle2 := CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, FProcessEntry32.th32ProcessID);
-          if FSnapshotHandle2 = INVALID_HANDLE_VALUE then
-            LogAndRaiseLastOSError('Unable to retrieve process information!');
-          try
-            FModuleEntry32.dwSize := SizeOf(FModuleEntry32);
-            Module32First(FSnapshotHandle2, FModuleEntry32);
-            if SameFileName(StrPas(FModuleEntry32.szExePath), ExeFileName) then
-            begin
-              Result := True;
-              break;
-            end;
-          finally
-            CloseHandle(FSnapshotHandle2);
-          end;
-        end;
-        ContinueLoop := Process32Next(FSnapshotHandle, FProcessEntry32);
-      end;
-    finally
-      CloseHandle(FSnapshotHandle);
-    end;
-  end
-  else
-  begin
-    ProcessNumber := 16;
-    GetMem(ProcessList, ProcessNumber * SizeOf(DWORD));
-    try
-      repeat
-        ProcessNumber := ProcessNumber * 2;
-        ReallocMem(ProcessList, ProcessNumber * SizeOf(DWORD));
-        BytesReturned := 0;
-        ProcessSize := ProcessNumber * SizeOf(DWORD);
-        if EnumProcesses(ProcessList, ProcessSize, BytesReturned) = false then
-          raise Exception.Create('Unable to enumerate processes!');
-      until BytesReturned < ProcessSize;
-      ProcessNumber := BytesReturned div SizeOf(DWORD);
-      ProcessList2 := ProcessList;
-      for I:=0 to ProcessNumber-1 do
-      begin
-        ProcessHandle := OpenProcess(PROCESS_QUERY_INFORMATION or PROCESS_VM_READ, False, ProcessList2^);
-        if ProcessHandle <> 0 then
-        begin
-          try
-            if EnumProcessModules(ProcessHandle, @ProcessModule, SizeOf(ProcessModule), SizeNeeded) <> false then
-            begin
-              ProcessNameBufferSize := 128;
-              GetMem(ProcessNameBuffer, ProcessNameBufferSize * SizeOf(Char));
-              try
-                repeat
-                  ProcessNameBufferSize := ProcessNameBufferSize * 2;
-                  ReallocMem(ProcessNameBuffer, ProcessNameBufferSize * SizeOf(Char));
-                  RealProcessNameSize := GetModuleFileNameEx(ProcessHandle, ProcessModule, ProcessNameBuffer, ProcessNameBufferSize);
-                until RealProcessNameSize < ProcessNameBufferSize;
-                if RealProcessNameSize > 0 then
-                begin
-                  SetString(ProcessName, ProcessNameBuffer, RealProcessNameSize);
-                  if SameFileName(ProcessName, exeFileName) then
-                  begin
-                    Result:=True;
-                    break;
-                  end;
-                end;
-              finally
-                FreeMem(ProcessNameBuffer);
-              end;
-            end;
-          finally
-            CloseHandle(ProcessHandle);
-          end;
-        end;
-        Inc(ProcessList2);
-      end;
-    finally
-      FreeMem(ProcessList);
-    end;
-  end;
-end;
-
-function WindowExists(const WindowName: String): Boolean;
-var
-  FoundWindow: HWND;
-begin
-  FoundWindow:=FindWindow(nil, PChar(WindowName));
-  if FoundWindow<>0 then
-    Result := True
-  else
-    Result := False;
-end;
-
-function RetrieveModuleFilename(ModuleHandle: HMODULE) : String;
-var
-  Path: LPTSTR;
-begin
-  Path:=StrAlloc(MAX_PATH+1);
-  try
-    Path[MAX_PATH]:=#0; //GetModuleFileName might return a not null-terminated, truncated string
-    if GetModuleFileName(ModuleHandle, Path, MAX_PATH) = 0 then
-      raise Exception.Create('Unable to retrieve filename of a module!');
-    Result := StrPas(Path);
-  finally
-    StrDispose(Path);
-  end;
-end;
-
-function CheckWindows98And2000: Boolean;
-begin
-  {$IFNDEF Delphi10_1orNewerCompiler}
-  Result:=False;
-  {$ENDIF}
-  case WindowsPlatformCompatibility of
-  osWin95Comp:
-    Result:=CheckWin32Version(4, 10); //Windows 98
-  osWinNTComp:
-    Result:=CheckWin32Version(5, 0); //Windows 2000
-  {$IFDEF DEBUG}
-  else
-    raise Exception.Create('Unsupported Windows platform!');
-  {$ENDIF}
-  end;
-end;
-
-function CheckWindowsMEAnd2000: Boolean;
-begin
-  {$IFNDEF Delphi10_1orNewerCompiler}
-  Result:=False;
-  {$ENDIF}
-  case WindowsPlatformCompatibility of
-  osWin95Comp:
-    Result:=CheckWin32Version(4, 90); //Windows ME
-  osWinNTComp:
-    Result:=CheckWin32Version(5, 0); //Windows 2000
-  {$IFDEF DEBUG}
-  else
-    raise Exception.Create('Unsupported Windows platform!');
-  {$ENDIF}
-  end;
-end;
-
-procedure WarnDriverBugs;
-var
-  S: String;
-  i: Integer;
-begin
-  if DriverBugs.Count <> 0 then
-  begin
-    //Note: Can't put in dictionary; no Python loaded yet!
-    S:='Registry corruption detected! One or more driver entries are corrupt. QuArK will continue to run, but some graphical options may be disabled.';
-    S:=S+sLineBreak+sLineBreak+'The most probable cause is either registry corruption, or a bad driver. Please contact your video card manufacturer for a corrected driver.';
-    S:=S+sLineBreak+sLineBreak+'The following bad keys were found:'+sLineBreak;
-    for i:=0 to DriverBugs.Count-1 do
-      S:=S+DriverBugs[i]+sLineBreak;
-    S:=S+sLineBreak+'This may be caused by a known bad AMD Graphics driver, that gives the "DriverDesc" key the wrong data-type (REG_BINARY instead of REG_SZ).'+sLineBreak;
-    S:=S+'There are also Intel HD graphics and VMWare drivers that contain the same bug, but with the "HardwareInformation" keys.'+sLineBreak;
-    S:=S+'For more information, see: https://quark.sourceforge.io/forums/index.php?topic=1064'+sLineBreak+sLineBreak;
-    S:=S+'You can disable this check by unchecking Configuration > Startup > Check for bugs.';
-    Application.MessageBox(PChar(S), 'QuArK', MB_ICONWARNING or MB_OK);
-  end;
-end;
-
 procedure LogSystemDetails;
 var
   s: TStringlist;
@@ -3477,6 +3287,66 @@ begin
     end;
   finally
     s.free;
+  end;
+end;
+
+procedure WarnDriverBugs;
+var
+  S: String;
+  i: Integer;
+begin
+  if DriverBugs.Count <> 0 then
+  begin
+    //Note: Can't put in dictionary; no Python loaded yet!
+    S:='Registry corruption detected! One or more driver entries are corrupt. QuArK will continue to run, but some graphical options may be disabled.';
+    S:=S+sLineBreak+sLineBreak+'The most probable cause is either registry corruption, or a bad driver. Please contact your video card manufacturer for a corrected driver.';
+    S:=S+sLineBreak+sLineBreak+'The following bad keys were found:'+sLineBreak;
+    for i:=0 to DriverBugs.Count-1 do
+      S:=S+DriverBugs[i]+sLineBreak;
+    S:=S+sLineBreak+'This may be caused by a known bad AMD Graphics driver, that gives its "DriverDesc" registry key the wrong data-type (REG_BINARY instead of REG_SZ).'+sLineBreak;
+    S:=S+'There are also Intel HD graphics and VMWare drivers that contain the same bug, but with the "HardwareInformation" registry keys.'+sLineBreak;
+    S:=S+'For more information, see: https://quark.sourceforge.io/forums/index.php?topic=1064'+sLineBreak+sLineBreak;
+    S:=S+'You can disable this check by unchecking Configuration > Startup > Check for bugs.';
+    Application.MessageBox(PChar(S), 'QuArK', MB_ICONWARNING or MB_OK);
+  end;
+end;
+
+function GetPlatformType: TPlatformType;
+begin
+  Result:=WindowsPlatformCompatibility;
+end;
+
+function CheckWindows98And2000: Boolean;
+begin
+  {$IFNDEF Delphi10_1orNewerCompiler}
+  Result:=False;
+  {$ENDIF}
+  case WindowsPlatformCompatibility of
+  osWin95Comp:
+    Result:=CheckWin32Version(4, 10); //Windows 98
+  osWinNTComp:
+    Result:=CheckWin32Version(5, 0); //Windows 2000
+  {$IFDEF DEBUG}
+  else
+    raise Exception.Create('Unsupported Windows platform!');
+  {$ENDIF}
+  end;
+end;
+
+function CheckWindowsMEAnd2000: Boolean;
+begin
+  {$IFNDEF Delphi10_1orNewerCompiler}
+  Result:=False;
+  {$ENDIF}
+  case WindowsPlatformCompatibility of
+  osWin95Comp:
+    Result:=CheckWin32Version(4, 90); //Windows ME
+  osWinNTComp:
+    Result:=CheckWin32Version(5, 0); //Windows 2000
+  {$IFDEF DEBUG}
+  else
+    raise Exception.Create('Unsupported Windows platform!');
+  {$ENDIF}
   end;
 end;
 

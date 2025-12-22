@@ -330,7 +330,7 @@ function ToILstring(const S: String) : ILstring;
 
 implementation
 
-uses Setup, Quarkx, QkExceptions, Logging, SystemDetails, ApplPaths;
+uses Setup, Quarkx, QkExceptions, Logging, ApplPaths, Platform;
 
 var
   TimesLoaded: Cardinal;

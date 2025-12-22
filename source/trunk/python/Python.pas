@@ -733,7 +733,7 @@ uses
   {$IFDEF Debug}QkObjects, {$ENDIF}
   {$IFDEF DebugPythonLeak}{$IFNDEF PyProfiling}Classes,{$ENDIF} QConsts, PyObjects, Quarkx,{$ENDIF}
   Windows, Forms, SysUtils, StrUtils, {Registry2,} QkExceptions,
-  ApplPaths, VersionNumbers, SystemDetails, Logging;
+  ApplPaths, VersionNumbers, Logging, Platform;
 
 {$IFDEF DebugPythonLeak}
 var g_PythonObjects: TList;

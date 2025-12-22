@@ -34,7 +34,7 @@ function GetSteamCacheDir : String;
 
 implementation
 
-uses ShellAPI, SysUtils, StrUtils, Quarkx, Game, Setup, Logging, SystemDetails,
+uses ShellAPI, SysUtils, StrUtils, Quarkx, Game, Setup, Logging, Platform,
      QkObjects, ApplPaths, QkExceptions, QkFileObjects;
 
 const

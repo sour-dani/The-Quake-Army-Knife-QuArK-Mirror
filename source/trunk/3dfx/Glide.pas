@@ -1586,7 +1586,7 @@ procedure UnloadGlide;
 
 implementation
 
-uses QkExceptions, QkDummyWindow, ApplPaths, Logging, Quarkx, SystemDetails;
+uses QkExceptions, QkDummyWindow, ApplPaths, Logging, Quarkx, Platform;
 
 type
   TFuncRequirement =  { Specifies which DLL, the function should exist in: }

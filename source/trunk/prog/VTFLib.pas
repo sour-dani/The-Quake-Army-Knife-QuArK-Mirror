@@ -388,7 +388,7 @@ var
 
 implementation
 
-uses Setup, Quarkx, QkExceptions, Logging, ApplPaths, SystemDetails;
+uses Setup, Quarkx, QkExceptions, Logging, ApplPaths, Platform;
 
 var
   TimesLoaded: Cardinal;
