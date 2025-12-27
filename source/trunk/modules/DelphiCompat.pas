@@ -105,6 +105,7 @@ type
   {$EXTERNALSYM TWideStringDynArray}
 {$endif}
 
+{$ifndef Delphi2009orNewerCompiler}
 //NativeInt and NativeUInt are not suitable before Delphi 2009, so let's supply our own.
 //More information:
 //  https://stackoverflow.com/questions/24507704/difference-between-longint-and-integer-longword-and-cardinal
@@ -112,15 +113,21 @@ type
 //  https://blog.dummzeuch.de/2018/09/08/nativeint-nativeuint-type-in-various-delphi-versions/
 //Note that Delphi 2009 has a compiler bug with NativeUInt (http://qc.embarcadero.com/wc/qcmain.aspx?d=71292),
 //so we supply a proper NativeUInt for Delphi 2009 as well.
-{$ifndef Delphi2009orNewerCompiler}
 {$IFDEF CPU64BITS}
   NativeInt = Int64; //Integer is 32-bit on 64-bit platforms, so it cannot be used.
 {$ELSE}
   NativeInt = Integer;
 {$ENDIF}
-
   PNativeInt = ^NativeInt;
+
+  Int8   = ShortInt;
+  Int16  = SmallInt;
+  Int32  = Integer;
+  UInt8  = Byte;
+  UInt16 = Word;
+  UInt32 = Cardinal;
 {$endif}
+
 {$ifndef Delphi2010orNewerCompiler}
 {$IFDEF CPU64BITS}
   NativeUInt = UInt64; //Cardinal is 32-bit on 64-bit platforms, so it cannot be used.
@@ -129,6 +136,31 @@ type
 {$ENDIF}
 
   PNativeUInt = ^NativeUInt;
+{$endif}
+
+{$ifdef DelphiXE2orNewerCompiler}
+  IntPtr  = NativeInt;
+  UIntPtr = NativeUInt;
+{$endif}
+
+{$ifdef DelphiXE8orNewerCompiler}
+{$IFDEF MSWINDOWS}
+  FixedInt = LongInt;
+  FixedUInt = LongWord;
+{$ENDIF}
+{$IFDEF POSIX}
+  FixedInt = Integer;
+  FixedUInt = Cardinal;
+{$ENDIF}
+  PFixedInt = ^FixedInt;
+  PFixedUInt = ^FixedUInt;
+  {$EXTERNALSYM FixedInt}
+  {$EXTERNALSYM FixedUInt}
+{$endif}
+
+{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi XE2, but existing in Delphi 11.3!
+  Float32 = Single;
+  Float64 = Double;
 {$endif}
 
   //To support pointer arithmetic, we need a custom datatype, because support for it has changed throughout the years.
