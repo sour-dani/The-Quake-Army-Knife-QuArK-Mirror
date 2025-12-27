@@ -11,29 +11,31 @@ data = []
 with open(os.path.join(path, "DebugStreamRef.log"), mode="r") as inFile:
 	for line in inFile.readlines():
 		action, rest = line.rstrip("\r\n").split(" ", 1)
-		if action == "Close":
+		if action == "Open":
+			handle, filename = rest.split(": ", 1)
+			refcount = 0
+			rest = None
+		elif action == "Close":
 			handle = rest
-			rest = ""
-			filename = ""
+			refcount = None
+			filename = None
+			rest = None
 		else:
 			handle, rest = rest.split(": ", 1)
-			if action != "Open":
-				refcount, rest = rest.split(" ", 1)
-				filename = ""
-			else:
-				refcount = 0
-				filename = rest
-				rest = ""
-		if int(handle) == 0:
+			refcount, rest = rest.split(" ", 1)
+			refcount = int(refcount)
+			filename = None
+
+		if int(handle) == -1:
 			#Skip it!
 			continue
-		data.append((action, int(handle), int(refcount), filename, rest))
+		data.append((action, int(handle), refcount, filename, rest))
 
 # Track one file
 handle_to_track = -1
 for line in data:
 	action, handle, refcount, filename, rest = line
-	if (action == "Open") and (filename == "Z:\Kingpin\main\Pak0.pak"):
+	if (action == "Open") and (filename == "C:\\Kingpin\\main\\Pak0.pak"):
 		handle_to_track = handle
 		continue
 	if handle != handle_to_track:
