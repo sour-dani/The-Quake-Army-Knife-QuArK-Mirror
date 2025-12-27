@@ -64,32 +64,32 @@ uses Windows, SysUtils, Quarkx, QkExceptions, QkObjectClassList,
 type
   //Based on: https://github.com/CptAsgard/CoD2Unity/blob/master/Assets/cod2materialfiles.txt
   TCoD2MaterialHeader = packed record
-     offset_material: Longword;            //index to the material name
-     offset_color_texture: Longword;       //index to color texture name
-     unknown1: Longword;                   //UNKNOWN
-     size_texture: Longword;               //texture size
-     unknown2: Longword;                   //UNKNOWN, padding?
-     unknown3, unknown4: Word;             //UNKNOWN, texture UV?
-     unknown5, unknown6: Word;             //UNKNOWN, texture ST?
-     texture_size_x, texture_size_y: Word; //texture size dimensions
-     unknown7: Longword;                   //UNKNOWN, padding?
-     unknown8: Longword;                   //UNKNOWN
-     unknown9: Longword;                   //UNKNOWN
-     unknown10: Longword;                  //UNKNOWN
-     unknown11: Longword;                  //UNKNOWN
-     unknown12: Longword;                  //UNKNOWN
-     offset_techniqueset: Longword;        //index to techniqueset name
-     unknown13: Longword;                  //UNKNOWN
-     offset_shader: Longword;              //index to shader name
-     offset_colormap_tag: Longword;        //index to 'colorMap'
-     unknown14: Longword;                  //UNKNOWN, shader slot index?
-     offset_colormap: Longword;            //index to color map name
-     offset_normalmap_tag: Longword;       //index to 'normalMap'
-     unknown15: Longword;                  //UNKNOWN, shader slot index?
-     offset_normalmap: Longword;           //index to normal map name
-     offset_specularmap_tag: Longword;     //index to 'specularMap'
-     unknown16: Longword;                  //UNKNOWN, shader slot index?
-     offset_specularmap: Longword;         //index to specular texture
+     offset_material: UInt32;                //index to the material name
+     offset_color_texture: UInt32;           //index to color texture name
+     unknown1: UInt32;                       //UNKNOWN
+     size_texture: UInt32;                   //texture size
+     unknown2: UInt32;                       //UNKNOWN, padding?
+     unknown3, unknown4: UInt16;             //UNKNOWN, texture UV?
+     unknown5, unknown6: UInt16;             //UNKNOWN, texture ST?
+     texture_size_x, texture_size_y: UInt16; //texture size dimensions
+     unknown7: UInt32;                       //UNKNOWN, padding?
+     unknown8: UInt32;                       //UNKNOWN
+     unknown9: UInt32;                       //UNKNOWN
+     unknown10: UInt32;                      //UNKNOWN
+     unknown11: UInt32;                      //UNKNOWN
+     unknown12: UInt32;                      //UNKNOWN
+     offset_techniqueset: UInt32;            //index to techniqueset name
+     unknown13: UInt32;                      //UNKNOWN
+     offset_shader: UInt32;                  //index to shader name
+     offset_colormap_tag: UInt32;            //index to 'colorMap'
+     unknown14: UInt32;                      //UNKNOWN, shader slot index?
+     offset_colormap: UInt32;                //index to color map name
+     offset_normalmap_tag: UInt32;           //index to 'normalMap'
+     unknown15: UInt32;                      //UNKNOWN, shader slot index?
+     offset_normalmap: UInt32;               //index to normal map name
+     offset_specularmap_tag: UInt32;         //index to 'specularMap'
+     unknown16: UInt32;                      //UNKNOWN, shader slot index?
+     offset_specularmap: UInt32;             //index to specular texture
   end;
 
 {------------------------}

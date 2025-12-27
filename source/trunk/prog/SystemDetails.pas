@@ -40,7 +40,7 @@ procedure WarnDriverBugs;
 type
   TCPU = class(TPersistent)
   private
-    FCPUIDLevel, FCPUIDExtLevel: LongWord;
+    FCPUIDLevel, FCPUIDExtLevel: UInt32;
     FName,
     FVendor,
     FSubModel,
@@ -67,8 +67,8 @@ type
   published
     property HasCPUID: Boolean read FHasCPUID stored false;
     property HasRDTSC: Boolean read FHasRDTSC stored false;
-    property CPUIDLevel: LongWord read FCPUIDLevel stored false;
-    property CPUIDExtLevel: LongWord read FCPUIDExtLevel stored false;
+    property CPUIDLevel: UInt32 read FCPUIDLevel stored false;
+    property CPUIDExtLevel: UInt32 read FCPUIDExtLevel stored false;
     property Count: Cardinal read FCount stored false;
     property Vendor: String read FVendor stored false;
     property Name: String read FName stored false;
@@ -377,9 +377,9 @@ type
 
   TVendorStr = array[0..11] of AnsiChar;
   TFeatureFlags = record
-    EBX: LongWord;
-    ECX: LongWord;
-    EDX: LongWord;
+    EBX: UInt32;
+    ECX: UInt32;
+    EDX: UInt32;
   end;
   TBrandStr = array[0..47] of AnsiChar;
 
@@ -471,7 +471,7 @@ const
                                             'Vortex',
                                             'Hygon');
 
-procedure GetCPUIDLevelAndVendor(var Level: LongWord; var VendorStr: TVendorStr); assembler;
+procedure GetCPUIDLevelAndVendor(var Level: UInt32; var VendorStr: TVendorStr); assembler;
 asm
 	{$IFDEF CPUX86}
 	//Save registers that need to be preserved
@@ -588,7 +588,7 @@ asm
 	{$ENDIF}
 end;
 
-procedure GetCPUIDSignatureAndFeatureFlags(var Signature: LongWord; var FeatureFlags: TFeatureFlags); assembler;
+procedure GetCPUIDSignatureAndFeatureFlags(var Signature: UInt32; var FeatureFlags: TFeatureFlags); assembler;
 asm
 	{$IFDEF CPUX86}
 	//Save registers that need to be preserved
@@ -661,7 +661,7 @@ asm
 	{$ENDIF}
 end;
 
-procedure GetCPUIDExtLevelAndVendor(var ExtLevel: LongWord); assembler;
+procedure GetCPUIDExtLevelAndVendor(var ExtLevel: UInt32); assembler;
 asm
 	{$IFDEF CPUX86}
 	//Save registers that need to be preserved
@@ -1235,7 +1235,7 @@ procedure TCPU.GetInfo;
 var
   I, J: Integer;
   CPUIDVendor: TVendorStr;
-  CPUIDSignature: LongWord;
+  CPUIDSignature: UInt32;
   CPUIDFeatureFlags: TFeatureFlags;
   ExtendedModel: Byte;
   ExtendedFamily: Byte;
@@ -3057,7 +3057,7 @@ end;
 
 procedure TDirectX.GetInfo;
   //Based on: https://www.oreilly.com/library/view/delphi-in-a/1565926595/re314.html
-  function Swap32(const Value: LongWord): LongWord;
+  function Swap32(const Value: UInt32): UInt32;
   begin
     Result := Swap(Value shr 16) or (Swap(Value) shl 16);
   end;

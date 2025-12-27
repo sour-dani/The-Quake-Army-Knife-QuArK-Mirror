@@ -327,7 +327,7 @@ var
   NeedToFreeDummy: Boolean;
   DummyImage: QImage;
   PSD: TPixelSetDescription;
-  TexSize : longword;
+  TexSize : Cardinal;
   RawBuffer: PByte;
   RawData, RawData2: PvlByte;
   SourceImg, SourceAlpha, Dest, pSourceImg, pSourceAlpha, pDest: PChar;

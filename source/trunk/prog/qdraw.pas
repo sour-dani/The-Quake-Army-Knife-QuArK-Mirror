@@ -330,7 +330,7 @@ end;
 
 function DataToBmp16(const S: String; W: Integer) : HBitmap; //FIXME: Binary data!
 type
- TColors16 = array[0..15] of LongWord;
+ TColors16 = array[0..15] of DWORD;
 const
  Colors16 : TColors16 =
   ($000000,

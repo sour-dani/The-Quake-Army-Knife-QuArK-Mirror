@@ -26,8 +26,8 @@ interface
 
 uses DelphiCompat, Sysutils, Classes, QkObjects;
 
-function ZipCompressStream(input: TStream; var output: TMemoryStream): LongWord; //Returns the CRC32
-function ZipDecompressStream(input: TStream; var output: TStream): LongWord; //Returns the CRC32
+function ZipCompressStream(input: TStream; var output: TMemoryStream): UInt32; //Returns the CRC32
+function ZipDecompressStream(input: TStream; var output: TStream): UInt32; //Returns the CRC32
 
 implementation
 
@@ -39,15 +39,15 @@ uses
 type
   //Same as in QkZip2.pas:
   TLocalFileHeader = packed record
-    version_needed      : Word;
-    bit_flag            : Word;
-    compression_method  : Word;
-    last_mod_datetime   : Longword;
-    crc_32              : Longword;
-    compressed          : Longword;
-    uncompressed        : Longword;
-    filename_len        : Word;
-    extrafield_len      : Word;
+    version_needed      : UInt16;
+    bit_flag            : UInt16;
+    compression_method  : UInt16;
+    last_mod_datetime   : UInt32;
+    crc_32              : UInt32;
+    compressed          : UInt32;
+    uncompressed        : UInt32;
+    filename_len        : UInt16;
+    extrafield_len      : UInt16;
   end;
 
 function GetZBufferSize: Integer;
@@ -67,7 +67,7 @@ begin
     Result:=8;
 end;
 
-function ZipCompressStream(input: TStream; var output: TMemoryStream) : LongWord;
+function ZipCompressStream(input: TStream; var output: TMemoryStream) : UInt32;
 var
   Hlpr: TAbDeflateHelper;
 begin
@@ -156,11 +156,11 @@ begin
   end;
 end;
 
-function ZipDecompressStream(input: TStream; var output: TStream): LongWord;
+function ZipDecompressStream(input: TStream; var output: TStream): UInt32;
 var
   Origin: TStreamPos;
   header: TLocalFileHeader;
-  sig: LongWord;
+  sig: UInt32;
 
   Hlpr: TAbDeflateHelper;
   Helper: TAbUnzipHelper;

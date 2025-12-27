@@ -469,7 +469,7 @@ type
   hl2_model_t = record
     id: Longint;
     version: Longint;
-    checksum: Longword; //long, so should be Longint?       // this has to be the same in the phy and vtx files to load!
+    checksum: Longword; //FIXME: long, so should be Longint?       // this has to be the same in the phy and vtx files to load!
     name: array [1..64] of char;
     length: Longint;
     eyeposition: vec3_t;    // ideal eye position

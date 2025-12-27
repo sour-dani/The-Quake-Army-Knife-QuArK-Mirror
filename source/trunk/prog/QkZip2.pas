@@ -57,43 +57,43 @@ uses
 
 type
   TLocalFileHeader = packed record
-    version_needed      : Word;
-    bit_flag            : Word;
-    compression_method  : Word;
-    last_mod_datetime   : Longword;
-    crc_32              : Longword;
-    compressed          : Longword;
-    uncompressed        : Longword;
-    filename_len        : Word;
-    extrafield_len      : Word;
+    version_needed      : UInt16;
+    bit_flag            : UInt16;
+    compression_method  : UInt16;
+    last_mod_datetime   : UInt32;
+    crc_32              : UInt32;
+    compressed          : UInt32;
+    uncompressed        : UInt32;
+    filename_len        : UInt16;
+    extrafield_len      : UInt16;
   end;
 
   TFileHeader = packed record
-    version_by           : Word;
-    version_needed       : Word;
-    bit_flag             : Word;
-    compression_method   : Word;     //  8
-    last_mod_datetime    : Longword;
-    crc_32               : Longword;
-    compressed           : Longword;
-    uncompressed         : Longword; //  24
-    filename_len         : Word;
-    extrafield_len       : Word;
-    filecomment_len      : Word;
-    disk_start_no        : Word;
-    internal_attrs       : Word;     //  34
-    external_attrs       : Longword;
-    local_header_offset  : Longword; //  42
+    version_by           : UInt16;
+    version_needed       : UInt16;
+    bit_flag             : UInt16;
+    compression_method   : UInt16;
+    last_mod_datetime    : UInt32;
+    crc_32               : UInt32;
+    compressed           : UInt32;
+    uncompressed         : UInt32;
+    filename_len         : UInt16;
+    extrafield_len       : UInt16;
+    filecomment_len      : UInt16;
+    disk_start_no        : UInt16;
+    internal_attrs       : UInt16;
+    external_attrs       : UInt32;
+    local_header_offset  : UInt32;
   end;
 
   TEndOfCentralDir = packed record
-    disk_no             : Word;
-    start_of_cd         : Word;
-    no_entries_disk     : Word;
-    no_entries          : Word;     //  8
-    size_cd             : Longword;
-    offset_CD           : Longword; //  16
-    zipfilecomment_len  : Word;     //  18
+    disk_no             : UInt16;
+    start_of_cd         : UInt16;
+    no_entries_disk     : UInt16;
+    no_entries          : UInt16;
+    size_cd             : UInt32;
+    offset_CD           : UInt32;
+    zipfilecomment_len  : UInt16;
   end;
 
   PEndOfCentralDir = ^TEndOfCentralDir;
@@ -144,7 +144,7 @@ const
   cIMPLODED_COMPRESSION = 6;
   cDEFLATED_COMPRESSION = 8;
 
-function BuildLFH(ver, bit, com: Word; las, crc, cmp, unc: Longword; fil, ext: Word) : TLocalFileHeader;
+function BuildLFH(ver, bit, com: UInt16; las, crc, cmp, unc: UInt32; fil, ext: UInt16) : TLocalFileHeader;
 begin
   Result.version_needed     := ver;
   Result.bit_flag           := bit;
@@ -157,7 +157,7 @@ begin
   Result.extrafield_len     := ext;
 end;
 
-function BuildFH(ver, vby, bit, com: Word; las, crc, cmp, unc: Longword; fil, ext, fcm, ita: Word; exa, lho, dsn: Longword) : TFileHeader;
+function BuildFH(ver, vby, bit, com: UInt16; las, crc, cmp, unc: UInt32; fil, ext, fcm, ita: UInt16; exa, lho, dsn: UInt32) : TFileHeader;
 begin
   Result.version_by          := vby;
   Result.version_needed      := ver;
@@ -176,7 +176,7 @@ begin
   Result.disk_start_no       := dsn;
 end;
 
-function BuildEOCD(dn, sod, nod, ent, siz, off, zfn:Longint) : TEndOfCentralDir;
+function BuildEOCD(dn, sod, nod, ent: UInt16; siz, off: UInt32; zfn: UInt16) : TEndOfCentralDir;
 begin
   Result.disk_no            := dn;
   Result.start_of_cd        := sod;
@@ -260,9 +260,9 @@ var
   tInfo: TInfoEnreg1;
   LFS: TLocalFileHeader;
   OrgSize, Size, pos: TStreamPos;
-  crc: LongWord;
+  crc: UInt32;
   cdir: TFileHeader;
-  sig: LongWord;
+  sig: UInt32;
   TimestampNow: Integer;
 begin
   Acces;
@@ -325,7 +325,7 @@ begin
           Info.F.WriteBuffer(PChar(S)^, Length(S));
          {/Write File Entry}
 
-          cdir:=BuildFH(VMB_NTFS, PKZIP_VERSION_2_0, 0, cDEFLATED_COMPRESSION, TimestampNow, crc, Size, OrgSize, length(s), 0, 0, 0, Longword(S_IFREG or (S_IRUSR or S_IWUSR or S_IRGRP or S_IWGRP or S_IROTH or S_IWOTH)) shl 16, pos, 0); //FIXME: Set proper timestamp, if available!
+          cdir:=BuildFH(VMB_NTFS, PKZIP_VERSION_2_0, 0, cDEFLATED_COMPRESSION, TimestampNow, crc, Size, OrgSize, length(s), 0, 0, 0, UInt32(S_IFREG or (S_IRUSR or S_IWUSR or S_IRGRP or S_IWGRP or S_IROTH or S_IWOTH)) shl 16, pos, 0); //FIXME: Set proper timestamp, if available!
           sig:=cCFILE_HEADER;
           Repertoire.WriteBuffer(sig, 4);
           Repertoire.WriteBuffer(cdir, sizeof(TFileHeader));
@@ -351,7 +351,7 @@ procedure QZipFolder.SaveFile(Info: TInfoEnreg1);
 var
   Repertoire: TMemoryStream;
   Origine, Fin: TStreamPos;
-  sig: LongWord;
+  sig: UInt32;
   EOCDHeader: TEndOfCentralDir;
   comment: string;
 begin
@@ -430,7 +430,7 @@ var
   FH: TFileHeader;
   org, Size: TStreamPos;
   files: TMemoryStream;
-  EoSig, FileSig: LongWord;
+  EoSig, FileSig: UInt32;
   nEnd: TStreamPos;
   eocd: TEndOfCentralDir;
   I: Word;

@@ -189,19 +189,19 @@ end;
 type
  THr2Entry = record
               SectionName: array[0..31] of Byte;
-              Version, Size: LongWord;
+              Version, Size: UInt32;
              end;
  THr2Header = record
-               skinwidth: LongInt;
-               skinheight: LongInt;
-               framesize: LongInt;        // byte size of each frame
-               num_skins: LongInt;
-               num_xyz: LongInt;
-               num_st: LongInt;           // greater than num_xyz for seams
-               num_tris: LongInt;
-               num_glcmds: LongInt;       // dwords in strip/fan command list
-               num_frames: LongInt;
-               mesh_nodes: LongInt;       { unknown, for Heretic II only }
+               skinwidth: Int32;
+               skinheight: Int32;
+               framesize: Int32;        // byte size of each frame
+               num_skins: Int32;
+               num_xyz: Int32;
+               num_st: Int32;           // greater than num_xyz for seams
+               num_tris: Int32;
+               num_glcmds: Int32;       // dwords in strip/fan command list
+               num_frames: Int32;
+               mesh_nodes: Int32;       { unknown, for Heretic II only }
               end;
 
 class function QHr2Model.TypeInfo: String;

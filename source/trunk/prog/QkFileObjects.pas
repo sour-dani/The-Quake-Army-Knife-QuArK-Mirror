@@ -228,16 +228,16 @@ const
 
 type
  TFileHeaderSignature = packed record
-                         Signature: LongWord;
-                         Version: LongWord;
+                         Signature: UInt32;
+                         Version: UInt32;
                         end;
  PFileHeaderSignature = ^TFileHeaderSignature;
 
  TFileHeaderBinary = packed record
                       //TFileHeaderSignature:
-                      Signature: LongWord;
-                      Version: LongWord;
-                      TotalFileLength: LongInt;
+                      Signature: UInt32;
+                      Version: UInt32;
+                      TotalFileLength: Int32;
                       InfoType: array[0..19] of Byte;
                      end;
 
@@ -1536,9 +1536,9 @@ begin
   rf_AsText:
     begin
      L:=TStringList.Create; try
-     SetLength(S, c_FileSignatureSize);
-     PLongWord(@S[1])^:=c_FileSignatureQQRK;
-     PLongWord(@S[1+SizeOf(LongWord)])^:=c_FileVersionText;
+     SetLength(S, SizeOf(TFileHeaderSignature));
+     PFileHeaderSignature(@S[1])^.Signature:=c_FileSignatureQQRK;
+     PFileHeaderSignature(@S[1])^.Version:=c_FileVersionText;
      L.Add(S);
      L.Add(FmtLoadStr1(5200, [QuArKVersion, Name+TypeInfo]));
      L.Text:=L.Text;   { #13 --> #13#10 }
@@ -1574,9 +1574,9 @@ begin
   rf_AsText:
     begin
      L:=TStringList.Create; try
-     SetLength(S, c_FileSignatureSize);
-     PLongWord(@S[1])^:=c_FileSignatureQQRK;
-     PLongWord(@S[1+SizeOf(LongWord)])^:=c_FileVersionText;
+     SetLength(S, SizeOf(TFileHeaderSignature));
+     PFileHeaderSignature(@S[1])^.Signature:=c_FileSignatureQQRK;
+     PFileHeaderSignature(@S[1])^.Version:=c_FileVersionText;
      L.Add(S);
      L.Add(FmtLoadStr1(5200, [QuArKVersion, Name+TypeInfo]));
      L.Text:=L.Text;   { #13 --> #13#10 }
