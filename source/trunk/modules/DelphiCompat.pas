@@ -161,6 +161,8 @@ type
 {$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi XE2, but existing in Delphi 11.3!
   Float32 = Single;
   Float64 = Double;
+
+  TEndian = (Big, Little);
 {$endif}
 
   //To support pointer arithmetic, we need a custom datatype, because support for it has changed throughout the years.
@@ -392,6 +394,13 @@ const
 
   { Days between TDateTime basis (12/31/1899) and Unix time_t basis (1/1/1970) }
   UnixDateDelta = 25569;
+{$endif}
+
+{$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi XE2, but existing in Delphi 11.3!
+  __Dummy = 1; //Needed before otherwise we have an empty const section, which is not allowed.
+var
+  PlatformEndian: TEndian = Little;
+const
 {$endif}
 
   { Days between TDateTime basis (12/31/1899) and Windows 64-bit timestamp basis (1/1/1601) }
