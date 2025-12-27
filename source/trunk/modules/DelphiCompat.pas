@@ -327,7 +327,7 @@ type
   {$ENDIF}
 
 // shell restriction values, parameter for SHRestricted()
-  RESTRICTIONS = Integer; //LongWord; //Really: enum
+  RESTRICTIONS = Int32; //Really: enum
   {$EXTERNALSYM RESTRICTIONS}
   TRestrictions = RESTRICTIONS;
 {$endif}
@@ -365,7 +365,7 @@ type
   PProcessMitigationPolicy = ^TProcessMitigationPolicy;
 {$endif}
 
-  _FIRMWARE_TYPE = LongWord; //Really: enum
+  _FIRMWARE_TYPE = Int32; //Really: enum
   {$EXTERNALSYM _FIRMWARE_TYPE}
   PFIRMWARE_TYPE = ^_FIRMWARE_TYPE;
   {$EXTERNALSYM PFIRMWARE_TYPE}
