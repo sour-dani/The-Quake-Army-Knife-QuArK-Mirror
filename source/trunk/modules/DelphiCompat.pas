@@ -397,10 +397,7 @@ const
 {$endif}
 
 {$ifndef Delphi11orNewerCompiler} //FIXME: Missing in Delphi XE2, but existing in Delphi 11.3!
-  __Dummy = 1; //Needed before otherwise we have an empty const section, which is not allowed.
-var
-  PlatformEndian: TEndian = Little;
-const
+  PlatformEndian: TEndian = {$IFDEF BIGENDIAN}Big{$ELSE}Little{$ENDIF};
 {$endif}
 
   { Days between TDateTime basis (12/31/1899) and Windows 64-bit timestamp basis (1/1/1601) }
