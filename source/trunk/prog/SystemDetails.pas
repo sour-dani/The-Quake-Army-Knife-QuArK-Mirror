@@ -366,7 +366,7 @@ function CheckWindowsMEAnd2000: Boolean;
 implementation
 
 uses Math, Forms, DateUtils, {$IFDEF CompiledWithDelphi2}ShellObj, OLE2, {$ELSE}ShlObj, ActiveX, {$ENDIF}
-  ComCtrls, Registry, Registry2, Logging, QkExceptions, QConsts;
+  ComCtrls, Registry, Registry2, Logging, QkExceptions, QConsts, Platform;
 
 type
   {$IFDEF Delphi4orNewerCompiler}
@@ -3056,11 +3056,6 @@ begin
 end;
 
 procedure TDirectX.GetInfo;
-  //Based on: https://www.oreilly.com/library/view/delphi-in-a/1565926595/re314.html
-  function Swap32(const Value: UInt32): UInt32;
-  begin
-    Result := Swap(Value shr 16) or (Swap(Value) shl 16);
-  end;
 var
   bdata: PArithByte;
   sl: TStringList;
@@ -3092,7 +3087,7 @@ begin
             except
               ZeroMemory(bdata, 8);
             end;
-            FVersion:=uinttostr(Swap32(PDWORD(bdata)^))+'.'+uinttostr(Swap32((PDWORD(bdata+4))^));
+            FVersion:=uinttostr(SwapEndian32(PDWORD(bdata)^))+'.'+uinttostr(SwapEndian32((PDWORD(bdata+4))^));
           finally
             FreeMem(bdata);
           end;

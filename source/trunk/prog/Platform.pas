@@ -39,6 +39,21 @@ function PlaySound(const SoundType: TSoundType): Boolean;
 function SaveRecentFiles: Boolean;
 function SaveWindowPositions: Boolean;
 
+function SwapEndian8(const Value: UInt8): UInt8; register;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+function SwapEndian16(const Value: UInt16): UInt16; register;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+function SwapEndian32(const Value: UInt32): UInt32; register;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+function SwapEndian64(const Value: UInt64): UInt64; register;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+
+function BigEndianToPlatformEndianness(const Value: UInt8): UInt8; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+function BigEndianToPlatformEndianness(const Value: UInt16): UInt16; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+function BigEndianToPlatformEndianness(const Value: UInt32): UInt32; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+function BigEndianToPlatformEndianness(const Value: UInt64): UInt64; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+function LittleEndianToPlatformEndianness(const Value: UInt8): UInt8; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+function LittleEndianToPlatformEndianness(const Value: UInt16): UInt16; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+function LittleEndianToPlatformEndianness(const Value: UInt32): UInt32; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+function LittleEndianToPlatformEndianness(const Value: UInt64): UInt64; overload;{$IFDEF Delphi2005orNewerCompiler} inline;{$ENDIF}
+//Note: Swapping endianness on a UInt8 is a no-op, but provided for consistency.
+
 implementation
 
 uses SysUtils, {$IFNDEF LINUX}ShlObj{$ENDIF}, TlHelp32, {$IFDEF Delphi5orNewerCompiler}Psapi, {$ENDIF}SystemDetails, QkExceptions;
@@ -221,6 +236,113 @@ begin
   else
     Result:=True;
   {$ENDIF}
+end;
+
+
+function BigEndianToPlatformEndianness(const Value: UInt8): UInt8;
+begin
+  {$IFDEF BIGENDIAN}
+  Result := Value;
+  {$ELSE}
+  Result := SwapEndian8(Value);
+  {$ENDIF}
+end;
+
+function BigEndianToPlatformEndianness(const Value: UInt16): UInt16;
+begin
+  {$IFDEF BIGENDIAN}
+  Result := Value;
+  {$ELSE}
+  Result := SwapEndian16(Value);
+  {$ENDIF}
+end;
+
+function BigEndianToPlatformEndianness(const Value: UInt32): UInt32;
+begin
+  {$IFDEF BIGENDIAN}
+  Result := Value;
+  {$ELSE}
+  Result := SwapEndian32(Value);
+  {$ENDIF}
+end;
+
+function BigEndianToPlatformEndianness(const Value: UInt64): UInt64;
+begin
+  {$IFDEF BIGENDIAN}
+  Result := Value;
+  {$ELSE}
+  Result := SwapEndian64(Value);
+  {$ENDIF}
+end;
+
+function LittleEndianToPlatformEndianness(const Value: UInt8): UInt8;
+begin
+  {$IFDEF BIGENDIAN}
+  Result := SwapEndian8(Value);
+  {$ELSE}
+  Result := Value;
+  {$ENDIF}
+end;
+
+function LittleEndianToPlatformEndianness(const Value: UInt16): UInt16;
+begin
+  {$IFDEF BIGENDIAN}
+  Result := SwapEndian16(Value);
+  {$ELSE}
+  Result := Value;
+  {$ENDIF}
+end;
+
+function LittleEndianToPlatformEndianness(const Value: UInt32): UInt32;
+begin
+  {$IFDEF BIGENDIAN}
+  Result := SwapEndian32(Value);
+  {$ELSE}
+  Result := Value;
+  {$ENDIF}
+end;
+
+function LittleEndianToPlatformEndianness(const Value: UInt64): UInt64;
+begin
+  {$IFDEF BIGENDIAN}
+  Result := SwapEndian64(Value);
+  {$ELSE}
+  Result := Value;
+  {$ENDIF}
+end;
+
+function SwapEndian8(const Value: UInt8): UInt8;
+begin
+  Result := Value;
+end;
+
+function SwapEndian16(const Value: UInt16): UInt16;
+{$IFDEF CPUX86}
+asm
+  rol   ax, 8
+end;
+{$ELSE}
+begin
+  Result := Swap(Value);
+end;
+{$ENDIF}
+
+//Based on: https://www.oreilly.com/library/view/delphi-in-a/1565926595/re314.html
+//Combined with: https://stackoverflow.com/a/3065619
+function SwapEndian32(const Value: UInt32): UInt32;
+{$IFDEF CPUX86}
+asm
+  bswap eax
+end;
+{$ELSE}
+begin
+  Result := Swap(Value shr 16) or (Swap(Value) shl 16);
+end;
+{$ENDIF}
+
+function SwapEndian64(const Value: UInt64): UInt64;
+begin
+  Result := UInt64(SwapEndian32(UInt32(Value))) shl 32 or SwapEndian32(UInt32(Value shr 32));
 end;
 
 end.
