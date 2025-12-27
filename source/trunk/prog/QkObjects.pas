@@ -21,7 +21,7 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 unit QkObjects;
 
 {$IFDEF DEBUG}
-{$DEFINE StreamRefDEBUG} //Note: This can make loading lots of game files really slow.
+{.$DEFINE StreamRefDEBUG} //Note: This can make loading lots of game files really slow.
 {$DEFINE MemQObjectDEBUG}
 {$ENDIF}
 
@@ -703,11 +703,10 @@ begin
   WriteLn(StreamRefFile, Format('Release %d: %d (about to -1)', [Self.FHandle, RefCount1]));
   CloseFile(StreamRefFile);
   {$ENDIF}
+  Assert(RefCount1>0, 'QStream.RefCount1');
   Dec(RefCount1);
   if RefCount1<=0 then
   begin
-    Assert(RefCount1>=0, 'QStream.RefCount1');
-
     I:=QFileList.IndexOfObject(Self);
     if I<0 then
       {$IFDEF Debug}
