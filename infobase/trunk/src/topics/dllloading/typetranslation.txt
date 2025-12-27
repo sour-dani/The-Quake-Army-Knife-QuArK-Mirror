@@ -1,38 +1,67 @@
 title: What C++ variable-types map onto what Delphi variable-types?
 author: DanielPharos
 
-The Delphi help comes to the rescue, but only partially. For instance, find the article called 'Integer Types' (using Delphi 6/7 here, but it should be in every version, with possibly a different name). It gives a list of Delphi integer variable types, with their range, amount of bytes (or bits) and if they are signed or unsigned. For convenience, the results are summarized in the table below.
+When interfacing with C/C++ code, or when reading files writing by C/C++ code, it's important to use the right datatypes for maximum interoperability, and to prevent security issues like integer overflows.
+
+The Delphi help comes to the rescue, but only partially. For instance, find the article called 'Integer Types' (using Delphi 6/7 here, but it should be in every version, with possibly a different name). It gives a list of Delphi integer variable types, with their range, amount of bytes (or bits) and if they are signed or unsigned. However, some Delphi versions changed what a variable type is defined as, so you'd need to compare different Delphi versions as well. For convenience, the results are summarized in the table below.
 
 <table>
-<tr><th align=right>C type</th><th></th><th>Delphi type</th></tr>
-<tr><td align=right>         int</td><td>==</td><td>Integer</td></tr>
-<tr><td align=right>  signed int</td><td>==</td><td>Integer</td></tr>
-<tr><td align=right>unsigned int</td><td>==</td><td>Cardinal</td></tr>
+<tr><th align=right>C type</th>        <th></th>  <th>Delphi 1 type</th><th>Delphi 2-3 type</th><th>Delphi 4-2006 type</th><th>Delphi 2007 type</th><th>Delphi 2009 type</th><th>Delphi 2010-XE type</th><th>Delphi XE2-XE7 type</th><th>Delphi XE8-10 type</th><th>Delphi 11-12 type</th></tr>
+<tr><td align=right>         byte</td> <td>==</td><td>ShortInt</td>     <td>ShortInt</td>       <td>ShortInt</td>          <td>ShortInt</td>        <td>ShortInt</td>        <td>ShortInt</td>           <td>ShortInt</td>           <td>ShortInt</td>          <td>ShortInt</td></tr>
+<tr><td align=right>  signed byte</td> <td>==</td><td>ShortInt</td>     <td>ShortInt</td>       <td>ShortInt</td>          <td>ShortInt</td>        <td>ShortInt</td>        <td>ShortInt</td>           <td>ShortInt</td>           <td>ShortInt</td>          <td>ShortInt</td></tr>
+<tr><td align=right>unsigned byte</td> <td>==</td><td>Byte</td>         <td>Byte</td>           <td>Byte</td>              <td>Byte</td>            <td>Byte</td>            <td>Byte</td>               <td>Byte</td>               <td>Byte</td>              <td>Byte</td></tr>
 
-<tr><td align=right>         byte</td><td>==</td><td>ShortInt</td></tr>
-<tr><td align=right>  signed byte</td><td>==</td><td>ShortInt</td></tr>
-<tr><td align=right>unsigned byte</td><td>==</td><td>Byte</td></tr>
+<tr><td align=right>         short</td><td>==</td><td>SmallInt</td>     <td>SmallInt</td>       <td>SmallInt</td>          <td>SmallInt</td>        <td>SmallInt</td>        <td>SmallInt</td>           <td>SmallInt</td>           <td>SmallInt</td>          <td>SmallInt</td></tr>
+<tr><td align=right>  signed short</td><td>==</td><td>SmallInt</td>     <td>SmallInt</td>       <td>SmallInt</td>          <td>SmallInt</td>        <td>SmallInt</td>        <td>SmallInt</td>           <td>SmallInt</td>           <td>SmallInt</td>          <td>SmallInt</td></tr>
+<tr><td align=right>unsigned short</td><td>==</td><td>Word</td>         <td>Word</td>           <td>Word</td>              <td>Word</td>            <td>Word</td>            <td>Word</td>               <td>Word</td>               <td>Word</td>              <td>Word</td></tr>
 
-<tr><td align=right>         short</td><td>==</td><td>SmallInt</td></tr>
-<tr><td align=right>  signed short</td><td>==</td><td>SmallInt</td></tr>
-<tr><td align=right>unsigned short</td><td>==</td><td>Word</td></tr>
+<tr><td align=right>         int</td>  <td>==</td><td>Integer</td>      <td>Integer</td>        <td>Integer</td>           <td>Integer</td>         <td>Integer</td>         <td>Integer</td>            <td>Integer</td>            <td>Integer</td>           <td>Integer</td></tr>
+<tr><td align=right>  signed int</td>  <td>==</td><td>Integer</td>      <td>Integer</td>        <td>Integer</td>           <td>Integer</td>         <td>Integer</td>         <td>Integer</td>            <td>Integer</td>            <td>Integer</td>           <td>Integer</td></tr>
+<tr><td align=right>unsigned int</td>  <td>==</td><td>-</td>            <td>Cardinal</td>       <td>Cardinal</td>          <td>Cardinal</td>        <td>Cardinal</td>        <td>Cardinal</td>           <td>Cardinal</td>           <td>Cardinal</td>          <td>Cardinal</td></tr>
 
-<tr><td align=right>         long</td><td>==</td><td>LongInt</td></tr>
-<tr><td align=right>  signed long</td><td>==</td><td>LongInt</td></tr>
-<tr><td align=right>unsigned long</td><td>==</td><td>Longword</td></tr>
+<tr><td align=right>         long</td> <td>==</td><td>-</td>            <td>LongInt</td>        <td>LongInt</td>           <td>LongInt</td>         <td>LongInt</td>         <td>LongInt</td>            <td>LongInt</td>            <td>LongInt</td>           <td>LongInt</td></tr>
+<tr><td align=right>  signed long</td> <td>==</td><td>-</td>            <td>LongInt</td>        <td>LongInt</td>           <td>LongInt</td>         <td>LongInt</td>         <td>LongInt</td>            <td>LongInt</td>            <td>LongInt</td>           <td>LongInt</td></tr>
+<tr><td align=right>unsigned long</td> <td>==</td><td>-</td>            <td>-</td>              <td>LongWord</td>          <td>LongWord</td>        <td>LongWord</td>        <td>LongWord</td>           <td>LongWord</td>           <td>LongWord</td>          <td>LongWord</td></tr>
 
-<tr><td align=right>         char</td><td>==</td><td>Char</td></tr>
-<tr><td align=right>  signed char</td><td>==</td><td>Char</td></tr>
-<tr><td align=right>unsigned char</td><td>==</td><td>Byte</td></tr>
+<tr><td align=right>         char</td> <td>==</td><td>Char</td>         <td>AnsiChar</td>       <td>AnsiChar</td>          <td>AnsiChar</td>        <td>AnsiChar</td>        <td>AnsiChar</td>           <td>AnsiChar</td>           <td>AnsiChar</td>          <td>AnsiChar</td></tr>
+<tr><td align=right>  signed char</td> <td>==</td><td>Char</td>         <td>AnsiChar</td>       <td>AnsiChar</td>          <td>AnsiChar</td>        <td>AnsiChar</td>        <td>AnsiChar</td>           <td>AnsiChar</td>           <td>AnsiChar</td>          <td>AnsiChar</td></tr>
+<tr><td align=right>unsigned char</td> <td>==</td><td>Byte</td>         <td>Byte</td>           <td>Byte</td>              <td>Byte</td>            <td>Byte</td>            <td>Byte</td>               <td>Byte</td>               <td>Byte</td>              <td>Byte</td></tr>
 
-<tr><td align=right> int64_t</td><td>==</td><td>Int64</td></tr>
-<tr><td align=right>uint64_t</td><td>==</td><td>UInt64</td></tr>
+<tr><td align=right>ssize_t</td>       <td>==</td><td>Integer</td>      <td>Integer</td>        <td>Integer</td>           <td>Integer</td>         <td>NativeInt</td>       <td>NativeInt</td>          <td>NativeInt</td>          <td>NativeInt</td>         <td>NativeInt</td></tr>
+<tr><td align=right> size_t</td>       <td>==</td><td>-</td>            <td>Cardinal</td>       <td>Cardinal</td>          <td>Cardinal</td>        <td>NativeUInt</td>      <td>NativeUInt</td>         <td>NativeUInt</td>         <td>NativeUInt</td>        <td>NativeUInt</td></tr>
 
-<tr><td align=right>void</td><td>==</td><td>Byte?</td></tr>
+<tr><td align=right> int8_t</td>       <td>==</td><td>ShortInt</td>     <td>ShortInt</td>       <td>ShortInt</td>          <td>ShortInt</td>        <td>Int8</td>            <td>Int8</td>               <td>Int8</td>               <td>Int8</td>              <td>Int8</td></tr>
+<tr><td align=right>uint8_t</td>       <td>==</td><td>Byte</td>         <td>Byte</td>           <td>Byte</td>              <td>Byte</td>            <td>UInt8</td>           <td>UInt8</td>              <td>UInt8</td>              <td>UInt8</td>             <td>UInt8</td></tr>
+
+<tr><td align=right> int16_t</td>      <td>==</td><td>SmallInt</td>     <td>SmallInt</td>       <td>SmallInt</td>          <td>SmallInt</td>        <td>Int16</td>           <td>Int16</td>              <td>Int16</td>              <td>Int16</td>             <td>Int16</td></tr>
+<tr><td align=right>uint16_t</td>      <td>==</td><td>Word</td>         <td>Word</td>           <td>Word</td>              <td>Word</td>            <td>UInt16</td>          <td>UInt16</td>             <td>UInt16</td>             <td>UInt16</td>            <td>UInt16</td></tr>
+
+<tr><td align=right> int32_t</td>      <td>==</td><td>LongInt</td>      <td>LongInt</td>        <td>LongInt</td>           <td>LongInt</td>         <td>Int32</td>           <td>Int32</td>              <td>Int32</td>              <td>Int32</td>             <td>Int32</td></tr>
+<tr><td align=right>uint32_t</td>      <td>==</td><td>-</td>            <td>-</td>              <td>LongWord</td>          <td>LongWord</td>        <td>UInt32</td>          <td>UInt32</td>             <td>UInt32</td>             <td>UInt32</td>            <td>UInt32</td></tr>
+
+<tr><td align=right> int64_t</td>      <td>==</td><td>-</td>            <td>-</td>              <td>Int64</td>             <td>Int64</td>           <td>Int64</td>           <td>Int64</td>              <td>Int64</td>              <td>Int64</td>             <td>Int64</td></tr>
+<tr><td align=right>uint64_t</td>      <td>==</td><td>-</td>            <td>-</td>              <td>-</td>                 <td>UInt64</td>          <td>UInt64</td>          <td>UInt64</td>             <td>UInt64</td>             <td>UInt64</td>            <td>UInt64</td></tr>
+
+<tr><td align=right> intptr_t</td>     <td>==</td><td>Integer</td>      <td>Integer</td>        <td>Integer</td>           <td>Integer</td>         <td>NativeInt</td>       <td>NativeInt</td>          <td>IntPtr</td>             <td>IntPtr</td>            <td>IntPtr</td></tr>
+<tr><td align=right>uintptr_t</td>     <td>==</td><td>-</td>            <td>Cardinal</td>       <td>Cardinal</td>          <td>Cardinal</td>        <td>NativeUInt</td>      <td>NativeUInt</td>         <td>UIntPtr</td>            <td>UIntPtr</td>           <td>UIntPtr</td></tr>
+
+<tr><td align=right>float</td>         <td>==</td><td>-</td>            <td>Single</td>         <td>Single</td>            <td>Single</td>          <td>Single</td>          <td>Single</td>             <td>Single</td>             <td>Single</td>            <td>Float32</td></tr>
+<tr><td align=right>double</td>        <td>==</td><td>-</td>            <td>Double</td>         <td>Double</td>            <td>Double</td>          <td>Double</td>          <td>Double</td>             <td>Double</td>             <td>Double</td>            <td>Float64</td></tr>
+
+<tr><td align=right>void</td>          <td>==</td><td>Byte?</td>        <td>Byte?</td>          <td>Byte?</td>             <td>Byte?</td>           <td>Byte?</td>           <td>Byte?</td>              <td>Byte?</td>              <td>Byte?</td>             <td>Byte?</td></tr>
 </table>
 
-Note: Some of these only apply to a Win32 32-bit application: Cardinal might be different in 64-bit Delphi, and the same goes for the C++ Int. However, since QuArK is 32-bit, and most DLL files are too, we don't need to be too concerned, but it is something to keep in mind.
+In QuArK's source code, try to stick to the local convention (in other words, whatever the surrounding code is doing). Otherwise, stick to the latest Delphi standard, and have <tt>DelphiCompat.pas</tt> take care of the backwards compatibility.
 
-Pointers to variables can simply be translated into a Delphi pointer to a variable of the translated type. For instance, a <b>char*</b> can simply be translated into a <b>PChar</b> (a pointer to a Char). <b>void*</b> is special, and I suggest using <b>PByte</b> for this because it's often a pointer to a buffer of unknown content, so we probably want to read/parse it byte-for-byte. However, Delphi (for historical reasons) uses PChar, so often using that keeps the code cleaner.
+Pointers to variables can simply be translated into a Delphi pointer to a variable of the translated type. For instance, a <tt>char*</tt> can simply be translated into a <tt>PChar</tt> (a pointer to a Char). <tt>void*</tt> is special, and I suggest using <tt>PByte</tt> for this because it's often a pointer to a buffer of unknown content, so we probably want to read/parse it byte-for-byte. However, Delphi (for historical reasons) uses <tt>PChar</tt>, so consider the QuArK's <tt>PArithByte</tt> type instead, to keep the code cleaner.
 
-Remember that it is important to use the right datatypes, to prevent security issues like integer overflows.
+
+<b>Relevant compiler bugs</b>
+
+Note that Delphi 1 has an undocumented Cardinal type, but it's not clear it's properly implemented: <a href="https://sheepdogguides.com/dst1a.htm">https://sheepdogguides.com/dst1a.htm</a>.
+
+Note that Native(U)Int is incorrectly implemented in Delphi 7 to 2007: <a href="https://blog.dummzeuch.de/2018/09/08/nativeint-nativeuint-type-in-various-delphi-versions/">https://blog.dummzeuch.de/2018/09/08/nativeint-nativeuint-type-in-various-delphi-versions/</a>.
+
+Note that there's an undocumented, broken implementation of UInt64 in Delphi 7 to 2006: <a href="https://qc.embarcadero.com/wc/qcmain.aspx?d=1210">https://qc.embarcadero.com/wc/qcmain.aspx?d=1210</a>.
+
+Note that there's a compiler bug in Delphi 2009, causing compiler crashes with NativeUInt: <a href="http://qc.embarcadero.com/wc/qcmain.aspx?d=71292">http://qc.embarcadero.com/wc/qcmain.aspx?d=71292</a>.
