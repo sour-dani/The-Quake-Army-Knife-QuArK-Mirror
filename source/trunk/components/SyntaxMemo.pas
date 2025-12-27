@@ -199,7 +199,7 @@ var
      I:=1;
      while I<=Length(Tabs) do
       begin
-       if Tabs[I] = chr(vk_Tab) then
+       if Tabs[I] = #9 then
         Tabs:=Copy(Tabs, 1, I-1)
             + Copy(TabSpaces, (DispPos+I) mod FTabStops + 1, MaxInt)
             + Copy(Tabs, I+1, MaxInt);

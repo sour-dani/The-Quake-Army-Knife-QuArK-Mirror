@@ -49,7 +49,7 @@ uses Qk1, QkQme, QkMapPoly, qmath, Travail, Setup,
 
 function ReadEntityList(Root: TTreeMapBrush; const SourceFile: String; BSP: QBsp) : TGameCode;
 const
- cSeperators = [' ', #13, #10, Chr(vk_Tab)];
+ cSeperators = [' ', #13, #10, #9];
  cExponentChars = ['E', 'e'];
  Granularite = 8192;
  FinDeLigne = False;

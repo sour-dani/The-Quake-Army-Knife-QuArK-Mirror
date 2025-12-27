@@ -89,7 +89,7 @@ end;
 
 procedure TKeyDlg.ListView1KeyPress(Sender: TObject; var Key: Char);
 begin
- if Key=Char(vk_Return) then
+ if Key=#13 then
   begin
    ListView1DblClick(Nil);
    Key:=#0;

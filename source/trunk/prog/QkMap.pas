@@ -433,7 +433,7 @@ end;
 
 function ReadEntityList(Racine: TTreeMapBrush; const SourceFile: String; BSP: QBsp) : TGameCode;
 const
- cSeperators = [' ', #13, #10, Chr(vk_Tab)];
+ cSeperators = [' ', #13, #10, #9];
  cExponentChars = ['E', 'e'];
  Granularite = 8192;
  EndOfLine = False;

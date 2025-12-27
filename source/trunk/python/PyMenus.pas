@@ -171,7 +171,7 @@ begin
              P:=PyString_AsString(obj);
              if P=Nil then Exit;
              nInfo.dwTypeData:=StrECopy(nZ, nInfo.dwTypeData);
-             nInfo.dwTypeData^:=Chr(vk_Tab);
+             nInfo.dwTypeData^:=#9;
              StrCopy(nInfo.dwTypeData+1, PChar(PyStrPas(P)));
              nInfo.dwTypeData:=nZ;
             finally

@@ -106,13 +106,13 @@ end;
 
 procedure TEnterEdit.KeyPress;
 begin
- if Key=Char(VK_RETURN) then
+ if Key=#13 then
   begin
    DoAccept;
    Key:=#0;
   end
  else
-  if (Key=Char(VK_ESCAPE)) and Cancel then
+  if (Key=#27) and Cancel then
    Key:=#0
   else
    inherited;
@@ -194,13 +194,13 @@ end;
 
 procedure TEnterComboBox.KeyPress;
 begin
- if Key=Char(VK_RETURN) then
+ if Key=#13 then
   begin
    DoAccept;
    Key:=#0;
   end
  else
-  if (Key=Char(VK_ESCAPE)) and FHasColor2 then
+  if (Key=#27) and FHasColor2 then
    begin
     Cancel;
     Key:=#0;
@@ -274,7 +274,7 @@ procedure TEnterComboBox.CNCommand;
 begin
  inherited;
  if Message.NotifyCode = CBN_CLOSEUP then
-  PostMessage(Handle, wm_Char, 13, 0);
+  PostMessage(Handle, wm_Char, Ord(#13), 0);
 end;
 
 end.

@@ -248,17 +248,17 @@ begin
  Result:=Name + #13#10'{'#13#10;
  Acces;
  for I:=0 to Specifics.Count-1 do  { attributes }
-  DumpSpec(Specifics.Items[I], chr(vk_Tab));
+  DumpSpec(Specifics.Items[I], #9);
  for K:=0 to SubElements.Count-1 do  { stages }
   begin
    Q:=SubElements[K];
    Q.Acces;
    { stage intro }
-   Result:=Result + chr(vk_Tab) + '{'#13#10;
+   Result:=Result + #9'{'#13#10;
    for I:=0 to Q.Specifics.Count-1 do  { stage attributes }
-    DumpSpec(Q.Specifics.Items[I], chr(vk_Tab) + chr(vk_Tab));
+    DumpSpec(Q.Specifics.Items[I], #9#9);
    { stage end }
-   Result:=Result + chr(vk_Tab) + '}'#13#10;
+   Result:=Result + #9'}'#13#10;
   end;
  { shader end }
  Result:=Result + '}'#13#10#13#10;
@@ -408,7 +408,7 @@ var
   procedure SkipSpaces;
   begin
    repeat
-    while CharInSet(Source^, [' ', Chr(vk_Tab)]) do
+    while CharInSet(Source^, [' ', #9]) do
      Inc(Source);
     if Source^=#13 then
      begin
@@ -436,11 +436,11 @@ var
    // we need this for Quake 4 support as some materials are defined as:
    //   materialName {
    // and the trailing '{' gets appended to the material name
-   while not CharInSet(Source^, [#13, #10, #0, ' ', Chr(vk_Tab)]) do
+   while not CharInSet(Source^, [#13, #10, #0, ' ', #9]) do
     Inc(Source);
    P2:=Source;
    // if the string ends with sp or tab, remove them
-   while (P2>P1) and CharInSet(P2[-1], [' ', Chr(vk_Tab)]) do
+   while (P2>P1) and CharInSet(P2[-1], [' ', #9]) do
     Dec(P2);
    SetString(Result, P1, P2-P1);
   end;
@@ -451,10 +451,10 @@ var
    Spec: String;
   begin
    P1:=Source;
-   while not CharInSet(Source^, [' ', Chr(vk_Tab), #13, #10, #0]) do
+   while not CharInSet(Source^, [' ', #9, #13, #10, #0]) do
     Inc(Source);
    SetString(Spec, P1, Source-P1);  // Spec is the Keywords,like qer_editorimage map ..., one at a time.
-   while CharInSet(Source^, [' ', Chr(vk_Tab)]) do
+   while CharInSet(Source^, [' ', #9]) do
     Inc(Source);
 
     { decker:
@@ -512,7 +512,7 @@ begin
       // is removed by the comment filtering code below
       for I:=0 to FSize-5 do
        if (Source[I]='t') and (Source[I+1]='a') and (Source[I+2]='b') and (Source[I+3]='l') and (Source[I+4]='e') then
-        if (I=0) or CharInSet(Source[I-1], [#13, #10, #0, ' ', Chr(vk_Tab)]) then
+        if (I=0) or CharInSet(Source[I-1], [#13, #10, #0, ' ', #9]) then
          begin
           Source[I]:='/';
           Source[I+1]:='/';
@@ -520,7 +520,7 @@ begin
       // cdunde: Do the same thing for "guide" that was causing "textures/" to get knocked out
       for I:=0 to FSize-5 do
        if (Source[I]='g') and (Source[I+1]='u') and (Source[I+2]='i') and (Source[I+3]='d') and (Source[I+4]='e') then
-        if (I=0) or CharInSet(Source[I-1], [#13, #10, #0, ' ', Chr(vk_Tab)]) then
+        if (I=0) or CharInSet(Source[I-1], [#13, #10, #0, ' ', #9]) then
          begin
           Source[I]:='/';
           Source[I+1]:='/';
