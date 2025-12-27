@@ -32,12 +32,12 @@ const
 
 type
  TOldMenuItemInfo = record
-                     cbSize, fMask, fType, fState, wID: LongInt;
+                     cbSize, fMask, fType, fState, wID: UINT;
                      hSubMenu: HMenu;
                      hbmpChecked, hbmpUnchecked: HBitmap;
-                     dwItemData: LongInt;
-                     dwTypeData: PChar;
-                     cch: Integer;
+                     dwItemData: ULONG_PTR;
+                     dwTypeData: LPSTR;
+                     cch: UINT;
                     end;
 
 function UpdateMenu(Menu: HMenu; List: PyObject; Callbacks: TList; FreeUnused: Boolean; sc, sci: PyObject; MenuBar, Recursive: Boolean) : Boolean;
@@ -126,7 +126,7 @@ begin
       begin
        nInfo.fMask:=MIIM_TYPE or MIIM_ID;
        nInfo.fType:=MFT_SEPARATOR;
-       nInfo.wID:=-1;
+       nInfo.wID:=UINT(-1);
        IsPopup:=False;
       end
      else
