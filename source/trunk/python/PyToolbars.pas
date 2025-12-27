@@ -766,7 +766,7 @@ end;
 
 procedure TQkToolbarButton.Paint;
 type
- TPattern = array[0..7] of LongInt;
+ TPattern = array[0..7] of DWORD;
 const
  Pattern : TPattern = ($AA, $55, $AA, $55, $AA, $55, $AA, $55);
 var
@@ -776,7 +776,7 @@ var
  BkColor: TColorRef;
  BmpInfo: packed record
            bmiHeader: TBitmapInfoHeader;
-           bmiColors: array[0..1] of LongInt;
+           bmiColors: array[0..1] of TRGBQuad;
            Bits: TPattern;
           end;
  GlyphSize: TPoint;
@@ -797,8 +797,8 @@ begin
        biPlanes:=1;
        biBitCount:=1;
       end;
-     BmpInfo.bmiColors[0]:=ColorToRGB(Color);
-     BmpInfo.bmiColors[1]:=ColorToRGB(clBtnHighlight);
+     BmpInfo.bmiColors[0]:=TRGBQuad(ColorToRGB(Color));
+     BmpInfo.bmiColors[1]:=TRGBQuad(ColorToRGB(clBtnHighlight));
      BmpInfo.Bits:=Pattern;
      BrushHandle:=CreateDIBPatternBrushPt(@BmpInfo, 0);
      Windows.FillRect(Handle, R, BrushHandle);
