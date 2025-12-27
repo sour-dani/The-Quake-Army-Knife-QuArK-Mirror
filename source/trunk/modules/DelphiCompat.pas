@@ -138,12 +138,12 @@ type
   PNativeUInt = ^NativeUInt;
 {$endif}
 
-{$ifdef DelphiXE2orNewerCompiler}
+{$ifndef DelphiXE2orNewerCompiler}
   IntPtr  = NativeInt;
   UIntPtr = NativeUInt;
 {$endif}
 
-{$ifdef DelphiXE8orNewerCompiler}
+{$ifndef DelphiXE8orNewerCompiler}
 {$IFDEF MSWINDOWS}
   FixedInt = LongInt;
   FixedUInt = LongWord;
