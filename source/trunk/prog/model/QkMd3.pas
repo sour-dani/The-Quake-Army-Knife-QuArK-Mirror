@@ -51,24 +51,28 @@ implementation
 uses StrUtils, qhelper, QuarkX, QkExceptions, Setup, QkObjectClassList, Game, QkQ3,
      QkPixelset, QkPcx, ApplPaths, qmath, qmatrices, Logging, Travail;
 
+(***********  Quake 3 .md3 format  ***********)
 const
- MAX_QPATH = 64;
+  SignatureMdl3 = $33504449; //"IDP3" = Quake-3 Model file
+  SignatureMdlRMD5 = $354D4452; //"RDM5" = Star Trek Voyager: Elite Force model file
+  SignatureMdlMGL2 = $44474C32; //"2LGM"
+
+  MAX_QPATH = 64;
 
 type
-
   TMD3Header = packed record
-    id: array[1..4] of char;       //id of file, always "IDP3"
-    version: longint;              //version number, always 15
-    filename: array[1..MAX_QPATH] of byte;//sometimes left Blank...
-    flags: Longint;                //???
-    BoundFrame_num: Longint;       //number of BoundFrames
-    Tag_num: Longint;              //number of 'tags' per Frame
-    Mesh_num: Longint;             //number of meshes/skins
-    Skin_num: Longint;             //number of unique skins
-    BoundFrame_offset: Longint;    //offset of the boundframes
-    Tag_offset: Longint;           //offset of the tags
-    Surface_offset: Longint;       //offset of the surface
-    End_offset: Longint;           //offset of the end of the file
+    id: Int32;                   //id of file, always "IDP3"
+    version: Int32;              //version number, always 15
+    filename: array[1..MAX_QPATH] of Byte;//sometimes left Blank...
+    flags: Int32;                //???
+    BoundFrame_num: Int32;       //number of BoundFrames
+    Tag_num: Int32;              //number of 'tags' per Frame
+    Mesh_num: Int32;             //number of meshes/skins
+    Skin_num: Int32;             //number of unique skins
+    BoundFrame_offset: Int32;    //offset of the boundframes
+    Tag_offset: Int32;           //offset of the tags
+    Surface_offset: Int32;       //offset of the surface
+    End_offset: Int32;           //offset of the end of the file
   end;
   { Comments to TMD3Header
      After the header comes a list of frame, then follows a list of tags, if available.
@@ -83,7 +87,7 @@ type
     Maxs: vec3_t;
     Position: vec3_t;
     Radius: single;
-    Name: array[1..16] of byte;
+    Name: array[1..16] of Byte;
   end;
   { TMD3BoundFrame
      If you divide the maximum and minimum xyz values of all the vertices from each meshframe you get
@@ -95,7 +99,7 @@ type
   }
 
   TMD3Tag = packed record
-    Name: array[1..MAX_QPATH] of byte;    //name of 'tag' as it's usually
+    Name: array[1..MAX_QPATH] of Byte; //name of 'tag' as it's usually
                                    //called in the md3 files try to
                                    //see it as a sub-mesh/seperate
                                    //mesh-part.
@@ -118,26 +122,18 @@ type
   }
 
   TMD3Mesh = packed record
-    ID: array[1..4] of char;          //id, must be IDP3
-    Name: array[1..MAX_QPATH] of byte;       //name of mesh
-    flags: Longint;                   //???
-    Frame_num: Longint;               //number of frames in mesh
-    Skin_num: Longint;                //number of skins in mesh
-    Vertex_num: Longint;              //number of vertices
-    Triangle_num: Longint;            //number of Triangles
-    Triangle_Start: Longint;          //starting position of
-                                      //Triangle data, relative
-                                      //to start of Mesh_Header
-    Skin_Start: Longint;              //starting position of
-                                      //Skin data, relative
-                                      //to start of Mesh_Header
-    TexVec_Start: Longint;            //starting position of
-                                      //texvector data, relative
-                                      //to start of Mesh_Header
-    Vertex_Start: Longint;            //starting position of
-                                      //vertex data,relative
-                                      //to start of Mesh_Header
-    MeshSize: Longint;                //size of mesh
+    ID: Int32;                      //id, must be IDP3
+    Name: array[1..MAX_QPATH] of Byte; //name of mesh
+    flags: Int32;                   //???
+    Frame_num: Int32;               //number of frames in mesh
+    Skin_num: Int32;                //number of skins in mesh
+    Vertex_num: Int32;              //number of vertices
+    Triangle_num: Int32;            //number of Triangles
+    Triangle_Start: Int32;          //starting position of Triangle data, relative to start of this header
+    Skin_Start: Int32;              //starting position of Skin data, relative o start of this header
+    TexVec_Start: Int32;            //starting position of texvector data, relative to start of this header
+    Vertex_Start: Int32;            //starting position of vertex data, relative to start of this header
+    MeshSize: Int32;                //size of mesh
   end;
   { Comments to TMD3Mesh
      Meshframe_num is the number of quake1/quake2 type frames in the mesh.
@@ -150,8 +146,8 @@ type
   }
 
   TMD3Skin = packed record
-    Name: array[1..MAX_QPATH] of byte; //name of skin used by mesh
-    Shader_index: LongInt;              //?
+    Name: array[1..MAX_QPATH] of Byte; //name of skin used by mesh
+    Shader_index: Int32;              //?
   end;
   { Comments to TMD3Skin
      Name holds the name of the texture, relative to the baseq3 path.
@@ -165,7 +161,7 @@ type
 
   PMD3Triangle = ^TMD3Triangle;
   TMD3Triangle = packed record
-    Triangle: array[1..3] of longint; //vertex 1,2,3 of triangle
+    Triangle: array[1..3] of Int32; //vertex 1,2,3 of triangle
   end;
   { Comments to TMD3Triangle
      This is the simplest of structures.
@@ -178,7 +174,7 @@ type
 
   PMD3TexVec = ^TMD3TexVec;
   TMD3TexVec = packed record
-    Vec: array[1..2] of single;
+    Vec: array[1..2] of Single;
   end;
   { Comments to TMD3TexVec
      U/V coordinates are basically the X/Y coordinates on the texture.
@@ -187,18 +183,17 @@ type
 
   PMD3Vertex = ^TMD3Vertex;
   TMD3Vertex = packed record
-    Vec: array[1..3]of smallint; //vertex X/Y/Z coordinate
-    envtex: array[1..2]of byte;
+    Vec: array[1..3] of Int16; //vertex X/Y/Z coordinate
+    Normal: Int16;
   end;
   { Comments to TMD3Vertex
-     Vec contains the 3d xyz coordinates of the vertices that form the model.EnvTex contains the texture coordinates for the
-     enviromental mapping.
+     Vec contains the 3d xyz coordinates of the vertices that form the model.
+     Normal contains the texture coordinates for the environmental mapping; the normal.
      Why does md3 have a second set of texture coordinates?
      Because:
      1. these texture coordinates need to be interpolated when the model changes shape,
      2. these texture coordinates are different from the normal texture coordinates but still both need to be used (with shaders you can
      have multi-layered surfaces, one could be an environmental map, an other could be a transparent texture)
-     DanielPharos: envtex are probably not interpreted correctly... Or not at al!
   }
 
 {--------------------------}
@@ -378,7 +373,7 @@ begin
     begin
       Log(LOG_VERBOSE, 'attempting to load %s', [base_tex_name]);
       {$IFNDEF Delphi10_1orNewerCompiler}
-      ImageFile := nil;
+      ImageFile := nil; //Supress compiler warning
       {$ENDIF}
       try
         ImageFile := NeedGameFile(base_tex_name, '');
@@ -386,9 +381,7 @@ begin
         on E: EFileNotFound do
         begin
           Log(LOG_WARNING, E.Message);
-          {$IFDEF Delphi10_1orNewerCompiler}
           ImageFile := nil; //file not found, ignore
-          {$ENDIF}
         end;
       end;
       if ImageFile <> nil then
@@ -504,6 +497,7 @@ begin
         begin
           for k:=0 to 2 do
             CVert^[k]:=(Vec[k+1] / 64);
+          //FIXME: Handle normal!
         end;
         Inc(Vertexes2);
         Inc(CVert);
@@ -664,28 +658,28 @@ begin
       org:=f.position;
       f.readbuffer(head, sizeof(head));
       org2:=f.position;
-      if (head.id='IDP3') and (CurrentGameMode=mjSTVEF) then
+      if (head.id=SignatureMdl3) and (CurrentGameMode=mjSTVEF) then
         ObjectGameCode := mjSTVEF;
-      if (head.id='IDP3') and (CurrentGameMode=mjEF2) then
+      if (head.id=SignatureMdl3) and (CurrentGameMode=mjEF2) then
         ObjectGameCode := mjEF2;
-      if (head.id='IDP3') and (CurrentGameMode=mjRTCWET) then
+      if (head.id=SignatureMdl3) and (CurrentGameMode=mjRTCWET) then
         ObjectGameCode := mjRTCWET;
-      if (head.id='IDP3') and (CurrentGameMode=mjNEXUIZ) then
+      if (head.id=SignatureMdl3) and (CurrentGameMode=mjNEXUIZ) then
         ObjectGameCode := mjNEXUIZ;
-      if (head.id='IDP3') and (CurrentGameMode=mjWarsow) then
+      if (head.id=SignatureMdl3) and (CurrentGameMode=mjWarsow) then
         ObjectGameCode := mjWarsow;
-      if (head.id='IDP3') and (CurrentGameMode=mjWarfork) then
+      if (head.id=SignatureMdl3) and (CurrentGameMode=mjWarfork) then
         ObjectGameCode := mjWarfork;
-      if (head.id='IDP3') and (head.version=15) then
+      if (head.id=SignatureMdl3) and (head.version=15) then //FIXME: Hardcoded!
       begin
         if (CurrentGameMode<mjQ3A) then
           ObjectGameCode := mjQ3A
         else
           ObjectGameCode := CurrentGameMode;
       end
-      else if (head.id='RDM5') {and (head.version=2)} then
+      else if (head.id=SignatureMdlRMD5) {and (head.version=2)} then //FIXME: Hardcoded!
         Raise EQObjectLoadingNotSupported.Create('RDM5 MD3 models')
-      else if (head.id='2LGM') then
+      else if (head.id=SignatureMdlMGL2) then
         Raise EQObjectLoadingNotSupported.Create('2LGM MD3 models')
       else
         Raise EErrorFmt(5809, [String(head.id)]);
@@ -830,16 +824,16 @@ begin
 
        if ObjectGameCode=mjSTVEF then
        begin
-         head.id:='RDM5';
-         head.version:=2;
+         head.id:=SignatureMdlRMD5;
+         head.version:=2; //FIXME: Hardcoded!
        end
        else
        begin
-         head.id:='IDP3';
-         head.version:=15;
+         head.id:=SignatureMdl3;
+         head.version:=15; //FIXME: Hardcoded!
        end;
 
-       //@We need to check for all the maxima!
+       //FIXME: We need to check for all the maxima!
        //Original Q3 Tools source example:
        //if ( g_data.model.numFrames >= MD3_MAX_FRAMES)
        //  Error ("model.numFrames >= MD3_MAX_FRAMES");
@@ -929,10 +923,7 @@ begin
          F.WriteBuffer(mesh, SizeOf(mesh));
 
          Comp:=QComponent(Components[I]);
-         mesh.id[1]:=head.id[1];
-         mesh.id[2]:=head.id[2];
-         mesh.id[3]:=head.id[3];
-         mesh.id[4]:=head.id[4]; //@
+         mesh.id:=head.id; //@
          PasToChar(mesh.name, Comp.Name);
          FillChar(mesh.flags, sizeof(mesh.flags), 0); //@
 
@@ -1035,8 +1026,7 @@ begin
                    Vertexes2^.Vec[1]:=Round(CVert2^[0] * 64);
                    Vertexes2^.Vec[2]:=Round(CVert2^[1] * 64);
                    Vertexes2^.Vec[3]:=Round(CVert2^[2] * 64);
-                   Vertexes2^.envtex[1]:=0; //@
-                   Vertexes2^.envtex[2]:=0; //@
+                   Vertexes2^.Normal:=0; //FIXME: Handle!
                    Inc(Vertexes2);
                    Inc(CVert2);
                  end;

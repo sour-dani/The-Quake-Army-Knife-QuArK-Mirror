@@ -31,47 +31,25 @@ uses
 
 (***********  Quake 2 .md2 format  ***********)
 
-const
-  SignatureMdl2 = $32504449;  { 'IDP2' }
-  VersionMdl2   = 8;
-  MAX_SKINNAME  = 64;
-
 type
-  dtriangle_p = ^dtriangle_t;
-  dtriangle_t = packed record
-    index_xyz : array[0..2] of SmallInt;
-    index_st  : array[0..2] of SmallInt;
-  end;
-  dtrivertx_t = packed record
-    v: array[0..2] of Byte;
-    lightnormalindex: Byte;
-  end;
-  daliasframe_p = ^daliasframe_t;
-  daliasframe_t = packed record
-    scale, translate: array[0..2] of Single;
-    name: array[0..15] of Byte;
-    verts: array[0..0] of dtrivertx_t;
-  end;
-                           // .md2 file format layout for Quake 2 models
-                           // See Quake 2 models MD2 file format specifications.htm
-  dmdl_t = record          // in this folder for full detail descriptions of items below.
-    ident: LongInt;            // magic number - must be: "IDP2"
-    version: LongInt;          // version: must be 8
-    skinwidth: LongInt;        // texture width
-    skinheight: LongInt;       // texture height
-    framesize: LongInt;        // size in bytes of a frame (byte size of each frame)
-    num_skins: LongInt;        // number of skins
-    num_xyz: LongInt;          // number of vertices per frame or num_vertices
-    num_st: LongInt;           // number of texture coordinates (greater than num_xyz for seams)
-    num_tris: LongInt;         // number of triangles
-    num_glcmds: LongInt;       // number of opengl commands (dwords in strip/fan command list)
-    num_frames: LongInt;       // number of frames
-    ofs_skins: LongInt;        // offset skin data (each skin is a MAX_SKINNAME string)
-    ofs_st: LongInt;           // offset texture coordinate data (byte offset from start for stverts)
-    ofs_tris: LongInt;         // offset triangle data (offset for dtriangles)
-    ofs_frames: LongInt;       // offset frame data (offset for first frame
-    ofs_glcmds: LongInt;       // offset OpenGL command data
-    ofs_end: LongInt;          // offset end of file (end of file)
+  dmdl_t = record
+    ident: Int32;            // magic number - must be: "IDP2"
+    version: Int32;          // version: must be 8
+    skinwidth: Int32;        // texture width
+    skinheight: Int32;       // texture height
+    framesize: Int32;        // size in bytes of a frame (byte size of each frame)
+    num_skins: Int32;        // number of skins
+    num_xyz: Int32;          // number of vertices per frame or num_vertices
+    num_st: Int32;           // number of texture coordinates (greater than num_xyz for seams)
+    num_tris: Int32;         // number of triangles
+    num_glcmds: Int32;       // number of opengl commands (dwords in strip/fan command list)
+    num_frames: Int32;       // number of frames
+    ofs_skins: Int32;        // offset skin data (each skin is a MAX_SKINNAME string)
+    ofs_st: Int32;           // offset texture coordinate data (byte offset from start for stverts)
+    ofs_tris: Int32;         // offset triangle data (offset for dtriangles)
+    ofs_frames: Int32;       // offset frame data (offset for first frame
+    ofs_glcmds: Int32;       // offset OpenGL command data
+    ofs_end: Int32;          // offset end of file (end of file)
   end;
   QMd2File = class(QModelFile)
   protected
@@ -83,12 +61,35 @@ type
     class procedure FileObjectClassInfo(var Info: TFileObjectClassInfo); override;
   end;
 
-const
-  BaseAliasFrameSize = SizeOf(daliasframe_t)-SizeOf(dtrivertx_t);
-
 implementation
 
 uses qhelper, QuarkX, QkExceptions, Setup, Travail, Logging, QkObjectClassList;
+
+(***********  Quake 2 .md2 format  ***********)
+const
+  SignatureMdl2 = $32504449; //"IDP2" = Quake-2 Model file
+  VersionMdl2   = 8;
+  MAX_SKINNAME  = 64;
+
+type
+  dtriangle_p = ^dtriangle_t;
+  dtriangle_t = packed record
+    index_xyz : array[0..2] of Int16;
+    index_st  : array[0..2] of Int16;
+  end;
+  dtrivertx_t = packed record
+    v: array[0..2] of Byte;
+    lightnormalindex: Byte;
+  end;
+  daliasframe_p = ^daliasframe_t;
+  daliasframe_t = packed record
+    scale, translate: array[0..2] of Single;
+    name: array[0..15] of Byte;
+    verts: array[0..0] of dtrivertx_t;
+  end;
+
+const
+  BaseAliasFrameSize = SizeOf(daliasframe_t)-SizeOf(dtrivertx_t);
 
 class function QMd2File.TypeInfo;
 begin
@@ -130,7 +131,7 @@ begin
       Check(mdl.ofs_st, mdl.num_st, SizeOf(dstvert_t), 'Invalid texture data');
       Check(mdl.ofs_tris, mdl.num_tris, SizeOf(dtriangle_t), 'Invalid triangle data');
       Check(mdl.ofs_frames, mdl.num_frames, mdl.framesize, 'Invalid frame data');
-      Check(mdl.ofs_glcmds, mdl.num_glcmds, SizeOf(LongInt), 'Invalid glcmds');
+      Check(mdl.ofs_glcmds, mdl.num_glcmds, SizeOf(Int16), 'Invalid glcmds');
       ReadMd2File(F, Origine, mdl);
     end;
     else
@@ -406,7 +407,7 @@ begin
            tmpptr:=best_xyz;   best_xyz:=strip_xyz;   strip_xyz:=tmpptr;
            tmpptr:=best_tris; best_tris:=strip_tris; strip_tris:=tmpptr;
           end;
-        end;  
+        end;
       end;
 
      for J:=0 to bestlen-1 do
@@ -422,8 +423,8 @@ begin
        Inc(st1, best_st^[J]);
        s:=(st1^.s + 0.5) * skinwidth1;
        t:=(st1^.t + 0.5) * skinheight1;
-       L.Add(Pointer(PLongInt(@s)^));
-       L.Add(Pointer(PLongInt(@t)^));
+       L.Add(Pointer(s));
+       L.Add(Pointer(t));
        L.Add(Pointer(best_xyz^[J]));
       end;
     end;
