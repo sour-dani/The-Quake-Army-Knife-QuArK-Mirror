@@ -565,7 +565,7 @@ begin
   Raise EErrorFmt(5184, [LoadName]);
  case Header.Version of
   c_FileVersionBinary: begin
-                    Source.Seek(Lu, soCurrent);
+                    Source.Seek(-Lu, soCurrent);
                     Lu:=Source.Read(Header, SizeOf(Header));
                     if (Lu<SizeOf(Header))
                     or (Header.TotalFileLength < SizeOf(Header)) then
