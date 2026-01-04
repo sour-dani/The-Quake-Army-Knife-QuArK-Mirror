@@ -158,20 +158,20 @@ begin
   Root := Loaded_Root;
   ObjectGameCode := mjHalflife;
   F.ReadBuffer(Header, sizeof(StudioHdr_T));
-  f.seek(f_origin + Header.bodypartindex, sobeginning);
+  f.seek(f_origin + Header.bodypartindex, soBeginning);
   for i := 0 to header.numbodyparts - 1 do
   begin
     f.readbuffer(bp, sizeof(mstudiobodyparts_t));
-    f.seek(f_origin + bp.modelindex, sobeginning);
+    f.seek(f_origin + bp.modelindex, soBeginning);
     for z := 0 to bp.nummodels-1 do
     begin
       f.readbuffer(model, sizeof(mstudiomodel_t));
-      f.seek(f_origin + model.meshindex, sobeginning);
+      f.seek(f_origin + model.meshindex, soBeginning);
       for j := 0 to model.nummesh - 1 do
       begin
         f.readbuffer(mesh, sizeof(mstudiomesh_t));
         Comp := Loaded_Component(Root, Format('Body%d.Model%d.Mesh%d', [i, z, j]));
-        f.seek(f_origin + mesh.trisIndex, sobeginning);
+        f.seek(f_origin + mesh.trisIndex, soBeginning);
         f.readbuffer(cmd, 2);
         k := 0;
         setlength(atri, mesh.numtris);
@@ -623,7 +623,7 @@ var
 
   begin
 
-  F.Seek(0,soBeginning);
+  F.Seek(0, soBeginning);
   F.ReadBuffer(mdl, SizeOf(mdl));
 
   ObjectGameCode := mjHL2;
@@ -741,7 +741,7 @@ var
   //-----------------------------------------------------------
   //-- LOAD TRIANGLES
   //-----------------------------------------------------------
-//  fs.seek(org+mhead.triangle_start, sobeginning);
+//  fs.seek(org+mhead.triangle_start, soBeginning);
 //  getmem(tris, triangle_num*sizeof(TMD3Triangle));
 //  fs.readbuffer(tris^, mhead.triangle_num*sizeof(TMD3Triangle));
 
@@ -750,7 +750,7 @@ tris := @tribox;
   //-- LOAD TEXTURE CO-ORDS
   //-----------------------------------------------------------
 
-//  fs.seek(org+mhead.TexVec_Start, sobeginning);
+//  fs.seek(org+mhead.TexVec_Start, soBeginning);
 //  getmem(texCoord, vertex_num*sizeof(TMD3TexVec));
 //  fs.readbuffer(texCoord^, mhead.vertex_num*sizeof(TMD3TexVec));
 texcoord:=@texbox;
@@ -790,7 +790,7 @@ texcoord:=@texbox;
   //-- LOAD FRAMES + VERTEXES
   //-----------------------------------------------------------
 
-//  fs.seek(org+mhead.Vertex_Start, sobeginning);
+//  fs.seek(org+mhead.Vertex_Start, soBeginning);
 
   for i:=1 to MeshFrame_num do
   begin

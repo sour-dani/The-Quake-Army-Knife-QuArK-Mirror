@@ -54,8 +54,8 @@ uses StrUtils, qhelper, QuarkX, QkExceptions, Setup, QkObjectClassList, Game, Qk
 (***********  Quake 3 .md3 format  ***********)
 const
   SignatureMdl3 = $33504449; //"IDP3" = Quake-3 Model file
-  SignatureMdlRMD5 = $354D4452; //"RDM5" = Star Trek Voyager: Elite Force model file
-  SignatureMdlMGL2 = $44474C32; //"2LGM"
+  SignatureMdlRMD5 = $354D4452; //"RDM5" = Star Trek Voyager: Elite Force Model file
+  SignatureMdlMGL2 = $44474C32; //"2LGM" = Soldier of Fortune 2 Model file
 
   MAX_QPATH = 64;
 
@@ -422,14 +422,14 @@ begin
   //-----------------------------------------------------------
   //-- LOAD TRIANGLES
   //-----------------------------------------------------------
-  fs.seek(org+mhead.triangle_start, sobeginning);
+  fs.seek(org+mhead.triangle_start, soBeginning);
   getmem(tris, mhead.triangle_num*sizeof(TMD3Triangle));
   fs.readbuffer(tris^, mhead.triangle_num*sizeof(TMD3Triangle));
 
   //-----------------------------------------------------------
   //-- LOAD TEXTURE CO-ORDS
   //-----------------------------------------------------------
-  fs.seek(org+mhead.TexVec_Start, sobeginning);
+  fs.seek(org+mhead.TexVec_Start, soBeginning);
   getmem(texCoord, mhead.vertex_num*sizeof(TMD3TexVec));
   fs.readbuffer(texCoord^, mhead.vertex_num*sizeof(TMD3TexVec));
 
@@ -478,7 +478,7 @@ begin
   //-----------------------------------------------------------
   //-- LOAD FRAMES + VERTEXES
   //-----------------------------------------------------------
-  fs.seek(org+mhead.Vertex_Start, sobeginning);
+  fs.seek(org+mhead.Vertex_Start, soBeginning);
   for i:=1 to mhead.Frame_num do
   begin
     Frame:=Loaded_Frame(Comp, format('Frame %d',[i]));
@@ -680,14 +680,14 @@ begin
       else if (head.id=SignatureMdlRMD5) {and (head.version=2)} then //FIXME: Hardcoded!
         Raise EQObjectLoadingNotSupported.Create('RDM5 MD3 models')
       else if (head.id=SignatureMdlMGL2) then
-        Raise EQObjectLoadingNotSupported.Create('2LGM MD3 models')
+        Raise EQObjectLoadingNotSupported.Create('2LGM MD3 models') //FIXME: Known versions: 4 and 6   NO, this has a .glm file extension!!!
       else
         Raise EErrorFmt(5809, [String(head.id)]);
       Root:=Loaded_Root;
       Misc:=Root.GetMisc;
       if head.BoundFrame_num<>0 then
       begin
-        f.seek(head.BoundFrame_offset + org,soBeginning);
+        f.seek(head.BoundFrame_offset + org, soBeginning);
         for i:=1 to head.boundframe_num do
         begin
           f.readbuffer(boundframe,sizeof(boundframe));
@@ -697,7 +697,7 @@ begin
         end;
         if head.Tag_num<>0 then
         begin
-          f.seek(head.Tag_offset + org,soBeginning);
+          f.seek(head.Tag_offset + org, soBeginning);
           Tags:=TQList.Create;
           try
             Misc.FindAllSubObjects('', QModelTag, nil, Tags);
@@ -723,12 +723,12 @@ begin
           finally
             Tags.Free;
           end;
-          f.seek(org2, sobeginning);
+          f.seek(org2, soBeginning);
         end;
       end;
       if head.Mesh_num<>0 then
       begin
-        f.seek(org + head.Surface_offset, sobeginning);
+        f.seek(org + head.Surface_offset, soBeginning);
         for i:=1 to head.Mesh_num do
         begin
           ReadMesh(f, Root);
