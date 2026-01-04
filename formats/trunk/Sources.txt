@@ -1,0 +1,44 @@
+map_formats\BSP\flipcode - Quake 2 BSP File Format.htm
+	http://www.flipcode.com/archives/Quake_2_BSP_File_Format.shtml
+map_formats\BSP\bsp.htm
+	http://www.planetquake.com/qxx/bsp/
+model_formats\3DS\(_3ds) 3D Studio File Format.htm
+	http://faydoc.tripod.com/formats/3ds.htm
+model_formats\3DS\3DS Format (_3ds).htm
+	http://www.whisqu.se/per/docs/graphics56.htm
+model_formats\3DS3ds_format.txt
+	http://www.ptf.hro.nl/odi/free-d/docs/io/3ds/3ds_bin.doc
+model_formats\3DS\flyingmt blog  3DS File Format.htm
+	http://www.lovehana.com/387?TSSESSIONlovehanacom=69e046aa1b8b72014fca1fa52c2cc52c
+model_formats\3DS\Spacesimulator_net - 3ds format file reader, loader.htm
+	http://www.spacesimulator.net/tut4_3dsloader.html
+model_formats\3DS\The Labs 3DS Specifics.htm
+	http://www.the-labs.com/Blender/3dsspec.html
+
+model_formats\MD2\C++  OpenGL  The MD2 Model File Format.htm
+	http://tfc.duke.free.fr/old/models/md2.htm
+model_formats\MD2\MD2 file format specifications (Quake 2's models).htm
+	http://tfc.duke.free.fr/coding/md2-specs-en.html
+model_formats\MD2\Quake 2 models MD2 file format specifications.htm
+	http://tfc.duke.free.fr/coding/md2-specs-en.html
+model_formats\MD2\Quake2 Model File (md2) Format Specification.htm
+	http://www.ugrad.cs.jhu.edu/~dansch/md2/
+
+model_formats\MD3\Description of MD3 Format (2006 Jun 29).htm
+	http://linux.ucla.edu/~phaethon/q3/formats/md3format.html
+
+model_formats\MD4\Description of MD4 Format (2004 Apr 30).htm
+	http://linux.ucla.edu/~phaethon/q3/formats/md4format.html
+model_formats\MD4\md4 v3 file spec.htm
+	http://gongo.quakedev.com/md4.html
+
+model_formats\MD5\MD5 (file format) - modwiki.htm
+	http://www.modwiki.net/wiki/MD5_(file_format)
+model_formats\MD5\MD5Mesh and MD5Anim files formats specifications (Doom 3's models).htm
+	http://tfc.duke.free.fr/coding/md5-specs-en.html
+
+model_formats\MDL\MDL file format specifications (Quake's models)
+	http://tfc.duke.free.fr/coding/mdl-specs-en.html
+
+pak_formats\daikatana-pak.txt
+	https://gist.githubusercontent.com/DanielGibson/8bde6241c93e5efe8b75e5e00d0b9858/raw/eed882cef60f4e949feba7a1496cf6e65a60d2a3/daikatana-pak.txt
