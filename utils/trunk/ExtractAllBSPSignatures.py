@@ -9,7 +9,7 @@ if len(sys.argv) != 2:
 path = sys.argv[1]
 
 for entry in os.scandir(path):
-	if (os.path.splitext(entry.name)[1] != ".bsp") and (os.path.splitext(entry.name)[1] != ".d3dbsp"):
+	if os.path.splitext(entry.name)[1] not in set({".bsp", ".d3dbsp"}):
 		continue
 	with open(entry.path, mode="rb", buffering=0) as inFile:
 		inFile.seek(0, os.SEEK_END)
