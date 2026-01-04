@@ -1037,7 +1037,7 @@ begin
     //Pak file search (this includes GCF's and VPK's)
     RestartAliasing(FileName);
     FilenameAlias := GetNextAlias;
-    if SameText(RightStr(PakFileName, 4), '.gcf') then
+    if SameText(ExtractFileExt(PakFileName), '.gcf') then
     begin
       //Move the basedir into the filename
       RestartAliasing(ConcatPaths([BaseDir,FileName]));

@@ -106,56 +106,38 @@ end;
 
 function StringListCompareOfficialPakFiles(List: TStringList; Index1, Index2: Integer): Integer;
 var
-  PakOfficialFormat, S: String;
-  I: Integer;
-  Filename1, Filename2: String;
+  PakOfficialFormat, PakFormatHex: String;
+  WildcardIndex: Integer;
   PakNumber1, PakNumber2: Integer;
+
+  function ExtractOfficialPakNumber(const Filename: String): Integer;
+  var
+    S: String;
+  begin
+    //Note: The length calculation is simplified from:
+    //  (Length(Filename)-WildcardIndex)-(Length(PakOfficialFormat)-WildcardIndex)+1
+    S:=Copy(Filename, WildcardIndex, Length(Filename)-Length(PakOfficialFormat)+1);
+    if PakFormatHex<>'' then
+      S:='$'+S;
+    if not TryStrToInt(S, Result) then
+    begin
+      Log(LOG_WARNING, LoadStr1(5789), [Filename]);
+      Result:=0;
+    end;
+  end;
 begin
+  //Note: This function only works properly when fed filename already in the right format!
   PakOfficialFormat:=SetupGameSet.Specifics.Strings['PakOfficialFormat'];
-  //This function only works properly when fed filename already in the right format!
-  I:=Pos('*', PakOfficialFormat);
-  if I=0 then
-    raise InternalE('Invalid official pak filename format!');
+  PakFormatHex:=SetupGameSet.Specifics.Strings['PakFormatHex'];
 
-  //Note: The length calculation is simplified from:
-  //  (Length(Filename)-I)-(Length(PakOfficialFormat)-I)+1
+  WildcardIndex:=Pos('*', PakOfficialFormat);
+  if WildcardIndex=0 then
+    raise EErrorFmt(5789, [PakOfficialFormat]);
 
-  Filename1:=ExtractFilename(List[Index1]);
-  S:=Copy(Filename1, I, Length(Filename1)-Length(PakOfficialFormat)+1);
-  if SetupGameSet.Specifics.Strings['PakFormatHex']<>'' then
-    try
-      PakNumber1:=StrToInt('$'+S);
-    except
-      Log(LOG_WARNING, LoadStr1(5789), [Filename1]);
-      PakNumber1:=0;
-    end
-  else
-    try
-      PakNumber1:=StrToInt(S);
-    except
-      Log(LOG_WARNING, LoadStr1(5789), [Filename1]);
-      PakNumber1:=0;
-    end;
+  PakNumber1:=ExtractOfficialPakNumber(ExtractFilename(List[Index1]));
+  PakNumber2:=ExtractOfficialPakNumber(ExtractFilename(List[Index2]));
 
-  //FIXME: Duplicate code... Make into a function?
-  Filename2:=ExtractFilename(List[Index2]);
-  S:=Copy(Filename2, I, Length(Filename2)-Length(PakOfficialFormat)+1);
-  if SetupGameSet.Specifics.Strings['PakFormatHex']<>'' then
-    try
-      PakNumber2:=StrToInt('$'+S);
-    except
-      Log(LOG_WARNING, LoadStr1(5789), [Filename2]);
-      PakNumber2:=0;
-    end
-  else
-    try
-      PakNumber2:=StrToInt(S);
-    except
-      Log(LOG_WARNING, LoadStr1(5789), [Filename2]);
-      PakNumber2:=0;
-    end;
-
- Result := PakNumber1 - PakNumber2;
+  Result := PakNumber1 - PakNumber2;
 end;
 
 procedure TGetPakNames.CreatePakList(const Path, CustomFilter: String; Backwards: Boolean; SearchForTemp: Boolean);
@@ -226,7 +208,7 @@ begin
      StrList.CustomSort(StringListCompareOfficialPakFiles);
    end;
 
-   //Get the list of strings, by looking in the path for files matching the filefilter
+   //Get the list of pak-filenames, by looking in the path for files matching the filefilter
    if FindFirst(ConcatPaths([Path, PakFileFilter]), faAnyFile, sr) = 0 then
    begin
      try

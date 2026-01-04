@@ -1077,6 +1077,7 @@ function ExcludeTrailingPathDelimiter(const S: string): string;
 
 function SameFileName(const S1, S2: string): Boolean;
 
+function TryStrToInt(const S: string; out Value: Integer): Boolean;
 function TryStrToInt64(const S: string; out Value: Int64): Boolean;
 
 function StrToFloatDef(const S: String; const Default: Extended) : Extended;
@@ -1510,6 +1511,14 @@ end;
 function SameFileName(const S1, S2: string): Boolean;
 begin
   Result := AnsiCompareFileName(S1, S2) = 0;
+end;
+
+function TryStrToInt(const S: string; out Value: Integer): Boolean;
+var
+  E: Integer;
+begin
+  Val(S, Value, E);
+  Result := E = 0;
 end;
 
 function TryStrToInt64(const S: string; out Value: Int64): Boolean;
