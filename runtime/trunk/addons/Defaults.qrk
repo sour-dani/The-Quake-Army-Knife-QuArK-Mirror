@@ -1482,6 +1482,7 @@ QQRKSRC1
         AlwaysPak = ""
         PakExt = ".pk3"
         ShaderExt = ".shader"
+        PakOfficialFormat = "assets*.pk3"
         Console = "1"
         PakExtra1 = ".nav"  // PAK extra files into pak file (ie maps/mapname.nav)
         DecimalPlaces = '5'
@@ -1558,6 +1559,7 @@ QQRKSRC1
         AlwaysPak = ""
         PakExt = ".pk3"
         ShaderExt = ".shader"
+        PakOfficialFormat = "assets*.pk3"
         Console = "1"
         PakExtra1 = ".nav"  // PAK extra files into pak file (ie maps/mapname.nav)
         DecimalPlaces = '5'
