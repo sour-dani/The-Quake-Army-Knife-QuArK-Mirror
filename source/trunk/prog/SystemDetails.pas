@@ -1928,7 +1928,14 @@ begin
           try
             dummy:=2;
             if TryReadBinaryData(rvType,bdata^,dummy) then
-              FType:=IntToStr(PWord(bdata)^); //FIXME: What do the numbers mean exactly?
+              case PWord(bdata)^ of
+                $0: FType := 'Compact';
+                $1: FType := 'Typical';
+                $2: FType := 'Portable';
+                $3: FType := 'Custom';
+                else
+                  FType:=IntToStr(PWord(bdata)^);
+                end;
           finally
             FreeMem(bdata);
           end;
