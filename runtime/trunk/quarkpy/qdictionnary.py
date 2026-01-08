@@ -1097,7 +1097,7 @@ Strings = {
     5820: "DrawToDC: Call to CreateDIBSection failed",
     5821: "DrawToDC: Call to SetDIBitsToDevice failed",
     5822: "Registered to %s",
-    5823: "%s on %s",
+    #5823: "%s on %s",
     5824: "Failed to parse poly: %s",
     5825: "Invalid face data",
     5826: "Files stored in %s",

@@ -94,28 +94,28 @@ const
   QuArKUsedCompiler       = 'Delphi XE8';
 {$ELSE}
 {$IFDEF CompiledWithDelphi10_0}
-  QuArKUsedCompiler       = 'Delphi 10.0';
+  QuArKUsedCompiler       = 'Delphi 10.0 Seattle';
 {$ELSE}
 {$IFDEF CompiledWithDelphi10_1}
-  QuArKUsedCompiler       = 'Delphi 10.1';
+  QuArKUsedCompiler       = 'Delphi 10.1 Berlin';
 {$ELSE}
 {$IFDEF CompiledWithDelphi10_2}
-  QuArKUsedCompiler       = 'Delphi 10.2';
+  QuArKUsedCompiler       = 'Delphi 10.2 Tokyo';
 {$ELSE}
 {$IFDEF CompiledWithDelphi10_3}
-  QuArKUsedCompiler       = 'Delphi 10.3';
+  QuArKUsedCompiler       = 'Delphi 10.3 Rio';
 {$ELSE}
 {$IFDEF CompiledWithDelphi10_4}
-  QuArKUsedCompiler       = 'Delphi 10.4';
+  QuArKUsedCompiler       = 'Delphi 10.4 Sydney';
 {$ELSE}
 {$IFDEF CompiledWithDelphi11}
-  QuArKUsedCompiler       = 'Delphi 11';
+  QuArKUsedCompiler       = 'Delphi 11 Alexandria';
 {$ELSE}
 {$IFDEF CompiledWithDelphi12}
-  QuArKUsedCompiler       = 'Delphi 12';
+  QuArKUsedCompiler       = 'Delphi 12 Athens';
 {$ELSE}
 {$IFDEF CompiledWithDelphi13}
-  QuArKUsedCompiler       = 'Delphi 13';
+  QuArKUsedCompiler       = 'Delphi 13 Florence';
 {$ELSE}
   {$Message Warning 'Unhandled Delphi version!'}
   QuArKUsedCompiler       = 'Delphi';

@@ -38,6 +38,38 @@ procedure LogSystemDetails;
 procedure WarnDriverBugs;
 
 type
+  TPlatformType = (osWin95Comp, osWinNTComp);
+
+function GetPlatformType: TPlatformType;
+function CheckWindows98And2000: Boolean;
+function CheckWindowsMEAnd2000: Boolean;
+
+implementation
+
+uses Math, Forms, DateUtils, {$IFDEF CompiledWithDelphi2}ShellObj, OLE2, {$ELSE}ShlObj, ActiveX, {$ENDIF}
+  ComCtrls, Registry, Registry2, Logging, QkExceptions, QConsts, Platform;
+
+type
+  TDelphi = class(TPersistent)
+  private
+    FCompiler: String;
+    FCompileDate: TDateTime;
+    FEndianess: TEndian;
+    FCompilerVersionMajor, FCompilerVersionMinor: Byte;
+    FRTLVersionMajor, FRTLVersionMinor: Byte;
+  public
+    procedure GetInfo;
+    procedure Report(var sl: TStringList);
+  published
+    property Compiler: String read FCompiler stored false;
+    property CompileDate: TDateTime read FCompileDate stored false;
+    property Endianess: TEndian read FEndianess stored false;
+    property CompilerVersionMajor: Byte read FCompilerVersionMajor stored false;
+    property CompilerVersionMinor: Byte read FCompilerVersionMinor stored false;
+    property RTLVersionMajor: Byte read FRTLVersionMajor stored false;
+    property RTLVersionMinor: Byte read FRTLVersionMinor stored false;
+  end;
+
   TCPU = class(TPersistent)
   private
     FCPUIDLevel, FCPUIDExtLevel: UInt32;
@@ -357,18 +389,6 @@ type
     property Direct3D: TStrings read FDirect3D stored false;
   end;
 
-  TPlatformType = (osWin95Comp, osWinNTComp);
-
-function GetPlatformType: TPlatformType;
-function CheckWindows98And2000: Boolean;
-function CheckWindowsMEAnd2000: Boolean;
-
-implementation
-
-uses Math, Forms, DateUtils, {$IFDEF CompiledWithDelphi2}ShellObj, OLE2, {$ELSE}ShlObj, ActiveX, {$ENDIF}
-  ComCtrls, Registry, Registry2, Logging, QkExceptions, QConsts, Platform;
-
-type
   {$IFDEF Delphi4orNewerCompiler}
      TLargInt = _LARGE_INTEGER;
   {$ELSE}
@@ -431,6 +451,51 @@ begin
   DivMod(TMP, 60, TMP, S);
   DivMod(TMP, 60, H, M);
   Result:=format('%d:%.2d:%.2d.%.3d',[H,M,S,MS]);
+end;
+
+{ TDelphi }
+
+procedure TDelphi.GetInfo;
+var
+  Version: Word;
+begin
+  Log(LOG_VERBOSE, 'Starting gathering Delphi information...');
+
+  FCompiler:=QuArKUsedCompiler;
+  FCompileDate:=QuArKCompileDate;
+  FEndianess:=PlatformEndian;
+
+  Version:=GetCompilerVersion();
+  FCompilerVersionMajor:=Hi(Version);
+  FCompilerVersionMinor:=Lo(Version);
+  Version:=GetRTLVersion();
+  FRTLVersionMajor:=Hi(Version);
+  FRTLVersionMinor:=Lo(Version);
+end;
+
+procedure TDelphi.Report(var sl: TStringList);
+var
+{$IFDEF Delphi7orNewerCompiler}
+  DateFormat: TFormatSettings;
+{$ENDIF}
+begin
+  {$IFDEF Delphi7orNewerCompiler}
+  GetLocaleFormatSettings(LOCALE_SYSTEM_DEFAULT, DateFormat);
+  {$ENDIF}
+
+  with sl do
+  begin
+    add(format('Used compiler: %s', [Compiler]));
+    add(format('Compiler version: %d.%d', [CompilerVersionMajor, CompilerVersionMinor]));
+    add(format('RTL version: %d.%d', [RTLVersionMajor, RTLVersionMinor]));
+    add(format('Compiled on %s', [DateToStr(QuArKCompileDate{$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF})]));
+    if Endianess = Big then
+      add('Endianness: Big')
+    else if Endianess = Little then
+      add('Endianness: Little')
+    else
+      add('Endianness: Unhandled endianness!');
+  end;
 end;
 
 { TCPU }
@@ -3133,6 +3198,19 @@ end;
 
 // ---
 
+Procedure GetDelphiDetails(var s: TStringlist);
+var
+  c: TDelphi;
+begin
+  c:=TDelphi.Create;
+  try
+    c.getInfo;
+    c.report(s);
+  finally
+    c.free;
+  end;
+end;
+
 Procedure GetCPUDetails(var s: TStringlist);
 var
   c: TCPU;
@@ -3219,36 +3297,13 @@ procedure LogSystemDetails;
 var
   s: TStringlist;
   i: Integer;
-  {$IFDEF Delphi12orNewerCompiler}
-  Version: Word;
-  {$ENDIF}
 begin
-  Log(LOG_VERBOSE, 'Now logging Delphi details...');
-  Log(LOG_SYS, LOG_INFO, 'Used compiler: %s', [QuArKUsedCompiler]);
-  {$IFDEF Delphi6orNewerCompiler}
-  {$IFDEF Delphi12orNewerCompiler}
-  Version:=GetCompilerVersion();
-  Log(LOG_SYS, LOG_INFO, 'Compiler version: %d.%d', [Hi(Version), Lo(Version)]);
-  Version:=GetRTLVersion();
-  Log(LOG_SYS, LOG_INFO, 'RTL version: %d.%d', [Hi(Version), Lo(Version)]);
-  {$ELSE}
-  Log(LOG_SYS, LOG_INFO, 'Compiler version: %f', [CompilerVersion]);
-  Log(LOG_SYS, LOG_INFO, 'RTL version: %f', [RTLVersion]);
-  {$ENDIF}
-  {$IFDEF RTLVersion1041}if RTLVersion1041 then Log(LOG_SYS, LOG_VERBOSE, 'RTL version 10.4.1: True');{$ENDIF}
-  {$IFDEF RTLVersion1042}if RTLVersion1042 then Log(LOG_SYS, LOG_VERBOSE, 'RTL version 10.4.2: True');{$ENDIF}
-  {$IFDEF RTLVersion111}if RTLVersion111 then Log(LOG_SYS, LOG_VERBOSE, 'RTL version 11.1: True');{$ENDIF}
-  {$IFDEF RTLVersion112}if RTLVersion112 then Log(LOG_SYS, LOG_VERBOSE, 'RTL version 11.2: True');{$ENDIF}
-  {$IFDEF RTLVersion113}if RTLVersion113 then Log(LOG_SYS, LOG_VERBOSE, 'RTL version 11.3: True');{$ENDIF}
-  {$IFDEF RTLVersion121}if RTLVersion121 then Log(LOG_SYS, LOG_VERBOSE, 'RTL version 12.1: True');{$ENDIF}
-  {$IFDEF RTLVersion122}if RTLVersion122 then Log(LOG_SYS, LOG_VERBOSE, 'RTL version 12.2: True');{$ENDIF}
-  {$IFDEF RTLVersion123}if RTLVersion123 then Log(LOG_SYS, LOG_VERBOSE, 'RTL version 12.3: True');{$ENDIF}
-  {$IFDEF RTLVersion131}if RTLVersion131 then Log(LOG_SYS, LOG_VERBOSE, 'RTL version 13.1: True');{$ENDIF}
-  {$ENDIF}
-
   Log(LOG_INFO, 'Now logging system details...');
   s:=TStringList.Create;
   try
+    s.add('COMPILER:');
+    GetDelphiDetails(s);
+    s.add('');
     {$IFDEF DEBUG}
     s.add('PROCESS:');
     s.add(format('Process ID: %u', [Windows.GetCurrentProcessId()]));
@@ -3277,9 +3332,7 @@ begin
     s.add('DIRECTX:');
     GetDirectxDetails(s);
     for i:=0 to s.count-1 do
-    begin
       Log(LOG_SYS, s.strings[i]);
-    end;
   finally
     s.free;
   end;

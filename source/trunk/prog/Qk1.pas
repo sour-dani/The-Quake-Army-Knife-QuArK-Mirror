@@ -367,9 +367,6 @@ var
  LaunchOptions: TCmdLineOptions;
  Setup: QObject;
  TimerID: {$IFDEF WIN64}UINT_PTR{$ELSE}UINT{$ENDIF};
-{$IFDEF Delphi7orNewerCompiler}
-  DateFormat: TFormatSettings;
-{$ENDIF}
 begin
  // No messageboxes from LoadLibrary; just fail it.
  if DelayFunc_GetErrorMode then
@@ -434,26 +431,14 @@ begin
    Splash:=nil;
  try
    try
-     {$IFDEF Delphi7orNewerCompiler}
-     GetLocaleFormatSettings(LOCALE_SYSTEM_DEFAULT, DateFormat);
-     {$ENDIF}
-
-     // Log QuArK version to the log
+     // Log QuArK information to the log
      S:=GetPatchVersion;
      if Length(S) <> 0 then
-       Log(LOG_PASCAL, 'QuArK version is %s %s', [QuArKFullVersion, S])
+       Log(LOG_PASCAL, 'QuArK version: %s %s', [QuArKFullVersion, S])
      else
-       Log(LOG_PASCAL, 'QuArK version is %s', [QuArKFullVersion]);
-     Log(LOG_PASCAL, 'Compiled with %s on %s', [QuArKUsedCompiler, DateToStr(QuArKCompileDate{$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF})]);
-     if PlatformEndian = Big then
-       Log(LOG_PASCAL, 'Endianness: Big')
-     else if PlatformEndian = Little then
-       Log(LOG_PASCAL, 'Endianness: Little')
-     else
-       Log(LOG_WARNING, 'Endianness: Unhandled endianness!');
-
+       Log(LOG_PASCAL, 'QuArK version: %s', [QuArKFullVersion]);
      {$IFDEF Debug}
-     Log(LOG_PASCAL, 'Current install is located at %s', [GetQPath(pQuArK)]);
+     Log(LOG_PASCAL, 'Current install location: %s', [GetQPath(pQuArK)]);
      Log(LOG_PASCAL, 'Running in DEBUG mode!');
      {$ENDIF}
 

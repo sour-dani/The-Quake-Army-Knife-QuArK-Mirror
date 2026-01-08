@@ -52,7 +52,7 @@ type
     WebsiteAddress: TLabel;
     RepositoryAddress: TLabel;
     ForumAddress: TLabel;
-    UsedCompilerLabel: TLabel;
+    CompileDateLabel: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure OKButtonClick(Sender: TObject);
   private
@@ -221,13 +221,13 @@ begin
   {$IFDEF Delphi7orNewerCompiler}
   GetLocaleFormatSettings(LOCALE_SYSTEM_DEFAULT, DateFormat);
   {$ENDIF}
-  UsedCompilerLabel.Caption := FmtLoadStr1(5823, [QuArKUsedCompiler, DateToStr(QuArKCompileDate{$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF})]);
+  CompileDateLabel.Caption := DateToStr(QuArKCompileDate{$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF});
 
   //Reposition the labels
   WebsiteAddress.Left := Label1.BoundsRect.Right + LabelSpacing;
   RepositoryAddress.Left := Label2.BoundsRect.Right + LabelSpacing;
   ForumAddress.Left := Label3.BoundsRect.Right + LabelSpacing;
-  UsedCompilerLabel.Left := Label4.BoundsRect.Right + LabelSpacing;
+  CompileDateLabel.Left := Label4.BoundsRect.Right + LabelSpacing;
 
   ProductName2.Left:=ProductName1.BoundsRect.Right;
   ProductName3.Left:=ProductName2.BoundsRect.Right + 6;

@@ -164,9 +164,9 @@ object AboutBox: TAboutBox
   object Label4: TLabel
     Left = 408
     Top = 288
-    Width = 68
+    Width = 61
     Height = 13
-    Caption = 'Compiled with:'
+    Caption = 'Compiled on:'
   end
   object WebsiteAddress: TLabel
     Left = 472
@@ -204,8 +204,8 @@ object AboutBox: TAboutBox
     Font.Style = []
     ParentFont = False
   end
-  object UsedCompilerLabel: TLabel
-    Left = 480
+  object CompileDateLabel: TLabel
+    Left = 472
     Top = 290
     Width = 2
     Height = 11

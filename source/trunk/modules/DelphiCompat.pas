@@ -52,6 +52,8 @@ type
 {$endif}
 
 {$ifndef Delphi3orNewerCompiler}
+  TDateTime = type Double;
+
   TCustomForm = TForm;
 {$endif}
 
@@ -1150,6 +1152,11 @@ function StrToUIntDef(const S: string; Default: Cardinal): Cardinal;
 function TryStrToUInt(const S: string; out Value: Cardinal): Boolean;
 {$endif}
 
+{$ifndef Delphi12orNewerCompiler}
+function GetCompilerVersion: Word;
+function GetRTLVersion: Word;
+{$endif}
+
 //These functions don't exist at all in Delphi:
 function LastPos(const SubStr: String; const S: String): Integer;
 
@@ -1805,6 +1812,67 @@ begin
 
   Value:=Cardinal(Dummy);
   Result:=True;
+end;
+{$endif}
+
+{$ifndef Delphi12orNewerCompiler}
+function GetCompilerVersion: Word;
+begin
+  {$ifdef CompiledWithDelphi1}
+  Result:=8;
+  {$else}
+  {$ifdef CompiledWithDelphi2}
+  Result:=9;
+  {$else}
+  {$ifdef CompiledWithDelphi3}
+  Result:=10;
+  {$else}
+  {$ifdef CompiledWithDelphi4}
+  Result:=12;
+  {$else}
+  {$ifdef CompiledWithDelphi5}
+  Result:=13;
+  {$else}
+  Result := Trunc(CompilerVersion) shl 8;
+  {$endif}
+  {$endif}
+  {$endif}
+  {$endif}
+  {$endif}
+end;
+
+function GetRTLVersion: Word;
+begin
+  {$ifdef CompiledWithDelphi1}
+  Result:=8;
+  {$else}
+  {$ifdef CompiledWithDelphi2}
+  Result:=9;
+  {$else}
+  {$ifdef CompiledWithDelphi3}
+  Result:=10;
+  {$else}
+  {$ifdef CompiledWithDelphi4}
+  Result:=12;
+  {$else}
+  {$ifdef CompiledWithDelphi5}
+  Result:=13;
+  {$else}
+  Result := Trunc(RTLVersion) shl 8;
+  {$IFDEF CONDITIONALEXPRESSIONS}
+  {$IF declared(RTLVersion113) or declared(RTLVersion123)}
+  Result := Result + $0003;
+  {$ELSEIF declared(RTLVersion1042) or declared(RTLVersion112) or declared(RTLVersion122)}
+  Result := Result + $0002;
+  {$ELSEIF declared(RTLVersion1041) or declared(RTLVersion111) or declared(RTLVersion121) or declared(RTLVersion131)}
+  Result := Result + $0001;
+  {$IFEND}
+  {$ENDIF}
+  {$endif}
+  {$endif}
+  {$endif}
+  {$endif}
+  {$endif}
 end;
 {$endif}
 
