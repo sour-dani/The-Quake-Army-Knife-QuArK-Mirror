@@ -166,7 +166,7 @@ var
   Helper: TAbUnzipHelper;
 begin
   Origin:=input.Position;
-  input.readbuffer(sig, 4);
+  input.readbuffer(sig, sizeof(sig));
   input.readbuffer(header, sizeof(TLocalFileHeader));
   //compsize := header.compressed;
   //uncompsize := header.uncompressed;
