@@ -1045,7 +1045,7 @@ begin
     end
    else
     Info.wID:=Msg.wParamLo;  { single item }
-   if (Info.wID>0) and (Info.wID <= Callbacks.Count) then
+   if (Info.wID > 0) and (Info.wID <= UINT(Callbacks.Count)) then
     begin
      obj:=PyObject(Callbacks[Info.wID-1]);
      if obj<>Nil then
@@ -1081,7 +1081,7 @@ begin
  else
   I:=CurrentPopupHandle;
  if not FindMenuItem(I, Msg.wParam, Info) then Exit;
- if (Info.wID<=0) or (Info.wID>Callbacks.Count) then
+ if (Info.wID <= 0) or (Info.wID > UINT(Callbacks.Count)) then
   begin
    if CurrentPopupHandle<>0 then Exit;
    if Info.wID = wID_HelpMenu then
