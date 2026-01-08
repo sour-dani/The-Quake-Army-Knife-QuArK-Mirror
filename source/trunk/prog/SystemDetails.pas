@@ -57,6 +57,7 @@ type
     FEndianess: TEndian;
     FCompilerVersionMajor, FCompilerVersionMinor: Byte;
     FRTLVersionMajor, FRTLVersionMinor: Byte;
+    FTrialEdition: Boolean;
   public
     procedure GetInfo;
     procedure Report(var sl: TStringList);
@@ -68,6 +69,7 @@ type
     property CompilerVersionMinor: Byte read FCompilerVersionMinor stored false;
     property RTLVersionMajor: Byte read FRTLVersionMajor stored false;
     property RTLVersionMinor: Byte read FRTLVersionMinor stored false;
+    property TrialEdition: Boolean read FTrialEdition stored false;
   end;
 
   TCPU = class(TPersistent)
@@ -471,6 +473,8 @@ begin
   Version:=GetRTLVersion();
   FRTLVersionMajor:=Hi(Version);
   FRTLVersionMinor:=Lo(Version);
+
+  FTrialEdition:={$IFDEF TRIAL_EDITION}True{$ELSE}False{$ENDIF};
 end;
 
 procedure TDelphi.Report(var sl: TStringList);
@@ -485,7 +489,10 @@ begin
 
   with sl do
   begin
-    add(format('Used compiler: %s', [Compiler]));
+    if TrialEdition then
+      add(format('Used compiler: %s (Trial edition)', [Compiler]))
+    else
+      add(format('Used compiler: %s', [Compiler]));
     add(format('Compiler version: %d.%d', [CompilerVersionMajor, CompilerVersionMinor]));
     add(format('RTL version: %d.%d', [RTLVersionMajor, RTLVersionMinor]));
     add(format('Compiled on %s', [DateToStr(QuArKCompileDate{$IFDEF Delphi7orNewerCompiler}, DateFormat{$ENDIF})]));
