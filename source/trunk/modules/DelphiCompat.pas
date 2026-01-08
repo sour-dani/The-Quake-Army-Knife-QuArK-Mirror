@@ -49,11 +49,11 @@ type
   AnsiChar = Char;
   PAnsiChar = PChar;
   AnsiString = String;
+
+  TDateTime = type Double;
 {$endif}
 
 {$ifndef Delphi3orNewerCompiler}
-  TDateTime = type Double;
-
   TCustomForm = TForm;
 {$endif}
 

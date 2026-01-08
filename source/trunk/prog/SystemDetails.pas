@@ -444,17 +444,6 @@ begin
 end;
 {$ENDIF}
 
-function FormatMilliSeconds(const Number: Integer) : String; overload;
-var
-  TMP: Word;
-  MS, S, M, H: Word;
-begin
-  DivMod(Number, 1000, TMP, MS); //FIXME: More modern Delphi's have a DivMod with UInt64!
-  DivMod(TMP, 60, TMP, S);
-  DivMod(TMP, 60, H, M);
-  Result:=format('%d:%.2d:%.2d.%.3d',[H,M,S,MS]);
-end;
-
 { TDelphi }
 
 procedure TDelphi.GetInfo;
@@ -2463,13 +2452,22 @@ begin
 end;
 
 procedure TWorkstation.Report(var sl: TStringList);
+var
+  Uptime: TDateTime;
 begin
+  //To convert the uptime from milliseconds to something we can use in FormatDateTime,
+  //we have to work-around the following limitations:
+  //- There is no MSecsToDateTime, so we have to go through TTimeStamp first.
+  //- MSecsToTimeStamp only takes signed integers.
+  //- TimeStampToDateTime doesn't allow Date to be zero.
+  //- TDateTime is counting from 12/31/1899, but we want relative time.
+  Uptime:=TimeStampToDateTime(MSecsToTimeStamp(SystemUpTime + MSecsPerDay));
   with sl do
   begin
     add('Name: '+Name);
     add('User: '+User);
     add('Firmware: '+Firmware);
-    add('System Up Time: '+FormatMilliSeconds(SystemUpTime));
+    add(format('System Up Time: %d day(s) %s', [Trunc(Uptime) + DateDelta - 1, FormatDateTime('h:nn:ss.zzz', Uptime)]));
     add('BIOS: '+BIOSName);
     add('BIOS date: '+BIOSDate);
     add('BIOS copyright: '+BIOSCopyright);
