@@ -30,6 +30,45 @@ const
   QuArKVersion            = 'QuArK 6.6';
   QuArKMinorVersion       = 'Beta 8';
   QuArKCopyright          = 'Copyright (C) 1996-2025 Armin Rigo and others';
+{$IFDEF FPC}
+{$IFDEF VER3}
+{$IFDEF VER3_0}
+  QuArKUsedCompiler       = 'FreePascal 3.0';
+{$ELSE}
+{$IFDEF VER3_2}
+  QuArKUsedCompiler       = 'FreePascal 3.2';
+{$ELSE}
+  QuArKUsedCompiler       = 'FreePascal 3';
+{$ENDIF}
+{$ENDIF}
+{$ELSE}
+{$IFDEF VER2}
+{$IFDEF VER2_0}
+  QuArKUsedCompiler       = 'FreePascal 2.0';
+{$ELSE}
+{$IFDEF VER2_2}
+  QuArKUsedCompiler       = 'FreePascal 2.2';
+{$ELSE}
+{$IFDEF VER2_4}
+  QuArKUsedCompiler       = 'FreePascal 2.4';
+{$ELSE}
+{$IFDEF VER2_6}
+  QuArKUsedCompiler       = 'FreePascal 2.6';
+{$ELSE}
+  QuArKUsedCompiler       = 'FreePascal 2';
+{$ENDIF}
+{$ENDIF}
+{$ENDIF}
+{$ENDIF}
+{$ELSE}
+{$IFDEF VER1_0}
+  QuArKUsedCompiler       = 'FreePascal 1.0';
+{$ELSE}
+  QuArKUsedCompiler       = 'FreePascal';
+{$ENDIF}
+{$ENDIF}
+{$ENDIF}
+{$ELSE}
 {$IFDEF CompiledWithDelphi1}
   QuArKUsedCompiler       = 'Delphi 1';
 {$ELSE}
@@ -119,6 +158,7 @@ const
 {$ELSE}
   {$Message Warning 'Unhandled Delphi version!'}
   QuArKUsedCompiler       = 'Delphi';
+{$ENDIF}
 {$ENDIF}
 {$ENDIF}
 {$ENDIF}

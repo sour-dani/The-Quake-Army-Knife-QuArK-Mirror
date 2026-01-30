@@ -21,6 +21,7 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 
 {$INCLUDE DelphiVer.inc}
 
+{$IFNDEF FPC}
 {$IFNDEF Delphi2005orNewerCompiler}
   {$DEFINE CPU386}
 {$ENDIF}
@@ -62,4 +63,5 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
       {$DEFINE WIN32}
     {$ENDIF}
   {$ENDIF}
+{$ENDIF}
 {$ENDIF}
