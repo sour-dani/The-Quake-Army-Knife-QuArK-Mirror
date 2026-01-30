@@ -97,10 +97,8 @@ begin
  with Info do
   case Format of
   rf_Default: begin  { as stand-alone file }
-    raise exception.create('Cannot save IWI files (yet)');
-    //FIXME
-
-    SaveFileDevIL(Info)
+    raise EQObjectSavingNotSupported.Create('IWI files'); //FIXME
+    //SaveFileDevIL(Info)
   end
   else
     inherited;
