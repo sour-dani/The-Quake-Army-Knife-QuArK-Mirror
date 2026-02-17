@@ -99,88 +99,70 @@ function pageLocalDisplay()
 			{
 				$CurrentVideo = &$videosdatabase[$SelectedVideos[$SelectedVideo]];
 
-				$bodytext = '';
+				$bodytext = array();
 
 				if (!is_null($CurrentVideo->Screenshot))
 				{
-					$bodytext .= '<div style="float: right;">';
+					$bodytext1 = '<div style="float: right;">';
 
 					if (!is_null($CurrentVideo->Link))
-						$bodytext .= '<a href="showvideo.php?VideoID='.($SelectedVideos[$SelectedVideo]+1).'">';
-					$bodytext .= DisplayRawImage($CurrentVideo->Screenshot);
+						$bodytext1 .= '<a href="showvideo.php?VideoID='.($SelectedVideos[$SelectedVideo]+1).'">';
+					$bodytext1 .= DisplayRawImage($CurrentVideo->Screenshot);
 					if (!is_null($CurrentVideo->Link))
-						$bodytext .= '</a>';
+						$bodytext1 .= '</a>';
 
-					$bodytext .= '</div>';
+					$bodytext1 .= '</div>';
+
+					$bodytext[] = $bodytext1;
+					unset($bodytext1);
 				}
 
-				$bodytext1 = '';
 				if (!is_null($CurrentVideo->Length))
-					$bodytext1 .= '<b>Video length</b>: ' . $CurrentVideo->Length . '<br>';
+					$bodytext[] = '<b>Video length</b>: ' . $CurrentVideo->Length;
 				else
-					$bodytext1 .= '<b>Video length</b>: unknown<br>';
-				$bodytext1 .= '<b>Movie format</b>: ' . $mediatypeslist[$CurrentVideo->Mediatype] . '<br>';
+					$bodytext[] = '<b>Video length</b>: unknown';
+				$bodytext[] = '<b>Movie format</b>: ' . $mediatypeslist[$CurrentVideo->Mediatype];
 				if (!is_null($CurrentVideo->Codecs))
-					$bodytext1 .= '<b>Used codec(s)</b>: ' . $CurrentVideo->Codecs . '<br>';
+					$bodytext[] = '<b>Used codec(s)</b>: ' . $CurrentVideo->Codecs;
 				if ($CurrentVideo->FileSize !== 0)
-					$bodytext1 .= '<b>File size</b>: ' . DisplayByteSize($CurrentVideo->FileSize) . '<br>';
+					$bodytext[] = '<b>File size</b>: ' . DisplayByteSize($CurrentVideo->FileSize);
 
-				if ($bodytext1 !== '')
-				{
-					$bodytext .= $bodytext1 . '<br>';
-				}
-
-				$bodytext1 = '';
 				if ($CurrentVideo->DatePublished !== 0)
-					$bodytext1 .= '<b>Published</b>: ' . DisplayDate($CurrentVideo->DatePublished) . '<br>';
+					$bodytext[] = '<b>Published</b>: ' . DisplayDate($CurrentVideo->DatePublished);
 				if (!is_null($CurrentVideo->Author))
 				{
 					if (!is_null($CurrentVideo->EmailAuthor))
 					{
-						$bodytext1 .= '<b>Author</b>: <a href=' . DisplayEncodedEmail($CurrentVideo->EmailAuthor) . '>' . $CurrentVideo->Author . '</a><br>';
+						$bodytext[] = '<b>Author</b>: <a href=' . DisplayEncodedEmail($CurrentVideo->EmailAuthor) . '>' . $CurrentVideo->Author . '</a>';
 					}
 					else
 					{
-						$bodytext1 .= '<b>Author</b>: '.$CurrentVideo->Author.'<br>';
+						$bodytext[] = '<b>Author</b>: '.$CurrentVideo->Author;
 					}
 				}
 				if (!is_null($CurrentVideo->Website))
-					$bodytext1 .= '<b>Website</b>: <a href="' . $CurrentVideo->Website . '">'.$CurrentVideo->Website.'</a><br>';
-
-				if ($bodytext1 !== '')
-				{
-					$bodytext .= $bodytext1 . '<br>';
-				}
+					$bodytext[] = '<b>Website</b>: <a href="' . $CurrentVideo->Website . '">'.$CurrentVideo->Website.'</a>';
 
 				if (!is_null($CurrentVideo->Description))
-					$bodytext .= '<p><b>Description</b>:<br>' . $CurrentVideo->Description . '</p>';
+					$bodytext[] = '<p><b>Description</b>:<br>' . $CurrentVideo->Description . '</p>';
 
 				$found_a_link = false;
 				if (!is_null($CurrentVideo->Link))
 				{
-					if (!$found_a_link)
-					{
-						$found_a_link = true;
-						$bodytext .= '<br>';
-					}
-					$bodytext .= '<a href="showvideo.php?VideoID='.($SelectedVideos[$SelectedVideo]+1).'">Play this movie!</a><br>';
+					$found_a_link = true;
+					$bodytext[] = '<a href="showvideo.php?VideoID='.($SelectedVideos[$SelectedVideo]+1).'">Play this movie!</a>';
 				}
 				if (!is_null($CurrentVideo->DownloadLink))
 				{
-					if (!$found_a_link)
-					{
-						$found_a_link = true;
-						$bodytext .= '<br>';
-					}
-					$bodytext .= '<a href="' . $CurrentVideo->DownloadLink . '">Download this movie!</a><br>';
+					$found_a_link = true;
+					$bodytext[] = '<a href="' . $CurrentVideo->DownloadLink . '">Download this movie!</a>';
 				}
 				if (!$found_a_link)
 				{
-					$bodytext .= '<br>';
-					$bodytext .= 'No play/download link<br>';
+					$bodytext[] = 'No play/download link';
 				}
 
-				pagePanel('community', $CurrentVideo->Name, $videotypeslist[$CurrentVideo->Type], $bodytext);
+				pagePanel('community', $CurrentVideo->Name, $videotypeslist[$CurrentVideo->Type], join('<br>', $bodytext));
 			}
 		}
 	}
