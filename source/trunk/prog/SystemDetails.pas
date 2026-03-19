@@ -500,7 +500,7 @@ const
   ID_Bit = $200000;   // EFLAGS ID bit
   TSC_Bit = $10;      // TimeStamp Counter EDX Feature Flag bit
 
-  CPUVendorIDs: array[0..14] of AnsiString = ('GenuineIntel',
+  CPUVendorIDs: array[0..15] of AnsiString = ('GenuineIntel',
                                               'UMC UMC UMC',
                                               'AuthenticAMD',
                                               'CyrixInstead',
@@ -514,9 +514,10 @@ const
                                               'AMDisbetter!',
                                               'TransmetaCPU',
                                               'Vortex86 SoC',
-                                              'HygonGenuine');
+                                              'HygonGenuine',
+                                              'GenuineIotel'); //Bug in processors such as the Xeon E3-1231 v3.
 
-  CPUVendors: array[0..14] of AnsiString = ('Intel',
+  CPUVendors: array[0..15] of AnsiString = ('Intel',
                                             'UMC',
                                             'AMD',
                                             'Cyrix',
@@ -530,7 +531,8 @@ const
                                             'AMD',
                                             'Transmeta',
                                             'Vortex',
-                                            'Hygon');
+                                            'Hygon',
+                                            'Intel');
 
 procedure GetCPUIDLevelAndVendor(var Level: UInt32; var VendorStr: TVendorStr); assembler;
 asm
@@ -1377,6 +1379,10 @@ begin
           Dec(j);
         end;
         SetString(CPUIDBrand_TMP, PAnsiChar(@(CPUIDBrand[i])), j-i+1);
+
+        if CPUIDBrand_TMP = 'Intel(R) ore(TM) i5-1245U' then //Bug in the Core i5-1245U CPU
+            CPUIDBrand_TMP := 'Intel(R) Core(TM) i5-1245U';
+
         FBrand:=CPUIDBrand_TMP;
       end;
     end;
