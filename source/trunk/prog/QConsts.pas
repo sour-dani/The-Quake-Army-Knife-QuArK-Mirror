@@ -29,7 +29,7 @@ uses DelphiCompat;
 const
   QuArKVersion            = 'QuArK 6.6';
   QuArKMinorVersion       = 'Beta 8';
-  QuArKCopyright          = 'Copyright (C) 1996-2025 Armin Rigo and others';
+  QuArKCopyright          = 'Copyright (C) 1996-2026 Armin Rigo and others';
 {$IFDEF FPC}
 {$IFDEF VER3}
 {$IFDEF VER3_0}
