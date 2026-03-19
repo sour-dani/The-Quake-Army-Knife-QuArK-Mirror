@@ -175,7 +175,7 @@ type
                        procedure SaveFile(Format: Integer; F: TStream); override;
                      end;}
   EQObjectFileNotFound = class(Exception);
-  EQObjectLoadingNotSupported = class(Exception); //Error message should be a description of the file format. Only raise this in in the LoadFile function.
+  EQObjectLoadingNotSupported = class(Exception); //Error message should be a description of the file format. Only raise this in the LoadFile function.
   EQObjectSavingNotSupported = class(Exception); //Error message should be a description of the file format. Only raise this in the SaveFile function.
 
  {------------------------}
