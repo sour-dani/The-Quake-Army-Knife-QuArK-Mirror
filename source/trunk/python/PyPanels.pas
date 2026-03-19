@@ -174,7 +174,7 @@ end;
 constructor TQkMainPanel.Create;
 begin
  {$IFDEF NeedParentDoubleBuffered}
- FDoubleBuffered:=True;
+ FDoubleBuffered:=CanUseDoubleBuffering;
  {$ENDIF}
  inherited;
  FLayoutMgr:=TLayoutMgr.Create(Self, Nil);
@@ -204,7 +204,7 @@ begin
  if AParent<>nil then
   FDoubleBuffered:=AParent.DoubleBuffered
  else
-  FDoubleBuffered:=True;
+  FDoubleBuffered:=CanUseDoubleBuffering;
 end;
 {$ENDIF}
 

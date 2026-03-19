@@ -464,6 +464,9 @@ const
   {$EXTERNALSYM IMAGE_FILE_LARGE_ADDRESS_AWARE}
 {$endif}
 {$ifndef Delphi2007orNewerCompiler}
+  {$EXTERNALSYM SM_REMOTESESSION}
+  SM_REMOTESESSION = $1000;
+
   {$EXTERNALSYM DWM_EC_DISABLECOMPOSITION}
   DWM_EC_DISABLECOMPOSITION         = 0;
   {$EXTERNALSYM DWM_EC_ENABLECOMPOSITION}
@@ -1155,6 +1158,8 @@ function TryStrToUInt(const S: string; out Value: Cardinal): Boolean;
 {$ifndef Delphi12orNewerCompiler}
 function GetCompilerVersion: Word;
 function GetRTLVersion: Word;
+
+function CanUseDoubleBuffering: Boolean;
 {$endif}
 
 //These functions don't exist at all in Delphi:
@@ -1873,6 +1878,14 @@ begin
   {$endif}
   {$endif}
   {$endif}
+end;
+
+function CanUseDoubleBuffering: Boolean; //Really: TWinControl.CanUseDoubleBuffering and TButtonControl.CanUseDoubleBuffering
+const
+  SingleBufferingInRemoteSessions = True; //Application.SingleBufferingInRemoteSessions
+begin
+  //Based on: https://docwiki.embarcadero.com/RADStudio/Florence/en/Double-buffering_and_Remote_Connections
+  Result := not ((GetSystemMetrics(SM_REMOTESESSION) <> 0) and SingleBufferingInRemoteSessions);
 end;
 {$endif}
 

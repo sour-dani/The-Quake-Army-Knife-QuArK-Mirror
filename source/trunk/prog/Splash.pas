@@ -68,7 +68,7 @@ type
   private
     Disclaimer: TDisclaimerThread;
     DisclaimerFont: HFont;
-    TextColor: COLORREF;
+    TextColor: TColorRef;
     function GetWaitHandle: THandle;
   public
     procedure Terminate;
@@ -147,7 +147,7 @@ var
   TextRect: TRect;
 begin
   {$IF RTLVersion < 20}
-  FDoubleBuffered:=True;
+  FDoubleBuffered:=CanUseDoubleBuffering;
   {$IFEND}
   Image1.Picture.Bitmap.LoadFromResourceName(HInstance, 'QUARKLOGO');
   ClientWidth:=Image1.Width;

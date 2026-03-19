@@ -378,7 +378,7 @@ end;
 constructor TQkForm.Create(AOwner: TComponent);
 begin
  {$IF RTLVersion < 20}
- FDoubleBuffered:=True;
+ FDoubleBuffered:=CanUseDoubleBuffering;
  {$IFEND}
  inherited;
  Log(LOG_VERBOSE, 'Now creating form... (%s)', [Self.Caption]);
