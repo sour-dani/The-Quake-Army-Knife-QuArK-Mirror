@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Install Prequisites
         run: |
-          sudo apt install git-svn
+          sudo apt install git git-svn
 
       - uses: actions/checkout@v6
         with:  
