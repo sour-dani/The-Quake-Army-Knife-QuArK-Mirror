@@ -7,13 +7,13 @@ on:
 
 jobs:
   mirror:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-2022
     permissions: 
       contents: write
     steps:
       - name: Install Prequisites
         run: |
-          sudo apt install git git-svn
+          sudo apt install git-svn
 
       - uses: actions/checkout@v6
         with:  
