@@ -1,0 +1,32 @@
+name: Mirror
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 2 * * 1"
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    permissions: 
+      contents: write
+    steps:
+      - name: Install Prequisites
+        run: |
+          sudo apt install git-svn
+
+      - uses: actions/checkout@v6
+        with:  
+          path: quark-code
+      
+      - name: Fetch SVN
+        working-directory: quark-code
+        run: |
+          git svn init https://svn.code.sf.net/p/quark/code --ignore-paths=".exe$|.rar$|.zip$"
+          git svn fetch 
+
+      - name: Rebase main to SVN remote
+        working-directory: quark-code
+        run: |
+          git rebase git-svn main
+          git push
