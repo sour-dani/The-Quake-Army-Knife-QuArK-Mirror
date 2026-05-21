@@ -2,6 +2,7 @@ name: Mirror
 
 on:
   workflow_dispatch:
+  push:
   schedule:
     - cron: "0 2 * * 1"
 
