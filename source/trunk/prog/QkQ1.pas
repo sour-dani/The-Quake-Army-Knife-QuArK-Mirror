@@ -86,7 +86,7 @@ procedure WriteColormapFile();
 implementation
 
 uses
-  qhelper, Travail, Quarkx, QkExceptions, Game, Setup, QkWad, QkPcx, QkObjectClassList;
+  qhelper, Logging, Travail, Quarkx, QkExceptions, Game, Setup, QkWad, QkPcx, QkObjectClassList;
 
 const
  LUMP_ENTITIES = 0;
@@ -108,14 +108,9 @@ const
  HEADER_LUMPS = 15;
 
 type
- TBspEntries = record
-               EntryPosition: LongInt;
-               EntrySize: LongInt;
-              end;
-
- TBsp1Header = record
-               Signature: LongInt;
-               Entries: array[0..HEADER_LUMPS-1] of TBspEntries;
+ TBsp1Header = packed record
+               Signature: LongInt; //Same as TBspHeader, but missing the Version!
+               Entries: array[0..HEADER_LUMPS-1] of TBspEntry;
               end;
 
 const
@@ -402,25 +397,36 @@ begin
 
   for I:=0 to HEADER_LUMPS-1 do
   begin
-    if (Header.Entries[I].EntryPosition+Header.Entries[I].EntrySize > StreamSize)
-    or (Header.Entries[I].EntryPosition < SizeOf(Header))
-    or (Header.Entries[I].EntrySize < 0) then
+    if Header.Entries[I].Size < 0 then
+      Raise EErrorFmt(5509, ['Invalid lump size']);
+
+    if Header.Entries[I].Size = 0 then
+    begin
+      Log(LOG_WARNING, LoadStr1(5641), [FBsp.Name, Bsp1EntryNames[I]]);
+      Header.Entries[I].Position := SizeOf(Header);
+    end;
+
+    if Header.Entries[I].Position < SizeOf(Header) then
+      Raise EErrorFmt(5509, ['Invalid lump offset']);
+
+    if Header.Entries[I].Position + Header.Entries[I].Size > StreamSize then
       Raise EErrorFmt(5509, ['File truncated']);
 
-    F.Position := Origine + Header.Entries[I].EntryPosition;
-    Q := MakeFileQObject(F, Bsp1EntryNames[I], FBsp); //FIXME: Used Header.Entries[I].EntrySize as third argument to OpenFileObjectData.
+    F.Position := Origine + Header.Entries[I].Position;
+    Q := MakeFileQObject(F, Bsp1EntryNames[I], FBsp); //FIXME: Used Header.Entries[I].Size as third argument to OpenFileObjectData.
     {if (I=LUMP_TEXTURES) and (Header.Signature = cSignatureBspHL) then
       Q.SetSpecificsList.Values['TextureType']:='.wad3_C';}
     FBsp.SubElements.Add(Q);
-    LoadedItem(rf_Default, F, Q, Header.Entries[I].EntrySize);
+    LoadedItem(rf_Default, F, Q, Header.Entries[I].Size);
   end;
 end;
 
 procedure QBsp1FileHandler.SaveBsp(Info: TInfoEnreg1);
+const
+  Zero: LongInt = 0;
 var
  Header: TBsp1Header;
  Origine, Fin: TStreamPos;
- Zero: LongInt;
  Q: QObject;
  I: Integer;
 begin
@@ -433,15 +439,14 @@ begin
     for I:=0 to HEADER_LUMPS-1 do
     begin
       Q := FBsp.BspEntry[I];
-      Header.Entries[I].EntryPosition := Info.F.Position;
+      Header.Entries[I].Position := Info.F.Position;
 
       Q.SaveFile1(Info);   { save in non-QuArK file format }
 
-      Header.Entries[I].EntrySize := Info.F.Position - Header.Entries[I].EntryPosition;
-      Dec(Header.Entries[I].EntryPosition, Origine);
+      Header.Entries[I].Size := Info.F.Position - Header.Entries[I].Position;
+      Dec(Header.Entries[I].Position, Origine);
 
-      Zero:=0;
-      Info.F.WriteBuffer(Zero, (-Header.Entries[I].EntrySize) and 3);  { align to 4 bytes }
+      Info.F.WriteBuffer(Zero, (-Header.Entries[I].Size) and 3);  { align to 4 bytes }
 
       ProgressIndicatorIncrement;
     end;

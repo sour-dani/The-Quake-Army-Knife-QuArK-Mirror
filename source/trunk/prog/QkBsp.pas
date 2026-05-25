@@ -286,52 +286,52 @@ type
 
 (***********  Quake 1, Hexen II and Half-Life .bsp format  ***********)
 const
- cSignatureBspQ1H2 = $0000001D; //Quake-1/Hexen-2 BSP
- cSignatureBspHL   = $0000001E; //Half-Life BSP
- cSignatureBspQ64  = $51363420; //"Q64 " in reverse = Quake64 BSP
+  cSignatureBspQ1H2 = $0000001D; //Quake-1/Hexen-2 BSP
+  cSignatureBspHL   = $0000001E; //Half-Life BSP
+  cSignatureBspQ64  = $51363420; //"Q64 " in reverse = Quake64 BSP
 
 (***********  id Software .bsp format  ***********)
 const
- cSignatureBspID   = $50534249; //"IBSP" = id Software BSP
+  cSignatureBspID   = $50534249; //"IBSP" = id Software BSP
 
- //cVersionCoD2      = $00000004; //Call of Duty 2 .D3DBSP
- cVersionBspQ2     = $00000026; //Quake-2 .BSP
- cVersionBspDK     = $00000029; //Daikatana .BSP
- cVersionKMQuake2  = $0000002A; //KMQuake2 .BSP
- cVersionBspQ3     = $0000002E; //Quake-3 or STVEF or Nexuiz .BSP
- cVersionBspSOF    = $0000002E; //Soldier of Fortune .BSP //Raven Software didn't talk to id Software about claiming this version number, did they?
- cVersionBspQL     = $0000002F; //Quake Live .BSP
- cVersionBspRTCW   = $0000002F; //RTCW or Wolfenstein: ET .BSP //Gray Matter Interactive didn't talk to id Software about claiming this version number, did they?
- cVersionBspIG     = $00000030; //Iron Grip .BSP
- cVersionBspCoD1   = $0000003B; //Call of Duty 1 .BSP
- cVersionBspQuetoo = $00000045; //Quetoo .BSP //Wanna bet the Quetoo developer ALSO didn't talk to id Software about claiming this version number? Also, childish 69 humour detected.
+  //cVersionCoD2      = $00000004; //Call of Duty 2 .D3DBSP
+  cVersionBspQ2     = $00000026; //Quake-2 .BSP
+  cVersionBspDK     = $00000029; //Daikatana .BSP
+  cVersionKMQuake2  = $0000002A; //KMQuake2 .BSP
+  cVersionBspQ3     = $0000002E; //Quake-3 or STVEF or Nexuiz .BSP
+  cVersionBspSOF    = $0000002E; //Soldier of Fortune .BSP //Raven Software didn't talk to id Software about claiming this version number, did they?
+  cVersionBspQL     = $0000002F; //Quake Live .BSP
+  cVersionBspRTCW   = $0000002F; //RTCW or Wolfenstein: ET .BSP //Gray Matter Interactive didn't talk to id Software about claiming this version number, did they?
+  cVersionBspIG     = $00000030; //Iron Grip .BSP
+  cVersionBspCoD1   = $0000003B; //Call of Duty 1 .BSP
+  cVersionBspQuetoo = $00000045; //Quetoo .BSP //Wanna bet the Quetoo developer ALSO didn't talk to id Software about claiming this version number? Also, childish 69 humour detected.
 
 (***********  Raven Software/Ritual Entertainment .bsp format  ***********) //Erm, can you guys please NOT share BSP signatures?
 const
- cSignatureBspRaven = $50534252; //"RBSP" = Raven Software/Ritual Entertainment BSP
+  cSignatureBspRaven = $50534252; //"RBSP" = Raven Software/Ritual Entertainment BSP
 
- cVersionBspSin     = $00000001; //Sin .BSP //Somebody should be punished; SOF has the same Sig/Vers as Q3 (!!)
- cVersionBspJK2     = $00000001; //Jedi Knight 2 .BSP
- cVersionBspSof2    = $00000001; //Soldier of Fortune 2 .BSP
- cVersionBspJA      = $00000001; //Jedi Academy .BSP
+  cVersionBspSin     = $00000001; //Sin .BSP //Somebody should be punished; SOF has the same Sig/Vers as Q3 (!!)
+  cVersionBspJK2     = $00000001; //Jedi Knight 2 .BSP
+  cVersionBspSof2    = $00000001; //Soldier of Fortune 2 .BSP
+  cVersionBspJA      = $00000001; //Jedi Academy .BSP
 
 (***********  Respawn Entertainment .bsp format  ***********)
 const
- cSignatureBspRespawn = $50534272; //"rBSP" = Respawn Entertainment BSP
+  cSignatureBspRespawn = $50534272; //"rBSP" = Respawn Entertainment BSP
 
- cVersionBspTitanfall = $00000013; //Titanfall .BSP
+  cVersionBspTitanfall = $00000013; //Titanfall .BSP
 
 (***********  2015 .bsp format  ***********)
 const
- cSignatureBsp2015 = $35313032; //"2015" = 2015 Inc BSP
+  cSignatureBsp2015 = $35313032; //"2015" = 2015 Inc BSP
 
- cVersionBspMOHAA  = $00000013; //MOHAA
+  cVersionBspMOHAA  = $00000013; //MOHAA
 
 (***********  EALA .bsp format  ***********)
 const
- cSignatureBspEALA  = $414C4145; //"EALA" = Electronic Arts Los Angeles BSP
+  cSignatureBspEALA  = $414C4145; //"EALA" = Electronic Arts Los Angeles BSP
 
- cVersionBspMOHAAXP = $00000015; //MOHAA: Spearhead or MOHAA: Breakthrough .BSP
+  cVersionBspMOHAAXP = $00000015; //MOHAA: Spearhead or MOHAA: Breakthrough .BSP
 
 (***********  FAKK .bsp format  ***********)
 const
@@ -349,40 +349,52 @@ const
 
 (***********  Valve .bsp format  ***********)
 const
- cSignatureBspValve = $50534256; //"VBSP" = Valve LLC BSP
+  cSignatureBspValve = $50534256; //"VBSP" = Valve LLC BSP
 
- cVersionBspHL2     = $00000013; //Half-Life 2
- cVersionBspHL2HDR  = $00000014; //Half-Life 2 with HDR lighting; Left 4 Dead
- cVersionBspHL2V21  = $00000015; //Half-Life 2 with various changes; Left 4 Dead 2
- cVersionBspDMoMM   = $00040014; //Dark Messiah of Might and Magic
+  cVersionBspHL2     = $00000013; //Half-Life 2
+  cVersionBspHL2HDR  = $00000014; //Half-Life 2 with HDR lighting; Left 4 Dead
+  cVersionBspHL2V21  = $00000015; //Half-Life 2 with various changes; Left 4 Dead 2
+  cVersionBspDMoMM   = $00040014; //Dark Messiah of Might and Magic
 
 (***********  Other .bsp format  ***********)
 const
- cSignatureBspEF2    = $21324645; //"EF2!" = Star Trek: Elite Force 2
- cSignatureBspSpace  = $20505342; //"BSP " = ?
- cSignatureBspRMQ    = $42535032; //"BSP2" in reverse = Remake Quake (RMQ)
- cSignatureBsp2      = $32505342; //"BSP2" = ? //FIXME: https://quakewiki.org/wiki/BSP2
- //FIXME: "32bits instead of shorts for all but bbox sizes (which still use shorts)" See: https://github.com/sezero/quakespasm/blob/master/Quake/bspfile.h
- //FIXME: "32bits instead of shorts for everything (bboxes use floats)" See: https://github.com/sezero/quakespasm/blob/master/Quake/bspfile.h
+  cSignatureBspEF2    = $21324645; //"EF2!" = Star Trek: Elite Force 2
+  cSignatureBspSpace  = $20505342; //"BSP " = ?
+  cSignatureBspRMQ    = $42535032; //"BSP2" in reverse = Remake Quake (RMQ)
+  cSignatureBsp2      = $32505342; //"BSP2" = ? //FIXME: https://quakewiki.org/wiki/BSP2
+  //FIXME: "32bits instead of shorts for all but bbox sizes (which still use shorts)" See: https://github.com/sezero/quakespasm/blob/master/Quake/bspfile.h
+  //FIXME: "32bits instead of shorts for everything (bboxes use floats)" See: https://github.com/sezero/quakespasm/blob/master/Quake/bspfile.h
 
- cVersionBspEF2      = $00000014; //Star Trek: Elite Force 2
- cVersionBspOverDose = $00000055; //OverDose //FIXME: Untested
- cVersionBspQuakeEX  = $00063C60; //Quake Enhanced
+  cVersionBspEF2      = $00000014; //Star Trek: Elite Force 2
+  cVersionBspOverDose = $00000055; //OverDose //FIXME: Untested
+  cVersionBspQuakeEX  = $00063C60; //Quake Enhanced
+
+type
+  //The header at the start of id Software style BSP files
+  TBspHeader = packed record
+    Signature: LongInt;
+    Version: LongInt;
+  end;
+
+  TBspEntry = packed record //Lump
+    Position: LongInt; //Often called "fileofs"
+    Size: LongInt; //Often called "filelen"
+  end;
 
 (*const
   HEADER_LUMPS = 64; //From HL2's bspfile.h
 
 type
- THL2Lump_T = record
-      fileofs: LongInt;
-      filelen: LongInt;
+ THL2Lump_T = packed record
+      Position: LongInt; //Same as TBspEntry
+      Size: LongInt;     //Same as TBspEntry
       version: LongInt;
-      fourCC: array[1..4] of Char;
+      fourCC: array[1..4] of Byte;
  end;
 
- TBspHL2Header = record
-      Signature: LongInt;
-      Version: LongInt;
+ TBspHL2Header = packed record
+      Signature: LongInt; //Same as TBspHeader
+      Version: LongInt;   //Same as TBspHeader
       lumps: array[1..HEADER_LUMPS] of THL2Lump_T;
       mapRevision: LongInt;
  end;
@@ -617,14 +629,9 @@ begin
 end;
 
 function TryNumberOfLumps(F: TStream; FSize: TStreamPos; NumberOfLumps: Integer) : Boolean;
-type
- TBspEntries = record
-               EntryPosition: LongInt;
-               EntrySize: LongInt;
-              end;
 var
  Origine: TStreamPos;
- LumpHeader: TBspEntries;
+ LumpHeader: TBspEntry;
  LumpAfterHeader: Boolean;
  PositionAfterHeader: TStreamPos;
  I: Integer;
@@ -632,7 +639,7 @@ begin
   //A dirty check to see if the given number of lumps is correct. We try to read in that many lumps,
   //and verify their positions + sizes make sense. Then, we assume there's no padding between the header
   //and the first lump, and thus that there must be a lump starting right after the list of lumps.
-  PositionAfterHeader:=(2 * SizeOf(LongInt)) + (NumberOfLumps * SizeOf(LumpHeader));
+  PositionAfterHeader:=SizeOf(TBspHeader) + (NumberOfLumps * SizeOf(LumpHeader));
   if FSize < PositionAfterHeader then
   begin
     //There isn't even enough room for the list of lumps.
@@ -644,30 +651,30 @@ begin
   Origine:=F.Position;
   try
     //Jump the signature and version.
-    F.Seek(2 * SizeOf(LongInt), soCurrent);
+    F.Seek(SizeOf(TBspHeader), soCurrent);
 
     LumpAfterHeader:=False;
     for I:=1 to NumberOfLumps do
     begin
       F.ReadBuffer(LumpHeader, SizeOf(LumpHeader));
-      if LumpHeader.EntrySize = 0 then
+      if LumpHeader.Size = 0 then
       begin
         //This lump is empty; skip it.
         Continue;
       end;
-      if LumpHeader.EntryPosition < PositionAfterHeader then
+      if LumpHeader.Position < PositionAfterHeader then
       begin
         //This lump would start inside the BSP file header.
         Result:=False;
         Exit;
       end
-      else if LumpHeader.EntryPosition > FSize then
+      else if LumpHeader.Position > FSize then
       begin
         //This lump would be positioned beyond the end of the file.
         Result:=False;
         Exit;
       end
-      else if LumpHeader.EntryPosition = PositionAfterHeader then
+      else if LumpHeader.Position = PositionAfterHeader then
         LumpAfterHeader:=True;
     end;
 
@@ -680,24 +687,24 @@ begin
 end;
 
 procedure QBsp.LoadFile(F: TStream; StreamSize: TStreamPos);
-{ (Comment by Decker 2001-01-21)
- Loads 4 bytes of signature, and 4 bytes of version, to determine what type of
- .BSP file it is. Then calls a specialized function to load the actual .BSP file-data
-}
 var
- Signature, Version: LongInt;
+  BspHeader: TBspHeader;
 begin
   case ReadFormat of
     rf_Default: { as stand-alone file }
     begin
-      if StreamSize < SizeOf(Signature)+SizeOf(Version) then
+      //Read the signature and version of the BSP file, and determine what type of
+      //.BSP file it is. Then calls a specialized function to load the actual .BSP file-data
+      //Note that the Quake 1 format doesn't have a version number, but there should
+      //be lump entries anyway, so it's harmless.
+
+      if StreamSize < SizeOf(BspHeader) then
         Raise EError(5519);
 
-      F.ReadBuffer(Signature, SizeOf(Signature));
-      F.ReadBuffer(Version, SizeOf(Version));
-      F.Seek(-(SizeOf(Signature)+SizeOf(Version)), soCurrent);
+      F.ReadBuffer(BspHeader, SizeOf(BspHeader));
+      F.Seek(-SizeOf(BspHeader), soCurrent);
 
-      case Signature of
+      case BspHeader.Signature of
         cSignatureBspQ1H2: { Quake 1 or Hexen 2 }
         begin
           ObjectGameCode := mjQuake; //Will check for Hexen 2 after loading
@@ -725,7 +732,7 @@ begin
 
         cSignatureBspID: { id Software BSP format }
         begin
-          case Version of
+          case BspHeader.Version of
             cVersionBspQ2: { Quake 2 }
             begin
               if QBspFileHandler.BspType(CurrentGameMode)<>bspTypeQ2 then
@@ -820,13 +827,13 @@ begin
             end;
 
             else {version unknown}
-              Raise EErrorFmt(5572, [LoadName, 'id Software', Version]);
+              Raise EErrorFmt(5572, [LoadName, 'id Software', BspHeader.Version]);
           end;
         end;
 
         cSignatureBspRaven:
         begin
-          case Version of
+          case BspHeader.Version of
             cVersionBspSin{, cVersionBspJK2, cVersionBspSof2, cVersionBspJA}: { Sin or Jedi Knight II or Soldier of Fortune 2 or Jedi Academy }
             begin
               //Determine if this is a Sin map. //FIXME: Untested if this method doesn't false-positive!
@@ -855,13 +862,13 @@ begin
             end;
 
             else {version unknown}
-              Raise EErrorFmt(5572, [LoadName, 'Raven Software', Version]);
+              Raise EErrorFmt(5572, [LoadName, 'Raven Software', BspHeader.Version]);
           end;
         end;
 
         cSignatureBspRespawn:
         begin
-          case Version of
+          case BspHeader.Version of
             cVersionBspTitanfall: { Titanfall }
             begin
 (* Non functional
@@ -873,13 +880,13 @@ begin
             end;
 
             else {version unknown}
-              Raise EErrorFmt(5572, [LoadName, 'Respawn Entertainment', Version]);
+              Raise EErrorFmt(5572, [LoadName, 'Respawn Entertainment', BspHeader.Version]);
             end;
         end;
 
         cSignatureBsp2015:
         begin
-          case Version of
+          case BspHeader.Version of
             cVersionBspMOHAA: { Moh:aa }
             begin
 (* Non functional
@@ -891,13 +898,13 @@ begin
             end;
 
             else {version unknown}
-              Raise EErrorFmt(5572, [LoadName, '2015', Version]);
+              Raise EErrorFmt(5572, [LoadName, '2015', BspHeader.Version]);
             end;
         end;
 
         cSignatureBspEALA:
         begin
-          case Version of
+          case BspHeader.Version of
             cVersionBspMOHAAXP: { Moh:aa:s or Moh:aa:bt }
             begin
 (* Non functional
@@ -909,13 +916,13 @@ begin
             end;
 
             else {version unknown}
-              Raise EErrorFmt(5572, [LoadName, 'EALA', Version]);
+              Raise EErrorFmt(5572, [LoadName, 'EALA', BspHeader.Version]);
             end;
         end;
 
         cSignatureBspFAKK:
         begin
-          case Version of
+          case BspHeader.Version of
             cVersionBspFAKK: { Heavy Metal: FAKK2 }
             begin
 (* Currently not supported
@@ -937,13 +944,13 @@ begin
             end;
 
             else {version unknown}
-              Raise EErrorFmt(5572, [LoadName, 'FAKK', Version]);
+              Raise EErrorFmt(5572, [LoadName, 'FAKK', BspHeader.Version]);
             end;
         end;
 
         cSignatureBspQFusion:
         begin
-          case Version of
+          case BspHeader.Version of
             cVersionBspWarsow: { Warsow }
             begin
 (* Currently not supported
@@ -955,13 +962,13 @@ begin
             end;
 
             else {version unknown}
-              Raise EErrorFmt(5572, [LoadName, 'QFusion', Version]);
+              Raise EErrorFmt(5572, [LoadName, 'QFusion', BspHeader.Version]);
           end;
         end;
 
         cSignatureBspValve: { Valve BSP format }
         begin
-          case Version of
+          case BspHeader.Version of
             cVersionBspHL2: { Half-Life 2 }
             begin
 (*              ObjectGameCode := mjHL2;*)
@@ -987,33 +994,33 @@ begin
             end;
 
             else {version unknown}
-              Raise EErrorFmt(5572, [LoadName, 'Valve', Version]);
+              Raise EErrorFmt(5572, [LoadName, 'Valve', BspHeader.Version]);
           end;
         end;
 
         cSignatureBspEF2: { Star Trek: Elite Force 2 }
         begin
-          case Version of
+          case BspHeader.Version of
             cVersionBspEF2: { Star Trek: Elite Force 2 }
             begin
               Raise EErrorFmt(5602, [LoadName, 'Star Trek: Elite Force 2']);
             end;
 
             else {version unknown}
-              Raise EErrorFmt(5572, [LoadName, 'EF2', Version]);
+              Raise EErrorFmt(5572, [LoadName, 'EF2', BspHeader.Version]);
           end;
         end;
 
         cSignatureBspSpace: { BSP with a space format }
         begin
-          case Version of
+          case BspHeader.Version of
             cVersionBspOverDose: { OverDose }
             begin
               Raise EErrorFmt(5602, [LoadName, 'OverDose']);
             end;
 
             else {version unknown}
-              Raise EErrorFmt(5572, [LoadName, 'generic', Version]);
+              Raise EErrorFmt(5572, [LoadName, 'generic', BspHeader.Version]);
           end;
         end;
 
@@ -1025,14 +1032,14 @@ begin
 
         cSignatureBsp2: { BSP2 format }
         begin
-          case Version of
+          case BspHeader.Version of
             cVersionBspQuakeEX: { Quake Enhanced }
             begin
               Raise EErrorFmt(5602, [LoadName, 'Quake Enhanced']);
             end;
 
             else {version unknown}
-              Raise EErrorFmt(5572, [LoadName, 'Enhanced', Version]);
+              Raise EErrorFmt(5572, [LoadName, 'Enhanced', BspHeader.Version]);
           end;
         end;
 
@@ -1044,7 +1051,7 @@ begin
         end;
 
         else {signature unknown}
-          Raise EErrorFmt(5520, [LoadName, Signature]);
+          Raise EErrorFmt(5520, [LoadName, BspHeader.Signature]);
       end;
 
       case FFileHandler.BspType(NeedObjectGameCode) of

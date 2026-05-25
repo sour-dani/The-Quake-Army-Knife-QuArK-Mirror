@@ -314,13 +314,14 @@ begin
 end;
 
 procedure QWad.SaveFile(Info: TInfoEnreg1);
+const
+  Zero: LongInt = 0;
 var
  Header: TWadHeader;
  Entree: TWadFileRec;
  Repertoire: TMemoryStream;
  Origine, Fin: TStreamPos;
  I: Integer;
- Zero: LongInt;
  Q: QObject;
  Tex: QPixelSet;
  TexFile: QTextureFile;
@@ -389,7 +390,6 @@ begin
             Entree.Taille:=Entree.Taille+((-Entree.Taille) and 3); {Some weird fix to get the HalfLife colors right in Wally}
           Entree.UncompressedSize:=Entree.Taille;
           Dec(Entree.Position, Origine);
-          Zero:=0;
           F.WriteBuffer(Zero, (-Entree.Taille) and 3);  { align to 4 bytes }
           Repertoire.WriteBuffer(Entree, SizeOf(Entree));
           Inc(Header.NoOfFileEntries);

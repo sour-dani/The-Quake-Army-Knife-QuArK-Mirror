@@ -127,14 +127,10 @@ const
  HEADER_LUMPS = 17;
 
 type
- TBspEntries = record
-               EntryPosition: LongInt;
-               EntrySize: LongInt;
-              end;
- TBsp3Header = record
-           Signature: LongInt;
-           Version: LongInt;
-           Entries: array[0..HEADER_LUMPS-1] of TBspEntries;
+ TBsp3Header = packed record
+           Signature: LongInt; //Same as TBspHeader
+           Version: LongInt;   //Same as TBspHeader
+           Entries: array[0..HEADER_LUMPS-1] of TBspEntry;
           end;
 
 const
@@ -833,35 +829,34 @@ begin
 
   for I:=0 to HEADER_LUMPS-1 do
   begin
-    if Header.Entries[I].EntrySize < 0 then
-      Raise EErrorFmt(5509, ['Invalid entry size']);
+    if Header.Entries[I].Size < 0 then
+      Raise EErrorFmt(5509, ['Invalid lump size']);
 
-    if Header.Entries[I].EntrySize = 0 then
-      Header.Entries[I].EntryPosition := SizeOf(Header)
-    else
+    if Header.Entries[I].Size = 0 then
     begin
-      if Header.Entries[I].EntryPosition < SizeOf(Header) then
-        Raise EErrorFmt(5509, ['Invalid file offset']);
-
-      if Header.Entries[I].EntryPosition+Header.Entries[I].EntrySize > StreamSize then
-      begin
-        Header.Entries[I].EntrySize := StreamSize - Header.Entries[I].EntryPosition;
-        GlobalWarning(LoadStr1(5641));
-      end;
+      Log(LOG_WARNING, LoadStr1(5641), [FBsp.Name, Bsp3EntryNames[I]]);
+      Header.Entries[I].Position := SizeOf(Header);
     end;
 
-    F.Position:=Origine + Header.Entries[I].EntryPosition;
-    Q:=MakeFileQObject(F, Bsp3EntryNames[I], FBsp); //FIXME: Used Header.Entries[I].EntrySize as third argument to OpenFileObjectData.
+    if Header.Entries[I].Position < SizeOf(Header) then
+      Raise EErrorFmt(5509, ['Invalid lump offset']);
+
+    if Header.Entries[I].Position + Header.Entries[I].Size > StreamSize then
+      Raise EErrorFmt(5509, ['File truncated']);
+
+    F.Position:=Origine + Header.Entries[I].Position;
+    Q:=MakeFileQObject(F, Bsp3EntryNames[I], FBsp); //FIXME: Used Header.Entries[I].Size as third argument to OpenFileObjectData.
     FBsp.SubElements.Add(Q);
-    LoadedItem(rf_Default, F, Q, Header.Entries[I].EntrySize);
+    LoadedItem(rf_Default, F, Q, Header.Entries[I].Size);
   end;
 end;
 
 procedure QBsp3FileHandler.SaveBsp(Info: TInfoEnreg1);
+const
+  Zero: LongInt = 0;
 var
   Header: TBsp3Header;
   Origine, Fin: TStreamPos;
-  Zero: LongInt;
   Q: QObject;
   I: Integer;
 begin
@@ -874,15 +869,14 @@ begin
     for I:=0 to HEADER_LUMPS-1 do
     begin
       Q := FBsp.BspEntry[I];
-      Header.Entries[I].EntryPosition := Info.F.Position;
+      Header.Entries[I].Position := Info.F.Position;
 
       Q.SaveFile1(Info);   { save in non-QuArK file format }
 
-      Header.Entries[I].EntrySize := Info.F.Position - Header.Entries[I].EntryPosition;
-      Dec(Header.Entries[I].EntryPosition, Origine);
+      Header.Entries[I].Size := Info.F.Position - Header.Entries[I].Position;
+      Dec(Header.Entries[I].Position, Origine);
 
-      Zero:=0;
-      Info.F.WriteBuffer(Zero, (-Header.Entries[I].EntrySize) and 3);  { align to 4 bytes }
+      Info.F.WriteBuffer(Zero, (-Header.Entries[I].Size) and 3);  { align to 4 bytes }
 
       ProgressIndicatorIncrement;
     end;

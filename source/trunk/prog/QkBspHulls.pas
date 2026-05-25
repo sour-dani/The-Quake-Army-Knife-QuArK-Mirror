@@ -88,7 +88,7 @@ type
                Side: SmallInt;
                LEdge_id: LongInt;
                LEdge_num, TexInfo_id: SmallInt;
-               LightStyles: array[0..15] of Byte;
+               LightStyles: array[0..15] of Byte; //@@@MAXLIGHTMAPS
                LightMapOffset: LongInt;
                LightInfo: LongInt;
               end;

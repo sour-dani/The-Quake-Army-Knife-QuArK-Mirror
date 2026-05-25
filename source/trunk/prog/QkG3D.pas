@@ -88,12 +88,12 @@ const
  HEADER_CHUNKS = 25;
 
 type
- TGBSP_Chunk = record
+ TGBSP_Chunk = packed record
                 xType: LongInt;
                 Size: LongInt;
                 Elements: LongInt;
                end;
- TGBSP_Header = record
+ TGBSP_Header = packed record
                  TAG: array[0..4] of Byte;	// 'G','B','S','P','0'
                  Version: LongInt;
                  BSPTime: SYSTEMTIME;
