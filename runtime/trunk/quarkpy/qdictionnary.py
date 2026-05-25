@@ -909,7 +909,7 @@ Strings = {
     5638: "The hull number %d contains %d invalid face(s).\n%s",
     5639: "No texture number %d",
     5640: "Cannot edit BSP faces (yet).",
-    5641: "The BSP structure seems a bit strange. Be sure the file didn't get truncated.",
+    5641: "BSP file '%s': %s lump has zero size.",
     5642: "Save changes in the configuration ?",
     5643: "Load-time include command '%s' : not found",
     5644: "Unknown file extension '%s'",
