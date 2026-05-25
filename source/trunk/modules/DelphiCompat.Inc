@@ -22,46 +22,46 @@ https://quark.sourceforge.io/ - Contact information in AUTHORS.TXT
 {$INCLUDE DelphiVer.inc}
 
 {$IFNDEF FPC}
-{$IFNDEF Delphi2005orNewerCompiler}
-  {$DEFINE CPU386}
-{$ENDIF}
+  {$IFNDEF Delphi2005orNewerCompiler}
+    {$DEFINE CPU386}
+  {$ENDIF}
 
-{$IFNDEF DelphiXE2orNewerCompiler}
-  {$DEFINE CPUX86}
-{$ENDIF}
+  {$IFNDEF DelphiXE2orNewerCompiler}
+    {$DEFINE CPUX86}
+  {$ENDIF}
 
-{$IFNDEF DelphiXE8orNewerCompiler}
-  {$IFDEF CPUX64}
-    {$DEFINE CPU64BITS}
-  {$ELSE} //CPUX86 or CPUARM
-    {$IFDEF CompiledWithDelphi1}
-      {$DEFINE CPU16BITS}
-    {$ELSE}
-      {$DEFINE CPU32BITS}
+  {$IFNDEF DelphiXE8orNewerCompiler}
+    {$IFDEF CPUX64}
+      {$DEFINE CPU64BITS}
+    {$ELSE} //CPUX86 or CPUARM
+      {$IFDEF CompiledWithDelphi1}
+        {$DEFINE CPU16BITS}
+      {$ELSE}
+        {$DEFINE CPU32BITS}
+      {$ENDIF}
+    {$ENDIF}
+
+    {$IFDEF CPUARM}
+      {$IFDEF CPU64BITS}
+        {$DEFINE CPUARM64}
+      {$ELSE} //CPU32BITS
+        {$DEFINE CPUARM32}
+      {$ENDIF}
     {$ENDIF}
   {$ENDIF}
 
-  {$IFDEF CPUARM}
-    {$IFDEF CPU64BITS}
-      {$DEFINE CPUARM64}
-    {$ELSE} //CPU32BITS
-      {$DEFINE CPUARM32}
+  {$IFNDEF Delphi6orNewerCompiler}
+    //Delphi 5 and earlier don't support other platforms, and they don't define this conditional.
+    {$DEFINE MSWINDOWS}
+  {$ENDIF}
+
+  {$IFDEF MSWINDOWS}
+    {$IFNDEF Delphi2009orNewerCompiler}
+      {$IFDEF CompiledWithDelphi1}
+        {$DEFINE WIN16}
+      {$ELSE}
+        {$DEFINE WIN32}
+      {$ENDIF}
     {$ENDIF}
   {$ENDIF}
-{$ENDIF}
-
-{$IFNDEF Delphi6orNewerCompiler}
-  //Delphi 5 and earlier don't support other platforms, so they don't define this conditional.
-  {$DEFINE MSWINDOWS}
-{$ENDIF}
-
-{$IFDEF MSWINDOWS}
-  {$IFNDEF Delphi2009orNewerCompiler}
-    {$IFDEF CompiledWithDelphi1}
-      {$DEFINE WIN16}
-    {$ELSE}
-      {$DEFINE WIN32}
-    {$ENDIF}
-  {$ENDIF}
-{$ENDIF}
 {$ENDIF}
