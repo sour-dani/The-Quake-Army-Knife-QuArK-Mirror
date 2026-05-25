@@ -67,7 +67,7 @@ type
       FChecksum   : Integer;
       FCurrent    : PArithByte;
       FLog        : TAbLogger;
-      FPartSize   : Integer;
+      FPartSize   : Int64;
       FSlideCount : integer;
       FStream     : TStream;
       FStreamPos  : Integer;
@@ -81,15 +81,15 @@ type
       constructor Create(aStream       : TStream;
                          aUseDeflate64 : boolean;
                          aUseCRC32     : boolean;
-                         aPartSize     : Integer;
+                         aPartSize     : Int64;
                          aTestOnly     : boolean;
                          aLog          : TAbLogger);
       destructor Destroy; override;
 
-      procedure AddBuffer(var aBuffer; aCount : integer);
+      procedure AddBuffer(var aBuffer; aCount : NativeInt);
       procedure AddLiteral(aCh : ArithByte);
       procedure AddLenDist(aLen : integer; aDist : integer);
-      function Position : Integer;
+      function Position : Int64;
 
       property Checksum : Integer read swGetChecksum;
       property Log : TAbLogger read FLog;
@@ -98,7 +98,7 @@ type
 implementation
 
 uses
-  SysUtils;
+  SysUtils, AbUtils;
 
 {Notes:
         Meaning of the internal pointers:
@@ -117,7 +117,7 @@ uses
 constructor TAbDfOutputWindow.Create(aStream       : TStream;
                                      aUseDeflate64 : boolean;
                                      aUseCRC32     : boolean;
-                                     aPartSize     : Integer;
+                                     aPartSize     : Int64;
                                      aTestOnly     : boolean;
                                      aLog          : TAbLogger);
 var
@@ -174,10 +174,10 @@ begin
   inherited Destroy;
 end;
 {--------}
-procedure TAbDfOutputWindow.AddBuffer(var aBuffer; aCount : integer);
+procedure TAbDfOutputWindow.AddBuffer(var aBuffer; aCount : NativeInt);
 var
   Buffer : PByte;
-  BytesToWrite : integer;
+  BytesToWrite : NativeInt;
 begin
   {if we've advanced to the point when we need to write, do so}
   if (FCurrent >= FWritePoint) then
@@ -313,7 +313,7 @@ begin
     swWriteToStream(false);
 end;
 {--------}
-function TAbDfOutputWindow.Position : Integer;
+function TAbDfOutputWindow.Position : Int64;
 begin
   if FTestOnly then
     Result := FStreamPos + (FCurrent - FBuffer)
@@ -345,9 +345,9 @@ begin
    updating the checksum}
   if aFlush then begin
     if FUseCRC32 then
-      AbUpdateCRCBuffer(FChecksum, FBuffer^, FCurrent - FBuffer)
+      AbUpdateCRCBuffer(FChecksum, FBuffer^, AbToInt32(FCurrent - FBuffer))
     else
-      AbUpdateAdlerBuffer(FChecksum, FBuffer^, FCurrent - FBuffer);
+      AbUpdateAdlerBuffer(FChecksum, FBuffer^, AbToInt32(FCurrent - FBuffer));
     if FTestOnly then
       inc(FStreamPos, FCurrent - FBuffer)
     else

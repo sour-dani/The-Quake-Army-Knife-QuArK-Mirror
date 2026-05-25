@@ -63,7 +63,7 @@ type
 
 
 {===helper routines==================================================}
-function IsCalcFeasible(aCount      : integer;
+function IsCalcFeasible(aCount      : NativeInt;
                         aMaxCodeLen : integer) : boolean;
 
 begin
@@ -128,9 +128,13 @@ procedure GenerateCodeLengths(aMaxCodeLen  : integer;
                               aStartInx    : integer;
                               aLog         : TAbLogger);
 var
-  i   : integer;
+  {$IF COMPILERVERSION < 20}
+  i   : Integer;
+  {$ELSE}
+  i   : NativeInt;
+  {$IFEND}
   Bit : integer;
-  WeightCount    : integer;
+  WeightCount    : NativeInt;
   OrigList       : PPkgNodeList;
   OrigListCount  : integer;
   MergeList      : PPkgNodeList;
@@ -268,7 +272,7 @@ begin
         Accumulate(Node);
     end;
     for i := 0 to pred(OrigListCount) do
-      aCodeLengths[aStartInx + integer(OrigList^[i].pnRight)] :=
+      aCodeLengths[aStartInx + NativeInt(OrigList^[i].pnRight)] :=
           OrigList^[i].pnCount;
   finally
     FreeMem(OrigList);

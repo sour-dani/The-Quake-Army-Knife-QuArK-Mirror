@@ -259,6 +259,27 @@ const
     {-Sets platform-native file attributes (DOS attr or Unix mode)}
   function AbFileGetSize(const aFileName : string) : Int64;
 
+  function AbToByte(const AValue: Byte): Byte; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+  function AbToByte(const AValue: Int16): Byte; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+  function AbToByte(const AValue: Int32): Byte; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+  function AbToByte(const AValue: Int64): Byte; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+  function AbToByte(const AValue: UInt16): Byte; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+
+  function AbToWord(const AValue: Int32): Word; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+  function AbToWord(const AValue: Int64): Word; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+  function AbToWord(const AValue: Word): Word; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+
+  function AbToSmallint(const AValue: Int32): Smallint; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+  function AbToSmallint(const AValue: Int64): Smallint; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+  function AbToSmallint(const AValue: Smallint): Smallint; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+
+  function AbToInt32(const AValue: Int32): Int32; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+  function AbToInt32(const AValue: Int64): Int32; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+
+  function AbToUInt32(const AValue: Int64): UInt32; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+  function AbToUInt32(const AValue: Int32): UInt32; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+  function AbToUInt32(const AValue: UInt32): UInt32; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+
 type
   TAbAttrExRec = record
     Time: TDateTime;
@@ -286,8 +307,8 @@ const
   MinutesInDay    =  1440;  {Number of minutes in a day}
 
 
-  function AbUnixTimeToLocalDateTime(UnixTime : Integer) : TDateTime;
-  function AbLocalDateTimeToUnixTime(DateTime : TDateTime) : Integer;
+  function AbUnixTimeToLocalDateTime(UnixTime : Int64) : TDateTime;
+  function AbLocalDateTimeToUnixTime(DateTime : TDateTime) : Int64;
 
   function AbDosFileDateToDateTime(FileDate, FileTime : Word) : TDateTime;
   function AbDateTimeToDosFileDate(Value : TDateTime) : Integer;
@@ -713,7 +734,7 @@ procedure AbIncFilename( var Filename : string; Value : Word );
 { place value at the end of filename, e.g. Files.C04 }
 var
   Ext : string;
-  I : Word;
+  I : Integer;
 begin
   I := (Value + 1) mod 100;
   Ext := ExtractFileExt(Filename);
@@ -864,7 +885,7 @@ begin
   else if V1 >= V2 then
     Result := 100
   else
-    Result := (V1 * 100) div V2;
+    Result := AbToByte((V1 * 100) div V2);
 end;
 { -------------------------------------------------------------------------- }
 (*procedure AbStripDots( var FName : string );
@@ -938,7 +959,7 @@ end;
 function AbCRC32Of(const aValue: TBytes) : Integer;
 begin
   Result := -1;
-  AbUpdateCRC(Result, aValue[0], Length(aValue));
+  AbUpdateCRC(Result, aValue[0], AbToInt32(Length(aValue)));
   Result := not Result;
 end;
 { -------------------------------------------------------------------------- }
@@ -986,20 +1007,20 @@ Result := Result * SecondsInMinute;
 end;
 {$ENDIF}
 { -------------------------------------------------------------------------- }
-function AbUnixTimeToLocalDateTime(UnixTime : Integer) : TDateTime;
+function AbUnixTimeToLocalDateTime(UnixTime : Int64) : TDateTime;
 { convert UTC unix date to Delphi TDateTime in local timezone }
 {$IFDEF MSWINDOWS}
 var
   Hrs, Mins, Secs : Word;
-  TodaysSecs : Integer;
+  TodaysSecs : Int64;
   Time: TDateTime;
 begin
   UnixTime := UnixTime - AbOffsetFromUTC;
   TodaysSecs := UnixTime mod SecondsInDay;
-  Hrs := TodaysSecs div SecondsInHour;
+  Hrs := AbToWord(TodaysSecs div SecondsInHour);
   TodaysSecs := TodaysSecs - (Hrs * SecondsInHour);
-  Mins := TodaysSecs div SecondsInMinute;
-  Secs := TodaysSecs - (Mins * SecondsInMinute);
+  Mins := AbToWord(TodaysSecs div SecondsInMinute);
+  Secs := AbToWord(TodaysSecs - (Mins * SecondsInMinute));
 
   if TryEncodeTime(Hrs, Mins, Secs, 0, Time) then
     Result := Unix0Date + (UnixTime div SecondsInDay) + Time
@@ -1013,7 +1034,7 @@ begin
 end;
 
 { -------------------------------------------------------------------------- }
-function AbLocalDateTimeToUnixTime(DateTime : TDateTime) : Integer;
+function AbLocalDateTimeToUnixTime(DateTime : TDateTime) : Int64;
 { convert local Delphi TDateTime to UTC unix date }
 {$IFDEF MSWINDOWS}
 var
@@ -1288,6 +1309,86 @@ begin
   TestLabel := Format(AB_SPAN_VOL_LABEL, [VolNo]);
   VolLabel := UpperCase(AbGetVolumeLabel(Drive));
   Result := VolLabel = TestLabel;
+end;
+
+function AbToByte(const AValue: Byte): Byte; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+begin
+  Result := AValue;
+end;
+
+function AbToByte(const AValue: Int16): Byte;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+begin
+  Result := Byte(AValue);
+end;
+
+function AbToByte(const AValue: Int32): Byte;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+begin
+  Result := Byte(AValue);
+end;
+
+function AbToByte(const AValue: Int64): Byte;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+begin
+  Result := Byte(AValue);
+end;
+
+function AbToByte(const AValue: UInt16): Byte;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+begin
+  Result := Byte(AValue);
+end;
+
+function AbToWord(const AValue: Int32): Word;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+begin
+  Result := Word(AValue);
+end;
+
+function AbToWord(const AValue: Int64): Word;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+begin
+  Result := Word(AValue);
+end;
+
+function AbToWord(const AValue: Word): Word; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+begin
+  Result := AValue;
+end;
+
+function AbToSmallint(const AValue: Int32): Smallint; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+begin
+  Result := Smallint(AValue);
+end;
+
+function AbToSmallint(const AValue: Int64): Smallint; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+begin
+  Result := Smallint(AValue);
+end;
+
+function AbToSmallint(const AValue: Smallint): Smallint; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+begin
+  Result := AValue;
+end;
+
+function AbToInt32(const AValue: Int32): Int32; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+begin
+  Result := AValue;
+end;
+
+function AbToInt32(const AValue: Int64): Int32; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+begin
+  Result := Int32(AValue);
+end;
+
+function AbToUInt32(const AValue: Int64): UInt32; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+begin
+  Result := UInt32(AValue);
+end;
+
+function AbToUInt32(const AValue: Int32): UInt32; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+begin
+  Result := UInt32(AValue);
+end;
+
+function AbToUInt32(const AValue: UInt32): UInt32; overload;{$IF COMPILERVERSION > 16} inline;{$IFEND}
+begin
+  Result := AValue;
 end;
 
 end.

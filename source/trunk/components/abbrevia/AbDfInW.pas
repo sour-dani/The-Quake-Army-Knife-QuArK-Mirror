@@ -52,6 +52,8 @@ type
     maLen  : integer;
     maDist : integer;
     maLit  : ArithByte;
+  (*public
+    class function Create: TAbDfMatch; static;*)
   end;
 
 type
@@ -82,7 +84,7 @@ type
       FUseCRC32     : boolean;
       FUseDeflate64 : boolean;
       FWinMask      : integer;
-      FWinSize      : integer;
+      FWinSize      : NativeInt;
     protected
       function iwGetChecksum : Integer;
       procedure iwReadFromStream;
@@ -104,9 +106,9 @@ type
                             var aMatch       : TAbDfMatch;
                           const aPrevMatch   : TAbDfMatch) : boolean;
       function GetNextChar : ArithByte;
-      function GetNextKeyLength : integer;
+      function GetNextKeyLength : Int64;
       function Position : int64;
-      procedure ReadBuffer(var aBuffer; aCount  : Integer;
+      procedure ReadBuffer(var aBuffer; aCount  : NativeInt;
                                         aOffset : Int64);
 
       property ChainLen : integer read FChainLen write FChainLen;
@@ -118,7 +120,7 @@ type
 implementation
 
 uses
-  SysUtils;
+  SysUtils, AbUtils;
 
 {Notes:
         Meaning of the internal pointers:
@@ -230,7 +232,7 @@ procedure TAbDfInputWindow.Advance(aCount     : integer;
                                    aHashCount : integer);
 var
   i : integer;
-  ByteCount : integer;
+  ByteCount : NativeInt;
   Percent   : integer;
   HashChains: PAbPointerList;
   HashHeads : PAbPointerList;
@@ -262,7 +264,7 @@ begin
     HashInx :=
        ((HashInx shl c_HashShift) xor Integer(CurPos[2])) and
        c_HashMask;
-    HashChains^[Integer(CurPos) and FWinMask] :=
+    HashChains^[NativeInt(CurPos) and FWinMask] :=
        HashHeads^[HashInx];
     HashHeads^[HashInx] := CurPos;
     inc(CurPos);
@@ -291,7 +293,11 @@ begin
     FAdvanceStart := true;
     {note: we can't advance automatically aCount bytes here, we need
            to calculate the actual count}
+    {$IF COMPILERVERSION < 20}
+    ByteCount := (CurPos - Integer(FWinSize)) - FStart;
+    {$ELSE}
     ByteCount := (CurPos - FWinSize) - FStart;
+    {$IFEND}
     inc(FStart, ByteCount);
     inc(FStartOffset, ByteCount);
   end;
@@ -300,7 +306,7 @@ begin
   if Assigned(FOnProgress) then begin
     inc(FBytesUsed, aCount);
     if ((FBytesUsed and $FFF) = 0) then begin
-      Percent := Round((100.0 * FBytesUsed) / FStreamSize);
+      Percent := AbToInt32(Round((100.0 * FBytesUsed) / FStreamSize));
       FOnProgress(Percent);
     end;
   end;
@@ -337,7 +343,7 @@ begin
   if Assigned(FOnProgress) then begin
     inc(FBytesUsed, 1);
     if ((FBytesUsed and $FFF) = 0) then begin
-      Percent := Round((100.0 * FBytesUsed) / FStreamSize);
+      Percent := AbToInt32(Round((100.0 * FBytesUsed) / FStreamSize));
       FOnProgress(Percent);
     end;
   end;
@@ -369,17 +375,17 @@ function TAbDfInputWindow.FindLongestMatch(aAmpleLength : integer;
 {$ENDIF}
 type
   PInteger = ^Integer;
-  PWord    = ^word;
+  PWord    = ^Word;
 var
-  MaxLen     : Integer;
-  MaxDist    : Integer;
-  MaxMatch   : integer;
-  ChainLen   : integer;
-  PrevStrPos : PArithByte;
-  CurPos     : PArithByte;
+  MaxLen      : Integer;
+  MaxDist     : Integer;
+  MaxMatch    : Integer;
+  ChainLen    : Integer;
+  PrevStrPos  : PArithByte;
+  CurPos      : PArithByte;
   {$IFDEF UseGreedyAsm}
-  CurWord    : word;
-  MaxWord    : word;
+  CurWord     : Word;
+  MaxWord     : Word;
   {$ENDIF}
   {$IFDEF UseGreedyPascal}
   Len        : Integer;
@@ -407,10 +413,10 @@ begin
 
   {update the chain itself: set the entry for this position equal to
    the previous string position}
-  FHashChains^[Integer(CurPos) and FWinMask] := PrevStrPos;
+  FHashChains^[NativeInt(CurPos) and FWinMask] := PrevStrPos;
 
   {calculate the maximum match we could do at this position}
-  MaxMatch := (FLookAheadEnd - CurPos);
+  MaxMatch := AbToInt32(FLookAheadEnd - CurPos);
   if (MaxMatch > FMaxMatchLen) then
     MaxMatch := FMaxMatchLen;
   if (aAmpleLength > MaxMatch) then
@@ -433,11 +439,11 @@ begin
    match we have to better}
   {$IFDEF UseGreedyAsm}
   CurWord := PWord(CurPos)^;
-  MaxWord := PWord(CurPos + pred(MaxLen))^;
+  MaxWord := PWord(CurPos + Pred(MaxLen))^;
   {$ENDIF}
   {$IFDEF UseGreedyPascal}
   CurCh := CurPos^;
-  MaxCh := (CurPos + pred(MaxLen))^;
+  MaxCh := (CurPos + Pred(MaxLen))^;
   {$ENDIF}
 
   {set the chain length to search based on the current maximum match
@@ -566,11 +572,12 @@ begin
 
   {$IFDEF UseGreedyPascal}
   {for all possible hash nodes in the chain...}
-  while (FStart <= PrevStrPos) and (PrevStrPos < CurPos) do begin
-
+  while (PrevStrPos <> nil) and (FStart <= PrevStrPos) and (PrevStrPos < CurPos) do
+  begin
     {if the initial and maximal characters match...}
     if (PrevStrPos[0] = CurCh) and
-       (PrevStrPos[pred(MaxLen)] = MaxCh) then begin
+       (PrevStrPos[Pred(MaxLen)] = MaxCh) then
+    begin
 
       {compare more characters}
       Len := 1;
@@ -578,43 +585,47 @@ begin
       MatchStr := PrevStrPos + 1;
 
       {compare away, but don't go above the maximum length}
-      while (Len < MaxMatch) and (MatchStr^ = CurrentCh^) do begin
-        inc(CurrentCh);
-        inc(MatchStr);
-        inc(Len);
+      while (Len < MaxMatch) and (MatchStr^ = CurrentCh^) do
+      begin
+        Inc(CurrentCh);
+        Inc(MatchStr);
+        Inc(Len);
       end;
 
       {have we reached another maximum for the length?}
-      if (Len > MaxLen) then begin
+      if (Len > MaxLen) then
+      begin
         MaxLen := Len;
         {calculate the distance}
-        MaxDist := CurPos - PrevStrPos;
-        MaxCh := CurPos[pred(MaxLen)];
+        MaxDist := AbToInt32(CurPos - PrevStrPos);
+        MaxCh := CurPos[Pred(MaxLen)];
 
         {is the new best length ample enough?}
-        if MaxLen >= aAmpleLength then
+        if MaxDist >= aAmpleLength then
           Break;
       end;
     end;
 
     {have we reached the end of this chain?}
-    dec(ChainLen);
-    if (ChainLen = 0) then
+    Dec(ChainLen);
+    if ChainLen = 0 then
       Break;
 
     {otherwise move onto the next position}
-    PrevStrPos := FHashChains^[Integer(PrevStrPos) and FWinMask];
+    PrevStrPos := FHashChains^[NativeInt(PrevStrPos) and FWinMask];
   end;
   {$ENDIF}
 
   {based on the results of our investigation, return the match values}
-  if (MaxLen < 3) or (MaxLen <= aPrevMatch.maLen) then begin
-    Result := false;
+  if (MaxLen < 3) or (MaxLen <= aPrevMatch.maLen) then
+  begin
+    Result := False;
     aMatch.maLen := 0;
     aMatch.maLit := CurPos^;
   end
-  else begin
-    Result := true;
+  else
+  begin
+    Result := True;
     aMatch.maLen := MaxLen;
     aMatch.maDist := MaxDist;
     aMatch.maLit := CurPos^; { just in case...}
@@ -627,7 +638,7 @@ begin
   inc(FCurrent);
 end;
 {--------}
-function TAbDfInputWindow.GetNextKeyLength : integer;
+function TAbDfInputWindow.GetNextKeyLength : Int64;
 begin
   Result := FLookAheadEnd - FCurrent;
   if (Result > 3) then
@@ -647,12 +658,12 @@ end;
 {--------}
 procedure TAbDfInputWindow.iwReadFromStream;
 var
-  BytesRead   : Integer;
-  BytesToRead : Integer;
+  BytesRead   : Int64;
+  BytesToRead : Int64;
 begin
   {read some more data into the look ahead zone}
   BytesToRead := FBufferEnd - FLookAheadEnd;
-  BytesRead := FStream.Read(FLookAheadEnd^, BytesToRead);
+  BytesRead := FStream.Read(FLookAheadEnd^, NativeInt(BytesToRead));
 
   {if nothing was read, we reached the end of the stream; hence
    there's no more need to slide the window since we have all the
@@ -664,9 +675,9 @@ begin
   else begin
     {update the checksum}
     if FUseCRC32 then
-      AbUpdateCRCBuffer(FChecksum, FLookAheadEnd^, BytesRead)
+      AbUpdateCRCBuffer(FChecksum, FLookAheadEnd^, AbToInt32(BytesRead))
     else
-      AbUpdateAdlerBuffer(FChecksum, FLookAheadEnd^, BytesRead);
+      AbUpdateAdlerBuffer(FChecksum, FLookAheadEnd^, AbToInt32(BytesRead));
 
     {reposition the pointer for the end of the lookahead area}
     inc(FLookAheadEnd, BytesRead);
@@ -704,14 +715,18 @@ procedure TAbDfInputWindow.iwSlide;
 type
   PNativeInt = ^NativeInt;
 var
-  i : integer;
-  ByteCount : integer;
+  {$IF COMPILERVERSION < 20}
+  i : Integer;
+  {$ELSE}
+  i : NativeInt;
+  {$IFEND}
+  ByteCount : Int64;
   Buffer    : NativeInt;
   ListItem  : PNativeInt;
 begin
   {move current valid data back to the start of the buffer}
   ByteCount := FLookAheadEnd - FStart;
-  Move(FStart^, FBuffer^, ByteCount);
+  Move(FStart^, FBuffer^, NativeInt(ByteCount));
 
   {reset the various pointers}
   ByteCount := FStart - FBuffer;
@@ -747,7 +762,7 @@ begin
   Result := (FCurrent - FStart) + FStartOffset;
 end;
 {--------}
-procedure TAbDfInputWindow.ReadBuffer(var aBuffer; aCount  : Integer;
+procedure TAbDfInputWindow.ReadBuffer(var aBuffer; aCount  : NativeInt;
                                                    aOffset : Int64);
 var
   CurPos : Int64;              
@@ -758,6 +773,13 @@ begin
   FStream.Seek(CurPos, soBeginning);
 end;
 {====================================================================}
+
+{ TAbDfMatch }
+
+(*class function TAbDfMatch.Create: TAbDfMatch;
+begin
+  FillChar(Result, SizeOf(Result), 0);
+end;*)
 
 end.
 

@@ -32,7 +32,13 @@ uses
   Types;
 
 type
+  {$IF COMPILERVERSION < 20}
+  Int16  = SmallInt;
+  UInt16 = Word;
+
+  Int32  = LongInt;
   UInt32 = LongWord;
+  {$IFEND}
 
   TBytes = TByteDynArray;
 

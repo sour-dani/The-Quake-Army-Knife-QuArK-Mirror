@@ -225,7 +225,7 @@ procedure AbortProgress;
 procedure AbUpdateAdlerBuffer(var aAdler : Integer;
                               var aBuffer; aCount : integer);
 procedure AbUpdateCRCBuffer(var aCRC : Integer;
-                            var aBuffer; aCount : integer);
+                            var aBuffer; aCount : Int64);
 
 
 implementation
@@ -457,8 +457,8 @@ end;
 {--------}
 function TAbLogger.logWriteBuffer : boolean;
 var
-  BytesToWrite : Integer;
-  BytesWritten : Integer;
+  BytesToWrite : NativeInt;
+  BytesWritten : NativeInt;
 begin
   BytesToWrite := FCurPos - FBuffer;
   BytesWritten := FStream.Write(FBuffer^, BytesToWrite);
@@ -477,8 +477,11 @@ end;
 {--------}
 function TAbLogger.Read(var Buffer; Count : Longint) : Longint;
 begin
+{$IFDEF ASSERTIONS}
   Assert(false, 'TAbLogger.Read: loggers are write-only, no reading allowed');
+{$ELSE}
   Result := 0;
+{$ENDIF}
 end;
 {--------}
 function TAbLogger.Seek(const Offset : Int64; Origin : TSeekOrigin) : Int64;
@@ -499,15 +502,18 @@ begin
       end;
   end;
 
+{$IFDEF ASSERTIONS}
   Assert(false, 'TAbLogger.Seek: loggers are write-only, no seeking allowed');
+{$ELSE}
   Result := 0;
+{$ENDIF}
 end;
 {--------}
 function TAbLogger.Write(const Buffer; Count : Longint) : Longint;
 var
   UserBuf      : PByte;
   BytesToGo    : Integer;
-  BytesToWrite : Integer;
+  BytesToWrite : NativeInt;
 begin
   {reference the user's buffer as a PChar}
   UserBuf := @Buffer;
@@ -651,9 +657,13 @@ begin
 end;
 {--------}
 procedure AbUpdateCRCBuffer(var aCRC : Integer;
-                            var aBuffer; aCount : integer);
+                            var aBuffer; aCount : Int64);
 var
-  i      : integer;
+  {$IF COMPILERVERSION < 20}
+  i      : Integer;
+  {$ELSE}
+  i      : Int64;
+  {$IFEND}
   CRC    : UInt32;
   Buffer : PByte;
 begin

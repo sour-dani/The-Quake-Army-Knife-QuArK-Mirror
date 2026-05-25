@@ -666,8 +666,8 @@ var
   IsFinalBlock : boolean;
   BlockType    : integer;
   TestOnly     : boolean;
-  SourceStartPos : Integer;
-  DestStartPos   : Integer;
+  SourceStartPos : Int64;
+  DestStartPos   : Int64;
   {$IFDEF UseLogging}
   StartPosn    : Integer;
   {$ENDIF}
@@ -676,11 +676,8 @@ begin
   SourceStartPos := 0;
   DestStartPos := 0;
   TestOnly := False;
-  {$ENDIF}
-
-{$IF COMPILERVERSION < 32}
   Result := 0;
-{$IFEND}
+  {$ENDIF}
 
   {$IFDEF UseLogging}
   StartPosn := 0;
