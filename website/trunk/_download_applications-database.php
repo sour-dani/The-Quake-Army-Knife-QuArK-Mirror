@@ -65,12 +65,13 @@ global $Applications;
 $Applications = array();
 
 $Applications[] = new cApplication('QuakeMap 1.0', '10', '#308030', False, True, False,
-                                   'Freeware', 0, NULL
+                                   'Freeware', mktime(0, 0, 0, 8, 15, 1995), NULL,
+                                   array($downloadroot.'oldies/quakemap.zip')
                                   );
 $Applications[] = new cApplication('QuakeMap 1.1', '11', '#308030', True, True, False,
-                                   'Freeware', 0, NULL
+                                   'Freeware', mktime(0, 0, 0, 9, 2, 1995), NULL,
+                                   array($downloadroot.'oldies/quakemap11.zip')
                                   );
-#One of the QuakeMap 1.x releases: 1996-08-16 or 1996-08-15
 #FIXME: Were there other 1.x releases?
 
 $Applications[] = new cApplication('QuakeMap 2.0 BETA first release', '20b1', '#308030', False, True, False,
@@ -105,7 +106,8 @@ $Applications[] = new cApplication('QuakeMap 2.4', '24', '#308030', False, True,
                                    'Shareware', mktime(0, 0, 0, 11, 20, 1996), NULL
                                   );
 $Applications[] = new cApplication('QuakeMap 2.5', '25', '#308030', False, True, False,
-                                   'Shareware', mktime(0, 0, 0, 12, 3, 1996), NULL
+                                   'Shareware', mktime(0, 0, 0, 12, 3, 1996), NULL,
+                                   array($downloadroot.'oldies/qmap25.zip')
                                   );
 $Applications[] = new cApplication('QuakeMap 2.51', '251', '#308030', False, True, False,
                                    'Shareware', mktime(0, 0, 0, 12, 9, 1996), NULL
@@ -122,8 +124,7 @@ $Applications[] = new cApplication('QuakeMap 2.8', '28', '#308030', True, True, 
                                    'Shareware', mktime(0, 0, 0, 1, 29, 1997), NULL,
                                    array($downloadroot.'oldies/qmap28.zip')
                                   );
-
-#Are there more QuakeMap 2.x?
+#FIXME: Are there more QuakeMap 2.x?
 
 #QuakeMap 3.0b : 21-2-1997 http://muri.tri6.net/quake/199702.html
 
